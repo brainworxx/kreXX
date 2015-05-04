@@ -82,6 +82,9 @@ class Objects {
 
       $ref = new \ReflectionClass($data);
 
+      // Dumping all methods.
+      $output .= Objects::getMethodData($data, $name);
+
       // Dumping public properties.
       $ref_props = $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
 
@@ -122,10 +125,6 @@ class Objects {
           $output .= Objects::getReflectionPropertiesData($ref_props, $name, $ref, $data, 'Private properties');
         }
       }
-
-      // Dumping all methods
-      // but only if we have any.
-      $output .= Objects::getMethodData($data, $name);
 
       // Dumping traversable data.
       if (Config::getConfigValue('deep', 'analyseTraversable') == 'true') {
@@ -276,7 +275,17 @@ class Objects {
 
       return $output;
     };
-    return Render::renderExpandableChild($name, 'class internals', $anon_function, $parameter, $label);
+
+    // We are dumping public properties direct into the main-level, without
+    // any "abstraction level", because they can be accessed directly
+    if (strpos(strtoupper($label),'PUBLIC') === FALSE) {
+      // Protected or private properties.
+      return Render::renderExpandableChild($name, 'class internals', $anon_function, $parameter, $label);
+    }
+    else {
+      // Public properties.
+      return Render::renderExpandableChild('', '', $anon_function, $parameter, $label);
+    }
   }
 
   /**
