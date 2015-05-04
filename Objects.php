@@ -430,13 +430,12 @@ class Objects {
       if (is_callable(array($data, $func_name)) && config::isAllowedDebugCall($data, $func_name)) {
         // Add a try to prevent the hosting CMS from doing something stupid.
         try {
-          $args = array();
           // We need to deactivate the current error handling to
           // prevent the host system to do anything stupid.
           set_error_handler(function() {
             // Do nothing.
           });
-          $parameter = $data->$func_name($args);
+          $parameter = $data->$func_name();
           // Reactivate whatever error handling we had previously.
           restore_error_handler();
         }
