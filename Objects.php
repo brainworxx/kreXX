@@ -463,7 +463,7 @@ class Objects {
           $anon_function = function (&$parameter) {
             return Internals::analysisHub($parameter);
           };
-          $output .= Render::renderExpandableChild($func_name, 'debug method', $anon_function, $parameter, '', '', '', FALSE, '', '() =');
+          $output .= Render::renderExpandableChild($func_name, 'debug method', $anon_function, $parameter, '. . .', '', '', FALSE, '->', '() =');
           unset($parameter);
         }
       }
@@ -489,26 +489,31 @@ class Objects {
       $output = '';
       foreach ($data as $key => $string) {
         if ($key !== 'comments' && $key !== 'declared in') {
-          $output .= Render::renderSingleChild($string, $key, $string, FALSE, 'reflection');
+          $output .= Render::renderSingleChild($string, $key, $string, FALSE, 'reflection', '', '', '', '=');
         }
         else {
-          $output .= Render::renderSingleChild($string, $key, '. . .', TRUE, 'reflection');
+          $output .= Render::renderSingleChild($string, $key, '. . .', TRUE, 'reflection', '', '', '', '=');
         }
       }
       return $output;
     };
 
-    // Getting the parameter list
+
     $param_list = '';
+    $connector1 = '->';
     foreach ($data as $key => $string) {
-       if (strpos($key, 'Parameter') === 0) {
-          $param_list .= trim(str_replace(array('&lt;optional&gt;', '&lt;required&gt;'), array('', ''), $string))  . ', ';
-        }
+      // Getting the parameter list
+      if (strpos($key, 'Parameter') === 0) {
+        $param_list .= trim(str_replace(array('&lt;optional&gt;', '&lt;required&gt;'), array('', ''), $string))  . ', ';
+      }
+      if (strpos($data['declaration keywords'],'static') !== FALSE) {
+        $connector1 = '::';
+      }
     }
     // Remove the ',' after the last char.
     $param_list = '<small>' . trim($param_list, ', ') . '</small>';
 
-    return Render::renderExpandableChild($name, $data['declaration keywords'] . ' method', $anon_function, $parameter, '', '', '', FALSE, '->', '(' . $param_list. ')');
+    return Render::renderExpandableChild($name, $data['declaration keywords'] . ' method', $anon_function, $parameter, '', '', '', FALSE, $connector1, '(' . $param_list. ')');
   }
 
   /**
