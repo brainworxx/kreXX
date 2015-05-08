@@ -80,7 +80,7 @@ class Internals {
       if ($cle != 'start') {
         // Calculate the time.
         $prcnt_t = round(((round(($val - $prv_val) * 1000, 4) / $tttime) * 100), 1);
-        $ar_aff[$prv_cle . ' -> ' . $cle] = $prcnt_t . '%';
+        $ar_aff[$prv_cle . '->' . $cle] = $prcnt_t . '%';
         $prv_val = $val;
         $prv_cle = $cle;
       }
@@ -102,9 +102,9 @@ class Internals {
    * @return string
    *   The generated markup.
    */
-  public Static Function analysisHub(&$data, $name = '...') {
+  public Static Function analysisHub(&$data, $name = '', $connector1 = '', $connector2 = '') {
 
-    // Ceck memory and runtime.
+    // Check memory and runtime.
     if (!self::checkEmergencyBreak()) {
       // No more took too long, or not enough memory is left.
       Messages::addMessage("Emergency break for large output during rendering process.\n\nYou should try to switch to file output.");
@@ -115,7 +115,7 @@ class Internals {
     if (is_object($data)) {
       self::$nestingLevel++;
       if (self::$nestingLevel <= (int) Config::getConfigValue('deep', 'level')) {
-        $result = Objects::analyseObject($data, $name);
+        $result = Objects::analyseObject($data, $name, '', $connector1, $connector2);
         self::$nestingLevel--;
         return $result;
       }
@@ -129,7 +129,7 @@ class Internals {
     if (is_array($data)) {
       self::$nestingLevel++;
       if (self::$nestingLevel <= (int) Config::getConfigValue('deep', 'level')) {
-        $result = Variables::analyseArray($data, $name);
+        $result = Variables::analyseArray($data, $name, '', $connector1, $connector2);
         self::$nestingLevel--;
         return $result;
       }
@@ -141,40 +141,40 @@ class Internals {
 
     // Resource?
     if (is_resource($data)) {
-      return Variables::analyseResource($data, $name);
+      return Variables::analyseResource($data, $name, '', $connector1, $connector2);
     }
 
     // String?
     if (is_string($data)) {
-      return Variables::analyseString($data, $name);
+      return Variables::analyseString($data, $name, '', $connector1, $connector2);
     }
 
     // Float?
     if (is_float($data)) {
-      return Variables::analyseFloat($data, $name);
+      return Variables::analyseFloat($data, $name, '', $connector1, $connector2);
     }
 
     // Integer?
     if (is_int($data)) {
-      return Variables::analyseInteger($data, $name);
+      return Variables::analyseInteger($data, $name, '', $connector1, $connector2);
     }
 
     // Boolean?
     if (is_bool($data)) {
-      return Variables::analyseBoolean($data, $name);
+      return Variables::analyseBoolean($data, $name, '', $connector1, $connector2);
     }
 
     // Null ?
     if (is_null($data)) {
-      return Variables::analyseNull($name);
+      return Variables::analyseNull($name, '', $connector1, $connector2);
     }
   }
 
   /**
    * Render a dump for the properties of an array or object.
    *
-   * @param array|object &$data
-   *   The object or array we want to analyse.
+   * @param array &$data
+   *   The array we want to analyse.
    *
    * @return string
    *   The generated markup.
@@ -198,14 +198,9 @@ class Internals {
       Hive::addToHive($data);
 
       // Keys?
-      if ($is_object) {
-        $keys = array_keys(get_object_vars($data));
-      }
-      else {
         $keys = array_keys($data);
-      }
 
-      // Itterate through.
+      // Iterate through.
       foreach ($keys as $k) {
 
         // Skip the recursion marker.
@@ -221,7 +216,7 @@ class Internals {
           $v = & $data[$k];
         }
 
-        $output .= Internals::analysisHub($v, $k);
+        $output .= Internals::analysisHub($v, $k, '[', ']=');
       }
       return $output;
     };
@@ -292,7 +287,7 @@ class Internals {
     // We need to get the footer before the generating of the header,
     // because we need to display messages in the header.
     $footer = Toolbox::outputFooter($caller);
-    $analysis = self::analysisHub($data);
+    $analysis = self::analysisHub($data, '...', '', '=>');
     self::$shutdownHandler->addChunkString(Toolbox::outputHeader($headline, $ignore_local_settings), $ignore_local_settings);
     self::$shutdownHandler->addChunkString(Messages::outputMessages(), $ignore_local_settings);
     self::$shutdownHandler->addChunkString($analysis, $ignore_local_settings);
@@ -346,7 +341,7 @@ class Internals {
   /**
    * Finds the place in the code from where krexx was called.
    *
-   * @return string
+   * @return array
    *   The code, from where krexx was called
    */
   public static function findCaller() {
@@ -359,14 +354,6 @@ class Internals {
         break;
       }
     }
-
-    // Now we try to get the context of the kreXX call.
-    // When calling something like krexx($this);
-    // we must treat protected and private properties like public ones, because
-    // they are accessible.
-    $source = Toolbox::readSourcecode($caller['file'], $caller['line'] - 1, 0);
-    // @todo Analyse this part of the sourcecode, to get the context.
-
     return $caller;
   }
 

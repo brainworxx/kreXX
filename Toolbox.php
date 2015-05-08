@@ -146,7 +146,7 @@ class Toolbox {
   /**
    * Simply renders the footer and output current settings.
    *
-   * @param string $caller
+   * @param array $caller
    *   Where was kreXX initially invoced from.
    * @param bool $is_expanded
    *   Are we rendering an expanded footer?

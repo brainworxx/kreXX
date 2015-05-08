@@ -90,13 +90,13 @@ class Render extends Help {
    *   calles this one.
    * @param string $help_id
    *   The id of the helptext we want to display here.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The generated markup from the template files.
    */
-  Public static function renderSingleChild($data, $name = '', $normal = '', $extra = FALSE, $type = '', $strlen = '', $help_id = '', $connector = '=>') {
+  Public static function renderSingleChild($data, $name = '', $normal = '', $extra = FALSE, $type = '', $strlen = '', $help_id = '', $connector1 = '=>', $connector2 = '=') {
     // This one is a little bit more complicated than the others,
     // because it assembels some partials and stitches them together.
     $template = self::getTemplateFileContent('singleChild');
@@ -134,8 +134,8 @@ class Render extends Help {
     $template = str_replace('{normal}', $normal, $template);
     $template = str_replace('{data}', $data, $template);
     $template = str_replace('{help}', self::renderHelp($help_id), $template);
-    $template = str_replace('{connector}', $connector, $template);
-    return $template;
+    $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
+    return str_replace('{connector2}', self::renderConnector($connector2), $template);
   }
 
   /**
@@ -150,19 +150,20 @@ class Render extends Help {
    *   We might want to tell the user what this actually is.
    * @param string $dom_id
    *   The id of the analysis data, a click on the recursion should jump to it.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The generated markup from the template files.
    */
-  Public Static Function renderRecursion($name = '', $value = '', $dom_id = '', $connector = '=>') {
+  Public Static Function renderRecursion($name = '', $value = '', $dom_id = '', $connector1 = '=>', $connector2 = '=') {
     $template = self::getTemplateFileContent('recursion');
     // Replace our stuff in the partial.
     $template = str_replace('{name}', $name, $template);
     $template = str_replace('{domId}', $dom_id, $template);
     $template = str_replace('{value}', $value, $template);
-    return $template = str_replace('{connector}', $connector, $template);
+    $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
+    return str_replace('{connector2}', self::renderConnector($connector2), $template);
   }
 
   /**
@@ -207,7 +208,7 @@ class Render extends Help {
   /**
    * Renders the kreXX footer.
    *
-   * @param string $caller
+   * @param array $caller
    *   The caller of kreXX.
    * @param string $config_output
    *   The pregenerated configuration markup.
@@ -304,13 +305,13 @@ class Render extends Help {
    * @param bool $is_expanded
    *   Is this one expanded from the beginning?
    *   TRUE when we render the settings menu only.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The generated markup from the template files.
    */
-  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector = '=>') {
+  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '=>', $connector2 = '=') {
     // Check for emergency break.
     if (!Internals::checkEmergencyBreak()) {
       // Normally, this should not show up, because the Chunks class will not
@@ -343,7 +344,8 @@ class Render extends Help {
 
       $template = str_replace('{additional}', $additional, $template);
       $template = str_replace('{help}', self::renderHelp($help_id), $template);
-      $template = str_replace('{connector}', $connector, $template);
+      $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
+      $template = str_replace('{connector2}', self::renderConnector($connector2), $template);
 
       // Is it expanded?
       if ($is_expanded) {
@@ -634,5 +636,29 @@ class Render extends Help {
     $template = str_replace('{lineNo}', $line_no, $template);
 
     return str_replace('{sourceCode}', $source_code, $template);
+  }
+
+  public static function renderSingeChildHr() {
+    return self::getTemplateFileContent('singleChildHr');
+  }
+
+  /**
+   * Renders the connector between analysis objects, params and results.
+   *
+   * @param string $connector
+   *   The data to be displayed.
+   *
+   * @return string
+   *   The rendered connector.
+   */
+  public static function renderConnector($connector) {
+    if (!empty($connector)) {
+      $template = self::getTemplateFileContent('connector');
+      return str_replace('{connector}', $connector, $template);
+    }
+    else {
+      return '';
+    }
+
   }
 }

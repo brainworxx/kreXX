@@ -47,15 +47,15 @@ class Variables {
    *   The Name, what we render here.
    * @param string $additional
    *   Information about thedeclaration in the parent class / array.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The rendered markup.
    */
-  public Static Function analyseNull($name, $additional = '', $connector = '=>') {
+  public Static Function analyseNull($name, $additional = '', $connector1 = '=>', $connector2 = '=') {
     $data = 'NULL';
-    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'null', '', '', $connector);
+    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'null', '', '', $connector1, $connector2);
   }
 
   /**
@@ -67,13 +67,13 @@ class Variables {
    *   The name, what we render here.
    * @param string $additional
    *   Information about thedeclaration in the parent class / array.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The rendered markup.
    */
-  public Static Function analyseArray(array &$data, $name, $additional = '', $connector = '=>') {
+  public Static Function analyseArray(array &$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
     // Dumping all Properties.
     $parameter = array($data);
     $anon_function = function ($parameter) {
@@ -81,7 +81,7 @@ class Variables {
       return Internals::iterateThrough($data);
     };
 
-    return Render::renderExpandableChild($name, $additional . 'array', $anon_function, $parameter, count($data) . ' elements', '', '', FALSE, $connector);
+    return Render::renderExpandableChild($name, $additional . 'array', $anon_function, $parameter, count($data) . ' elements', '', '', FALSE, $connector1, $connector2);
   }
 
   /**
@@ -93,15 +93,15 @@ class Variables {
    *   The name, what we render here.
    * @param string $additional
    *   Information about thedeclaration in the parent class / array.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The rendered markup.
    */
-  public Static Function analyseResource($data, $name, $additional = '', $connector = '=>') {
+  public Static Function analyseResource($data, $name, $additional = '', $connector1 =  '=>', $connector2 = '=') {
     $data = get_resource_type($data);
-    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'resource', '', '', $connector);
+    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'resource', '', '', $connector1, $connector2);
   }
 
   /**
@@ -113,15 +113,15 @@ class Variables {
    *   The name, what we render here.
    * @param string $additional
    *   Information about thedeclaration in the parent class / array.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The rendered markup.
    */
-  public Static Function analyseBoolean($data, $name, $additional = '', $connector = '=>') {
+  public Static Function analyseBoolean($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
     $data = $data ? 'TRUE' : 'FALSE';
-    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'boolean', '', '', $connector);
+    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'boolean', '', '', $connector1, $connector2);
   }
 
   /**
@@ -133,14 +133,14 @@ class Variables {
    *   The name, what we render here.
    * @param string $additional
    *   Information about thedeclaration in the parent class / array.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The rendered markup.
    */
-  public Static Function analyseInteger($data, $name, $additional = '', $connector = '=>') {
-    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'integer', '', '', $connector);
+  public Static Function analyseInteger($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
+    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'integer', '', '', $connector1, $connector2);
   }
 
   /**
@@ -152,14 +152,14 @@ class Variables {
    *   The name, what we render here.
    * @param string $additional
    *   Information about thedeclaration in the parent class / array.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The rendered markup.
    */
-  public Static Function analyseFloat($data, $name, $additional = '', $connector = '=>') {
-    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'float', '', '', $connector);
+  public Static Function analyseFloat($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
+    return Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'float', '', '', $connector1, $connector2);
   }
 
   /**
@@ -171,13 +171,13 @@ class Variables {
    *   The name, what we render here.
    * @param string $additional
    *   Information about thedeclaration in the parent class / array.
-   * @param string $connector
-   *   The connector type to the parent class / array.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
    *
    * @return string
    *   The rendered markup.
    */
-  public Static Function analyseString($data, $name, $additional = '', $connector = '=>') {
+  public Static Function analyseString($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
 
     // Extra ?
     $has_extra = FALSE;
@@ -198,7 +198,7 @@ class Variables {
       $strlen = ' mixed encoded ~ ' . strlen($data);
     }
 
-    return Render::renderSingleChild($clean_data, $name, $cut, $has_extra, $additional . 'string', ' ' . $strlen, '', $connector);
+    return Render::renderSingleChild($clean_data, $name, $cut, $has_extra, $additional . 'string', ' ' . $strlen, '', $connector1, $connector2);
   }
 
   /**

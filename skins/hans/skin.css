@@ -69,6 +69,7 @@ li.kchild {
 .kel em.karrow {
   font: bold 12px tahoma,verdana;
   background-color: #303030;
+  padding: 0 2px;
 }
 .khidden {
   display: none;
@@ -576,4 +577,12 @@ ul.kconfiguration li.kchild {
 .ksearch-found-highlight .kpre,
 .highlight-jumpto .kpre {
   color: #303030!important;
+}
+li.kchild.krow hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  margin-right: 20px;
+  margin-top: 0;
 }
