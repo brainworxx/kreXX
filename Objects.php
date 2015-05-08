@@ -78,7 +78,7 @@ class Objects {
     $anon_function = function (&$parameter) {
       $data = $parameter[0];
       $name = $parameter[1];
-      $output = '';
+      $output = Render::renderSingeChildHr();;
 
       $ref = new \ReflectionClass($data);
 
@@ -138,6 +138,9 @@ class Objects {
 
       // Dumping all configured debug functions.
       $output .= Objects::pollAllConfiguredDebugMethods($data, $name);
+
+      // Adding a HR for a better readability.
+      $output .= Render::renderSingeChildHr();
       return $output;
     };
 
@@ -505,7 +508,7 @@ class Objects {
     // Remove the ',' after the last char.
     $param_list = '<small>' . trim($param_list, ', ') . '</small>';
 
-    return Render::renderExpandableChild($name, $data['declaration keywords'] . ' method', $anon_function, $parameter, '', '', '', FALSE, '=', '(' . $param_list. ')');
+    return Render::renderExpandableChild($name, $data['declaration keywords'] . ' method', $anon_function, $parameter, '', '', '', FALSE, '->', '(' . $param_list. ')');
   }
 
   /**

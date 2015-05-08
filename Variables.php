@@ -46,7 +46,7 @@ class Variables {
    * @param string $name
    *   The Name, what we render here.
    * @param string $additional
-   *   Information about thedeclaration in the parent class / array.
+   *   Information about the declaration in the parent class / array.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    *
@@ -66,7 +66,7 @@ class Variables {
    * @param string $name
    *   The name, what we render here.
    * @param string $additional
-   *   Information about thedeclaration in the parent class / array.
+   *   Information about the declaration in the parent class / array.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    *
@@ -92,7 +92,7 @@ class Variables {
    * @param string $name
    *   The name, what we render here.
    * @param string $additional
-   *   Information about thedeclaration in the parent class / array.
+   *   Information about the declaration in the parent class / array.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    *
@@ -112,7 +112,7 @@ class Variables {
    * @param string $name
    *   The name, what we render here.
    * @param string $additional
-   *   Information about thedeclaration in the parent class / array.
+   *   Information about the declaration in the parent class / array.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    *
@@ -132,7 +132,7 @@ class Variables {
    * @param string $name
    *   The name, what we render here.
    * @param string $additional
-   *   Information about thedeclaration in the parent class / array.
+   *   Information about the declaration in the parent class / array.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    *
@@ -151,7 +151,7 @@ class Variables {
    * @param string $name
    *   The name, what we render here.
    * @param string $additional
-   *   Information about thedeclaration in the parent class / array.
+   *   Information about the declaration in the parent class / array.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    *
@@ -170,7 +170,7 @@ class Variables {
    * @param string $name
    *   The name, what we render here.
    * @param string $additional
-   *   Information about thedeclaration in the parent class / array.
+   *   Information about the declaration in the parent class / array.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    *

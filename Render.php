@@ -96,7 +96,7 @@ class Render extends Help {
    * @return string
    *   The generated markup from the template files.
    */
-  Public static function renderSingleChild($data, $name = '', $normal = '', $extra = FALSE, $type = '', $strlen = '', $help_id = '', $connector1 = '=>', $connector2 = '=') {
+  Public static function renderSingleChild($data, $name = '', $normal = '', $extra = FALSE, $type = '', $strlen = '', $help_id = '', $connector1 = '', $connector2 = '') {
     // This one is a little bit more complicated than the others,
     // because it assembels some partials and stitches them together.
     $template = self::getTemplateFileContent('singleChild');
@@ -156,7 +156,7 @@ class Render extends Help {
    * @return string
    *   The generated markup from the template files.
    */
-  Public Static Function renderRecursion($name = '', $value = '', $dom_id = '', $connector1 = '=>', $connector2 = '=') {
+  Public Static Function renderRecursion($name = '', $value = '', $dom_id = '', $connector1 = '', $connector2 = '') {
     $template = self::getTemplateFileContent('recursion');
     // Replace our stuff in the partial.
     $template = str_replace('{name}', $name, $template);
@@ -311,7 +311,7 @@ class Render extends Help {
    * @return string
    *   The generated markup from the template files.
    */
-  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '=>', $connector2 = '=') {
+  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '', $connector2 = '') {
     // Check for emergency break.
     if (!Internals::checkEmergencyBreak()) {
       // Normally, this should not show up, because the Chunks class will not

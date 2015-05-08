@@ -111,6 +111,13 @@ class Internals {
       return '';
     }
 
+    // If we are currently analysing an array, we might need to add stuff to
+    // the connector
+    if ($connector1 == '[' && is_string($name)) {
+      $connector1 = $connector1 . "'";
+      $connector2 = "'" . $connector2;
+    }
+
     // Object?
     if (is_object($data)) {
       self::$nestingLevel++;
@@ -198,7 +205,9 @@ class Internals {
       Hive::addToHive($data);
 
       // Keys?
-        $keys = array_keys($data);
+      $keys = array_keys($data);
+
+      $output .= \Krexx\Render::renderSingeChildHr();
 
       // Iterate through.
       foreach ($keys as $k) {
@@ -216,8 +225,9 @@ class Internals {
           $v = & $data[$k];
         }
 
-        $output .= Internals::analysisHub($v, $k, '[', ']=');
+        $output .= Internals::analysisHub($v, $k, '[', ']');
       }
+      $output .= \Krexx\Render::renderSingeChildHr();
       return $output;
     };
     return Render::renderExpandableChild('', '', $analysis, $parameter);
