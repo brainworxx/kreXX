@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *   Renderfunctions for kreXX
+ *   Render functions for kreXX
  *   kreXX: Krumo eXXtended
  *
  *   This is a debugging tool, which displays structured information
@@ -31,7 +31,10 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Krexx;
+namespace Brainworxx\Krexx\View;
+
+use Brainworxx\Krexx\Analysis;
+use Brainworxx\Krexx\Framework;
 
 /**
  * This class hosts the internal rendering functions.
@@ -77,34 +80,36 @@ class Render extends Help {
    * @param string $name
    *   The Name, what we render here.
    * @param string $normal
-   *   The normal content. Content using linebreaks shoulg get
-   *   rendert into $extra.
+   *   The normal content. Content using linebreaks should get
+   *   rendered into $extra.
    * @param bool $extra
-   *   If set, the data text will be rendert inside the yellow square.
+   *   If set, the data text will be rendered inside the yellow square.
    * @param string $type
    *   The type of the analysed variable, in a string.
    * @param string $strlen
    *   The length of the string. In this function, the string which gets
    *   displayed is already not just escaped, but completely encoded. We need
    *   the value from the original string, which we get from the method, which
-   *   calles this one.
+   *   calls this one.
    * @param string $help_id
-   *   The id of the helptext we want to display here.
+   *   The id of the help text we want to display here.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
+   * @param string $connector2
+   *   The connector2 type to the parent class / array.
    *
    * @return string
    *   The generated markup from the template files.
    */
   Public static function renderSingleChild($data, $name = '', $normal = '', $extra = FALSE, $type = '', $strlen = '', $help_id = '', $connector1 = '', $connector2 = '') {
     // This one is a little bit more complicated than the others,
-    // because it assembels some partials and stitches them together.
+    // because it assembles some partials and stitches them together.
     $template = self::getTemplateFileContent('singleChild');
     $part_expand = '';
     $part_callable = '';
     $part_extra = '';
     if ($extra) {
-      // We have a lot of text, so we render this one expandeble (yellow box).
+      // We have a lot of text, so we render this one expandable (yellow box).
       $part_expand = self::getTemplateFileContent('singleChildExpand');
     }
     if (is_callable($data)) {
@@ -141,7 +146,7 @@ class Render extends Help {
   /**
    * Render a block of a detected recursion.
    *
-   * If the recursion is an objekct, a click should jump to the original
+   * If the recursion is an object, a click should jump to the original
    * analysis data.
    *
    * @param string $name
@@ -152,6 +157,8 @@ class Render extends Help {
    *   The id of the analysis data, a click on the recursion should jump to it.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
+   * @param string $connector2
+   *   The connector2 type to the parent class / array.
    *
    * @return string
    *   The generated markup from the template files.
@@ -187,7 +194,7 @@ class Render extends Help {
     $template = str_replace('{KrexxCount}', self::$KrexxCount, $template);
     $template = str_replace('{headline}', $headline, $template);
     $template = str_replace('{cssJs}', $css_js, $template);
-    $template = str_replace('{KrexxId}', Hive::getMarker(), $template);
+    $template = str_replace('{KrexxId}', Analysis\Hive::getMarker(), $template);
     $template = str_replace('{search}', self::renderSearch(), $template);
 
     return $template;
@@ -201,7 +208,7 @@ class Render extends Help {
    */
   public static function renderSearch() {
     $template = self::getTemplateFileContent('search');
-    $template = str_replace('{KrexxId}', Hive::getMarker(), $template);
+    $template = str_replace('{KrexxId}', Analysis\Hive::getMarker(), $template);
     return $template;
   }
 
@@ -234,7 +241,7 @@ class Render extends Help {
    * Renders a nest with a anonymous function in the middle.
    *
    * @param \Closure $anon_function
-   *   The anonymous function generates the raw output which is renderd
+   *   The anonymous function generates the raw output which is rendered
    *   into the nest.
    * @param mixed $parameter
    *   The parameters for the anonymous function.
@@ -270,9 +277,9 @@ class Render extends Help {
    * Simply outputs the css and js stuff.
    *
    * @param string $css
-   *   The CSS, renderd into the template.
+   *   The CSS, rendered into the template.
    * @param string $js
-   *   The JS, renderd into the template.
+   *   The JS, rendered into the template.
    *
    * @return string
    *   The generated markup from the template files.
@@ -293,7 +300,7 @@ class Render extends Help {
    * @param string $type
    *   Replacement for the {type} in the template file.
    * @param \Closure $anon_function
-   *   The anonymous function generates the raw output which is renderd.
+   *   The anonymous function generates the raw output which is rendered.
    * @param mixed $parameter
    *   The parameters for the anonymous function.
    * @param string $additional
@@ -307,15 +314,17 @@ class Render extends Help {
    *   TRUE when we render the settings menu only.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
+   * @param string $connector2
+   *   The connector2 type to the parent class / array.
    *
    * @return string
    *   The generated markup from the template files.
    */
   Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '', $connector2 = '') {
     // Check for emergency break.
-    if (!Internals::checkEmergencyBreak()) {
+    if (!Analysis\Internals::checkEmergencyBreak()) {
       // Normally, this should not show up, because the Chunks class will not
-      // output anything, exept a JS alert.
+      // output anything, except a JS alert.
       Messages::addMessage("Emergency break for large output during rendering process.\n\nYou should try to switch to file output.");
       return '';
     }
@@ -325,7 +334,7 @@ class Render extends Help {
       // Without a Name or Type I only display the Child with a Node.
       $template = self::getTemplateFileContent('expandableChildSimple');
       // Replace our stuff in the partial.
-      return str_replace('{mainfunction}', Chunks::chunkMe($anon_function($parameter)), $template);
+      return str_replace('{mainfunction}', Framework\Chunks::chunkMe($anon_function($parameter)), $template);
     }
     else {
       // We need to render this one normally.
@@ -334,7 +343,7 @@ class Render extends Help {
       $template = str_replace('{name}', $name, $template);
       $template = str_replace('{type}', $type, $template);
 
-      // Explode the type to get the classnames right.
+      // Explode the type to get the class names right.
       $types = explode(' ', $type);
       $css_type = '';
       foreach ($types as $type) {
@@ -354,7 +363,7 @@ class Render extends Help {
       else {
         $template = str_replace('{isExpanded}', '', $template);
       }
-      return str_replace('{nest}', Chunks::chunkMe(self::renderNest($anon_function, $parameter, $dom_id, $is_expanded)), $template);
+      return str_replace('{nest}', Framework\Chunks::chunkMe(self::renderNest($anon_function, $parameter, $dom_id, $is_expanded)), $template);
     }
   }
 
@@ -370,18 +379,18 @@ class Render extends Help {
   protected static function getTemplateFileContent($what) {
     static $file_cache = array();
     if (!isset($file_cache[$what])) {
-      $file_cache[$what] = preg_replace('/\s+/', ' ', Toolbox::getFileContents(KREXXDIR . 'skins/' . self::$skin . '/' . $what . '.html'));
+      $file_cache[$what] = preg_replace('/\s+/', ' ', Framework\Toolbox::getFileContents(Framework\Config::$krexxdir . 'resources/skins/' . self::$skin . '/' . $what . '.html'));
     }
     return $file_cache[$what];
   }
 
   /**
-   * Renders a simpel editable child node.
+   * Renders a simple editable child node.
    *
    * @param string $name
    *   The Name, what we render here.
    * @param string $normal
-   *   The normal content. conetnt using linebreaks should get rendert
+   *   The normal content. Content using linebreaks should get rendered
    *   into $extra.
    * @param string $source
    *   Source of the setting.
@@ -418,7 +427,7 @@ class Render extends Help {
           break;
 
         case "skin":
-          // Get a list of all skinfolders.
+          // Get a list of all skin folders.
           $value_list = self::getSkinList();
           break;
 
@@ -533,14 +542,14 @@ class Render extends Help {
     $template = str_replace('{doctype}', $doctype, $template);
     $template = str_replace('{search}', self::renderSearch(), $template);
 
-    return str_replace('{KrexxId}', Hive::getMarker(), $template);
+    return str_replace('{KrexxId}', Analysis\Hive::getMarker(), $template);
   }
 
   /**
    * Renders all internal messages.
    *
    * @param array $messages
-   *   The currrent messages.
+   *   The current messages.
    *
    * @return string
    *   The generates html output
@@ -607,10 +616,10 @@ class Render extends Help {
 
     if (count($list) == 0) {
       // Get the list.
-      $list = array_filter(glob(KREXXDIR . 'skins/*'), 'is_dir');
+      $list = array_filter(glob(Framework\Config::$krexxdir . 'resources/skins/*'), 'is_dir');
       // Now we need to filter it, we only want the names, not the full path.
       foreach ($list as &$path) {
-        $path = str_replace(KREXXDIR . 'skins/', '', $path);
+        $path = str_replace(Framework\Config::$krexxdir . 'resources/skins/', '', $path);
       }
     }
 
@@ -618,14 +627,14 @@ class Render extends Help {
   }
 
   /**
-   * Renders the line of the sourcecode, from where the backtrace is comming.
+   * Renders the line of the sourcecode, from where the backtrace is coming.
    *
    * @param string $class_name
    *   The class name where the sourcecode is from.
    * @param string $line_no
    *   The kine number from the file.
    * @param string $source_code
-   *   Part of the sourcecode, where the backtrace is comming from.
+   *   Part of the sourcecode, where the backtrace is coming from.
    *
    * @return string
    *   The generated markup from the template files.
@@ -638,6 +647,12 @@ class Render extends Help {
     return str_replace('{sourceCode}', $source_code, $template);
   }
 
+  /**
+   * Renders the hr.
+   *
+   * @return string
+   *   The generated markup from the template file.
+   */
   public static function renderSingeChildHr() {
     return self::getTemplateFileContent('singleChildHr');
   }
