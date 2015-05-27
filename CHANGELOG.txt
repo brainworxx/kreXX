@@ -10,6 +10,8 @@
   readable. The format is now much more similar to the actual code.
 - Change: Refactored file handling (chunks and logfiles).
 - Change: Cleaned up the file structure.
+- Change: kreXX will now evaluate all cookie settings right away, and
+  not when the value is actually needed (if at all).
 
 1.3.2
 - Bugfix: Removed that annoying "Hidden internal properties"
