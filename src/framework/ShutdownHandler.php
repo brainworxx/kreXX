@@ -84,8 +84,6 @@ class ShutdownHandler {
       // Since we are in CLI mode, these messages are not in HTML.
       // We can output them right away.
       echo $messages;
-      // Something went wrong, better to stop right here.
-      return;
     }
 
     // Output our chunks.

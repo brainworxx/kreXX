@@ -34,6 +34,7 @@
 namespace Brainworxx\Krexx\Framework;
 
 use Brainworxx\Krexx\View;
+use Krexx\Messages;
 
 /**
  * This class hosts the kreXX configuration functions.
@@ -252,7 +253,6 @@ class Config {
     if (Toolbox::isRequestAjaxOrCli()) {
       return FALSE;
     }
-
     return self::$isEnabled;
   }
 

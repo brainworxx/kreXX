@@ -53,7 +53,6 @@ class Variables {
     'ISO-8859-5',
     'ISO-8859-15',
     'cp866',
-    'ibm866',
     'cp1251',
     'Windows-1251',
     'cp1252',

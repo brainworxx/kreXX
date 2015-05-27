@@ -273,7 +273,7 @@ class Toolbox {
   }
 
   /**
-   * Simply outputs a formatted var_dump and then dies.
+   * Simply outputs a formatted var_dump.
    *
    * This is an internal debugging function, because it is
    * rather difficult to debug a debugger, when your tool of
@@ -285,7 +285,7 @@ class Toolbox {
   public static function formattedVarDump($data) {
     echo '<pre>';
     var_dump($data);
-    die('</pre>');
+    echo('</pre>');
   }
 
   /**

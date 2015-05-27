@@ -249,7 +249,8 @@ class Chunks {
       // Clean up leftover files.
       $chunk_list = glob(Framework\Config::$krexxdir . 'chunks/*.Krexx.tmp');
       foreach ($chunk_list as $file) {
-        if (filemtime($file) < time() - 3600) {
+        // We delete everything that is older than one hour.
+        if ((filemtime($file) + 3600) < time()) {
           unlink($file);
         }
       }
