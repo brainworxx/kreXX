@@ -552,7 +552,7 @@ class Objects {
    * @return string
    *   The generated markup.
    */
-  public Static Function analyseClosure($data, $prop_name = 'closure', $additional, $connector1) {
+  public Static Function analyseClosure($data, $prop_name = 'closure', $additional = '', $connector1 = '', $connector2 = '') {
     $ref = new \ReflectionFunction($data);
 
     $result = array();
@@ -593,7 +593,7 @@ class Objects {
       return $output;
     };
 
-    return View\Render::renderExpandableChild($prop_name, $additional . ' closure', $anon_function, $result, '', '', '', FALSE, $connector1, '(' . $param_list . ') =');
+    return View\Render::renderExpandableChild($prop_name, $additional . ' closure', $anon_function, $result, '', '', '', FALSE, $connector1, $connector2 . '(' . $param_list . ') =');
 
   }
 
