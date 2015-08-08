@@ -117,7 +117,6 @@ backtraceAnalysis = "normal"
 ; Since the local configuration is stored in a cookie, settings will be 
 ; ignored, in case a setting can not be edited.
 skin = "full"
-jsLib = "none"
 memoryLeft = "full"
 maxRuntime = "full"
 folder = "none"
