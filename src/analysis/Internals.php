@@ -388,7 +388,9 @@ class Internals {
         break;
       }
     }
-    return $caller;
+    // We will not keep the whole backtrace im memory. We only return what we
+    // actually need.
+    return array('file' => $caller['file'], 'line' => $caller['line']);
   }
 
   /**
