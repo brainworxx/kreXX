@@ -133,6 +133,7 @@ class Render extends Help {
     $template = str_replace('{data}', $data, $template);
     $template = str_replace('{help}', self::renderHelp($help_id), $template);
     $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
+    $template = str_replace('{gensource}', self::generateSource($connector1, $connector2, $name), $template);
     return str_replace('{connector2}', self::renderConnector($connector2), $template);
   }
 
@@ -348,6 +349,7 @@ class Render extends Help {
       $template = str_replace('{help}', self::renderHelp($help_id), $template);
       $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
       $template = str_replace('{connector2}', self::renderConnector($connector2), $template);
+      $template = str_replace('{gensource}', self::generateSource($connector1, $connector2, $name), $template);
 
       // Is it expanded?
       if ($is_expanded) {
@@ -667,6 +669,39 @@ class Render extends Help {
     else {
       return '';
     }
+  }
 
+  /**
+   * Generates PHP sourcecode.
+   *
+   * From the 2 connectors and from the name of name/key of the attribute
+   * we can generate PHP code to actually reach the corresponding value.
+   * This function generates this code.
+   *
+   * @param $connector1
+   * @param $connector2
+   * @param $name
+   *
+   * @return string
+   *   The generated PHP source.
+   */
+  protected static function generateSource($connector1, $connector2, $name) {
+
+    $result = '';
+    
+    if ($connector1 . $connector2 == '') {
+      // No connectors mean, we are dealing with some meta stuff, like functions
+      // We will not add anything for these.
+
+      // @todo Solve stuff for protected attributes or functions.
+      //       Do we really want to auto generate reflection classes to make
+      //       some stuff reachable? I mean, really?!?
+    }
+    else {
+      $result = $connector1 . $name . $connector2;
+    }
+
+
+    return $result;
   }
 }
