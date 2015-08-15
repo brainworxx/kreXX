@@ -407,7 +407,10 @@ class Internals {
       // Called too often, we might get into trouble here!
       $result = TRUE;
     }
-
+    // Give feedback if this is our last call.
+    if (View\Render::$KrexxCount == $max_call - 1) {
+      View\Messages::addMessage('Maximum call-level reached. This is the last analysis for this request. To increase this value, please edit:<br />output => maxCall.','critical');
+    }
     return $result;
   }
 
