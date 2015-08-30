@@ -321,6 +321,8 @@ class Internals {
     // We need to get the footer before the generating of the header,
     // because we need to display messages in the header.
     $footer = Framework\Toolbox::outputFooter($caller);
+    // Start the analysis itself.
+    View\Codegen::resetCounter();
     $analysis = self::analysisHub($data, $caller['varname'], '', '=');
     self::$shutdownHandler->addChunkString(Framework\Toolbox::outputHeader($headline, $ignore_local_settings));
     self::$shutdownHandler->addChunkString(View\Messages::outputMessages());
