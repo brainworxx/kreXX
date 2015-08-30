@@ -32,6 +32,7 @@
  */
 
 namespace Brainworxx\Krexx\View;
+use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Framework\Toolbox;
 
 
@@ -102,24 +103,28 @@ class Codegen {
       }
     }
 
+    // We can not simply put anything inside the data element. We need to do
+    // some escaping!
+    $result = Variables::encodeString($result);
+
     self::$counter++;
     return $result;
   }
 
   protected static function reflectProperty($name) {
     // We stop the current codeline here.
-    $result = ";\n\r";
+    $result = ";<br />";
     // The genereted code at thsi point should look something like this:
     // $result = $myClass->value1->value2;
     // This means, that we have the protected/private property inside the
     // $result object.
-    $result .= '// We are creating a reflection to make this property accessible' . "\n\r";
-    $result .= '// Please not, that this is *NOT* a proper way to code.' . "\n\r";
-    $result .= '// There is a reason, why this value is protected.' . "\n\r";
-    $result .= '$reflection = new \reflectionClass($result);' . "\n\r";
-    $result .= '$property = $reflection->getProperty(' . $name . ');' . "\n\r";
-    $result .= '$property->setAccessible(true);' . "\n\r";
-    $result .= '$result = $property->getValue($result);' . "\n\r";
+    $result .= '// We are creating a reflection to make this property accessible<br />';
+    $result .= '// Please note, that this is *NOT* a proper way to code.<br />';
+    $result .= '// There is a reason, why this value is protected.<br />';
+    $result .= '$reflection = new \reflectionClass($result);<br />';
+    $result .= '$property = $reflection->getProperty(' . $name . ');<br />';
+    $result .= '$property->setAccessible(true);<br />';
+    $result .= '$result = $property->getValue($result)';
     return $result;
   }
 
