@@ -280,7 +280,7 @@
       krexx.generateCode(this);
     });
 
-    $('.kwrapper .kcodedisplay').on('click', function () {
+    $('.kwrapper .kcodedisplay').on('click', function (event) {
       // Do nothing.
       // Prevents the default event behavior (ie: click).
       event.preventDefault();
@@ -330,6 +330,8 @@
       $newEl.children('.kname').html($el.children('.kname').html());
       // Remove the recursion EL.
       $el.remove();
+      // @todo We must copy the data-source data from the original li.kchild
+      //       so the code generation is still functional.
     }
   };
 
@@ -679,7 +681,7 @@
   /**
    * The kreXX code generator.
    *
-   * @param {HTMLElement} el
+   * @param {HTMLElement} button
    *   The P symbol of the code generator.
    */
   krexx.generateCode = function (button) {
@@ -702,13 +704,13 @@
             break;
           }
           else {
-            // We're good, value canbe reached!
+            // We're good, value can be reached!
             result = result.concat(sourcedata);
           }
         }
       }
       // 3. Add the text
-      $codedisplay.html('<code class="kcode-inner">' + result + ';</code>');
+      $codedisplay.html('<div class="kcode-inner">' + result + ';</div>');
 
     }
     krexx.SelectText($codedisplay[0]);
