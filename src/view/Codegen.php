@@ -33,7 +33,7 @@
 
 namespace Brainworxx\Krexx\View;
 use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\Framework\Toolbox;
+use Brainworxx\Krexx\Framework\Config;
 
 
 /**
@@ -65,6 +65,10 @@ class Codegen {
    *   The generated PHP source.
    */
   public static function generateSource($connector1, $connector2, $type, $name) {
+
+    if (!Config::$allowCodegen) {
+      return '';
+    }
 
     $result = '';
     // We will not generate anything for function analytic data
