@@ -327,8 +327,8 @@
       var $newEl = $orgEl.clone(true, true).insertAfter(el);
       // Change the key of the just cloned EL to the one from the recursion.
       $newEl.children('.kname').html($el.children('.kname').html());
-      // We  need to remove the id from the copy to avoid double ids.
-      $newEl.next().removeAttr('id');
+      // We  need to remove the ids from the copy to avoid double ids.
+      $newEl.parent().find('*').removeAttr('id');
       // Now we add the dom-id to the clone, as a data-field. this way we can
       // make sure to always produce the right path to this value during source
       // generation.
