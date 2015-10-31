@@ -183,7 +183,7 @@ class Codegen {
     }
 
     // Test if we are inside the scope
-    if (Internals::isInScope()) {
+    if (Internals::isInScope($type)) {
       // We are inside the scope, this value, function or class is reachable.
       return $contagination;
     }

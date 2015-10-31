@@ -575,7 +575,17 @@ class Internals {
    * @return bool
    *   Whether it is within the scope or not.
    */
-  public static function isInScope() {
-    return Internals::$nestingLevel <= 1 && Internals::$scope == '$this';
+  public static function isInScope($type = '') {
+    // When analysing a class, we have + 1 on our nesting level, when comming
+    // from the code generation. That is, because that class is currently being
+    // analysed.
+    if (strpos($type, 'class') === FALSE) {
+      $nestingLevel =  Internals::$nestingLevel;
+    }
+    else {
+      $nestingLevel =  Internals::$nestingLevel - 1;
+    }
+
+    return $nestingLevel <= 1 && Internals::$scope == '$this';
   }
 }
