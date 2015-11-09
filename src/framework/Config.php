@@ -92,7 +92,7 @@ class Config {
     ),
     'errorHandling' => array(
       'registerAutomatically' => 'false',
-      'backtraceAnalysis' => 'normal',
+      'backtraceAnalysis' => 'deep',
     ),
   );
 

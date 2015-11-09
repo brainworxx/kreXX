@@ -444,8 +444,8 @@ class Render extends Help {
           break;
 
         case "backtraceAnalysis":
-          // Norm al or deep analysis.
-          $value_list = array('normal', 'deep');
+          // Normal or deep analysis.
+          $value_list = array('deep', 'normal');
           break;
 
         case "skin":
