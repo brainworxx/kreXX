@@ -333,6 +333,7 @@
       // make sure to always produce the right path to this value during source
       // generation.
       krexx.setDataset($newEl.parent()[0], 'domid', domid);
+
       // Remove the recursion EL.
       $el.remove();
     }
@@ -699,14 +700,19 @@
     while ($el.length > 0) {
       // Get the domid
       domid = krexx.getDataset($el[0], 'domid');
+      sourcedata = krexx.getDataset($el[0], 'source');
 
-      if (typeof domid !== 'undefined') {
-        // We need to get a new el, because we are facing a recursion!
-        $el = $('#'+domid).parent();
+      if (typeof sourcedata !== 'undefined' && sourcedata == '. . .') {
+        if (typeof domid !== 'undefined') {
+          // We need to get a new el, because we are facing a recursion, and the
+          // current path is not really reachable.
+          $el = $('#'+domid).parent();
+          // Get the source, again.
+          sourcedata = krexx.getDataset($el[0], 'source');
+        }
       }
 
-      // Get the source
-      sourcedata = krexx.getDataset($el[0], 'source');
+      // Recheck everything.
       if (typeof sourcedata !== 'undefined') {
         // We must check if our value is actually reachable.
         // '. . .' means it is not reachable,

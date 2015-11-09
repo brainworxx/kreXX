@@ -4,6 +4,7 @@
 - Change: Replaced the option analysePublicMethods with
   analyseMethodsAtall. The old option does not really make sense
   anymore, since we indtroduced the scope analysis.
+- Improved the automatic code generation for recursions.
 - Change: Standard value for 'backtraceAnalysis' is now 'deep'.
 - Bugfix: Added the "$" in front of static properties.
 - Bugfix: Automatic selection of the generated source code now works
