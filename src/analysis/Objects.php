@@ -225,7 +225,7 @@ class Objects {
         if ($ref_property->isStatic()) {
           $additional .= 'static ';
           $connector1 = '::';
-          // There is always a $ in front of a static property
+          // There is always a $ in front of a static property.
           $prop_name = '$' . $prop_name;
         }
 
@@ -395,7 +395,7 @@ class Objects {
     $ref = new \ReflectionClass($data);
     if (Framework\Config::getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
       $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
-    
+
       if (Framework\Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' || Internals::isInScope()) {
         $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
       }
