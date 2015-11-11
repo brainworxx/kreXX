@@ -1,0 +1,695 @@
+/**
+ * @file
+ *   Template css for kreXX Hans skin.
+ *   kreXX: Krumo eXXtended
+ *
+ *   This is a debugging tool, which displays structured information
+ *   about any PHP object. It is a nice replacement for print_r() or var_dump()
+ *   which are used by a lot of PHP developers.
+ *
+ *   kreXX is a fork of Krumo, which was originally written by:
+ *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ *
+ * @author brainworXX GmbH <info@brainworxx.de>
+ *
+ * @license http://opensource.org/licenses/LGPL-2.1
+ *   GNU Lesser General Public License Version 2.1
+ *
+ *   kreXX Copyright (C) 2014-2015 Brainworxx GmbH
+ *
+ *   This library is free software; you can redistribute it and/or modify it
+ *   under the terms of the GNU Lesser General Public License as published by
+ *   the Free Software Foundation; either version 2.1 of the License, or (at
+ *   your option) any later version.
+ *   This library is distributed in the hope that it will be useful, but WITHOUT
+ *   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *   for more details.
+ *   You should have received a copy of the GNU Lesser General Public License
+ *   along with this library; if not, write to the Free Software Foundation,
+ *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+
+/**
+ * Variables
+ *
+ */
+
+// The skin
+$black: #000000;
+$grey30: #303030;
+$grey44: #444444;
+$grey6c: #6c6c6c;
+$greyb1: #b1b1b1; // also: Recursion
+$greydb: #dbdbdb;
+$greyf2: #f2f2f2;
+$white: #ffffff;
+$yellow: #fffda5;
+$orange: #ffcd00;
+$red: #990100;
+$fatal: #FF0000;
+
+$bool: #d87cd8;
+$array: #62d9ef;
+$object: #a6e22a;
+$string: #e2db74;
+
+html {
+  overflow-y: scroll !important;
+}
+
+.kwrapper {
+
+  // The wrapper itself
+  position: absolute;
+  z-index: 10000;
+  text-align: left;
+  color: $black;
+  padding-bottom: 35px;
+
+  * {
+    box-sizing: content-box;
+  }
+
+  .kbg-wrapper {
+    .knormal {
+      background-color: $grey30;
+      -webkit-border-bottom-right-radius: 10px;
+      -webkit-border-bottom-left-radius: 10px;
+      -moz-border-radius-bottomright: 10px;
+      -moz-border-radius-bottomleft: 10px;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+      padding-bottom: 5px;
+    }
+    .kfatal {
+      background-color: $grey30;
+      -webkit-border-radius: 15px;
+      -moz-border-radius: 15px;
+      border-radius: 15px;
+      padding: 15px 0;
+      margin-bottom: 25px;
+    }
+
+  }
+
+  // The ul node
+  .knode {
+    margin: 0;
+    padding: 0;
+    ul {
+      margin-left: 24px;
+    }
+    &.kfirst {
+      font: normal 11px/1 tahoma, verdana;
+    }
+
+    // The header
+    .kheadnote {
+      height: 25px;
+      -webkit-border-top-left-radius: 10px;
+      -webkit-border-top-right-radius: 10px;
+      -moz-border-radius-topleft: 10px;
+      -moz-border-radius-topright: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      background-color: $grey30;
+      padding: 4px 5px 3px 5px;
+      list-style: none;
+      cursor: move;
+      margin: 0;
+      color: $greyb1;
+      .klogo {
+        background-color: $orange;
+        border-radius: 50%;
+        color: $black;
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        height: 24px;
+        width: 24px;
+        /*position: relative;*/
+      }
+
+      .klogo-xx {
+        /* Klo go XX? Really? */
+        margin-left: 4px;
+        margin-top: 5px;
+        position: absolute;
+      }
+
+      .kcall-no {
+        color: $greyb1;
+        font: bold 12px tahoma, verdana;
+        padding-left: 5px;
+        /*position: absolute;*/
+        top: 7px;
+      }
+
+      .kversion {
+        float: right !important;
+        a {
+          font: 10px tahoma, verdana;
+          color: $greyb1 !important;
+          font-weight: bold;
+          text-decoration: underline !important;
+          &:hover {
+            text-decoration: none !important;
+          }
+        }
+        .kel {
+          display: inline;
+        }
+        .klinks {
+          position: absolute;
+          border-radius: 8px;
+          padding: 8px;
+          font: 10px tahoma, verdana;
+        }
+
+      }
+
+      .kheadnote-wraper {
+        width: 100%;
+      }
+    }
+  }
+
+  .kmessage {
+    background-color: $yellow;
+    list-style: outside none none;
+    padding: 4px 5px 3px;
+    margin: 0;
+    &:before {
+      content: "\00a0\00a0!\00a0\00a0";
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+      background-color: $orange;
+      border: 1px solid $black;
+      font-size: small;
+    }
+  }
+
+  // The el children
+  .kchild {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    font: bold 12px tahoma, verdana;
+    color: $white;
+    .kel {
+      cursor: default;
+      display: block;
+      clear: both;
+      padding: 2px 0 3px 0;
+      margin: 0 0 5px;
+      background: $grey44 5px center;
+      line-height: 13px;
+      &:hover {
+        background-color: $grey6c;
+      }
+
+      em {
+        font: lighter 10px tahoma, verdana;
+        &.karrow {
+          font: bold 12px tahoma, verdana;
+          background-color: $grey30;
+          padding: 0 2px;
+        }
+      }
+
+      .kel-bg {
+        /* white line */
+        background: $white no-repeat;
+        margin-left: 5px;
+        margin-right: 15px;
+        float: left;
+        width: 3px;
+      }
+      .kexpand {
+        background-image: none;
+        color: $white;
+        cursor: pointer;
+        &:before {
+          content: "\00a0\25B6\00a0\00a0";
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+        }
+        .kel-bg {
+          display: none;
+        }
+      }
+      &.kopened {
+        background-image: none;
+        &:before {
+          content: "\00a0\25BC\00a0\00a0";
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+        }
+      }
+
+      .kname,
+      .kname:hover {
+        color: $greyb1;
+      }
+      .ktype {
+        font-style: normal;
+        margin: 0 2px;
+      }
+
+      .kgencode {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+        display: table-cell;
+        float: right;
+        &:before {
+          content: '\02665';
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+        }
+        &:hover {
+          color: $greydb;
+        }
+      }
+
+      .kcodedisplay {
+        color: $grey30;
+        background-color: $greydb;
+        padding: 5px;
+        margin: 5px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+      }
+
+    }
+
+    .knest {
+      background-color: $grey30;
+    }
+
+    // Preview and  code preview
+    .kpreview {
+      padding: 0;
+
+      .kpre {
+        font-style: normal;
+        overflow: auto;
+        color: $greyb1;
+        font: bold 12px tahoma, verdana;
+        white-space: pre;
+      }
+      .source {
+        padding: 0 20px;
+      }
+      .klineno {
+        font-weight: normal;
+      }
+      .highlight {
+        background-color: $grey44 !important;
+        padding: 5px 20px;
+        color: $white;
+        margin: 10px 0;
+        /**
+         * red line
+         * @todo: transform this image into css blaock with background
+         */
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAcCAIAAAArypKmAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4zjOaXUAAAABJJREFUKFNjmMkARaMsBIuBAQCpUTI14iqTlwAAAABJRU5ErkJggg==');
+        background-repeat: no-repeat;
+        background-position: 5px center;
+      }
+    }
+
+    // Footer
+    .kconfiguration {
+      padding: 0;
+      margin: 0;
+      font: 10px tahoma, verdana;
+      .kchild {
+        font: 10px tahoma, verdana;
+      }
+      .call {
+        display: table-cell;
+        font: bold 12px tahoma, verdana;
+        color: $greyb1;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 5px;
+        .kcaller {
+          color: $white;
+        }
+      }
+      .khelp {
+        position: absolute;
+        border: solid 1px $black;
+        background-color: $greyf2;
+        padding: 2px 5px;
+        margin-top: 10px;
+        display: none;
+        margin-left: 250px;
+        color: $grey30;
+      }
+      .kel:hover .khelp {
+        display: block;
+      }
+      .kcollapse-me {
+        display: none;
+      }
+
+    }
+
+    // Data general
+    .kcollapse-me {
+      /* collapse arrows white */
+      background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAAERSURBVDhPjZOtEcJAEIUjIikgBSApAoFAIpCUgEQimIlAICkAQQmUgUAiEMgIBAKBQBzvg2xmk7sZeDPfcYR7S/bnshDCLxZiVu8H4iLOosez7uEUO/EQy/rTdBB5ytDlJLz2ovpuQ5kyeHLxFOgl5qIvSAFVKZOHnNFNDMVI3HkgHUWRMnmmAl3FRvAWiLT+KuJapESgsfgZYCJWNaWgI8ZWfLpAofjif+SwGQnSDdxgG17H8uuKNFomj20oiPWbQBSMwiEK2TJ5WApBSxAtolW0jNYhWhkZDRabKoaDIWFYLB2GiBpFRoOFgiECMaZepBWZPCz8AxfD5C8OHYlMHttQRFLgqlrOXGGucnM4JmRvUoNUVPFXIdMAAAAASUVORK5CYII=') no-repeat;
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      display: table-cell;
+      float: right;
+      &:hover {
+        /* collapse arrows grey */
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAARhJREFUOE+Nk60RAjEQRhFICqAAJEUgEEgEkhKQSAQzJxBICkBQAh3EIpAIBPIEAoFAIOB7TJbZSzID4uU2uf32bn/SCiH8Yi6m0e6LsziJDmepc4mtuItFfL4ie9EuCVKOwkSwE3W0q5LA0xYPgfNTzERPkAJndUnkIWccr2IghuIWzw6iWxJ5JgLni1gL/oI9af1VxJVAkEKgkfgZYCyWkUrQEWMjPl2gUGz8S5xNSJA08Bcz+B3LL4U0GiKPGRTE+k0gCkbh2FPIhsjD0hW0BGdaRKtoGa3jjFZmQoPFporhYEgYFkuHIaJGmdBgoWA4E4gxxTZIKxN5WPgCF8NE/uLQkUzkMYMikgJX1XLmCnOVv845ofUGKTedRRoin7oAAAAASUVORK5CYII=');
+      }
+      &.collapsed {
+        /* collapsed arrows yellow */
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAXdJREFUOE+NUz1LA0EUvEJUsBBErATBQsSfYLqINhaCIv4AGyshjQTh0igIdmJlSgsL/4KNYCEIMcYoSOIFixwmBKxEUDHjm1332Fs3YjF3bx8zy/uYDQD0xstpP+qLFdTm6wmilQtEq+cKzXzoF9qICzmU+oCSHF1Ey5fy9YhsdI5GcTf9pkVy0ePSFW7HP9W5ubWTJrtoH07hfuZVkcvDXcTbm4jDDdyMfKlcp5hNC1xUxjSxOvmO1n4GT+snSTvXg+CM0gIXHBjJvKg211CxAdsSjib2QvtgAA+zrURUHuqisXam/tyIcNICHzhEtlCd+JA2FlTueW9X5nHMWJN4YJIxSSRTRDFzf0AHLMcuz5TM8tmGI7Khg2TPP+DAzAY4SEdkQ9uVK1FiWRFXxZWxBeZ4kUdoIEMqZhWR5qBJaBaahjmaiGbyCA0C2lGRaU/a1BiFbf1riPIglOAX5CI+JI/IhlSQD5PnyYHZT5dPmTPyCDUQfAO04Omd2pDycQAAAABJRU5ErkJggg==');
+        &:hover {
+          /* collapsed arrows grey */
+          background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAARVJREFUOE+Nky0OwkAQRisqOQAHQPYQCASyopIjIJEIEkQFkgMgOAI3WItAIhBIBAKBQCDge8lOMm03BfGW6WS+YednsxBCH7nYip1jLVaRMiVqMxVv8UlQpwRtBuIkEJBoI67xu0oJPENxFAQ/xESMxT36ipTIcxMEnsVIzIWV8xJ5SuShYQSTaB9tg7KylMjDFA7CRE+xjL9M5GcCoImUcBFF9M3EAtuC+MCJTRDBiBBbTBIzuI6/nl2Z61NGQ+Qxw+Zs0DCbAI1siDwc/AMjIZgRMSpGRgn4SNQRGhzUTCDLwZKwLCwNPpaIZeoIDY5KEMx6sqa2KJT1VxNrgaANiXhIHZGHoxT2PGmYf7o85Z4phOwLKTedRbNt8e4AAAAASUVORK5CYII=');
+        }
+      }
+    }
+
+    // Data payload
+    .krecursion {
+      color: $greyb1;
+      .kel-bg {
+        /* grey line */
+        background-color: $greyb1;
+      }
+    }
+    .kstring {
+      .kel-bg {
+        /* yellow line */
+        background-color: $string;
+      }
+      &.kexpand {
+        background-image: none;
+        &:before {
+          color: $string;
+        }
+      }
+      em, .kname {
+        color: $string;
+      }
+    }
+    .kclass {
+      &:before {
+        color: $object;
+      }
+      em {
+        color: $object;
+      }
+      span.kname {
+        color: $object;
+      }
+    }
+    .kmethod {
+      &:before {
+        color: $object;
+      }
+      em {
+        color: $object;
+      }
+    }
+    .kclosure {
+      &:before {
+        color: $object;
+      }
+      em {
+        color: $object;
+      }
+    }
+    .karray {
+      background-image: none;
+      &:before {
+        color: $array;
+      }
+      &.kopened {
+        background-image: none;
+      }
+      em {
+        color: $array;
+      }
+      span.kname {
+        color: $array;
+      }
+    }
+    .kboolean {
+      &.kel-bg {
+        /* pink line */
+        background-color: $bool;
+      }
+      em {
+        color: $bool;
+      }
+      span.kname {
+        color: $bool;
+      }
+    }
+
+    &.krow hr {
+      border: 0;
+      height: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      margin-right: 20px;
+      margin-top: 0;
+      margin-bottom: 5px;
+      background-color: transparent;
+    }
+  }
+
+  .khidden {
+    display: none;
+  }
+
+  // The rootline (hide-everything-else)
+  .kfilterroot.krootline.kchild,
+  .kchild.krootline {
+    display: block !important;
+  }
+  .kfilterroot .kchild {
+    display: none;
+  }
+  .ktopline .kchild {
+    display: block !important;
+  }
+
+  // Form elements general (could be anywhere)
+  .keditable {
+    input, select {
+      border: inherit;
+      border-radius: inherit;
+      font: 11px/1 tahoma, verdana;
+      height: inherit;
+      line-height: inherit;
+      margin: 2px;
+      padding: 2px 5px;
+      width: inherit;
+      background: none repeat scroll 0 0 $greydb !important;
+      color: $black !important;
+      &:hover {
+        background: none repeat scroll 0 0 $white !important;
+        border: inherit !important;
+      }
+    }
+  }
+
+  .ksearchbutton {
+    border: inherit;
+    border-radius: inherit;
+    font: 11px/1 tahoma, verdana;
+    height: inherit;
+    line-height: inherit;
+    margin: 2px;
+    padding: 2px 5px;
+    width: inherit;
+    background: none repeat scroll 0 0 $greydb !important;
+    color: $black !important;
+    &:hover {
+      background: none repeat scroll 0 0 $white !important;
+      border: inherit !important;
+    }
+  }
+
+  .kclose {
+    .kfatal {
+      cursor: pointer;
+      display: inline-table;
+      width: 30px;
+      height: 40px;
+      margin-right: 7px;
+      color: $grey30;
+      &:hover {
+        color: $white;
+      }
+    }
+    .knormal {
+      cursor: pointer;
+      display: inline-table;
+      font-size: 17px;
+      margin-right: 7px;
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+
+  // The search
+  .search-wrapper {
+    &.hidden {
+      display: none !important;
+      visibility: hidden !important;
+    }
+    .ksearch {
+      background-color: $orange;
+      color: $grey30;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      border-radius: 8px;
+      padding: 4px;
+      font: 12px tahoma, verdana;
+      z-index: 10;
+      .kclose {
+        cursor: pointer;
+        display: inline-table;
+        font-size: 17px;
+        margin-right: 7px;
+        &:hover {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  .highlight-jumpto {
+    background-color: $orange !important;
+    color: $grey30 !important;
+  }
+
+  .ksearch-found-highlight {
+    background-color: $red;
+    color: $grey30;
+  }
+
+  .ksearch-found-highlight .kpre,
+  .highlight-jumpto .kpre {
+    color: $grey30 !important;
+  }
+
+
+}
+
+// Special definitions for the fatal error handler
+.kfatalwrapper-outer {
+  background: none repeat scroll 0 0 rgba(148, 148, 148, 0.8);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 100000;
+  overflow: auto;
+  .kwrapper {
+    bottom: 0;
+    font: 12px tahoma, verdana;
+    height: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: 40px 40px auto;
+    .kfatal-headnote {
+      font: 11px tahoma, verdana;
+      background-color: $red;
+      padding: 4px 5px 3px 5px;
+      list-style: none;
+      margin: 0;
+      height: 50px;
+      -webkit-border-top-left-radius: 15px;
+      -webkit-border-top-right-radius: 15px;
+      -moz-border-radius-topleft: 15px;
+      -moz-border-radius-topright: 15px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      text-align: center;
+      color: $white;
+      font-size: 36px;
+      font-weight: bold;
+      .kstop {
+        background: $grey30; /* fallback */
+        background: -moz-linear-gradient(45deg, transparent 8px, $grey30 10px),
+        -moz-linear-gradient(135deg, transparent 8px, $grey30 10px),
+        -moz-linear-gradient(225deg, transparent 8px, $grey30 10px),
+        -moz-linear-gradient(315deg, transparent 8px, $grey30 10px);
+        background: -o-linear-gradient(45deg, transparent 8px, $grey30 10px),
+        -o-linear-gradient(135deg, transparent 8px, $grey30 10px),
+        -o-linear-gradient(225deg, transparent 8px, $grey30 10px),
+        -o-linear-gradient(315deg, transparent 8px, $grey30 10px);
+        background: -webkit-linear-gradient(45deg, transparent 8px, $grey30 10px),
+        -webkit-linear-gradient(135deg, transparent 8px, $grey30 10px),
+        -webkit-linear-gradient(225deg, transparent 8px, $grey30 10px),
+        -webkit-linear-gradient(315deg, transparent 8px, $grey30 10px);
+
+        background-position: bottom left, bottom right, top right, top left;
+        -moz-background-size: 50% 50%;
+        -webkit-background-size: 50% 50%;
+        background-size: 50% 50%;
+        background-repeat: no-repeat;
+        float: left;
+        color: $red;
+        width: 44px;
+        margin-left: 4px;
+        margin-top: 4px;
+      }
+      .kversion .kel {
+        font: bold 12px tahoma, verdana;
+      }
+    }
+
+    .kfatal-message {
+      padding: 4px;
+      font: 12px tahoma, verdana;
+      background-color: $grey44;
+      text-align: center;
+      list-style: none;
+      .kerror-str {
+        color: $greyb1;
+        font-weight: bold;
+      }
+      .kerror-path {
+        color: $white;
+        font-weight: bold;
+      }
+    }
+
+    .kfootnote {
+      background-color: $grey30;
+      padding: 4px 0 3px;
+      list-style: none;
+      cursor: default;
+      -webkit-border-bottom-right-radius: 15px;
+      -webkit-border-bottom-left-radius: 15px;
+      -moz-border-radius-bottomright: 15px;
+      -moz-border-radius-bottomleft: 15px;
+      border-bottom-right-radius: 15px;
+      border-bottom-left-radius: 15px;
+      margin-bottom: 10px;
+      min-height: 8px;
+    }
+  }
+
+}
+
+
+

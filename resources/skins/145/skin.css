@@ -1,0 +1,489 @@
+/**
+ * @file
+ *   Template css for kreXX Hans skin.
+ *   kreXX: Krumo eXXtended
+ *
+ *   This is a debugging tool, which displays structured information
+ *   about any PHP object. It is a nice replacement for print_r() or var_dump()
+ *   which are used by a lot of PHP developers.
+ *
+ *   kreXX is a fork of Krumo, which was originally written by:
+ *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ *
+ * @author brainworXX GmbH <info@brainworxx.de>
+ *
+ * @license http://opensource.org/licenses/LGPL-2.1
+ *   GNU Lesser General Public License Version 2.1
+ *
+ *   kreXX Copyright (C) 2014-2015 Brainworxx GmbH
+ *
+ *   This library is free software; you can redistribute it and/or modify it
+ *   under the terms of the GNU Lesser General Public License as published by
+ *   the Free Software Foundation; either version 2.1 of the License, or (at
+ *   your option) any later version.
+ *   This library is distributed in the hope that it will be useful, but WITHOUT
+ *   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *   for more details.
+ *   You should have received a copy of the GNU Lesser General Public License
+ *   along with this library; if not, write to the Free Software Foundation,
+ *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+/**
+ * Variables
+ *
+ */
+html {
+  overflow-y: scroll !important; }
+
+.kwrapper {
+  position: absolute;
+  z-index: 10000;
+  text-align: left;
+  color: #000000;
+  padding-bottom: 35px; }
+  .kwrapper * {
+    box-sizing: content-box; }
+  .kwrapper .kbg-wrapper .knormal {
+    background-color: #303030;
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-bottom: 5px; }
+  .kwrapper .kbg-wrapper .kfatal {
+    background-color: #303030;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    padding: 15px 0;
+    margin-bottom: 25px; }
+  .kwrapper .knode {
+    margin: 0;
+    padding: 0; }
+    .kwrapper .knode ul {
+      margin-left: 24px; }
+    .kwrapper .knode.kfirst {
+      font: normal 11px/1 tahoma, verdana; }
+    .kwrapper .knode .kheadnote {
+      height: 25px;
+      -webkit-border-top-left-radius: 10px;
+      -webkit-border-top-right-radius: 10px;
+      -moz-border-radius-topleft: 10px;
+      -moz-border-radius-topright: 10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      background-color: #303030;
+      padding: 4px 5px 3px 5px;
+      list-style: none;
+      cursor: move;
+      margin: 0;
+      color: #b1b1b1; }
+      .kwrapper .knode .kheadnote .klogo {
+        background-color: #ffcd00;
+        border-radius: 50%;
+        color: #000000;
+        float: left;
+        font-size: 12px;
+        font-weight: bold;
+        height: 24px;
+        width: 24px;
+        /*position: relative;*/ }
+      .kwrapper .knode .kheadnote .klogo-xx {
+        /* Klo go XX? Really? */
+        margin-left: 4px;
+        margin-top: 5px;
+        position: absolute; }
+      .kwrapper .knode .kheadnote .kcall-no {
+        color: #b1b1b1;
+        font: bold 12px tahoma, verdana;
+        padding-left: 5px;
+        /*position: absolute;*/
+        top: 7px; }
+      .kwrapper .knode .kheadnote .kversion {
+        float: right !important; }
+        .kwrapper .knode .kheadnote .kversion a {
+          font: 10px tahoma, verdana;
+          color: #b1b1b1 !important;
+          font-weight: bold;
+          text-decoration: underline !important; }
+          .kwrapper .knode .kheadnote .kversion a:hover {
+            text-decoration: none !important; }
+        .kwrapper .knode .kheadnote .kversion .kel {
+          display: inline; }
+        .kwrapper .knode .kheadnote .kversion .klinks {
+          position: absolute;
+          border-radius: 8px;
+          padding: 8px;
+          font: 10px tahoma, verdana; }
+      .kwrapper .knode .kheadnote .kheadnote-wraper {
+        width: 100%; }
+  .kwrapper .kmessage {
+    background-color: #fffda5;
+    list-style: outside none none;
+    padding: 4px 5px 3px;
+    margin: 0; }
+    .kwrapper .kmessage:before {
+      content: "\00a0\00a0!\00a0\00a0";
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+      background-color: #ffcd00;
+      border: 1px solid #000000;
+      font-size: small; }
+  .kwrapper .kchild {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    font: bold 12px tahoma, verdana;
+    color: #ffffff; }
+    .kwrapper .kchild .kel {
+      cursor: default;
+      display: block;
+      clear: both;
+      padding: 2px 0 3px 0;
+      margin: 0 0 5px;
+      background: #444444 5px center;
+      line-height: 13px; }
+      .kwrapper .kchild .kel:hover {
+        background-color: #6c6c6c; }
+      .kwrapper .kchild .kel em {
+        font: lighter 10px tahoma, verdana; }
+        .kwrapper .kchild .kel em.karrow {
+          font: bold 12px tahoma, verdana;
+          background-color: #303030;
+          padding: 0 2px; }
+      .kwrapper .kchild .kel .kel-bg {
+        /* white line */
+        background: #ffffff no-repeat;
+        margin-left: 5px;
+        margin-right: 15px;
+        float: left;
+        width: 3px; }
+      .kwrapper .kchild .kel .kexpand {
+        background-image: none;
+        color: #ffffff;
+        cursor: pointer; }
+        .kwrapper .kchild .kel .kexpand:before {
+          content: "\00a0\25B6\00a0\00a0";
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+        .kwrapper .kchild .kel .kexpand .kel-bg {
+          display: none; }
+      .kwrapper .kchild .kel.kopened {
+        background-image: none; }
+        .kwrapper .kchild .kel.kopened:before {
+          content: "\00a0\25BC\00a0\00a0";
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+      .kwrapper .kchild .kel .kname,
+      .kwrapper .kchild .kel .kname:hover {
+        color: #b1b1b1; }
+      .kwrapper .kchild .kel .ktype {
+        font-style: normal;
+        margin: 0 2px; }
+      .kwrapper .kchild .kel .kgencode {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+        display: table-cell;
+        float: right; }
+        .kwrapper .kchild .kel .kgencode:before {
+          content: '\02665';
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+        .kwrapper .kchild .kel .kgencode:hover {
+          color: #dbdbdb; }
+      .kwrapper .kchild .kel .kcodedisplay {
+        color: #303030;
+        background-color: #dbdbdb;
+        padding: 5px;
+        margin: 5px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px; }
+    .kwrapper .kchild .knest {
+      background-color: #303030; }
+    .kwrapper .kchild .kpreview {
+      padding: 0; }
+      .kwrapper .kchild .kpreview .kpre {
+        font-style: normal;
+        overflow: auto;
+        color: #b1b1b1;
+        font: bold 12px tahoma, verdana;
+        white-space: pre; }
+      .kwrapper .kchild .kpreview .source {
+        padding: 0 20px; }
+      .kwrapper .kchild .kpreview .klineno {
+        font-weight: normal; }
+      .kwrapper .kchild .kpreview .highlight {
+        background-color: #444444 !important;
+        padding: 5px 20px;
+        color: #ffffff;
+        margin: 10px 0;
+        /**
+         * red line
+         * @todo: transform this image into css blaock with background
+         */
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAcCAIAAAArypKmAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwgAADsIBFShKgAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4zjOaXUAAAABJJREFUKFNjmMkARaMsBIuBAQCpUTI14iqTlwAAAABJRU5ErkJggg==");
+        background-repeat: no-repeat;
+        background-position: 5px center; }
+    .kwrapper .kchild .kconfiguration {
+      padding: 0;
+      margin: 0;
+      font: 10px tahoma, verdana; }
+      .kwrapper .kchild .kconfiguration .kchild {
+        font: 10px tahoma, verdana; }
+      .kwrapper .kchild .kconfiguration .call {
+        display: table-cell;
+        font: bold 12px tahoma, verdana;
+        color: #b1b1b1;
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 5px; }
+        .kwrapper .kchild .kconfiguration .call .kcaller {
+          color: #ffffff; }
+      .kwrapper .kchild .kconfiguration .khelp {
+        position: absolute;
+        border: solid 1px #000000;
+        background-color: #f2f2f2;
+        padding: 2px 5px;
+        margin-top: 10px;
+        display: none;
+        margin-left: 250px;
+        color: #303030; }
+      .kwrapper .kchild .kconfiguration .kel:hover .khelp {
+        display: block; }
+      .kwrapper .kchild .kconfiguration .kcollapse-me {
+        display: none; }
+    .kwrapper .kchild .kcollapse-me {
+      /* collapse arrows white */
+      background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuNWWFMmUAAAERSURBVDhPjZOtEcJAEIUjIikgBSApAoFAIpCUgEQimIlAICkAQQmUgUAiEMgIBAKBQBzvg2xmk7sZeDPfcYR7S/bnshDCLxZiVu8H4iLOosez7uEUO/EQy/rTdBB5ytDlJLz2ovpuQ5kyeHLxFOgl5qIvSAFVKZOHnNFNDMVI3HkgHUWRMnmmAl3FRvAWiLT+KuJapESgsfgZYCJWNaWgI8ZWfLpAofjif+SwGQnSDdxgG17H8uuKNFomj20oiPWbQBSMwiEK2TJ5WApBSxAtolW0jNYhWhkZDRabKoaDIWFYLB2GiBpFRoOFgiECMaZepBWZPCz8AxfD5C8OHYlMHttQRFLgqlrOXGGucnM4JmRvUoNUVPFXIdMAAAAASUVORK5CYII=") no-repeat;
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      display: table-cell;
+      float: right; }
+      .kwrapper .kchild .kcollapse-me:hover {
+        /* collapse arrows grey */
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAARhJREFUOE+Nk60RAjEQRhFICqAAJEUgEEgEkhKQSAQzJxBICkBQAh3EIpAIBPIEAoFAIOB7TJbZSzID4uU2uf32bn/SCiH8Yi6m0e6LsziJDmepc4mtuItFfL4ie9EuCVKOwkSwE3W0q5LA0xYPgfNTzERPkAJndUnkIWccr2IghuIWzw6iWxJ5JgLni1gL/oI9af1VxJVAkEKgkfgZYCyWkUrQEWMjPl2gUGz8S5xNSJA08Bcz+B3LL4U0GiKPGRTE+k0gCkbh2FPIhsjD0hW0BGdaRKtoGa3jjFZmQoPFporhYEgYFkuHIaJGmdBgoWA4E4gxxTZIKxN5WPgCF8NE/uLQkUzkMYMikgJX1XLmCnOVv845ofUGKTedRRoin7oAAAAASUVORK5CYII="); }
+      .kwrapper .kchild .kcollapse-me.collapsed {
+        /* collapsed arrows yellow */
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAAXdJREFUOE+NUz1LA0EUvEJUsBBErATBQsSfYLqINhaCIv4AGyshjQTh0igIdmJlSgsL/4KNYCEIMcYoSOIFixwmBKxEUDHjm1332Fs3YjF3bx8zy/uYDQD0xstpP+qLFdTm6wmilQtEq+cKzXzoF9qICzmU+oCSHF1Ey5fy9YhsdI5GcTf9pkVy0ePSFW7HP9W5ubWTJrtoH07hfuZVkcvDXcTbm4jDDdyMfKlcp5hNC1xUxjSxOvmO1n4GT+snSTvXg+CM0gIXHBjJvKg211CxAdsSjib2QvtgAA+zrURUHuqisXam/tyIcNICHzhEtlCd+JA2FlTueW9X5nHMWJN4YJIxSSRTRDFzf0AHLMcuz5TM8tmGI7Khg2TPP+DAzAY4SEdkQ9uVK1FiWRFXxZWxBeZ4kUdoIEMqZhWR5qBJaBaahjmaiGbyCA0C2lGRaU/a1BiFbf1riPIglOAX5CI+JI/IhlSQD5PnyYHZT5dPmTPyCDUQfAO04Omd2pDycQAAAABJRU5ErkJggg=="); }
+        .kwrapper .kchild .kcollapse-me.collapsed:hover {
+          /* collapsed arrows grey */
+          background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC41ZYUyZQAAARVJREFUOE+Nky0OwkAQRisqOQAHQPYQCASyopIjIJEIEkQFkgMgOAI3WItAIhBIBAKBQCDge8lOMm03BfGW6WS+YednsxBCH7nYip1jLVaRMiVqMxVv8UlQpwRtBuIkEJBoI67xu0oJPENxFAQ/xESMxT36ipTIcxMEnsVIzIWV8xJ5SuShYQSTaB9tg7KylMjDFA7CRE+xjL9M5GcCoImUcBFF9M3EAtuC+MCJTRDBiBBbTBIzuI6/nl2Z61NGQ+Qxw+Zs0DCbAI1siDwc/AMjIZgRMSpGRgn4SNQRGhzUTCDLwZKwLCwNPpaIZeoIDY5KEMx6sqa2KJT1VxNrgaANiXhIHZGHoxT2PGmYf7o85Z4phOwLKTedRbNt8e4AAAAASUVORK5CYII="); }
+    .kwrapper .kchild .krecursion {
+      color: #b1b1b1; }
+      .kwrapper .kchild .krecursion .kel-bg {
+        /* grey line */
+        background-color: #b1b1b1; }
+    .kwrapper .kchild .kstring .kel-bg {
+      /* yellow line */
+      background-color: #e2db74; }
+    .kwrapper .kchild .kstring.kexpand {
+      background-image: none; }
+      .kwrapper .kchild .kstring.kexpand:before {
+        color: #e2db74; }
+    .kwrapper .kchild .kstring em, .kwrapper .kchild .kstring .kname {
+      color: #e2db74; }
+    .kwrapper .kchild .kclass:before {
+      color: #a6e22a; }
+    .kwrapper .kchild .kclass em {
+      color: #a6e22a; }
+    .kwrapper .kchild .kclass span.kname {
+      color: #a6e22a; }
+    .kwrapper .kchild .kmethod:before {
+      color: #a6e22a; }
+    .kwrapper .kchild .kmethod em {
+      color: #a6e22a; }
+    .kwrapper .kchild .kclosure:before {
+      color: #a6e22a; }
+    .kwrapper .kchild .kclosure em {
+      color: #a6e22a; }
+    .kwrapper .kchild .karray {
+      background-image: none; }
+      .kwrapper .kchild .karray:before {
+        color: #62d9ef; }
+      .kwrapper .kchild .karray.kopened {
+        background-image: none; }
+      .kwrapper .kchild .karray em {
+        color: #62d9ef; }
+      .kwrapper .kchild .karray span.kname {
+        color: #62d9ef; }
+    .kwrapper .kchild .kboolean.kel-bg {
+      /* pink line */
+      background-color: #d87cd8; }
+    .kwrapper .kchild .kboolean em {
+      color: #d87cd8; }
+    .kwrapper .kchild .kboolean span.kname {
+      color: #d87cd8; }
+    .kwrapper .kchild.krow hr {
+      border: 0;
+      height: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      margin-right: 20px;
+      margin-top: 0;
+      margin-bottom: 5px;
+      background-color: transparent; }
+  .kwrapper .khidden {
+    display: none; }
+  .kwrapper .kfilterroot.krootline.kchild,
+  .kwrapper .kchild.krootline {
+    display: block !important; }
+  .kwrapper .kfilterroot .kchild {
+    display: none; }
+  .kwrapper .ktopline .kchild {
+    display: block !important; }
+  .kwrapper .keditable input, .kwrapper .keditable select {
+    border: inherit;
+    border-radius: inherit;
+    font: 11px/1 tahoma, verdana;
+    height: inherit;
+    line-height: inherit;
+    margin: 2px;
+    padding: 2px 5px;
+    width: inherit;
+    background: none repeat scroll 0 0 #dbdbdb !important;
+    color: #000000 !important; }
+    .kwrapper .keditable input:hover, .kwrapper .keditable select:hover {
+      background: none repeat scroll 0 0 #ffffff !important;
+      border: inherit !important; }
+  .kwrapper .ksearchbutton {
+    border: inherit;
+    border-radius: inherit;
+    font: 11px/1 tahoma, verdana;
+    height: inherit;
+    line-height: inherit;
+    margin: 2px;
+    padding: 2px 5px;
+    width: inherit;
+    background: none repeat scroll 0 0 #dbdbdb !important;
+    color: #000000 !important; }
+    .kwrapper .ksearchbutton:hover {
+      background: none repeat scroll 0 0 #ffffff !important;
+      border: inherit !important; }
+  .kwrapper .kclose .kfatal {
+    cursor: pointer;
+    display: inline-table;
+    width: 30px;
+    height: 40px;
+    margin-right: 7px;
+    color: #303030; }
+    .kwrapper .kclose .kfatal:hover {
+      color: #ffffff; }
+  .kwrapper .kclose .knormal {
+    cursor: pointer;
+    display: inline-table;
+    font-size: 17px;
+    margin-right: 7px; }
+    .kwrapper .kclose .knormal:hover {
+      color: #ffffff; }
+  .kwrapper .search-wrapper.hidden {
+    display: none !important;
+    visibility: hidden !important; }
+  .kwrapper .search-wrapper .ksearch {
+    background-color: #ffcd00;
+    color: #303030;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    padding: 4px;
+    font: 12px tahoma, verdana;
+    z-index: 10; }
+    .kwrapper .search-wrapper .ksearch .kclose {
+      cursor: pointer;
+      display: inline-table;
+      font-size: 17px;
+      margin-right: 7px; }
+      .kwrapper .search-wrapper .ksearch .kclose:hover {
+        color: #ffffff; }
+  .kwrapper .highlight-jumpto {
+    background-color: #ffcd00 !important;
+    color: #303030 !important; }
+  .kwrapper .ksearch-found-highlight {
+    background-color: #990100;
+    color: #303030; }
+  .kwrapper .ksearch-found-highlight .kpre,
+  .kwrapper .highlight-jumpto .kpre {
+    color: #303030 !important; }
+
+.kfatalwrapper-outer {
+  background: none repeat scroll 0 0 rgba(148, 148, 148, 0.8);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 100000;
+  overflow: auto; }
+  .kfatalwrapper-outer .kwrapper {
+    bottom: 0;
+    font: 12px tahoma, verdana;
+    height: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: 40px 40px auto; }
+    .kfatalwrapper-outer .kwrapper .kfatal-headnote {
+      font: 11px tahoma, verdana;
+      background-color: #990100;
+      padding: 4px 5px 3px 5px;
+      list-style: none;
+      margin: 0;
+      height: 50px;
+      -webkit-border-top-left-radius: 15px;
+      -webkit-border-top-right-radius: 15px;
+      -moz-border-radius-topleft: 15px;
+      -moz-border-radius-topright: 15px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      text-align: center;
+      color: #ffffff;
+      font-size: 36px;
+      font-weight: bold; }
+      .kfatalwrapper-outer .kwrapper .kfatal-headnote .kstop {
+        background: #303030;
+        /* fallback */
+        background: -moz-linear-gradient(45deg, transparent 8px, #303030 10px), -moz-linear-gradient(135deg, transparent 8px, #303030 10px), -moz-linear-gradient(225deg, transparent 8px, #303030 10px), -moz-linear-gradient(315deg, transparent 8px, #303030 10px);
+        background: -o-linear-gradient(45deg, transparent 8px, #303030 10px), -o-linear-gradient(135deg, transparent 8px, #303030 10px), -o-linear-gradient(225deg, transparent 8px, #303030 10px), -o-linear-gradient(315deg, transparent 8px, #303030 10px);
+        background: -webkit-linear-gradient(45deg, transparent 8px, #303030 10px), -webkit-linear-gradient(135deg, transparent 8px, #303030 10px), -webkit-linear-gradient(225deg, transparent 8px, #303030 10px), -webkit-linear-gradient(315deg, transparent 8px, #303030 10px);
+        background-position: bottom left, bottom right, top right, top left;
+        -moz-background-size: 50% 50%;
+        -webkit-background-size: 50% 50%;
+        background-size: 50% 50%;
+        background-repeat: no-repeat;
+        float: left;
+        color: #990100;
+        width: 44px;
+        margin-left: 4px;
+        margin-top: 4px; }
+      .kfatalwrapper-outer .kwrapper .kfatal-headnote .kversion .kel {
+        font: bold 12px tahoma, verdana; }
+    .kfatalwrapper-outer .kwrapper .kfatal-message {
+      padding: 4px;
+      font: 12px tahoma, verdana;
+      background-color: #444444;
+      text-align: center;
+      list-style: none; }
+      .kfatalwrapper-outer .kwrapper .kfatal-message .kerror-str {
+        color: #b1b1b1;
+        font-weight: bold; }
+      .kfatalwrapper-outer .kwrapper .kfatal-message .kerror-path {
+        color: #ffffff;
+        font-weight: bold; }
+    .kfatalwrapper-outer .kwrapper .kfootnote {
+      background-color: #303030;
+      padding: 4px 0 3px;
+      list-style: none;
+      cursor: default;
+      -webkit-border-bottom-right-radius: 15px;
+      -webkit-border-bottom-left-radius: 15px;
+      -moz-border-radius-bottomright: 15px;
+      -moz-border-radius-bottomleft: 15px;
+      border-bottom-right-radius: 15px;
+      border-bottom-left-radius: 15px;
+      margin-bottom: 10px;
+      min-height: 8px; }
+
+/*# sourceMappingURL=skin.css.map */
