@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *   Messaging system for kreXX
+ *   Render functions for kreXX Hans Skin
  *   kreXX: Krumo eXXtended
  *
  *   This is a debugging tool, which displays structured information
@@ -33,55 +33,4 @@
 
 namespace Brainworxx\Krexx\View;
 
-
-/**
- * This class hosts functions, which offer additional services.
- *
- * @package Krexx
- */
-class Messages {
-
-  /**
-   * Here we store all messages, which gets send to the output.
-   *
-   * @var array
-   */
-  protected static $messages = array();
-
-  /**
-   * The message we want to add. It will be displayed in the output.
-   *
-   * @param string $message
-   *   The message itself.
-   * @param string $class
-   *   The class of the message.
-   */
-  public static function addMessage($message, $class = 'normal') {
-    self::$messages[$message] = array('message' => $message, 'class' => $class);
-  }
-
-  /**
-   * Renders the output of the messages.
-   *
-   * @return string
-   *   The rendered html output of the messages.
-   */
-  public static function outputMessages() {
-    // Simple Wrapper for SkinRender::renderMessages
-    if (php_sapi_name() == "cli") {
-      if (count(self::$messages)) {
-        $result = "\n\nkreXX messages\n";
-        $result .= "==============\n";
-        foreach (self::$messages as $message) {
-          $message = $message['message'];
-          $result .= "$message\n";
-        }
-        $result .= "\n\n";
-        return $result;
-      }
-    }
-    else {
-      return SkinRender::renderMessages(self::$messages);
-    }
-  }
-}
+class SkinRender extends Render {}

@@ -109,6 +109,7 @@ class Krexx {
     include_once $krexxdir . 'src/view/Render.php';
     include_once $krexxdir . 'src/view/Messages.php';
     include_once $krexxdir . 'src/view/Codegen.php';
+    include_once $krexxdir . 'src/view/Output.php';
     include_once $krexxdir . 'src/framework/Config.php';
     include_once $krexxdir . 'src/framework/Toolbox.php';
     include_once $krexxdir . 'src/framework/Chunks.php';
@@ -121,12 +122,16 @@ class Krexx {
     include_once $krexxdir . 'src/errorhandler/AbstractHandler.php';
     include_once $krexxdir . 'src/errorhandler/Fatal.php';
 
+
     Framework\Config::$krexxdir = $krexxdir;
 
-    // Setting template info.
+    // Setting the skin info.
     if (is_null(View\Render::$skin)) {
       View\Render::$skin = Framework\Config::getConfigValue('render', 'skin');
     }
+    // Every skin has an own implementation of the render class. We need to
+    // include this one, too.
+    include_once $krexxdir . 'resources/skins/' . Framework\Config::getConfigValue('render', 'skin') . '/SkinRender.php';
 
     // Register our shutdown handler. He will handle the display
     // of kreXX after the hosting CMS is finished.
@@ -310,8 +315,8 @@ class Krexx {
 
     // Render it.
     View\Render::$KrexxCount++;
-    $footer = Framework\Toolbox::outputFooter($caller, TRUE);
-    Analysis\Internals::$shutdownHandler->addChunkString(Framework\Toolbox::outputHeader('Edit local settings', TRUE), TRUE);
+    $footer = View\Output::outputFooter($caller, TRUE);
+    Analysis\Internals::$shutdownHandler->addChunkString(View\Output::outputHeader('Edit local settings', TRUE), TRUE);
     Analysis\Internals::$shutdownHandler->addChunkString(View\Messages::outputMessages(), TRUE);
     Analysis\Internals::$shutdownHandler->addChunkString($footer, TRUE);
 

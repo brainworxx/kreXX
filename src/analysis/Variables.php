@@ -87,7 +87,7 @@ class Variables {
    */
   public Static Function analyseNull($name, $additional = '', $connector1 = '=>', $connector2 = '=') {
     $data = 'NULL';
-    return View\Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'null', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'null', '', '', $connector1, $connector2);
   }
 
   /**
@@ -115,7 +115,7 @@ class Variables {
       return Internals::iterateThrough($data);
     };
 
-    return View\Render::renderExpandableChild($name, $additional . 'array', $anon_function, $parameter, count($data) . ' elements', '', '', FALSE, $connector1, $connector2);
+    return View\SkinRender::renderExpandableChild($name, $additional . 'array', $anon_function, $parameter, count($data) . ' elements', '', '', FALSE, $connector1, $connector2);
   }
 
   /**
@@ -137,7 +137,7 @@ class Variables {
    */
   public Static Function analyseResource($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
     $data = get_resource_type($data);
-    return View\Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'resource', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'resource', '', '', $connector1, $connector2);
   }
 
   /**
@@ -159,7 +159,7 @@ class Variables {
    */
   public Static Function analyseBoolean($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
     $data = $data ? 'TRUE' : 'FALSE';
-    return View\Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'boolean', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'boolean', '', '', $connector1, $connector2);
   }
 
   /**
@@ -180,7 +180,7 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseInteger($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
-    return View\Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'integer', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'integer', '', '', $connector1, $connector2);
   }
 
   /**
@@ -201,7 +201,7 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseFloat($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
-    return View\Render::renderSingleChild($data, $name, $data, FALSE, $additional . 'float', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'float', '', '', $connector1, $connector2);
   }
 
   /**
@@ -242,7 +242,7 @@ class Variables {
       $strlen = ' mixed encoded ~ ' . strlen($data);
     }
 
-    return View\Render::renderSingleChild($clean_data, $name, $cut, $has_extra, $additional . 'string', ' ' . $strlen, '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($clean_data, $name, $cut, $has_extra, $additional . 'string', ' ' . $strlen, '', $connector1, $connector2);
   }
 
   /**

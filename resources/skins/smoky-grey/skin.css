@@ -1,0 +1,559 @@
+/**
+ * @file
+ *   Template css for kreXX Hans skin.
+ *   kreXX: Krumo eXXtended
+ *
+ *   This is a debugging tool, which displays structured information
+ *   about any PHP object. It is a nice replacement for print_r() or var_dump()
+ *   which are used by a lot of PHP developers.
+ *
+ *   kreXX is a fork of Krumo, which was originally written by:
+ *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ *
+ * @author brainworXX GmbH <info@brainworxx.de>
+ *
+ * @license http://opensource.org/licenses/LGPL-2.1
+ *   GNU Lesser General Public License Version 2.1
+ *
+ *   kreXX Copyright (C) 2014-2015 Brainworxx GmbH
+ *
+ *   This library is free software; you can redistribute it and/or modify it
+ *   under the terms of the GNU Lesser General Public License as published by
+ *   the Free Software Foundation; either version 2.1 of the License, or (at
+ *   your option) any later version.
+ *   This library is distributed in the hope that it will be useful, but WITHOUT
+ *   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *   for more details.
+ *   You should have received a copy of the GNU Lesser General Public License
+ *   along with this library; if not, write to the Free Software Foundation,
+ *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+/**
+ * Variables
+ *
+ */
+.kwrapper {
+  position: absolute;
+  z-index: 10000;
+  text-align: left;
+  color: #000000;
+  min-width: 35%;
+  -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5); }
+  .kwrapper div, .kwrapper span, .kwrapper em, .kwrapper ul, .kwrapper li, .kwrapper a, .kwrapper input, .kwrapper table, .kwrapper caption, .kwrapper tbody, .kwrapper tr, .kwrapper td, .kwrapper strong, .kwrapper hr, .kwrapper select {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    color: inherit;
+    border: none; }
+  .kwrapper * {
+    box-sizing: content-box; }
+  .kwrapper .kbg-wrapper.knormal {
+    background-color: #B2B2B2;
+    padding: 0 2px 2px;
+    position: relative; }
+  .kwrapper .kbg-wrapper.kfatal {
+    background-color: #B2B2B2;
+    margin-bottom: 25px; }
+  .kwrapper .knode {
+    margin: 0;
+    padding: 0; }
+    .kwrapper .knode ul {
+      margin-left: 24px; }
+    .kwrapper .knode.kfirst {
+      font: normal 12px tahoma, verdana; }
+    .kwrapper .knode .kheadnote {
+      background-color: #919191;
+      padding: 5px 10px 5px 10px;
+      list-style: none;
+      cursor: move;
+      margin: 0; }
+      .kwrapper .knode .kheadnote .kheadnote-wrapper {
+        width: 100%;
+        font-size: 20px; }
+        .kwrapper .knode .kheadnote .kheadnote-wrapper .klogo {
+          display: inline-block;
+          background-color: #ffcd00;
+          border-radius: 50%;
+          color: #555555;
+          font-size: 14px;
+          font-weight: bold;
+          height: 28px;
+          width: 28px;
+          margin-left: -4px;
+          vertical-align: -3px; }
+          .kwrapper .knode .kheadnote .kheadnote-wrapper .klogo .klogo-xx {
+            /* Klo go XX? Really? */
+            margin-left: 4px;
+            margin-top: 4px;
+            position: absolute; }
+        .kwrapper .knode .kheadnote .kheadnote-wrapper .ktext {
+          display: inline-block;
+          color: #ffffff;
+          vertical-align: 5px; }
+        .kwrapper .knode .kheadnote .kheadnote-wrapper .kspace {
+          padding-left: 15px; }
+    .kwrapper .knode .ktool-tabs {
+      margin: 0;
+      list-style: none;
+      background-color: #B2B2B2; }
+      .kwrapper .knode .ktool-tabs .ktab {
+        display: inline-block;
+        margin-left: 10px;
+        padding: 3px 10px;
+        font-size: 20px;
+        background-color: transparent;
+        color: #ffffff;
+        cursor: pointer; }
+        .kwrapper .knode .ktool-tabs .ktab:hover {
+          background-color: #E0E0E0; }
+        .kwrapper .knode .ktool-tabs .ktab.kactive {
+          background-color: #F2F2F2;
+          color: #919191; }
+          .kwrapper .knode .ktool-tabs .ktab.kactive:hover {
+            color: #E0E0E0; }
+        .kwrapper .knode .ktool-tabs .ktab.ksearchbutton {
+          float: right;
+          margin-right: 10px; }
+    .kwrapper .knode.kadditional {
+      background-color: #F2F2F2;
+      padding: 10px; }
+      .kwrapper .knode.kadditional table {
+        min-width: 50%;
+        color: #919191;
+        font: bold 12px tahoma, verdana; }
+        .kwrapper .knode.kadditional table tbody {
+          padding: 0; }
+        .kwrapper .knode.kadditional table .kheadline {
+          color: #555555;
+          text-align: left;
+          margin-left: 4px;
+          margin-bottom: 4px; }
+        .kwrapper .knode.kadditional table tr {
+          background-color: #ffffff;
+          margin: 0 5px;
+          padding: 0; }
+        .kwrapper .knode.kadditional table td {
+          padding: 2px 4px;
+          min-width: 50%;
+          vertical-align: top;
+          border: 1px solid #E0E0E0; }
+    .kwrapper .knode.kpayload {
+      background-color: #F2F2F2;
+      overflow-y: scroll;
+      max-height: 350px;
+      padding: 10px 10px 5px; }
+  .kwrapper .kmessage {
+    background-color: #fffda5;
+    list-style: outside none none;
+    padding: 4px 5px 3px;
+    margin: 0; }
+    .kwrapper .kmessage:before {
+      content: "\00a0\00a0!\00a0\00a0";
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+      background-color: #ffcd00;
+      border: 1px solid #000000;
+      font-size: small; }
+  .kwrapper .kconfiguration {
+    padding: 0;
+    margin: 0; }
+    .kwrapper .kconfiguration .call {
+      display: table-cell;
+      font: bold 12px tahoma, verdana;
+      padding-right: 10px;
+      padding-left: 10px;
+      padding-bottom: 5px; }
+      .kwrapper .kconfiguration .call .kcaller {
+        color: #555555; }
+    .kwrapper .kconfiguration .khelp {
+      position: absolute;
+      border: solid 1px #B2B2B2;
+      background-color: #ffffff;
+      padding: 2px 5px;
+      margin-top: 10px;
+      display: none;
+      margin-left: 250px;
+      color: #555555;
+      line-height: 150%;
+      font-weight: lighter;
+      z-index: 1; }
+    .kwrapper .kconfiguration .kel:hover .khelp {
+      display: block; }
+    .kwrapper .kconfiguration .kcollapse-me {
+      display: none !important; }
+    .kwrapper .kconfiguration .kname {
+      margin-left: 10px; }
+    .kwrapper .kconfiguration .kexpand .kname {
+      margin-left: 0; }
+  .kwrapper .kchild {
+    display: inline;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    font: bold 12px tahoma, verdana;
+    color: #919191;
+    position: relative; }
+    .kwrapper .kchild .kel {
+      cursor: default;
+      display: block;
+      clear: both;
+      padding: 2px 0 3px 0;
+      margin: 0 0 5px;
+      background-color: #ffffff;
+      line-height: 13px; }
+      .kwrapper .kchild .kel:hover, .kwrapper .kchild .kel.kcurrent-additional {
+        background-color: #E0E0E0; }
+        .kwrapper .kchild .kel:hover input, .kwrapper .kchild .kel:hover select, .kwrapper .kchild .kel.kcurrent-additional input, .kwrapper .kchild .kel.kcurrent-additional select {
+          background-color: #ffffff !important;
+          border: solid 1px #919191; }
+      .kwrapper .kchild .kel em {
+        font: lighter 10px tahoma, verdana; }
+        .kwrapper .kchild .kel em.karrow {
+          font: bold 12px tahoma, verdana;
+          background-color: #919191;
+          padding: 0 2px;
+          color: #F2F2F2; }
+      .kwrapper .kchild .kel .kel-bg {
+        /* white line */
+        background-color: #919191;
+        margin-left: 5px;
+        margin-right: 15px;
+        float: left;
+        width: 3px;
+        height: 20px;
+        margin-top: -2px; }
+      .kwrapper .kchild .kel.kexpand {
+        background-image: none;
+        cursor: pointer; }
+        .kwrapper .kchild .kel.kexpand:before {
+          content: "\00a0\25B6\00a0\00a0";
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+        .kwrapper .kchild .kel.kexpand .kel-bg {
+          display: none; }
+      .kwrapper .kchild .kel.kopened {
+        background-image: none; }
+        .kwrapper .kchild .kel.kopened:before {
+          content: "\00a0\25BC\00a0\00a0";
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+      .kwrapper .kchild .kel .ktype {
+        font-style: normal;
+        margin: 0 2px; }
+      .kwrapper .kchild .kel .kgencode {
+        margin-right: 5px;
+        float: right;
+        font-size: 10px;
+        height: 16px; }
+        .kwrapper .kchild .kel .kgencode:hover {
+          color: #555555; }
+      .kwrapper .kchild .kel .kcodedisplay {
+        color: #555555;
+        background-color: #B2B2B2;
+        padding: 5px;
+        margin: 5px;
+        float: right; }
+    .kwrapper .kchild .kpreview {
+      padding: 0;
+      margin-bottom: 5px;
+      background-color: #ffffff; }
+      .kwrapper .kchild .kpreview .kpre {
+        font-style: normal;
+        overflow: auto;
+        color: #919191;
+        font: bold 12px tahoma, verdana;
+        white-space: pre; }
+      .kwrapper .kchild .kpreview .source {
+        padding: 0 20px; }
+      .kwrapper .kchild .kpreview .klineno {
+        font-weight: normal; }
+      .kwrapper .kchild .kpreview .highlight {
+        background-color: #E0E0E0 !important;
+        padding: 5px 20px;
+        color: #555555;
+        margin: 10px 0;
+        position: relative; }
+        .kwrapper .kchild .kpreview .highlight:before {
+          width: 3px;
+          background: #990100 none repeat scroll 0 0;
+          content: "";
+          height: 25px;
+          margin-left: -10px;
+          position: absolute;
+          margin-top: -5px; }
+    .kwrapper .kchild .kcollapse-me {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      display: table-cell;
+      float: right;
+      color: #919191; }
+      .kwrapper .kchild .kcollapse-me:before {
+        content: '\21D4';
+        font-weight: bolder;
+        font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+      .kwrapper .kchild .kcollapse-me:hover {
+        color: #555555; }
+      .kwrapper .kchild .kcollapse-me.collapsed {
+        color: #ffcd00; }
+        .kwrapper .kchild .kcollapse-me.collapsed:before {
+          content: '\21D5';
+          font-weight: bolder;
+          font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+        .kwrapper .kchild .kcollapse-me.collapsed:hover {
+          color: #555555; }
+    .kwrapper .kchild .kcurrent-additional .kcollapse-me.collapsed {
+      color: #AF8C4F; }
+      .kwrapper .kchild .kcurrent-additional .kcollapse-me.collapsed:hover {
+        color: #555555; }
+    .kwrapper .kchild .krecursion {
+      color: #b1b1b1; }
+      .kwrapper .kchild .krecursion .kel-bg {
+        /* grey line */
+        background-color: #b1b1b1; }
+    .kwrapper .kchild .kstring .kel-bg {
+      /* yellow line */
+      background-color: #DEB462; }
+    .kwrapper .kchild .kstring.kexpand {
+      background-image: none; }
+      .kwrapper .kchild .kstring.kexpand:before {
+        color: #DEB462; }
+    .kwrapper .kchild .kstring em, .kwrapper .kchild .kstring .kname {
+      color: #DEB462; }
+    .kwrapper .kchild .kstring.kcurrent-additional .kel-bg {
+      /* yellow line */
+      background-color: #AF8C4F; }
+    .kwrapper .kchild .kstring.kcurrent-additional.kexpand {
+      background-image: none; }
+      .kwrapper .kchild .kstring.kcurrent-additional.kexpand:before {
+        color: #AF8C4F; }
+    .kwrapper .kchild .kstring.kcurrent-additional em, .kwrapper .kchild .kstring.kcurrent-additional .kname {
+      color: #AF8C4F; }
+    .kwrapper .kchild .kclass:before {
+      color: #00AD00; }
+    .kwrapper .kchild .kclass em {
+      color: #00AD00; }
+    .kwrapper .kchild .kclass span.kname {
+      color: #00AD00; }
+    .kwrapper .kchild .kmethod:before {
+      color: #00AD00; }
+    .kwrapper .kchild .kmethod em {
+      color: #00AD00; }
+    .kwrapper .kchild .kclosure:before {
+      color: #00AD00; }
+    .kwrapper .kchild .kclosure em {
+      color: #00AD00; }
+    .kwrapper .kchild .karray {
+      background-image: none; }
+      .kwrapper .kchild .karray:before {
+        color: #3498DB; }
+      .kwrapper .kchild .karray.kopened {
+        background-image: none; }
+      .kwrapper .kchild .karray em {
+        color: #3498DB; }
+      .kwrapper .kchild .karray span.kname {
+        color: #3498DB; }
+    .kwrapper .kchild .kboolean.kel-bg {
+      /* pink line */
+      background-color: #d87cd8; }
+    .kwrapper .kchild .kboolean em {
+      color: #d87cd8; }
+    .kwrapper .kchild .kboolean span.kname {
+      color: #d87cd8; }
+    .kwrapper .kchild .kinteger .kel-bg {
+      /* yellow line */
+      background-color: #555555; }
+    .kwrapper .kchild .kinteger.kexpand {
+      background-image: none; }
+      .kwrapper .kchild .kinteger.kexpand:before {
+        color: #555555; }
+    .kwrapper .kchild .kinteger em, .kwrapper .kchild .kinteger .kname {
+      color: #555555; }
+    .kwrapper .kchild.krow hr {
+      border: 0;
+      height: 0;
+      border-top: 1px solid #919191;
+      border-bottom: none;
+      margin-top: 0;
+      margin-bottom: 5px;
+      background-color: transparent; }
+  .kwrapper .khidden {
+    display: none !important; }
+  .kwrapper .kfilterroot.krootline.kchild,
+  .kwrapper .kchild.krootline {
+    display: block !important; }
+  .kwrapper .kfilterroot .kchild {
+    display: none; }
+  .kwrapper .ktopline .kchild {
+    display: block !important; }
+  .kwrapper .keditable input, .kwrapper .keditable select {
+    border: solid 1px #919191;
+    font: normal 12px tahoma, verdana;
+    height: 18px;
+    line-height: inherit;
+    margin: 2px;
+    padding: 2px 5px;
+    width: inherit;
+    background: none repeat scroll 0 0 #E0E0E0 !important;
+    color: #555555 !important; }
+    .kwrapper .keditable input:hover, .kwrapper .keditable select:hover {
+      background: none repeat scroll 0 0 #ffffff !important;
+      border: solid 1px #919191; }
+  .kwrapper .keditable input[type=button], .kwrapper .keditable select {
+    cursor: pointer; }
+  .kwrapper .kclose {
+    float: right; }
+    .kwrapper .kclose.kfatal {
+      cursor: pointer;
+      display: inline-table;
+      width: 30px;
+      height: 40px;
+      margin-right: 7px;
+      color: #303030; }
+      .kwrapper .kclose.kfatal:hover {
+        color: #ffffff; }
+    .kwrapper .kclose.knormal {
+      cursor: pointer;
+      display: inline-table;
+      font-size: 25px;
+      color: #ffffff; }
+      .kwrapper .kclose.knormal:before {
+        content: '\2715'; }
+      .kwrapper .kclose.knormal:hover {
+        color: #B2B2B2; }
+  .kwrapper .search-wrapper {
+    list-style: none;
+    position: absolute;
+    z-index: 1; }
+    .kwrapper .search-wrapper.hidden {
+      display: none !important;
+      visibility: hidden !important; }
+    .kwrapper .search-wrapper .ksearch {
+      background-color: #ffcd00;
+      color: #555555;
+      padding: 2px 4px;
+      font: normal 12px tahoma, verdana;
+      z-index: 10;
+      margin-left: 2px; }
+      .kwrapper .search-wrapper .ksearch .kclose {
+        cursor: pointer;
+        display: inline-table;
+        font-size: 17px;
+        margin: 0 5px; }
+        .kwrapper .search-wrapper .ksearch .kclose:hover {
+          color: #ffffff; }
+  .kwrapper .highlight-jumpto {
+    background-color: #ffcd00 !important;
+    color: #303030 !important; }
+  .kwrapper .ksearch-found-highlight {
+    background-color: #990100;
+    color: #303030; }
+  .kwrapper .ksearch-found-highlight .kpre,
+  .kwrapper .highlight-jumpto .kpre {
+    color: #303030 !important; }
+  .kwrapper .klinks .kchild .kel {
+    color: #919191;
+    text-decoration: none;
+    padding: 3px 6px 6px;
+    cursor: pointer; }
+    .kwrapper .klinks .kchild .kel:hover {
+      text-decoration: underline; }
+
+.kfatalwrapper-outer {
+  background: none repeat scroll 0 0 rgba(148, 148, 148, 0.8);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 100000;
+  overflow: auto; }
+  .kfatalwrapper-outer .kwrapper {
+    font: normal 12px tahoma, verdana;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: #B2B2B2; }
+    .kfatalwrapper-outer .kwrapper .kfatal-headnote {
+      font: normal 12px tahoma, verdana;
+      background-color: #990100;
+      padding: 4px 5px 3px 5px;
+      list-style: none;
+      margin: 0;
+      height: 50px;
+      color: #F2F2F2;
+      font-size: 36px;
+      font-weight: bold; }
+      .kfatalwrapper-outer .kwrapper .kfatal-headnote .kstop {
+        background: #555555;
+        /* fallback */
+        background: -moz-linear-gradient(45deg, transparent 8px, #000000 10px), -moz-linear-gradient(135deg, transparent 8px, #000000 10px), -moz-linear-gradient(225deg, transparent 8px, #000000 10px), -moz-linear-gradient(315deg, transparent 8px, #000000 10px);
+        background: -o-linear-gradient(45deg, transparent 8px, #000000 10px), -o-linear-gradient(135deg, transparent 8px, #000000 10px), -o-linear-gradient(225deg, transparent 8px, #000000 10px), -o-linear-gradient(315deg, transparent 8px, #000000 10px);
+        background: -webkit-linear-gradient(45deg, transparent 8px, #000000 10px), -webkit-linear-gradient(135deg, transparent 8px, #000000 10px), -webkit-linear-gradient(225deg, transparent 8px, #000000 10px), -webkit-linear-gradient(315deg, transparent 8px, #000000 10px);
+        background-position: bottom left, bottom right, top right, top left;
+        -moz-background-size: 50% 50%;
+        -webkit-background-size: 50% 50%;
+        background-size: 50% 50%;
+        background-repeat: no-repeat;
+        float: left;
+        color: #F2F2F2;
+        width: 44px;
+        margin-left: 4px;
+        margin-top: 4px;
+        margin-right: 4px; }
+        .kfatalwrapper-outer .kwrapper .kfatal-headnote .kstop span {
+          margin-left: 15px; }
+      .kfatalwrapper-outer .kwrapper .kfatal-headnote .ktext.kfirst {
+        margin-left: 40px; }
+      .kfatalwrapper-outer .kwrapper .kfatal-headnote .klogo {
+        display: inline-block;
+        background-color: #ffcd00;
+        border-radius: 50%;
+        color: #555555;
+        font-size: 14px;
+        font-weight: bold;
+        height: 28px;
+        width: 28px;
+        margin-left: -4px;
+        vertical-align: -3px; }
+        .kfatalwrapper-outer .kwrapper .kfatal-headnote .klogo .klogo-xx {
+          /* Klo go XX? Really? */
+          margin-left: 4px;
+          margin-top: 4px;
+          position: absolute; }
+      .kfatalwrapper-outer .kwrapper .kfatal-headnote .kclose {
+        font-size: 40px;
+        float: none;
+        position: absolute;
+        right: 15px;
+        top: 0;
+        color: #F2F2F2; }
+        .kfatalwrapper-outer .kwrapper .kfatal-headnote .kclose:hover {
+          color: #B2B2B2; }
+    .kfatalwrapper-outer .kwrapper .kpreview {
+      padding: 15px 0; }
+    .kfatalwrapper-outer .kwrapper .kfatal-message {
+      padding: 4px;
+      font: normal 12px tahoma, verdana;
+      background-color: #919191;
+      text-align: center;
+      list-style: none; }
+      .kfatalwrapper-outer .kwrapper .kfatal-message .kerror-str {
+        color: #E0E0E0;
+        font-weight: bold; }
+      .kfatalwrapper-outer .kwrapper .kfatal-message .kerror-path {
+        color: #ffffff;
+        font-weight: bold; }
+    .kfatalwrapper-outer .kwrapper .kfootnote {
+      background-color: #303030;
+      padding: 4px 0 3px;
+      list-style: none;
+      cursor: default;
+      margin-bottom: 10px;
+      min-height: 8px; }
+    .kfatalwrapper-outer .kwrapper .knode.kpayload {
+      max-height: none;
+      overflow-y: auto; }
+
+/*# sourceMappingURL=skin.css.map */

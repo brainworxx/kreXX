@@ -70,7 +70,7 @@ class Objects {
     if (Hive::isInHive($data)) {
       // Tell them, we've been here before
       // but also say who we are.
-      $output .= View\Render::renderRecursion($name, $additional . 'class', get_class($data), Framework\Toolbox::generateDomIdFromObject($data), $connector1, $connector2);
+      $output .= View\SkinRender::renderRecursion($name, $additional . 'class', get_class($data), Framework\Toolbox::generateDomIdFromObject($data), $connector1, $connector2);
 
       // We will not render this one, but since we
       // return to wherever we came from, we need to decrease the level.
@@ -83,7 +83,7 @@ class Objects {
     $anon_function = function (&$parameter) {
       $data = $parameter[0];
       $name = $parameter[1];
-      $output = View\Render::renderSingeChildHr();;
+      $output = View\SkinRender::renderSingeChildHr();;
 
       $ref = new \ReflectionClass($data);
 
@@ -118,7 +118,7 @@ class Objects {
         $output .= Objects::getReflectionPropertiesData($ref_props, $name, $ref, $data, 'Public properties');
         // Adding a HR to reflect that the following stuff are not public
         // properties anymore.
-        $output .= View\Render::renderSingeChildHr();
+        $output .= View\SkinRender::renderSingeChildHr();
       }
 
       // Dumping protected properties.
@@ -152,13 +152,13 @@ class Objects {
       $output .= Objects::pollAllConfiguredDebugMethods($data, $name);
 
       // Adding a HR for a better readability.
-      $output .= View\Render::renderSingeChildHr();
+      $output .= View\SkinRender::renderSingeChildHr();
       return $output;
     };
 
 
     // Output data from the class.
-    $output .= View\Render::renderExpandableChild($name, $additional . 'class', $anon_function, $parameter, get_class($data), Framework\Toolbox::generateDomIdFromObject($data), '', FALSE, $connector1, $connector2);
+    $output .= View\SkinRender::renderExpandableChild($name, $additional . 'class', $anon_function, $parameter, get_class($data), Framework\Toolbox::generateDomIdFromObject($data), '', FALSE, $connector1, $connector2);
     // We've finished this one, and can decrease the level setting.
     $level--;
     return $output;
@@ -320,11 +320,11 @@ class Objects {
     // any "abstraction level", because they can be accessed directly.
     if (strpos(strtoupper($label), 'PUBLIC') === FALSE) {
       // Protected or private properties.
-      return View\Render::renderExpandableChild($label, 'class internals', $anon_function, $parameter, '', '', '', FALSE, '', '');
+      return View\SkinRender::renderExpandableChild($label, 'class internals', $anon_function, $parameter, '', '', '', FALSE, '', '');
     }
     else {
       // Public properties.
-      return View\Render::renderExpandableChild('', '', $anon_function, $parameter, $label);
+      return View\SkinRender::renderExpandableChild('', '', $anon_function, $parameter, $label);
     }
   }
 
@@ -349,7 +349,7 @@ class Objects {
       // Recursion detection of objects are
       // handled in the hub.
       if (is_array($data) && Hive::isInHive($data)) {
-        return View\Render::renderRecursion();
+        return View\SkinRender::renderRecursion();
       }
 
       // Remember, that we've already been here.
@@ -383,7 +383,7 @@ class Objects {
       }
       return $output;
     };
-    return View\Render::renderExpandableChild('', '', $analysis, $parameter);
+    return View\SkinRender::renderExpandableChild('', '', $analysis, $parameter);
   }
 
   /**
@@ -428,7 +428,7 @@ class Objects {
         return Objects::analyseMethods($parameter[0], $parameter[1]);
       };
 
-      return View\Render::renderExpandableChild('Methods', 'class internals', $anon_function, $parameter, '', '', '', FALSE, '', '');
+      return View\SkinRender::renderExpandableChild('Methods', 'class internals', $anon_function, $parameter, '', '', '', FALSE, '', '');
     }
     return '';
   }
@@ -451,7 +451,7 @@ class Objects {
         // This could be anything, we need to examine it first.
         return Internals::analysisHub($data);
       };
-      return View\Render::renderExpandableChild($name, 'Foreach', $anon_function, $parameter, 'Traversable Info');
+      return View\SkinRender::renderExpandableChild($name, 'Foreach', $anon_function, $parameter, 'Traversable Info');
     }
     return '';
   }
@@ -500,7 +500,7 @@ class Objects {
           $anon_function = function (&$parameter) {
             return Internals::analysisHub($parameter);
           };
-          $output .= View\Render::renderExpandableChild($func_name, 'debug method', $anon_function, $parameter, '. . .', '', '', FALSE, '->', '() =');
+          $output .= View\SkinRender::renderExpandableChild($func_name, 'debug method', $anon_function, $parameter, '. . .', '', '', FALSE, '->', '() =');
           unset($parameter);
         }
       }
@@ -526,10 +526,10 @@ class Objects {
       $output = '';
       foreach ($data as $key => $string) {
         if ($key !== 'comments' && $key !== 'declared in') {
-          $output .= View\Render::renderSingleChild($string, $key, $string, FALSE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, $string, FALSE, 'reflection', '', '', '', '=');
         }
         else {
-          $output .= View\Render::renderSingleChild($string, $key, '. . .', TRUE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, '. . .', TRUE, 'reflection', '', '', '', '=');
         }
       }
       return $output;
@@ -553,7 +553,7 @@ class Objects {
     // Remove the ',' after the last char.
     $param_list = '<small>' . trim($param_list, ', ') . '</small>';
 
-    return View\Render::renderExpandableChild($name, $data['declaration keywords'] . ' method', $anon_function, $parameter, '', '', '', FALSE, $connector1, '(' . $param_list . ')');
+    return View\SkinRender::renderExpandableChild($name, $data['declaration keywords'] . ' method', $anon_function, $parameter, '', '', '', FALSE, $connector1, '(' . $param_list . ')');
   }
 
   /**
@@ -605,16 +605,16 @@ class Objects {
       $output = '';
       foreach ($data as $key => $string) {
         if ($key !== 'comments' && $key !== 'declared in') {
-          $output .= View\Render::renderSingleChild($string, $key, $string, FALSE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, $string, FALSE, 'reflection', '', '', '', '=');
         }
         else {
-          $output .= View\Render::renderSingleChild($string, $key, '. . .', TRUE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, '. . .', TRUE, 'reflection', '', '', '', '=');
         }
       }
       return $output;
     };
 
-    return View\Render::renderExpandableChild($prop_name, $additional . ' closure', $anon_function, $result, '', '', '', FALSE, $connector1, $connector2 . '(' . $param_list . ') =');
+    return View\SkinRender::renderExpandableChild($prop_name, $additional . ' closure', $anon_function, $result, '', '', '', FALSE, $connector1, $connector2 . '(' . $param_list . ') =');
 
   }
 

@@ -63,7 +63,7 @@ class Config {
    */
   public static $configFallback = array(
     'render' => array(
-      'skin' => '145',
+      'skin' => 'smoky-grey',
       'memoryLeft' => '64',
       'maxRuntime' => '60',
     ),
@@ -222,7 +222,7 @@ class Config {
    *
    * @var string
    */
-  public static $version = '1.4.0';
+  public static $version = '1.4.0 dev';
 
   /**
    * Get\Set kreXX state: whether it is enabled or disabled.

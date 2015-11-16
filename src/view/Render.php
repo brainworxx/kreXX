@@ -39,6 +39,9 @@ use Brainworxx\Krexx\Framework;
 /**
  * This class hosts the internal rendering functions.
  *
+ * It get extended by the SkinRender class, so every skin can do some special
+ * stuff.
+ *
  * @package Krexx
  */
 class Render extends Help {
@@ -244,11 +247,13 @@ class Render extends Help {
    *   The caller of kreXX.
    * @param string $config_output
    *   The pregenerated configuration markup.
+   * @param boolean $config_only
+   *   Info if we are only displaying the configuration
    *
    * @return string
    *   The generated markup from the template files.
    */
-  Public static function renderFooter($caller, $config_output) {
+  Public static function renderFooter($caller, $config_output, $config_only = FALSE) {
     $template = self::getTemplateFileContent('footer');
     // Replace our stuff in the partial.
     if (!isset($caller['file'])) {
