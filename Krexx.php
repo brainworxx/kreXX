@@ -48,7 +48,7 @@ use Brainworxx\Krexx\View;
  * @param string $handle
  *   The developer handle.
  */
-function krexx($data, $handle = '') {
+function krexx($data = NULL, $handle = '') {
   if ($handle == '') {
     \Krexx::open($data);
   }

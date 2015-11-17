@@ -63,10 +63,29 @@ $fontBold: bold 12px tahoma, verdana;
 $fontStandard: normal 12px tahoma, verdana;
 $fontLight: lighter 10px tahoma, verdana;
 
-.kwrapper {
+// Mixins
+@mixin border-radius-top($radius) {
+  -webkit-border-top-left-radius: $radius;
+  -webkit-border-top-right-radius: $radius;
+  -moz-border-radius-topleft: $radius;
+  -moz-border-radius-topright: $radius;
+  border-top-left-radius: $radius;
+  border-top-right-radius: $radius;
+}
+@mixin border-radius-bottom($radius) {
+  -webkit-border-bottom-right-radius: $radius;
+  -webkit-border-bottom-left-radius: $radius;
+  -moz-border-radius-bottomright: $radius;
+  -moz-border-radius-bottomleft: $radius;
+  border-bottom-right-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+
+
+.kwrapper, .kfatalwrapper-outer {
 
   // We need to secure some initial formating for our elements, to prevent the
-  // host-system from makiong them unuseable with css formating.
+  // host-system from making them unusable with css formatting.
   div, span, em, ul, li, a, input, table, caption, tbody, tr, td, strong, hr, select, option {
     padding: 0;
     margin: 0;
@@ -75,7 +94,7 @@ $fontLight: lighter 10px tahoma, verdana;
     border: none;
     text-align: left;
   }
-   //Setting the display attribute, hard!
+  //Setting the display attribute, hard!
   div, ul, hr, option {
     display: block;
   }
@@ -103,8 +122,10 @@ $fontLight: lighter 10px tahoma, verdana;
   select {
     display: inline-block;
   }
-
-
+  option {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 
   // The wrapper itself
   position: absolute;
@@ -115,8 +136,12 @@ $fontLight: lighter 10px tahoma, verdana;
   -webkit-box-shadow: $boxShadow;
   -moz-box-shadow: $boxShadow;
   box-shadow: $boxShadow;
+  @include border-radius-bottom(2px);
+  @include border-radius-top(2px);
+  overflow: hidden;
   * {
     box-sizing: content-box;
+
   }
 
   .krela-wrapper {
@@ -176,6 +201,7 @@ $fontLight: lighter 10px tahoma, verdana;
             margin-left: 4px;
             margin-top: 4px;
             position: absolute;
+            font-size: 13px;
           }
         }
         .ktext {
@@ -202,6 +228,7 @@ $fontLight: lighter 10px tahoma, verdana;
         background-color: transparent;
         color: $white;
         cursor: pointer;
+        @include border-radius-top(1px);
         &:hover {
           background-color: $greyLight;
         }
@@ -223,6 +250,7 @@ $fontLight: lighter 10px tahoma, verdana;
     &.kadditional {
       background-color: $whiteDark;
       padding: 10px;
+      @include border-radius-bottom(2px);
       table {
         min-width: 50%;
         color: $greyDark;
@@ -247,6 +275,8 @@ $fontLight: lighter 10px tahoma, verdana;
           min-width: 50%;
           vertical-align: top;
           border: 1px solid $greyLight;
+          @include border-radius-top(1px);
+          @include border-radius-bottom(1px);
         }
       }
     }
@@ -334,6 +364,8 @@ $fontLight: lighter 10px tahoma, verdana;
       margin: 0 0 5px;
       background-color: $white;
       line-height: 13px;
+      @include border-radius-top(1px);
+      @include border-radius-bottom(1px);
       &:hover, &.kcurrent-additional {
         background-color: $greyLight;
         input, select {
@@ -407,7 +439,6 @@ $fontLight: lighter 10px tahoma, verdana;
       }
 
     }
-
 
     // Preview and  code preview
     .kpreview {
@@ -631,6 +662,8 @@ $fontLight: lighter 10px tahoma, verdana;
       width: inherit;
       background: none repeat scroll 0 0 $greyLight !important;
       color: $blackLight !important;
+      @include border-radius-top(1px);
+      @include border-radius-bottom(1px);
       &:hover {
         background: none repeat scroll 0 0 $white !important;
         border: solid 1px $greyDark;
@@ -726,7 +759,6 @@ $fontLight: lighter 10px tahoma, verdana;
 
     }
   }
-
 }
 
 // Special definitions for the fatal error handler
