@@ -295,7 +295,7 @@
      * @event click
      */
     $('.kwrapper .kel').on('click', function (event) {
-      krexx.setAdditionalDate(this);
+      krexx.setAdditionalData(this);
     });
 
     $('.kfatalwrapper-outer').on('scroll', function (event) {
@@ -306,7 +306,7 @@
     krexx.setPayloadMaxHeight();
 
     // Expand the configuration info, we have enough space here!
-    krexx.toggle($('.kconfiguration .kchild >.kexpand:first')[0]);
+    krexx.toggle($('.kconfiguration .kchild:nth-child(2) .kexpand:not(.kConfig)'));
 
     // Disable form-buttons in case a logfile is opened local.
     if (window.location.protocol === 'file:') {
@@ -545,7 +545,6 @@
    *   The Element you want to expand.
    */
   krexx.toggle = function (el) {
-
     $(el).toggleClass('kopened').next().toggleClass('khidden');
 
   };
@@ -839,7 +838,6 @@
 
     if (height > 0) {
       $('.kpayload:not(.kfatalwrapper-outer .kpayload)').css('max-height', height + 'px');
-      console.log($('.kpayload:not(.kfatalwrapper-outer .kpayload)'));
     }
   };
 
@@ -849,18 +847,21 @@
    * @event click
    * @param el
    */
-  krexx.setAdditionalDate = function (el) {
+  krexx.setAdditionalData = function (el) {
     var $el = $(el);
     var $wrapper = $el.parents('.kwrapper');
     var $body = $wrapper.find('.kdatabody');
     var html = '';
     var counter = 0;
 
+
+
     // Mark the clicked el, clear the others.
     $wrapper.find('.kcurrent-additional').removeClass('kcurrent-additional');
     $el.addClass('kcurrent-additional');
 
     // Load the Json, jQuery transforms it right away.
+    console.log($el.data('addjson'));
     var json = $el.data('addjson');
     if (typeof json === 'object') {
       // We've got data!

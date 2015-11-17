@@ -86,8 +86,11 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseNull($name, $additional = '', $connector1 = '=>', $connector2 = '=') {
+    $json = array();
+    $json['type'] = 'NULL';
+
     $data = 'NULL';
-    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'null', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, $additional . 'null', '', $connector1, $connector2, $json);
   }
 
   /**
@@ -108,6 +111,10 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseArray(array &$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
+    $json = array();
+    $json['type'] = 'array';
+    $json['count'] = (string) count($data);
+
     // Dumping all Properties.
     $parameter = array($data);
     $anon_function = function ($parameter) {
@@ -115,7 +122,7 @@ class Variables {
       return Internals::iterateThrough($data);
     };
 
-    return View\SkinRender::renderExpandableChild($name, $additional . 'array', $anon_function, $parameter, count($data) . ' elements', '', '', FALSE, $connector1, $connector2);
+    return View\SkinRender::renderExpandableChild($name, $additional . 'array', $anon_function, $parameter, count($data) . ' elements', '', '', FALSE, $connector1, $connector2, $json);
   }
 
   /**
@@ -136,8 +143,11 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseResource($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
+    $json = array();
+    $json['type'] = 'resource';
+
     $data = get_resource_type($data);
-    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'resource', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, $additional . 'resource', '', $connector1, $connector2, $json);
   }
 
   /**
@@ -158,8 +168,11 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseBoolean($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
+    $json = array();
+    $json['type'] = 'boolean';
+
     $data = $data ? 'TRUE' : 'FALSE';
-    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'boolean', '', '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($data, $name, $data, $additional . 'boolean', '', $connector1, $connector2, $json);
   }
 
   /**
@@ -180,7 +193,10 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseInteger($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
-    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'integer', '', '', $connector1, $connector2);
+    $json = array();
+    $json['type'] = 'integer';
+
+    return View\SkinRender::renderSingleChild($data, $name, $data, $additional . 'integer', '', $connector1, $connector2, $json);
   }
 
   /**
@@ -201,7 +217,10 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseFloat($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
-    return View\SkinRender::renderSingleChild($data, $name, $data, FALSE, $additional . 'float', '', '', $connector1, $connector2);
+    $json = array();
+    $json['type'] = 'float';
+
+    return View\SkinRender::renderSingleChild($data, $name, $data, $additional . 'float', '', $connector1, $connector2, $json);
   }
 
   /**
@@ -222,27 +241,30 @@ class Variables {
    *   The rendered markup.
    */
   public Static Function analyseString($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=') {
+    $json = array();
+    $json['type'] = 'string';
 
     // Extra ?
-    $has_extra = FALSE;
     $cut = $data;
     if (strlen($data) > 50) {
       $cut = substr($data, 0, 50 - 3) . '...';
-      $has_extra = TRUE;
     }
 
     // Security, there could be anything inside the string.
     $clean_data = self::encodeString($data);
     $cut = self::encodeString($cut);
 
+    $json['encoding'] = @mb_detect_encoding($data);
     // We need to take care for mixed encodings here.
-    $strlen = @mb_strlen($data, @mb_detect_encoding($data));
+    $json['length'] = (string) $strlen = @mb_strlen($data, $json['encoding']);
     if ($strlen === FALSE) {
       // Looks like we have a mixed encoded string.
-      $strlen = ' mixed encoded ~ ' . strlen($data);
+      $json['length'] = '~ ' . strlen($data);
+      $strlen = ' broken encoding ' . $json['length'];
+      $json['encoding'] = 'broken';
     }
 
-    return View\SkinRender::renderSingleChild($clean_data, $name, $cut, $has_extra, $additional . 'string', ' ' . $strlen, '', $connector1, $connector2);
+    return View\SkinRender::renderSingleChild($clean_data, $name, $cut, $additional . 'string' . ' ' . $strlen, '', $connector1, $connector2, $json);
   }
 
   /**
@@ -302,7 +324,7 @@ class Variables {
       // Here we have another SPOF. When the string is large enough
       // we will run out of memory!
       // @see https://sourceforge.net/p/krexx/bugs/21/
-      // We will *NOT* return the unescaped string. Se we must check if it
+      // We will *NOT* return the unescaped string. So we must check if it
       // is small enough for the unpack().
       // 100 kb should be save enough.
       if (strlen($data) < 102400) {

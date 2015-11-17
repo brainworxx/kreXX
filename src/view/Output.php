@@ -233,19 +233,19 @@ class Output {
         $step_data = $parameter;
         // File.
         if (isset($step_data['file'])) {
-          $output .= SkinRender::renderSingleChild($step_data['file'], 'File', $step_data['file'], FALSE, 'string ', strlen($step_data['file']));
+          $output .= SkinRender::renderSingleChild($step_data['file'], 'File', $step_data['file'], 'string ' . strlen($step_data['file']));
         }
         // Line.
         if (isset($step_data['line'])) {
-          $output .= SkinRender::renderSingleChild($step_data['line'], 'Line no.', $step_data['line'], FALSE, 'integer');
+          $output .= SkinRender::renderSingleChild($step_data['line'], 'Line no.', $step_data['line'], 'integer');
         }
         // Sourcecode, is escaped by now.
         if (isset($step_data['sourcecode'])) {
-          $output .= SkinRender::renderSingleChild($step_data['sourcecode'], 'Sourcecode', '. . .', TRUE, 'PHP');
+          $output .= SkinRender::renderSingleChild($step_data['sourcecode'], 'Sourcecode', '. . .', 'PHP');
         }
         // Function.
         if (isset($step_data['function'])) {
-          $output .= SkinRender::renderSingleChild($step_data['function'], 'Last called function', $step_data['function'], FALSE, 'string ', strlen($step_data['function']));
+          $output .= SkinRender::renderSingleChild($step_data['function'], 'Last called function', $step_data['function'], 'string ' . strlen($step_data['function']));
         }
         // Object.
         if (isset($step_data['object'])) {
@@ -253,7 +253,7 @@ class Output {
         }
         // Type.
         if (isset($step_data['type'])) {
-          $output .= SkinRender::renderSingleChild($step_data['type'], 'Call type', $step_data['type'], FALSE, 'string ', strlen($step_data['type']));
+          $output .= SkinRender::renderSingleChild($step_data['type'], 'Call type', $step_data['type'], 'string ' . strlen($step_data['type']));
         }
         // Args.
         if (isset($step_data['args'])) {

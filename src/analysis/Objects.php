@@ -526,10 +526,10 @@ class Objects {
       $output = '';
       foreach ($data as $key => $string) {
         if ($key !== 'comments' && $key !== 'declared in') {
-          $output .= View\SkinRender::renderSingleChild($string, $key, $string, FALSE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, $string, 'reflection', '', '', '=');
         }
         else {
-          $output .= View\SkinRender::renderSingleChild($string, $key, '. . .', TRUE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, '. . .', 'reflection', '', '', '=');
         }
       }
       return $output;
@@ -605,10 +605,10 @@ class Objects {
       $output = '';
       foreach ($data as $key => $string) {
         if ($key !== 'comments' && $key !== 'declared in') {
-          $output .= View\SkinRender::renderSingleChild($string, $key, $string, FALSE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, $string, 'reflection', '', '', '=');
         }
         else {
-          $output .= View\SkinRender::renderSingleChild($string, $key, '. . .', TRUE, 'reflection', '', '', '', '=');
+          $output .= View\SkinRender::renderSingleChild($string, $key, '. . .', 'reflection', '', '', '=');
         }
       }
       return $output;

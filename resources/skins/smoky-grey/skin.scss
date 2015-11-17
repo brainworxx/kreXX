@@ -1,6 +1,6 @@
 /**
  * @file
- *   Template css for kreXX Hans skin.
+ *   Template css for kreXX smokey-grey skin.
  *   kreXX: Krumo eXXtended
  *
  *   This is a debugging tool, which displays structured information
@@ -35,21 +35,7 @@
  *
  */
 
-// The skin (old)
-$black: #000000;
-$grey30: #303030;
-$grey44: #444444;
-$grey6c: #6c6c6c;
-$greyb1: #b1b1b1;
-$greydb: #dbdbdb;
-$greyf2: #f2f2f2;
-$white: #ffffff;
-$yellow: #fffda5;
-$orange: #ffcd00;
-$red: #990100;
-$fatal: #FF0000;
-
-// The skin (new)
+// The skin
 $blackLight: #555555;
 $greyDark: #919191;
 $grey: #B2B2B2;
@@ -61,7 +47,7 @@ $red: #990100;
 $fatal: #FF0000;
 $yellow: #fffda5;
 
-// The syntax highlighting (new)
+// The syntax highlighting
 $bool: #d87cd8;
 $array: #3498DB;
 $object: #00AD00;
@@ -81,25 +67,61 @@ $fontLight: lighter 10px tahoma, verdana;
 
   // We need to secure some initial formating for our elements, to prevent the
   // host-system from makiong them unuseable with css formating.
-  div, span, em, ul, li, a, input, table, caption, tbody, tr, td, strong, hr, select {
+  div, span, em, ul, li, a, input, table, caption, tbody, tr, td, strong, hr, select, option {
     padding: 0;
     margin: 0;
     background-color: transparent;
     color: inherit;
     border: none;
+    text-align: left;
   }
+   //Setting the display attribute, hard!
+  div, ul, hr, option {
+    display: block;
+  }
+  span, em, a, input, strong {
+    display: inline;
+  }
+  li {
+    display: list-item;
+  }
+  table {
+    display: table;
+  }
+  caption {
+    display: table-caption;
+  }
+  tbody {
+    display: table-row-group;
+  }
+  tr {
+    display: table-row;
+  }
+  td {
+    display: table-cell;
+  }
+  select {
+    display: inline-block;
+  }
+
+
 
   // The wrapper itself
   position: absolute;
   z-index: 10000;
   text-align: left;
-  color: $black;
+  color: $blackLight;
   min-width: 35%;
   -webkit-box-shadow: $boxShadow;
   -moz-box-shadow: $boxShadow;
   box-shadow: $boxShadow;
   * {
     box-sizing: content-box;
+  }
+
+  .krela-wrapper {
+    position: relative;
+    width: 100%;
   }
 
   .kbg-wrapper {
@@ -130,7 +152,7 @@ $fontLight: lighter 10px tahoma, verdana;
     // The header
     .kheadnote {
       background-color: $greyDark;
-      padding: 5px 10px 5px 10px;
+      padding: 5px 10px 0;
       list-style: none;
       cursor: move;
       margin: 0;
@@ -140,15 +162,15 @@ $fontLight: lighter 10px tahoma, verdana;
         font-size: 20px;
         .klogo {
           display: inline-block;
-          background-color: $orange;
+          background-color: $yellowBwx;
           border-radius: 50%;
           color: $blackLight;
           font-size: 14px;
           font-weight: bold;
-          height: 28px;
-          width: 28px;
+          height: 26px;
+          width: 26px;
           margin-left: -4px;
-          vertical-align: -3px;
+          vertical-align: -1px;
           .klogo-xx {
             /* Klo go XX? Really? */
             margin-left: 4px;
@@ -247,8 +269,8 @@ $fontLight: lighter 10px tahoma, verdana;
     &:before {
       content: "\00a0\00a0!\00a0\00a0";
       font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
-      background-color: $orange;
-      border: 1px solid $black;
+      background-color: $yellowBwx;
+      border: 1px solid $blackLight;
       font-size: small;
     }
   }
@@ -260,7 +282,6 @@ $fontLight: lighter 10px tahoma, verdana;
     .call {
       display: table-cell;
       font: $fontBold;
-      //color: $greyb1;
       padding-right: 10px;
       padding-left: 10px;
       padding-bottom: 5px;
@@ -327,7 +348,8 @@ $fontLight: lighter 10px tahoma, verdana;
           font: $fontBold;
           background-color: $greyDark;
           padding: 0 2px;
-          color: $whiteDark;
+          color: $whiteDark !important;
+          margin: 0 10px;
         }
       }
 
@@ -361,10 +383,6 @@ $fontLight: lighter 10px tahoma, verdana;
         }
       }
 
-      .kname,
-      .kname:hover {
-        //color: $greyb1;
-      }
       .ktype {
         font-style: normal;
         margin: 0 2px;
@@ -390,9 +408,6 @@ $fontLight: lighter 10px tahoma, verdana;
 
     }
 
-    .knest {
-      //background-color: $grey30;
-    }
 
     // Preview and  code preview
     .kpreview {
@@ -448,7 +463,7 @@ $fontLight: lighter 10px tahoma, verdana;
         color: $blackLight;
       }
       &.collapsed {
-        color: $orange;
+        color: $yellowBwx;
         &:before {
           content: '\21D5';
           font-weight: bolder;
@@ -634,7 +649,7 @@ $fontLight: lighter 10px tahoma, verdana;
       width: 30px;
       height: 40px;
       margin-right: 7px;
-      color: $grey30;
+      color: $blackLight;
       &:hover {
         color: $white;
       }
@@ -642,7 +657,7 @@ $fontLight: lighter 10px tahoma, verdana;
     &.knormal {
       cursor: pointer;
       display: inline-table;
-      font-size: 25px;
+      font-size: 20px;
       color: $white;
       &:before {
         content: '\2715';
@@ -663,7 +678,7 @@ $fontLight: lighter 10px tahoma, verdana;
       visibility: hidden !important;
     }
     .ksearch {
-      background-color: $orange;
+      background-color: $yellowBwx;
       color: $blackLight;
       padding: 2px 4px;
       font: $fontStandard;
@@ -682,18 +697,18 @@ $fontLight: lighter 10px tahoma, verdana;
   }
 
   .highlight-jumpto {
-    background-color: $orange !important;
-    color: $grey30 !important;
+    background-color: $yellowBwx !important;
+    color: $blackLight !important;
   }
 
   .ksearch-found-highlight {
     background-color: $red;
-    color: $grey30;
+    color: $blackLight;
   }
 
   .ksearch-found-highlight .kpre,
   .highlight-jumpto .kpre {
-    color: $grey30 !important;
+    color: $blackLight !important;
   }
 
   .klinks {
@@ -746,18 +761,18 @@ $fontLight: lighter 10px tahoma, verdana;
       font-weight: bold;
       .kstop {
         background: $blackLight; /* fallback */
-        background: -moz-linear-gradient(45deg, transparent 8px, $black 10px),
-        -moz-linear-gradient(135deg, transparent 8px, $black 10px),
-        -moz-linear-gradient(225deg, transparent 8px, $black 10px),
-        -moz-linear-gradient(315deg, transparent 8px, $black 10px);
-        background: -o-linear-gradient(45deg, transparent 8px, $black 10px),
-        -o-linear-gradient(135deg, transparent 8px, $black 10px),
-        -o-linear-gradient(225deg, transparent 8px, $black 10px),
-        -o-linear-gradient(315deg, transparent 8px, $black 10px);
-        background: -webkit-linear-gradient(45deg, transparent 8px, $black 10px),
-        -webkit-linear-gradient(135deg, transparent 8px, $black 10px),
-        -webkit-linear-gradient(225deg, transparent 8px, $black 10px),
-        -webkit-linear-gradient(315deg, transparent 8px, $black 10px);
+        background: -moz-linear-gradient(45deg, transparent 8px, $blackLight 10px),
+        -moz-linear-gradient(135deg, transparent 8px, $blackLight 10px),
+        -moz-linear-gradient(225deg, transparent 8px, $blackLight 10px),
+        -moz-linear-gradient(315deg, transparent 8px, $blackLight 10px);
+        background: -o-linear-gradient(45deg, transparent 8px, $blackLight 10px),
+        -o-linear-gradient(135deg, transparent 8px, $blackLight 10px),
+        -o-linear-gradient(225deg, transparent 8px, $blackLight 10px),
+        -o-linear-gradient(315deg, transparent 8px, $blackLight 10px);
+        background: -webkit-linear-gradient(45deg, transparent 8px, $blackLight 10px),
+        -webkit-linear-gradient(135deg, transparent 8px, $blackLight 10px),
+        -webkit-linear-gradient(225deg, transparent 8px, $blackLight 10px),
+        -webkit-linear-gradient(315deg, transparent 8px, $blackLight 10px);
         background-position: bottom left, bottom right, top right, top left;
         -moz-background-size: 50% 50%;
         -webkit-background-size: 50% 50%;
@@ -778,7 +793,7 @@ $fontLight: lighter 10px tahoma, verdana;
       }
       .klogo {
         display: inline-block;
-        background-color: $orange;
+        background-color: $yellowBwx;
         border-radius: 50%;
         color: $blackLight;
         font-size: 14px;
@@ -826,14 +841,6 @@ $fontLight: lighter 10px tahoma, verdana;
       }
     }
 
-    .kfootnote {
-      background-color: $grey30;
-      padding: 4px 0 3px;
-      list-style: none;
-      cursor: default;
-      margin-bottom: 10px;
-      min-height: 8px;
-    }
     .knode.kpayload {
       max-height: none;
       overflow-y: auto;

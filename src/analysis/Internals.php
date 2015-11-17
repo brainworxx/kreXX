@@ -35,7 +35,7 @@ namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Framework;
 use Brainworxx\Krexx\View;
-use Drupal\toolbar\Element\Toolbar;
+
 
 /**
  * This class hosts the internal analysis functions.

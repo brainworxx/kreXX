@@ -75,40 +75,38 @@ class Render extends Help {
    * @param string $normal
    *   The normal content. Content using linebreaks should get
    *   rendered into $extra.
-   * @param bool $extra
-   *   If set, the data text will be rendered inside the yellow square.
    * @param string $type
    *   The type of the analysed variable, in a string.
-   * @param string $strlen
-   *   The length of the string. In this function, the string which gets
-   *   displayed is already not just escaped, but completely encoded. We need
-   *   the value from the original string, which we get from the method, which
-   *   calls this one.
    * @param string $help_id
    *   The id of the help text we want to display here.
    * @param string $connector1
    *   The connector1 type to the parent class / array.
    * @param string $connector2
    *   The connector2 type to the parent class / array.
-   * @param bool $is_footer
-   *   Are we displaying currently the footer? If yes, we will not do the
-   *   callback part.
    *
    * @return string
    *   The generated markup from the template files.
    */
-  Public static function renderSingleChild($data, $name = '', $normal = '', $extra = FALSE, $type = '', $strlen = '', $help_id = '', $connector1 = '', $connector2 = '', $is_footer = FALSE) {
+  Public static function renderSingleChild($data, $name = '', $normal = '', $type = '', $help_id = '', $connector1 = '', $connector2 = '', $json = array()) {
     // This one is a little bit more complicated than the others,
     // because it assembles some partials and stitches them together.
     $template = self::getTemplateFileContent('singleChild');
     $part_expand = '';
     $part_callable = '';
     $part_extra = '';
+
+    if (strlen($data) > strlen($normal) ) {
+      $extra = TRUE;
+    }
+    else {
+      $extra = FALSE;
+    }
+
     if ($extra) {
       // We have a lot of text, so we render this one expandable (yellow box).
       $part_expand = self::getTemplateFileContent('singleChildExpand');
     }
-    if (is_callable($data) && !$is_footer) {
+    if (is_callable($data)) {
       // Add callable partial.
       $part_callable = self::getTemplateFileContent('singleChildCallable');
     }
@@ -145,7 +143,6 @@ class Render extends Help {
     $template = str_replace('{name}', $name, $template);
     $template = str_replace('{type}', $type, $template);
     $template = str_replace('{type-classes}', $type_classes, $template);
-    $template = str_replace('{strlen}', $strlen, $template);
     $template = str_replace('{normal}', $normal, $template);
     $template = str_replace('{data}', $data, $template);
     $template = str_replace('{help}', self::renderHelp($help_id), $template);
@@ -350,7 +347,7 @@ class Render extends Help {
    * @return string
    *   The generated markup from the template files.
    */
-  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '', $connector2 = '') {
+  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '', $connector2 = '', $json = array()) {
     // Check for emergency break.
     if (!Analysis\Internals::checkEmergencyBreak()) {
       // Normally, this should not show up, because the Chunks class will not

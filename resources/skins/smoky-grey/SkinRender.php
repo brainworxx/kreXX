@@ -42,17 +42,14 @@ class SkinRender extends Render {
   /**
    * {@inheritDoc}
    */
-  Public static function renderSingleChild($data, $name = '', $normal = '', $extra = FALSE, $type = '', $strlen = '', $help_id = '', $connector1 = '', $connector2 = '', $is_footer = FALSE) {
+  Public static function renderSingleChild($data, $name = '', $normal = '',  $type = '', $help_id = '', $connector1 = '', $connector2 = '', $json = array()) {
 
-    $template = parent::renderSingleChild($data, $name, $normal, $extra, $type, $strlen, $help_id, $connector1, $connector2, $is_footer);
+    $template = parent::renderSingleChild($data, $name, $normal, $type, $help_id, $connector1, $connector2, $json);
 
+    $json['Help'] = self::getHelp($help_id);
     // Prepare the json.
-    $json = json_encode(array(
-      'Help' => self::getHelp($help_id),
-//      'Key' => $name,
-//      'Type' => $type,
-      'Length' => $strlen,
-    ));
+    $json = json_encode($json);
+
     $template = str_replace('{addjson}', $json, $template);
 
     return  $template;
@@ -62,7 +59,7 @@ class SkinRender extends Render {
   /**
    * {@inheritDoc}
    */
-  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '', $connector2 = '') {
+  Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '', $connector2 = '', $json = array()) {
 
     // Check for emergency break.
     if (!Analysis\Internals::checkEmergencyBreak()) {
@@ -124,12 +121,9 @@ class SkinRender extends Render {
         $additional = '';
       }
 
-      $json = json_encode(array(
-        'Help' => self::getHelp($help_id),
-//        'Key' => $name,
-//        'Type' => $type,
-        'Classname' => $additional,
-      ));
+      // @todo Use the array from above
+      $json['Help'] = self::getHelp($help_id);
+      $json = json_encode($json);
       $template = str_replace('{addjson}', $json, $template);
 
       return str_replace('{nest}', Framework\Chunks::chunkMe(self::renderNest($anon_function, $parameter, $dom_id, FALSE)), $template);
