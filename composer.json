@@ -8,6 +8,7 @@
     "analysis"
   ],
   "type": "library",
+  "version": "1.3.2",
   "homepage": "https://sourceforge.net/projects/krexx/",
   "license": ["LGPL-2.1"],
   "authors": [
