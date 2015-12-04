@@ -371,17 +371,17 @@
         font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
       .kwrapper .kchild .kcollapse-me:hover, .kfatalwrapper-outer .kchild .kcollapse-me:hover {
         color: #555555; }
-      .kwrapper .kchild .kcollapse-me.collapsed, .kfatalwrapper-outer .kchild .kcollapse-me.collapsed {
+      .kwrapper .kchild .kcollapse-me.kcollapsed, .kfatalwrapper-outer .kchild .kcollapse-me.kcollapsed {
         color: #FED300; }
-        .kwrapper .kchild .kcollapse-me.collapsed:before, .kfatalwrapper-outer .kchild .kcollapse-me.collapsed:before {
+        .kwrapper .kchild .kcollapse-me.kcollapsed:before, .kfatalwrapper-outer .kchild .kcollapse-me.kcollapsed:before {
           content: '\21D5';
           font-weight: bolder;
           font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
-        .kwrapper .kchild .kcollapse-me.collapsed:hover, .kfatalwrapper-outer .kchild .kcollapse-me.collapsed:hover {
+        .kwrapper .kchild .kcollapse-me.kcollapsed:hover, .kfatalwrapper-outer .kchild .kcollapse-me.kcollapsed:hover {
           color: #555555; }
-    .kwrapper .kchild .kcurrent-additional .kcollapse-me.collapsed, .kfatalwrapper-outer .kchild .kcurrent-additional .kcollapse-me.collapsed {
+    .kwrapper .kchild .kcurrent-additional .kcollapse-me.kcollapsed, .kfatalwrapper-outer .kchild .kcurrent-additional .kcollapse-me.kcollapsed {
       color: #AF8C4F; }
-      .kwrapper .kchild .kcurrent-additional .kcollapse-me.collapsed:hover, .kfatalwrapper-outer .kchild .kcurrent-additional .kcollapse-me.collapsed:hover {
+      .kwrapper .kchild .kcurrent-additional .kcollapse-me.kcollapsed:hover, .kfatalwrapper-outer .kchild .kcurrent-additional .kcollapse-me.kcollapsed:hover {
         color: #555555; }
     .kwrapper .kchild .krecursion, .kfatalwrapper-outer .kchild .krecursion {
       color: #b1b1b1; }
@@ -515,7 +515,7 @@
     list-style: none;
     position: absolute;
     z-index: 1; }
-    .kwrapper .search-wrapper.hidden, .kfatalwrapper-outer .search-wrapper.hidden {
+    .kwrapper .search-wrapper.khidden, .kfatalwrapper-outer .search-wrapper.khidden {
       display: none !important;
       visibility: hidden !important; }
     .kwrapper .search-wrapper .ksearch, .kfatalwrapper-outer .search-wrapper .ksearch {

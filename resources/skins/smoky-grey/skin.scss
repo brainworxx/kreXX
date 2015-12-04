@@ -493,7 +493,7 @@ $fontLight: lighter 10px tahoma, verdana;
       &:hover {
         color: $blackLight;
       }
-      &.collapsed {
+      &.kcollapsed {
         color: $yellowBwx;
         &:before {
           content: '\21D5';
@@ -505,7 +505,7 @@ $fontLight: lighter 10px tahoma, verdana;
         }
       }
     }
-    .kcurrent-additional .kcollapse-me.collapsed {
+    .kcurrent-additional .kcollapse-me.kcollapsed {
       color: $string-current;
       &:hover {
         color: $blackLight;
@@ -706,7 +706,7 @@ $fontLight: lighter 10px tahoma, verdana;
     list-style: none;
     position: absolute;
     z-index: 1;
-    &.hidden {
+    &.khidden {
       display: none !important;
       visibility: hidden !important;
     }
