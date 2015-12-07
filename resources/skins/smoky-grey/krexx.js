@@ -165,7 +165,7 @@
      * display the fatal error handler
      *
      */
-    krexx.addEvent('.kfatalwrapper-outer', 'scroll', krexx.checkSeachInViewport)
+    krexx.addEvent('.kfatalwrapper-outer', 'scroll', krexx.checkSeachInViewport);
 
     // Get viewport height to set kreXX data payload to max 75%
     krexx.setPayloadMaxHeight();
@@ -323,6 +323,7 @@
       var newExpand = newEl.nextElementSibling.querySelectorAll('.kexpand');
       for (i = 0; i < newExpand.length; i++) {
         newExpand[i].addEventListener('click', krexx.toggle);
+        newExpand[i].addEventListener('click', krexx.setAdditionalData);
       }
       // Register the Collapse function.
       var hideEverythingElse = newEl.nextElementSibling.querySelectorAll('.kcollapse-me');
@@ -334,6 +335,12 @@
       for (i = 0; i < codegen.length; i++) {
         codegen[i].addEventListener('click', krexx.generateCode);
       }
+      // Register the additional jasaon data display function
+      var additional = newEl.nextElementSibling.querySelectorAll('.kwrapper .kel');
+      for (i = 0; i < additional.length; i++) {
+          additional[i].addEventListener('click', krexx.setAdditionalData);
+      }
+      
 
       // Change the key of the just cloned EL to the one from the recursion.
       krexx.findInDomlistByClass(newEl.children, 'kname').innerHTML = krexx.findInDomlistByClass(this.children, 'kname').innerHTML;
@@ -918,6 +925,12 @@
   krexx.setAdditionalData = function (event) {
 
     var wrapper = krexx.getParents(this, '.kwrapper')[0];
+    if (typeof wrapper === 'undefined') {
+      // This only happens, when we are facing a recursion. There is no
+      // additional json data, anyway.
+      return;
+    }
+
     var body = wrapper.querySelector('.kdatabody');
     var html = '';
     var counter = 0;
@@ -1130,15 +1143,15 @@
 
       // Check for classname
       if (parent[matches()](selector)) {
-      // if (krexx.hasClass(parent, className)) {
         result.push(parent);
       }
       // Get the next one.
       parent = parent.parentNode;
     }
+    // No more parent nodes? Return what we've got!
     return result;
 
-    // Workarround for several browsers, since matches() is still not really
+    // Workaround for several browsers, since matches() is still not really
     // implemented in IE.
     function matches() {
       var el = document.querySelector('body');

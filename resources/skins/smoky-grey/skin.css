@@ -390,13 +390,13 @@
         background-color: #b1b1b1; }
     .kwrapper .kchild .kstring .kel-bg, .kfatalwrapper-outer .kchild .kstring .kel-bg {
       /* yellow line */
-      background-color: #DEB462; }
+      background-color: #AF8C4F; }
     .kwrapper .kchild .kstring.kexpand, .kfatalwrapper-outer .kchild .kstring.kexpand {
       background-image: none; }
       .kwrapper .kchild .kstring.kexpand:before, .kfatalwrapper-outer .kchild .kstring.kexpand:before {
-        color: #DEB462; }
+        color: #AF8C4F; }
     .kwrapper .kchild .kstring em, .kwrapper .kchild .kstring .kname, .kfatalwrapper-outer .kchild .kstring em, .kfatalwrapper-outer .kchild .kstring .kname {
-      color: #DEB462; }
+      color: #AF8C4F; }
     .kwrapper .kchild .kstring.kcurrent-additional .kel-bg, .kfatalwrapper-outer .kchild .kstring.kcurrent-additional .kel-bg {
       /* yellow line */
       background-color: #AF8C4F; }
