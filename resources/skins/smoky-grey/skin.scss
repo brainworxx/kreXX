@@ -228,6 +228,7 @@ $fontLight: lighter 10px tahoma, verdana;
         background-color: transparent;
         color: $white;
         cursor: pointer;
+        height: 26px;
         @include border-radius-top(1px);
         &:hover {
           background-color: $greyLight;

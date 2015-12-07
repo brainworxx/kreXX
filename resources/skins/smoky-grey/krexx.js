@@ -334,12 +334,16 @@
       for (i = 0; i < codegen.length; i++) {
         codegen[i].addEventListener('click', krexx.generateCode);
       }
-      // Register the additional jasaon data display function
+      // Register the additional json data display function
       var additional = newEl.nextElementSibling.querySelectorAll('.kwrapper .kel');
       for (i = 0; i < additional.length; i++) {
           additional[i].addEventListener('click', krexx.setAdditionalData);
       }
-
+      // Register the recursion resolving (this function) on possible recursions
+      var recursions = newEl.nextElementSibling.querySelectorAll('.kwrapper .kcopyFrom');
+       for (i = 0; i < recursions.length; i++) {
+          recursions[i].addEventListener('click', krexx.copyFrom);
+      }
 
       // Change the key of the just cloned EL to the one from the recursion.
       krexx.findInDomlistByClass(newEl.children, 'kname').innerHTML = krexx.findInDomlistByClass(this.children, 'kname').innerHTML;
