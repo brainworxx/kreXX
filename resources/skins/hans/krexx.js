@@ -69,7 +69,7 @@
      *   Displays a closing animation of the corresponding
      *   krexx output "window" and then removes it from the markup.
      */
-    krexx.addEvent('.kwrapper .kheadnote-wrapper .kclose', 'click', krexx.close);
+    krexx.addEvent('.kwrapper .kheadnote-wrapper .kclose, .kwrapper .kfatal-headnote .kclose', 'click', krexx.close);
 
     /**
      * Register toggling to the elements.
@@ -158,7 +158,7 @@
      * display the fatal error handler
      *
      */
-    krexx.addEvent('.kfatalwrapper-outer', 'scroll', krexx.checkSeachInViewport);
+    // krexx.addEvent('.kfatalwrapper-outer', 'scroll', krexx.checkSeachInViewport);
 
     // Disable form-buttons in case a logfile is opened local.
     if (window.location.protocol === 'file:') {
@@ -187,8 +187,7 @@
      */
     function startDraxx (event) {
       // The selector has an ID, we only have one of them.
-      var elContent = document.querySelector(selector);
-
+      var elContent = krexx.getParents(this, selector)[0];
       var offset = getElementOffset(elContent);
 
       // Calculate original offset.
@@ -527,15 +526,15 @@
     if (krexx.hasClass(search, 'hidden')) {
       // Display it.
       krexx.toggleClass(search, 'hidden');
-      krexx.toggleClass(searchtab, 'kactive');
       search.querySelector('.ksearchfield').focus();
+      search.style.position = 'fixed';
     }
     else {
       // Hide it.
       krexx.toggleClass(search, 'hidden');
-      krexx.toggleClass(searchtab, 'kactive');
+      krexx.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
+      search.style.position = 'fixed';
       // Clear the results.
-      krexx.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight')
       results = [];
     }
   };
@@ -589,10 +588,6 @@
       // Normal scrolling
       container = document.querySelectorAll('html');
       destination = el.getBoundingClientRect().top + container[0].scrollTop - 50;
-
-      console.log('Container:   ' + container[0].scrollTop);
-      console.log('Destination: ' + destination);
-
     }
     else {
       // Fatal Error scrolling.
@@ -810,11 +805,11 @@
     codedisplay.innerHTML ='<div class="kcode-inner">' + result + ';</div>';
     if (codedisplay.style.display == 'none') {
       codedisplay.style.display = '';
+      krexx.selectText(codedisplay);
     }
     else {
       codedisplay.style.display = 'none';
     }
-    krexx.selectText(codedisplay);
   };
 
   /**
@@ -1011,7 +1006,7 @@
         elements[i].classList.remove(className);
       }
       else {
-        elements[i].className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        elements[i].className = elements[i].className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
       }
     }
   };
@@ -1112,13 +1107,23 @@
     }
     return result;
 
-    // Workarround for several browsers, since matches() is still not really
+    // Workaround for several browsers, since matches() is still not really
     // implemented in IE.
     function matches() {
       var el = document.querySelector('body');
-      return ( el.mozMatchesSelector || el.msMatchesSelector ||
-               el.oMatchesSelector   || el.webkitMatchesSelector ||
-               {name:'getAttribute'} ).name;
+      var names = [
+        'matches',
+        'msMatchesSelector',
+        'mozMatchesSelector',
+        'oMatchesSelector',
+        'webkitMatchesSelector'
+      ];
+      // We need to iterate them.
+      for (var i = 0; i < names.length; i++) {
+        if (typeof el[names[i]] === 'function') {
+          return names[i];
+        }
+      }
     }
   };
 

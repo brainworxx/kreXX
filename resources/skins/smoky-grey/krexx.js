@@ -200,8 +200,7 @@
      */
     function startDraxx (event) {
       // The selector has an ID, we only have one of them.
-      var elContent = document.querySelector(selector);
-
+      var elContent = krexx.getParents(this, selector)[0];
       var offset = getElementOffset(elContent);
 
       // Calculate original offset.
@@ -340,7 +339,7 @@
       for (i = 0; i < additional.length; i++) {
           additional[i].addEventListener('click', krexx.setAdditionalData);
       }
-      
+
 
       // Change the key of the just cloned EL to the one from the recursion.
       krexx.findInDomlistByClass(newEl.children, 'kname').innerHTML = krexx.findInDomlistByClass(this.children, 'kname').innerHTML;
@@ -800,14 +799,14 @@
     }
 
     // 3. Add the text
-    codedisplay.innerHTML ='<div class="kcode-inner">' + result + ';</div>';
+    codedisplay.innerHTML = '<div class="kcode-inner">' + result + ';</div>';
     if (codedisplay.style.display == 'none') {
       codedisplay.style.display = '';
+      krexx.selectText(codedisplay);
     }
     else {
       codedisplay.style.display = 'none';
     }
-    krexx.selectText(codedisplay);
   };
 
   /**
@@ -820,18 +819,18 @@
    * @constructor
    */
   krexx.selectText = function (element) {
-    var doc = document
-      , text = element
-      , range, selection;
+    var doc = document;
+    var range;
+    var selection;
 
     if (doc.body.createTextRange) {
       range = document.body.createTextRange();
-      range.moveToElementText(text);
+      range.moveToElementText(element);
       range.select();
     } else if (window.getSelection) {
       selection = window.getSelection();
       range = document.createRange();
-      range.selectNodeContents(text);
+      range.selectNodeContents(element);
       selection.removeAllRanges();
       selection.addRange(range);
     }
@@ -959,7 +958,10 @@
     }
 
     // Add it to the DOM.
-    body.innerHTML = html;
+    html = '<table><caption class="kheadline">Additional data</caption><tbody class="kdatabody">' + html + '</tbody></table>'
+    // Meh, IE9 does not allow me to edit the contents of a table. I have to
+    // redraw the whole thing.  :-(
+    body.parentNode.parentNode.innerHTML = html;
   };
 
   /**
@@ -1050,7 +1052,7 @@
         elements[i].classList.remove(className);
       }
       else {
-        elements[i].className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        elements[i].className = elements[i].className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
       }
     }
   };
@@ -1155,9 +1157,19 @@
     // implemented in IE.
     function matches() {
       var el = document.querySelector('body');
-      return ( el.mozMatchesSelector || el.msMatchesSelector ||
-               el.oMatchesSelector   || el.webkitMatchesSelector ||
-               {name:'getAttribute'} ).name;
+      var names = [
+        'matches',
+        'msMatchesSelector',
+        'mozMatchesSelector',
+        'oMatchesSelector',
+        'webkitMatchesSelector'
+      ];
+      // We need to iterate them.
+      for (var i = 0; i < names.length; i++) {
+        if (typeof el[names[i]] === 'function') {
+          return names[i];
+        }
+      }
     }
   };
 

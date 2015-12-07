@@ -722,6 +722,7 @@ $fontLight: lighter 10px tahoma, verdana;
         display: inline-table;
         font-size: 17px;
         margin: 0 5px;
+        float: none;
         &:hover {
           color: $white;
         }

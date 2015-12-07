@@ -529,7 +529,8 @@
         cursor: pointer;
         display: inline-table;
         font-size: 17px;
-        margin: 0 5px; }
+        margin: 0 5px;
+        float: none; }
         .kwrapper .search-wrapper .ksearch .kclose:hover, .kfatalwrapper-outer .search-wrapper .ksearch .kclose:hover {
           color: #ffffff; }
   .kwrapper .highlight-jumpto, .kfatalwrapper-outer .highlight-jumpto {
