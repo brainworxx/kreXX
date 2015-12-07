@@ -33,8 +33,6 @@
 (function () {
   "use strict";
 
-
-
   /**
    * Register the frontend functions.
    *
@@ -42,10 +40,9 @@
    *   All events are getting registered as soon as the
    *   document is complete.
    */
-  document.addEventListener("DOMContentLoaded", function(event) {
+  document.addEventListener("DOMContentLoaded", function() {
     krexx.onDocumentReady();
   });
-
 
   /**
    * kreXX JS Class.
@@ -180,7 +177,6 @@
     if (window.location.protocol === 'file:') {
       krexx.disableForms();
     }
-
   };
 
   /**
@@ -301,6 +297,8 @@
     // Prevents the event from propagating (ie: "bubbling").
     event.stopPropagation();
 
+    var i;
+
     // Get the DOM id of the original analysis.
     var domid = krexx.getDataset(this, 'domid');
     // Get the analysis data.
@@ -316,19 +314,32 @@
       var newEl = orgEl.cloneNode(true);
       this.parentNode.insertBefore(newEl, this.nextSibling);
       // Register the events on the new element.
-      // @todo Register the hideEverythingElse and the codegeneration
-
       newEl.addEventListener('click', krexx.toggle);
+      newEl.addEventListener('click', krexx.setAdditionalData);
+      newEl.querySelector('.kgencode').addEventListener('click', krexx.generateCode);
+      newEl.querySelector('.kcollapse-me').addEventListener('click', krexx.collapse);
+
+      // Register the toggel function.
       var newExpand = newEl.nextElementSibling.querySelectorAll('.kexpand');
-      for (var i = 0; i < newExpand.length; i++) {
+      for (i = 0; i < newExpand.length; i++) {
         newExpand[i].addEventListener('click', krexx.toggle);
+      }
+      // Register the Collapse function.
+      var hideEverythingElse = newEl.nextElementSibling.querySelectorAll('.kcollapse-me');
+      for (i = 0; i < hideEverythingElse.length; i++) {
+        hideEverythingElse[i].addEventListener('click', krexx.collapse);
+      }
+      // Register the Code-Generation function.
+      var codegen = newEl.nextElementSibling.querySelectorAll('.kgencode');
+      for (i = 0; i < codegen.length; i++) {
+        codegen[i].addEventListener('click', krexx.generateCode);
       }
 
       // Change the key of the just cloned EL to the one from the recursion.
       krexx.findInDomlistByClass(newEl.children, 'kname').innerHTML = krexx.findInDomlistByClass(this.children, 'kname').innerHTML;
       // We  need to remove the ids from the copy to avoid double ids.
       var allChildren = newEl.nextElementSibling.getElementsByTagName("*");
-      for (var i = 0; i < allChildren.length; i++) {
+      for (i = 0; i < allChildren.length; i++) {
         allChildren[i].removeAttribute('id');
       }
       newEl.nextElementSibling.removeAttribute('id');
@@ -1169,7 +1180,9 @@
     for (var i = 0; i < configs.length; i++) {
       elements = configs[i].querySelectorAll('.kchild .kexpand');
       // We chose the first one.
-      krexx.trigger(elements[0], 'click');
+      krexx.toggleClass(elements[0], 'kopened');
+      krexx.toggleClass(elements[0].nextElementSibling, 'khidden');
+
     }
   }
 

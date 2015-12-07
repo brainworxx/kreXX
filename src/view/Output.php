@@ -193,11 +193,6 @@ class Output {
     // Remove whitespace.
     $css = preg_replace('/\s+/', ' ', $css);
 
-
-    // Adding JQuery.
-    // $js_lib = Toolbox::getFileContents(Config::$krexxdir . 'resources/jsLibs/jquery-1.11.3.js');
-    // $js_wrapper = Toolbox::getFileContents(Config::$krexxdir . 'resources/jsLibs/wrapper.js');
-    // $js = str_replace('{jQueryGoesHere}', $js_lib, $js_wrapper);
     // Krexx.js is comes directly form the template.
     $js = Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.js');
 
