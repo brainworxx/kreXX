@@ -567,6 +567,13 @@
   };
 
   /**
+   * Here we store our jump-to-scroll-animation interval.
+   *
+   * @var {number}
+   */
+  var interval;
+
+  /**
    * "Jumps" to an element in the markup and highlights it.
    *
    * It is used when we are facing a recursion in our analysis.
@@ -583,7 +590,7 @@
     krexx.removeClass(nests, 'khidden');
     // We need to expand them all.
     for (var i = 0; i < nests.length; i++) {
-      krexx.addClass(nests[i].previousElementSibling, 'kopened')
+      krexx.addClass([nests[i].previousElementSibling], 'kopened');
     }
 
     // Remove old highlighting.
@@ -609,7 +616,7 @@
       clearInterval(interval);
       // We also need to check if the setting of the new valkue was successful.
       var lastValue = container[0].scrollTop;
-      var interval = setInterval(function() {
+      interval = setInterval(function() {
         container[0].scrollTop +=  step;
         if (Math.abs(container[0].scrollTop - destination) <= Math.abs(step) || container[0].scrollTop == lastValue) {
           // We are here now, the next step would take us too far.

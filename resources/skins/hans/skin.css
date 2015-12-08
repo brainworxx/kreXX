@@ -116,7 +116,15 @@ div.kwrapper {
 
 .kwrapper select {
   display: inline-block;
+  -webkit-appearance: menulist;
+  -moz-appearance: menulist;
+  -o-appearance:menulist;
+  appearance: menulist;
 }
+.kwrapper select::-ms-expand{
+  display: block;
+}
+
 .kwrapper option {
   padding-left: 5px;
   padding-right: 5px;

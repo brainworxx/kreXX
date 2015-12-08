@@ -578,7 +578,7 @@
     krexx.removeClass(nests, 'khidden');
     // We need to expand them all.
     for (var i = 0; i < nests.length; i++) {
-      krexx.addClass(nests[i].previousElementSibling, 'kopened')
+      krexx.addClass([nests[i].previousElementSibling], 'kopened');
     }
 
     // Remove old highlighting.

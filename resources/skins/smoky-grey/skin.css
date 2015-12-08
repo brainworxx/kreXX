@@ -79,7 +79,13 @@
   .kwrapper td, .kfatalwrapper-outer td {
     display: table-cell; }
   .kwrapper select, .kfatalwrapper-outer select {
-    display: inline-block; }
+    display: inline-block;
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    -o-appearance: menulist;
+    appearance: menulist; }
+    .kwrapper select::-ms-expand, .kfatalwrapper-outer select::-ms-expand {
+      display: block; }
   .kwrapper option, .kfatalwrapper-outer option {
     padding-left: 5px;
     padding-right: 5px; }
@@ -232,13 +238,13 @@
       .kwrapper .kconfiguration .call .kcaller, .kfatalwrapper-outer .kconfiguration .call .kcaller {
         color: #555555; }
     .kwrapper .kconfiguration .khelp, .kfatalwrapper-outer .kconfiguration .khelp {
-      position: fixed;
+      position: absolute;
       border: solid 1px #B2B2B2;
       background-color: #ffffff;
       padding: 2px 5px;
       margin-top: 10px;
       display: none;
-      margin-left: 250px;
+      right: 0;
       color: #555555;
       line-height: 150%;
       font-weight: lighter;
@@ -546,12 +552,12 @@
         float: none; }
         .kwrapper .search-wrapper .ksearch .kclose:hover, .kfatalwrapper-outer .search-wrapper .ksearch .kclose:hover {
           color: #ffffff; }
+  .kwrapper .ksearch-found-highlight, .kfatalwrapper-outer .ksearch-found-highlight {
+    background-color: #fffda5 !important;
+    color: #555555; }
   .kwrapper .highlight-jumpto, .kfatalwrapper-outer .highlight-jumpto {
     background-color: #FED300 !important;
     color: #555555 !important; }
-  .kwrapper .ksearch-found-highlight, .kfatalwrapper-outer .ksearch-found-highlight {
-    background-color: #990100;
-    color: #555555; }
   .kwrapper .ksearch-found-highlight .kpre,
   .kwrapper .highlight-jumpto .kpre, .kfatalwrapper-outer .ksearch-found-highlight .kpre,
   .kfatalwrapper-outer .highlight-jumpto .kpre {

@@ -92,7 +92,7 @@ class SkinRender extends Render {
       $template = str_replace('{ktype}', $css_type, $template);
 
       $template = str_replace('{additional}', $additional, $template);
-      $template = str_replace('{help}', self::renderHelp($help_id), $template);
+//      $template = str_replace('{help}', self::renderHelp($help_id), $template);
       $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
       $template = str_replace('{connector2}', self::renderConnector($connector2), $template);
 

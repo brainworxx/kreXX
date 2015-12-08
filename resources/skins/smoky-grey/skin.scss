@@ -121,6 +121,13 @@ $fontLight: lighter 10px tahoma, verdana;
   }
   select {
     display: inline-block;
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
+    -o-appearance:menulist;
+    appearance: menulist;
+    &::-ms-expand{
+      display: block;
+    }
   }
   option {
     padding-left: 5px;
@@ -320,13 +327,13 @@ $fontLight: lighter 10px tahoma, verdana;
       }
     }
     .khelp {
-      position: fixed;
+      position: absolute;
       border: solid 1px $grey;
       background-color: $white;
       padding: 2px 5px;
       margin-top: 10px;
       display: none;
-      margin-left: 250px;
+      right: 0;
       color: $blackLight;
       line-height: 150%;
       font-weight: lighter;
@@ -743,16 +750,17 @@ $fontLight: lighter 10px tahoma, verdana;
       }
     }
   }
+  .ksearch-found-highlight {
+    background-color: $yellow !important;
+    color: $blackLight;
+  }
 
   .highlight-jumpto {
     background-color: $yellowBwx !important;
     color: $blackLight !important;
   }
 
-  .ksearch-found-highlight {
-    background-color: $red;
-    color: $blackLight;
-  }
+
 
   .ksearch-found-highlight .kpre,
   .highlight-jumpto .kpre {
