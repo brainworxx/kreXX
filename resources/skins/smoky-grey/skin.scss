@@ -157,7 +157,6 @@ $fontLight: lighter 10px tahoma, verdana;
     }
     &.kfatal {
       background-color: $grey;
-      //padding: 15px 0;
       margin-bottom: 25px;
     }
 
@@ -311,7 +310,7 @@ $fontLight: lighter 10px tahoma, verdana;
     padding: 0;
     margin: 0;
     .call {
-      display: table-cell;
+      display: inline-block;
       font: $fontBold;
       padding-right: 10px;
       padding-left: 10px;
@@ -321,7 +320,7 @@ $fontLight: lighter 10px tahoma, verdana;
       }
     }
     .khelp {
-      position: absolute;
+      position: fixed;
       border: solid 1px $grey;
       background-color: $white;
       padding: 2px 5px;
@@ -349,7 +348,7 @@ $fontLight: lighter 10px tahoma, verdana;
 
   // The el children
   .kchild {
-    display: inline;
+    display: block;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -360,7 +359,6 @@ $fontLight: lighter 10px tahoma, verdana;
     .kel {
       cursor: default;
       display: block;
-      clear: both;
       padding: 2px 0 3px 0;
       margin: 0 0 5px;
       background-color: $white;
@@ -415,17 +413,30 @@ $fontLight: lighter 10px tahoma, verdana;
           font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
         }
       }
+      &:not(.kexpand) {
+        position: relative;
+        &:before {
+          /* grey line */
+          width: 3px;
+          background: $greyDark none repeat scroll 0 0;
+          content: "\00a0";
+          margin-left: 5px;
+          display: inline-block;
+          margin-right: 13px;
+          line-height: 16px;
+        }
+      }
 
       .ktype {
         font-style: normal;
-        margin: 0 2px;
+        margin: 0;
       }
 
       .kgencode {
-        margin-right: 5px;
         float: right;
         font-size: 10px;
-        height: 16px;
+        margin-left: 15px;
+        display: inline-block;
         &:hover {
           color: $blackLight;
         }
@@ -482,7 +493,8 @@ $fontLight: lighter 10px tahoma, verdana;
       width: 16px;
       height: 16px;
       margin-right: 5px;
-      display: table-cell;
+      margin-left: 5px;
+      display: inline-block;
       float: right;
       color: $greyDark;
       &:before {
@@ -516,21 +528,22 @@ $fontLight: lighter 10px tahoma, verdana;
     // Data payload
     .krecursion {
       color: $recursion;
-      .kel-bg {
+       &:before {
         /* grey line */
-        background-color: $recursion;
+        background: $recursion none repeat scroll 0 0!important;
       }
     }
 
     .kstring {
-      .kel-bg {
+      &:before {
         /* yellow line */
-        background-color: $string;
+        background: $string none repeat scroll 0 0!important;
       }
       &.kexpand {
         background-image: none;
         &:before {
           color: $string;
+          background-color: transparent !important;
         }
       }
       em, .kname {
@@ -596,9 +609,9 @@ $fontLight: lighter 10px tahoma, verdana;
       }
     }
     .kboolean {
-      &.kel-bg {
+      &:before {
         /* pink line */
-        background-color: $bool;
+        background: $bool none repeat scroll 0 0!important;
       }
       em {
         color: $bool;
@@ -608,9 +621,9 @@ $fontLight: lighter 10px tahoma, verdana;
       }
     }
     .kinteger {
-      .kel-bg {
-        /* yellow line */
-        background-color: $integer;
+      &:before {
+        /* black line */
+        background: $integer none repeat scroll 0 0!important;
       }
       &.kexpand {
         background-image: none;

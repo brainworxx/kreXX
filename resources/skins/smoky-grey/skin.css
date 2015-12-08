@@ -224,7 +224,7 @@
     padding: 0;
     margin: 0; }
     .kwrapper .kconfiguration .call, .kfatalwrapper-outer .kconfiguration .call {
-      display: table-cell;
+      display: inline-block;
       font: bold 12px tahoma, verdana;
       padding-right: 10px;
       padding-left: 10px;
@@ -232,7 +232,7 @@
       .kwrapper .kconfiguration .call .kcaller, .kfatalwrapper-outer .kconfiguration .call .kcaller {
         color: #555555; }
     .kwrapper .kconfiguration .khelp, .kfatalwrapper-outer .kconfiguration .khelp {
-      position: absolute;
+      position: fixed;
       border: solid 1px #B2B2B2;
       background-color: #ffffff;
       padding: 2px 5px;
@@ -252,7 +252,7 @@
     .kwrapper .kconfiguration .kexpand .kname, .kfatalwrapper-outer .kconfiguration .kexpand .kname {
       margin-left: 0; }
   .kwrapper .kchild, .kfatalwrapper-outer .kchild {
-    display: inline;
+    display: block;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -263,7 +263,6 @@
     .kwrapper .kchild .kel, .kfatalwrapper-outer .kchild .kel {
       cursor: default;
       display: block;
-      clear: both;
       padding: 2px 0 3px 0;
       margin: 0 0 5px;
       background-color: #ffffff;
@@ -315,14 +314,25 @@
         .kwrapper .kchild .kel.kopened:before, .kfatalwrapper-outer .kchild .kel.kopened:before {
           content: "\00a0\25BC\00a0\00a0";
           font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif; }
+      .kwrapper .kchild .kel:not(.kexpand), .kfatalwrapper-outer .kchild .kel:not(.kexpand) {
+        position: relative; }
+        .kwrapper .kchild .kel:not(.kexpand):before, .kfatalwrapper-outer .kchild .kel:not(.kexpand):before {
+          /* grey line */
+          width: 3px;
+          background: #919191 none repeat scroll 0 0;
+          content: "\00a0";
+          margin-left: 5px;
+          display: inline-block;
+          margin-right: 13px;
+          line-height: 16px; }
       .kwrapper .kchild .kel .ktype, .kfatalwrapper-outer .kchild .kel .ktype {
         font-style: normal;
-        margin: 0 2px; }
+        margin: 0; }
       .kwrapper .kchild .kel .kgencode, .kfatalwrapper-outer .kchild .kel .kgencode {
-        margin-right: 5px;
         float: right;
         font-size: 10px;
-        height: 16px; }
+        margin-left: 15px;
+        display: inline-block; }
         .kwrapper .kchild .kel .kgencode:hover, .kfatalwrapper-outer .kchild .kel .kgencode:hover {
           color: #555555; }
       .kwrapper .kchild .kel .kcodedisplay, .kfatalwrapper-outer .kchild .kel .kcodedisplay {
@@ -363,7 +373,8 @@
       width: 16px;
       height: 16px;
       margin-right: 5px;
-      display: table-cell;
+      margin-left: 5px;
+      display: inline-block;
       float: right;
       color: #919191; }
       .kwrapper .kchild .kcollapse-me:before, .kfatalwrapper-outer .kchild .kcollapse-me:before {
@@ -386,16 +397,17 @@
         color: #555555; }
     .kwrapper .kchild .krecursion, .kfatalwrapper-outer .kchild .krecursion {
       color: #b1b1b1; }
-      .kwrapper .kchild .krecursion .kel-bg, .kfatalwrapper-outer .kchild .krecursion .kel-bg {
+      .kwrapper .kchild .krecursion:before, .kfatalwrapper-outer .kchild .krecursion:before {
         /* grey line */
-        background-color: #b1b1b1; }
-    .kwrapper .kchild .kstring .kel-bg, .kfatalwrapper-outer .kchild .kstring .kel-bg {
+        background: #b1b1b1 none repeat scroll 0 0 !important; }
+    .kwrapper .kchild .kstring:before, .kfatalwrapper-outer .kchild .kstring:before {
       /* yellow line */
-      background-color: #AF8C4F; }
+      background: #AF8C4F none repeat scroll 0 0 !important; }
     .kwrapper .kchild .kstring.kexpand, .kfatalwrapper-outer .kchild .kstring.kexpand {
       background-image: none; }
       .kwrapper .kchild .kstring.kexpand:before, .kfatalwrapper-outer .kchild .kstring.kexpand:before {
-        color: #AF8C4F; }
+        color: #AF8C4F;
+        background-color: transparent !important; }
     .kwrapper .kchild .kstring em, .kwrapper .kchild .kstring .kname, .kfatalwrapper-outer .kchild .kstring em, .kfatalwrapper-outer .kchild .kstring .kname {
       color: #AF8C4F; }
     .kwrapper .kchild .kstring.kcurrent-additional .kel-bg, .kfatalwrapper-outer .kchild .kstring.kcurrent-additional .kel-bg {
@@ -431,16 +443,16 @@
         color: #3498DB; }
       .kwrapper .kchild .karray span.kname, .kfatalwrapper-outer .kchild .karray span.kname {
         color: #3498DB; }
-    .kwrapper .kchild .kboolean.kel-bg, .kfatalwrapper-outer .kchild .kboolean.kel-bg {
+    .kwrapper .kchild .kboolean:before, .kfatalwrapper-outer .kchild .kboolean:before {
       /* pink line */
-      background-color: #d87cd8; }
+      background: #d87cd8 none repeat scroll 0 0 !important; }
     .kwrapper .kchild .kboolean em, .kfatalwrapper-outer .kchild .kboolean em {
       color: #d87cd8; }
     .kwrapper .kchild .kboolean span.kname, .kfatalwrapper-outer .kchild .kboolean span.kname {
       color: #d87cd8; }
-    .kwrapper .kchild .kinteger .kel-bg, .kfatalwrapper-outer .kchild .kinteger .kel-bg {
-      /* yellow line */
-      background-color: #555555; }
+    .kwrapper .kchild .kinteger:before, .kfatalwrapper-outer .kchild .kinteger:before {
+      /* black line */
+      background: #555555 none repeat scroll 0 0 !important; }
     .kwrapper .kchild .kinteger.kexpand, .kfatalwrapper-outer .kchild .kinteger.kexpand {
       background-image: none; }
       .kwrapper .kchild .kinteger.kexpand:before, .kfatalwrapper-outer .kchild .kinteger.kexpand:before {

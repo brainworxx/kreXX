@@ -748,7 +748,7 @@
   krexx.disableForms = function () {
     var elements = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
     for (var i = 0; i < elements.length; i++) {
-      elements.disabled = true;
+      elements[i].disabled = true;
     }
   };
 

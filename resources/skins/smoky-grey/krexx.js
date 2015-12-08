@@ -744,7 +744,7 @@
   krexx.disableForms = function () {
     var elements = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
     for (var i = 0; i < elements.length; i++) {
-      elements.disabled = true;
+      elements[i].disabled = true;
     }
   };
 
@@ -909,7 +909,7 @@
    */
   krexx.setPayloadMaxHeight = function () {
     // Get the height.
-    var height = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
+    var height = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.70);
 
     if (height > 0) {
       var elements = document.querySelectorAll('.krela-wrapper .kpayload');
