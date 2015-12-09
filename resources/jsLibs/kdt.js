@@ -1,0 +1,406 @@
+/**
+ * @file
+ *   kreXX DOM Tools.
+ *   kreXX: Krumo eXXtended
+ *
+ *   This is a debugging tool, which displays structured information
+ *   about any PHP object. It is a nice replacement for print_r() or var_dump()
+ *   which are used by a lot of PHP developers.
+ *
+ *   kreXX is a fork of Krumo, which was originally written by:
+ *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ *
+ * @author brainworXX GmbH <info@brainworxx.de>
+ *
+ * @license http://opensource.org/licenses/LGPL-2.1
+ *   GNU Lesser General Public License Version 2.1
+ *
+ *   kreXX Copyright (C) 2014-2015 Brainworxx GmbH
+ *
+ *   This library is free software; you can redistribute it and/or modify it
+ *   under the terms of the GNU Lesser General Public License as published by
+ *   the Free Software Foundation; either version 2.1 of the License, or (at
+ *   your option) any later version.
+ *   This library is distributed in the hope that it will be useful, but WITHOUT
+ *   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ *   for more details.
+ *   You should have received a copy of the GNU Lesser General Public License
+ *   along with this library; if not, write to the Free Software Foundation,
+ *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+
+(function () {
+  "use strict";
+
+  /**
+   * kreXX JS Class.
+   *
+   * @namespace
+   *   Collection of js functions.
+   */
+  function kdt() {}
+
+  /**
+   * Gets all parents of an element which has the specified class.
+   *
+   * @param el
+   * @param selector
+   * @returns {Array}
+   */
+  kdt.getParents = function(el, selector) {
+    var result = [];
+    var parent = el.parentNode;
+
+    while (parent !== null && typeof parent[matches()] === 'function') {
+
+      // Check for classname
+      if (parent[matches()](selector)) {
+        result.push(parent);
+      }
+      // Get the next one.
+      parent = parent.parentNode;
+    }
+    return result;
+
+    // Workaround for several browsers, since matches() is still not really
+    // implemented in IE.
+    function matches() {
+      var el = document.querySelector('body');
+      var names = [
+        'matches',
+        'msMatchesSelector',
+        'mozMatchesSelector',
+        'oMatchesSelector',
+        'webkitMatchesSelector'
+      ];
+      // We need to iterate them.
+      for (var i = 0; i < names.length; i++) {
+        if (typeof el[names[i]] === 'function') {
+          return names[i];
+        }
+      }
+    }
+  };
+
+  /**
+   * Triggers an event on an element.
+   *
+   * @param el
+   * @param eventName
+   */
+  kdt.trigger = function(el, eventName) {
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent(eventName, true, false);
+    el.dispatchEvent(event);
+  };
+
+  /**
+   * Determines if an element has a class.
+   *
+   * @param el
+   * @param className
+   * @returns {boolean}
+   */
+  kdt.hasClass = function(el, className) {
+    if (el.classList) {
+      return el.classList.contains(className);
+    }
+    else {
+      return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+    }
+  };
+
+  /**
+   * Gets the first element from a list which hat that class.
+   *
+   * @param elements
+   * @param className
+   * @returns the element
+   */
+  kdt.findInDomlistByClass = function(elements, className) {
+
+    className = " " + className + " ";
+    for (var i = 0; i < elements.length; i++) {
+      if ( (" " + elements[i].className + " ").replace(/[\n\t]/g, " ").indexOf(className) > -1 ) {
+        return  elements[i];
+      }
+    }
+  };
+
+  /**
+   * Adds a class to elements.
+   *
+   * @param selector
+   * @param className
+   */
+  kdt.addClass = function(selector, className) {
+    var elements;
+
+    if (typeof selector === 'string') {
+      // Get our elements.
+      elements = document.querySelectorAll(selector);
+    }
+    else {
+      // We already have our list that we will use.
+      elements = selector;
+    }
+
+    for (var i = 0; i < elements.length; i++) {
+      if (elements[i].classList) {
+        elements[i].classList.add(className);
+      }
+      else {
+        elements[i].className += ' ' + className;
+      }
+    }
+  };
+
+  /**
+   * Removes a class from elements
+   *
+   * @param selector
+   * @param className
+   */
+  kdt.removeClass = function(selector, className) {
+    var elements;
+
+    if (typeof selector === 'string') {
+      // Get our elements.
+      elements = document.querySelectorAll(selector);
+    }
+    else {
+      // We already have our list that we will use.
+      elements = selector;
+    }
+
+    for (var i = 0; i < elements.length; i++) {
+      if (elements[i].classList) {
+        elements[i].classList.remove(className);
+      }
+      else {
+        elements[i].className = elements[i].className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+      }
+    }
+  };
+
+  /**
+   * Toggles the class of an element
+   *
+   * @param el
+   * @param className
+   */
+  kdt.toggleClass = function(el, className) {
+
+    if (el.classList) {
+      // Just toggle it.
+      el.classList.toggle(className);
+    } else {
+      // no class list there, we need to do this by hand.
+      var classes = el.className.split(' ');
+      var existingIndex = classes.indexOf(className);
+
+      if (existingIndex >= 0)
+        classes.splice(existingIndex, 1);
+      else
+        classes.push(className);
+
+      el.className = classes.join(' ');
+    }
+  };
+
+  /**
+   * Adds a event listener to a list of elements.
+   *
+   * @param selector
+   * @param eventName
+   * @param callback
+   *
+   * @return
+   *   The elements have processed.
+   */
+  kdt.addEvent = function (selector, eventName, callback) {
+    var elements = document.querySelectorAll(selector);
+
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener(eventName, callback);
+    }
+  };
+
+  /**
+   * Gets the dataset from en element.
+   *
+   * @param el
+   * @param what
+   */
+  kdt.getDataset = function (el, what) {
+    var result;
+
+    if (typeof el !== 'undefined') {
+      result = el.getAttribute('data-' + what);
+
+      if (result !== null) {
+        return result;
+      }
+    }
+
+  };
+
+  /**
+   * Sets the dataset from en element.
+   *
+   * @param el
+   * @param what
+   * @param value
+   */
+  kdt.setDataset = function (el, what, value) {
+    if (typeof el !== 'undefined') {
+      el.setAttribute('data-' + what, value);
+    }
+  };
+
+  /**
+   * Selects some text
+   *
+   * @see http://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
+   * @autor Jason
+   *
+   * @param element
+   * @constructor
+   */
+  kdt.selectText = function (element) {
+    var doc = document;
+    var range;
+    var selection;
+
+    if (doc.body.createTextRange) {
+      range = document.body.createTextRange();
+      range.moveToElementText(element);
+      range.select();
+    } else if (window.getSelection) {
+      selection = window.getSelection();
+      range = document.createRange();
+      range.selectNodeContents(element);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  };
+
+  /**
+   * Our dragable function (formerly a jQuery plugin)
+   *
+   * @param {string} selector
+   *   The selector for the content we want to drag around
+   * @param {string} handle
+   *   The selector for the handle (the element where you click and pull the
+   *   "window".
+   */
+  kdt.draXX = function (selector, handle, callbackUp, callbackDrag) {
+
+    kdt.addEvent(selector + ' ' + handle, 'mousedown', startDraxx);
+
+    /**
+     * Starts the dragging on a mousedown.
+     *
+     * @event  mousedown
+     * @param event
+     */
+    function startDraxx (event) {
+      // The selector has an ID, we only have one of them.
+      var elContent = kdt.getParents(this, selector)[0];
+      var offset = getElementOffset(elContent);
+
+      // Calculate original offset.
+      var offSetY = offset.top + elContent.offsetHeight - event.pageY - elContent.offsetHeight;
+      var offSetX = offset.left + outerWidth(elContent) - event.pageX - outerWidth(elContent);
+
+      // Prevents the default event behavior (ie: click).
+      event.preventDefault();
+      // Prevents the event from propagating (ie: "bubbling").
+      event.stopPropagation();
+
+      /**
+       * @param {event} event
+       *   The mousemove event from the pulling of the handle.
+       *
+       * @event mousemove
+       *   The actual dragging of the handle.
+       */
+      document.addEventListener("mousemove", drag);
+
+      /**
+       * Stops the dragging process
+       *
+       * @event mouseup
+       */
+      document.addEventListener("mouseup", function () {
+        // Prevents the default event behavior (ie: click).
+        event.preventDefault();
+        // Prevents the event from propagating (ie: "bubbling").
+        event.stopPropagation();
+        // Unregister to prevent slowdown.
+        document.removeEventListener("mousemove", drag);
+
+        // Calling the callback for the mouseup.
+        if (typeof  callbackUp === 'function') {
+          callbackUp();
+        }
+      });
+
+      /**
+       * Drags the DOM element around.
+       *
+       * @param event
+       */
+      function drag(event) {
+        // Prevents the default event behavior (ie: click).
+        event.preventDefault();
+        // Prevents the event from propagating (ie: "bubbling").
+        event.stopPropagation();
+
+        var left = event.pageX + offSetX;
+        var top = event.pageY + offSetY;
+
+        elContent.style.left = left + "px";
+        elContent.style.top = top + "px";
+
+        // Calling the callback for the dragging.
+        if (typeof  callbackDrag === 'function') {
+          callbackDrag();
+        }
+      }
+    }
+
+    /**
+     * Gets the top and left offset of a DOM element.
+     *
+     * @param element
+     * @returns {{top: number, left: number}}
+     */
+    function getElementOffset(element) {
+      var de = document.documentElement;
+      var box = element.getBoundingClientRect();
+      var top = box.top + window.pageYOffset - de.clientTop;
+      var left = box.left + window.pageXOffset - de.clientLeft;
+      return { top: top, left: left };
+    }
+
+    /**
+     * Gets the outer width of an element.
+     *
+     * @param el
+     * @returns {number}
+     */
+    function outerWidth(el) {
+      var width = el.offsetWidth;
+      var style = getComputedStyle(el);
+      width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+      return width;
+    }
+
+  };
+
+  // And register it inside the DOM.
+  window.kreXXdomTools = kdt;
+
+})();

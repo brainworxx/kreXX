@@ -193,8 +193,10 @@ class Output {
     // Remove whitespace.
     $css = preg_replace('/\s+/', ' ', $css);
 
+    // Adding our DOM tools to the js.
+    $js = Toolbox::getFileContents(Config::$krexxdir . 'resources/jsLibs/kdt.js');
     // Krexx.js is comes directly form the template.
-    $js = Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.js');
+    $js .= Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.js');
 
     return SkinRender::renderCssJs($css, $js);
   }
