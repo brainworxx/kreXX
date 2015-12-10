@@ -214,16 +214,16 @@
    *
    * @param selector
    * @param eventName
-   * @param callback
+   * @param callBack
    *
    * @return
    *   The elements have processed.
    */
-  kdt.addEvent = function (selector, eventName, callback) {
+  kdt.addEvent = function (selector, eventName, callBack) {
     var elements = document.querySelectorAll(selector);
 
     for (var i = 0; i < elements.length; i++) {
-      elements[i].addEventListener(eventName, callback);
+      elements[i].addEventListener(eventName, callBack);
     }
   };
 
@@ -263,7 +263,7 @@
    * Selects some text
    *
    * @see http://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
-   * @autor Jason
+   * @author Jason
    *
    * @param element
    * @constructor
@@ -289,11 +289,10 @@
   /**
    * Our dragable function (formerly a jQuery plugin)
    *
-   * @param {string} selector
-   *   The selector for the content we want to drag around
-   * @param {string} handle
-   *   The selector for the handle (the element where you click and pull the
-   *   "window".
+   * @param selector
+   * @param handle
+   * @param callbackUp
+   * @param callbackDrag
    */
   kdt.draXX = function (selector, handle, callbackUp, callbackDrag) {
 
@@ -319,13 +318,6 @@
       // Prevents the event from propagating (ie: "bubbling").
       event.stopPropagation();
 
-      /**
-       * @param {event} event
-       *   The mousemove event from the pulling of the handle.
-       *
-       * @event mousemove
-       *   The actual dragging of the handle.
-       */
       document.addEventListener("mousemove", drag);
 
       /**
@@ -394,13 +386,96 @@
     function outerWidth(el) {
       var width = el.offsetWidth;
       var style = getComputedStyle(el);
-      width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+      width += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
       return width;
     }
 
   };
 
-  // And register it inside the DOM.
+  /**
+   * Reads the values from a cookie.
+   *
+   * @param {string} krexxDebugSettings
+   *   Name of the cookie.
+   *
+   * @return string
+   *   The value, set in the cookie.
+   */
+  kdt.readSettings = function (krexxDebugSettings) {
+    var cookieName = krexxDebugSettings + "=";
+    var cookieArray = document.cookie.split(';');
+    var result = {};
+
+    for (var i = 0; i < cookieArray.length; i++) {
+      var c = cookieArray[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1, c.length);
+      }
+      if (c.indexOf(cookieName) === 0) {
+        try {
+          // Return json, if possible.
+          result = JSON.parse(c.substring(cookieName.length, c.length));
+        }
+        catch (error) {
+          // Return the value.
+          result = c.substring(cookieName.length, c.length);
+        }
+      }
+    }
+    return result;
+  };
+
+  /**
+   * Adds the value from a html element to the local cookie settings.
+   *
+   * @param event
+   */
+  kdt.setSetting = function (event) {
+    // Prevents the default event behavior (ie: click).
+    event.preventDefault();
+    // Prevents the event from propagating (ie: "bubbling").
+    event.stopPropagation();
+
+    // Get the old value.
+    var settings = kdt.readSettings('KrexxDebugSettings');
+    // Get new settings from element.
+    var newValue = this.value;
+    var valueName = this.name;
+    settings[valueName] = newValue;
+
+    // Save it.
+    var date = new Date();
+    date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+    var expires = 'expires=' + date.toUTCString();
+    // Remove a possible old value from a previous version.
+    document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    // Set the new one.
+    document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
+    // Feedback about update.
+    alert(valueName + ' --> ' + newValue + '\n\nPlease reload the page to use the new local settings.');
+  };
+
+  /**
+   * Resets all values in the local cookie settings.
+   *
+   * @param event
+   */
+  kdt.resetSetting = function (event) {
+    // Prevents the default event behavior (ie: click).
+    event.preventDefault();
+    // Prevents the event from propagating (ie: "bubbling").
+    event.stopPropagation();
+
+    // We do not delete the cookie, we simply remove all settings in it.
+    var settings = {};
+    var date = new Date();
+    date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+    var expires = 'expires=' + date.toUTCString();
+    document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
+
+    alert('All local configuration have been reset.\n\nPlease reload the page to use the these settings.');
+  };
+
   window.kreXXdomTools = kdt;
 
 })();

@@ -109,7 +109,7 @@
      *   Changes on the krexx html forms.
      *   All changes will automatically be written to the browser cookies.
      */
-    kdt.addEvent('.kwrapper .keditable select, .kwrapper .keditable input:not(.ksearchfield)', 'change', krexx.setSetting);
+    kdt.addEvent('.kwrapper .keditable select, .kwrapper .keditable input:not(.ksearchfield)', 'change', kdt.setSetting);
 
     /**
      * Register cookie reset function on the reset button.
@@ -118,7 +118,7 @@
      *   Resets the local settings in the settings cookie,
      *   when the reset button ic clicked.
      */
-    kdt.addEvent('.kwrapper .resetbutton', 'click', krexx.resetSetting);
+    kdt.addEvent('.kwrapper .resetbutton', 'click', kdt.resetSetting);
 
     /**
      * Register the recursions resolving.
@@ -302,8 +302,6 @@
    *                                     [pointer]
    * The [pointer] is the key of the [search result] where
    * you would jump to when you click "next"
-   *
-   * @var array
    */
   var results = [];
 
@@ -515,94 +513,9 @@
   };
 
   /**
-   * Reads the values from a cookie.
-   *
-   * @param {string} krexxDebugSettings
-   *   Name of the cookie.
-   *
-   * @return string
-   *   The value, set in the cookie.
-   */
-  krexx.readSettings = function (krexxDebugSettings) {
-    var cookieName = krexxDebugSettings + "=";
-    var cookieArray = document.cookie.split(';');
-    var result = {};
-
-    for (var i = 0; i < cookieArray.length; i++) {
-      var c = cookieArray[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1, c.length);
-      }
-      if (c.indexOf(cookieName) === 0) {
-        try {
-          // Return json, if possible.
-          result = JSON.parse(c.substring(cookieName.length, c.length));
-        }
-        catch (error) {
-          // Return the value.
-          result = c.substring(cookieName.length, c.length);
-        }
-      }
-    }
-    return result;
-  };
-
-  /**
-   * Adds the value from a html element to the local cookie settings.
-   *
-   * @param event
-   */
-  krexx.setSetting = function (event) {
-    // Prevents the default event behavior (ie: click).
-    event.preventDefault();
-    // Prevents the event from propagating (ie: "bubbling").
-    event.stopPropagation();
-
-    // Get the old value.
-    var settings = krexx.readSettings('KrexxDebugSettings');
-    // Get new settings from element.
-    var newValue = this.value;
-    var valueName = this.name;
-    settings[valueName] = newValue;
-
-    // Save it.
-    var date = new Date();
-    date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-    var expires = 'expires=' + date.toUTCString();
-    // Remove a possible old value from a previous version.
-    document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    // Set the new one.
-    document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
-    // Feedback about update.
-    alert(valueName + ' --> ' + newValue + '\n\nPlease reload the page to use the new local settings.');
-  };
-
-  /**
-   * Resets all values in the local cookie settings.
-   *
-   * @param event
-   */
-  krexx.resetSetting = function (event) {
-    // Prevents the default event behavior (ie: click).
-    event.preventDefault();
-    // Prevents the event from propagating (ie: "bubbling").
-    event.stopPropagation();
-
-    // We do not delete the cookie, we simply remove all settings in it.
-    var settings = {};
-    var date = new Date();
-    date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-    var expires = 'expires=' + date.toUTCString();
-    document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
-
-    alert('All local configuration have been reset.\n\nPlease reload the page to use the these settings.');
-  };
-
-  /**
    * Shows a "fast" closing animation and then removes the krexx window from the markup.
    *
-   * @param {HTMLElement} event
-   *   The closing button.
+   * @param event
    */
   krexx.close = function (event) {
 
@@ -710,7 +623,7 @@
   /**
    * Sets the kactive on the clicked element and removes it from the others.
    *
-   * @even click
+   * @event click
    * @param event
    */
   krexx.switchTab = function (event) {

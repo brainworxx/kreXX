@@ -194,9 +194,21 @@ class Output {
     $css = preg_replace('/\s+/', ' ', $css);
 
     // Adding our DOM tools to the js.
-    $js = Toolbox::getFileContents(Config::$krexxdir . 'resources/jsLibs/kdt.js');
+    if (is_readable(Config::$krexxdir . 'resources/jsLibs/kdt.min.js')) {
+      $js = Toolbox::getFileContents(Config::$krexxdir . 'resources/jsLibs/kdt.min.js');
+    }
+    else {
+      $js = Toolbox::getFileContents(Config::$krexxdir . 'resources/jsLibs/kdt.js');
+    }
+
     // Krexx.js is comes directly form the template.
-    $js .= Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.js');
+    if (is_readable(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.min.js')) {
+      $js .= Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.min.js');
+    }
+    else {
+      $js .= Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.js');
+    }
+
 
     return SkinRender::renderCssJs($css, $js);
   }

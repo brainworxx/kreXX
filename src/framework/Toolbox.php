@@ -92,8 +92,6 @@ class Toolbox {
     return FALSE;
   }
 
-
-
   /**
    * Generates a id for the DOM.
    *
