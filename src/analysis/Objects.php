@@ -451,7 +451,18 @@ class Objects {
         // This could be anything, we need to examine it first.
         return Internals::analysisHub($data);
       };
-      return View\SkinRender::renderExpandableChild($name, 'Foreach', $anon_function, $parameter, 'Traversable Info');
+      // If we are facing a IteratorAggregate, we can not access the array
+      // directly. To do this, we must get the Iterator from the class.
+      if (is_a($data, 'IteratorAggregate')) {
+        $connector2 = '->getIterator()';
+        // Remove the name, because this would then get added to the source
+        // generation, resulting in unusable code.
+        $name = '';
+      }
+      else {
+        $connector2 = '';
+      }
+      return View\SkinRender::renderExpandableChild($name, 'Foreach', $anon_function, $parameter, 'Traversable Info', '', '', FALSE, '', $connector2);
     }
     return '';
   }

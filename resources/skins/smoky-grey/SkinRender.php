@@ -92,9 +92,16 @@ class SkinRender extends Render {
       $template = str_replace('{ktype}', $css_type, $template);
 
       $template = str_replace('{additional}', $additional, $template);
-//      $template = str_replace('{help}', self::renderHelp($help_id), $template);
-      $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
-      $template = str_replace('{connector2}', self::renderConnector($connector2), $template);
+      // There is not much need for a connector to an empty name.
+      if (empty($name)) {
+        $template = str_replace('{connector1}', '', $template);
+        $template = str_replace('{connector2}', '', $template);
+      }
+      else {
+        $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
+        $template = str_replace('{connector2}', self::renderConnector($connector2), $template);
+      }
+
 
       // Generating our code and adding the Codegen button, if there is
       // something to generate.
