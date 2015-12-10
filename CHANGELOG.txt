@@ -11,6 +11,8 @@
   when used on the frontend.
 - Bugfix: Generated sourcecode now works with IteratorAggregate when
   trying to access a single element from the iterator.
+- Bugfix: Configured debugging methods will not be called anymore,
+  if they require a parameter.
 
 1.3.6
 - Added scope analysis. Protected an private variables are treated

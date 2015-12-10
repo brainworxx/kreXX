@@ -149,7 +149,7 @@ class Objects {
       }
 
       // Dumping all configured debug functions.
-      $output .= Objects::pollAllConfiguredDebugMethods($data, $name);
+      $output .= Objects::pollAllConfiguredDebugMethods($data);
 
       // Adding a HR for a better readability.
       $output .= View\SkinRender::renderSingeChildHr();
@@ -428,7 +428,7 @@ class Objects {
         return Objects::analyseMethods($parameter[0], $parameter[1]);
       };
 
-      return View\SkinRender::renderExpandableChild('Methods', 'class internals', $anon_function, $parameter, '', '', '', FALSE, '', '');
+      return View\SkinRender::renderExpandableChild('Methods', 'class internals', $anon_function, $parameter);
     }
     return '';
   }
@@ -477,13 +477,11 @@ class Objects {
    *
    * @param object $data
    *   The object we are analysing.
-   * @param string $name
-   *   The name of the object we are analysing.
    *
    * @return string
    *   The generated markup.
    */
-  public static function pollAllConfiguredDebugMethods($data, $name) {
+  public static function pollAllConfiguredDebugMethods($data) {
     $output = '';
 
     $func_list = explode(',', Framework\Config::getConfigValue('deep', 'debugMethods'));
@@ -493,26 +491,43 @@ class Objects {
           $func_name,
         )) && Framework\config::isAllowedDebugCall($data, $func_name)
       ) {
-        // Add a try to prevent the hosting CMS from doing something stupid.
-        try {
-          // We need to deactivate the current error handling to
-          // prevent the host system to do anything stupid.
-          set_error_handler(function () {
+        // We need to check if the callable function requires any parameters.
+        // We will not call those, because we simply can not provide them.
+        $ref = new \ReflectionMethod($data, $func_name);
+        $params = $ref->getParameters();
+
+        $found_required = FALSE;
+        foreach ($params as $param) {
+          if (!$param->isOptional()) {
+            // We've got a required parameter!
+            // We will not call this one.
+            $found_required = TRUE;
+          }
+        }
+        unset($ref);
+
+        if ($found_required == FALSE) {
+          // Add a try to prevent the hosting CMS from doing something stupid.
+          try {
+            // We need to deactivate the current error handling to
+            // prevent the host system to do anything stupid.
+            set_error_handler(function () {
+              // Do nothing.
+            });
+            $result = $data->$func_name();
+            // Reactivate whatever error handling we had previously.
+            restore_error_handler();
+          }
+          catch (\Exception $e) {
             // Do nothing.
-          });
-          $parameter = $data->$func_name();
-          // Reactivate whatever error handling we had previously.
-          restore_error_handler();
-        }
-        catch (\Exception $e) {
-          // Do nothing.
-        }
-        if (isset($parameter)) {
-          $anon_function = function (&$parameter) {
-            return Internals::analysisHub($parameter);
-          };
-          $output .= View\SkinRender::renderExpandableChild($func_name, 'debug method', $anon_function, $parameter, '. . .', '', '', FALSE, '->', '() =');
-          unset($parameter);
+          }
+          if (isset($result)) {
+            $anon_function = function (&$result) {
+              return Internals::analysisHub($result);
+            };
+            $output .= View\SkinRender::renderExpandableChild($func_name, 'debug method', $anon_function, $result, '. . .', '', '', FALSE, '->', '() =');
+            unset($result);
+          }
         }
       }
     }
