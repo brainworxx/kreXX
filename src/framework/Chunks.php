@@ -155,7 +155,12 @@ class Chunks {
    */
   public static function sendDechunkedToBrowser($string) {
 
+    // Do some housekeeping. Unless something dreadfull had appened, there
+    // sould not be anything to cleanup.
     self::cleanupOldChunks();
+
+    // Check for an emergency break.
+    $all_ok = Framework\Internals::checkEmergencyBreak();
 
     $chunk_pos = strpos($string, '@@@');
     
@@ -172,6 +177,12 @@ class Chunks {
 
     // No more chunk keys, we send what is left.
     echo $string;
+
+    if (!$all_ok) {
+      // We had an emergency break. Not everything was send to the browser,
+      // so we need to do some housekeeping.
+      self::cleanupNewChunks();
+    }
   }
 
   /**

@@ -682,11 +682,14 @@ $fontLight: lighter 10px tahoma, verdana;
       width: inherit;
       background: none repeat scroll 0 0 $greyLight !important;
       color: $blackLight !important;
-      @include border-radius-top(1px);
-      @include border-radius-bottom(1px);
+      @include border-radius-top(2px);
+      @include border-radius-bottom(2px);
       &:hover {
         background: none repeat scroll 0 0 $white !important;
         border: solid 1px $greyDark;
+      }
+      &:focus {
+        background-color: $white !important;
       }
     }
     input[type=button], select {

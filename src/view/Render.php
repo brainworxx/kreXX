@@ -349,13 +349,12 @@ class Render extends Help {
    */
   Public static function renderExpandableChild($name, $type, \Closure $anon_function, &$parameter, $additional = '', $dom_id = '', $help_id = '', $is_expanded = FALSE, $connector1 = '', $connector2 = '', $json = array()) {
     // Check for emergency break.
-    if (!Analysis\Internals::checkEmergencyBreak()) {
+    if (!Framework\Internals::checkEmergencyBreak()) {
       // Normally, this should not show up, because the Chunks class will not
       // output anything, except a JS alert.
       Messages::addMessage("Emergency break for large output during analysis process.");
       return '';
     }
-
 
     if ($name == '' && $type == '') {
       // Without a Name or Type I only display the Child with a Node.

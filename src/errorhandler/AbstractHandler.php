@@ -85,7 +85,7 @@ abstract class AbstractHandler {
   protected function giveFeedback(array $error_data) {
     if ($this->isActive) {
       View\SkinRender::$KrexxCount++;
-      Analysis\Internals::$timer = time();
+      Framework\Internals::$timer = time();
 
       // Setting template info.
       if (is_null(View\SkinRender::$skin)) {

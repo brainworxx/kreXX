@@ -34,6 +34,7 @@
 namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\View;
+use Brainworxx\Krexx\Framework;
 
 /**
  * This class hosts the variable analysis functions.
@@ -69,6 +70,177 @@ class Variables {
     'EUCJP',
     'eucJP-win',
   );
+
+
+
+  /**
+   * Dump information about a variable.
+   *
+   * This function decides what functions analyse the data
+   * and acts as a hub.
+   *
+   * @param mixed $data
+   *   The variable we are analysing.
+   * @param string $name
+   *   The name of the variable, if available.
+   * @param string $connector1
+   *   The connector1 type to the parent class / array.
+   * @param string $connector2
+   *   The connector2 type to the parent class / array.
+   *
+   * @return string
+   *   The generated markup.
+   */
+  public Static Function analysisHub(&$data, $name = '', $connector1 = '', $connector2 = '') {
+
+    // Check memory and runtime.
+    if (!Framework\Internals::checkEmergencyBreak()) {
+      // No more took too long, or not enough memory is left.
+      View\Messages::addMessage("Emergency break for large output during analysis process.");
+      return '';
+    }
+
+    // If we are currently analysing an array, we might need to add stuff to
+    // the connector.
+    if ($connector1 == '[' && is_string($name)) {
+      $connector1 = $connector1 . "'";
+      $connector2 = "'" . $connector2;
+    }
+
+    // Object?
+    // Closures are analysed separately.
+    if (is_object($data) && !is_a($data, '\Closure')) {
+      Framework\Internals::$nestingLevel++;
+      if (Framework\Internals::$nestingLevel <= (int) Framework\Config::getConfigValue('deep', 'level')) {
+        $result = Objects::analyseObject($data, $name, '', $connector1, $connector2);
+        Framework\Internals::$nestingLevel--;
+        return $result;
+      }
+      else {
+        Framework\Internals::$nestingLevel--;
+        return Variables::analyseString("Object => Maximum for analysis reached. I will not go any further.\n To increase this value, change the deep => level setting.", $name);
+      }
+    }
+
+    // Closure?
+    if (is_object($data) && is_a($data, '\Closure')) {
+      Framework\Internals::$nestingLevel++;
+      if (Framework\Internals::$nestingLevel <= (int) Framework\Config::getConfigValue('deep', 'level')) {
+        if ($connector2 == '] =') {
+          $connector2 = ']';
+        }
+        $result = Objects::analyseClosure($data, $name, '', $connector1, $connector2);
+        Framework\Internals::$nestingLevel--;
+        return $result;
+      }
+      else {
+        Framework\Internals::$nestingLevel--;
+        return Variables::analyseString("Closure => Maximum for analysis reached. I will not go any further.\n To increase this value, change the deep => level setting.", $name);
+      }
+    }
+
+    // Array?
+    if (is_array($data)) {
+      Framework\Internals::$nestingLevel++;
+      if (Framework\Internals::$nestingLevel <= (int) Framework\Config::getConfigValue('deep', 'level')) {
+        $result = Variables::analyseArray($data, $name, '', $connector1, $connector2);
+        Framework\Internals::$nestingLevel--;
+        return $result;
+      }
+      else {
+        Framework\Internals::$nestingLevel--;
+        return Variables::analyseString("Array => Maximum for analysis reached. I will not go any further.\n To increase this value, change the deep => level setting.", $name);
+      }
+    }
+
+    // Resource?
+    if (is_resource($data)) {
+      return Variables::analyseResource($data, $name, '', $connector1, $connector2);
+    }
+
+    // String?
+    if (is_string($data)) {
+      return Variables::analyseString($data, $name, '', $connector1, $connector2);
+    }
+
+    // Float?
+    if (is_float($data)) {
+      return Variables::analyseFloat($data, $name, '', $connector1, $connector2);
+    }
+
+    // Integer?
+    if (is_int($data)) {
+      return Variables::analyseInteger($data, $name, '', $connector1, $connector2);
+    }
+
+    // Boolean?
+    if (is_bool($data)) {
+      return Variables::analyseBoolean($data, $name, '', $connector1, $connector2);
+    }
+
+    // Null ?
+    if (is_null($data)) {
+      return Variables::analyseNull($name, '', $connector1, $connector2);
+    }
+
+    // Still here? This should not happen. Return empty string, just in case.
+    return '';
+  }
+
+  /**
+   * Render a dump for the properties of an array or object.
+   *
+   * @param array &$data
+   *   The array we want to analyse.
+   *
+   * @return string
+   *   The generated markup.
+   */
+  public Static Function iterateThrough(&$data) {
+    $parameter = array($data);
+    $analysis = function (&$parameter) {
+      $output = '';
+      $data = $parameter[0];
+      $is_object = is_object($data);
+
+      $recursion_marker = Hive::getMarker();
+
+      // Recursion detection of objects are handled in the hub.
+      if (is_array($data) && Hive::isInHive($data)) {
+        return View\Render::renderRecursion();
+      }
+
+      // Remember, that we've already been here.
+      Hive::addToHive($data);
+
+      // Keys?
+      $keys = array_keys($data);
+
+      $output .= View\Render::renderSingeChildHr();
+
+      // Iterate through.
+      foreach ($keys as $k) {
+
+        // Skip the recursion marker.
+        if ($k === $recursion_marker) {
+          continue;
+        }
+
+        // Get real value.
+        if ($is_object) {
+          $v = & $data->$k;
+        }
+        else {
+          $v = & $data[$k];
+        }
+
+        $output .= Variables::analysisHub($v, $k, '[', '] =');
+      }
+      $output .= View\Render::renderSingeChildHr();
+      return $output;
+    };
+    return View\Render::renderExpandableChild('', '', $analysis, $parameter);
+  }
 
   /**
    * Render a 'dump' for a NULL value.
@@ -119,7 +291,7 @@ class Variables {
     $parameter = array($data);
     $anon_function = function ($parameter) {
       $data = $parameter[0];
-      return Internals::iterateThrough($data);
+      return Variables::iterateThrough($data);
     };
 
     return View\SkinRender::renderExpandableChild($name, $additional . 'array', $anon_function, $parameter, count($data) . ' elements', '', '', FALSE, $connector1, $connector2, $json);

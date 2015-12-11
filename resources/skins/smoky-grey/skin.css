@@ -493,21 +493,23 @@
     width: inherit;
     background: none repeat scroll 0 0 #E0E0E0 !important;
     color: #555555 !important;
-    -webkit-border-top-left-radius: 1px;
-    -webkit-border-top-right-radius: 1px;
-    -moz-border-radius-topleft: 1px;
-    -moz-border-radius-topright: 1px;
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
-    -webkit-border-bottom-right-radius: 1px;
-    -webkit-border-bottom-left-radius: 1px;
-    -moz-border-radius-bottomright: 1px;
-    -moz-border-radius-bottomleft: 1px;
-    border-bottom-right-radius: 1px;
-    border-bottom-left-radius: 1px; }
+    -webkit-border-top-left-radius: 2px;
+    -webkit-border-top-right-radius: 2px;
+    -moz-border-radius-topleft: 2px;
+    -moz-border-radius-topright: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    -webkit-border-bottom-right-radius: 2px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -moz-border-radius-bottomleft: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px; }
     .kwrapper .keditable input:hover, .kwrapper .keditable select:hover, .kfatalwrapper-outer .keditable input:hover, .kfatalwrapper-outer .keditable select:hover {
       background: none repeat scroll 0 0 #ffffff !important;
       border: solid 1px #919191; }
+    .kwrapper .keditable input:focus, .kwrapper .keditable select:focus, .kfatalwrapper-outer .keditable input:focus, .kfatalwrapper-outer .keditable select:focus {
+      background-color: #ffffff !important; }
   .kwrapper .keditable input[type=button], .kwrapper .keditable select, .kfatalwrapper-outer .keditable input[type=button], .kfatalwrapper-outer .keditable select {
     cursor: pointer; }
   .kwrapper .kclose, .kfatalwrapper-outer .kclose {
