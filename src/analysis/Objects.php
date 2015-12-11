@@ -208,7 +208,7 @@ class Objects {
         // Check memory and runtime.
         if (!Internals::checkEmergencyBreak()) {
           // No more took too long, or not enough memory is left.
-          View\Messages::addMessage("Emergency break for large output during rendering process.\n\nYou should try to switch to file output.");
+          View\Messages::addMessage("Emergency break for large output during analysis process.");
           return '';
         }
         // Recursion tests are done in the analyseObject and

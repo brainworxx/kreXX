@@ -32,6 +32,7 @@
  */
 
 namespace Brainworxx\Krexx\View;
+use Brainworxx\Krexx\Framework\Toolbox;
 
 
 /**
@@ -83,5 +84,7 @@ class Messages {
     else {
       return SkinRender::renderMessages(self::$messages);
     }
+    // Still here?
+    return '';
   }
 }

@@ -303,6 +303,7 @@ $fontLight: lighter 10px tahoma, verdana;
     list-style: outside none none;
     padding: 4px 5px 3px;
     margin: 0;
+    font: bold 12px tahoma,verdana;
     &:before {
       content: "\00a0\00a0!\00a0\00a0";
       font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -345,9 +346,6 @@ $fontLight: lighter 10px tahoma, verdana;
     }
     .kcollapse-me {
       display: none !important;
-    }
-    .kname {
-      margin-left: 10px;
     }
     .kexpand .kname {
       margin-left: 0;

@@ -129,7 +129,7 @@ class Internals {
     // Check memory and runtime.
     if (!self::checkEmergencyBreak()) {
       // No more took too long, or not enough memory is left.
-      View\Messages::addMessage("Emergency break for large output during rendering process.\n\nYou should try to switch to file output.");
+      View\Messages::addMessage("Emergency break for large output during analysis process.");
       return '';
     }
 
@@ -337,8 +337,11 @@ class Internals {
     // Start Output.
     View\Render::$KrexxCount++;
     // We need to get the footer before the generating of the header,
-    // because we need to display messages in the header.
+    // because we need to display messages in the header from the configuration.
+    self::checkEmergencyBreak(FALSE);
     $footer = View\Output::outputFooter($caller);
+    self::checkEmergencyBreak(TRUE);
+
     // Start the analysis itself.
     View\Codegen::resetCounter();
 
@@ -357,9 +360,22 @@ class Internals {
 
     // Start the magic.
     $analysis = self::analysisHub($data, $caller['varname'], '', '=');
+    // Now that our analysis is done, we must check if there was an emergency
+    // break.
+    $emergency = FALSE;
+    if (!self::checkEmergencyBreak()) {
+      $emergency = TRUE;
+    }
+    // Disable it, so we can send the "meta" stuff from the template, like
+    // header, messages and footer.
+    self::checkEmergencyBreak(FALSE);
+
     self::$shutdownHandler->addChunkString(View\Output::outputHeader($headline, $ignore_local_settings));
     self::$shutdownHandler->addChunkString(View\Messages::outputMessages());
-    self::$shutdownHandler->addChunkString($analysis);
+    // We will not send the analysis if we have encountered an emergency break.
+    if (!$emergency) {
+      self::$shutdownHandler->addChunkString($analysis);
+    }
     self::$shutdownHandler->addChunkString($footer);
 
     // Cleanup the hive, this removes all recursion markers.
@@ -367,6 +383,9 @@ class Internals {
 
     // Reset value for the code generation.
     Framework\Config::$allowCodegen = FALSE;
+
+    // Enable emergency break for use in further use.
+    self::checkEmergencyBreak(TRUE);
   }
 
   /**
@@ -400,16 +419,35 @@ class Internals {
     // because that is the internal function in kreXX.
     $backtrace = debug_backtrace();
     unset($backtrace[0]);
+
+    self::checkEmergencyBreak(FALSE);
     $footer = View\Output::outputFooter($caller);
+    self::checkEmergencyBreak(TRUE);
+
     $analysis = View\Output::outputBacktrace($backtrace);
+    // Now that our analysis is done, we must check if there was an emergency
+    // break.
+    $emergency = FALSE;
+    if (!self::checkEmergencyBreak()) {
+      $emergency = TRUE;
+    }
+    // Disable it, so we can send the "meta" stuff from the template, like
+    // header, messages and footer.
+    self::checkEmergencyBreak(FALSE);
 
     self::$shutdownHandler->addChunkString(View\Output::outputHeader($headline));
     self::$shutdownHandler->addChunkString(View\Messages::outputMessages());
-    self::$shutdownHandler->addChunkString($analysis);
+    // We will not send the analysis if we have encountered an emergency break.
+    if (!$emergency) {
+      self::$shutdownHandler->addChunkString($analysis);
+    }
     self::$shutdownHandler->addChunkString($footer);
 
     // Cleanup the hive, this removes all recursion markers.
     Hive::cleanupHive();
+
+    // Enable emergency break for use in further use.
+    self::checkEmergencyBreak(TRUE);
   }
 
   /**
@@ -464,13 +502,40 @@ class Internals {
    *   TRUE = all is OK.
    *   FALSE = we have a problem.
    */
-  public static function checkEmergencyBreak() {
-    static $result = TRUE;
 
-    if (!$result) {
+  /**
+   * Checks if there is enough memory and time left on the Server.
+   *
+   * @param mixed $enable
+   *   Enables and disables the check itself. When disabled, it will always
+   *   return TRUE (all is OK).
+   *
+   * @return bool
+   *   Boolean to show if we have enough left.
+   *   TRUE = all is OK.
+   *   FALSE = we have a problem.
+   */
+  public static function checkEmergencyBreak($enable = NULL) {
+    static $result = TRUE;
+    static $is_disabled = FALSE;
+
+    // We are saving the value of being enabled / disabled.
+    if ($enable === TRUE) {
+      $is_disabled = FALSE;
+    }
+    if ($enable === FALSE) {
+      $is_disabled = TRUE;
+    }
+
+    // Tell them everything is fine, when it is disabled.
+    if ($is_disabled) {
+      return TRUE;
+    }
+
+    if ($result === FALSE) {
       // This has failed before!
-      // no need to check again!
-      return $result;
+      // No need to check again!
+      return FALSE;
     }
 
     // Check Runtime.
@@ -480,6 +545,7 @@ class Internals {
     }
 
     if ($result) {
+      // Commence with ste memory check.
       // Check this only, if we have enough time left.
       $limit = strtoupper(ini_get('memory_limit'));
       $memory_limit = 0;

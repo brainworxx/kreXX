@@ -352,7 +352,7 @@ class Render extends Help {
     if (!Analysis\Internals::checkEmergencyBreak()) {
       // Normally, this should not show up, because the Chunks class will not
       // output anything, except a JS alert.
-      Messages::addMessage("Emergency break for large output during rendering process.\n\nYou should try to switch to file output.");
+      Messages::addMessage("Emergency break for large output during analysis process.");
       return '';
     }
 

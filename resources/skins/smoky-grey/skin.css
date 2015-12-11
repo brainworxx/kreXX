@@ -219,7 +219,8 @@
     background-color: #fffda5;
     list-style: outside none none;
     padding: 4px 5px 3px;
-    margin: 0; }
+    margin: 0;
+    font: bold 12px tahoma,verdana; }
     .kwrapper .kmessage:before, .kfatalwrapper-outer .kmessage:before {
       content: "\00a0\00a0!\00a0\00a0";
       font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
@@ -254,8 +255,6 @@
       display: block; }
     .kwrapper .kconfiguration .kcollapse-me, .kfatalwrapper-outer .kconfiguration .kcollapse-me {
       display: none !important; }
-    .kwrapper .kconfiguration .kname, .kfatalwrapper-outer .kconfiguration .kname {
-      margin-left: 10px; }
     .kwrapper .kconfiguration .kexpand .kname, .kfatalwrapper-outer .kconfiguration .kexpand .kname {
       margin-left: 0; }
   .kwrapper .kchild, .kfatalwrapper-outer .kchild {
