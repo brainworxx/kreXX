@@ -225,7 +225,8 @@
       font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
       background-color: #FED300;
       border: 1px solid #555555;
-      font-size: small; }
+      font-size: small;
+      margin-right: 5px; }
   .kwrapper .kconfiguration, .kfatalwrapper-outer .kconfiguration {
     padding: 0;
     margin: 0; }

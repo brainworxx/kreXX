@@ -453,6 +453,8 @@ class Objects {
       };
       // If we are facing a IteratorAggregate, we can not access the array
       // directly. To do this, we must get the Iterator from the class.
+      // For our analysis is it not really important, because it does not
+      // change anything. We need this for the automatic code generation.
       if (is_a($data, 'IteratorAggregate')) {
         $connector2 = '->getIterator()';
         // Remove the name, because this would then get added to the source
@@ -491,20 +493,31 @@ class Objects {
           $func_name,
         )) && Framework\config::isAllowedDebugCall($data, $func_name)
       ) {
-        // We need to check if the callable function requires any parameters.
-        // We will not call those, because we simply can not provide them.
-        $ref = new \ReflectionMethod($data, $func_name);
-        $params = $ref->getParameters();
-
         $found_required = FALSE;
-        foreach ($params as $param) {
-          if (!$param->isOptional()) {
-            // We've got a required parameter!
-            // We will not call this one.
-            $found_required = TRUE;
+        // We need to check if this method actually exists. Just because it is
+        // callable does not mean it exists!
+        if (method_exists($data, $func_name)) {
+          // We need to check if the callable function requires any parameters.
+          // We will not call those, because we simply can not provide them.
+          // Interestingly, some methods of a class are callable, but are not
+          // implemented. This means, that when I try to get a reflection,
+          // it will result in a WSOD.
+          $ref = new \ReflectionMethod($data, $func_name);
+          $params = $ref->getParameters();
+          foreach ($params as $param) {
+            if (!$param->isOptional()) {
+              // We've got a required parameter!
+              // We will not call this one.
+              $found_required = TRUE;
+            }
           }
+          unset($ref);
         }
-        unset($ref);
+        else {
+          // It's callable, but does not exist. Looks like a __call fallback.
+          // We will not poll it for data.
+          $found_required = TRUE;
+        }
 
         if ($found_required == FALSE) {
           // Add a try to prevent the hosting CMS from doing something stupid.
