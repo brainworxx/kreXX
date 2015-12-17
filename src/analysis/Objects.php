@@ -540,7 +540,7 @@ class Objects {
             $anon_function = function (&$result) {
               return Variables::analysisHub($result);
             };
-            $output .= View\SkinRender::renderExpandableChild($func_name, 'debug method', $anon_function, $result, '. . .', '', '', FALSE, '->', '() =');
+            $output .= View\SkinRender::renderExpandableChild($func_name, 'debug method', $anon_function, $result, '. . .', '', $func_name, FALSE, '->', '() =');
             unset($result);
           }
         }
