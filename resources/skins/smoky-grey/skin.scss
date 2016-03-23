@@ -93,6 +93,10 @@ $fontLight: lighter 10px tahoma, verdana;
     color: inherit;
     border: none;
     text-align: left;
+    line-height: normal;
+  }
+  small {
+    line-height: normal;
   }
   //Setting the display attribute, hard!
   div, ul, hr, option {
