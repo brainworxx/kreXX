@@ -62,7 +62,8 @@
     color: inherit;
     border: none;
     text-align: left;
-    line-height: normal; }
+    line-height: normal;
+    float: none; }
   .kwrapper small, .kfatalwrapper-outer small {
     line-height: normal; }
   .kwrapper div, .kwrapper ul, .kwrapper hr, .kwrapper option, .kfatalwrapper-outer div, .kfatalwrapper-outer ul, .kfatalwrapper-outer hr, .kfatalwrapper-outer option {
