@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Framework;
  * It get extended by the SkinRender class, so every skin can do some special
  * stuff.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\View
  */
 class Render extends Help {
 

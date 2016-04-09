@@ -35,13 +35,15 @@ namespace Brainworxx\Krexx\Framework;
 
 use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\View;
-
+use Brainworxx\Krexx\View\SkinRender;
+use Brainworxx\Krexx\View\Output;
+use Brainworxx\Krexx\View\Codegen;
+use Brainworxx\Krexx\View\Messages;
 
 /**
  * This class hosts the internal functions.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\Framework
  */
 class Internals {
 
@@ -172,15 +174,15 @@ class Internals {
     }
 
     // Start Output.
-    View\Render::$KrexxCount++;
+    SkinRender::$KrexxCount++;
     // We need to get the footer before the generating of the header,
     // because we need to display messages in the header from the configuration.
     self::checkEmergencyBreak(FALSE);
-    $footer = View\Output::outputFooter($caller);
+    $footer = Output::outputFooter($caller);
     self::checkEmergencyBreak(TRUE);
 
     // Start the analysis itself.
-    View\Codegen::resetCounter();
+    Codegen::resetCounter();
 
     // Enable code generation only if we were aqble to determine the varname.
     if ($caller['varname'] == '...') {
@@ -207,7 +209,7 @@ class Internals {
     // header, messages and footer.
     self::checkEmergencyBreak(FALSE);
 
-    self::$shutdownHandler->addChunkString(View\Output::outputHeader($headline, $ignore_local_settings));
+    self::$shutdownHandler->addChunkString(Output::outputHeader($headline, $ignore_local_settings));
     // We will not send the analysis if we have encountered an emergency break.
     if (!$emergency) {
       self::$shutdownHandler->addChunkString($analysis);
@@ -249,7 +251,7 @@ class Internals {
     }
 
     // Start Output.
-    View\Render::$KrexxCount++;
+    SkinRender::$KrexxCount++;
 
     // Remove the fist step from the backtrace,
     // because that is the internal function in kreXX.
@@ -257,10 +259,10 @@ class Internals {
     unset($backtrace[0]);
 
     self::checkEmergencyBreak(FALSE);
-    $footer = View\Output::outputFooter($caller);
+    $footer = Output::outputFooter($caller);
     self::checkEmergencyBreak(TRUE);
 
-    $analysis = View\Output::outputBacktrace($backtrace);
+    $analysis = Output::outputBacktrace($backtrace);
     // Now that our analysis is done, we must check if there was an emergency
     // break.
     $emergency = FALSE;
@@ -271,7 +273,7 @@ class Internals {
     // header, messages and footer.
     self::checkEmergencyBreak(FALSE);
 
-    self::$shutdownHandler->addChunkString(View\Output::outputHeader($headline));
+    self::$shutdownHandler->addChunkString(Output::outputHeader($headline));
     // We will not send the analysis if we have encountered an emergency break.
     if (!$emergency) {
       self::$shutdownHandler->addChunkString($analysis);
@@ -316,13 +318,13 @@ class Internals {
   protected static function checkMaxCall() {
     $result = FALSE;
     $max_call = (int) Config::getConfigValue('output', 'maxCall');
-    if (View\Render::$KrexxCount >= $max_call) {
+    if (SkinRender::$KrexxCount >= $max_call) {
       // Called too often, we might get into trouble here!
       $result = TRUE;
     }
     // Give feedback if this is our last call.
-    if (View\Render::$KrexxCount == $max_call - 1) {
-      View\Messages::addMessage('Maximum call-level reached. This is the last analysis for this request. To increase this value, please edit:<br />output => maxCall.', 'critical');
+    if (SkinRender::$KrexxCount == $max_call - 1) {
+      Messages::addMessage('Maximum call-level reached. This is the last analysis for this request. To increase this value, please edit:<br />output => maxCall.', 'critical');
     }
     return $result;
   }

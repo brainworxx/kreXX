@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Framework\Toolbox;
 /**
  * This class hosts the code generation functions.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\View
  */
 class Output {
 

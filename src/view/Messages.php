@@ -32,13 +32,11 @@
  */
 
 namespace Brainworxx\Krexx\View;
-use Brainworxx\Krexx\Framework\Toolbox;
-
 
 /**
  * This class hosts functions, which offer additional services.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\View
  */
 class Messages {
 

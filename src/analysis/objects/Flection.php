@@ -31,7 +31,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analysis;
+namespace Brainworxx\Krexx\Analysis\Objects;
 
 /**
  * This class is a mockup class for the original reflection property class
@@ -41,7 +41,7 @@ namespace Brainworxx\Krexx\Analysis;
  * reflection, so I can reuse the analysis methods which are based on reflection
  * properties.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\Analysis\Objects
  */
 class Flection {
 

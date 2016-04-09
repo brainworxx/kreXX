@@ -39,11 +39,9 @@ use Brainworxx\Krexx\View;
 /**
  * This class hosts functions, which offer additional services.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\Framework
  */
 class Toolbox {
-
-
 
   /**
    * Returns the microtime timestamp for file operations.

@@ -33,9 +33,9 @@
 
 namespace Brainworxx\Krexx\Framework;
 
-use Brainworxx\Krexx\Analysis;
-use Brainworxx\Krexx\View;
-use Brainworxx\Krexx\Framework;
+use Brainworxx\Krexx\View\Messages;
+use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Framework\Internals;
 
 /**
  * Splitting strings into small tiny chunks.
@@ -53,7 +53,7 @@ use Brainworxx\Krexx\Framework;
  *   We use '@@@' to mark a chunk key. This function escapes the @
  *   so we have no collusion with data from strings.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\Framework
  */
 class Chunks {
 
@@ -91,7 +91,7 @@ class Chunks {
       // Get the key.
       $key = self::genKey();
       // Write the key to the chunks folder.
-      Toolbox::putFileContents(Framework\Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp', $string);
+      Toolbox::putFileContents(Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp', $string);
       // Return the first part plus the key.
       return '@@@' . $key . '@@@';
     }
@@ -129,7 +129,7 @@ class Chunks {
    *
    */
   protected static function dechunkMe($key) {
-    $filename = Framework\Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp';
+    $filename = Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp';
     if (is_writable($filename)) {
       // Read the file.
       $string = Toolbox::getFileContents($filename);
@@ -139,7 +139,7 @@ class Chunks {
     else {
       // Huh, we can not fully access this one.
       $string = 'Could not access chunk file ' . $filename;
-      View\Messages::addMessage('Could not access chunk file ' . $filename);
+      Messages::addMessage('Could not access chunk file ' . $filename);
     }
 
     return $string;
@@ -160,7 +160,7 @@ class Chunks {
     self::cleanupOldChunks();
 
     // Check for an emergency break.
-    $all_ok = Framework\Internals::checkEmergencyBreak();
+    $all_ok = Internals::checkEmergencyBreak();
 
     $chunk_pos = strpos($string, '@@@');
     
@@ -205,7 +205,7 @@ class Chunks {
 
     // Determine the filename.
     $timestamp = Toolbox::fileStamp();
-    $filename = Framework\Config::$krexxdir . $log_dir . $timestamp . '.Krexx.html';
+    $filename = Config::$krexxdir . $log_dir . $timestamp . '.Krexx.html';
 
     $chunk_pos = strpos($string, '@@@');
 
@@ -236,7 +236,7 @@ class Chunks {
     // We only do this once.
     if (!$been_here) {
       // Clean up leftover files.
-      $chunk_list = glob(Framework\Config::$krexxdir . 'chunks/*.Krexx.tmp');
+      $chunk_list = glob(Config::$krexxdir . 'chunks/*.Krexx.tmp');
       foreach ($chunk_list as $file) {
         // We delete everything that is older than one hour.
         if ((filemtime($file) + 3600) < time()) {
@@ -256,7 +256,7 @@ class Chunks {
    */
   protected static function cleanupOldLogs($log_dir) {
     // Cleanup old logfiles to prevent a overflow.
-    $log_list = glob(Framework\Config::$krexxdir . $log_dir . "*.Krexx.html");
+    $log_list = glob(Config::$krexxdir . $log_dir . "*.Krexx.html");
     array_multisort(array_map('filemtime', $log_list), SORT_DESC, $log_list);
     $max_file_count = (int) Config::getConfigValue('logging', 'maxfiles');
     $count = 1;
@@ -273,7 +273,7 @@ class Chunks {
    * Deletes all chunks from the current run.
    */
   public static function cleanupNewChunks() {
-    $chunk_list = glob(Framework\Config::$krexxdir . 'chunks/' . Toolbox::fileStamp() . '_*.Krexx.tmp');
+    $chunk_list = glob(Config::$krexxdir . 'chunks/' . Toolbox::fileStamp() . '_*.Krexx.tmp');
 
     foreach ($chunk_list as $file) {
       unlink($file);

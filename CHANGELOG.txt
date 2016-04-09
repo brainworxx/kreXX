@@ -1,3 +1,6 @@
+1.4.1
+- Cleaned up the object analysis as well as the namespace usage.
+
 1.4.0
 - Added smoky-grey as the new standard skin.
 - Added some primary formatting to the Hans skin to prevent the host

@@ -36,6 +36,11 @@ namespace Brainworxx\Krexx\View;
 use Brainworxx\Krexx\Analysis;
 use Brainworxx\Krexx\Framework;
 
+/**
+ * Individual render class for the smokey-grey skin.
+ *
+ * @package Brainworxx\Krexx\View
+ */
 class SkinRender extends Render {
 
 

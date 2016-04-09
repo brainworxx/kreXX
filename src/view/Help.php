@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\View;
 /**
  * Help texts for kreXX.
  *
- * @package Krexx
+ * @package Brainworxx\Krexx\View
  */
 class Help {
 
