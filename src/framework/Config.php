@@ -144,7 +144,7 @@ class Config {
     ),
     'destination' => array(
       'type' => 'Select',
-      'editable' => 'true',
+      'editable' => 'false',
     ),
     'maxfiles' => array(
       'type' => 'None',
