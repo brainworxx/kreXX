@@ -82,6 +82,7 @@ class Config {
       'analyseProtected' => 'false',
       'analysePrivate' => 'false',
       'analyseTraversable' => 'true',
+      'analyseConstants' => 'true',
       'debugMethods' => 'debug,__toArray,toArray,__toString,toString,_getProperties,__debugInfo',
       'level' => '5',
     ),
@@ -114,6 +115,10 @@ class Config {
       'editable' => 'true',
     ),
     'analysePrivate' => array(
+      'type' => 'Select',
+      'editable' => 'true',
+    ),
+    'analyseConstants' => array(
       'type' => 'Select',
       'editable' => 'true',
     ),
@@ -571,7 +576,7 @@ class Config {
       // We must evaluate it.
       $result = FALSE;
       switch ($name) {
-        case "analyseMethodsAtall":
+        case 'analyseMethodsAtall':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -580,7 +585,7 @@ class Config {
           }
           break;
 
-        case "analyseProtectedMethods":
+        case 'analyseProtectedMethods':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -589,7 +594,7 @@ class Config {
           }
           break;
 
-        case "analysePrivateMethods":
+        case 'analysePrivateMethods':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -598,7 +603,7 @@ class Config {
           }
           break;
 
-        case "analyseProtected":
+        case 'analyseProtected':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -607,7 +612,7 @@ class Config {
           }
           break;
 
-        case "analysePrivate":
+        case 'analysePrivate':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -616,7 +621,17 @@ class Config {
           }
           break;
 
-        case "analyseTraversable":
+        case 'analyseConstants':
+          // We expect a bool.
+          $result = self::evalBool($value);
+          if (!$result) {
+            Messages::addMessage('Wrong configuration for: "deep => analyseConstants"! Expected boolean. The configured setting was not applied!');
+            Messages::addKey('deep.analysePrivate.error');
+          }
+          break;
+
+
+        case 'analyseTraversable':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -625,14 +640,14 @@ class Config {
           }
           break;
 
-        case "debugMethods":
+        case 'debugMethods':
           // String that can get exploded, separated by a comma,
           // might as well be a single function.
           // We are not going to check this one.
           $result = TRUE;
           break;
 
-        case "level":
+        case 'level':
           // We expect an integer.
           $result = self::evalInt($value);
           if (!$result) {
@@ -641,7 +656,7 @@ class Config {
           }
           break;
 
-        case "maxCall":
+        case 'maxCall':
           // We expect an integer.
           $result = self::evalInt($value);
           if (!$result) {
@@ -650,7 +665,7 @@ class Config {
           }
           break;
 
-        case "disabled":
+        case 'disabled':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -659,7 +674,7 @@ class Config {
           }
           break;
 
-        case "detectAjax":
+        case 'detectAjax':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -668,7 +683,7 @@ class Config {
           }
           break;
 
-        case "destination":
+        case 'destination':
           // We expect 'frontend' or 'file'
           if ($value == 'frontend' || $value == 'file') {
             $result = TRUE;
@@ -679,7 +694,7 @@ class Config {
           }
           break;
 
-        case "maxfiles":
+        case 'maxfiles':
           // We expect an integer.
           $result = self::evalInt($value);
           if (!$result) {
@@ -688,7 +703,7 @@ class Config {
           }
           break;
 
-        case "folder":
+        case 'folder':
           // Directory with writeaccess.
           // We also need to check, if the folder is properly protected.
           $is_writable = is_writable(self::$krexxdir . $value);
@@ -706,7 +721,7 @@ class Config {
           }
           break;
 
-        case "skin":
+        case 'skin':
           // We check the directory and one of the files for readability.
           if (is_readable(self::$krexxdir . 'resources/skins/' . $value . '/header.html')) {
             $result = TRUE;
@@ -717,13 +732,13 @@ class Config {
           }
           break;
 
-        case "Local open function":
+        case 'Local open function':
           // The Developer handle,
           // we are not going to check this one, could be anything you can type.
           $result = TRUE;
           break;
 
-        case "traceFatals":
+        case 'traceFatals':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -732,7 +747,7 @@ class Config {
           }
           break;
 
-        case "traceWarnings":
+        case 'traceWarnings':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -741,7 +756,7 @@ class Config {
           }
           break;
 
-        case "traceNotices":
+        case 'traceNotices':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -750,7 +765,7 @@ class Config {
           }
           break;
 
-        case "registerAutomatically":
+        case 'registerAutomatically':
           // We expect a bool.
           $result = self::evalBool($value);
           if (!$result) {
@@ -769,7 +784,7 @@ class Config {
 
           break;
 
-        case "backtraceAnalysis":
+        case 'backtraceAnalysis':
           // We expect "normal" or "deep"
           if ($value == 'normal' || $value == 'deep') {
             $result = TRUE;
@@ -780,7 +795,7 @@ class Config {
           }
           break;
 
-        case "memoryLeft";
+        case 'memoryLeft';
           // We expect an integer.
           $result = self::evalInt($value);
           if (!$result) {
@@ -789,7 +804,7 @@ class Config {
           }
           break;
 
-        case "maxRuntime":
+        case 'maxRuntime':
           // We expect an integer not greater than the max runtime of the
           // server.
           $result = self::evalInt($value);
@@ -800,7 +815,7 @@ class Config {
           else {
             // OK, we got an int, now to see if it is smaller than the
             // configured max runtime.
-            $max_time = (int) ini_get("max_execution_time");
+            $max_time = (int) ini_get('max_execution_time');
             $value = (int) $value;
             if ($max_time > 0 && $max_time < $value) {
               // Too big!

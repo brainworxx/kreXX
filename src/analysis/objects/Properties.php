@@ -34,7 +34,6 @@
 namespace Brainworxx\Krexx\Analysis\Objects;
 
 use Brainworxx\Krexx\Framework\Internals;
-use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\View\SkinRender;
@@ -210,61 +209,62 @@ class Properties {
   }
 
   /**
-   * Render a dump for the properties of an array or object.
+   * Dumps the constants of a class,
    *
-   * @param mixed &$data
-   *   The object or array we want to analyse.
+   * @param \ReflectionClass $ref
+   *   The already generated reflection of said class
    *
    * @return string
    *   The generated markup.
    */
-  public Static Function iterateThroughReferenceProperties(&$data) {
+  public static function getReflectionConstantsData(\ReflectionClass $ref) {
+    // This is actually an array, we ara analysing. But We do not want to render
+    // an array, so we need to process it like the return from an iterator.
+    $parameter = $ref->getConstants();
+
+    if (count($parameter) > 0) {
+      // We've got some values, we will dump them.
+      $anon_function = function (&$ref_const) {
+        // This should be an array.
+        return Properties::iterateThroughConstants($ref_const);
+      };
+
+      return SkinRender::renderExpandableChild('Constants', 'class internals', $anon_function, $parameter, '', '', '', FALSE);
+    }
+
+    // Nothing to see here, return an empty string.
+    return '';
+  }
+
+
+  /**
+   * Render a dump for the properties of an array.
+   *
+   * @param array &$data
+   *   The array we want to analyse.
+   *
+   * @return string
+   *   The generated markup.
+   */
+  public Static Function iterateThroughConstants(array &$data) {
     $parameter = array($data);
     $analysis = function (&$parameter) {
       $output = '';
       $data = $parameter[0];
-      $is_object = is_object($data);
 
-      $recursion_marker = Hive::getMarker();
+      $output .= SkinRender::renderSingeChildHr();
 
-      // Recursion detection of objects are
-      // handled in the hub.
-      if (is_array($data) && Hive::isInHive($data)) {
-        return SkinRender::renderRecursion();
-      }
-
-      // Remember, that we've already been here.
-      Hive::addToHive($data);
-
-      // Keys?
-      if ($is_object) {
-        $keys = array_keys(get_object_vars($data));
-      }
-      else {
-        $keys = array_keys($data);
-      }
-
+      // We do not need to check the hive, this is ome class internal stuff.
+      // Is it even possible to create a recursion here?
       // Iterate through.
-      foreach ($keys as $k) {
-
-        // Skip the recursion marker.
-        if ($k === $recursion_marker) {
-          continue;
-        }
-
-        // Get real value.
-        if ($is_object) {
-          $v = &$data->$k;
-        }
-        else {
-          $v = &$data[$k];
-        }
-
-        $output .= Variables::analysisHub($v, $k);
+      foreach ($data as $k => $v) {
+          $v = & $data[$k];
+        $output .= Variables::analysisHub($v, $k, '::', ' =');
       }
+
+      $output .= SkinRender::renderSingeChildHr();
       return $output;
     };
     return SkinRender::renderExpandableChild('', '', $analysis, $parameter);
   }
-
 }

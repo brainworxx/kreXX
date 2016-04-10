@@ -125,7 +125,7 @@ class SkinRender extends Render {
       // Is it expanded?
       // This is done in the js.
       $template = str_replace('{isExpanded}', '', $template);
-      
+
       $json['Help'] = self::getHelp($help_id);
       $json = json_encode($json);
       $template = str_replace('{addjson}', $json, $template);

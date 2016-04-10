@@ -113,7 +113,7 @@ class Objects {
         }
       }
 
-      // We will dum the properties alphabetically sorted, via this callback.
+      // We will dump the properties alphabetically sorted, via this callback.
       $sorting_callback = function ($a, $b) {
         return strcmp($a->name, $b->name);
       };
@@ -143,6 +143,11 @@ class Objects {
         if (count($ref_props)) {
           $output .= Properties::getReflectionPropertiesData($ref_props, $ref, $data, 'Private properties');
         }
+      }
+
+      // Dumping class constants.
+      if (Config::getConfigValue('deep', 'analyseConstants') == 'true') {
+        $output .= Properties::getReflectionConstantsData($ref);
       }
 
       // Dumping all methods.
