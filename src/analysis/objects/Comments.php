@@ -42,7 +42,7 @@ namespace Brainworxx\Krexx\Analysis\Objects;
  */
 class Comments {
 
-    /**
+  /**
    * Gets comments from the reflection.
    *
    * Inherited comments are resolved by recursion of this function.

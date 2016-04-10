@@ -41,7 +41,6 @@ use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
 
 
-
 /**
  * This class hosts the object analysis functions.
  *
@@ -114,10 +113,10 @@ class Objects {
         }
       }
 
-      // We will dum the properties alphabetically sorted, via this callback
+      // We will dum the properties alphabetically sorted, via this callback.
       $sorting_callback = function ($a, $b) {
-          return strcmp($a->name, $b->name);
-        };
+        return strcmp($a->name, $b->name);
+      };
 
       if (count($ref_props)) {
         usort($ref_props, $sorting_callback);

@@ -64,15 +64,12 @@ class Internals {
    */
   protected static $scope = '';
 
-
-
   /**
    * Sends the output to the browser during shutdown phase.
    *
    * @var ShutdownHandler
    */
   public static $shutdownHandler;
-
 
   /**
    * Unix timestamp, used to determine if we need to do an emergency break.
@@ -114,7 +111,7 @@ class Internals {
     return $ar_aff;
   }
 
-    /**
+  /**
    * Dump information about a variable.
    *
    * Here everything starts and ends (well, unless we are only outputting
@@ -459,7 +456,7 @@ class Internals {
         preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', $source_call, $name);
         if (isset($name[1])) {
           // Gotcha! We escape this one, just in case.
-          $varname = \Brainworxx\Krexx\Analysis\Variables::encodeString($name[1]);
+          $varname = Variables::encodeString($name[1]);
           break;
         }
       }
@@ -475,6 +472,9 @@ class Internals {
 
   /**
    * We decide if a function is currently within a reachable scope.
+   *
+   * @param string $type
+   *   The type we are looking at, either class or array.
    *
    * @return bool
    *   Whether it is within the scope or not.

@@ -637,7 +637,7 @@ class Config {
           $result = self::evalInt($value);
           if (!$result) {
             Messages::addMessage('Wrong configuration for: "deep => level"! Expected integer. The configured setting was not applied!');
-            essages::addKey('deep.level.error');
+            Messages::addKey('deep.level.error');
           }
           break;
 
@@ -790,7 +790,8 @@ class Config {
           break;
 
         case "maxRuntime":
-          // We expect an integer not greater than the max runtime of the server.
+          // We expect an integer not greater than the max runtime of the
+          // server.
           $result = self::evalInt($value);
           if (!$result) {
             Messages::addMessage('Wrong configuration for: "render => maxRuntime"! Expected integer. The configured setting was not applied!');
@@ -957,6 +958,7 @@ class Config {
    * Checks if the php veriosn is lower then 7.0.0.
    *
    * @return bool
+   *   Whether it does evaluate or not.
    */
   protected static function evalPhp() {
     if (version_compare(phpversion(), '7.0.0', '>=')) {

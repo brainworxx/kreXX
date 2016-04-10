@@ -143,7 +143,7 @@ class Krexx {
     // Check if the log and chunk folder are writable.
     // If not, give feedback!
     if (!is_writeable($krexxdir . 'chunks' . DIRECTORY_SEPARATOR)) {
-      View\Messages::addMessage('Chunksfolder ' . $krexxdir . 'chunks' . DIRECTORY_SEPARATOR . ' is not writable!. This will increase the memory usage of kreXX significally!', 'critical');
+      View\Messages::addMessage('Chunksfolder ' . $krexxdir . 'chunks' . DIRECTORY_SEPARATOR . ' is not writable!. This will increase the memory usage of kreXX significantly!', 'critical');
       // We can work without chunks, but this will require much more memory!
       Brainworxx\Krexx\Framework\Chunks::setUseChunks(FALSE);
     }

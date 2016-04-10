@@ -74,8 +74,6 @@ class Variables {
     'eucJP-win',
   );
 
-
-
   /**
    * Dump information about a variable.
    *

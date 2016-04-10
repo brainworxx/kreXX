@@ -34,8 +34,7 @@
 namespace Brainworxx\Krexx\Framework;
 
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Framework\Internals;
+
 
 /**
  * Splitting strings into small tiny chunks.
@@ -163,7 +162,7 @@ class Chunks {
     $all_ok = Internals::checkEmergencyBreak();
 
     $chunk_pos = strpos($string, '@@@');
-    
+
     while ($chunk_pos !== FALSE) {
       // We have a chunk, we send the html part.
       echo substr($string, 0, $chunk_pos);

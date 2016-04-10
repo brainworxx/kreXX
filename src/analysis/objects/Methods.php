@@ -102,8 +102,6 @@ class Methods {
    * @return string
    *   The generated markup.
    */
-
-  // @todo Method hub?
   public Static Function analyseMethods(\ReflectionClass $ref, $data) {
     $parameter = array($ref, $data);
 
@@ -218,6 +216,5 @@ class Methods {
     $param_list = '<small>' . trim($param_list, ', ') . '</small>';
     return SkinRender::renderExpandableChild($name, $data['declaration keywords'] . ' method', $anon_function, $parameter, '', '', '', FALSE, $connector1, '(' . $param_list . ')');
   }
-
 
 }

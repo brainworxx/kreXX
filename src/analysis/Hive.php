@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analysis;
  * @package Brainworxx\Krexx\Analysis
  */
 class Hive {
+
   /**
    * Storage for arrays ans objects, to prevent recursions.
    *

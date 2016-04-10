@@ -69,7 +69,7 @@ class Messages {
    *
    * @param string $key
    *   The key for the translation function.
-   * @param NULL|array
+   * @param NULL|array $params
    *   The parameters for the string replacements inside the translation.
    */
   public static function addKey($key, $params = NULL) {

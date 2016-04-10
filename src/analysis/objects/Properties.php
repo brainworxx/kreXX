@@ -47,7 +47,7 @@ use Brainworxx\Krexx\Analysis\Variables;
  */
 class Properties {
 
-    /**
+  /**
    * Gets the properties from a reflection property of the object.
    *
    * @param array $ref_props

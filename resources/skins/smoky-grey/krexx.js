@@ -377,7 +377,7 @@
       else {
         refreshResultlist();
       }
-      
+
       // Set the pointer to the next or previous element
       if (direction == 'forward') {
         results[instance][searchtext]['pointer']++;
@@ -396,7 +396,7 @@
           results[instance][searchtext]['pointer'] = results[instance][searchtext]['data'].length - 1;
         }
       }
-      
+
       // Feedback about where we are
       this.parentNode.querySelector('.ksearch-state').textContent = results[instance][searchtext]['pointer'] + ' / ' + (results[instance][searchtext]['data'].length - 1);
       // Now we simply jump to the element in the array.
@@ -432,7 +432,7 @@
       // Reset our index.
       results[instance][searchtext]['pointer'] = -1;
     }
-    
+
 
   };
 
@@ -767,7 +767,7 @@
     }
 
     // Add it to the DOM.
-    html = '<table><caption class="kheadline">Additional data</caption><tbody class="kdatabody">' + html + '</tbody></table>'
+    html = '<table><caption class="kheadline">Additional data</caption><tbody class="kdatabody">' + html + '</tbody></table>';
     // Meh, IE9 does not allow me to edit the contents of a table. I have to
     // redraw the whole thing.  :-(
     body.parentNode.parentNode.innerHTML = html;

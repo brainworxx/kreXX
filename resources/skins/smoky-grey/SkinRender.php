@@ -125,15 +125,7 @@ class SkinRender extends Render {
       // Is it expanded?
       // This is done in the js.
       $template = str_replace('{isExpanded}', '', $template);
-
-      // Prepare the json.
-      if ($type != 'class') {
-        // If we analyse the class, the classname is stored inside the
-        // additional.
-        $additional = '';
-      }
-
-      // @todo Use the array from above
+      
       $json['Help'] = self::getHelp($help_id);
       $json = json_encode($json);
       $template = str_replace('{addjson}', $json, $template);
@@ -152,7 +144,7 @@ class SkinRender extends Render {
 
     // Prepare the json. Not much do display for form elements.
     $json = json_encode(array(
-      'Help' => self::getHelp($help_id)
+      'Help' => self::getHelp($help_id),
     ));
     $template = str_replace('{addjson}', $json, $template);
 
@@ -168,7 +160,7 @@ class SkinRender extends Render {
 
     // Prepare the json. Not much do display for form elements.
     $json = json_encode(array(
-      'Help' => self::getHelp($help_id)
+      'Help' => self::getHelp($help_id),
     ));
     $template = str_replace('{addjson}', $json, $template);
 
