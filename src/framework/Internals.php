@@ -189,6 +189,7 @@ class Internals {
       // We were able to determine the variable name and can generate some
       // sourcecode.
       Config::$allowCodegen = TRUE;
+      $headline = $caller['varname'];
     }
 
     // Set the current scope.
@@ -219,7 +220,7 @@ class Internals {
     // Reset value for the code generation.
     Config::$allowCodegen = FALSE;
 
-    // Enable emergency break for use in further use.
+    // Enable emergency break for further use.
     self::checkEmergencyBreak(TRUE);
   }
 
