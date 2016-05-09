@@ -192,7 +192,7 @@ class Krexx {
     }
     self::reFatalAfterKrexx();
   }
-  
+
   /**
    * Takes a "moment".
    *
@@ -304,6 +304,8 @@ class Krexx {
 
     // Find caller.
     $caller = Internals::findCaller();
+    $caller['type'] = 'Cookie Configuration';
+    Chunks::addMetadata($caller);
 
     // Render it.
     Render::$KrexxCount++;
