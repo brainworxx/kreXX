@@ -36,7 +36,7 @@
   /**
    * kreXX JS Class.
    *
-   * @namespace
+   * @namespace kdt
    *   Collection of js functions.
    */
   function kdt() {}
@@ -44,8 +44,8 @@
   /**
    * Gets all parents of an element which has the specified class.
    *
-   * @param el
-   * @param selector
+   * @param {Element} el
+   * @param {string} selector
    * @returns {Array}
    */
   kdt.getParents = function(el, selector) {
@@ -66,6 +66,7 @@
     // Workaround for several browsers, since matches() is still not really
     // implemented in IE.
     function matches() {
+      /** @type {Element} */
       var el = document.querySelector('body');
       var names = [
         'matches',
@@ -86,10 +87,11 @@
   /**
    * Triggers an event on an element.
    *
-   * @param el
-   * @param eventName
+   * @param {Element} el
+   * @param {string} eventName
    */
   kdt.trigger = function(el, eventName) {
+    /** @type {Event} */
     var event = document.createEvent('HTMLEvents');
     event.initEvent(eventName, true, false);
     el.dispatchEvent(event);
@@ -98,8 +100,8 @@
   /**
    * Determines if an element has a class.
    *
-   * @param el
-   * @param className
+   * @param {Node} el
+   * @param {string} className
    * @returns {boolean}
    */
   kdt.hasClass = function(el, className) {
@@ -114,9 +116,9 @@
   /**
    * Gets the first element from a list which hat that class.
    *
-   * @param elements
-   * @param className
-   * @returns the element
+   * @param {NodeList} elements
+   * @param {string} className
+   * @returns {Element} the element
    */
   kdt.findInDomlistByClass = function(elements, className) {
 
@@ -131,8 +133,8 @@
   /**
    * Adds a class to elements.
    *
-   * @param selector
-   * @param className
+   * @param {string} selector
+   * @param {string} className
    */
   kdt.addClass = function(selector, className) {
     var elements;
@@ -159,14 +161,16 @@
   /**
    * Removes a class from elements
    *
-   * @param selector
-   * @param className
+   * @param {string} selector
+   * @param {string} className
    */
   kdt.removeClass = function(selector, className) {
+     /** @type {NodeList} */
     var elements;
 
     if (typeof selector === 'string') {
       // Get our elements.
+
       elements = document.querySelectorAll(selector);
     }
     else {
@@ -187,8 +191,8 @@
   /**
    * Toggles the class of an element
    *
-   * @param el
-   * @param className
+   * @param {Element} el
+   * @param {string} className
    */
   kdt.toggleClass = function(el, className) {
 
@@ -212,12 +216,10 @@
   /**
    * Adds a event listener to a list of elements.
    *
-   * @param selector
-   * @param eventName
-   * @param callBack
+   * @param {string} selector
+   * @param {string} eventName
+   * @param {Function} callBack
    *
-   * @return
-   *   The elements have processed.
    */
   kdt.addEvent = function (selector, eventName, callBack) {
     var elements = document.querySelectorAll(selector);
@@ -230,8 +232,8 @@
   /**
    * Gets the dataset from en element.
    *
-   * @param el
-   * @param what
+   * @param {Element} el
+   * @param {string} what
    */
   kdt.getDataset = function (el, what) {
     var result;
@@ -249,9 +251,9 @@
   /**
    * Sets the dataset from en element.
    *
-   * @param el
-   * @param what
-   * @param value
+   * @param {Element} el
+   * @param {string} what
+   * @param {string} value
    */
   kdt.setDataset = function (el, what, value) {
     if (typeof el !== 'undefined') {
@@ -265,8 +267,7 @@
    * @see http://stackoverflow.com/questions/985272/selecting-text-in-an-element-akin-to-highlighting-with-your-mouse
    * @author Jason
    *
-   * @param element
-   * @constructor
+   * @param {Element} element
    */
   kdt.selectText = function (element) {
     var doc = document;
@@ -289,10 +290,10 @@
   /**
    * Our dragable function (formerly a jQuery plugin)
    *
-   * @param selector
-   * @param handle
-   * @param callbackUp
-   * @param callbackDrag
+   * @param {string} selector
+   * @param {string} handle
+   * @param {Function} callbackUp
+   * @param {Function} callbackDrag
    */
   kdt.draXX = function (selector, handle, callbackUp, callbackDrag) {
 
@@ -301,8 +302,8 @@
     /**
      * Starts the dragging on a mousedown.
      *
-     * @event  mousedown
-     * @param event
+     * @event mouseDown
+     * @param {Event} event
      */
     function startDraxx (event) {
 
@@ -343,7 +344,7 @@
       /**
        * Drags the DOM element around.
        *
-       * @param event
+       * @param {Event} event
        */
       function drag(event) {
         // Prevents the default event behavior (ie: click).
@@ -367,7 +368,7 @@
     /**
      * Gets the top and left offset of a DOM element.
      *
-     * @param element
+     * @param {Element} element
      * @returns {{top: number, left: number}}
      */
     function getElementOffset(element) {
@@ -381,7 +382,7 @@
     /**
      * Gets the outer width of an element.
      *
-     * @param el
+     * @param {Element} el
      * @returns {number}
      */
     function outerWidth(el) {
@@ -399,7 +400,7 @@
    * @param {string} krexxDebugSettings
    *   Name of the cookie.
    *
-   * @return string
+   * @return {string}
    *   The value, set in the cookie.
    */
   kdt.readSettings = function (krexxDebugSettings) {
@@ -429,7 +430,7 @@
   /**
    * Adds the value from a html element to the local cookie settings.
    *
-   * @param event
+   * @param {Event} event
    */
   kdt.setSetting = function (event) {
     // Prevents the default event behavior (ie: click).
@@ -459,7 +460,7 @@
   /**
    * Resets all values in the local cookie settings.
    *
-   * @param event
+   * @param {Event} event
    */
   kdt.resetSetting = function (event) {
     // Prevents the default event behavior (ie: click).
@@ -480,7 +481,7 @@
   /**
    * Wrapper to parse a json, without the danger of an error.
    *
-   * @param string
+   * @param {string} string
    * @returns {*}
    */
   kdt.parseJson = function (string) {
@@ -499,7 +500,7 @@
   /**
    * Prevents the bubbeling of en event, nothing more.
    *
-   * @param event event
+   * @param {Event} event
    */
   kdt.preventBubble = function (event) {
     event.stopPropagation();
