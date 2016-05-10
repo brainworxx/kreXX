@@ -49,7 +49,9 @@
    * @returns {Array}
    */
   kdt.getParents = function(el, selector) {
+    /** @type {Array} */
     var result = [];
+    /** @type {Node} */
     var parent = el.parentNode;
 
     while (parent !== null && typeof parent[matches()] === 'function') {
@@ -68,6 +70,7 @@
     function matches() {
       /** @type {Element} */
       var el = document.querySelector('body');
+      /** @type {Array.<String>} */
       var names = [
         'matches',
         'msMatchesSelector',
@@ -118,7 +121,8 @@
    *
    * @param {NodeList} elements
    * @param {string} className
-   * @returns {Element} the element
+   *
+   * @returns {Element|null} the element
    */
   kdt.findInDomlistByClass = function(elements, className) {
 
@@ -128,15 +132,17 @@
         return  elements[i];
       }
     }
+    return null;
   };
 
   /**
    * Adds a class to elements.
    *
-   * @param {string} selector
+   * @param {NodeList|string} selector
    * @param {string} className
    */
   kdt.addClass = function(selector, className) {
+    /** @type {NodeList|null} */
     var elements;
 
     if (typeof selector === 'string') {
@@ -161,11 +167,11 @@
   /**
    * Removes a class from elements
    *
-   * @param {string} selector
+   * @param {NodeList|string} selector
    * @param {string} className
    */
   kdt.removeClass = function(selector, className) {
-     /** @type {NodeList} */
+     /** @type {NodeList|null} */
     var elements;
 
     if (typeof selector === 'string') {
@@ -201,7 +207,9 @@
       el.classList.toggle(className);
     } else {
       // no class list there, we need to do this by hand.
+      /** @type {Array} */
       var classes = el.className.split(' ');
+      /** @type {number} */
       var existingIndex = classes.indexOf(className);
 
       if (existingIndex >= 0)
@@ -222,6 +230,7 @@
    *
    */
   kdt.addEvent = function (selector, eventName, callBack) {
+    /** @type {NodeList} */
     var elements = document.querySelectorAll(selector);
 
     for (var i = 0; i < elements.length; i++) {
@@ -234,8 +243,12 @@
    *
    * @param {Element} el
    * @param {string} what
+   *
+   * @returns {string|*}
    */
   kdt.getDataset = function (el, what) {
+
+    /** @type {string|*} */
     var result;
 
     if (typeof el !== 'undefined') {
@@ -270,11 +283,13 @@
    * @param {Element} element
    */
   kdt.selectText = function (element) {
-    var doc = document;
+
+    /** @type {Range|TextRange} */
     var range;
+    /** @type {Selection} */
     var selection;
 
-    if (doc.body.createTextRange) {
+    if (document.body.createTextRange) {
       range = document.body.createTextRange();
       range.moveToElementText(element);
       range.select();
@@ -308,11 +323,15 @@
     function startDraxx (event) {
 
       // The selector has an ID, we only have one of them.
+      /** @type {Element} */
       var elContent = kdt.getParents(this, selector)[0];
+      /** @type {{top, left}|{top: number, left: number}} */
       var offset = getElementOffset(elContent);
 
       // Calculate original offset.
+      /** @type {number} */
       var offSetY = offset.top + elContent.offsetHeight - event.pageY - elContent.offsetHeight;
+      /** @type {number} */
       var offSetX = offset.left + outerWidth(elContent) - event.pageX - outerWidth(elContent);
 
       // Prevents the default event behavior (ie: click).
@@ -352,7 +371,9 @@
         // Prevents the event from propagating (ie: "bubbling").
         event.stopPropagation();
 
+        /** @type {number} */
         var left = event.pageX + offSetX;
+        /** @type {number} */
         var top = event.pageY + offSetY;
 
         elContent.style.left = left + "px";
@@ -369,12 +390,17 @@
      * Gets the top and left offset of a DOM element.
      *
      * @param {Element} element
+     *
      * @returns {{top: number, left: number}}
      */
     function getElementOffset(element) {
+      /** @type {Element} */
       var de = document.documentElement;
+      /** @type {ClientRect} */
       var box = element.getBoundingClientRect();
+      /** @type {number} */
       var top = box.top + window.pageYOffset - de.clientTop;
+      /** @type {number} */
       var left = box.left + window.pageXOffset - de.clientLeft;
       return { top: top, left: left };
     }
@@ -383,10 +409,13 @@
      * Gets the outer width of an element.
      *
      * @param {Element} el
+     *
      * @returns {number}
      */
     function outerWidth(el) {
+      /** @type {number} */
       var width = el.offsetWidth;
+      /** @type {CSSStyleDeclaration} */
       var style = getComputedStyle(el);
       width += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
       return width;
@@ -400,15 +429,19 @@
    * @param {string} krexxDebugSettings
    *   Name of the cookie.
    *
-   * @return {string}
+   * @return {*}
    *   The value, set in the cookie.
    */
   kdt.readSettings = function (krexxDebugSettings) {
+    /** @type {string} */
     var cookieName = krexxDebugSettings + "=";
+    /** @type {Array} */
     var cookieArray = document.cookie.split(';');
+    /** @type {*} */
     var result = {};
 
     for (var i = 0; i < cookieArray.length; i++) {
+      /** @type {string} */
       var c = cookieArray[i];
       while (c.charAt(0) === ' ') {
         c = c.substring(1, c.length);
@@ -439,15 +472,20 @@
     event.stopPropagation();
 
     // Get the old value.
+    /** @type {*} */
     var settings = kdt.readSettings('KrexxDebugSettings');
     // Get new settings from element.
+    /** @type {string|Number} */
     var newValue = this.value;
+    /** @type {string} */
     var valueName = this.name;
     settings[valueName] = newValue;
 
     // Save it.
+    /** @type {Date} */
     var date = new Date();
     date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+    /** @type {string} */
     var expires = 'expires=' + date.toUTCString();
     // Remove a possible old value from a previous version.
     document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -469,9 +507,12 @@
     event.stopPropagation();
 
     // We do not delete the cookie, we simply remove all settings in it.
+    /** @type {Object} */
     var settings = {};
+    /** @type {Date} */
     var date = new Date();
     date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+    /** @type {string} */
     var expires = 'expires=' + date.toUTCString();
     document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
 
@@ -485,6 +526,7 @@
    * @returns {*}
    */
   kdt.parseJson = function (string) {
+    /** @type {*} */
     var result;
     try {
       result = JSON.parse(string);
