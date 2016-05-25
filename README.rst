@@ -20,11 +20,6 @@ Key features:
 	- Fatal error handler with a full backtrace
 	- Code generation to reach the displayed values, if possible.
 
-
-
-.. code-block:: php
-
-	krexx($myObject);
 	
 .. figure:: https://cloud.githubusercontent.com/assets/11192910/15508377/7cc49e1a-21cf-11e6-8a9d-e64f3ec84604.png
   :width: 672px
