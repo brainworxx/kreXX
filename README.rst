@@ -4,16 +4,6 @@
 kreXX Debugger
 ==============
 
-What does it do?
-================
-
-kreXX will be called from within the PHP source code:
-
-.. code-block:: php
-
-	krexx($myObject);
-
-
 Key features:
 	- Dumping of protected variables
 	- Dumping of private variables
@@ -29,6 +19,12 @@ Key features:
 	- Benchmarking
 	- Fatal error handler with a full backtrace
 	- Code generation to reach the displayed values, if possible.
+
+
+
+.. code-block:: php
+
+	krexx($myObject);
 	
 .. figure:: https://cloud.githubusercontent.com/assets/11192910/15508377/7cc49e1a-21cf-11e6-8a9d-e64f3ec84604.png
   :width: 672px
@@ -38,9 +34,11 @@ Key features:
   
 Usage inside the PHP code
 =========================
+kreXX will be called from within the PHP source code:
 
 Main analytic function
 ^^^^^^^^^^^^^^^^^^^^^^
+
 .. code-block:: php
 
 	krexx($myObject);
