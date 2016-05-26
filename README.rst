@@ -11,7 +11,7 @@ Key features:
 	- Configurable debug callbacks, which will be called on objects (if present). The output will then be dumped.
 	- Analysis of the methods of objects (comments, where declared, parameters). Comment dumping supports :literal:`{@inheritdoc}`.
 	- Output is draggable and has a closing button.
-	- All features can be globally configured with a backend editor.
+	- All features can be globally configured in a configuration file.
 	- All features can be locally configured in the browser. The settings will be stored in a cookie.
 	- Configurable local opening function, to prevent other developers from calling your debug commands.
 	- Output can be saved to an output folder. Very useful in m2m communication.
