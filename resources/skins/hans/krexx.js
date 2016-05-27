@@ -59,7 +59,7 @@
 
     // In case we are handling a broken html structure, we must move everything
     // to the bottom.
-    kdt.moveToBottom('.kwrapper');
+    kdt.moveToBottom('.kouterwrapper');
 
     // Initialize the draggable.
     kdt.draXX(

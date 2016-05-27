@@ -60,7 +60,7 @@
 
         // In case we are handling a broken html structure, we must move everything
         // to the bottom.
-        kdt.moveToBottom('.kwrapper');
+        kdt.moveToBottom('.kouterwrapper');
 
         // Get viewport height to set kreXX data payload to max 75% for debug.
         // The payload for the fatal error handler is set to the remaining space.
