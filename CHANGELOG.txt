@@ -1,3 +1,8 @@
+1.4.3
+- Change: Removed the code generation for the SplObjectStorage.
+  Generating code for the SplObjectStorage is right now too
+  complicated.
+
 1.4.2
 - Added analysis metadata to the file output.
 - Change: Restructured the configuration options. The sorting does now

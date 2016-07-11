@@ -76,14 +76,9 @@ class Codegen
         $result = '';
         // We will not generate anything for function analytic data.
         $connector2 = trim($connector2, ' = ');
-
+        
         // We handle the first one special.
-        if (self::$counter == 0) {
-            $connector1 = '$kresult = ';
-            $connector2 = '';
-        }
-
-        if ($connector1 . $connector2 == '') {
+        if ($connector1 . $connector2 == '' && self::$counter !== 0) {
             // No connectors mean, we are dealing with some meta stuff, like functions
             // We will not add anything for them.
         } else {
