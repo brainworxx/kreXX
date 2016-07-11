@@ -36,6 +36,11 @@ namespace Brainworxx\Krexx\Analysis\Objects;
 use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Model\Closure\Objects\AnalyseObject;
+use Brainworxx\Krexx\Model\Closure\Objects\Closure;
+use Brainworxx\Krexx\Model\Closure\Objects\IterateThroughDebug;
+use Brainworxx\Krexx\Model\Closure\Objects\IterateThroughTraversable;
+use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
@@ -70,127 +75,38 @@ class Objects
         static $level = 0;
 
         $output = '';
-        $parameter = array($data, $name);
         $level++;
+
+        $model = new AnalyseObject();
+        $model->setName($name)
+            ->setType($additional . 'class')
+            ->addParameter('data', $data)
+            ->addParameter('name', $name)
+            ->setAdditional(get_class($data))
+            ->setDomid(Toolbox::generateDomIdFromObject($data))
+            ->setConnector1($connector1)
+            ->setConnector2($connector2);
 
         if (Hive::isInHive($data)) {
             // Tell them, we've been here before
             // but also say who we are.
-            $output .= SkinRender::renderRecursion(
-                $name,
-                $additional . 'class',
-                get_class($data),
-                Toolbox::generateDomIdFromObject($data),
-                $connector1,
-                $connector2
-            );
+            $model->setName(get_class($data));
+            $output .= SkinRender::renderRecursion($model);
 
             // We will not render this one, but since we
             // return to wherever we came from, we need to decrease the level.
             $level--;
             return $output;
-        }
-        // Remember, that we've been here before.
-        Hive::addToHive($data);
+        } else {
+            // Remember, that we've been here before.
+            Hive::addToHive($data);
 
-        $anonFunction = function (&$parameter) {
-            $data = $parameter[0];
-            $name = $parameter[1];
-            $output = SkinRender::renderSingeChildHr();
-
-            $ref = new \ReflectionClass($data);
-
-            // Dumping public properties.
-            $refProps = $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
-
-            // Adding undeclared public properties to the dump.
-            // Those are properties which are not visible with
-            // $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
-            // but are in get_object_vars();
-            // 1. Make a list of all properties
-            // 2. Remove those that are listed in
-            // $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
-            // What is left are those special properties that were dynamically
-            // set during runtime, but were not declared in the class.
-            foreach ($refProps as $refProp) {
-                $publicProps[$refProp->name] = $refProp->name;
-            }
-            foreach (get_object_vars($data) as $key => $value) {
-                if (!isset($publicProps[$key])) {
-                    $refProps[] = new Flection($value, $key);
-                }
-            }
-
-            // We will dump the properties alphabetically sorted, via this callback.
-            $sortingCallback = function ($a, $b) {
-                return strcmp($a->name, $b->name);
-            };
-
-            if (count($refProps)) {
-                usort($refProps, $sortingCallback);
-                $output .= Properties::getReflectionPropertiesData($refProps, $ref, $data, 'Public properties');
-                // Adding a HR to reflect that the following stuff are not public
-                // properties anymore.
-                $output .= SkinRender::renderSingeChildHr();
-            }
-
-            // Dumping protected properties.
-            if (Config::getConfigValue('properties', 'analyseProtected') == 'true' || Internals::isInScope()) {
-                $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
-                usort($refProps, $sortingCallback);
-
-                if (count($refProps)) {
-                    $output .= Properties::getReflectionPropertiesData($refProps, $ref, $data, 'Protected properties');
-                }
-            }
-
-            // Dumping private properties.
-            if (Config::getConfigValue('properties', 'analysePrivate') == 'true' || Internals::isInScope()) {
-                $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
-                usort($refProps, $sortingCallback);
-                if (count($refProps)) {
-                    $output .= Properties::getReflectionPropertiesData($refProps, $ref, $data, 'Private properties');
-                }
-            }
-
-            // Dumping class constants.
-            if (Config::getConfigValue('properties', 'analyseConstants') == 'true') {
-                $output .= Properties::getReflectionConstantsData($ref);
-            }
-
-            // Dumping all methods.
-            $output .= Methods::getMethodData($data);
-
-            // Dumping traversable data.
-            if (Config::getConfigValue('properties', 'analyseTraversable') == 'true') {
-                $output .= Objects::getTraversableData($data, $name);
-            }
-
-            // Dumping all configured debug functions.
-            $output .= Objects::pollAllConfiguredDebugMethods($data);
-
-            // Adding a HR for a better readability.
-            $output .= SkinRender::renderSingeChildHr();
+            // Output data from the class.
+            $output .= SkinRender::renderExpandableChild($model);
+            // We've finished this one, and can decrease the level setting.
+            $level--;
             return $output;
-        };
-
-
-        // Output data from the class.
-        $output .= SkinRender::renderExpandableChild(
-            $name,
-            $additional . 'class',
-            $anonFunction,
-            $parameter,
-            get_class($data),
-            Toolbox::generateDomIdFromObject($data),
-            '',
-            false,
-            $connector1,
-            $connector2
-        );
-        // We've finished this one, and can decrease the level setting.
-        $level--;
-        return $output;
+        }
     }
 
     /**
@@ -207,12 +123,6 @@ class Objects
     public static function getTraversableData($data, $name)
     {
         if (is_a($data, 'Traversable')) {
-            $parameter = iterator_to_array($data);
-            $anonFunction = function (&$data) {
-                // This should be an array. Giving it directly to the analysis hub would
-                // create another useless nest.
-                return Variables::iterateThrough($data);
-            };
             $connector1 = '';
             $connector2 = '';
 
@@ -236,19 +146,16 @@ class Objects
                 $name = '';
                 $connector2 = '. . .';
             }
+            $model = new IterateThroughTraversable();
+            $parameter = iterator_to_array($data);
+            $model->setName($name)
+                ->setType('Foreach')
+                ->setAdditional('Traversable Info')
+                ->setConnector1($connector1)
+                ->setConnector2($connector2)
+                ->addParameter('data', $parameter);
 
-            return SkinRender::renderExpandableChild(
-                $name,
-                'Foreach',
-                $anonFunction,
-                $parameter,
-                'Traversable Info',
-                '',
-                '',
-                false,
-                $connector1,
-                $connector2
-            );
+            return SkinRender::renderExpandableChild($model);
         }
         return '';
     }
@@ -318,21 +225,16 @@ class Objects
                         // Do nothing.
                     }
                     if (isset($result)) {
-                        $anonFunction = function (&$result) {
-                            return Variables::analysisHub($result);
-                        };
-                        $output .= SkinRender::renderExpandableChild(
-                            $funcName,
-                            'debug method',
-                            $anonFunction,
-                            $result,
-                            '. . .',
-                            '',
-                            $funcName,
-                            false,
-                            '->',
-                            '() ='
-                        );
+                        $model = new IterateThroughDebug();
+                        $model->setName($funcName)
+                            ->setType('debug method')
+                            ->setAdditional('. . .')
+                            ->setHelpid($funcName)
+                            ->setConnector1('->')
+                            ->setConnector2('() =')
+                            ->addParameter('result', $result);
+
+                        $output .= SkinRender::renderExpandableChild($model);
                         unset($result);
                     }
                 }
@@ -394,31 +296,14 @@ class Objects
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
 
-        $anonFunction = function ($parameter) {
-            $data = $parameter;
-            $output = '';
-            foreach ($data as $key => $string) {
-                if ($key !== 'comments' && $key !== 'declared in') {
-                    $output .= SkinRender::renderSingleChild($string, $key, $string, 'reflection', '', '', '=');
-                } else {
-                    $output .= SkinRender::renderSingleChild($string, $key, '. . .', 'reflection', '', '', '=');
-                }
-            }
-            return $output;
-        };
+        $model = new Closure();
+        $model->setName($propName)
+            ->setType($additional . ' closure')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2 . '(' . $paramList . ') =')
+            ->addParameter('data', $result);
 
-        return SkinRender::renderExpandableChild(
-            $propName,
-            $additional . ' closure',
-            $anonFunction,
-            $result,
-            '',
-            '',
-            '',
-            false,
-            $connector1,
-            $connector2 . '(' . $paramList . ') ='
-        );
+        return SkinRender::renderExpandableChild($model);
 
     }
 }

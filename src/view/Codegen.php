@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\View;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Internals;
+use Brainworxx\Krexx\Model\Simple;
 
 /**
  * This class hosts the code generation functions.
@@ -46,7 +47,7 @@ class Codegen
 {
 
     protected static $counter = 0;
-
+    
     /**
      * Generates PHP sourcecode.
      *
@@ -54,40 +55,33 @@ class Codegen
      * we can generate PHP code to actually reach the corresponding value.
      * This function generates this code.
      *
-     * @param string $connector1
-     *   The first PHP connector to the value.
-     * @param string $connector2
-     *   The second PHP connector to the value.
-     * @param string $type
-     *   The type we are handling (static protected property, for example).
-     * @param string $name
-     *   The name of the property or method.
+     * @param \Brainworxx\Krexx\Model\Simple $model
+     *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated PHP source.
      */
-    public static function generateSource($connector1, $connector2, $type, $name)
+    public static function generateSource(Simple $model)
     {
-
         if (!Config::$allowCodegen) {
             return '';
         }
 
         $result = '';
         // We will not generate anything for function analytic data.
-        $connector2 = trim($connector2, ' = ');
-        
+        $connector2 = trim($model->getConnector2(), ' = ');
+
         // We handle the first one special.
-        if ($connector1 . $connector2 == '' && self::$counter !== 0) {
+        if ($model->getConnector1() . $connector2 == '' && self::$counter !== 0) {
             // No connectors mean, we are dealing with some meta stuff, like functions
             // We will not add anything for them.
         } else {
             // Simply fuse the connectors.
             // The connectors are a representation of the current used "language".
-            switch (self::analyseType($type)) {
+            switch (self::analyseType($model->getType())) {
                 case 'contagination':
                     // We simply add the connectors for public access.
-                    $result = $connector1 . $name . $connector2;
+                    $result = $model->getConnector1() . $model->getName() . $connector2;
                     break;
 
                 case 'method':

@@ -34,6 +34,8 @@
 namespace Brainworxx\Krexx\Analysis\Objects;
 
 use Brainworxx\Krexx\Framework\Internals;
+use Brainworxx\Krexx\Model\Closure\Objects\Constants;
+use Brainworxx\Krexx\Model\Closure\Objects\IterateThroughConstants;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Framework\Config;
@@ -65,177 +67,22 @@ class Properties
      */
     public static function getReflectionPropertiesData(array $refProps, \ReflectionClass $ref, $data, $label)
     {
-        // I need to preprocess them, since I do not want to render a
-        // reflection property.
-        $parameter = array($refProps, $ref, $data);
-        $anonFunction = function (&$parameter) {
-            $refProps = $parameter[0];
-            /* @var \ReflectionClass $ref */
-            $ref = $parameter[1];
-            $orgObject = $parameter[2];
-            $output = '';
-            $default = $ref->getDefaultProperties();
-
-            foreach ($refProps as $refProperty) {
-                /* @var \ReflectionProperty $refProperty */
-                $refProperty->setAccessible(true);
-
-                // Getting our values from the reflection.
-                $value = $refProperty->getValue($orgObject);
-                $propName = $refProperty->name;
-                if (is_null($value) && $refProperty->isDefault()) {
-                    // We might want to look at the default value.
-                    $value = $default[$propName];
-                }
-
-                // Check memory and runtime.
-                if (!Internals::checkEmergencyBreak()) {
-                    // No more took too long, or not enough memory is left.
-                    Messages::addMessage("Emergency break for large output during analysis process.");
-                    return '';
-                }
-                // Recursion tests are done in the analyseObject and
-                // iterateThrough (for arrays).
-                // We will not check them here.
-                // Now that we have the key and the value, we can analyse it.
-                // Stitch together our additional info about the data:
-                // public, protected, private, static.
-                $additional = '';
-                $connector1 = '->';
-                if ($refProperty->isPublic()) {
-                    $additional .= 'public ';
-                }
-                if ($refProperty->isPrivate()) {
-                    $additional .= 'private ';
-                }
-                if ($refProperty->isProtected()) {
-                    $additional .= 'protected ';
-                }
-                if (is_a($refProperty, '\Brainworxx\Krexx\Analysis\Flection')) {
-                    /* @var \Brainworxx\Krexx\Analysis\Objects\Flection $refProperty */
-                    $additional .= $refProperty->getWhatAmI() . ' ';
-                }
-                if ($refProperty->isStatic()) {
-                    $additional .= 'static ';
-                    $connector1 = '::';
-                    // There is always a $ in front of a static property.
-                    $propName = '$' . $propName;
-                }
-
-                // Object?
-                // Closures are analysed separately.
-                if (is_object($value) && !is_a($value, '\Closure')) {
-                    Internals::$nestingLevel++;
-                    if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                        $result = Objects::analyseObject($value, $propName, $additional, $connector1);
-                        Internals::$nestingLevel--;
-                        $output .= $result;
-                    } else {
-                        Internals::$nestingLevel--;
-                        $output .= Variables::analyseString(
-                            'Object => ' . Help::getHelp('maximumLevelReached'),
-                            $propName,
-                            $additional,
-                            $connector1
-                        );
-                    }
-                }
-
-                // Closure?
-                if (is_object($value) && is_a($value, '\Closure')) {
-                    Internals::$nestingLevel++;
-                    if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                        $result = Objects::analyseClosure($value, $propName, $additional, $connector1);
-                        Internals::$nestingLevel--;
-                        $output .= $result;
-                    } else {
-                        Internals::$nestingLevel--;
-                        $output .= Variables::analyseString(
-                            'Closure => ' . Help::getHelp('maximumLevelReached'),
-                            $propName,
-                            $additional,
-                            $connector1
-                        );
-                    }
-                }
-
-                // Array?
-                if (is_array($value)) {
-                    Internals::$nestingLevel++;
-                    if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                        $result = Variables::analyseArray($value, $propName, $additional, $connector1);
-                        Internals::$nestingLevel--;
-                        $output .= $result;
-                    } else {
-                        Internals::$nestingLevel--;
-                        $output .= Variables::analyseString(
-                            'Array => ' . Help::getHelp('maximumLevelReached'),
-                            $propName,
-                            $additional,
-                            $connector1
-                        );
-                    }
-                }
-
-                // Resource?
-                if (is_resource($value)) {
-                    $output .= Variables::analyseResource($value, $propName, $additional, $connector1);
-                }
-
-                // String?
-                if (is_string($value)) {
-                    $output .= Variables::analyseString($value, $propName, $additional, $connector1);
-                }
-
-                // Float?
-                if (is_float($value)) {
-                    $output .= Variables::analyseFloat($value, $propName, $additional, $connector1);
-                }
-
-                // Integer?
-                if (is_int($value)) {
-                    $output .= Variables::analyseInteger($value, $propName, $additional, $connector1);
-                }
-
-                // Boolean?
-                if (is_bool($value)) {
-                    $output .= Variables::analyseBoolean($value, $propName, $additional, $connector1);
-                }
-
-                // Null ?
-                if (is_null($value)) {
-                    $output .= Variables::analyseNull($propName, $additional, $connector1);
-                }
-            }
-
-            return $output;
-        };
-
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
+        $model = new \Brainworxx\Krexx\Model\Closure\Objects\Properties();
+        $model->addParameter('refProps', $refProps)
+            ->addParameter('ref', $ref)
+            ->addParameter('orgObject', $data);
+
         if (strpos(strtoupper($label), 'PUBLIC') === false) {
             // Protected or private properties.
-            return SkinRender::renderExpandableChild(
-                $label,
-                'class internals',
-                $anonFunction,
-                $parameter,
-                '',
-                '',
-                '',
-                false,
-                '',
-                ''
-            );
+            $model->setName($label)
+                ->setType('class internals');
+            return SkinRender::renderExpandableChild($model);
         } else {
             // Public properties.
-            return SkinRender::renderExpandableChild(
-                '',
-                '',
-                $anonFunction,
-                $parameter,
-                $label
-            );
+            $model->setAdditional($label);
+            return SkinRender::renderExpandableChild($model);
         }
     }
 
@@ -252,25 +99,17 @@ class Properties
     {
         // This is actually an array, we ara analysing. But We do not want to render
         // an array, so we need to process it like the return from an iterator.
-        $parameter = $ref->getConstants();
+        $refConst = $ref->getConstants();
 
-        if (count($parameter) > 0) {
+        if (count($refConst) > 0) {
+
             // We've got some values, we will dump them.
-            $anonFunction = function (&$refConst) {
-                // This should be an array.
-                return Properties::iterateThroughConstants($refConst);
-            };
+            $model = new Constants();
+            $model->setName('Constants')
+                ->setType('class internals')
+                ->addParameter('refConst', $refConst);
 
-            return SkinRender::renderExpandableChild(
-                'Constants',
-                'class internals',
-                $anonFunction,
-                $parameter,
-                '',
-                '',
-                '',
-                false
-            );
+            return SkinRender::renderExpandableChild($model);
         }
 
         // Nothing to see here, return an empty string.
@@ -289,24 +128,9 @@ class Properties
      */
     public static function iterateThroughConstants(array &$data)
     {
-        $parameter = array($data);
-        $analysis = function (&$parameter) {
-            $output = '';
-            $data = $parameter[0];
+        $model = new IterateThroughConstants();
+        $model->addParameter('data', $data);
 
-            $output .= SkinRender::renderSingeChildHr();
-
-            // We do not need to check the hive, this is ome class internal stuff.
-            // Is it even possible to create a recursion here?
-            // Iterate through.
-            foreach ($data as $k => $v) {
-                $v = &$data[$k];
-                $output .= Variables::analysisHub($v, $k, '::', ' =');
-            }
-
-            $output .= SkinRender::renderSingeChildHr();
-            return $output;
-        };
-        return SkinRender::renderExpandableChild('', '', $analysis, $parameter);
+        return SkinRender::renderExpandableChild($model);
     }
 }

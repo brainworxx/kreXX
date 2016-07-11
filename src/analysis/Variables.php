@@ -35,6 +35,9 @@ namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Framework\Internals;
+use Brainworxx\Krexx\Model\Closure\Variables\AnalyseArray;
+use Brainworxx\Krexx\Model\Closure\Variables\IterateThrough;
+use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
@@ -199,47 +202,9 @@ class Variables
      */
     public static function iterateThrough(&$data)
     {
-        $parameter = array($data);
-        $analysis = function (&$parameter) {
-            $output = '';
-            $data = $parameter[0];
-            $isObject = is_object($data);
-
-            $recursionMarker = Hive::getMarker();
-
-            // Recursion detection of objects are handled in the hub.
-            if (is_array($data) && Hive::isInHive($data)) {
-                return SkinRender::renderRecursion();
-            }
-
-            // Remember, that we've already been here.
-            Hive::addToHive($data);
-
-            // Keys?
-            $keys = array_keys($data);
-
-            $output .= SkinRender::renderSingeChildHr();
-
-            // Iterate through.
-            foreach ($keys as $k) {
-                // Skip the recursion marker.
-                if ($k === $recursionMarker) {
-                    continue;
-                }
-
-                // Get real value.
-                if ($isObject) {
-                    $v = &$data->$k;
-                } else {
-                    $v = &$data[$k];
-                }
-
-                $output .= Variables::analysisHub($v, $k, '[', '] =');
-            }
-            $output .= SkinRender::renderSingeChildHr();
-            return $output;
-        };
-        return SkinRender::renderExpandableChild('', '', $analysis, $parameter);
+        $model = new IterateThrough();
+        $model->addParameter('data', $data);
+        return SkinRender::renderExpandableChild($model);
     }
 
     /**
@@ -261,18 +226,18 @@ class Variables
     {
         $json = array();
         $json['type'] = 'NULL';
-
         $data = 'NULL';
-        return SkinRender::renderSingleChild(
-            $data,
-            $name,
-            $data,
-            $additional . 'null',
-            '',
-            $connector1,
-            $connector2,
-            $json
-        );
+
+        $model = new Simple();
+        $model->setData($data)
+            ->setName($name)
+            ->setNormal($data)
+            ->setType($additional . 'null')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2)
+            ->setJson($json);
+
+        return SkinRender::renderSingleChild($model);
     }
 
     /**
@@ -299,25 +264,16 @@ class Variables
         $json['count'] = (string)count($data);
 
         // Dumping all Properties.
-        $parameter = array($data);
-        $anonFunction = function ($parameter) {
-            $data = $parameter[0];
-            return Variables::iterateThrough($data);
-        };
+        $model = new AnalyseArray();
+        $model->setName($name)
+            ->setType($additional . 'array')
+            ->setAdditional(count($data) . ' elements')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2)
+            ->setJson($json)
+            ->addParameter('data', $data);
 
-        return SkinRender::renderExpandableChild(
-            $name,
-            $additional . 'array',
-            $anonFunction,
-            $parameter,
-            count($data) . ' elements',
-            '',
-            '',
-            false,
-            $connector1,
-            $connector2,
-            $json
-        );
+        return SkinRender::renderExpandableChild($model);
     }
 
     /**
@@ -341,18 +297,18 @@ class Variables
     {
         $json = array();
         $json['type'] = 'resource';
-
         $data = get_resource_type($data);
-        return SkinRender::renderSingleChild(
-            $data,
-            $name,
-            $data,
-            $additional . 'resource',
-            '',
-            $connector1,
-            $connector2,
-            $json
-        );
+
+        $model = new Simple();
+        $model->setData($data)
+            ->setName($name)
+            ->setNormal($data)
+            ->setType($additional . 'resource')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2)
+            ->setJson($json);
+
+        return SkinRender::renderSingleChild($model);
     }
 
     /**
@@ -376,18 +332,18 @@ class Variables
     {
         $json = array();
         $json['type'] = 'boolean';
-
         $data = $data ? 'TRUE' : 'FALSE';
-        return SkinRender::renderSingleChild(
-            $data,
-            $name,
-            $data,
-            $additional . 'boolean',
-            '',
-            $connector1,
-            $connector2,
-            $json
-        );
+
+        $model = new Simple();
+        $model->setData($data)
+            ->setName($name)
+            ->setNormal($data)
+            ->setType($additional . 'boolean')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2)
+            ->setJson($json);
+
+        return SkinRender::renderSingleChild($model);
     }
 
     /**
@@ -412,16 +368,16 @@ class Variables
         $json = array();
         $json['type'] = 'integer';
 
-        return SkinRender::renderSingleChild(
-            $data,
-            $name,
-            $data,
-            $additional . 'integer',
-            '',
-            $connector1,
-            $connector2,
-            $json
-        );
+        $model = new Simple();
+        $model->setData($data)
+            ->setName($name)
+            ->setNormal($data)
+            ->setType($additional . 'integer')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2)
+            ->setJson($json);
+
+        return SkinRender::renderSingleChild($model);
     }
 
     /**
@@ -446,16 +402,16 @@ class Variables
         $json = array();
         $json['type'] = 'float';
 
-        return SkinRender::renderSingleChild(
-            $data,
-            $name,
-            $data,
-            $additional . 'float',
-            '',
-            $connector1,
-            $connector2,
-            $json
-        );
+        $model = new Simple();
+        $model->setData($data)
+            ->setName($name)
+            ->setNormal($data)
+            ->setType($additional . 'float')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2)
+            ->setJson($json);
+
+        return SkinRender::renderSingleChild($model);
     }
 
     /**
@@ -500,16 +456,16 @@ class Variables
             $json['encoding'] = 'broken';
         }
 
-        return SkinRender::renderSingleChild(
-            $cleanData,
-            $name,
-            $cut,
-            $additional . 'string' . ' ' . $strlen,
-            '',
-            $connector1,
-            $connector2,
-            $json
-        );
+        $model = new Simple();
+        $model->setData($cleanData)
+            ->setName($name)
+            ->setNormal($cut)
+            ->setType($additional . 'string' . ' ' . $strlen)
+            ->setConnector1($connector1)
+            ->setConnector2($connector2)
+            ->setJson($json);
+
+        return SkinRender::renderSingleChild($model);
     }
 
     /**
@@ -551,7 +507,7 @@ class Variables
             if ($code) {
                 // We are displaying sourcecode, so we need
                 // to do some formatting.
-                $anonFunction = function ($n) {
+                $sortingCallback = function ($n) {
                     if ($n == 9) {
                         // Replace TAB with two spaces, it's better readable that way.
                         $result = '&nbsp;&nbsp;';
@@ -562,7 +518,7 @@ class Variables
                 };
             } else {
                 // No formatting.
-                $anonFunction = function ($n) {
+                $sortingCallback = function ($n) {
                     return "&#$n;";
                 };
             }
@@ -574,7 +530,7 @@ class Variables
             // is small enough for the unpack().
             // 100 kb should be save enough.
             if (strlen($data) < 102400) {
-                $result = implode("", array_map($anonFunction, unpack("N*", $data)));
+                $result = implode("", array_map($sortingCallback, unpack("N*", $data)));
             } else {
                 $result = Help::getHelp('stringTooLarge');
             }

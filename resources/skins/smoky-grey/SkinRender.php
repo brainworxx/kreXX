@@ -35,6 +35,7 @@ namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Analysis;
 use Brainworxx\Krexx\Framework;
+use Brainworxx\Krexx\Model\Simple;
 
 /**
  * Individual render class for the smokey-grey skin.
@@ -47,20 +48,12 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderSingleChild(
-        $data,
-        $name = '',
-        $normal = '',
-        $type = '',
-        $helpid = '',
-        $connector1 = '',
-        $connector2 = '',
-        $json = array()
-    ) {
+    public static function renderSingleChild(Simple $model)
+    {
 
-        $template = parent::renderSingleChild($data, $name, $normal, $type, $helpid, $connector1, $connector2, $json);
+        $template = parent::renderSingleChild($model);
 
-        $json['Help'] = self::getHelp($helpid);
+        $json['Help'] = self::getHelp($model->getHelpid());
         // Prepare the json.
         $json = json_encode($json);
 
@@ -73,19 +66,8 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderExpandableChild(
-        $name,
-        $type,
-        \Closure $anonFunction,
-        &$parameter,
-        $additional = '',
-        $domid = '',
-        $helpid = '',
-        $isExpanded = false,
-        $connector1 = '',
-        $connector2 = '',
-        $json = array()
-    ) {
+    public static function renderExpandableChild(Simple $model, $isExpanded = false)
+    {
 
         // Check for emergency break.
         if (!Framework\Internals::checkEmergencyBreak()) {
@@ -96,40 +78,40 @@ class SkinRender extends Render
         }
 
 
-        if ($name == '' && $type == '') {
+        if ($model->getName() == '' && $model->getType() == '') {
             // Without a Name or Type I only display the Child with a Node.
             $template = self::getTemplateFileContent('expandableChildSimple');
             // Replace our stuff in the partial.
-            return str_replace('{mainfunction}', Framework\Chunks::chunkMe($anonFunction($parameter)), $template);
+            return str_replace('{mainfunction}', Framework\Chunks::chunkMe($model->renderMe()), $template);
         } else {
             // We need to render this one normally.
             $template = self::getTemplateFileContent('expandableChildNormal');
             // Replace our stuff in the partial.
-            $template = str_replace('{name}', $name, $template);
-            $template = str_replace('{type}', $type, $template);
+            $template = str_replace('{name}', $model->getName(), $template);
+            $template = str_replace('{type}', $model->getType(), $template);
 
             // Explode the type to get the class names right.
-            $types = explode(' ', $type);
+            $types = explode(' ', $model->getType());
             $cssType = '';
             foreach ($types as $singleType) {
                 $cssType .= ' k' . $singleType;
             }
             $template = str_replace('{ktype}', $cssType, $template);
 
-            $template = str_replace('{additional}', $additional, $template);
+            $template = str_replace('{additional}', $model->getAdditional(), $template);
             // There is not much need for a connector to an empty name.
-            if (empty($name) && $name != 0) {
+            if (empty($model->getName()) && $model->getName() != 0) {
                 $template = str_replace('{connector1}', '', $template);
                 $template = str_replace('{connector2}', '', $template);
             } else {
-                $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
-                $template = str_replace('{connector2}', self::renderConnector($connector2), $template);
+                $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
+                $template = str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
             }
 
 
             // Generating our code and adding the Codegen button, if there is
             // something to generate.
-            $gencode = Codegen::generateSource($connector1, $connector2, $type, $name);
+            $gencode = Codegen::generateSource($model);
             if ($gencode == '') {
                 // Remove the markers, because here is nothing to add.
                 $template = str_replace('{gensource}', '', $template);
@@ -144,13 +126,13 @@ class SkinRender extends Render
             // This is done in the js.
             $template = str_replace('{isExpanded}', '', $template);
 
-            $json['Help'] = self::getHelp($helpid);
+            $json['Help'] = self::getHelp($model->getHelpid());
             $json = json_encode($json);
             $template = str_replace('{addjson}', $json, $template);
 
             return str_replace(
                 '{nest}',
-                Framework\Chunks::chunkMe(self::renderNest($anonFunction, $parameter, $domid, false)),
+                Framework\Chunks::chunkMe(self::renderNest($model, false)),
                 $template
             );
         }
@@ -160,14 +142,14 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderSingleEditableChild($name, $normal, $source, $inputType, $helpid = '')
+    public static function renderSingleEditableChild(Simple $model)
     {
 
-        $template = parent::renderSingleEditableChild($name, $normal, $source, $inputType, $helpid);
+        $template = parent::renderSingleEditableChild($model);
 
         // Prepare the json. Not much do display for form elements.
         $json = json_encode(array(
-            'Help' => self::getHelp($helpid),
+            'Help' => self::getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 
@@ -177,18 +159,18 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderButton($name = '', $text = '', $helpid = '')
+    public static function renderButton(Simple $model)
     {
 
-        $template = parent::renderButton($name, $text, $helpid);
+        $template = parent::renderButton($model);
 
         // Prepare the json. Not much do display for form elements.
         $json = json_encode(array(
-            'Help' => self::getHelp($helpid),
+            'Help' => self::getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 
-        return str_replace('{class}', $name, $template);
+        return str_replace('{class}', $model->getName(), $template);
     }
 
     /**

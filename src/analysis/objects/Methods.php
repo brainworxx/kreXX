@@ -34,6 +34,9 @@
 namespace Brainworxx\Krexx\Analysis\Objects;
 
 use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Model\Closure\Objects\AnalyseMethods;
+use Brainworxx\Krexx\Model\Closure\Objects\MethodInfo;
+use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Framework\Internals;
@@ -81,13 +84,13 @@ class Methods
                 return strcmp($a->name, $b->name);
             };
             usort($methods, $sortingCallback);
+            $model = new AnalyseMethods();
+            $model->setName('Methods')
+                ->setType('class internals')
+                ->addParameter('ref', $ref)
+                ->addParameter('methods', $methods);
 
-            $parameter = array($ref, $methods);
-            $anonFunction = function (&$parameter) {
-                return Methods::analyseMethods($parameter[0], $parameter[1]);
-            };
-
-            return SkinRender::renderExpandableChild('Methods', 'class internals', $anonFunction, $parameter);
+            return SkinRender::renderExpandableChild($model);
         }
         return '';
     }
@@ -105,72 +108,63 @@ class Methods
      */
     public static function analyseMethods(\ReflectionClass $ref, $data)
     {
-        $parameter = array($ref, $data);
+        $result = '';
 
-        $analysis = function ($parameter) {
-            $ref = $parameter[0];
-            $data = $parameter[1];
-            $result = '';
-
-            // Deep analysis of the methods.
-            foreach ($data as $reflection) {
-                $methodData = array();
-                /* @var \ReflectionMethod $reflection */
-                $method = $reflection->name;
-                // Get the comment from the class, it's parents, interfaces or traits.
-                $comments = trim($reflection->getDocComment());
-                if ($comments != '') {
-                    $methodData['comments'] = Comments::prettifyComment($comments);
-                    $methodData['comments'] = Comments::getParentalComment($methodData['comments'], $ref, $method);
-                    $methodData['comments'] = Comments::getInterfaceComment($methodData['comments'], $ref, $method);
-                    $methodData['comments'] = Variables::encodeString($methodData['comments'], true);
-                }
-                // Get declaration place.
-                $declaringClass = $reflection->getDeclaringClass();
-                if (is_null($declaringClass->getFileName()) || $declaringClass->getFileName() == '') {
-                    $methodData['declared in'] =
-                        ':: unable to determine declaration ::<br/><br/>Maybe this is a predeclared class?';
-                } else {
-                    $methodData['declared in'] = htmlspecialchars($declaringClass->getFileName()) . '<br/>';
-                    $methodData['declared in'] .= htmlspecialchars($declaringClass->getName()) . ' ';
-                    $methodData['declared in'] .= 'in line ' . htmlspecialchars($reflection->getStartLine());
-                }
-
-                // Get parameters.
-                $parameters = $reflection->getParameters();
-                foreach ($parameters as $parameter) {
-                    preg_match('/(.*)(?= \[ )/', $parameter, $key);
-                    $parameter = str_replace($key[0], '', $parameter);
-                    $methodData[$key[0]] = htmlspecialchars(trim($parameter, ' []'));
-                }
-                // Get visibility.
-                $methodData['declaration keywords'] = '';
-                if ($reflection->isPrivate()) {
-                    $methodData['declaration keywords'] .= ' private';
-                }
-                if ($reflection->isProtected()) {
-                    $methodData['declaration keywords'] .= ' protected';
-                }
-                if ($reflection->isPublic()) {
-                    $methodData['declaration keywords'] .= ' public';
-                }
-                if ($reflection->isStatic()) {
-                    $methodData['declaration keywords'] .= ' static';
-                }
-                if ($reflection->isFinal()) {
-                    $methodData['declaration keywords'] .= ' final';
-                }
-                if ($reflection->isAbstract()) {
-                    $methodData['declaration keywords'] .= ' abstract';
-                }
-                $methodData['declaration keywords'] = trim($methodData['declaration keywords']);
-                $result .= Methods::dumpMethodInfo($methodData, $method);
+        // Deep analysis of the methods.
+        foreach ($data as $reflection) {
+            $methodData = array();
+            /* @var \ReflectionMethod $reflection */
+            $method = $reflection->name;
+            // Get the comment from the class, it's parents, interfaces or traits.
+            $comments = trim($reflection->getDocComment());
+            if ($comments != '') {
+                $methodData['comments'] = Comments::prettifyComment($comments);
+                $methodData['comments'] = Comments::getParentalComment($methodData['comments'], $ref, $method);
+                $methodData['comments'] = Comments::getInterfaceComment($methodData['comments'], $ref, $method);
+                $methodData['comments'] = Variables::encodeString($methodData['comments'], true);
             }
-            return $result;
+            // Get declaration place.
+            $declaringClass = $reflection->getDeclaringClass();
+            if (is_null($declaringClass->getFileName()) || $declaringClass->getFileName() == '') {
+                $methodData['declared in'] =
+                    ':: unable to determine declaration ::<br/><br/>Maybe this is a predeclared class?';
+            } else {
+                $methodData['declared in'] = htmlspecialchars($declaringClass->getFileName()) . '<br/>';
+                $methodData['declared in'] .= htmlspecialchars($declaringClass->getName()) . ' ';
+                $methodData['declared in'] .= 'in line ' . htmlspecialchars($reflection->getStartLine());
+            }
 
-        };
-
-        return $analysis($parameter);
+            // Get parameters.
+            $parameters = $reflection->getParameters();
+            foreach ($parameters as $parameter) {
+                preg_match('/(.*)(?= \[ )/', $parameter, $key);
+                $parameter = str_replace($key[0], '', $parameter);
+                $methodData[$key[0]] = htmlspecialchars(trim($parameter, ' []'));
+            }
+            // Get visibility.
+            $methodData['declaration keywords'] = '';
+            if ($reflection->isPrivate()) {
+                $methodData['declaration keywords'] .= ' private';
+            }
+            if ($reflection->isProtected()) {
+                $methodData['declaration keywords'] .= ' protected';
+            }
+            if ($reflection->isPublic()) {
+                $methodData['declaration keywords'] .= ' public';
+            }
+            if ($reflection->isStatic()) {
+                $methodData['declaration keywords'] .= ' static';
+            }
+            if ($reflection->isFinal()) {
+                $methodData['declaration keywords'] .= ' final';
+            }
+            if ($reflection->isAbstract()) {
+                $methodData['declaration keywords'] .= ' abstract';
+            }
+            $methodData['declaration keywords'] = trim($methodData['declaration keywords']);
+            $result .= Methods::dumpMethodInfo($methodData, $method);
+        }
+        return $result;
     }
 
     /**
@@ -186,20 +180,6 @@ class Methods
      */
     public static function dumpMethodInfo(array $data, $name)
     {
-        $parameter = array($data);
-        $anonFunction = function ($parameter) {
-            $data = $parameter[0];
-            $output = '';
-            foreach ($data as $key => $string) {
-                if ($key !== 'comments' && $key !== 'declared in') {
-                    $output .= SkinRender::renderSingleChild($string, $key, $string, 'reflection', '', '', '=');
-                } else {
-                    $output .= SkinRender::renderSingleChild($string, $key, '. . .', 'reflection', '', '', '=');
-                }
-            }
-            return $output;
-        };
-
         $paramList = '';
         $connector1 = '->';
         foreach ($data as $key => $string) {
@@ -216,17 +196,13 @@ class Methods
         }
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
-        return SkinRender::renderExpandableChild(
-            $name,
-            $data['declaration keywords'] . ' method',
-            $anonFunction,
-            $parameter,
-            '',
-            '',
-            '',
-            false,
-            $connector1,
-            '(' . $paramList . ')'
-        );
+        $model = new MethodInfo();
+        $model->setName($name)
+            ->setType($data['declaration keywords'] . ' method')
+            ->setConnector1($connector1)
+            ->setConnector2('(' . $paramList . ')')
+            ->addParameter('data', $data);
+
+        return SkinRender::renderExpandableChild($model);
     }
 }

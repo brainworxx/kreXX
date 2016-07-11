@@ -131,6 +131,21 @@ class Krexx
         include_once $krexxdir . 'src/analysis/objects/Properties.php';
         include_once $krexxdir . 'src/analysis/Hive.php';
         include_once $krexxdir . 'src/analysis/Variables.php';
+        include_once $krexxdir . 'src/model/Simple.php';
+        include_once $krexxdir . 'src/model/closure/output/Footer.php';
+        include_once $krexxdir . 'src/model/closure/output/FooterSection.php';
+        include_once $krexxdir . 'src/model/closure/output/Backtrace.php';
+        include_once $krexxdir . 'src/model/closure/variables/AnalyseArray.php';
+        include_once $krexxdir . 'src/model/closure/variables/IterateThrough.php';
+        include_once $krexxdir . 'src/model/closure/objects/AnalyseObject.php';
+        include_once $krexxdir . 'src/model/closure/objects/Properties.php';
+        include_once $krexxdir . 'src/model/closure/objects/Constants.php';
+        include_once $krexxdir . 'src/model/closure/objects/IterateThroughConstants.php';
+        include_once $krexxdir . 'src/model/closure/objects/AnalyseMethods.php';
+        include_once $krexxdir . 'src/model/closure/objects/MethodInfo.php';
+        include_once $krexxdir . 'src/model/closure/objects/IterateThroughTraversable.php';
+        include_once $krexxdir . 'src/model/closure/objects/Closure.php';
+        include_once $krexxdir . 'src/model/closure/objects/IterateThroughDebug.php';
         include_once $krexxdir . 'src/errorhandler/AbstractHandler.php';
         include_once $krexxdir . 'src/errorhandler/Fatal.php';
 

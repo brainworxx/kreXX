@@ -37,6 +37,9 @@ use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Model\Closure\Output\Backtrace;
+use Brainworxx\Krexx\Model\Closure\Output\Footer;
+use Brainworxx\Krexx\Model\Simple;
 
 /**
  * This class hosts the code generation functions.
@@ -84,71 +87,6 @@ class Output
      */
     public static function outputFooter($caller, $isExpanded = false)
     {
-        // Wrap an expandable around to save space.
-        $anonFunction = function ($params) {
-            $config = $params[0];
-            $source = $params[1];
-            $configOutput = '';
-            foreach ($config as $sectionName => $sectionData) {
-                $paramsExpandable = array(
-                    $sectionData,
-                    $source[$sectionName]
-                );
-
-                // Render a whole section.
-                $anonFunction = function ($params) {
-                    $sectionData = $params[0];
-                    $source = $params[1];
-                    $sectionOutput = '';
-                    foreach ($sectionData as $parameterName => $parameterValue) {
-                        // Render the single value.
-                        // We need to find out where the value comes from.
-                        $config = Config::getFeConfig($parameterName);
-                        $editable = $config[0];
-                        $type = $config[1];
-
-                        if ($type != 'None') {
-                            if ($editable) {
-                                $sectionOutput .= SkinRender::renderSingleEditableChild(
-                                    $parameterName,
-                                    htmlspecialchars($parameterValue),
-                                    $source[$parameterName],
-                                    $type,
-                                    $parameterName
-                                );
-                            } else {
-                                $sectionOutput .= SkinRender::renderSingleChild(
-                                    $parameterValue,
-                                    $parameterName,
-                                    htmlspecialchars($parameterValue),
-                                    $source[$parameterName],
-                                    $parameterName
-                                );
-                            }
-                        }
-                    }
-                    return $sectionOutput;
-                };
-                $configOutput .= SkinRender::renderExpandableChild(
-                    $sectionName,
-                    'Config',
-                    $anonFunction,
-                    $paramsExpandable,
-                    '. . .'
-                );
-            }
-            // Render the dev-handle field.
-            $configOutput .= SkinRender::renderSingleEditableChild(
-                'Local open function',
-                Config::getDevHandler(),
-                '\krexx::',
-                'Input',
-                'localFunction'
-            );
-            // Render the reset-button which will delete the debug-cookie.
-            $configOutput .= SkinRender::renderButton('resetbutton', 'Reset local settings', 'resetbutton');
-            return $configOutput;
-        };
 
         // Now we need to stitch together the content of the ini file
         // as well as it's path.
@@ -167,16 +105,14 @@ class Output
 
         $parameter = array($config, $source);
 
-        $configOutput = SkinRender::renderExpandableChild(
-            $path,
-            Config::getPathToIni(),
-            $anonFunction,
-            $parameter,
-            '',
-            '',
-            'currentSettings',
-            $isExpanded
-        );
+        $model = new Footer();
+        $model->setName($path)
+            ->setType(Config::getPathToIni())
+            ->setHelpid('currentSettings')
+            ->addParameter('config', $config)
+            ->addParameter('source', $source);
+
+        $configOutput = SkinRender::renderExpandableChild($model, $isExpanded);
         return SkinRender::renderFooter($caller, $configOutput, $isExpanded);
     }
 
@@ -232,77 +168,12 @@ class Output
         $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace);
 
         foreach ($backtrace as $step => $stepData) {
-            $name = $step;
-            $type = 'Stack Frame';
-            $parameter = $stepData;
-            $anonFunction = function ($parameter) {
-                $output = '';
-                // We are handling the following values here:
-                // file, line, function, object, type, args, sourcecode.
-                $stepData = $parameter;
-                // File.
-                if (isset($stepData['file'])) {
-                    $output .= SkinRender::renderSingleChild(
-                        $stepData['file'],
-                        'File',
-                        $stepData['file'],
-                        'string ' . strlen($stepData['file'])
-                    );
-                }
-                // Line.
-                if (isset($stepData['line'])) {
-                    $output .= SkinRender::renderSingleChild(
-                        $stepData['line'],
-                        'Line no.',
-                        $stepData['line'],
-                        'integer'
-                    );
-                }
-                // Sourcecode, is escaped by now.
-                if (isset($stepData['sourcecode'])) {
-                    $output .= SkinRender::renderSingleChild(
-                        $stepData['sourcecode'],
-                        'Sourcecode',
-                        '. . .',
-                        'PHP'
-                    );
-                }
-                // Function.
-                if (isset($stepData['function'])) {
-                    $output .= SkinRender::renderSingleChild(
-                        $stepData['function'],
-                        'Last called function',
-                        $stepData['function'],
-                        'string ' . strlen($stepData['function'])
-                    );
-                }
-                // Object.
-                if (isset($stepData['object'])) {
-                    $output .= Objects::analyseObject(
-                        $stepData['object'],
-                        'Calling object'
-                    );
-                }
-                // Type.
-                if (isset($stepData['type'])) {
-                    $output .= SkinRender::renderSingleChild(
-                        $stepData['type'],
-                        'Call type',
-                        $stepData['type'],
-                        'string ' . strlen($stepData['type'])
-                    );
-                }
-                // Args.
-                if (isset($stepData['args'])) {
-                    $output .= Variables::analyseArray(
-                        $stepData['args'],
-                        'Arguments from the call'
-                    );
-                }
+            $model = new Backtrace();
+            $model->setName($step)
+                ->setType('Stack Frame')
+                ->addParameter('stepData', $stepData);
 
-                return $output;
-            };
-            $output .= SkinRender::renderExpandableChild($name, $type, $anonFunction, $parameter);
+            $output .= SkinRender::renderExpandableChild($model);
         }
 
         return $output;

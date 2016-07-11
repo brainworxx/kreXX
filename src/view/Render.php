@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Framework\Internals;
+use Brainworxx\Krexx\Model\Simple;
 
 /**
  * This class hosts the internal rendering functions.
@@ -69,40 +70,16 @@ class Render extends Help
     /**
      * Renders a "single child", containing a single not expandable value.
      *
-     * Depending on how many characters
-     * are in there, it may be toggelable.
+     * Depending on how many characters are in there, it may be toggelable.
      *
-     * @param string $data
-     *   The initial data rendered.
-     * @param string $name
-     *   The Name, what we render here.
-     * @param string $normal
-     *   The normal content. Content using linebreaks should get
-     *   rendered into $extra.
-     * @param string $type
-     *   The type of the analysed variable, in a string.
-     * @param string $helpid
-     *   The id of the help text we want to display here.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
-     * @param array $json
-     *   The additional data table on the bottom.
+     * @param \Brainworxx\Krexx\Model\Simple $model
+     *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderSingleChild(
-        $data,
-        $name = '',
-        $normal = '',
-        $type = '',
-        $helpid = '',
-        $connector1 = '',
-        $connector2 = '',
-        $json = array()
-    ) {
+    public static function renderSingleChild(Simple $model)
+    {
         // This one is a little bit more complicated than the others,
         // because it assembles some partials and stitches them together.
         $template = self::getTemplateFileContent('singleChild');
@@ -110,7 +87,7 @@ class Render extends Help
         $partCallable = '';
         $partExtra = '';
 
-        if (strlen($data) > strlen($normal)) {
+        if (strlen($model->getData()) > strlen($model->getNormal())) {
             $extra = true;
         } else {
             $extra = false;
@@ -120,7 +97,7 @@ class Render extends Help
             // We have a lot of text, so we render this one expandable (yellow box).
             $partExpand = self::getTemplateFileContent('singleChildExpand');
         }
-        if (is_callable($data)) {
+        if (is_callable($model->getData())) {
             // Add callable partial.
             $partCallable = self::getTemplateFileContent('singleChildCallable');
         }
@@ -129,7 +106,7 @@ class Render extends Help
             $partExtra = self::getTemplateFileContent('singleChildExtra');
         }
         // Stitching the classes together, depending on the types.
-        $typeArray = explode(' ', $type);
+        $typeArray = explode(' ', $model->getType());
         $typeClasses = '';
         foreach ($typeArray as $typeClass) {
             $typeClass = 'k' . $typeClass;
@@ -138,7 +115,7 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is something
         // to generate.
-        $gencode = Codegen::generateSource($connector1, $connector2, $type, $name);
+        $gencode = Codegen::generateSource($model);
         if ($gencode == '') {
             // Remove the markers, because here is nothing to add.
             $template = str_replace('{gensource}', '', $template);
@@ -153,15 +130,15 @@ class Render extends Help
         $template = str_replace('{expand}', $partExpand, $template);
         $template = str_replace('{callable}', $partCallable, $template);
         $template = str_replace('{extra}', $partExtra, $template);
-        $template = str_replace('{name}', $name, $template);
-        $template = str_replace('{type}', $type, $template);
+        $template = str_replace('{name}', $model->getName(), $template);
+        $template = str_replace('{type}', $model->getType(), $template);
         $template = str_replace('{type-classes}', $typeClasses, $template);
-        $template = str_replace('{normal}', $normal, $template);
-        $template = str_replace('{data}', $data, $template);
-        $template = str_replace('{help}', self::renderHelp($helpid), $template);
-        $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
+        $template = str_replace('{normal}', $model->getNormal(), $template);
+        $template = str_replace('{data}', $model->getData(), $template);
+        $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
+        $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
         $template = str_replace('{gensource}', $gencode, $template);
-        return str_replace('{connector2}', self::renderConnector($connector2), $template);
+        return str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
     }
 
     /**
@@ -170,35 +147,19 @@ class Render extends Help
      * If the recursion is an object, a click should jump to the original
      * analysis data.
      *
-     * @param string $name
-     *   We might want to tell the user how to actually access it.
-     * @param string $type
-     *   The type of the original object of the recursion.
-     * @param string $value
-     *   We might want to tell the user what this actually is.
-     * @param string $domid
-     *   The id of the analysis data, a click on the recursion should jump to it.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
+     * @param \Brainworxx\Krexx\Model\Simple $model
+     *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderRecursion(
-        $name = '',
-        $type = '',
-        $value = '',
-        $domid = '',
-        $connector1 = '',
-        $connector2 = ''
-    ) {
+    public static function renderRecursion(Simple $model)
+    {
         $template = self::getTemplateFileContent('recursion');
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = Codegen::generateSource($connector1, $connector2, $type, $name);
+        $gencode = Codegen::generateSource($model);
 
         if ($gencode == '') {
             // Remove the markers, because here is nothing to add.
@@ -210,11 +171,12 @@ class Render extends Help
         }
 
         // Replace our stuff in the partial.
-        $template = str_replace('{name}', $name, $template);
-        $template = str_replace('{domId}', $domid, $template);
-        $template = str_replace('{value}', $value, $template);
-        $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
-        return str_replace('{connector2}', self::renderConnector($connector2), $template);
+        $template = str_replace('{name}', $model->getName(), $template);
+        $template = str_replace('{domId}', $model->getDomid(), $template);
+        $template = str_replace('{value}', $model->getNormal(), $template);
+        $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
+
+        return str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
     }
 
     /**
@@ -289,14 +251,8 @@ class Render extends Help
     /**
      * Renders a nest with a anonymous function in the middle.
      *
-     * @param \Closure $anonFunction
-     *   The anonymous function generates the raw output which is rendered
-     *   into the nest.
-     * @param mixed $parameter
-     *   The parameters for the anonymous function.
-     * @param string $domid
-     *   The dom_id in the markup, in case we have a recursion, so we can jump
-     *   directly to the first analysis result.
+     * @param \Brainworxx\Krexx\Model\Simple $model
+     *   The model, which hosts all the data we need.
      * @param bool $isExpanded
      *   The only expanded nest is the settings menu, when we render only the
      *   settings menu.
@@ -304,12 +260,13 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderNest(\Closure $anonFunction, &$parameter, $domid = '', $isExpanded = false)
+    public static function renderNest(Simple $model, $isExpanded = false)
     {
         $template = self::getTemplateFileContent('nest');
         // Replace our stuff in the partial.
-        if (strlen($domid)) {
-            $domid = 'id="' . $domid . '"';
+        $domid = '';
+        if (strlen($model->getDomid())) {
+            $domid = 'id="' . $model->getDomid() . '"';
         }
         $template = str_replace('{domId}', $domid, $template);
         // Are we expanding this one?
@@ -319,7 +276,7 @@ class Render extends Help
             $style = 'khidden';
         }
         $template = str_replace('{style}', $style, $template);
-        return str_replace('{mainfunction}', $anonFunction($parameter), $template);
+        return str_replace('{mainfunction}', $model->renderMe(), $template);
     }
 
     /**
@@ -372,19 +329,34 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderExpandableChild(
-        $name,
-        $type,
-        \Closure $anonFunction,
-        &$parameter,
-        $additional = '',
-        $domid = '',
-        $helpid = '',
-        $isExpanded = false,
-        $connector1 = '',
-        $connector2 = '',
-        $json = array()
-    ) {
+//    public static function renderExpandableChild(
+//        $name,
+//        $type,
+//        \Closure $anonFunction,
+//        &$parameter,
+//        $additional = '',
+//        $domid = '',
+//        $helpid = '',
+//        $isExpanded = false,
+//        $connector1 = '',
+//        $connector2 = '',
+//        $json = array()
+//    ) {
+
+    /**
+     * Renders a expandable child with a callback in the middle.
+     *
+     * @param \Brainworxx\Krexx\Model\Simple $model
+     *   The model, which hosts all the data we need.
+     * @param bool $isExpanded
+     *   Is this one expanded from the beginning?
+     *   TRUE when we render the settings menu only.
+     *
+     * @return string
+     *   The generated markup from the template files.
+     */
+    public static function renderExpandableChild(Simple $model, $isExpanded = false)
+    {
         // Check for emergency break.
         if (!Internals::checkEmergencyBreak()) {
             // Normally, this should not show up, because the Chunks class will not
@@ -393,34 +365,34 @@ class Render extends Help
             return '';
         }
 
-        if ($name == '' && $type == '') {
+        if ($model->getName() == '' && $model->getType() == '') {
             // Without a Name or Type I only display the Child with a Node.
             $template = self::getTemplateFileContent('expandableChildSimple');
             // Replace our stuff in the partial.
-            return str_replace('{mainfunction}', Chunks::chunkMe($anonFunction($parameter)), $template);
+            return str_replace('{mainfunction}', Chunks::chunkMe($model->renderMe()), $template);
         } else {
             // We need to render this one normally.
             $template = self::getTemplateFileContent('expandableChildNormal');
             // Replace our stuff in the partial.
-            $template = str_replace('{name}', $name, $template);
-            $template = str_replace('{type}', $type, $template);
+            $template = str_replace('{name}', $model->getName(), $template);
+            $template = str_replace('{type}', $model->getType(), $template);
 
             // Explode the type to get the class names right.
-            $types = explode(' ', $type);
+            $types = explode(' ', $model->getType());
             $cssType = '';
             foreach ($types as $singleType) {
                 $cssType .= ' k' . $singleType;
             }
             $template = str_replace('{ktype}', $cssType, $template);
 
-            $template = str_replace('{additional}', $additional, $template);
-            $template = str_replace('{help}', self::renderHelp($helpid), $template);
-            $template = str_replace('{connector1}', self::renderConnector($connector1), $template);
-            $template = str_replace('{connector2}', self::renderConnector($connector2), $template);
+            $template = str_replace('{additional}', $model->getAdditional(), $template);
+            $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
+            $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
+            $template = str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
 
             // Generating our code and adding the Codegen button, if there is
             // something to generate.
-            $gencode = Codegen::generateSource($connector1, $connector2, $type, $name);
+            $gencode = Codegen::generateSource($model);
             if ($gencode == '') {
                 // Remove the markers, because here is nothing to add.
                 $template = str_replace('{gensource}', '', $template);
@@ -439,7 +411,7 @@ class Render extends Help
             }
             return str_replace(
                 '{nest}',
-                Chunks::chunkMe(self::renderNest($anonFunction, $parameter, $domid, $isExpanded)),
+                Chunks::chunkMe(self::renderNest($model, $isExpanded)),
                 $template
             );
         }
@@ -470,36 +442,28 @@ class Render extends Help
     /**
      * Renders a simple editable child node.
      *
-     * @param string $name
-     *   The Name, what we render here.
-     * @param string $normal
-     *   The normal content. Content using linebreaks should get rendered
-     *   into $extra.
-     * @param string $source
-     *   Source of the setting.
-     * @param string $inputType
-     *   Currently we have a true/false dropdown and a text input.
-     *   Values can be 'text' or 'dropdown'.
-     * @param string $helpid
-     *   The help id for this output, if available.
+     * @todo remove inconsistencies with the template placeholders
+     *
+     * @param \Brainworxx\Krexx\Model\Simple $model
+     *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderSingleEditableChild($name, $normal, $source, $inputType, $helpid = '')
+    public static function renderSingleEditableChild(Simple $model)
     {
         $template = self::getTemplateFileContent('singleEditableChild');
-        $element = self::getTemplateFileContent('single' . $inputType);
+        $element = self::getTemplateFileContent('single' . $model->getType());
 
-        $element = str_replace('{name}', $name, $element);
-        $element = str_replace('{value}', $normal, $element);
+        $element = str_replace('{name}', $model->getData(), $element);
+        $element = str_replace('{value}', $model->getName(), $element);
 
         // For dropdown elements, we need to render the options.
-        if ($inputType == 'Select') {
-            $option = self::getTemplateFileContent('single' . $inputType . 'Options');
+        if ($model->getType() == 'Select') {
+            $option = self::getTemplateFileContent('single' . $model->getType() . 'Options');
 
             // Here we store what the list of possible values.
-            switch ($name) {
+            switch ($model->getData()) {
                 case "destination":
                     // Frontend or file.
                     $valueList = array('frontend', 'file');
@@ -524,7 +488,7 @@ class Render extends Help
             // Paint it.
             $options = '';
             foreach ($valueList as $value) {
-                if ($value == $normal) {
+                if ($value == $model->getName()) {
                     // This one is selected.
                     $selected = 'selected="selected"';
                 } else {
@@ -544,11 +508,11 @@ class Render extends Help
             $element = str_replace('{options}', $options, $element);
         }
 
-        $template = str_replace('{name}', $name, $template);
-        $template = str_replace('{source}', $source, $template);
+        $template = str_replace('{name}', $model->getData(), $template);
+        $template = str_replace('{source}', $model->getNormal(), $template);
         $template = str_replace('{normal}', $element, $template);
         $template = str_replace('{type}', 'editable', $template);
-        $template = str_replace('{help}', self::renderHelp($helpid), $template);
+        $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
 
         return $template;
     }
@@ -556,23 +520,19 @@ class Render extends Help
     /**
      * Renders a simple button.
      *
-     * @param string $name
-     *   The classname of the button, used to assign js functions to it.
-     * @param string $text
-     *   The text displayed on the button.
-     * @param string $helpid
-     *   The ID of the help text.
+     * @param \Brainworxx\Krexx\Model\Simple $model
+     *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderButton($name = '', $text = '', $helpid = '')
+    public static function renderButton(Simple $model)
     {
         $template = self::getTemplateFileContent('singleButton');
-        $template = str_replace('{help}', self::renderHelp($helpid), $template);
+        $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
 
-        $template = str_replace('{text}', $text, $template);
-        return str_replace('{class}', $name, $template);
+        $template = str_replace('{text}', $model->getNormal(), $template);
+        return str_replace('{class}', $model->getName(), $template);
     }
 
     /**
