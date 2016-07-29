@@ -33,6 +33,8 @@
 
 namespace Brainworxx\Krexx\Model;
 
+use Brainworxx\Krexx\Framework\Toolbox;
+
 /**
  * Here we host the basic getter / setter for all the info we are giving to
  * the render class. All in all, just a bunch of setter/getter.
@@ -123,6 +125,27 @@ class Simple
     protected $parameters = array();
 
     /**
+     * Is the containing $data already escaped at this time?
+     *
+     * @var bool
+     */
+    protected $isEscaped = false;
+
+    /**
+     * Setter for the $isEscaped.
+     *
+     * @param $isEscaped
+     *
+     * @return \Brainworxx\Krexx\Model\Simple
+     *   $this, for chaining.
+     */
+    public function setIsEscaped($isEscaped)
+    {
+        $this->isEscaped = $isEscaped;
+        return $this;
+    }
+
+    /**
      * Placeholder for the render function. Overwrite this one
      *
      * @return string
@@ -154,7 +177,11 @@ class Simple
      */
     public function getData()
     {
-        return $this->data;
+        if (is_string($this->data) && !$this->isEscaped) {
+            return Toolbox::encodeString($this->data);
+        } else {
+            return $this->data;
+        }
     }
 
     /**
@@ -178,7 +205,11 @@ class Simple
      */
     public function getName()
     {
-        return $this->name;
+        if (is_string($this->name)) {
+            return Toolbox::encodeString($this->name);
+        } else {
+            return $this->name;
+        }
     }
 
     /**
@@ -202,7 +233,11 @@ class Simple
      */
     public function getNormal()
     {
-        return $this->normal;
+        if (is_string($this->normal)) {
+            return Toolbox::encodeString($this->normal);
+        } else {
+            return $this->normal;
+        }
     }
 
     /**
@@ -226,7 +261,11 @@ class Simple
      */
     public function getAdditional()
     {
-        return $this->additional;
+        if (is_string($this->additional)) {
+            return Toolbox::encodeString($this->additional);
+        } else {
+            return $this->additional;
+        }
     }
 
     /**
@@ -250,7 +289,11 @@ class Simple
      */
     public function getType()
     {
-        return $this->type;
+        if (is_string($this->type)) {
+            return Toolbox::encodeString($this->type);
+        } else {
+            return $this->type;
+        }
     }
 
     /**

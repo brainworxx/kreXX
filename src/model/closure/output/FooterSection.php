@@ -65,7 +65,7 @@ class FooterSection extends Simple
                 $model = new Simple();
                 if ($editable) {
                     $model->setData($parameterName)
-                        ->setName(htmlspecialchars($parameterValue))
+                        ->setName($parameterValue)
                         ->setNormal($source[$parameterName])
                         ->setType($type)
                         ->setHelpid($parameterName);
@@ -74,7 +74,7 @@ class FooterSection extends Simple
                 } else {
                     $model->setData($parameterValue)
                         ->setName($parameterName)
-                        ->setNormal(htmlspecialchars($parameterValue))
+                        ->setNormal($parameterValue)
                         ->setType($source[$parameterName])
                         ->setHelpid($parameterName);
                     $sectionOutput .= SkinRender::renderSingleChild($model);

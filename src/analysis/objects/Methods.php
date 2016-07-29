@@ -121,17 +121,16 @@ class Methods
                 $methodData['comments'] = Comments::prettifyComment($comments);
                 $methodData['comments'] = Comments::getParentalComment($methodData['comments'], $ref, $method);
                 $methodData['comments'] = Comments::getInterfaceComment($methodData['comments'], $ref, $method);
-                $methodData['comments'] = Variables::encodeString($methodData['comments'], true);
             }
             // Get declaration place.
             $declaringClass = $reflection->getDeclaringClass();
             if (is_null($declaringClass->getFileName()) || $declaringClass->getFileName() == '') {
                 $methodData['declared in'] =
-                    ':: unable to determine declaration ::<br/><br/>Maybe this is a predeclared class?';
+                    ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
             } else {
-                $methodData['declared in'] = htmlspecialchars($declaringClass->getFileName()) . '<br/>';
-                $methodData['declared in'] .= htmlspecialchars($declaringClass->getName()) . ' ';
-                $methodData['declared in'] .= 'in line ' . htmlspecialchars($reflection->getStartLine());
+                $methodData['declared in'] = $declaringClass->getFileName() . "\n";
+                $methodData['declared in'] .= $declaringClass->getName() . ' ';
+                $methodData['declared in'] .= 'in line ' . $reflection->getStartLine();
             }
 
             // Get parameters.
@@ -139,7 +138,7 @@ class Methods
             foreach ($parameters as $parameter) {
                 preg_match('/(.*)(?= \[ )/', $parameter, $key);
                 $parameter = str_replace($key[0], '', $parameter);
-                $methodData[$key[0]] = htmlspecialchars(trim($parameter, ' []'));
+                $methodData[$key[0]] = trim($parameter, ' []');
             }
             // Get visibility.
             $methodData['declaration keywords'] = '';

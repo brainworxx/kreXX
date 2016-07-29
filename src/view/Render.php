@@ -302,50 +302,6 @@ class Render extends Help
     /**
      * Renders a expandable child with a callback in the middle.
      *
-     * @param string $name
-     *   Replacement for the {name} in the template file.
-     * @param string $type
-     *   Replacement for the {type} in the template file.
-     * @param \Closure $anonFunction
-     *   The anonymous function generates the raw output which is rendered.
-     * @param mixed $parameter
-     *   The parameters for the anonymous function.
-     * @param string $additional
-     *   Replacement for the {additional} in the template file.
-     * @param string $domid
-     *   The DOM id in the markup, in case we need to jup to this analysis result.
-     * @param string $helpid
-     *   The help id for this output, if available.
-     * @param bool $isExpanded
-     *   Is this one expanded from the beginning?
-     *   TRUE when we render the settings menu only.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
-     * @param array $json
-     *   The additional data table on the bottom.
-     *
-     * @return string
-     *   The generated markup from the template files.
-     */
-//    public static function renderExpandableChild(
-//        $name,
-//        $type,
-//        \Closure $anonFunction,
-//        &$parameter,
-//        $additional = '',
-//        $domid = '',
-//        $helpid = '',
-//        $isExpanded = false,
-//        $connector1 = '',
-//        $connector2 = '',
-//        $json = array()
-//    ) {
-
-    /**
-     * Renders a expandable child with a callback in the middle.
-     *
      * @param \Brainworxx\Krexx\Model\Simple $model
      *   The model, which hosts all the data we need.
      * @param bool $isExpanded

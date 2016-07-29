@@ -47,7 +47,7 @@ use Brainworxx\Krexx\View\Messages;
  * chunks. We also use this class stitch back together this
  * string for output.
  *
- * @see \Krexx\Variables::encodeString()
+ * @see \Brainworxx\Krexx\Framework\Toolbox->encodeString()
  *   We use '@@@' to mark a chunk key. This function escapes the @
  *   so we have no collusion with data from strings.
  *

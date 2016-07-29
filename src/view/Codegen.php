@@ -47,7 +47,7 @@ class Codegen
 {
 
     protected static $counter = 0;
-    
+
     /**
      * Generates PHP sourcecode.
      *
@@ -95,11 +95,7 @@ class Codegen
                     break;
             }
         }
-
-        // We can not simply put anything inside the data element. We need to do
-        // some escaping!
-        $result = Variables::encodeString($result);
-
+        
         self::$counter++;
         return $result;
     }

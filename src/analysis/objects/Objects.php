@@ -272,10 +272,10 @@ class Objects
         $result = array();
 
         // Adding comments from the file.
-        $result['comments'] = Variables::encodeString(Comments::prettifyComment($ref->getDocComment()), true);
+        $result['comments'] = Comments::prettifyComment($ref->getDocComment());
         // Adding the place where it was declared.
-        $result['declared in'] = htmlspecialchars($ref->getFileName()) . '<br/>';
-        $result['declared in'] .= 'in line ' . htmlspecialchars($ref->getStartLine());
+        $result['declared in'] = $ref->getFileName() . "\n";
+        $result['declared in'] .= 'in line ' . $ref->getStartLine();
         // Adding the namespace, but only if we have one.
         $namespace = $ref->getNamespaceName();
         if (strlen($namespace) > 0) {
@@ -287,7 +287,7 @@ class Objects
         foreach ($parameters as $parameter) {
             preg_match('/(.*)(?= \[ )/', $parameter, $key);
             $parameter = str_replace($key[0], '', $parameter);
-            $result[$key[0]] = htmlspecialchars(trim($parameter, ' []'));
+            $result[$key[0]] = trim($parameter, ' []');
             $paramList .= trim(str_replace(array(
                     '&lt;optional&gt;',
                     '&lt;required&gt;'

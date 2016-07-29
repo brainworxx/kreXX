@@ -327,9 +327,9 @@ class Internals
         // We will not keep the whole backtrace im memory. We only return what we
         // actually need.
         return array(
-            'file' => $caller['file'],
-            'line' => $caller['line'],
-            'varname' => self::getVarName($caller['file'], $caller['line'])
+            'file' => htmlspecialchars($caller['file']),
+            'line' => htmlspecialchars($caller['line']),
+            'varname' => htmlspecialchars(self::getVarName($caller['file'], $caller['line']))
         );
     }
 
@@ -482,8 +482,7 @@ class Internals
             foreach ($possibleFunctionnames as $funcname) {
                 preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', $sourceCall, $name);
                 if (isset($name[1])) {
-                    // Gotcha! We escape this one, just in case.
-                    $varname = Variables::encodeString($name[1]);
+                    $varname = $name[1];
                     break;
                 }
             }
