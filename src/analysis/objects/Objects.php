@@ -90,7 +90,7 @@ class Objects
         if (Hive::isInHive($data)) {
             // Tell them, we've been here before
             // but also say who we are.
-            $model->setName(get_class($data));
+            $model->setNormal(get_class($data));
             $output .= SkinRender::renderRecursion($model);
 
             // We will not render this one, but since we
