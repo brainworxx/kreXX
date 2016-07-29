@@ -51,7 +51,6 @@ class AnalyseArray extends Simple
      */
     public function renderMe()
     {
-        $data = $this->parameters['data'];
-        return Variables::iterateThrough($data);
+        return Variables::iterateThrough($this->parameters['data']);
     }
 }

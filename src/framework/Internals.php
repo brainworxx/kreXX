@@ -357,17 +357,6 @@ class Internals
     /**
      * Checks if there is enough memory and time left on the Server.
      *
-     * If we use up too much, we might get a WSOD.
-     *
-     * @return bool
-     *   Boolean to show if we have enough left.
-     *   TRUE = all is OK.
-     *   FALSE = we have a problem.
-     */
-
-    /**
-     * Checks if there is enough memory and time left on the Server.
-     *
      * @param mixed $enable
      *   Enables and disables the check itself. When disabled, it will always
      *   return TRUE (all is OK).
@@ -478,6 +467,8 @@ class Internals
                 'krexx',
                 'krexx::open',
                 'krexx::' . Config::getDevHandler(),
+                'Krexx::open',
+                'Krexx::' . Config::getDevHandler()
             );
             foreach ($possibleFunctionnames as $funcname) {
                 preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', $sourceCall, $name);

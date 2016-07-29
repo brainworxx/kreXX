@@ -7,6 +7,8 @@
 - Cleanup: Moved (nearly) all string escaping to the "model".
   Exception to this is the read sourcecode, which we are handling
   a little bit differently.
+- Bugfix: Code generation was not working when krexx was called via
+  'Krexx::'.
 
 1.4.2
 - Added analysis metadata to the file output.
