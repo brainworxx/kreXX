@@ -466,14 +466,25 @@ class Variables
 
         // Adding comments from the file.
         $result['comments'] = Toolbox::prettifyComment($ref->getDocComment());
+
+        // Adding the sourcecode
+
+        $highlight = $ref->getStartLine() -1;
+        $from = $highlight - 3;
+        $to = $ref->getEndLine() -1;
+        $file = $ref->getFileName();
+        $result['source'] = Toolbox::readSourcecode($file, $highlight, $from, $to);
+
         // Adding the place where it was declared.
         $result['declared in'] = $ref->getFileName() . "\n";
         $result['declared in'] .= 'in line ' . $ref->getStartLine();
+
         // Adding the namespace, but only if we have one.
         $namespace = $ref->getNamespaceName();
         if (strlen($namespace) > 0) {
             $result['namespace'] = $namespace;
         }
+
         // Adding the parameters.
         $parameters = $ref->getParameters();
         $paramList = '';
@@ -568,12 +579,12 @@ class Variables
      * @return string
      *   The rendered backtrace.
      */
-    public static function analysisBacktrace(array $backtrace)
+    public static function analysisBacktrace(array $backtrace, $offset = 0)
     {
         $output = '';
 
         // Add the sourcecode to our backtrace.
-        $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace, -1);
+        $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace, $offset);
 
         foreach ($backtrace as $step => $stepData) {
             $model = new AnalysisBacktrace();

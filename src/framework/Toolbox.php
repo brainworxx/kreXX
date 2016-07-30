@@ -179,7 +179,7 @@ class Toolbox
     {
         foreach ($backtrace as &$trace) {
             $trace['line'] = $trace['line'] + $offset;
-            $source = self::readSourcecode($trace['file'], $trace['line'], 5);
+            $source = self::readSourcecode($trace['file'], $trace['line'], $trace['line'] -5, $trace['line'] +5);
             // Add it only, if we have source code. Some internal functions do not
             // provide any (call_user_func for example).
             if (strlen(trim($source)) > 0) {
@@ -197,22 +197,22 @@ class Toolbox
      *
      * @param string $file
      *   Path to the file you want to read.
-     * @param int $lineNo
-     *   The line number you want to read.
-     * @param int $spaceLine
-     *   How many lines before and after the line number.
+     * @param int $highlight
+     *   The line number you want to highlight
+     * @param int $from
+     *   The strarline.
+     * @param int $to
+     *   The Endline.
      *
      * @return string
      *   The source code.
      */
-    public static function readSourcecode($file, $lineNo, $spaceLine)
+    public static function readSourcecode($file, $highlight, $from, $to)
     {
         $result = '';
         if (is_readable($file)) {
             // Load content and add it to the backtrace.
             $contentArray = file($file);
-            $from = $lineNo - $spaceLine;
-            $to = $lineNo + $spaceLine;
             // Correct the value, in case we are exceeding the line numbers.
             if ($from < 0) {
                 $from = 0;
@@ -229,7 +229,7 @@ class Toolbox
                     // Escape it.
                     $contentArray[$currentLineNo] = self::encodeString($contentArray[$currentLineNo], true);
 
-                    if ($currentLineNo == $lineNo) {
+                    if ($currentLineNo == $highlight) {
                         $result .= SkinRender::renderBacktraceSourceLine(
                             'highlight',
                             $realLineNo,

@@ -109,14 +109,14 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is something
         // to generate.
-        $gencode = Codegen::generateSource($model);
-        if ($gencode == '') {
+        $gensource = Codegen::generateSource($model);
+        if ($gensource == '') {
             // Remove the markers, because here is nothing to add.
             $template = str_replace('{gensource}', '', $template);
             $template = str_replace('{gencode}', '', $template);
         } else {
             // We add the buttton and the code.
-            $template = str_replace('{gensource}', $gencode, $template);
+            $template = str_replace('{gensource}', $gensource, $template);
             $template = str_replace('{gencode}', self::getTemplateFileContent('gencode'), $template);
         }
 
@@ -131,7 +131,7 @@ class Render extends Help
         $template = str_replace('{data}', $model->getData(), $template);
         $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
         $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
-        $template = str_replace('{gensource}', $gencode, $template);
+        $template = str_replace('{gensource}', $gensource, $template);
         return str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
     }
 

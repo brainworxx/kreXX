@@ -34,9 +34,9 @@
 
 namespace Brainworxx\Krexx\View;
 
-use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Chunks;
+use Brainworxx\Krexx\Framework\Hive;
 use Brainworxx\Krexx\Model\Simple;
 
 /**

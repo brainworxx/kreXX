@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -95,7 +96,12 @@ class Codegen
             switch (self::analyseType($model->getType())) {
                 case 'contagination':
                     // We simply add the connectors for public access.
-                    $result = $model->getConnector1() . $model->getName() . $connector2;
+                    // Escape the quotes. This is not done by the model.
+                    // To prevent double escaping-slashes, we ned to un-slash it
+                    // first. Vunterslaush anyone?
+                    $name = str_replace('"', '&#034;', addslashes(stripslashes($model->getName())));
+                    $name = str_replace("'", '&#039;', $name);
+                    $result = $model->getConnector1() . $name . $connector2;
                     break;
 
                 case 'method':

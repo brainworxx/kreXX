@@ -142,7 +142,12 @@ class Fatal extends Error
                     'errfile' => $error['file'],
                     'errline' => $error['line'],
                     'handler' => __FUNCTION__,
-                    'source' => Toolbox::readSourcecode($error['file'], $error['line'], 5),
+                    'source' => Toolbox::readSourcecode(
+                        $error['file'],
+                        $error['line'],
+                        $error['line'] -5,
+                        $error['line'] +5
+                    ),
                     'backtrace' => $this->tickedBacktrace,
                 );
 

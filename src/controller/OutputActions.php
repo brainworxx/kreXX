@@ -191,7 +191,7 @@ class OutputActions extends Internals
         $footer = self::outputFooter($caller);
         self::checkEmergencyBreak(true);
 
-        $analysis = Variables::analysisBacktrace($backtrace);
+        $analysis = Variables::analysisBacktrace($backtrace, -1);
         // Now that our analysis is done, we must check if there was an emergency
         // break.
         $emergency = false;

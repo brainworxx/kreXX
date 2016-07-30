@@ -1,4 +1,5 @@
 1.4.3
+- Added sourcecode to the closure analysis.
 - Change: Removed the code generation for the SplObjectStorage.
   Generating code for the SplObjectStorage is right now too
   complicated.

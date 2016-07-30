@@ -53,6 +53,7 @@ class IterateThroughArray extends Simple
     {
         $output = '';
         $data = $this->parameters['data'];
+        $recursionMarker = Hive::getMarker();
 
         // Recursion detection of objects are handled in the hub.
         if (Hive::isInHive($data)) {
@@ -66,6 +67,13 @@ class IterateThroughArray extends Simple
 
         // Iterate through.
         foreach ($data as $k => &$v) {
+            // We will not output our recursion marker.
+            // Meh, the only reason for the recursion marker
+            // in arrays is because of the $GLOBAL array, which
+            // we will only render once.
+            if ($k === $recursionMarker) {
+                continue;
+            }
             $output .= Variables::analysisHub($v, $k, '[', '] =');
         }
         $output .= SkinRender::renderSingeChildHr();

@@ -651,6 +651,7 @@
         }
 
         // 3. Add the text
+        console.log(result);
         codedisplay.innerHTML = '<div class="kcode-inner">' + result + '</div>';
         if (codedisplay.style.display == 'none') {
             codedisplay.style.display = '';

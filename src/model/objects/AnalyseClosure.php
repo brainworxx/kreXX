@@ -51,16 +51,20 @@ class AnalyseClosure extends Simple
      */
     public function renderMe()
     {
-        $data = $this->parameters['data'];
         $output = '';
-        foreach ($data as $key => $string) {
+        foreach ($this->parameters['data'] as $key => $string) {
             $model = new Simple();
             $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
 
-            if ($key !== 'comments' && $key !== 'declared in') {
+            if ($key !== 'comments' && $key !== 'declared in' && $key !== 'source') {
                 $model->setNormal($string);
             } else {
                 $model->setNormal('. . .');
+            }
+
+            // The source part contains HTML. Escaping it contra productive.
+            if ($key === 'source') {
+                $model->setIsEscaped(true);
             }
 
             $output .= SkinRender::renderSingleChild($model);

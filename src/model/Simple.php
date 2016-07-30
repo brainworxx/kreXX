@@ -53,7 +53,7 @@ class Simple
     /**
      * The name/key of it.
      *
-     * @var string
+     * @var mixed
      */
     protected $name = '';
 
@@ -201,7 +201,7 @@ class Simple
     /**
      * Getter for the name.
      *
-     * @return string
+     * @return mixed
      */
     public function getName()
     {
@@ -229,7 +229,7 @@ class Simple
     /**
      * Getter for normal.
      *
-     * @return string
+     * @return mixed
      */
     public function getNormal()
     {
@@ -257,7 +257,7 @@ class Simple
     /**
      * Getter for additional
      *
-     * @return string
+     * @return mixed
      */
     public function getAdditional()
     {
@@ -285,7 +285,7 @@ class Simple
     /**
      * Getter for the type.
      *
-     * @return string
+     * @return mixed
      */
     public function getType()
     {
