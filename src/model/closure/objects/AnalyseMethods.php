@@ -33,7 +33,7 @@
 
 namespace Brainworxx\Krexx\Model\Closure\Objects;
 
-use Brainworxx\Krexx\Analysis\Objects\Comments;
+use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
 
@@ -56,13 +56,13 @@ class AnalyseMethods extends Simple
             // Get the comment from the class, it's parents, interfaces or traits.
             $comments = trim($reflection->getDocComment());
             if ($comments != '') {
-                $methodData['comments'] = Comments::prettifyComment($comments);
-                $methodData['comments'] = Comments::getParentalComment(
+                $methodData['comments'] = Toolbox::prettifyComment($comments);
+                $methodData['comments'] = $this->getParentalComment(
                     $methodData['comments'],
                     $this->parameters['ref'],
                     $method
                 );
-                $methodData['comments'] = Comments::getInterfaceComment(
+                $methodData['comments'] = $this->getInterfaceComment(
                     $methodData['comments'],
                     $this->parameters['ref'],
                     $method
@@ -150,5 +150,173 @@ class AnalyseMethods extends Simple
             ->addParameter('data', $data);
 
         return SkinRender::renderExpandableChild($model);
+    }
+
+    /**
+     * Gets comments from the reflection.
+     *
+     * Inherited comments are resolved by recursion of this function.
+     *
+     * @param string $originalComment
+     *   The original comment, so far. We use this function recursively,
+     *   new comments are added until all of them are resolved.
+     * @param \ReflectionClass $reflection
+     *   The reflection class of the object we want to analyse.
+     * @param string $methodName
+     *   The name of the method from which we ant to get the comment.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function getParentalComment($originalComment, \ReflectionClass $reflection, $methodName)
+    {
+        if (stripos($originalComment, '{@inheritdoc}') !== false) {
+            // now we need to get the parentclass and the comment
+            // from the parent function
+            /* @var \ReflectionClass $parentClass */
+            $parentClass = $reflection->getParentClass();
+            if (!is_object($parentClass)) {
+                // we've gone too far
+                // maybe a trait?
+                return self::getTraitComment($originalComment, $reflection, $methodName);
+            }
+
+            try {
+                $parentMethod = $parentClass->getMethod($methodName);
+                $parentComment = Toolbox::prettifyComment($parentMethod->getDocComment());
+            } catch (\ReflectionException $e) {
+                // Looks like we are trying to inherit from a not existing method
+                // maybe a trait?
+                return self::getTraitComment($originalComment, $reflection, $methodName);
+            }
+            // Replace it.
+            $originalComment = str_ireplace('{@inheritdoc}', $parentComment, $originalComment);
+            // and search for further parental comments . . .
+            return $this->getParentalComment($originalComment, $parentClass, $methodName);
+        } else {
+            // We don't need to do anything with it.
+            return $originalComment;
+        }
+    }
+
+    /**
+     * Gets the comment from all implemented interfaces.
+     *
+     * Iterated through an array of interfaces, to see
+     * if we can resolve the inherited comment.
+     *
+     * @param string $originalComment
+     *   The original comment, so far.
+     * @param \ReflectionClass $reflection
+     *   A reflection of the object we are currently analysing.
+     * @param string $methodName
+     *   The name of the method from which we ant to get the comment.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function getInterfaceComment($originalComment, \ReflectionClass $reflection, $methodName)
+    {
+        if (stripos($originalComment, '{@inheritdoc}') !== false) {
+            $interfaceArray = $reflection->getInterfaces();
+            foreach ($interfaceArray as $interface) {
+                if (stripos($originalComment, '{@inheritdoc}') !== false) {
+                    try {
+                        $interfaceMethod = $interface->getMethod($methodName);
+                        if (!is_object($interfaceMethod)) {
+                            // We've gone too far.
+                            // We should tell the user, that we could not resolve
+                            // the inherited comment.
+                            $originalComment = str_ireplace(
+                                '{@inheritdoc}',
+                                ' ***could not resolve inherited comment*** ',
+                                $originalComment
+                            );
+                        } else {
+                            $interfacecomment = Toolbox::prettifyComment($interfaceMethod->getDocComment());
+                            // Replace it.
+                            $originalComment = str_ireplace('{@inheritdoc}', $interfacecomment, $originalComment);
+                        }
+                    } catch (\ReflectionException $e) {
+                        // Method not found.
+                        // We should try the next interface.
+                    }
+                } else {
+                    // Looks like we've resolved them all.
+                    return $originalComment;
+                }
+            }
+            // We are still here ?!? Return the original comment.
+            return $originalComment;
+        } else {
+            return $originalComment;
+        }
+    }
+
+    /**
+     * Gets the comment from all added traits.
+     *
+     * Iterated through an array of traits, to see
+     * if we can resolve the inherited comment. Traits
+     * are only supported since PHP 5.4, so we need to
+     * check if they are available.
+     *
+     * @param string $originalComment
+     *   The original comment, so far.
+     * @param \ReflectionClass $reflection
+     *   A reflection of the object we are currently analysing.
+     * @param string $methodName
+     *   The name of the method from which we ant to get the comment.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function getTraitComment($originalComment, \ReflectionClass $reflection, $methodName)
+    {
+        if (stripos($originalComment, '{@inheritdoc}') !== false) {
+            // We need to check if we can get traits here.
+            if (method_exists($reflection, 'getTraits')) {
+                // Get the traits from this class.
+                $traitArray = $reflection->getTraits();
+                // Get the traits from the parent traits.
+                foreach ($traitArray as $trait) {
+                    $parentTraits = $trait->getTraits();
+                    // Merge them into our trait array to get al parents.
+                    $traitArray = array_merge($traitArray, $parentTraits);
+                }
+                // Now we should have an array with reflections of all
+                // traits in the class we are currently looking at.
+                foreach ($traitArray as $trait) {
+                    try {
+                        $traitMethod = $trait->getMethod($methodName);
+                        if (!is_object($traitMethod)) {
+                            // We've gone too far.
+                            // We should tell the user, that we could not resolve
+                            // the inherited comment.
+                            $originalComment = str_ireplace(
+                                '{@inheritdoc}',
+                                ' ***could not resolve inherited comment*** ',
+                                $originalComment
+                            );
+                        } else {
+                            $traitComment = Toolbox::prettifyComment($traitMethod->getDocComment());
+                            // Replace it.
+                            $originalComment = str_ireplace('{@inheritdoc}', $traitComment, $originalComment);
+                        }
+                    } catch (\ReflectionException $e) {
+                        // Method not found.
+                        // We should try the next trait.
+                    }
+                }
+                // Return what we could resolve so far.
+                return $originalComment;
+            } else {
+                // Wrong PHP version. Traits are not available.
+                // Maybe there is something in the interface?
+                return $originalComment;
+            }
+        } else {
+            return $originalComment;
+        }
     }
 }

@@ -466,7 +466,7 @@ class Variables
         $result = array();
 
         // Adding comments from the file.
-        $result['comments'] = Comments::prettifyComment($ref->getDocComment());
+        $result['comments'] = Toolbox::prettifyComment($ref->getDocComment());
         // Adding the place where it was declared.
         $result['declared in'] = $ref->getFileName() . "\n";
         $result['declared in'] .= 'in line ' . $ref->getStartLine();

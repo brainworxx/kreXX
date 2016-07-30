@@ -250,6 +250,40 @@ class Toolbox
         return $result;
     }
 
+        /**
+     * Removes the comment-chars from the comment string.
+     *
+     * @param string $comment
+     *   The original comment from the reflection
+     *   (or interface) in case if an inherited comment.
+     *
+     * @return string
+     *   The better readable comment
+     */
+    public static function prettifyComment($comment)
+    {
+        // We split our comment into single lines and remove the unwanted
+        // comment chars with the array_map callback.
+        $commentArray = explode("\n", $comment);
+        $result = array();
+        foreach ($commentArray as $commentLine) {
+            // We skip lines with /** and */
+            if ((strpos($commentLine, '/**') === false) && (strpos($commentLine, '*/') === false)) {
+                // Remove comment-chars, but we need to leave the whitespace intact.
+                $commentLine = trim($commentLine);
+                if (strpos($commentLine, '*') === 0) {
+                    // Remove the * by char position.
+                    $result[] = substr($commentLine, 1);
+                } else {
+                    // We are missing the *, so we just add the line.
+                    $result[] = $commentLine;
+                }
+            }
+        }
+
+        return implode(PHP_EOL, $result);
+    }
+
     /**
      * Reads the content of a file.
      *

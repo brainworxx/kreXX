@@ -121,9 +121,7 @@ class Krexx
         include_once $krexxdir . 'src/framework/Toolbox.php';
         include_once $krexxdir . 'src/framework/Chunks.php';
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
-        include_once $krexxdir . 'src/analysis/objects/Comments.php';
         include_once $krexxdir . 'src/analysis/objects/Flection.php';
-        include_once $krexxdir . 'src/analysis/objects/Properties.php';
         include_once $krexxdir . 'src/analysis/Hive.php';
         include_once $krexxdir . 'src/analysis/Variables.php';
         include_once $krexxdir . 'src/model/Simple.php';
