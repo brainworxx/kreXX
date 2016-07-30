@@ -33,8 +33,10 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
+use Brainworxx\Krexx\Analysis\Objects\Comments;
 use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Closure\Variables\AnalyseArray;
 use Brainworxx\Krexx\Model\Closure\Variables\IterateThrough;
 use Brainworxx\Krexx\Model\Simple;
@@ -42,6 +44,8 @@ use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Model\Closure\Objects\AnalyseObject;
+use Brainworxx\Krexx\Model\Closure\Objects\Closure;
 
 /**
  * This class hosts the variable analysis functions.
@@ -432,5 +436,125 @@ class Variables
             ->setJson($json);
 
         return SkinRender::renderSingleChild($model);
+    }
+
+    /**
+     * Analyses a closure.
+     *
+     * @param object $data
+     *   The closure we want to analyse.
+     * @param string $propName
+     *   The property name
+     * @param string $additional
+     *   Information about the declaration in the parent class / array.
+     * @param string $connector1
+     *   The connector1 type to the parent class / array.
+     * @param string $connector2
+     *   The connector2 type to the parent class / array.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    public static function analyseClosure(
+        $data,
+        $propName = 'closure',
+        $additional = '',
+        $connector1 = '',
+        $connector2 = ''
+    ) {
+        $ref = new \ReflectionFunction($data);
+
+        $result = array();
+
+        // Adding comments from the file.
+        $result['comments'] = Comments::prettifyComment($ref->getDocComment());
+        // Adding the place where it was declared.
+        $result['declared in'] = $ref->getFileName() . "\n";
+        $result['declared in'] .= 'in line ' . $ref->getStartLine();
+        // Adding the namespace, but only if we have one.
+        $namespace = $ref->getNamespaceName();
+        if (strlen($namespace) > 0) {
+            $result['namespace'] = $namespace;
+        }
+        // Adding the parameters.
+        $parameters = $ref->getParameters();
+        $paramList = '';
+        foreach ($parameters as $parameter) {
+            preg_match('/(.*)(?= \[ )/', $parameter, $key);
+            $parameter = str_replace($key[0], '', $parameter);
+            $result[$key[0]] = trim($parameter, ' []');
+            $paramList .= trim(str_replace(array(
+                    '&lt;optional&gt;',
+                    '&lt;required&gt;'
+                ), array('', ''), $result[$key[0]])) . ', ';
+        }
+        // Remove the ',' after the last char.
+        $paramList = '<small>' . trim($paramList, ', ') . '</small>';
+
+        $model = new Closure();
+        $model->setName($propName)
+            ->setType($additional . ' closure')
+            ->setConnector1($connector1)
+            ->setConnector2($connector2 . '(' . $paramList . ') =')
+            ->addParameter('data', $result);
+
+        return SkinRender::renderExpandableChild($model);
+
+    }
+
+    /**
+     * Render a dump for an object.
+     *
+     * @param mixed $data
+     *   The object we want to analyse.
+     * @param string $name
+     *   The name of the object.
+     * @param string $additional
+     *   Information about the declaration in the parent class / array.
+     * @param string $connector1
+     *   The connector1 type to the parent class / array.
+     * @param string $connector2
+     *   The connector2 type to the parent class / array.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    public static function analyseObject($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    {
+        static $level = 0;
+
+        $output = '';
+        $level++;
+
+        $model = new AnalyseObject();
+        $model->setName($name)
+            ->setType($additional . 'class')
+            ->addParameter('data', $data)
+            ->addParameter('name', $name)
+            ->setAdditional(get_class($data))
+            ->setDomid(Toolbox::generateDomIdFromObject($data))
+            ->setConnector1($connector1)
+            ->setConnector2($connector2);
+
+        if (Hive::isInHive($data)) {
+            // Tell them, we've been here before
+            // but also say who we are.
+            $model->setNormal(get_class($data));
+            $output .= SkinRender::renderRecursion($model);
+
+            // We will not render this one, but since we
+            // return to wherever we came from, we need to decrease the level.
+            $level--;
+            return $output;
+        } else {
+            // Remember, that we've been here before.
+            Hive::addToHive($data);
+
+            // Output data from the class.
+            $output .= SkinRender::renderExpandableChild($model);
+            // We've finished this one, and can decrease the level setting.
+            $level--;
+            return $output;
+        }
     }
 }

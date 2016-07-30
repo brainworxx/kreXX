@@ -119,11 +119,11 @@ class AnalyseObject extends Simple
 
         // Dumping traversable data.
         if (Config::getConfigValue('properties', 'analyseTraversable') == 'true') {
-            $output .= Objects::getTraversableData($data, $name);
+            $output .= $this->getTraversableData($data, $name);
         }
 
         // Dumping all configured debug functions.
-        $output .= Objects::pollAllConfiguredDebugMethods($data);
+        $output .= $this->pollAllConfiguredDebugMethods($data);
 
         // Adding a HR for a better readability.
         $output .= SkinRender::renderSingeChildHr();
@@ -170,6 +170,140 @@ class AnalyseObject extends Simple
                 ->setType('class internals')
                 ->addParameter('ref', $ref)
                 ->addParameter('methods', $methods);
+
+            return SkinRender::renderExpandableChild($model);
+        }
+        return '';
+    }
+
+    /**
+     * Calls all configured debug methods in die class.
+     *
+     * I've added a try and an empty error function callback
+     * to catch possible problems with this. This will,
+     * of cause, not stop a possible fatal in the function
+     * itself.
+     *
+     * @param object $data
+     *   The object we are analysing.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function pollAllConfiguredDebugMethods($data)
+    {
+        $output = '';
+
+        $funcList = explode(',', Config::getConfigValue('methods', 'debugMethods'));
+        foreach ($funcList as $funcName) {
+            if (is_callable(array(
+                    $data,
+                    $funcName,
+                )) && Config::isAllowedDebugCall($data, $funcName)
+            ) {
+                $foundRequired = false;
+                // We need to check if this method actually exists. Just because it is
+                // callable does not mean it exists!
+                if (method_exists($data, $funcName)) {
+                    // We need to check if the callable function requires any parameters.
+                    // We will not call those, because we simply can not provide them.
+                    // Interestingly, some methods of a class are callable, but are not
+                    // implemented. This means, that when I try to get a reflection,
+                    // it will result in a WSOD.
+                    $ref = new \ReflectionMethod($data, $funcName);
+                    $params = $ref->getParameters();
+                    foreach ($params as $param) {
+                        if (!$param->isOptional()) {
+                            // We've got a required parameter!
+                            // We will not call this one.
+                            $foundRequired = true;
+                        }
+                    }
+                    unset($ref);
+                } else {
+                    // It's callable, but does not exist. Looks like a __call fallback.
+                    // We will not poll it for data.
+                    $foundRequired = true;
+                }
+
+                if ($foundRequired == false) {
+                    // Add a try to prevent the hosting CMS from doing something stupid.
+                    try {
+                        // We need to deactivate the current error handling to
+                        // prevent the host system to do anything stupid.
+                        set_error_handler(function () {
+                            // Do nothing.
+                        });
+                        $result = $data->$funcName();
+                        // Reactivate whatever error handling we had previously.
+                        restore_error_handler();
+                    } catch (\Exception $e) {
+                        // Do nothing.
+                    }
+                    if (isset($result)) {
+                        $model = new IterateThroughDebug();
+                        $model->setName($funcName)
+                            ->setType('debug method')
+                            ->setAdditional('. . .')
+                            ->setHelpid($funcName)
+                            ->setConnector1('->')
+                            ->setConnector2('() =')
+                            ->addParameter('result', $result);
+
+                        $output .= SkinRender::renderExpandableChild($model);
+                        unset($result);
+                    }
+                }
+            }
+        }
+        return $output;
+    }
+
+    /**
+     * Dumps all available traversable data.
+     *
+     * @param \Iterator $data
+     *   The object we are analysing.
+     * @param string $name
+     *   The name of the object we want to analyse.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function getTraversableData($data, $name)
+    {
+        if (is_a($data, 'Traversable')) {
+            $connector1 = '';
+            $connector2 = '';
+
+            // If we are facing a IteratorAggregate, we can not access the array
+            // directly. To do this, we must get the Iterator from the class.
+            // For our analysis is it not really important, because it does not
+            // change anything. We need this for the automatic code generation.
+            if (is_a($data, 'IteratorAggregate')) {
+                $connector2 = '->getIterator()';
+                // Remove the name, because this would then get added to the source
+                // generation, resulting in unusable code.
+                $name = '';
+            }
+
+            // SplObjectStorage objects are something 'special'.
+            // You can only get their value by wrapping then with a
+            // iterator_or_array() or via a foreach and then using the
+            // key. Either can not be generated by the code generator. :-(
+            if (is_a($data, 'SplObjectStorage')) {
+                $connector1 = '';
+                $name = '';
+                $connector2 = '. . .';
+            }
+            $model = new IterateThroughTraversable();
+            $parameter = iterator_to_array($data);
+            $model->setName($name)
+                ->setType('Foreach')
+                ->setAdditional('Traversable Info')
+                ->setConnector1($connector1)
+                ->setConnector2($connector2)
+                ->addParameter('data', $parameter);
 
             return SkinRender::renderExpandableChild($model);
         }

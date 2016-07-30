@@ -193,7 +193,7 @@ class Config
     /**
      * Known Problems with debug functions, which will most likely cause a fatal.
      *
-     * Used by \Krexx\Objects::pollAllConfiguredDebugMethods() to determine
+     * Used by Objects::pollAllConfiguredDebugMethods() to determine
      * if we might expect problems.
      *
      * @var array
