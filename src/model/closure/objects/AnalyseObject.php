@@ -40,7 +40,6 @@ use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Analysis\Objects\Flection;
 use Brainworxx\Krexx\Analysis\Objects\Properties;
-use Brainworxx\Krexx\Analysis\Objects\Methods;
 
 class AnalyseObject extends Simple
 {
@@ -116,7 +115,7 @@ class AnalyseObject extends Simple
         }
 
         // Dumping all methods.
-        $output .= Methods::getMethodData($data);
+        $output .= $this->getMethodData($data);
 
         // Dumping traversable data.
         if (Config::getConfigValue('properties', 'analyseTraversable') == 'true') {
@@ -129,5 +128,51 @@ class AnalyseObject extends Simple
         // Adding a HR for a better readability.
         $output .= SkinRender::renderSingeChildHr();
         return $output;
+    }
+
+    /**
+     * Decides which methods we want to analyse and then starts the dump.
+     *
+     * @param object $data
+     *   The object we want to analyse.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function getMethodData($data)
+    {
+        // Dumping all methods but only if we have any.
+        $public = array();
+        $protected = array();
+        $private = array();
+        $ref = new \ReflectionClass($data);
+        if (Config::getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
+            $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+            if (Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' || Codegen::isInScope()) {
+                $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
+            }
+            if (Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' || Codegen::isInScope()) {
+                $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
+            }
+        }
+
+        // Is there anything to analyse?
+        $methods = array_merge($public, $protected, $private);
+        if (count($methods)) {
+            // We need to sort these alphabetically.
+            $sortingCallback = function ($a, $b) {
+                return strcmp($a->name, $b->name);
+            };
+            usort($methods, $sortingCallback);
+            $model = new AnalyseMethods();
+            $model->setName('Methods')
+                ->setType('class internals')
+                ->addParameter('ref', $ref)
+                ->addParameter('methods', $methods);
+
+            return SkinRender::renderExpandableChild($model);
+        }
+        return '';
     }
 }

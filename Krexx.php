@@ -123,7 +123,6 @@ class Krexx
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
         include_once $krexxdir . 'src/analysis/objects/Comments.php';
         include_once $krexxdir . 'src/analysis/objects/Flection.php';
-        include_once $krexxdir . 'src/analysis/objects/Methods.php';
         include_once $krexxdir . 'src/analysis/objects/Objects.php';
         include_once $krexxdir . 'src/analysis/objects/Properties.php';
         include_once $krexxdir . 'src/analysis/Hive.php';
