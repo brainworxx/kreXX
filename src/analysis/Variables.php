@@ -36,15 +36,15 @@ namespace Brainworxx\Krexx\Analysis;
 use Brainworxx\Krexx\Analysis\Objects\Comments;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
-use Brainworxx\Krexx\Model\Closure\Variables\AnalyseArray;
-use Brainworxx\Krexx\Model\Closure\Variables\IterateThrough;
+use Brainworxx\Krexx\Model\Variables\AnalyseArray;
+use Brainworxx\Krexx\Model\Variables\IterateThrough;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Model\Closure\Objects\AnalyseObject;
-use Brainworxx\Krexx\Model\Closure\Objects\Closure;
+use Brainworxx\Krexx\Model\Objects\AnalyseObject;
+use Brainworxx\Krexx\Model\Objects\Closure;
 
 /**
  * This class hosts the variable analysis functions.
