@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Model for the view rendering, hosting the object analysis closure.
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -37,8 +38,13 @@ use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Codegen;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Analysis\Objects\Flection;
+use Brainworxx\Krexx\Framework\Flection;
 
+/**
+ * Object analysis methods.
+ *
+ * @package Brainworxx\Krexx\Model\Objects
+ */
 class AnalyseObject extends Simple
 {
     /**
@@ -163,7 +169,7 @@ class AnalyseObject extends Simple
                 return strcmp($a->name, $b->name);
             };
             usort($methods, $sortingCallback);
-            $model = new AnalyseMethods();
+            $model = new IterateThroughMethods();
             $model->setName('Methods')
                 ->setType('class internals')
                 ->addParameter('ref', $ref)
@@ -325,7 +331,7 @@ class AnalyseObject extends Simple
 
         if (count($refConst) > 0) {
             // We've got some values, we will dump them.
-            $model = new Constants();
+            $model = new AnalyseConstants();
             $model->setName('Constants')
                 ->setType('class internals')
                 ->addParameter('refConst', $refConst);
@@ -356,7 +362,7 @@ class AnalyseObject extends Simple
     {
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
-        $model = new Properties();
+        $model = new IterateThroughProperties();
         $model->addParameter('refProps', $refProps)
             ->addParameter('ref', $ref)
             ->addParameter('orgObject', $data);

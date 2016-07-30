@@ -36,13 +36,13 @@ namespace Brainworxx\Krexx\Controller;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\View\Codegen;
-use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\Analysis\Hive;
+use Brainworxx\Krexx\Framework\Variables;
+use Brainworxx\Krexx\Framework\Hive;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
 
 /**
- * Controller actions for kreXX.
+ * Controller actions (if you want to call them that).
  *
  * @package Brainworxx\Krexx\Controller
  */
@@ -191,7 +191,7 @@ class OutputActions extends Internals
         $footer = self::outputFooter($caller);
         self::checkEmergencyBreak(true);
 
-        $analysis = self::outputBacktrace($backtrace);
+        $analysis = Variables::analysisBacktrace($backtrace);
         // Now that our analysis is done, we must check if there was an emergency
         // break.
         $emergency = false;
@@ -279,7 +279,7 @@ class OutputActions extends Internals
             $errorData['source']
         );
         // Get the backtrace.
-        $backtrace = self::outputBacktrace($errorData['backtrace']);
+        $backtrace = Variables::analysisBacktrace($errorData['backtrace']);
         // Get the footer.
         $footer = self::outputFooter('');
         // Get the messages.

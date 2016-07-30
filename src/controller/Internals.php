@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Controller actions for kreXX
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -36,14 +37,13 @@ namespace Brainworxx\Krexx\Controller;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Toolbox;
-use Brainworxx\Krexx\Model\Output\Backtrace;
-use Brainworxx\Krexx\Model\Output\Footer;
+use Brainworxx\Krexx\Model\Output\IterateThroughConfig;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\SkinRender;
 
 /**
- * Internal management stuff for the controller.
+ * Controller actions toolbox.
  *
  * @package Brainworxx\Krexx\Controller
  */
@@ -316,7 +316,7 @@ class Internals
         $source = $wholeConfig[0];
         $config = $wholeConfig[1];
 
-        $model = new Footer();
+        $model = new IterateThroughConfig();
         $model->setName($path)
             ->setType(Config::getPathToIni())
             ->setHelpid('currentSettings')
@@ -357,37 +357,6 @@ class Internals
         $js .= Toolbox::getFileContents($jsFile);
 
         return SkinRender::renderCssJs($css, $js);
-    }
-
-    /**
-     * Outputs a backtrace.
-     *
-     * We need to format this one a little bit different than a
-     * normal array.
-     *
-     * @param array $backtrace
-     *   The backtrace.
-     *
-     * @return string
-     *   The rendered backtrace.
-     */
-    protected static function outputBacktrace(array $backtrace)
-    {
-        $output = '';
-
-        // Add the sourcecode to our backtrace.
-        $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace, -1);
-
-        foreach ($backtrace as $step => $stepData) {
-            $model = new Backtrace();
-            $model->setName($step)
-                ->setType('Stack Frame')
-                ->addParameter('stepData', $stepData);
-
-            $output .= SkinRender::renderExpandableChild($model);
-        }
-
-        return $output;
     }
 
     /**

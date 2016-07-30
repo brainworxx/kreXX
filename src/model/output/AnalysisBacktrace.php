@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Model for the view rendering, hosting the backtrace closure.
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -35,13 +36,19 @@ namespace Brainworxx\Krexx\Model\Output;
 
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Analysis\Objects\Objects;
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Framework\Variables;
 
-class Backtrace extends Simple
+/**
+ * Backtrace analysis methods.
+ *
+ * The iterate-part takes place in the OutputActions::backtraceAction()
+ *
+ * @package Brainworxx\Krexx\Model\Output
+ */
+class AnalysisBacktrace extends Simple
 {
     /**
-     * Renders a backtrace.
+     * Renders a backtrace step.
      *
      * @return string
      */
@@ -94,7 +101,7 @@ class Backtrace extends Simple
         }
         // Object.
         if (isset($stepData['object'])) {
-            $output .= Objects::analyseObject($stepData['object'], 'Calling object');
+            $output .= Variables::analyseObject($stepData['object'], 'Calling object');
         }
         // Type.
         if (isset($stepData['type'])) {

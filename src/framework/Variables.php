@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Variables analysis functions for kreXX
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   kreXX is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -31,25 +32,23 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analysis;
+namespace Brainworxx\Krexx\Framework;
 
-use Brainworxx\Krexx\Analysis\Objects\Comments;
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Toolbox;
+use Brainworxx\Krexx\Model\Output\AnalysisBacktrace;
 use Brainworxx\Krexx\Model\Variables\AnalyseArray;
-use Brainworxx\Krexx\Model\Variables\IterateThrough;
+use Brainworxx\Krexx\Model\Variables\IterateThroughArray;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Model\Objects\AnalyseObject;
-use Brainworxx\Krexx\Model\Objects\Closure;
+use Brainworxx\Krexx\Model\Objects\AnalyseClosure;
 
 /**
- * This class hosts the variable analysis functions.
+ * Variables analysis functions methods.
  *
- * @package Brainworxx\Krexx\Analysis
+ * @package Brainworxx\Krexx\Framework
  */
 class Variables
 {
@@ -175,7 +174,7 @@ class Variables
      */
     public static function iterateThrough(&$data)
     {
-        $model = new IterateThrough();
+        $model = new IterateThroughArray();
         $model->addParameter('data', $data);
         return SkinRender::renderExpandableChild($model);
     }
@@ -490,7 +489,7 @@ class Variables
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
 
-        $model = new Closure();
+        $model = new AnalyseClosure();
         $model->setName($propName)
             ->setType($additional . ' closure')
             ->setConnector1($connector1)
@@ -555,5 +554,36 @@ class Variables
             $level--;
             return $output;
         }
+    }
+
+    /**
+     * Analysis a backtrace.
+     *
+     * We need to format this one a little bit different than a
+     * normal array.
+     *
+     * @param array $backtrace
+     *   The backtrace.
+     *
+     * @return string
+     *   The rendered backtrace.
+     */
+    public static function analysisBacktrace(array $backtrace)
+    {
+        $output = '';
+
+        // Add the sourcecode to our backtrace.
+        $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace, -1);
+
+        foreach ($backtrace as $step => $stepData) {
+            $model = new AnalysisBacktrace();
+            $model->setName($step)
+                ->setType('Stack Frame')
+                ->addParameter('stepData', $stepData);
+
+            $output .= SkinRender::renderExpandableChild($model);
+        }
+
+        return $output;
     }
 }

@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Output string handling for kreXX
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -37,9 +38,9 @@ use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Messages;
 
 /**
- * Splitting strings into small tiny chunks.
+ * Output string handling for kreXX, splitting strings into small tiny chunks.
  *
- * The mainproblem with our "templating engine" is, we are
+ * The main problem with our "templating engine" is, we are
  * adding partials into partials, over and over again. This
  * results in a very long string, 30 MB or larger. When using
  * str_replace() on it, we can have a memory peak of 90 MB or

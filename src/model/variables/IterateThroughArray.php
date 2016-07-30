@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Model for the view rendering, hosting iterating through array closure.
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -35,10 +36,15 @@ namespace Brainworxx\Krexx\Model\Variables;
 
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\Analysis\Hive;
+use Brainworxx\Krexx\Framework\Variables;
+use Brainworxx\Krexx\Framework\Hive;
 
-class IterateThrough extends Simple
+/**
+ * Array analysis mehtods.
+ *
+ * @package Brainworxx\Krexx\Model\Variables
+ */
+class IterateThroughArray extends Simple
 {
     /**
      * @return string
@@ -47,37 +53,19 @@ class IterateThrough extends Simple
     {
         $output = '';
         $data = $this->parameters['data'];
-        $isObject = is_object($data);
-
-        $recursionMarker = Hive::getMarker();
 
         // Recursion detection of objects are handled in the hub.
-        if (is_array($data) && Hive::isInHive($data)) {
+        if (Hive::isInHive($data)) {
             return SkinRender::renderRecursion(new Simple());
         }
 
         // Remember, that we've already been here.
         Hive::addToHive($data);
 
-        // Keys?
-        $keys = array_keys($data);
-
         $output .= SkinRender::renderSingeChildHr();
 
         // Iterate through.
-        foreach ($keys as $k) {
-            // Skip the recursion marker.
-            if ($k === $recursionMarker) {
-                continue;
-            }
-
-            // Get real value.
-            if ($isObject) {
-                $v = &$data->$k;
-            } else {
-                $v = &$data[$k];
-            }
-
+        foreach ($data as $k => &$v) {
             $output .= Variables::analysisHub($v, $k, '[', '] =');
         }
         $output .= SkinRender::renderSingeChildHr();

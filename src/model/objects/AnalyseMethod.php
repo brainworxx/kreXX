@@ -36,7 +36,12 @@ namespace Brainworxx\Krexx\Model\Objects;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
 
-class MethodInfo extends Simple
+/**
+ * Class MethodInfo
+ *
+ * @package Brainworxx\Krexx\Model\Objects
+ */
+class AnalyseMethod extends Simple
 {
     /**
      * Renders the info of a single method.

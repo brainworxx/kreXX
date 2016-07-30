@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Model for the view rendering, hosting the footer closure.
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -38,10 +39,11 @@ use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
 
 /**
- * Class OutputFooter
- * @package Brainworxx\Krexx\Model\Closure
+ * Configuration output methods.
+ *
+ * @package Brainworxx\Krexx\Model\Output
  */
-class Footer extends Simple
+class IterateThroughConfig extends Simple
 {
     /**
      * Renders the footer.
@@ -55,7 +57,7 @@ class Footer extends Simple
         $configOutput = '';
         foreach ($config as $sectionName => $sectionData) {
             // Render a whole section.
-            $model = new FooterSection();
+            $model = new AnalysisConfig();
             $model->setName($sectionName)
                 ->setType('Config')
                 ->setAdditional('. . .')

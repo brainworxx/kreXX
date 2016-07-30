@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Model for the view rendering, hosting the object methods analysis closure.
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -37,7 +38,12 @@ use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
 
-class AnalyseMethods extends Simple
+/**
+ * Methods analysis methods. :rolleyes:
+ *
+ * @package Brainworxx\Krexx\Model\Objects
+ */
+class IterateThroughMethods extends Simple
 {
     /**
      * Simply start to iterate through the methods.
@@ -142,7 +148,7 @@ class AnalyseMethods extends Simple
         }
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
-        $model = new MethodInfo();
+        $model = new AnalyseMethod();
         $model->setName($name)
             ->setType($data['declaration keywords'] . ' method')
             ->setConnector1($connector1)
