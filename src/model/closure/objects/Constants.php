@@ -34,7 +34,6 @@
 namespace Brainworxx\Krexx\Model\Closure\Objects;
 
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Class Constants

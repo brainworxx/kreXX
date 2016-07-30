@@ -34,12 +34,12 @@
 namespace Brainworxx\Krexx\Model\Closure\Objects;
 
 use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\View\Codegen;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Analysis\Objects\Flection;
 use Brainworxx\Krexx\Analysis\Objects\Properties;
-use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\Analysis\Objects\Methods;
 
 class AnalyseObject extends Simple
@@ -92,7 +92,7 @@ class AnalyseObject extends Simple
         }
 
         // Dumping protected properties.
-        if (Config::getConfigValue('properties', 'analyseProtected') == 'true' || Internals::isInScope()) {
+        if (Config::getConfigValue('properties', 'analyseProtected') == 'true' || Codegen::isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
             usort($refProps, $sortingCallback);
 
@@ -102,7 +102,7 @@ class AnalyseObject extends Simple
         }
 
         // Dumping private properties.
-        if (Config::getConfigValue('properties', 'analysePrivate') == 'true' || Internals::isInScope()) {
+        if (Config::getConfigValue('properties', 'analysePrivate') == 'true' || Codegen::isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
             if (count($refProps)) {

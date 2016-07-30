@@ -34,10 +34,10 @@
 namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Analysis\Hive;
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Framework\Chunks;
-use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -50,13 +50,6 @@ use Brainworxx\Krexx\Model\Simple;
  */
 class Render extends Help
 {
-
-    /**
-     * Counts how often kreXX was called.
-     *
-     * @var int
-     */
-    public static $KrexxCount = 0;
 
     /**
      * Name of the skin currently in use.
@@ -198,7 +191,7 @@ class Render extends Help
         // Replace our stuff in the partial.
         $template = str_replace('{version}', Config::$version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
-        $template = str_replace('{KrexxCount}', self::$KrexxCount, $template);
+        $template = str_replace('{KrexxCount}', OutputActions::$KrexxCount, $template);
         $template = str_replace('{headline}', $headline, $template);
         $template = str_replace('{cssJs}', $cssJs, $template);
         $template = str_replace('{KrexxId}', Hive::getMarker(), $template);
@@ -314,7 +307,7 @@ class Render extends Help
     public static function renderExpandableChild(Simple $model, $isExpanded = false)
     {
         // Check for emergency break.
-        if (!Internals::checkEmergencyBreak()) {
+        if (!OutputActions::checkEmergencyBreak()) {
             // Normally, this should not show up, because the Chunks class will not
             // output anything, except a JS alert.
             Messages::addMessage("Emergency break for large output during analysis process.");
@@ -517,7 +510,7 @@ class Render extends Help
         $template = str_replace('{errstr}', $errstr, $template);
         $template = str_replace('{file}', $errfile, $template);
         $template = str_replace('{source}', $source, $template);
-        $template = str_replace('{KrexxCount}', self::$KrexxCount, $template);
+        $template = str_replace('{KrexxCount}', OutputActions::$KrexxCount, $template);
 
         return str_replace('{line}', $errline, $template);
     }

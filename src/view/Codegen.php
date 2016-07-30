@@ -33,9 +33,8 @@
 
 namespace Brainworxx\Krexx\View;
 
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -46,6 +45,20 @@ use Brainworxx\Krexx\Model\Simple;
 class Codegen
 {
 
+     /**
+     * The "scope we are starting with. When it is $this in combination with a
+     * nesting level of 1, we treat protected and private variables and functions
+     * as public, because they are reachable from the current scope.
+     *
+     * @var string
+     */
+    public static $scope = '';
+
+    /**
+     * We are counting the level of the object.
+     *
+     * @var int
+     */
     protected static $counter = 0;
 
     /**
@@ -95,7 +108,7 @@ class Codegen
                     break;
             }
         }
-        
+
         self::$counter++;
         return $result;
     }
@@ -170,7 +183,7 @@ class Codegen
         }
 
         // Test if we are inside the scope.
-        if (Internals::isInScope($type)) {
+        if (self::isInScope($type)) {
             // We are inside the scope, this value, function or class is reachable.
             return $contagination;
         }
@@ -196,5 +209,28 @@ class Codegen
     public static function resetCounter()
     {
         self::$counter = 0;
+    }
+
+    /**
+     * We decide if a function is currently within a reachable scope.
+     *
+     * @param string $type
+     *   The type we are looking at, either class or array.
+     *
+     * @return bool
+     *   Whether it is within the scope or not.
+     */
+    public static function isInScope($type = '')
+    {
+        // When analysing a class or array, we have + 1 on our nesting level, when
+        // coming from the code generation. That is, because that class is currently
+        // being analysed.
+        if (strpos($type, 'class') === false && strpos($type, 'array') === false) {
+            $nestingLevel = OutputActions::$nestingLevel;
+        } else {
+            $nestingLevel = OutputActions::$nestingLevel - 1;
+        }
+
+        return $nestingLevel <= 1 && self::$scope == '$this';
     }
 }

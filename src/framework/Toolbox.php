@@ -33,6 +33,7 @@
 
 namespace Brainworxx\Krexx\Framework;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\SkinRender;
 
@@ -111,7 +112,7 @@ class Toolbox
     public static function generateDomIdFromObject($data)
     {
         if (is_object($data)) {
-            return 'k' . SkinRender::$KrexxCount . '_' . spl_object_hash($data);
+            return 'k' . OutputActions::$KrexxCount . '_' . spl_object_hash($data);
         } else {
             // Do nothing.
             return '';
@@ -167,15 +168,17 @@ class Toolbox
      *
      * @param array $backtrace
      *   The backtrace from debug_backtrace().
+     * @param int $offset
+     *   When using the tick-backtrace, we are off by 1.
      *
      * @return array
      *   The backtrace with the source samples.
      */
-    public static function addSourcecodeToBacktrace(array $backtrace)
+    public static function addSourcecodeToBacktrace(array $backtrace, $offset = 0)
     {
         foreach ($backtrace as &$trace) {
-            // The line number is 0-based, we need to a -1.
-            $source = self::readSourcecode($trace['file'], $trace['line'] - 1, 3);
+            $trace['line'] = $trace['line'] + $offset;
+            $source = self::readSourcecode($trace['file'], $trace['line'], 5);
             // Add it only, if we have source code. Some internal functions do not
             // provide any (call_user_func for example).
             if (strlen(trim($source)) > 0) {
@@ -189,7 +192,7 @@ class Toolbox
     }
 
     /**
-     * Reads sourcecode from files, in case a fatal error occurred.
+     * Reads sourcecode from files, for the backtrace.
      *
      * @param string $file
      *   Path to the file you want to read.
@@ -219,14 +222,6 @@ class Toolbox
 
             for ($currentLineNo = $from; $currentLineNo <= $to; $currentLineNo++) {
                 if (isset($contentArray[$currentLineNo])) {
-                    // We are ignoring empty lines.
-                    $line = preg_replace('/\s+/', '', $contentArray[$currentLineNo]);
-                    if (strlen($line) == 0) {
-                        // We will need to increase the $to.
-                        if ($to + 1 <= count($contentArray)) {
-                            $to++;
-                        }
-                    }
                     // Add it to the result.
                     $realLineNo = $currentLineNo + 1;
 
@@ -477,6 +472,40 @@ class Toolbox
             }
         }
 
+        return $result;
+    }
+
+    /**
+     * The benchmark main function.
+     *
+     * @param array $timeKeeping
+     *   The timekeeping array.
+     *
+     * @return array
+     *   The benchmark array.
+     *
+     * @see http://php.net/manual/de/function.microtime.php
+     * @author gomodo at free dot fr
+     */
+    public static function miniBenchTo(array $timeKeeping)
+    {
+        // Get the very first key.
+        $start = key($timeKeeping);
+        $totalTime = round((end($timeKeeping) - $timeKeeping[$start]) * 1000, 4);
+        $result['url'] = Toolbox::getCurrentUrl();
+        $result['total_time'] = $totalTime;
+        $prevMomentName = $start;
+        $prevMomentStart = $timeKeeping[$start];
+
+        foreach ($timeKeeping as $moment => $time) {
+            if ($moment != $start) {
+                // Calculate the time.
+                $percentageTime = round(((round(($time - $prevMomentStart) * 1000, 4) / $totalTime) * 100), 1);
+                $result[$prevMomentName . '->' . $moment] = $percentageTime . '%';
+                $prevMomentStart = $time;
+                $prevMomentName = $moment;
+            }
+        }
         return $result;
     }
 }

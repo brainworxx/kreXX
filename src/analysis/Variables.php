@@ -34,7 +34,7 @@
 namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Analysis\Objects\Objects;
-use Brainworxx\Krexx\Framework\Internals;
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Closure\Variables\AnalyseArray;
 use Brainworxx\Krexx\Model\Closure\Variables\IterateThrough;
 use Brainworxx\Krexx\Model\Simple;
@@ -70,9 +70,8 @@ class Variables
      */
     public static function analysisHub(&$data, $name = '', $connector1 = '', $connector2 = '')
     {
-
         // Check memory and runtime.
-        if (!Internals::checkEmergencyBreak()) {
+        if (!OutputActions::checkEmergencyBreak()) {
             // No more took too long, or not enough memory is left.
             Messages::addMessage("Emergency break for large output during analysis process.");
             return '';
@@ -88,42 +87,42 @@ class Variables
         // Object?
         // Closures are analysed separately.
         if (is_object($data) && !is_a($data, '\Closure')) {
-            Internals::$nestingLevel++;
-            if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
+            OutputActions::$nestingLevel++;
+            if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
                 $result = Objects::analyseObject($data, $name, '', $connector1, $connector2);
-                Internals::$nestingLevel--;
+                OutputActions::$nestingLevel--;
                 return $result;
             } else {
-                Internals::$nestingLevel--;
+                OutputActions::$nestingLevel--;
                 return Variables::analyseString('Object => ' . Help::getHelp('maximumLevelReached'), $name);
             }
         }
 
         // Closure?
         if (is_object($data) && is_a($data, '\Closure')) {
-            Internals::$nestingLevel++;
-            if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
+            OutputActions::$nestingLevel++;
+            if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
                 if ($connector2 == '] =') {
                     $connector2 = ']';
                 }
                 $result = Objects::analyseClosure($data, $name, '', $connector1, $connector2);
-                Internals::$nestingLevel--;
+                OutputActions::$nestingLevel--;
                 return $result;
             } else {
-                Internals::$nestingLevel--;
+                OutputActions::$nestingLevel--;
                 return Variables::analyseString('Closure => ' . Help::getHelp('maximumLevelReached'), $name);
             }
         }
 
         // Array?
         if (is_array($data)) {
-            Internals::$nestingLevel++;
-            if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
+            OutputActions::$nestingLevel++;
+            if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
                 $result = Variables::analyseArray($data, $name, '', $connector1, $connector2);
-                Internals::$nestingLevel--;
+                OutputActions::$nestingLevel--;
                 return $result;
             } else {
-                Internals::$nestingLevel--;
+                OutputActions::$nestingLevel--;
                 return Variables::analyseString('Array => ' . Help::getHelp('maximumLevelReached'), $name);
             }
         }

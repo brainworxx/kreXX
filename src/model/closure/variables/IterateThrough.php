@@ -35,7 +35,6 @@ namespace Brainworxx\Krexx\Model\Closure\Variables;
 
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Analysis\Objects;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Analysis\Hive;
 

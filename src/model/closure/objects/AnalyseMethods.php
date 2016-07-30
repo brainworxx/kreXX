@@ -34,7 +34,6 @@
 namespace Brainworxx\Krexx\Model\Closure\Objects;
 
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Objects\Methods;
 
 class AnalyseMethods extends Simple

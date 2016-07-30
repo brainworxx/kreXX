@@ -33,8 +33,9 @@
 
 namespace Brainworxx\Krexx\View;
 
-use Brainworxx\Krexx\Analysis;
-use Brainworxx\Krexx\Framework;
+use Brainworxx\Krexx\Analysis\Hive;
+use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -70,7 +71,7 @@ class SkinRender extends Render
     {
 
         // Check for emergency break.
-        if (!Framework\Internals::checkEmergencyBreak()) {
+        if (!OutputActions::checkEmergencyBreak()) {
             // Normally, this should not show up, because the Chunks class will not
             // output anything, except a JS alert.
             Messages::addMessage("Emergency break for large output during analysis process.");
@@ -82,7 +83,7 @@ class SkinRender extends Render
             // Without a Name or Type I only display the Child with a Node.
             $template = self::getTemplateFileContent('expandableChildSimple');
             // Replace our stuff in the partial.
-            return str_replace('{mainfunction}', Framework\Chunks::chunkMe($model->renderMe()), $template);
+            return str_replace('{mainfunction}', Chunks::chunkMe($model->renderMe()), $template);
         } else {
             // We need to render this one normally.
             $template = self::getTemplateFileContent('expandableChildNormal');
@@ -132,7 +133,7 @@ class SkinRender extends Render
 
             return str_replace(
                 '{nest}',
-                Framework\Chunks::chunkMe(self::renderNest($model, false)),
+                Chunks::chunkMe(self::renderNest($model, false)),
                 $template
             );
         }
@@ -224,6 +225,6 @@ class SkinRender extends Render
 
         // Add the search.
         $template = str_replace('{search}', self::renderSearch(), $template);
-        return str_replace('{KrexxId}', Analysis\Hive::getMarker(), $template);
+        return str_replace('{KrexxId}', Hive::getMarker(), $template);
     }
 }

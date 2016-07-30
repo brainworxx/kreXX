@@ -31,17 +31,16 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-use Brainworxx\Krexx\Analysis\Hive;
+
 use Brainworxx\Krexx\Errorhandler\Fatal;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
-
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\View\Render;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Help;
-use Brainworxx\Krexx\View\Output;
+use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Framework\Toolbox;
 
 /**
  * Alias function for object analysis.
@@ -118,12 +117,10 @@ class Krexx
         include_once $krexxdir . 'src/view/Render.php';
         include_once $krexxdir . 'src/view/Messages.php';
         include_once $krexxdir . 'src/view/Codegen.php';
-        include_once $krexxdir . 'src/view/Output.php';
         include_once $krexxdir . 'src/framework/Config.php';
         include_once $krexxdir . 'src/framework/Toolbox.php';
         include_once $krexxdir . 'src/framework/Chunks.php';
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
-        include_once $krexxdir . 'src/framework/Internals.php';
         include_once $krexxdir . 'src/analysis/objects/Comments.php';
         include_once $krexxdir . 'src/analysis/objects/Flection.php';
         include_once $krexxdir . 'src/analysis/objects/Methods.php';
@@ -146,8 +143,10 @@ class Krexx
         include_once $krexxdir . 'src/model/closure/objects/IterateThroughTraversable.php';
         include_once $krexxdir . 'src/model/closure/objects/Closure.php';
         include_once $krexxdir . 'src/model/closure/objects/IterateThroughDebug.php';
-        include_once $krexxdir . 'src/errorhandler/AbstractHandler.php';
+        include_once $krexxdir . 'src/errorhandler/Error.php';
         include_once $krexxdir . 'src/errorhandler/Fatal.php';
+        include_once $krexxdir . 'src/controller/Internals.php';
+        include_once $krexxdir . 'src/controller/OutputActions.php';
 
         Config::$krexxdir = $krexxdir;
 
@@ -161,10 +160,10 @@ class Krexx
 
         // Register our shutdown handler. He will handle the display
         // of kreXX after the hosting CMS is finished.
-        Internals::$shutdownHandler = new ShutdownHandler();
+        OutputActions::$shutdownHandler = new ShutdownHandler();
         register_shutdown_function(array(
-          Internals::$shutdownHandler,
-          'shutdownCallback'
+            OutputActions::$shutdownHandler,
+            'shutdownCallback'
         ));
 
         // Check if the log and chunk folder are writable.
@@ -262,7 +261,7 @@ class Krexx
         }
         self::timerMoment('end');
         // And we are done. Feedback to the user.
-        Internals::dump(Internals::miniBenchTo(self::$timekeeping), 'kreXX timer');
+        OutputActions::dumpAction(Toolbox::miniBenchTo(self::$timekeeping), 'kreXX timer');
         self::reFatalAfterKrexx();
     }
 
@@ -279,7 +278,7 @@ class Krexx
         if (!Config::isEnabled()) {
             return;
         }
-        Internals::dump($data);
+        OutputActions::dumpAction($data);
         self::reFatalAfterKrexx();
     }
 
@@ -297,7 +296,7 @@ class Krexx
             return;
         }
         // Render it.
-        Internals::backtrace();
+        OutputActions::backtraceAction();
         self::reFatalAfterKrexx();
     }
 
@@ -335,21 +334,7 @@ class Krexx
         if (!Config::isEnabled(null)) {
             return;
         }
-        Internals::$timer = time();
-
-        // Find caller.
-        $caller = Internals::findCaller();
-        $caller['type'] = 'Cookie Configuration';
-        Chunks::addMetadata($caller);
-
-        // Render it.
-        Render::$KrexxCount++;
-        $footer = Output::outputFooter($caller, true);
-        Internals::$shutdownHandler->addChunkString(Output::outputHeader('Edit local settings'));
-        Internals::$shutdownHandler->addChunkString($footer);
-
-        // Cleanup the hive.
-        Hive::cleanupHive();
+        OutputActions::editSettingsAction();
         self::reFatalAfterKrexx();
     }
 

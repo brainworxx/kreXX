@@ -36,10 +36,8 @@ namespace Brainworxx\Krexx\Analysis\Objects;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Model\Closure\Objects\AnalyseMethods;
 use Brainworxx\Krexx\Model\Closure\Objects\MethodInfo;
-use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\View\Codegen;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\Framework\Internals;
 
 /**
  * This class hosts the object methods analysis functions.
@@ -68,10 +66,10 @@ class Methods
         if (Config::getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
             $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if (Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' || Internals::isInScope()) {
+            if (Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' || Codegen::isInScope()) {
                 $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
             }
-            if (Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' || Internals::isInScope()) {
+            if (Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' || Codegen::isInScope()) {
                 $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
             }
         }

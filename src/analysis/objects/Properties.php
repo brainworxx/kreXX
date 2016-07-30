@@ -33,17 +33,12 @@
 
 namespace Brainworxx\Krexx\Analysis\Objects;
 
-use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\Model\Closure\Objects\Constants;
 use Brainworxx\Krexx\Model\Closure\Objects\IterateThroughConstants;
-use Brainworxx\Krexx\View\Help;
-use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Analysis\Variables;
 
 /**
- * Thisclass hosts the ibject properties analysis methods.
+ * This class hosts the object properties analysis methods.
  *
  * @package Brainworxx\Krexx\Analysis\Objects
  */
@@ -102,7 +97,6 @@ class Properties
         $refConst = $ref->getConstants();
 
         if (count($refConst) > 0) {
-
             // We've got some values, we will dump them.
             $model = new Constants();
             $model->setName('Constants')

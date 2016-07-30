@@ -33,14 +33,11 @@
 
 namespace Brainworxx\Krexx\Analysis\Objects;
 
-use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\Analysis\Hive;
-use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Model\Closure\Objects\AnalyseObject;
 use Brainworxx\Krexx\Model\Closure\Objects\Closure;
 use Brainworxx\Krexx\Model\Closure\Objects\IterateThroughDebug;
 use Brainworxx\Krexx\Model\Closure\Objects\IterateThroughTraversable;
-use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;

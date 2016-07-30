@@ -33,6 +33,7 @@
 
 namespace Brainworxx\Krexx\Framework;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Messages;
 
 /**
@@ -171,7 +172,7 @@ class Chunks
         self::cleanupOldChunks();
 
         // Check for an emergency break.
-        $allOk = Internals::checkEmergencyBreak();
+        $allOk = OutputActions::checkEmergencyBreak();
 
         $chunkPos = strpos($string, '@@@');
 

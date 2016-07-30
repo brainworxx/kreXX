@@ -33,11 +33,10 @@
 
 namespace Brainworxx\Krexx\Model\Closure\Objects;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Framework\Internals;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\View\Help;
@@ -77,7 +76,7 @@ class Properties extends Simple
             }
 
             // Check memory and runtime.
-            if (!Internals::checkEmergencyBreak()) {
+            if (!OutputActions::checkEmergencyBreak()) {
                 // No more took too long, or not enough memory is left.
                 Messages::addMessage("Emergency break for large output during analysis process.");
                 return '';
@@ -113,13 +112,13 @@ class Properties extends Simple
             // Object?
             // Closures are analysed separately.
             if (is_object($value) && !is_a($value, '\Closure')) {
-                Internals::$nestingLevel++;
-                if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
+                OutputActions::$nestingLevel++;
+                if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
                     $result = Objects::analyseObject($value, $propName, $additional, $connector1);
-                    Internals::$nestingLevel--;
+                    OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {
-                    Internals::$nestingLevel--;
+                    OutputActions::$nestingLevel--;
                     $output .= Variables::analyseString(
                         'Object => ' . Help::getHelp('maximumLevelReached'),
                         $propName,
@@ -131,13 +130,13 @@ class Properties extends Simple
 
             // Closure?
             if (is_object($value) && is_a($value, '\Closure')) {
-                Internals::$nestingLevel++;
-                if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
+                OutputActions::$nestingLevel++;
+                if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
                     $result = Objects::analyseClosure($value, $propName, $additional, $connector1);
-                    Internals::$nestingLevel--;
+                    OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {
-                    Internals::$nestingLevel--;
+                    OutputActions::$nestingLevel--;
                     $output .= Variables::analyseString(
                         'Closure => ' . Help::getHelp('maximumLevelReached'),
                         $propName,
@@ -149,13 +148,13 @@ class Properties extends Simple
 
             // Array?
             if (is_array($value)) {
-                Internals::$nestingLevel++;
-                if (Internals::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
+                OutputActions::$nestingLevel++;
+                if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
                     $result = Variables::analyseArray($value, $propName, $additional, $connector1);
-                    Internals::$nestingLevel--;
+                    OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {
-                    Internals::$nestingLevel--;
+                    OutputActions::$nestingLevel--;
                     $output .= Variables::analyseString(
                         'Array => ' . Help::getHelp('maximumLevelReached'),
                         $propName,

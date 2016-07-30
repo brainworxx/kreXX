@@ -172,7 +172,7 @@ class Flection
      *
      * Undeclared properties are never have default properties.
      *
-     * @return bool
+     * @return array
      *   Always returns an empty array.
      */
     public function getDefaultProperties()

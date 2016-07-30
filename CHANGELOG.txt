@@ -2,6 +2,8 @@
 - Change: Removed the code generation for the SplObjectStorage.
   Generating code for the SplObjectStorage is right now too
   complicated.
+- Change: Removed the unnecessary stuff from the source generation.
+  Stuff like '$kresult =' is now gone.
 - Cleanup: Introduced "models", to get the values to the view.
 - Cleanup: Removed all closures and use real classes.
 - Cleanup: Moved (nearly) all string escaping to the "model".
@@ -9,6 +11,7 @@
   a little bit differently.
 - Bugfix: Code generation was not working when krexx was called via
   'Krexx::'.
+- Bugfix: Wrong line number in the fatal error handler.
 
 1.4.2
 - Added analysis metadata to the file output.

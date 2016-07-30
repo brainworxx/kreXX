@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Framework\Toolbox;
  *
  * @package Brainworxx\Krexx\Errorhandler
  */
-class Fatal extends AbstractHandler
+class Fatal extends Error
 {
 
     /**
