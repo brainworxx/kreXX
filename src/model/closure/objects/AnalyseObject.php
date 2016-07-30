@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Model\Closure\Objects;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Codegen;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Analysis\Objects\Flection;
 use Brainworxx\Krexx\Analysis\Objects\Properties;
@@ -84,7 +83,7 @@ class AnalyseObject extends Simple
 
         if (count($refProps)) {
             usort($refProps, $sortingCallback);
-            $output .= Properties::getReflectionPropertiesData($refProps, $ref, $data, 'Public properties');
+            $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Public properties');
             // Adding a HR to reflect that the following stuff are not public
             // properties anymore.
             $output .= SkinRender::renderSingeChildHr();
@@ -96,7 +95,7 @@ class AnalyseObject extends Simple
             usort($refProps, $sortingCallback);
 
             if (count($refProps)) {
-                $output .= Properties::getReflectionPropertiesData($refProps, $ref, $data, 'Protected properties');
+                $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Protected properties');
             }
         }
 
@@ -105,13 +104,13 @@ class AnalyseObject extends Simple
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
             if (count($refProps)) {
-                $output .= Properties::getReflectionPropertiesData($refProps, $ref, $data, 'Private properties');
+                $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Private properties');
             }
         }
 
         // Dumping class constants.
         if (Config::getConfigValue('properties', 'analyseConstants') == 'true') {
-            $output .= Properties::getReflectionConstantsData($ref);
+            $output .= $this->getReflectionConstantsData($ref);
         }
 
         // Dumping all methods.
@@ -308,5 +307,70 @@ class AnalyseObject extends Simple
             return SkinRender::renderExpandableChild($model);
         }
         return '';
+    }
+
+    /**
+     * Dumps the constants of a class,
+     *
+     * @param \ReflectionClass $ref
+     *   The already generated reflection of said class
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function getReflectionConstantsData(\ReflectionClass $ref)
+    {
+        // This is actually an array, we ara analysing. But We do not want to render
+        // an array, so we need to process it like the return from an iterator.
+        $refConst = $ref->getConstants();
+
+        if (count($refConst) > 0) {
+            // We've got some values, we will dump them.
+            $model = new Constants();
+            $model->setName('Constants')
+                ->setType('class internals')
+                ->addParameter('refConst', $refConst);
+
+            return SkinRender::renderExpandableChild($model);
+        }
+
+        // Nothing to see here, return an empty string.
+        return '';
+    }
+
+        /**
+     * Gets the properties from a reflection property of the object.
+     *
+     * @param array $refProps
+     *   The list of the reflection properties.
+     * @param \ReflectionClass $ref
+     *   The reflection of the object we are currently analysing.
+     * @param object $data
+     *   The object we are currently analysing.
+     * @param string $label
+     *   The additional part of the template file.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected function getReflectionPropertiesData(array $refProps, \ReflectionClass $ref, $data, $label)
+    {
+        // We are dumping public properties direct into the main-level, without
+        // any "abstraction level", because they can be accessed directly.
+        $model = new \Brainworxx\Krexx\Model\Closure\Objects\Properties();
+        $model->addParameter('refProps', $refProps)
+            ->addParameter('ref', $ref)
+            ->addParameter('orgObject', $data);
+
+        if (strpos(strtoupper($label), 'PUBLIC') === false) {
+            // Protected or private properties.
+            $model->setName($label)
+                ->setType('class internals');
+            return SkinRender::renderExpandableChild($model);
+        } else {
+            // Public properties.
+            $model->setAdditional($label);
+            return SkinRender::renderExpandableChild($model);
+        }
     }
 }

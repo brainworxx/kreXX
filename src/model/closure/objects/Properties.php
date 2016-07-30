@@ -35,7 +35,6 @@ namespace Brainworxx\Krexx\Model\Closure\Objects;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Analysis\Variables;
@@ -114,7 +113,7 @@ class Properties extends Simple
             if (is_object($value) && !is_a($value, '\Closure')) {
                 OutputActions::$nestingLevel++;
                 if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $result = Objects::analyseObject($value, $propName, $additional, $connector1);
+                    $result = Variables::analyseObject($value, $propName, $additional, $connector1);
                     OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {
@@ -132,7 +131,7 @@ class Properties extends Simple
             if (is_object($value) && is_a($value, '\Closure')) {
                 OutputActions::$nestingLevel++;
                 if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $result = Objects::analyseClosure($value, $propName, $additional, $connector1);
+                    $result = Variables::analyseClosure($value, $propName, $additional, $connector1);
                     OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {

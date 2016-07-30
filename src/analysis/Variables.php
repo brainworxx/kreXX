@@ -34,7 +34,6 @@
 namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Analysis\Objects\Comments;
-use Brainworxx\Krexx\Analysis\Objects\Objects;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Closure\Variables\AnalyseArray;
@@ -93,7 +92,7 @@ class Variables
         if (is_object($data) && !is_a($data, '\Closure')) {
             OutputActions::$nestingLevel++;
             if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                $result = Objects::analyseObject($data, $name, '', $connector1, $connector2);
+                $result = self::analyseObject($data, $name, '', $connector1, $connector2);
                 OutputActions::$nestingLevel--;
                 return $result;
             } else {
@@ -109,7 +108,7 @@ class Variables
                 if ($connector2 == '] =') {
                     $connector2 = ']';
                 }
-                $result = Objects::analyseClosure($data, $name, '', $connector1, $connector2);
+                $result = self::analyseClosure($data, $name, '', $connector1, $connector2);
                 OutputActions::$nestingLevel--;
                 return $result;
             } else {

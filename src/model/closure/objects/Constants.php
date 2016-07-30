@@ -34,6 +34,7 @@
 namespace Brainworxx\Krexx\Model\Closure\Objects;
 
 use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Class Constants
@@ -48,7 +49,11 @@ class Constants extends Simple
      */
     public function renderMe()
     {
-        // This should be an array.
-        return \Brainworxx\Krexx\Analysis\Objects\Properties::iterateThroughConstants($this->parameters['refConst']);
+
+        $model = new IterateThroughConstants();
+        $model->addParameter('data', $this->parameters['refConst']);
+
+        return SkinRender::renderExpandableChild($model);
     }
+    
 }
