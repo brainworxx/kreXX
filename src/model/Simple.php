@@ -103,7 +103,7 @@ class Simple
     /**
      * Additional data, we are sending to the FE vas a json, hence the name.
      *
-     * Right now, only the Smoky-Grey skin makes use of this.
+     * Right now, only the smokygrey skin makes use of this.
      *
      * @var array
      */

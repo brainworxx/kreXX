@@ -74,7 +74,7 @@ class Config
             'maxRuntime' => '60',
         ),
         'output' => array(
-            'skin' => 'smoky-grey',
+            'skin' => 'smokygrey',
             'destination' => 'frontend',
             'folder' => 'log',
             'maxfiles' => '10',

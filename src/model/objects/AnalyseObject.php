@@ -34,9 +34,9 @@
 
 namespace Brainworxx\Krexx\Model\Objects;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Codegen;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Analysis\Flection;
 
@@ -56,7 +56,7 @@ class AnalyseObject extends Simple
     {
         $data = $this->parameters['data'];
         $name = $this->parameters['name'];
-        $output = SkinRender::renderSingeChildHr();
+        $output = OutputActions::$render->renderSingeChildHr();
 
         $ref = new \ReflectionClass($data);
 
@@ -91,7 +91,7 @@ class AnalyseObject extends Simple
             $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Public properties');
             // Adding a HR to reflect that the following stuff are not public
             // properties anymore.
-            $output .= SkinRender::renderSingeChildHr();
+            $output .= OutputActions::$render->renderSingeChildHr();
         }
 
         // Dumping protected properties.
@@ -130,7 +130,7 @@ class AnalyseObject extends Simple
         $output .= $this->pollAllConfiguredDebugMethods($data);
 
         // Adding a HR for a better readability.
-        $output .= SkinRender::renderSingeChildHr();
+        $output .= OutputActions::$render->renderSingeChildHr();
         return $output;
     }
 
@@ -175,7 +175,7 @@ class AnalyseObject extends Simple
                 ->addParameter('ref', $ref)
                 ->addParameter('methods', $methods);
 
-            return SkinRender::renderExpandableChild($model);
+            return OutputActions::$render->renderExpandableChild($model);
         }
         return '';
     }
@@ -254,7 +254,7 @@ class AnalyseObject extends Simple
                             ->setConnector2('() =')
                             ->addParameter('result', $result);
 
-                        $output .= SkinRender::renderExpandableChild($model);
+                        $output .= OutputActions::$render->renderExpandableChild($model);
                         unset($result);
                     }
                 }
@@ -309,7 +309,7 @@ class AnalyseObject extends Simple
                 ->setConnector2($connector2)
                 ->addParameter('data', $parameter);
 
-            return SkinRender::renderExpandableChild($model);
+            return OutputActions::$render->renderExpandableChild($model);
         }
         return '';
     }
@@ -336,7 +336,7 @@ class AnalyseObject extends Simple
                 ->setType('class internals')
                 ->addParameter('refConst', $refConst);
 
-            return SkinRender::renderExpandableChild($model);
+            return OutputActions::$render->renderExpandableChild($model);
         }
 
         // Nothing to see here, return an empty string.
@@ -371,11 +371,11 @@ class AnalyseObject extends Simple
             // Protected or private properties.
             $model->setName($label)
                 ->setType('class internals');
-            return SkinRender::renderExpandableChild($model);
+            return OutputActions::$render->renderExpandableChild($model);
         } else {
             // Public properties.
             $model->setAdditional($label);
-            return SkinRender::renderExpandableChild($model);
+            return OutputActions::$render->renderExpandableChild($model);
         }
     }
 }

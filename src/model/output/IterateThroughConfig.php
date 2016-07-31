@@ -34,8 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Output;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
 
 /**
@@ -63,7 +63,7 @@ class IterateThroughConfig extends Simple
                 ->setAdditional('. . .')
                 ->addParameter('sectionData', $sectionData)
                 ->addParameter('source', $source[$sectionName]);
-            $configOutput .= SkinRender::renderExpandableChild($model);
+            $configOutput .= OutputActions::$render->renderExpandableChild($model);
         }
         // Render the dev-handle field.
         $editableModel = new Simple();
@@ -74,14 +74,14 @@ class IterateThroughConfig extends Simple
             ->setType('Input')
             ->setHelpid('localFunction');
 
-        $configOutput .= SkinRender::renderSingleEditableChild($editableModel);
+        $configOutput .= OutputActions::$render->renderSingleEditableChild($editableModel);
         // Render the reset-button which will delete the debug-cookie.
         $buttonModel = new Simple();
         $buttonModel->setName('resetbutton')
             ->setNormal('Reset local settings')
             ->setHelpid('resetbutton');
 
-        $configOutput .= SkinRender::renderButton($buttonModel);
+        $configOutput .= OutputActions::$render->renderButton($buttonModel);
         return $configOutput;
     }
 }

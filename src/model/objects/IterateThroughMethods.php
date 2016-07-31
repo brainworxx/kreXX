@@ -34,9 +34,9 @@
 
 namespace Brainworxx\Krexx\Model\Objects;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Methods analysis methods. :rolleyes:
@@ -155,7 +155,7 @@ class IterateThroughMethods extends Simple
             ->setConnector2('(' . $paramList . ')')
             ->addParameter('data', $data);
 
-        return SkinRender::renderExpandableChild($model);
+        return OutputActions::$render->renderExpandableChild($model);
     }
 
     /**

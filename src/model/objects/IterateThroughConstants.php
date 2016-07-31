@@ -34,8 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Objects;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Variables;
 
 /**
@@ -56,7 +56,7 @@ class IterateThroughConstants extends Simple
         $output = '';
         $data = $this->parameters['data'];
 
-        $output .= SkinRender::renderSingeChildHr();
+        $output .= OutputActions::$render->renderSingeChildHr();
 
         // We do not need to check the recursionHandler, this is ome class internal stuff.
         // Is it even possible to create a recursion here?
@@ -66,7 +66,7 @@ class IterateThroughConstants extends Simple
             $output .= Variables::analysisHub($v, $k, '::', ' =');
         }
 
-        $output .= SkinRender::renderSingeChildHr();
+        $output .= OutputActions::$render->renderSingeChildHr();
         return $output;
     }
 }

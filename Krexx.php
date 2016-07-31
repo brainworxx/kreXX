@@ -147,14 +147,6 @@ class Krexx
 
         Config::$krexxdir = $krexxdir;
 
-        // Setting the skin info.
-        if (is_null(Render::$skin)) {
-            Render::$skin = Config::getConfigValue('output', 'skin');
-        }
-        // Every skin has an own implementation of the render class. We need to
-        // include this one, too.
-        include_once $krexxdir . 'resources/skins/' . Config::getConfigValue('output', 'skin') . '/SkinRender.php';
-
         // Register our shutdown handler. He will handle the display
         // of kreXX after the hosting CMS is finished.
         OutputActions::$shutdownHandler = new ShutdownHandler();

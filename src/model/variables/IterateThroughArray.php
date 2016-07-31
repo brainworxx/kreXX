@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Model\Variables;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Variables;
 
 /**
@@ -57,13 +56,13 @@ class IterateThroughArray extends Simple
 
         // Recursion detection of objects are handled in the hub.
         if (OutputActions::$recursionHandler->isInHive($data)) {
-            return SkinRender::renderRecursion(new Simple());
+            return OutputActions::$render->renderRecursion(new Simple());
         }
 
         // Remember, that we've already been here.
         OutputActions::$recursionHandler->addToHive($data);
 
-        $output .= SkinRender::renderSingeChildHr();
+        $output .= OutputActions::$render->renderSingeChildHr();
 
         // Iterate through.
         foreach ($data as $k => &$v) {
@@ -76,7 +75,7 @@ class IterateThroughArray extends Simple
             }
             $output .= Variables::analysisHub($v, $k, '[', '] =');
         }
-        $output .= SkinRender::renderSingeChildHr();
+        $output .= OutputActions::$render->renderSingeChildHr();
         return $output;
     }
 }

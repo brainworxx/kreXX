@@ -39,7 +39,6 @@ use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Controller actions (if you want to call them that).
@@ -253,19 +252,19 @@ class OutputActions extends Internals
         self::$recursionHandler = new RecursionHandler();
 
         // Setting template info.
-        if (is_null(SkinRender::$skin)) {
-            SkinRender::$skin = Config::getConfigValue('output', 'skin');
+        if (is_null(OutputActions::$render->skin)) {
+            OutputActions::$render->skin = Config::getConfigValue('output', 'skin');
         }
 
         // Get the header.
         if (self::$headerSend) {
-            $header = SkinRender::renderFatalHeader('', '<!DOCTYPE html>');
+            $header = OutputActions::$render->renderFatalHeader('', '<!DOCTYPE html>');
         } else {
-            $header = SkinRender::renderFatalHeader(self::outputCssAndJs(), '<!DOCTYPE html>');
+            $header = OutputActions::$render->renderFatalHeader(self::outputCssAndJs(), '<!DOCTYPE html>');
         }
 
         // Get the main part.
-        $main = SkinRender::renderFatalMain(
+        $main = OutputActions::$render->renderFatalMain(
             $errorData['type'],
             $errorData['errstr'],
             $errorData['errfile'],

@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Framework;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Help;
-use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Toolbox methods
@@ -229,13 +228,13 @@ class Toolbox
                     $contentArray[$currentLineNo] = self::encodeString($contentArray[$currentLineNo], true);
 
                     if ($currentLineNo == $highlight) {
-                        $result .= SkinRender::renderBacktraceSourceLine(
+                        $result .= OutputActions::$render->renderBacktraceSourceLine(
                             'highlight',
                             $realLineNo,
                             $contentArray[$currentLineNo]
                         );
                     } else {
-                        $result .= SkinRender::renderBacktraceSourceLine(
+                        $result .= OutputActions::$render->renderBacktraceSourceLine(
                             'source',
                             $realLineNo,
                             $contentArray[$currentLineNo]

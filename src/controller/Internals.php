@@ -40,7 +40,7 @@ use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Output\IterateThroughConfig;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Help;
-use Brainworxx\Krexx\View\SkinRender;
+use Brainworxx\Krexx\View\Render;
 
 /**
  * Controller actions toolbox.
@@ -92,6 +92,27 @@ class Internals
      * @var \Brainworxx\Krexx\Analysis\RecursionHandler
      */
     public static $recursionHandler;
+
+    /**
+     * The instance of the render class from the skin.
+     *
+     * Gets loaded in the output footer.
+     *
+     * @var Render
+     */
+    public static $render;
+
+    /**
+     * Loads the renderer from the skin.
+     */
+    protected static function loadRendrerer()
+    {
+        $skin = Config::getConfigValue('output', 'skin');
+        $path = Config::$krexxdir . 'resources/skins/' . $skin . '/Render.php';
+        $classname = 'Brainworxx\Krexx\View\\' . ucfirst($skin) . '\\Render';
+        include_once $path;
+        self::$render = new $classname;
+    }
 
     /**
      * Finds the place in the code from where krexx was called.
@@ -290,9 +311,9 @@ class Internals
         if (!self::$headerSend) {
             // Send doctype and css/js only once.
             self::$headerSend = true;
-            return SkinRender::renderHeader('<!DOCTYPE html>', $headline, self::outputCssAndJs());
+            return self::$render->renderHeader('<!DOCTYPE html>', $headline, self::outputCssAndJs());
         } else {
-            return SkinRender::renderHeader('', $headline, '');
+            return self::$render->renderHeader('', $headline, '');
         }
     }
 
@@ -332,8 +353,9 @@ class Internals
             ->addParameter('config', $config)
             ->addParameter('source', $source);
 
-        $configOutput = SkinRender::renderExpandableChild($model, $isExpanded);
-        return SkinRender::renderFooter($caller, $configOutput, $isExpanded);
+        self::loadRendrerer();
+        $configOutput = self::$render->renderExpandableChild($model, $isExpanded);
+        return self::$render->renderFooter($caller, $configOutput, $isExpanded);
     }
 
     /**
@@ -345,7 +367,9 @@ class Internals
     protected static function outputCssAndJs()
     {
         // Get the css file.
-        $css = Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/skin.css');
+        $css = Toolbox::getFileContents(
+            Config::$krexxdir . 'resources/skins/' . Config::getConfigValue('output', 'skin') . '/skin.css'
+        );
         // Remove whitespace.
         $css = preg_replace('/\s+/', ' ', $css);
 
@@ -358,14 +382,15 @@ class Internals
         $js = Toolbox::getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
-        if (is_readable(Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.min.js')) {
-            $jsFile = Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.min.js';
+        $path = Config::$krexxdir . 'resources/skins/' . Config::getConfigValue('output', 'skin');
+        if (is_readable($path . '/krexx.min.js')) {
+            $jsFile = $path . '/krexx.min.js';
         } else {
-            $jsFile = Config::$krexxdir . 'resources/skins/' . SkinRender::$skin . '/krexx.js';
+            $jsFile = $path . '/krexx.js';
         }
         $js .= Toolbox::getFileContents($jsFile);
 
-        return SkinRender::renderCssJs($css, $js);
+        return self::$render->renderCssJs($css, $js);
     }
 
     /**

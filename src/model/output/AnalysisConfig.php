@@ -34,9 +34,9 @@
 
 namespace Brainworxx\Krexx\Model\Output;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Configuration "analysis" methods. Meh, naminc conventions suck sometimes.
@@ -72,14 +72,14 @@ class AnalysisConfig extends Simple
                         ->setType($type)
                         ->setHelpid($parameterName);
 
-                    $sectionOutput .= SkinRender::renderSingleEditableChild($model);
+                    $sectionOutput .= OutputActions::$render->renderSingleEditableChild($model);
                 } else {
                     $model->setData($parameterValue)
                         ->setName($parameterName)
                         ->setNormal($parameterValue)
                         ->setType($source[$parameterName])
                         ->setHelpid($parameterName);
-                    $sectionOutput .= SkinRender::renderSingleChild($model);
+                    $sectionOutput .= OutputActions::$render->renderSingleChild($model);
                 }
             }
         }

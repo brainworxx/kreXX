@@ -44,23 +44,13 @@ use Brainworxx\Krexx\Model\Simple;
 /**
  * Render methods.
  *
- * It get extended by the SkinRender class, so every skin can do some special
- * stuff.
+ * It get extended by the render class of the used skin, so every skin can do
+ * some special stuff.
  *
  * @package Brainworxx\Krexx\View
  */
 class Render extends Help
 {
-
-    /**
-     * Name of the skin currently in use.
-     *
-     * Gets set as soon as the css is being loaded.
-     *
-     * @var string
-     */
-    public static $skin;
-
     /**
      * Renders a "single child", containing a single not expandable value.
      *
@@ -72,11 +62,11 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderSingleChild(Simple $model)
+    public function renderSingleChild(Simple $model)
     {
         // This one is a little bit more complicated than the others,
         // because it assembles some partials and stitches them together.
-        $template = self::getTemplateFileContent('singleChild');
+        $template = $this->getTemplateFileContent('singleChild');
         $partExpand = '';
         $partCallable = '';
         $partExtra = '';
@@ -89,15 +79,15 @@ class Render extends Help
 
         if ($extra) {
             // We have a lot of text, so we render this one expandable (yellow box).
-            $partExpand = self::getTemplateFileContent('singleChildExpand');
+            $partExpand = $this->getTemplateFileContent('singleChildExpand');
         }
         if (is_callable($model->getData())) {
             // Add callable partial.
-            $partCallable = self::getTemplateFileContent('singleChildCallable');
+            $partCallable = $this->getTemplateFileContent('singleChildCallable');
         }
         if ($extra) {
             // Add the yellow box for large output text.
-            $partExtra = self::getTemplateFileContent('singleChildExtra');
+            $partExtra = $this->getTemplateFileContent('singleChildExtra');
         }
         // Stitching the classes together, depending on the types.
         $typeArray = explode(' ', $model->getType());
@@ -117,7 +107,7 @@ class Render extends Help
         } else {
             // We add the buttton and the code.
             $template = str_replace('{gensource}', $gensource, $template);
-            $template = str_replace('{gencode}', self::getTemplateFileContent('gencode'), $template);
+            $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
         }
 
         // Stitching it together.
@@ -129,10 +119,10 @@ class Render extends Help
         $template = str_replace('{type-classes}', $typeClasses, $template);
         $template = str_replace('{normal}', $model->getNormal(), $template);
         $template = str_replace('{data}', $model->getData(), $template);
-        $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
-        $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
+        $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
+        $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
         $template = str_replace('{gensource}', $gensource, $template);
-        return str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
+        return str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
     }
 
     /**
@@ -147,9 +137,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderRecursion(Simple $model)
+    public function renderRecursion(Simple $model)
     {
-        $template = self::getTemplateFileContent('recursion');
+        $template = $this->getTemplateFileContent('recursion');
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
@@ -168,9 +158,9 @@ class Render extends Help
         $template = str_replace('{name}', $model->getName(), $template);
         $template = str_replace('{domId}', $model->getDomid(), $template);
         $template = str_replace('{value}', $model->getNormal(), $template);
-        $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
+        $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
 
-        return str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
+        return str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
     }
 
     /**
@@ -186,9 +176,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderHeader($doctype, $headline, $cssJs)
+    public function renderHeader($doctype, $headline, $cssJs)
     {
-        $template = self::getTemplateFileContent('header');
+        $template = $this->getTemplateFileContent('header');
         // Replace our stuff in the partial.
         $template = str_replace('{version}', Config::$version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
@@ -196,7 +186,7 @@ class Render extends Help
         $template = str_replace('{headline}', $headline, $template);
         $template = str_replace('{cssJs}', $cssJs, $template);
         $template = str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
-        $template = str_replace('{search}', self::renderSearch(), $template);
+        $template = str_replace('{search}', $this->renderSearch(), $template);
         $template = str_replace('{messages}', Messages::outputMessages(), $template);
 
         return $template;
@@ -208,9 +198,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderSearch()
+    public function renderSearch()
     {
-        $template = self::getTemplateFileContent('search');
+        $template = $this->getTemplateFileContent('search');
         $template = str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
         return $template;
     }
@@ -228,15 +218,15 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderFooter($caller, $configOutput, $configOnly = false)
+    public function renderFooter($caller, $configOutput, $configOnly = false)
     {
-        $template = self::getTemplateFileContent('footer');
+        $template = $this->getTemplateFileContent('footer');
         // Replace our stuff in the partial.
         if (!isset($caller['file'])) {
             // When we have no caller, we will not render it.
             $template = str_replace('{caller}', '', $template);
         } else {
-            $template = str_replace('{caller}', self::renderCaller($caller['file'], $caller['line']), $template);
+            $template = str_replace('{caller}', $this->renderCaller($caller['file'], $caller['line']), $template);
         }
         $template = str_replace('{configInfo}', $configOutput, $template);
         return $template;
@@ -254,9 +244,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderNest(Simple $model, $isExpanded = false)
+    public function renderNest(Simple $model, $isExpanded = false)
     {
-        $template = self::getTemplateFileContent('nest');
+        $template = $this->getTemplateFileContent('nest');
         // Replace our stuff in the partial.
         $domid = '';
         if (strlen($model->getDomid())) {
@@ -284,9 +274,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderCssJs($css, $js)
+    public function renderCssJs($css, $js)
     {
-        $template = self::getTemplateFileContent('cssJs');
+        $template = $this->getTemplateFileContent('cssJs');
         // Replace our stuff in the partial.
         $template = str_replace('{css}', $css, $template);
         $template = str_replace('{js}', $js, $template);
@@ -305,7 +295,7 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderExpandableChild(Simple $model, $isExpanded = false)
+    public function renderExpandableChild(Simple $model, $isExpanded = false)
     {
         // Check for emergency break.
         if (!OutputActions::checkEmergencyBreak()) {
@@ -317,12 +307,12 @@ class Render extends Help
 
         if ($model->getName() == '' && $model->getType() == '') {
             // Without a Name or Type I only display the Child with a Node.
-            $template = self::getTemplateFileContent('expandableChildSimple');
+            $template = $this->getTemplateFileContent('expandableChildSimple');
             // Replace our stuff in the partial.
             return str_replace('{mainfunction}', Chunks::chunkMe($model->renderMe()), $template);
         } else {
             // We need to render this one normally.
-            $template = self::getTemplateFileContent('expandableChildNormal');
+            $template = $this->getTemplateFileContent('expandableChildNormal');
             // Replace our stuff in the partial.
             $template = str_replace('{name}', $model->getName(), $template);
             $template = str_replace('{type}', $model->getType(), $template);
@@ -336,9 +326,9 @@ class Render extends Help
             $template = str_replace('{ktype}', $cssType, $template);
 
             $template = str_replace('{additional}', $model->getAdditional(), $template);
-            $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
-            $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
-            $template = str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
+            $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
+            $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
+            $template = str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
 
             // Generating our code and adding the Codegen button, if there is
             // something to generate.
@@ -350,7 +340,7 @@ class Render extends Help
             } else {
                 // We add the buttton and the code.
                 $template = str_replace('{gensource}', $gencode, $template);
-                $template = str_replace('{gencode}', self::getTemplateFileContent('gencode'), $template);
+                $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
             }
 
             // Is it expanded?
@@ -361,7 +351,7 @@ class Render extends Help
             }
             return str_replace(
                 '{nest}',
-                Chunks::chunkMe(self::renderNest($model, $isExpanded)),
+                Chunks::chunkMe($this->renderNest($model, $isExpanded)),
                 $template
             );
         }
@@ -376,14 +366,22 @@ class Render extends Help
      * @return string
      *   The template file, without whitespaces.
      */
-    protected static function getTemplateFileContent($what)
+    protected function getTemplateFileContent($what)
     {
         static $fileCache = array();
+
         if (!isset($fileCache[$what])) {
             $fileCache[$what] = preg_replace(
                 '/\s+/',
                 ' ',
-                Toolbox::getFileContents(Config::$krexxdir . 'resources/skins/' . self::$skin . '/' . $what . '.html')
+                Toolbox::getFileContents(
+                    Config::$krexxdir .
+                    'resources/skins/' .
+                    Config::getConfigValue('output', 'skin') .
+                    '/' .
+                    $what .
+                    '.html'
+                )
             );
         }
         return $fileCache[$what];
@@ -400,17 +398,17 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderSingleEditableChild(Simple $model)
+    public function renderSingleEditableChild(Simple $model)
     {
-        $template = self::getTemplateFileContent('singleEditableChild');
-        $element = self::getTemplateFileContent('single' . $model->getType());
+        $template = $this->getTemplateFileContent('singleEditableChild');
+        $element = $this->getTemplateFileContent('single' . $model->getType());
 
         $element = str_replace('{name}', $model->getData(), $element);
         $element = str_replace('{value}', $model->getName(), $element);
 
         // For dropdown elements, we need to render the options.
         if ($model->getType() == 'Select') {
-            $option = self::getTemplateFileContent('single' . $model->getType() . 'Options');
+            $option = $this->getTemplateFileContent('single' . $model->getType() . 'Options');
 
             // Here we store what the list of possible values.
             switch ($model->getData()) {
@@ -426,7 +424,7 @@ class Render extends Help
 
                 case "skin":
                     // Get a list of all skin folders.
-                    $valueList = self::getSkinList();
+                    $valueList = $this->getSkinList();
                     break;
 
                 default:
@@ -462,7 +460,7 @@ class Render extends Help
         $template = str_replace('{source}', $model->getNormal(), $template);
         $template = str_replace('{normal}', $element, $template);
         $template = str_replace('{type}', 'editable', $template);
-        $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
+        $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
 
         return $template;
     }
@@ -476,10 +474,10 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderButton(Simple $model)
+    public function renderButton(Simple $model)
     {
-        $template = self::getTemplateFileContent('singleButton');
-        $template = str_replace('{help}', self::renderHelp($model->getHelpid()), $template);
+        $template = $this->getTemplateFileContent('singleButton');
+        $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
 
         $template = str_replace('{text}', $model->getNormal(), $template);
         return str_replace('{class}', $model->getName(), $template);
@@ -502,9 +500,9 @@ class Render extends Help
      * @return string
      *   The template file, with all markers replaced.
      */
-    public static function renderFatalMain($type, $errstr, $errfile, $errline, $source)
+    public function renderFatalMain($type, $errstr, $errfile, $errline, $source)
     {
-        $template = self::getTemplateFileContent('fatalMain');
+        $template = $this->getTemplateFileContent('fatalMain');
 
         // Insert our values.
         $template = str_replace('{type}', $type, $template);
@@ -527,15 +525,15 @@ class Render extends Help
      * @return string
      *   The templatefile, with all markers replaced.
      */
-    public static function renderFatalHeader($cssJs, $doctype)
+    public function renderFatalHeader($cssJs, $doctype)
     {
-        $template = self::getTemplateFileContent('fatalHeader');
+        $template = $this->getTemplateFileContent('fatalHeader');
 
         // Insert our values.
         $template = str_replace('{cssJs}', $cssJs, $template);
         $template = str_replace('{version}', Config::$version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
-        $template = str_replace('{search}', self::renderSearch(), $template);
+        $template = str_replace('{search}', $this->renderSearch(), $template);
 
         return str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
     }
@@ -549,9 +547,9 @@ class Render extends Help
      * @return string
      *   The generates html output
      */
-    public static function renderMessages(array $messages)
+    public function renderMessages(array $messages)
     {
-        $template = self::getTemplateFileContent('message');
+        $template = $this->getTemplateFileContent('message');
         $result = '';
 
         foreach ($messages as $message) {
@@ -573,9 +571,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    protected static function renderCaller($file, $line)
+    protected function renderCaller($file, $line)
     {
-        $template = self::getTemplateFileContent('caller');
+        $template = $this->getTemplateFileContent('caller');
         $template = str_replace('{callerFile}', $file, $template);
         return str_replace('{callerLine}', $line, $template);
     }
@@ -591,11 +589,11 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    protected static function renderHelp($helpid)
+    protected function renderHelp($helpid)
     {
-        $helpText = self::getHelp($helpid);
+        $helpText = $this->getHelp($helpid);
         if ($helpText != '') {
-            return str_replace('{help}', $helpText, self::getTemplateFileContent('help'));
+            return str_replace('{help}', $helpText, $this->getTemplateFileContent('help'));
         } else {
             return '';
         }
@@ -607,7 +605,7 @@ class Render extends Help
      * @return array
      *   An array with the skinnames.
      */
-    protected static function getSkinList()
+    protected function getSkinList()
     {
         // Static cache to make it a little bit faster.
         static $list = array();
@@ -637,9 +635,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template files.
      */
-    public static function renderBacktraceSourceLine($className, $lineNo, $sourceCode)
+    public function renderBacktraceSourceLine($className, $lineNo, $sourceCode)
     {
-        $template = self::getTemplateFileContent('backtraceSourceLine');
+        $template = $this->getTemplateFileContent('backtraceSourceLine');
         $template = str_replace('{className}', $className, $template);
         $template = str_replace('{lineNo}', $lineNo, $template);
 
@@ -652,9 +650,9 @@ class Render extends Help
      * @return string
      *   The generated markup from the template file.
      */
-    public static function renderSingeChildHr()
+    public function renderSingeChildHr()
     {
-        return self::getTemplateFileContent('singleChildHr');
+        return $this->getTemplateFileContent('singleChildHr');
     }
 
     /**
@@ -666,10 +664,10 @@ class Render extends Help
      * @return string
      *   The rendered connector.
      */
-    public static function renderConnector($connector)
+    public function renderConnector($connector)
     {
         if (!empty($connector)) {
-            $template = self::getTemplateFileContent('connector');
+            $template = $this->getTemplateFileContent('connector');
             return str_replace('{connector}', $connector, $template);
         } else {
             return '';

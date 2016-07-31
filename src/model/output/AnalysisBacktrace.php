@@ -34,8 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Output;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Variables;
 
 /**
@@ -66,7 +66,7 @@ class AnalysisBacktrace extends Simple
                 ->setNormal($stepData['file'])
                 ->setType('string ' . strlen($stepData['file']));
 
-            $output .= SkinRender::renderSingleChild($fileModel);
+            $output .= OutputActions::$render->renderSingleChild($fileModel);
         }
         // Line.
         if (isset($stepData['line'])) {
@@ -76,7 +76,7 @@ class AnalysisBacktrace extends Simple
                 ->setNormal($stepData['line'])
                 ->setType('integer');
 
-            $output .= SkinRender::renderSingleChild($lineModel);
+            $output .= OutputActions::$render->renderSingleChild($lineModel);
         }
         // Sourcecode, is escaped by now.
         if (isset($stepData['sourcecode'])) {
@@ -86,7 +86,7 @@ class AnalysisBacktrace extends Simple
                 ->setNormal('. . .')
                 ->setType('PHP');
 
-            $output .= SkinRender::renderSingleChild($sourceModel);
+            $output .= OutputActions::$render->renderSingleChild($sourceModel);
         }
         // Function.
         if (isset($stepData['function'])) {
@@ -96,7 +96,7 @@ class AnalysisBacktrace extends Simple
                 ->setNormal($stepData['function'])
                 ->setType('string ' . strlen($stepData['function']));
 
-            $output .= SkinRender::renderSingleChild($functionModel);
+            $output .= OutputActions::$render->renderSingleChild($functionModel);
         }
         // Object.
         if (isset($stepData['object'])) {
@@ -110,7 +110,7 @@ class AnalysisBacktrace extends Simple
                 ->setNormal($stepData['type'])
                 ->setType('string ' . strlen($stepData['type']));
 
-            $output .= SkinRender::renderSingleChild($typeModel);
+            $output .= OutputActions::$render->renderSingleChild($typeModel);
         }
         // Args.
         if (isset($stepData['args'])) {

@@ -41,7 +41,6 @@ use Brainworxx\Krexx\Model\Variables\IterateThroughArray;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Model\Objects\AnalyseObject;
 use Brainworxx\Krexx\Model\Objects\AnalyseClosure;
 use Brainworxx\Krexx\Framework\Toolbox;
@@ -178,7 +177,7 @@ class Variables
     {
         $model = new IterateThroughArray();
         $model->addParameter('data', $data);
-        return SkinRender::renderExpandableChild($model);
+        return OutputActions::$render->renderExpandableChild($model);
     }
 
     /**
@@ -211,7 +210,7 @@ class Variables
             ->setConnector2($connector2)
             ->setJson($json);
 
-        return SkinRender::renderSingleChild($model);
+        return OutputActions::$render->renderSingleChild($model);
     }
 
     /**
@@ -247,7 +246,7 @@ class Variables
             ->setJson($json)
             ->addParameter('data', $data);
 
-        return SkinRender::renderExpandableChild($model);
+        return OutputActions::$render->renderExpandableChild($model);
     }
 
     /**
@@ -282,7 +281,7 @@ class Variables
             ->setConnector2($connector2)
             ->setJson($json);
 
-        return SkinRender::renderSingleChild($model);
+        return OutputActions::$render->renderSingleChild($model);
     }
 
     /**
@@ -317,7 +316,7 @@ class Variables
             ->setConnector2($connector2)
             ->setJson($json);
 
-        return SkinRender::renderSingleChild($model);
+        return OutputActions::$render->renderSingleChild($model);
     }
 
     /**
@@ -351,7 +350,7 @@ class Variables
             ->setConnector2($connector2)
             ->setJson($json);
 
-        return SkinRender::renderSingleChild($model);
+        return OutputActions::$render->renderSingleChild($model);
     }
 
     /**
@@ -385,7 +384,7 @@ class Variables
             ->setConnector2($connector2)
             ->setJson($json);
 
-        return SkinRender::renderSingleChild($model);
+        return OutputActions::$render->renderSingleChild($model);
     }
 
     /**
@@ -435,7 +434,7 @@ class Variables
             ->setConnector2($connector2)
             ->setJson($json);
 
-        return SkinRender::renderSingleChild($model);
+        return OutputActions::$render->renderSingleChild($model);
     }
 
     /**
@@ -509,7 +508,7 @@ class Variables
             ->setConnector2($connector2 . '(' . $paramList . ') =')
             ->addParameter('data', $result);
 
-        return SkinRender::renderExpandableChild($model);
+        return OutputActions::$render->renderExpandableChild($model);
 
     }
 
@@ -551,7 +550,7 @@ class Variables
             // Tell them, we've been here before
             // but also say who we are.
             $model->setNormal(get_class($data));
-            $output .= SkinRender::renderRecursion($model);
+            $output .= OutputActions::$render->renderRecursion($model);
 
             // We will not render this one, but since we
             // return to wherever we came from, we need to decrease the level.
@@ -562,7 +561,7 @@ class Variables
             OutputActions::$recursionHandler->addToHive($data);
 
             // Output data from the class.
-            $output .= SkinRender::renderExpandableChild($model);
+            $output .= OutputActions::$render->renderExpandableChild($model);
             // We've finished this one, and can decrease the level setting.
             $level--;
             return $output;
@@ -594,7 +593,7 @@ class Variables
                 ->setType('Stack Frame')
                 ->addParameter('stepData', $stepData);
 
-            $output .= SkinRender::renderExpandableChild($model);
+            $output .= OutputActions::$render->renderExpandableChild($model);
         }
 
         return $output;

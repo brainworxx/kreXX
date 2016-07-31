@@ -34,8 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Objects;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Closure analysis methods.
@@ -68,9 +68,7 @@ class AnalyseClosure extends Simple
                 $model->setNormal('. . .');
             }
 
-
-
-            $output .= SkinRender::renderSingleChild($model);
+            $output .= OutputActions::$render->renderSingleChild($model);
         }
         return $output;
     }

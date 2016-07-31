@@ -34,8 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Objects;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\SkinRender;
 
 /**
  * Constant analysis methods.
@@ -55,7 +55,7 @@ class AnalyseConstants extends Simple
         $model = new IterateThroughConstants();
         $model->addParameter('data', $this->parameters['refConst']);
 
-        return SkinRender::renderExpandableChild($model);
+        return OutputActions::$render->renderExpandableChild($model);
     }
 
 }

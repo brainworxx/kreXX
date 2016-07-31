@@ -32,14 +32,14 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View;
+namespace Brainworxx\Krexx\View\Hans;
 
 /**
  * Individual render class for the Hans skin.
  *
  * @package Brainworxx\Krexx\View
  */
-class SkinRender extends Render
+class Render extends \Brainworxx\Krexx\View\Render
 {
     // Do nothing.
 }

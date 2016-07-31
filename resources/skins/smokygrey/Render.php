@@ -32,30 +32,31 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View;
+namespace Brainworxx\Krexx\View\Smokygrey;
 
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\View\Messages;
 
 /**
  * Individual render class for the smokey-grey skin.
  *
  * @package Brainworxx\Krexx\View
  */
-class SkinRender extends Render
+class Render extends \Brainworxx\Krexx\View\Render
 {
 
     /**
      * {@inheritDoc}
      */
-    public static function renderSingleChild(Simple $model)
+    public function renderSingleChild(Simple $model)
     {
 
         $template = parent::renderSingleChild($model);
 
-        $json['Help'] = self::getHelp($model->getHelpid());
+        $json['Help'] = $this->getHelp($model->getHelpid());
         // Prepare the json.
         $json = json_encode($json);
 
@@ -68,7 +69,7 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderExpandableChild(Simple $model, $isExpanded = false)
+    public function renderExpandableChild(Simple $model, $isExpanded = false)
     {
 
         // Check for emergency break.
@@ -82,12 +83,12 @@ class SkinRender extends Render
 
         if ($model->getName() == '' && $model->getType() == '') {
             // Without a Name or Type I only display the Child with a Node.
-            $template = self::getTemplateFileContent('expandableChildSimple');
+            $template = $this->getTemplateFileContent('expandableChildSimple');
             // Replace our stuff in the partial.
             return str_replace('{mainfunction}', Chunks::chunkMe($model->renderMe()), $template);
         } else {
             // We need to render this one normally.
-            $template = self::getTemplateFileContent('expandableChildNormal');
+            $template = $this->getTemplateFileContent('expandableChildNormal');
             // Replace our stuff in the partial.
             $template = str_replace('{name}', $model->getName(), $template);
             $template = str_replace('{type}', $model->getType(), $template);
@@ -106,8 +107,8 @@ class SkinRender extends Render
                 $template = str_replace('{connector1}', '', $template);
                 $template = str_replace('{connector2}', '', $template);
             } else {
-                $template = str_replace('{connector1}', self::renderConnector($model->getConnector1()), $template);
-                $template = str_replace('{connector2}', self::renderConnector($model->getConnector2()), $template);
+                $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
+                $template = str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
             }
 
 
@@ -121,20 +122,20 @@ class SkinRender extends Render
             } else {
                 // We add the buttton and the code.
                 $template = str_replace('{gensource}', $gencode, $template);
-                $template = str_replace('{gencode}', self::getTemplateFileContent('gencode'), $template);
+                $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
             }
 
             // Is it expanded?
             // This is done in the js.
             $template = str_replace('{isExpanded}', '', $template);
 
-            $json['Help'] = self::getHelp($model->getHelpid());
+            $json['Help'] = $this->getHelp($model->getHelpid());
             $json = json_encode($json);
             $template = str_replace('{addjson}', $json, $template);
 
             return str_replace(
                 '{nest}',
-                Chunks::chunkMe(self::renderNest($model, false)),
+                Chunks::chunkMe($this->renderNest($model, false)),
                 $template
             );
         }
@@ -144,14 +145,14 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderSingleEditableChild(Simple $model)
+    public function renderSingleEditableChild(Simple $model)
     {
 
         $template = parent::renderSingleEditableChild($model);
 
         // Prepare the json. Not much do display for form elements.
         $json = json_encode(array(
-            'Help' => self::getHelp($model->getHelpid()),
+            'Help' => $this->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 
@@ -161,14 +162,14 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderButton(Simple $model)
+    public function renderButton(Simple $model)
     {
 
         $template = parent::renderButton($model);
 
         // Prepare the json. Not much do display for form elements.
         $json = json_encode(array(
-            'Help' => self::getHelp($model->getHelpid()),
+            'Help' => $this->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 
@@ -178,11 +179,11 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderHeader($doctype, $headline, $cssJs)
+    public function renderHeader($doctype, $headline, $cssJs)
     {
         $template = parent::renderHeader($doctype, $headline, $cssJs);
 
-        // Doing special stuff for smoky-grey:
+        // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch
         // to the config as the current payload.
         if ($headline == 'Edit local settings') {
@@ -201,11 +202,11 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderFooter($caller, $configOutput, $configOnly = false)
+    public function renderFooter($caller, $configOutput, $configOnly = false)
     {
         $template = parent::renderFooter($caller, $configOutput);
 
-        // Doing special stuff for smoky-grey:
+        // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch
         // to the config as the current payload.
         if ($configOnly) {
@@ -220,12 +221,12 @@ class SkinRender extends Render
     /**
      * {@inheritDoc}
      */
-    public static function renderFatalMain($type, $errstr, $errfile, $errline, $source)
+    public function renderFatalMain($type, $errstr, $errfile, $errline, $source)
     {
         $template = parent::renderFatalMain($type, $errstr, $errfile, $errline, $source);
 
         // Add the search.
-        $template = str_replace('{search}', self::renderSearch(), $template);
+        $template = str_replace('{search}', $this->renderSearch(), $template);
         return str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
     }
 }
