@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Model\Output;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\FeConfig;
 
 /**
  * Configuration "analysis" methods. Meh, naminc conventions suck sometimes.
@@ -59,7 +59,7 @@ class AnalysisConfig extends Simple
         foreach ($sectionData as $parameterName => $parameterValue) {
             // Render the single value.
             // We need to find out where the value comes from.
-            $config = Config::getFeConfig($parameterName);
+            $config = FeConfig::getFeConfig($parameterName);
             $editable = $config[0];
             $type = $config[1];
 

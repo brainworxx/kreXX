@@ -35,7 +35,7 @@ namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Analysis\RecursionHandler;
 use Brainworxx\Krexx\Framework\Chunks;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\View\Messages;
@@ -250,12 +250,7 @@ class OutputActions extends Internals
     {
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
-
-        // Setting template info.
-        if (is_null(OutputActions::$render->skin)) {
-            OutputActions::$render->skin = Config::getConfigValue('output', 'skin');
-        }
-
+        
         // Get the header.
         if (self::$headerSend) {
             $header = OutputActions::$render->renderFatalHeader('', '<!DOCTYPE html>');

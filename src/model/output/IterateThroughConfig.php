@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Model\Output;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\Config;
 
 /**
  * Configuration output methods.

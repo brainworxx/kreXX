@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Errorhandler;
 
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
 
 /**

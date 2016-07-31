@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\config\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Model\Simple;

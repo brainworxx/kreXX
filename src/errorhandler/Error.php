@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Errorhandler;
 
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\Config;
 
 /**
  * This class hosts all functions which all error handlers will share
@@ -65,7 +65,7 @@ abstract class Error
      */
     protected function getIsActive()
     {
-        if ($this->isActive && Config::isEnabled()) {
+        if ($this->isActive && Config::getEnabled()) {
             // We will only handle errors when kreXX and the handler
             // itself is enabled.
             return true;
@@ -84,7 +84,7 @@ abstract class Error
      */
     protected function giveFeedback(array $errorData)
     {
-        if ($this->isActive && Config::isEnabled()) {
+        if ($this->isActive && Config::getEnabled()) {
             OutputActions::errorAction($errorData);
         }
     }

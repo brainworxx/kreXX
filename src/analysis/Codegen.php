@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Model\Simple;
 
 /**

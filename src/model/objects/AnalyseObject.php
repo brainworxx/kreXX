@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Model\Objects;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Codegen;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Flection;
 
 /**

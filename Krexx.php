@@ -33,10 +33,9 @@
 
 
 use Brainworxx\Krexx\Errorhandler\Fatal;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Chunks;
-use Brainworxx\Krexx\View\Render;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\Controller\OutputActions;
@@ -117,7 +116,10 @@ class Krexx
         include_once $krexxdir . 'src/view/Render.php';
         include_once $krexxdir . 'src/view/Messages.php';
         include_once $krexxdir . 'src/analysis/Codegen.php';
-        include_once $krexxdir . 'src/framework/Config.php';
+        include_once $krexxdir . 'src/config/Fallback.php';
+        include_once $krexxdir . 'src/config/Tools.php';
+        include_once $krexxdir . 'src/config/Config.php';
+        include_once $krexxdir . 'src/config/FeConfig.php';
         include_once $krexxdir . 'src/framework/Toolbox.php';
         include_once $krexxdir . 'src/framework/Chunks.php';
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
@@ -198,7 +200,7 @@ class Krexx
     {
         self::noFatalForKrexx();
         // Do we gave a handle?
-        $handle = Config::getConfigFromCookies('deep', 'Local open function');
+        $handle = Config::getDevHandler();
         if ($name == $handle) {
             // We do a standard-open.
             if (isset($arguments[0])) {
@@ -221,7 +223,7 @@ class Krexx
     {
         self::noFatalForKrexx();
         // Disabled?
-        if (!Config::isEnabled()) {
+        if (!Config::getEnabled()) {
             return;
         }
 
@@ -245,7 +247,7 @@ class Krexx
     {
         self::noFatalForKrexx();
         // Disabled ?
-        if (!Config::isEnabled()) {
+        if (!Config::getEnabled()) {
             return;
         }
         self::timerMoment('end');
@@ -264,7 +266,7 @@ class Krexx
     {
         self::noFatalForKrexx();
         // Disabled?
-        if (!Config::isEnabled()) {
+        if (!Config::getEnabled()) {
             return;
         }
         OutputActions::dumpAction($data);
@@ -281,7 +283,7 @@ class Krexx
     {
         self::noFatalForKrexx();
         // Disabled?
-        if (!Config::isEnabled()) {
+        if (!Config::getEnabled()) {
             return;
         }
         // Render it.
@@ -295,7 +297,7 @@ class Krexx
     public static function enable()
     {
         self::noFatalForKrexx();
-        Config::isEnabled(true);
+        Config::setEnabled(true);
         self::reFatalAfterKrexx();
     }
 
@@ -305,7 +307,7 @@ class Krexx
     public static function disable()
     {
         self::noFatalForKrexx();
-        Config::isEnabled(false);
+        Config::setEnabled(false);
         // We will not re-enable it afterwards, because kreXX
         // is disabled and the handler would not show up anyway.
     }
@@ -320,7 +322,7 @@ class Krexx
         self::noFatalForKrexx();
         // Disabled?
         // We are ignoring local settings here.
-        if (!Config::isEnabled(null)) {
+        if (!Config::getEnabled()) {
             return;
         }
         OutputActions::editSettingsAction();
@@ -335,7 +337,7 @@ class Krexx
     public static function registerFatal()
     {
         // Disabled?
-        if (!Config::isEnabled()) {
+        if (!Config::getEnabled()) {
             return;
         }
 
@@ -375,7 +377,7 @@ class Krexx
     public static function unregisterFatal()
     {
         // Disabled?
-        if (!Config::isEnabled()) {
+        if (!Config::getEnabled()) {
             return;
         }
 

@@ -44,7 +44,7 @@ use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Model\Objects\AnalyseObject;
 use Brainworxx\Krexx\Model\Objects\AnalyseClosure;
 use Brainworxx\Krexx\Framework\Toolbox;
-use Brainworxx\Krexx\Framework\Config;
+use Brainworxx\Krexx\Config\Config;
 
 /**
  * Variables analysis functions methods.
@@ -576,6 +576,9 @@ class Variables
      *
      * @param array $backtrace
      *   The backtrace.
+     * @param int $offset
+     *   For some reason, we have an offset of -1 for fatel error backtrace
+     *   line number.
      *
      * @return string
      *   The rendered backtrace.

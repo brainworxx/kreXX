@@ -57,5 +57,4 @@ class AnalyseConstants extends Simple
 
         return OutputActions::$render->renderExpandableChild($model);
     }
-
 }

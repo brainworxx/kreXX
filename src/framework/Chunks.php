@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Framework;
 
+use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Messages;
 

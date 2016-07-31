@@ -53,7 +53,7 @@ class Simple
     /**
      * The name/key of it.
      *
-     * @var mixed
+     * @var string|int
      */
     protected $name = '';
 
@@ -125,7 +125,6 @@ class Simple
      */
     protected $parameters = array();
 
-
     /**
      * Placeholder for the render function. Overwrite this one
      *
@@ -142,7 +141,7 @@ class Simple
      * @param mixed $data
      *   The current variable we are rendering.
      * @param bool $escapeMe
-     *   Sets it the data mus be escaped.
+     *   Sets it the data must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -161,6 +160,7 @@ class Simple
      * Getter for the data.
      *
      * @return mixed
+     *   The variable, we are currently analysing.
      */
     public function getData()
     {
@@ -170,7 +170,10 @@ class Simple
     /**
      * Setter for the name.
      *
-     * @param string $name
+     * @param int|string $name
+     *   The name/key we are analysing.
+     * @param bool $escapeMe
+     *   Sets if the name must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -188,7 +191,8 @@ class Simple
     /**
      * Getter for the name.
      *
-     * @return mixed
+     * @return int|string
+     *   The name/key we are analysing.
      */
     public function getName()
     {
@@ -199,13 +203,16 @@ class Simple
      * Setter for normal.
      *
      * @param string $normal
+     *   The short result of the analysis.
+     * @param bool $escapeMe
+     *   Sets if the short result must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
     public function setNormal($normal, $escapeMe = true)
     {
-        if (is_string($normal) && $escapeMe) {
+        if ($escapeMe) {
             $this->normal = Toolbox::encodeString($normal);
         } else {
             $this->normal = $normal;
@@ -216,7 +223,8 @@ class Simple
     /**
      * Getter for normal.
      *
-     * @return mixed
+     * @return string
+     *   The short result of the analysis.
      */
     public function getNormal()
     {
@@ -227,13 +235,16 @@ class Simple
      * Setter for additional.
      *
      * @param string $additional
+     *   The long result of the analysis.
+     * @param bool $escapeMe
+     *   Sets if the long result must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
     public function setAdditional($additional, $escapeMe = true)
     {
-        if (is_string($additional) && $escapeMe) {
+        if ($escapeMe) {
             $this->additional = Toolbox::encodeString($additional);
         } else {
             $this->additional = $additional;
@@ -246,6 +257,7 @@ class Simple
      * Getter for additional
      *
      * @return mixed
+     *   The long result of the analysis.
      */
     public function getAdditional()
     {
@@ -256,13 +268,16 @@ class Simple
      * Setter for the type.
      *
      * @param string $type
+     *   The type of the variable we are analysing.
+     * @param bool $escapeMe
+     *   Sets if the type of the variable must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
     public function setType($type, $escapeMe = true)
     {
-        if (is_string($type) && $escapeMe) {
+        if ($escapeMe) {
             $this->type = Toolbox::encodeString($type);
         } else {
             $this->type = $type;
@@ -274,7 +289,8 @@ class Simple
     /**
      * Getter for the type.
      *
-     * @return mixed
+     * @return string
+     *   The type of the variable we are analysing
      */
     public function getType()
     {
@@ -285,6 +301,7 @@ class Simple
      * Setter for the helpid.
      *
      * @param int $helpid
+     *   The ID of the help text.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -298,7 +315,8 @@ class Simple
     /**
      * Getter for the help id.
      *
-     * @return string
+     * @return int
+     *   The ID of the help text.
      */
     public function getHelpid()
     {
@@ -309,6 +327,7 @@ class Simple
      * Setter for connector1.
      *
      * @param string $connector1
+     *   The first connector.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -323,6 +342,7 @@ class Simple
      * Getter got connector1.
      *
      * @return string
+     *   The first connector.
      */
     public function getConnector1()
     {
@@ -333,6 +353,7 @@ class Simple
      * Setter for connector2.
      *
      * @param string $connector2
+     *   The second connector.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -347,6 +368,7 @@ class Simple
      * Getter for connector2.
      *
      * @return string
+     *   The second connector.
      */
     public function getConnector2()
     {
@@ -357,6 +379,7 @@ class Simple
      * Setter for json.
      *
      * @param array $json
+     *   More analysis data.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -371,6 +394,7 @@ class Simple
      * Getter for json.
      *
      * @return array
+     *   More analysis data.
      */
     public function getJson()
     {
@@ -381,6 +405,7 @@ class Simple
      * Setter for domid.
      *
      * @param string $domid
+     *   The dom id, of cause.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -395,6 +420,7 @@ class Simple
      * Getter for domid.
      *
      * @return string
+     *   The dom id, of cause.
      */
     public function getDomid()
     {
