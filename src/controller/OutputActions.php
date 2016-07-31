@@ -68,6 +68,7 @@ class OutputActions extends Internals
         }
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
+        self::loadRendrerer();
 
         // Find caller.
         $caller = self::findCaller();
@@ -171,6 +172,7 @@ class OutputActions extends Internals
         }
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
+        self::loadRendrerer();
 
         Config::$allowCodegen = false;
 
@@ -227,6 +229,8 @@ class OutputActions extends Internals
             return;
         }
         self::resetTimer();
+        self::$recursionHandler = new RecursionHandler();
+        self::loadRendrerer();
 
         // Find caller.
         $caller = self::findCaller();
@@ -250,7 +254,7 @@ class OutputActions extends Internals
     {
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
-        
+
         // Get the header.
         if (self::$headerSend) {
             $header = OutputActions::$render->renderFatalHeader('', '<!DOCTYPE html>');

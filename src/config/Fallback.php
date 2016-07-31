@@ -62,7 +62,7 @@ class Fallback
      *
      * @var array
      */
-    protected static $configFallback = array(
+    public static $configFallback = array(
         'runtime' => array(
             'disabled' => 'false',
             'detectAjax' => 'true',
@@ -100,7 +100,7 @@ class Fallback
      *
      * @var array
      */
-    protected static $feConfigFallback = array(
+    public static $feConfigFallback = array(
         'analyseMethodsAtall' => array(
             'type' => 'Select',
             'editable' => 'true',

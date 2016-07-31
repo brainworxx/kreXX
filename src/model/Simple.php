@@ -269,19 +269,13 @@ class Simple
      *
      * @param string $type
      *   The type of the variable we are analysing.
-     * @param bool $escapeMe
-     *   Sets if the type of the variable must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setType($type, $escapeMe = true)
+    public function setType($type)
     {
-        if ($escapeMe) {
-            $this->type = Toolbox::encodeString($type);
-        } else {
-            $this->type = $type;
-        }
+        $this->type = $type;
 
         return $this;
     }
@@ -300,7 +294,7 @@ class Simple
     /**
      * Setter for the helpid.
      *
-     * @param int $helpid
+     * @param string $helpid
      *   The ID of the help text.
      *
      * @return \Brainworxx\Krexx\Model\Simple
@@ -315,7 +309,7 @@ class Simple
     /**
      * Getter for the help id.
      *
-     * @return int
+     * @return string
      *   The ID of the help text.
      */
     public function getHelpid()

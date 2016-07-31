@@ -288,4 +288,27 @@ class Config extends Tools
         // Nothing found?
         return true;
     }
+
+    /**
+     * Gets a list of all available skins for the frontend config.
+     *
+     * @return array
+     *   An array with the skinnames.
+     */
+    public static function getSkinList()
+    {
+        // Static cache to make it a little bit faster.
+        static $list = array();
+
+        if (count($list) == 0) {
+            // Get the list.
+            $list = array_filter(glob(self::$krexxdir . 'resources/skins/*'), 'is_dir');
+            // Now we need to filter it, we only want the names, not the full path.
+            foreach ($list as &$path) {
+                $path = str_replace(self::$krexxdir . 'resources/skins/', '', $path);
+            }
+        }
+
+        return $list;
+    }
 }

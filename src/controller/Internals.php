@@ -105,7 +105,7 @@ class Internals
     /**
      * Loads the renderer from the skin.
      */
-    protected static function loadRendrerer()
+    public static function loadRendrerer()
     {
         $skin = Config::getConfigValue('output', 'skin');
         $path = Config::$krexxdir . 'resources/skins/' . $skin . '/Render.php';
@@ -136,8 +136,10 @@ class Internals
         // actually need.
         return array(
             'file' => htmlspecialchars($caller['file']),
-            'line' => htmlspecialchars($caller['line']),
-            'varname' => htmlspecialchars(self::getVarName($caller['file'], $caller['line']))
+            'line' => (int)$caller['line'],
+            // We don't need to escape the varname, this will be done in
+            // the model.
+            'varname' => self::getVarName($caller['file'], $caller['line']),
         );
     }
 
@@ -353,7 +355,6 @@ class Internals
             ->addParameter('config', $config)
             ->addParameter('source', $source);
 
-        self::loadRendrerer();
         $configOutput = self::$render->renderExpandableChild($model, $isExpanded);
         return self::$render->renderFooter($caller, $configOutput, $isExpanded);
     }

@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Errorhandler;
 
 use Brainworxx\Krexx\Config\Config;
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
 
 /**
@@ -135,6 +136,8 @@ class Fatal extends Error
 
                 // We need to correct the error line.
                 $error['line']--;
+                
+                OutputActions::loadRendrerer();
 
                 $errorData = array(
                     'type' => $errorType[0],

@@ -62,7 +62,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['file'])) {
             $fileModel = new Simple();
             $fileModel->setData($stepData['file'])
-                ->setName('File')
+                ->setName('File', false)
                 ->setNormal($stepData['file'])
                 ->setType('string ' . strlen($stepData['file']));
 
@@ -72,7 +72,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['line'])) {
             $lineModel = new Simple();
             $lineModel->setData($stepData['line'])
-                ->setName('Line no.')
+                ->setName('Line no.', false)
                 ->setNormal($stepData['line'])
                 ->setType('integer');
 
@@ -81,8 +81,8 @@ class AnalysisBacktrace extends Simple
         // Sourcecode, is escaped by now.
         if (isset($stepData['sourcecode'])) {
             $sourceModel = new Simple();
-            $sourceModel->setData($stepData['sourcecode'], true)
-                ->setName('Sourcecode')
+            $sourceModel->setData($stepData['sourcecode'], false)
+                ->setName('Sourcecode', false)
                 ->setNormal('. . .')
                 ->setType('PHP');
 
@@ -92,7 +92,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['function'])) {
             $functionModel = new Simple();
             $functionModel->setData($stepData['function'])
-                ->setName('Last called function')
+                ->setName('Last called function', false)
                 ->setNormal($stepData['function'])
                 ->setType('string ' . strlen($stepData['function']));
 
@@ -106,7 +106,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['type'])) {
             $typeModel = new Simple();
             $typeModel->setData($stepData['type'])
-                ->setName('Call type')
+                ->setName('Call type', false)
                 ->setNormal($stepData['type'])
                 ->setType('string ' . strlen($stepData['type']));
 

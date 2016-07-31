@@ -58,7 +58,7 @@ class Tools extends Fallback
      * @return bool
      *   If it was evaluated.
      */
-    protected static function evaluateSetting($group, $name, $value)
+    public static function evaluateSetting($group, $name, $value)
     {
         static $evaluated = array();
 
@@ -347,7 +347,7 @@ class Tools extends Fallback
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    protected static function getFeConfigFromFile($parameterName)
+    public static function getFeConfigFromFile($parameterName)
     {
         static $config = array();
 
@@ -504,7 +504,7 @@ class Tools extends Fallback
      * @return string
      *   The value from the file.
      */
-    protected static function getConfigFromFile($group, $name)
+    public static function getConfigFromFile($group, $name)
     {
         static $config = array();
 

@@ -77,7 +77,7 @@ class IterateThroughConfig extends Simple
         $configOutput .= OutputActions::$render->renderSingleEditableChild($editableModel);
         // Render the reset-button which will delete the debug-cookie.
         $buttonModel = new Simple();
-        $buttonModel->setName('resetbutton')
+        $buttonModel->setName('resetbutton', false)
             ->setNormal('Reset local settings')
             ->setHelpid('resetbutton');
 

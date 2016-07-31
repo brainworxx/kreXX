@@ -6,9 +6,9 @@
   complicated.
 - Change: Removed the unnecessary stuff from the source generation.
   Stuff like '$kresult =' is now gone.
-- Change: Refactored pretty much everything and introduced somthing
-  that looks remotely like MVC
-- Bugfix: Code generation was not working when krexx was called via
+- Change: Refactored pretty much everything and introduced something
+  that looks remotely like MVC.
+- Bugfix: Code generation is now working when krexx is called via
   'Krexx::'.
 - Bugfix: Wrong line number in the fatal error handler.
 

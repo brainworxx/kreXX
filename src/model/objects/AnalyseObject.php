@@ -170,7 +170,7 @@ class AnalyseObject extends Simple
             };
             usort($methods, $sortingCallback);
             $model = new IterateThroughMethods();
-            $model->setName('Methods')
+            $model->setName('Methods', false)
                 ->setType('class internals')
                 ->addParameter('ref', $ref)
                 ->addParameter('methods', $methods);
@@ -332,7 +332,7 @@ class AnalyseObject extends Simple
         if (count($refConst) > 0) {
             // We've got some values, we will dump them.
             $model = new AnalyseConstants();
-            $model->setName('Constants')
+            $model->setName('Constants', false)
                 ->setType('class internals')
                 ->addParameter('refConst', $refConst);
 
