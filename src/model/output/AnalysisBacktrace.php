@@ -81,8 +81,7 @@ class AnalysisBacktrace extends Simple
         // Sourcecode, is escaped by now.
         if (isset($stepData['sourcecode'])) {
             $sourceModel = new Simple();
-            $sourceModel->setData($stepData['sourcecode'])
-                ->setIsEscaped(true)
+            $sourceModel->setData($stepData['sourcecode'], true)
                 ->setName('Sourcecode')
                 ->setNormal('. . .')
                 ->setType('PHP');

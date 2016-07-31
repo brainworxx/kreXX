@@ -101,7 +101,8 @@ class Simple
     protected $connector2 = '';
 
     /**
-     * Additinal data, we are sending to the FE vas a json, hence the name.
+     * Additional data, we are sending to the FE vas a json, hence the name.
+     *
      * Right now, only the Smoky-Grey skin makes use of this.
      *
      * @var array
@@ -109,41 +110,21 @@ class Simple
     protected $json = array();
 
     /**
-     * A unique ID for the dom. We use this one for recursion resolving
-     * via JS.
+     * A unique ID for the dom. We use this one for recursion resolving via JS.
      *
      * @var string
      */
     protected $domid = '';
 
     /**
-     * Parameters for the renderMe method. Should be used in the
-     * extending classes.
+     * Parameters for the renderMe method.
+     *
+     * Should be used in the extending classes.
      *
      * @var array
      */
     protected $parameters = array();
 
-    /**
-     * Is the containing $data already escaped at this time?
-     *
-     * @var bool
-     */
-    protected $isEscaped = false;
-
-    /**
-     * Setter for the $isEscaped.
-     *
-     * @param $isEscaped
-     *
-     * @return \Brainworxx\Krexx\Model\Simple
-     *   $this, for chaining.
-     */
-    public function setIsEscaped($isEscaped)
-    {
-        $this->isEscaped = $isEscaped;
-        return $this;
-    }
 
     /**
      * Placeholder for the render function. Overwrite this one
@@ -158,15 +139,21 @@ class Simple
     /**
      * Setter for the data.
      *
-     * @param $data
+     * @param mixed $data
      *   The current variable we are rendering.
+     * @param bool $escapeMe
+     *   Sets it the data mus be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setData(&$data)
+    public function setData(&$data, $escapeMe = true)
     {
-        $this->data = $data;
+        if (is_string($data) && $escapeMe) {
+            $this->data = Toolbox::encodeString($data);
+        } else {
+            $this->data = $data;
+        }
         return $this;
     }
 
@@ -177,11 +164,7 @@ class Simple
      */
     public function getData()
     {
-        if (is_string($this->data) && !$this->isEscaped) {
-            return Toolbox::encodeString($this->data);
-        } else {
-            return $this->data;
-        }
+        return $this->data;
     }
 
     /**
@@ -192,9 +175,13 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setName($name)
+    public function setName($name, $escapeMe = true)
     {
-        $this->name = $name;
+        if (is_string($name) && $escapeMe) {
+            $this->name = Toolbox::encodeString($name);
+        } else {
+            $this->name = $name;
+        }
         return $this;
     }
 
@@ -205,11 +192,7 @@ class Simple
      */
     public function getName()
     {
-        if (is_string($this->name)) {
-            return Toolbox::encodeString($this->name);
-        } else {
-            return $this->name;
-        }
+        return $this->name;
     }
 
     /**
@@ -220,9 +203,13 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setNormal($normal)
+    public function setNormal($normal, $escapeMe = true)
     {
-        $this->normal = $normal;
+        if (is_string($normal) && $escapeMe) {
+            $this->normal = Toolbox::encodeString($normal);
+        } else {
+            $this->normal = $normal;
+        }
         return $this;
     }
 
@@ -233,11 +220,7 @@ class Simple
      */
     public function getNormal()
     {
-        if (is_string($this->normal)) {
-            return Toolbox::encodeString($this->normal);
-        } else {
-            return $this->normal;
-        }
+        return $this->normal;
     }
 
     /**
@@ -248,9 +231,14 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setAdditional($additional)
+    public function setAdditional($additional, $escapeMe = true)
     {
-        $this->additional = $additional;
+        if (is_string($additional) && $escapeMe) {
+            $this->additional = Toolbox::encodeString($additional);
+        } else {
+            $this->additional = $additional;
+        }
+
         return $this;
     }
 
@@ -261,11 +249,7 @@ class Simple
      */
     public function getAdditional()
     {
-        if (is_string($this->additional)) {
-            return Toolbox::encodeString($this->additional);
-        } else {
-            return $this->additional;
-        }
+        return $this->additional;
     }
 
     /**
@@ -276,9 +260,14 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setType($type)
+    public function setType($type, $escapeMe = true)
     {
-        $this->type = $type;
+        if (is_string($type) && $escapeMe) {
+            $this->type = Toolbox::encodeString($type);
+        } else {
+            $this->type = $type;
+        }
+
         return $this;
     }
 
@@ -289,17 +278,13 @@ class Simple
      */
     public function getType()
     {
-        if (is_string($this->type)) {
-            return Toolbox::encodeString($this->type);
-        } else {
-            return $this->type;
-        }
+        return $this->type;
     }
 
     /**
      * Setter for the helpid.
      *
-     * @param string $helpid
+     * @param int $helpid
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.

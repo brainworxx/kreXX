@@ -54,7 +54,13 @@ class AnalyseClosure extends Simple
         $output = '';
         foreach ($this->parameters['data'] as $key => $string) {
             $model = new Simple();
-            $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
+            // The source part contains HTML. Escaping it contra productive.
+            if ($key === 'source') {
+                $model->setData($string, true)->setName($key)->setType('reflection')->setConnector2('=');
+            } else {
+                $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
+            }
+
 
             if ($key !== 'comments' && $key !== 'declared in' && $key !== 'source') {
                 $model->setNormal($string);
@@ -62,10 +68,7 @@ class AnalyseClosure extends Simple
                 $model->setNormal('. . .');
             }
 
-            // The source part contains HTML. Escaping it contra productive.
-            if ($key === 'source') {
-                $model->setIsEscaped(true);
-            }
+
 
             $output .= SkinRender::renderSingleChild($model);
         }
