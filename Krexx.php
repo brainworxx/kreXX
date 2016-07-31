@@ -122,7 +122,7 @@ class Krexx
         include_once $krexxdir . 'src/framework/Chunks.php';
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
         include_once $krexxdir . 'src/analysis/Flection.php';
-        include_once $krexxdir . 'src/analysis/Hive.php';
+        include_once $krexxdir . 'src/analysis/RecursionHandler.php';
         include_once $krexxdir . 'src/analysis/Variables.php';
         include_once $krexxdir . 'src/model/Simple.php';
         include_once $krexxdir . 'src/model/output/AnalysisConfig.php';

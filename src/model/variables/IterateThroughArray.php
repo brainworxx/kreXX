@@ -34,10 +34,10 @@
 
 namespace Brainworxx\Krexx\Model\Variables;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\Analysis\Hive;
 
 /**
  * Array analysis mehtods.
@@ -53,15 +53,15 @@ class IterateThroughArray extends Simple
     {
         $output = '';
         $data = $this->parameters['data'];
-        $recursionMarker = Hive::getMarker();
+        $recursionMarker = OutputActions::$recursionHandler->getMarker();
 
         // Recursion detection of objects are handled in the hub.
-        if (Hive::isInHive($data)) {
+        if (OutputActions::$recursionHandler->isInHive($data)) {
             return SkinRender::renderRecursion(new Simple());
         }
 
         // Remember, that we've already been here.
-        Hive::addToHive($data);
+        OutputActions::$recursionHandler->addToHive($data);
 
         $output .= SkinRender::renderSingeChildHr();
 

@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Analysis\Codegen;
-use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
@@ -196,7 +195,7 @@ class Render extends Help
         $template = str_replace('{KrexxCount}', OutputActions::$KrexxCount, $template);
         $template = str_replace('{headline}', $headline, $template);
         $template = str_replace('{cssJs}', $cssJs, $template);
-        $template = str_replace('{KrexxId}', Hive::getMarker(), $template);
+        $template = str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
         $template = str_replace('{search}', self::renderSearch(), $template);
         $template = str_replace('{messages}', Messages::outputMessages(), $template);
 
@@ -212,7 +211,7 @@ class Render extends Help
     public static function renderSearch()
     {
         $template = self::getTemplateFileContent('search');
-        $template = str_replace('{KrexxId}', Hive::getMarker(), $template);
+        $template = str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
         return $template;
     }
 
@@ -538,7 +537,7 @@ class Render extends Help
         $template = str_replace('{doctype}', $doctype, $template);
         $template = str_replace('{search}', self::renderSearch(), $template);
 
-        return str_replace('{KrexxId}', Hive::getMarker(), $template);
+        return str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
     }
 
     /**

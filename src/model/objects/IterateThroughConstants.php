@@ -58,7 +58,7 @@ class IterateThroughConstants extends Simple
 
         $output .= SkinRender::renderSingeChildHr();
 
-        // We do not need to check the hive, this is ome class internal stuff.
+        // We do not need to check the recursionHandler, this is ome class internal stuff.
         // Is it even possible to create a recursion here?
         // Iterate through.
         foreach ($data as $k => $v) {

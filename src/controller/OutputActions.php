@@ -33,11 +33,11 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analysis\RecursionHandler;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
 
@@ -68,6 +68,7 @@ class OutputActions extends Internals
             return;
         }
         self::resetTimer();
+        self::$recursionHandler = new RecursionHandler();
 
         // Find caller.
         $caller = self::findCaller();
@@ -153,9 +154,6 @@ class OutputActions extends Internals
             Chunks::addMetadata($caller);
         }
 
-        // Cleanup the hive, this removes all recursion markers.
-        Hive::cleanupHive();
-
         // Reset value for the code generation.
         Config::$allowCodegen = false;
 
@@ -173,6 +171,7 @@ class OutputActions extends Internals
             return;
         }
         self::resetTimer();
+        self::$recursionHandler = new RecursionHandler();
 
         Config::$allowCodegen = false;
 
@@ -215,9 +214,6 @@ class OutputActions extends Internals
             Chunks::addMetadata($caller);
         }
 
-        // Cleanup the hive, this removes all recursion markers.
-        Hive::cleanupHive();
-
         // Enable emergency break for use in further use.
         self::checkEmergencyBreak(true);
     }
@@ -242,9 +238,6 @@ class OutputActions extends Internals
         $footer = self::outputFooter($caller, true);
         self::$shutdownHandler->addChunkString(self::outputHeader('Edit local settings'));
         self::$shutdownHandler->addChunkString($footer);
-
-        // Cleanup the hive.
-        Hive::cleanupHive();
     }
 
     /**
@@ -257,6 +250,7 @@ class OutputActions extends Internals
     public static function errorAction(array $errorData)
     {
         self::resetTimer();
+        self::$recursionHandler = new RecursionHandler();
 
         // Setting template info.
         if (is_null(SkinRender::$skin)) {
@@ -300,9 +294,5 @@ class OutputActions extends Internals
             // Send it to the browser.
             Chunks::sendDechunkedToBrowser($header . $messages . $main . $backtrace . $footer);
         }
-
-        // Cleanup the hive, this removes all recursion markers.
-        Hive::cleanupHive();
-
     }
 }

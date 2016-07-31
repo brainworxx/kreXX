@@ -547,7 +547,7 @@ class Variables
             ->setConnector1($connector1)
             ->setConnector2($connector2);
 
-        if (Hive::isInHive($data)) {
+        if (OutputActions::$recursionHandler->isInHive($data)) {
             // Tell them, we've been here before
             // but also say who we are.
             $model->setNormal(get_class($data));
@@ -559,7 +559,7 @@ class Variables
             return $output;
         } else {
             // Remember, that we've been here before.
-            Hive::addToHive($data);
+            OutputActions::$recursionHandler->addToHive($data);
 
             // Output data from the class.
             $output .= SkinRender::renderExpandableChild($model);

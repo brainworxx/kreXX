@@ -85,6 +85,15 @@ class Internals
     protected static $headerSend = false;
 
     /**
+     * An instance of the recursion handler.
+     *
+     * It gets reinstantiated with every new call.
+     *
+     * @var \Brainworxx\Krexx\Analysis\RecursionHandler
+     */
+    public static $recursionHandler;
+
+    /**
      * Finds the place in the code from where krexx was called.
      *
      * @return array

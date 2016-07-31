@@ -37,7 +37,6 @@ namespace Brainworxx\Krexx\View;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Chunks;
-use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -227,6 +226,6 @@ class SkinRender extends Render
 
         // Add the search.
         $template = str_replace('{search}', self::renderSearch(), $template);
-        return str_replace('{KrexxId}', Hive::getMarker(), $template);
+        return str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
     }
 }
