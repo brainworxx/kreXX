@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Model\Variables;
 
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Framework\Variables;
+use Brainworxx\Krexx\Analysis\Variables;
 
 /**
  * Array analysis methods (again).

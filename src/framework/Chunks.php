@@ -299,7 +299,7 @@ class Chunks
     /**
      * Deletes all chunks from the current run.
      */
-    public static function cleanupNewChunks()
+    protected static function cleanupNewChunks()
     {
         $chunkList = glob(Config::$krexxdir . 'chunks/' . Toolbox::fileStamp() . '_*.Krexx.tmp');
 

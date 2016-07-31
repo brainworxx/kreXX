@@ -32,11 +32,10 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View;
+namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -48,7 +47,7 @@ class Codegen
 {
 
      /**
-     * The "scope we are starting with. When it is $this in combination with a
+     * The "scope" we are starting with. When it is $this in combination with a
      * nesting level of 1, we treat protected and private variables and functions
      * as public, because they are reachable from the current scope.
      *

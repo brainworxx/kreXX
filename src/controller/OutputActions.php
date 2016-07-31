@@ -35,9 +35,9 @@ namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\View\Codegen;
-use Brainworxx\Krexx\Framework\Variables;
-use Brainworxx\Krexx\Framework\Hive;
+use Brainworxx\Krexx\Analysis\Codegen;
+use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
 
@@ -305,5 +305,4 @@ class OutputActions extends Internals
         Hive::cleanupHive();
 
     }
-
 }

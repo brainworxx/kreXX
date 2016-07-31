@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Model\Objects;
 
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Framework\Variables;
+use Brainworxx\Krexx\Analysis\Variables;
 
 /**
  * Debug method result analysis methods.

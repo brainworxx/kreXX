@@ -49,6 +49,11 @@ class Messages
      */
     protected static $messages = array();
 
+    /**
+     * The translatable keys for backend integration.
+     *
+     * @var array
+     */
     protected static $keys = array();
 
     /**

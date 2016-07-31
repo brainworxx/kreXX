@@ -45,7 +45,6 @@ use Brainworxx\Krexx\View\SkinRender;
  */
 class Toolbox
 {
-
     /**
      * Returns the microtime timestamp for file operations.
      *
@@ -251,7 +250,7 @@ class Toolbox
         return $result;
     }
 
-        /**
+    /**
      * Removes the comment-chars from the comment string.
      *
      * @param string $comment
@@ -542,5 +541,35 @@ class Toolbox
             }
         }
         return $result;
+    }
+
+    /**
+     * We merge recursively two arrays.
+     *
+     * We keep the keys and overwrite the original values
+     * of the $oldArray.
+     *
+     * @param array $oldArray
+     *   The array we want to change.
+     * @param array $newArray
+     *   The new values for the $oldArray.
+     */
+    public static function arrayMerge(array &$oldArray, array &$newArray)
+    {
+        foreach ($newArray as $key => $value) {
+            if (!isset($oldArray[$key])) {
+                // We simply add it.
+                $oldArray[$key] = $value;
+            } else {
+                // We have already a value.
+                if (is_array($value)) {
+                    // Add our array recursively.
+                    self::arrayMerge($oldArray[$key], $value);
+                } else {
+                    // It's not an array, we simply overwrite the value.
+                    $oldArray[$key] = $value;
+                }
+            }
+        }
     }
 }

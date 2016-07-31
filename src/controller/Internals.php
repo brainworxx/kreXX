@@ -54,7 +54,7 @@ class Internals
      *
      * @var int
      */
-    public static $timer = 0;
+    protected static $timer = 0;
 
     /**
      * Counts how often kreXX was called.
@@ -82,7 +82,7 @@ class Internals
      *
      * @var bool
      */
-    public static $headerSend = false;
+    protected static $headerSend = false;
 
     /**
      * Finds the place in the code from where krexx was called.
@@ -275,7 +275,7 @@ class Internals
      * @return string
      *   The generated markup
      */
-    public static function outputHeader($headline)
+    protected static function outputHeader($headline)
     {
         // Do we do an output as file?
         if (!self::$headerSend) {

@@ -36,8 +36,8 @@ namespace Brainworxx\Krexx\Model\Variables;
 
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\SkinRender;
-use Brainworxx\Krexx\Framework\Variables;
-use Brainworxx\Krexx\Framework\Hive;
+use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Hive;
 
 /**
  * Array analysis mehtods.

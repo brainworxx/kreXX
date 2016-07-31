@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\Framework\Variables;
+use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\View\Help;
 
 /**
@@ -100,7 +100,7 @@ class IterateThroughProperties extends Simple
                 $additional .= 'protected ';
             }
             if (is_a($refProperty, '\Brainworxx\Krexx\Analysis\Flection')) {
-                /* @var \Brainworxx\Krexx\Analysis\Objects\Flection $refProperty */
+                /* @var \Brainworxx\Krexx\Analysis\Flection $refProperty */
                 $additional .= $refProperty->getWhatAmI() . ' ';
             }
             if ($refProperty->isStatic()) {

@@ -116,14 +116,14 @@ class Krexx
         include_once $krexxdir . 'src/view/Help.php';
         include_once $krexxdir . 'src/view/Render.php';
         include_once $krexxdir . 'src/view/Messages.php';
-        include_once $krexxdir . 'src/view/Codegen.php';
+        include_once $krexxdir . 'src/analysis/Codegen.php';
         include_once $krexxdir . 'src/framework/Config.php';
         include_once $krexxdir . 'src/framework/Toolbox.php';
         include_once $krexxdir . 'src/framework/Chunks.php';
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
-        include_once $krexxdir . 'src/framework/Flection.php';
-        include_once $krexxdir . 'src/framework/Hive.php';
-        include_once $krexxdir . 'src/framework/Variables.php';
+        include_once $krexxdir . 'src/analysis/Flection.php';
+        include_once $krexxdir . 'src/analysis/Hive.php';
+        include_once $krexxdir . 'src/analysis/Variables.php';
         include_once $krexxdir . 'src/model/Simple.php';
         include_once $krexxdir . 'src/model/output/AnalysisConfig.php';
         include_once $krexxdir . 'src/model/output/IterateThroughConfig.php';

@@ -34,7 +34,8 @@
 
 namespace Brainworxx\Krexx\View;
 
-use Brainworxx\Krexx\Framework\Hive;
+use Brainworxx\Krexx\Analysis\Codegen;
+use Brainworxx\Krexx\Analysis\Hive;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
@@ -607,7 +608,7 @@ class Render extends Help
      * @return array
      *   An array with the skinnames.
      */
-    public static function getSkinList()
+    protected static function getSkinList()
     {
         // Static cache to make it a little bit faster.
         static $list = array();

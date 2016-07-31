@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Framework;
+namespace Brainworxx\Krexx\Analysis;
 
 /**
  * Recursion handler.

@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Framework;
+namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Output\AnalysisBacktrace;
@@ -44,6 +44,8 @@ use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Model\Objects\AnalyseObject;
 use Brainworxx\Krexx\Model\Objects\AnalyseClosure;
+use Brainworxx\Krexx\Framework\Toolbox;
+use Brainworxx\Krexx\Framework\Config;
 
 /**
  * Variables analysis functions methods.

@@ -35,10 +35,10 @@
 namespace Brainworxx\Krexx\Model\Objects;
 
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\Codegen;
+use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\View\SkinRender;
 use Brainworxx\Krexx\Framework\Config;
-use Brainworxx\Krexx\Framework\Flection;
+use Brainworxx\Krexx\Analysis\Flection;
 
 /**
  * Object analysis methods.
@@ -343,7 +343,7 @@ class AnalyseObject extends Simple
         return '';
     }
 
-        /**
+    /**
      * Gets the properties from a reflection property of the object.
      *
      * @param array $refProps

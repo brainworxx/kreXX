@@ -64,7 +64,7 @@ class Config
      *
      * @var array
      */
-    public static $configFallback = array(
+    protected static $configFallback = array(
         'runtime' => array(
             'disabled' => 'false',
             'detectAjax' => 'true',
@@ -97,7 +97,7 @@ class Config
         ),
     );
 
-    public static $feConfigFallback = array(
+    protected static $feConfigFallback = array(
         'analyseMethodsAtall' => array(
             'type' => 'Select',
             'editable' => 'true',
@@ -324,37 +324,7 @@ class Config
      */
     public static function overwriteLocalSettings(array $newSettings)
     {
-        self::krexxArrayMerge(self::$localConfig, $newSettings);
-    }
-
-    /**
-     * We merge recursively two arrays.
-     *
-     * We keep the keys and overwrite the original values
-     * of the $oldArray.
-     *
-     * @param array $oldArray
-     *   The array we want to change.
-     * @param array $newArray
-     *   The new values for the $oldArray.
-     */
-    protected static function krexxArrayMerge(array &$oldArray, array &$newArray)
-    {
-        foreach ($newArray as $key => $value) {
-            if (!isset($oldArray[$key])) {
-                // We simply add it.
-                $oldArray[$key] = $value;
-            } else {
-                // We have already a value.
-                if (is_array($value)) {
-                    // Add our array recursively.
-                    self::krexxArrayMerge($oldArray[$key], $value);
-                } else {
-                    // It's not an array, we simply overwrite the value.
-                    $oldArray[$key] = $value;
-                }
-            }
-        }
+        Toolbox::arrayMerge(self::$localConfig, $newSettings);
     }
 
     /**
@@ -559,7 +529,7 @@ class Config
      * @return bool
      *   If it was evaluated.
      */
-    public static function evaluateSetting($group, $name, $value)
+    protected static function evaluateSetting($group, $name, $value)
     {
         static $evaluated = array();
 
@@ -870,7 +840,7 @@ class Config
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    public static function getFeConfigFromFile($parameterName)
+    protected static function getFeConfigFromFile($parameterName)
     {
         static $config = array();
 
