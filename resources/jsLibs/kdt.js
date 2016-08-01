@@ -257,10 +257,14 @@
 
             if (result !== null) {
                 return result.replace(/&/g, "&amp;")
-                     .replace(/</g, "&lt;")
-                     .replace(/>/g, "&gt;")
-                     .replace(/"/g, "&quot;")
-                     .replace(/'/g, "&#039;");
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;")
+                    // <small> is allowed. Parameters are better readable
+                    // this way.
+                    .replace('&lt;small&gt;', '<small>')
+                    .replace('&lt;/small&gt;', '</small>');
             }
         }
     };
