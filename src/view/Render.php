@@ -494,8 +494,6 @@ class Render extends Help
      *   The file where the error occurred.
      * @param int $errline
      *   The line number where the error occurred.
-     * @param string $source
-     *   Part of the source code, where the error occurred.
      *
      * @return string
      *   The template file, with all markers replaced.
@@ -506,7 +504,7 @@ class Render extends Help
 
         $from = $errline -5;
         $to = $errline +5;
-        $source = Toolbox::readSourcecode($errfile, $errline, $from, $to);
+        $source = Toolbox::readSourcecode($errfile, $errline -1, $from -1, $to -1);
 
         // Insert our values.
         $template = str_replace('{type}', $type, $template);

@@ -274,7 +274,7 @@ class OutputActions extends Internals
             $errorData['errfile'],
             $errorData['errline']
         );
-        
+
         // Get the backtrace.
         $backtrace = Variables::analysisBacktrace($errorData['backtrace']);
         // Get the footer.
