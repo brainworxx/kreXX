@@ -53,7 +53,8 @@ class AnalyseConstants extends Simple
     {
 
         $model = new IterateThroughConstants();
-        $model->addParameter('data', $this->parameters['refConst']);
+        $model->addParameter('data', $this->parameters['refConst'])
+            ->addParameter('classname', $this->parameters['classname']);
 
         return OutputActions::$render->renderExpandableChild($model);
     }

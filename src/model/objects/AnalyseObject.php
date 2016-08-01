@@ -342,9 +342,12 @@ class AnalyseObject extends Simple
         if (count($refConst) > 0) {
             // We've got some values, we will dump them.
             $model = new AnalyseConstants();
+            $classname =$ref->getName();
             $model->setName('Constants', false)
                 ->setType('class internals')
-                ->addParameter('refConst', $refConst);
+                ->setConnector1(' ')
+                ->addParameter('refConst', $refConst)
+                ->addParameter('classname', $classname);
 
             return OutputActions::$render->renderExpandableChild($model);
         }

@@ -92,7 +92,7 @@ class Codegen
         } else {
             // Simply fuse the connectors.
             // The connectors are a representation of the current used "language".
-            switch (self::analyseType($model->getType())) {
+            switch (self::analyseType($model)) {
                 case 'contagination':
                     // We simply add the connectors for public access.
                     // Escape the quotes. This is not done by the model.
@@ -111,6 +111,11 @@ class Codegen
                 case 'property':
                     // We create a reflection property an set it to public to access it.
                     $result = self::reflectProperty();
+                    break;
+
+                case 'stop':
+                    // This tells the JS to stop iterating for previous gencode.
+                    $result ='.stop.';
                     break;
             }
         }
@@ -162,7 +167,7 @@ class Codegen
     /**
      * Analyses the type and then decides what to do with it
      *
-     * @param string $type
+     * @param simple $model
      *   The type we are analysing, for example 'private array'.
      *
      * @return string
@@ -171,15 +176,24 @@ class Codegen
      *   - method
      *   - property
      */
-    protected static function analyseType($type)
+    protected static function analyseType($model)
     {
+        $type = $model->getType();
+
         $contagination = 'contagination';
         $method = 'method';
         $property = 'property';
+        $stop = 'stop';
 
         // Debug methods are always public.
         if ($type == 'debug method' || self::$counter == 0) {
             return $contagination;
+        }
+
+        // Test for constants.
+        if ($type == 'class internals' && $model->getName() == 'Constants') {
+            // We must only take the stuff from the constant itself
+            return $stop;
         }
 
         // Test for protected or private.
@@ -193,6 +207,7 @@ class Codegen
             // We are inside the scope, this value, function or class is reachable.
             return $contagination;
         }
+
 
         // We are still here? Must be a protected method or property.
         if (strpos($type, 'method') === false) {

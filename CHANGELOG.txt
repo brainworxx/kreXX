@@ -11,6 +11,7 @@
 - Bugfix: Code generation is now working when krexx is called via
   'Krexx::'.
 - Bugfix: Wrong line number in the fatal error handler.
+- Bugfix: Code generation for class constants now works properly.
 
 1.4.2
 - Added analysis metadata to the file output.

@@ -63,7 +63,7 @@ class IterateThroughConstants extends Simple
         // Iterate through.
         foreach ($data as $k => $v) {
             $v = &$data[$k];
-            $output .= Variables::analysisHub($v, $k, '::', ' =');
+            $output .= Variables::analysisHub($v, $k, $this->parameters['classname'] . '::', ' =');
         }
 
         $output .= OutputActions::$render->renderSingeChildHr();

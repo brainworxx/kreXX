@@ -641,10 +641,17 @@
                     result = '// Value is either protected or private.<br /> // Sorry . . ';
                     break;
                 }
-                else {
-                    // We're good, value can be reached!
-                    result = sourcedata + result;
+                // Check if we are facing a .stop. instruction
+                 if (sourcedata == '.stop.') {
+                     // Return, what we've got so far.
+                     break;
+                 }
+                if (sourcedata == '. . .') {
+
                 }
+                // We're good, value can be reached!
+                result = sourcedata + result;
+
             }
             // Get the next el.
             el = kdt.getParents(el, 'li.kchild')[0];
