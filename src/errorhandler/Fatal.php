@@ -120,9 +120,10 @@ class Fatal extends Error
         $error = error_get_last();
 
         // Do we have an error at all?
-        if (!is_null($error) && $this->getIsActive()) {
-            // We will not generate any code here!
-            Config::$allowCodegen = false;
+        if (!is_null($error) &&
+            $this->getIsActive() &&
+            Config::getEnabled()
+        ) {
 
             // Do we need to check this one, according to our settings?
             $translatedError = $this->translateErrorType($error['type']);
@@ -134,23 +135,15 @@ class Fatal extends Error
                 // We also need to prepare some Data we want to display.
                 $errorType = $this->translateErrorType($error['type']);
 
-                // We need to correct the error line.
-                $error['line']--;
-                
-                OutputActions::loadRendrerer();
-
+                // We prepeare the error as far as we can here.
+                // The adding of the sourcecode happens in the controller.
                 $errorData = array(
                     'type' => $errorType[0],
                     'errstr' => $error['message'],
                     'errfile' => $error['file'],
                     'errline' => $error['line'],
                     'handler' => __FUNCTION__,
-                    'source' => Toolbox::readSourcecode(
-                        $error['file'],
-                        $error['line'],
-                        $error['line'] -5,
-                        $error['line'] +5
-                    ),
+                    'file' => $error['file'],
                     'backtrace' => $this->tickedBacktrace,
                 );
 
@@ -159,7 +152,8 @@ class Fatal extends Error
                     // analysed objects as possible.
                     Config::overwriteLocalSettings(self::$configFatal);
                 }
-                $this->giveFeedback($errorData);
+
+                OutputActions::errorAction($errorData);
             }
         }
         // Clean exit.

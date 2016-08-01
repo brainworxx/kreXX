@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\View\Messages;
 
 /**
@@ -254,6 +255,10 @@ class OutputActions extends Internals
     {
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
+        OutputActions::loadRendrerer();
+
+        // We will not generate any code here!
+        Config::$allowCodegen = false;
 
         // Get the header.
         if (self::$headerSend) {
@@ -267,9 +272,9 @@ class OutputActions extends Internals
             $errorData['type'],
             $errorData['errstr'],
             $errorData['errfile'],
-            $errorData['errline'] + 1,
-            $errorData['source']
+            $errorData['errline']
         );
+        
         // Get the backtrace.
         $backtrace = Variables::analysisBacktrace($errorData['backtrace']);
         // Get the footer.

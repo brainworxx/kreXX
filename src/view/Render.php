@@ -492,7 +492,7 @@ class Render extends Help
      *   The string from the error.
      * @param string $errfile
      *   The file where the error occurred.
-     * @param string $errline
+     * @param int $errline
      *   The line number where the error occurred.
      * @param string $source
      *   Part of the source code, where the error occurred.
@@ -500,9 +500,13 @@ class Render extends Help
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalMain($type, $errstr, $errfile, $errline, $source)
+    public function renderFatalMain($type, $errstr, $errfile, $errline)
     {
         $template = $this->getTemplateFileContent('fatalMain');
+
+        $from = $errline -5;
+        $to = $errline +5;
+        $source = Toolbox::readSourcecode($errfile, $errline, $from, $to);
 
         // Insert our values.
         $template = str_replace('{type}', $type, $template);

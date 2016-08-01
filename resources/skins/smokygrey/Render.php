@@ -221,9 +221,9 @@ class Render extends \Brainworxx\Krexx\View\Render
     /**
      * {@inheritDoc}
      */
-    public function renderFatalMain($type, $errstr, $errfile, $errline, $source)
+    public function renderFatalMain($type, $errstr, $errfile, $errline)
     {
-        $template = parent::renderFatalMain($type, $errstr, $errfile, $errline, $source);
+        $template = parent::renderFatalMain($type, $errstr, $errfile, $errline);
 
         // Add the search.
         $template = str_replace('{search}', $this->renderSearch(), $template);

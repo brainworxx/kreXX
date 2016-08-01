@@ -76,20 +76,6 @@ abstract class Error
     }
 
     /**
-     * Renders the info to the error, warning or notice.
-     *
-     * @param array $errorData
-     *   The data frm the error. This should be a backtrace
-     *   with code samples.
-     */
-    protected function giveFeedback(array $errorData)
-    {
-        if ($this->isActive && Config::getEnabled()) {
-            OutputActions::errorAction($errorData);
-        }
-    }
-
-    /**
      * Translates the error number into human readable text.
      *
      * It also includes the corresponding config
