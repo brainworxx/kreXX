@@ -32,14 +32,11 @@
  */
 
 
-use Brainworxx\Krexx\Errorhandler\Fatal;
 use Brainworxx\Krexx\config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Toolbox;
 
 /**
  * Alias function for object analysis.
@@ -72,39 +69,6 @@ function krexx($data = null, $handle = '')
  */
 class Krexx
 {
-
-    /**
-     * Here we store the fatal error handler.
-     *
-     * @var \Brainworxx\Krexx\Errorhandler\Fatal
-     */
-    protected static $krexxFatal;
-
-    /**
-     * Stores whether out fatal error handler should be active.
-     *
-     * During a kreXX analysis, we deactivate it to improve performance.
-     * Here we save, whether we should reactivate it.
-     *
-     * @var boolean
-     */
-    protected static $fatalShouldActive = false;
-
-    /**
-     * Here we save all timekeeping stuff.
-     *
-     * @var string array
-     */
-    protected static $timekeeping = array();
-
-    /**
-     * Remembers, if the header or footer must be printed.
-     *
-     * @var int
-     */
-    protected static $startRun = 0;
-    protected static $counterCache = array();
-
     /**
      * Includes all needed files and sets some internal values.
      */
@@ -179,7 +143,7 @@ class Krexx
         // At this point, we won't inform the dev right away. The error message
         // will pop up, when kreXX is actually displayed, no need to bother the
         // dev just now.
-        // We might need to register our Backtracer.
+        // We might need to register our fatal error handler.
         if (Config::getConfigValue('backtraceAndError', 'registerAutomatically') == 'true') {
             self::registerFatal();
         }
@@ -196,7 +160,7 @@ class Krexx
      */
     public static function __callStatic($name, array $arguments)
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         // Do we gave a handle?
         $handle = Config::getDevHandler();
         if ($name == $handle) {
@@ -207,7 +171,7 @@ class Krexx
                 self::open();
             }
         }
-        self::reFatalAfterKrexx();
+        OutputActions::reFatalAfterKrexx();
     }
 
     /**
@@ -219,23 +183,13 @@ class Krexx
      */
     public static function timerMoment($string)
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         // Disabled?
         if (!Config::getEnabled()) {
             return;
         }
-
-        // Did we use this one before?
-        if (isset(self::$counterCache[$string])) {
-            // Add another to the counter.
-            self::$counterCache[$string]++;
-            self::$timekeeping['[' . self::$counterCache[$string] . ']' . $string] = microtime(true);
-        } else {
-            // First time counter, set it to 1.
-            self::$counterCache[$string] = 1;
-            self::$timekeeping[$string] = microtime(true);
-        }
-        self::reFatalAfterKrexx();
+        OutputActions::timerAction($string);
+        OutputActions::reFatalAfterKrexx();
     }
 
     /**
@@ -243,15 +197,13 @@ class Krexx
      */
     public static function timerEnd()
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         // Disabled ?
         if (!Config::getEnabled()) {
             return;
         }
-        self::timerMoment('end');
-        // And we are done. Feedback to the user.
-        OutputActions::dumpAction(Toolbox::miniBenchTo(self::$timekeeping), 'kreXX timer');
-        self::reFatalAfterKrexx();
+        OutputActions::timerEndAction();
+        OutputActions::reFatalAfterKrexx();
     }
 
     /**
@@ -262,13 +214,13 @@ class Krexx
      */
     public static function open($data = null)
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         // Disabled?
         if (!Config::getEnabled()) {
             return;
         }
         OutputActions::dumpAction($data);
-        self::reFatalAfterKrexx();
+        OutputActions::reFatalAfterKrexx();
     }
 
     /**
@@ -279,14 +231,14 @@ class Krexx
      */
     public static function backtrace()
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         // Disabled?
         if (!Config::getEnabled()) {
             return;
         }
         // Render it.
         OutputActions::backtraceAction();
-        self::reFatalAfterKrexx();
+        OutputActions::reFatalAfterKrexx();
     }
 
     /**
@@ -294,9 +246,9 @@ class Krexx
      */
     public static function enable()
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         Config::setEnabled(true);
-        self::reFatalAfterKrexx();
+        OutputActions::reFatalAfterKrexx();
     }
 
     /**
@@ -304,7 +256,7 @@ class Krexx
      */
     public static function disable()
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         Config::setEnabled(false);
         // We will not re-enable it afterwards, because kreXX
         // is disabled and the handler would not show up anyway.
@@ -317,14 +269,14 @@ class Krexx
      */
     public static function editSettings()
     {
-        self::noFatalForKrexx();
+        OutputActions::noFatalForKrexx();
         // Disabled?
         // We are ignoring local settings here.
         if (!Config::getEnabled()) {
             return;
         }
         OutputActions::editSettingsAction();
-        self::reFatalAfterKrexx();
+        OutputActions::reFatalAfterKrexx();
     }
 
     /**
@@ -338,31 +290,7 @@ class Krexx
         if (!Config::getEnabled()) {
             return;
         }
-
-        // As of PHP Version 7.0.2, the register_tick_function() causesPHP to crash,
-        // with a connection reset! We need to check the version to avoid this, and
-        // then tell the dev what happened.
-        if (version_compare(phpversion(), '7.0.0', '>=')) {
-            // Too high! 420 Method Failure :-(
-            Messages::addMessage(Help::getHelp('php7yellow'));
-            krexx(Help::getHelp('php7'));
-
-            // Just return, there is nothing more to do here.
-            return;
-        }
-
-        // Do we need another shutdown handler?
-        if (!is_object(self::$krexxFatal)) {
-            self::$krexxFatal = new Fatal();
-            declare(ticks = 1);
-            register_shutdown_function(array(
-              self::$krexxFatal,
-              'shutdownCallback',
-            ));
-        }
-        register_tick_function(array(self::$krexxFatal, 'tickCallback'));
-        self::$krexxFatal->setIsActive(true);
-        self::$fatalShouldActive = true;
+        OutputActions::registerFatalAction();
     }
 
     /**
@@ -378,41 +306,7 @@ class Krexx
         if (!Config::getEnabled()) {
             return;
         }
-
-        if (!is_null(self::$krexxFatal)) {
-            // Now we need to tell the shutdown function, that is must
-            // not do anything on shutdown.
-            self::$krexxFatal->setIsActive(false);
-            unregister_tick_function(array(self::$krexxFatal, 'tickCallback'));
-        }
-        self::$fatalShouldActive = false;
+        OutputActions::unregisterFatalAction();
     }
 
-    /**
-     * Disables the fatal handler and the tick callback.
-     *
-     * We disable the tick callback and the error handler during
-     * a analysis, to generate faster output.
-     */
-    protected static function noFatalForKrexx()
-    {
-        if (self::$fatalShouldActive) {
-            self::$krexxFatal->setIsActive(false);
-            unregister_tick_function(array(self::$krexxFatal, 'tickCallback'));
-        }
-    }
-
-    /**
-     * Re-enable the fatal handler and the tick callback.
-     *
-     * We disable the tick callback and the error handler during
-     * a analysis, to generate faster output.
-     */
-    protected static function reFatalAfterKrexx()
-    {
-        if (self::$fatalShouldActive) {
-            self::$krexxFatal->setIsActive(true);
-            register_tick_function(array(self::$krexxFatal, 'tickCallback'));
-        }
-    }
 }

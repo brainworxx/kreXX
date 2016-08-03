@@ -34,11 +34,13 @@
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Analysis\RecursionHandler;
+use Brainworxx\Krexx\Errorhandler\Fatal;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Framework\Toolbox;
+use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 
 /**
@@ -297,5 +299,89 @@ class OutputActions extends Internals
             // Send it to the browser.
             Chunks::sendDechunkedToBrowser($header . $messages . $main . $backtrace . $footer);
         }
+    }
+
+    /**
+     * Register the fatal error handler.
+     */
+    public static function registerFatalAction()
+    {
+        // As of PHP Version 7.0.2, the register_tick_function() causesPHP to crash,
+        // with a connection reset! We need to check the version to avoid this, and
+        // then tell the dev what happened.
+        // Not to mention that fatals got removed anyway.
+        if (version_compare(phpversion(), '7.0.0', '>=')) {
+            // Too high! 420 Method Failure :-(
+            Messages::addMessage(Help::getHelp('php7yellow'));
+            krexx(Help::getHelp('php7'));
+
+            // Just return, there is nothing more to do here.
+            return;
+        }
+
+        // Do we need another shutdown handler?
+        if (!is_object(self::$krexxFatal)) {
+            self::$krexxFatal = new Fatal();
+            declare(ticks = 1);
+            register_shutdown_function(array(
+              self::$krexxFatal,
+              'shutdownCallback',
+            ));
+        }
+        register_tick_function(array(self::$krexxFatal, 'tickCallback'));
+        self::$krexxFatal->setIsActive(true);
+        self::$fatalShouldActive = true;
+    }
+
+    /**
+     * "Unregister" the fatal error handler.
+     *
+     * Actually we can not unregister it. We simply tell it to not activate
+     * and we unregister the tick function which provides us with the
+     * backtrace.
+     */
+    public static function unregisterFatalAction()
+    {
+        if (!is_null(self::$krexxFatal)) {
+            // Now we need to tell the shutdown function, that is must
+            // not do anything on shutdown.
+            self::$krexxFatal->setIsActive(false);
+            unregister_tick_function(array(self::$krexxFatal, 'tickCallback'));
+        }
+        self::$fatalShouldActive = false;
+    }
+
+    /**
+     * Takes a "moment" for the benchmark test.
+     *
+     * @param string $string
+     *   Defines a "moment" during a benchmark test.
+     *   The string should be something meaningful, like "Model invoice db call".
+     */
+    public static function timerAction($string)
+    {
+        // Did we use this one before?
+        if (isset(self::$counterCache[$string])) {
+            // Add another to the counter.
+            self::$counterCache[$string]++;
+            self::$timekeeping['[' . self::$counterCache[$string] . ']' . $string] = microtime(true);
+        } else {
+            // First time counter, set it to 1.
+            self::$counterCache[$string] = 1;
+            self::$timekeeping[$string] = microtime(true);
+        }
+    }
+
+    /**
+     * Outputs the timer
+     */
+    public static function timerEndAction()
+    {
+        self::timerAction('end');
+        // And we are done. Feedback to the user.
+        OutputActions::dumpAction(Toolbox::miniBenchTo(self::$timekeeping), 'kreXX timer');
+        // Reset the timer vars.
+        self::$timekeeping = array();
+        self::$counterCache = array();
     }
 }

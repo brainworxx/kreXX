@@ -103,6 +103,31 @@ class Internals
     public static $render;
 
     /**
+     * Here we store the fatal error handler.
+     *
+     * @var \Brainworxx\Krexx\Errorhandler\Fatal
+     */
+    protected static $krexxFatal;
+
+    /**
+     * Stores whether out fatal error handler should be active.
+     *
+     * During a kreXX analysis, we deactivate it to improve performance.
+     * Here we save, whether we should reactivate it.
+     *
+     * @var boolean
+     */
+    protected static $fatalShouldActive = false;
+
+    /**
+     * Here we save all timekeeping stuff.
+     *
+     * @var string array
+     */
+    protected static $timekeeping = array();
+    protected static $counterCache = array();
+
+    /**
      * Loads the renderer from the skin.
      */
     public static function loadRendrerer()
@@ -404,6 +429,34 @@ class Internals
     {
         if (self::$timer == 0) {
             self::$timer = time();
+        }
+    }
+
+    /**
+     * Disables the fatal handler and the tick callback.
+     *
+     * We disable the tick callback and the error handler during
+     * a analysis, to generate faster output.
+     */
+    public static function noFatalForKrexx()
+    {
+        if (self::$fatalShouldActive) {
+            self::$krexxFatal->setIsActive(false);
+            unregister_tick_function(array(self::$krexxFatal, 'tickCallback'));
+        }
+    }
+
+    /**
+     * Re-enable the fatal handler and the tick callback.
+     *
+     * We disable the tick callback and the error handler during
+     * a analysis, to generate faster output.
+     */
+    public static function reFatalAfterKrexx()
+    {
+        if (self::$fatalShouldActive) {
+            self::$krexxFatal->setIsActive(true);
+            register_tick_function(array(self::$krexxFatal, 'tickCallback'));
         }
     }
 }
