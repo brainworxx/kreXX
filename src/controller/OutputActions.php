@@ -40,6 +40,7 @@ use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Framework\Toolbox;
+use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 
@@ -133,7 +134,11 @@ class OutputActions extends Internals
         Codegen::$scope = $caller['varname'];
 
         // Start the magic.
-        $analysis = Variables::analysisHub($data, $caller['varname'], '', '=');
+        $model = new Simple();
+        $model->setData($data)
+            ->setName($caller['varname'])
+            ->setConnector2('=');
+        $analysis = Variables::analysisHub($model);
         // Now that our analysis is done, we must check if there was an emergency
         // break.
         $emergency = false;

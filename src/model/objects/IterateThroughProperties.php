@@ -115,17 +115,23 @@ class IterateThroughProperties extends Simple
             if (is_object($value) && !is_a($value, '\Closure')) {
                 OutputActions::$nestingLevel++;
                 if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $result = Variables::analyseObject($value, $propName, $additional, $connector1);
+                    $model = new Simple();
+                    $model->setData($value)
+                        ->setName($propName)
+                        ->setAdditional($additional)
+                        ->setConnector1($connector1);
+                    $result = Variables::analyseObject($model);
                     OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {
                     OutputActions::$nestingLevel--;
-                    $output .= Variables::analyseString(
-                        'Object => ' . Help::getHelp('maximumLevelReached'),
-                        $propName,
-                        $additional,
-                        $connector1
-                    );
+                    $model = new Simple();
+                    $text = 'Object => ' . Help::getHelp('maximumLevelReached');
+                    $model->setData($text)
+                        ->setName($propName)
+                        ->setAdditional($additional)
+                        ->setConnector1($connector1);
+                    $output .= Variables::analyseString($model);
                 }
             }
 
@@ -133,17 +139,23 @@ class IterateThroughProperties extends Simple
             if (is_object($value) && is_a($value, '\Closure')) {
                 OutputActions::$nestingLevel++;
                 if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $result = Variables::analyseClosure($value, $propName, $additional, $connector1);
+                    $model = new Simple();
+                    $model->setData($value)
+                        ->setName($propName)
+                        ->setAdditional($additional)
+                        ->setConnector1($connector1);
+                    $result = Variables::analyseClosure($model);
                     OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {
                     OutputActions::$nestingLevel--;
-                    $output .= Variables::analyseString(
-                        'Closure => ' . Help::getHelp('maximumLevelReached'),
-                        $propName,
-                        $additional,
-                        $connector1
-                    );
+                    $model = new Simple();
+                    $text = 'Closure => ' . Help::getHelp('maximumLevelReached');
+                    $model->setData($text)
+                        ->setName($propName)
+                        ->setAdditional($additional)
+                        ->setConnector1($connector1);
+                    $output .= Variables::analyseString($model);
                 }
             }
 
@@ -151,48 +163,83 @@ class IterateThroughProperties extends Simple
             if (is_array($value)) {
                 OutputActions::$nestingLevel++;
                 if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $result = Variables::analyseArray($value, $propName, $additional, $connector1);
+                    $model = new Simple();
+                    $model->setData($value)
+                        ->setName($propName)
+                        ->setAdditional($additional)
+                        ->setConnector1($connector1);
+                    $result = Variables::analyseArray($model);
                     OutputActions::$nestingLevel--;
                     $output .= $result;
                 } else {
                     OutputActions::$nestingLevel--;
-                    $output .= Variables::analyseString(
-                        'Array => ' . Help::getHelp('maximumLevelReached'),
-                        $propName,
-                        $additional,
-                        $connector1
-                    );
+                    $model = new Simple();
+                    $text = 'Array => ' . Help::getHelp('maximumLevelReached');
+                    $model->setData($text)
+                        ->setName($propName)
+                        ->setAdditional($additional)
+                        ->setConnector1($connector1);
+                    $output .= Variables::analyseString($model);
                 }
             }
 
             // Resource?
             if (is_resource($value)) {
-                $output .= Variables::analyseResource($value, $propName, $additional, $connector1);
+                $model = new Simple();
+                $model->setData($value)
+                    ->setName($propName)
+                    ->setAdditional($additional)
+                    ->setConnector1($connector1);
+                $output .= Variables::analyseResource($model);
             }
 
             // String?
             if (is_string($value)) {
-                $output .= Variables::analyseString($value, $propName, $additional, $connector1);
+                $model = new Simple();
+                $model->setData($value)
+                    ->setName($propName)
+                    ->setAdditional($additional)
+                    ->setConnector1($connector1);
+                $output .= Variables::analyseString($model);
             }
 
             // Float?
             if (is_float($value)) {
-                $output .= Variables::analyseFloat($value, $propName, $additional, $connector1);
+                $model = new Simple();
+                $model->setData($value)
+                    ->setName($propName)
+                    ->setAdditional($additional)
+                    ->setConnector1($connector1);
+                $output .= Variables::analyseFloat($model);
             }
 
             // Integer?
             if (is_int($value)) {
-                $output .= Variables::analyseInteger($value, $propName, $additional, $connector1);
+                $model = new Simple();
+                $model->setData($value)
+                    ->setName($propName)
+                    ->setAdditional($additional)
+                    ->setConnector1($connector1);
+                $output .= Variables::analyseInteger($model);
             }
 
             // Boolean?
             if (is_bool($value)) {
-                $output .= Variables::analyseBoolean($value, $propName, $additional, $connector1);
+                $model = new Simple();
+                $model->setData($value)
+                    ->setName($propName)
+                    ->setAdditional($additional)
+                    ->setConnector1($connector1);
+                $output .= Variables::analyseBoolean($model);
             }
 
             // Null ?
             if (is_null($value)) {
-                $output .= Variables::analyseNull($propName, $additional, $connector1);
+                $model = new Simple();
+                $model->setName($propName)
+                    ->setAdditional($additional)
+                    ->setConnector1($connector1);
+                $output .= Variables::analyseNull($model);
             }
         }
 

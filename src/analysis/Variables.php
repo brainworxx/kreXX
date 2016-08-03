@@ -58,19 +58,14 @@ class Variables
      * This function decides what functions analyse the data
      * and acts as a hub.
      *
-     * @param mixed $data
+     * @param Simple $model
      *   The variable we are analysing.
-     * @param string $name
-     *   The name of the variable, if available.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The generated markup.
      */
-    public static function analysisHub(&$data, $name = '', $connector1 = '', $connector2 = '')
+    //public static function analysisHub(&$data, $name = '', $connector1 = '', $connector2 = '')
+    public static function analysisHub($model)
     {
         // Check memory and runtime.
         if (!OutputActions::checkEmergencyBreak()) {
@@ -78,6 +73,10 @@ class Variables
             Messages::addMessage("Emergency break for large output during analysis process.");
             return '';
         }
+        $data = $model->getData();
+        $name = $model->getName();
+        $connector1 = $model->getConnector1();
+        $connector2 = $model->getConnector2();
 
         // If we are currently analysing an array, we might need to add stuff to
         // the connector.
@@ -91,12 +90,21 @@ class Variables
         if (is_object($data) && !is_a($data, '\Closure')) {
             OutputActions::$nestingLevel++;
             if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                $result = self::analyseObject($data, $name, '', $connector1, $connector2);
+                $model = new Simple();
+                $model->setData($data)
+                    ->setName($name)
+                    ->setConnector1($connector1)
+                    ->setConnector2($connector2);
+                $result = self::analyseObject($model);
                 OutputActions::$nestingLevel--;
                 return $result;
             } else {
                 OutputActions::$nestingLevel--;
-                return Variables::analyseString('Object => ' . Help::getHelp('maximumLevelReached'), $name);
+                $model = new Simple();
+                $text = 'Object => ' . Help::getHelp('maximumLevelReached');
+                $model->setData($text)
+                    ->setName($name);
+                return Variables::analyseString($model);
             }
         }
 
@@ -107,12 +115,21 @@ class Variables
                 if ($connector2 == '] =') {
                     $connector2 = ']';
                 }
-                $result = self::analyseClosure($data, $name, '', $connector1, $connector2);
+                $model = new Simple();
+                $model->setData($data)
+                    ->setName($name)
+                    ->setConnector1($connector1)
+                    ->setConnector2($connector2);
+                $result = self::analyseClosure($model);
                 OutputActions::$nestingLevel--;
                 return $result;
             } else {
                 OutputActions::$nestingLevel--;
-                return Variables::analyseString('Closure => ' . Help::getHelp('maximumLevelReached'), $name);
+                $model = new Simple();
+                $text = 'Closure => ' . Help::getHelp('maximumLevelReached');
+                $model->setData($text)
+                    ->setName($name);
+                return Variables::analyseString($model);
             }
         }
 
@@ -120,43 +137,81 @@ class Variables
         if (is_array($data)) {
             OutputActions::$nestingLevel++;
             if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                $result = Variables::analyseArray($data, $name, '', $connector1, $connector2);
+                $model = new Simple();
+                $model->setData($data)
+                    ->setName($name)
+                    ->setConnector1($connector1)
+                    ->setConnector2($connector2);
+                $result = Variables::analyseArray($model);
                 OutputActions::$nestingLevel--;
                 return $result;
             } else {
                 OutputActions::$nestingLevel--;
-                return Variables::analyseString('Array => ' . Help::getHelp('maximumLevelReached'), $name);
+                $model = new Simple();
+                $text = 'Array => ' . Help::getHelp('maximumLevelReached');
+                $model->setData($text)
+                    ->setName($name);
+                return Variables::analyseString($model);
             }
         }
 
         // Resource?
         if (is_resource($data)) {
-            return Variables::analyseResource($data, $name, '', $connector1, $connector2);
+            $model = new Simple();
+            $model->setData($data)
+                ->setName($name)
+                ->setConnector1($connector1)
+                ->setConnector2($connector2);
+            return Variables::analyseResource($model);
         }
 
         // String?
         if (is_string($data)) {
-            return Variables::analyseString($data, $name, '', $connector1, $connector2);
+            $model = new Simple();
+            $model->setData($data)
+                ->setName($name)
+                ->setConnector1($connector1)
+                ->setConnector2($connector2);
+            return Variables::analyseString($model);
         }
 
         // Float?
         if (is_float($data)) {
-            return Variables::analyseFloat($data, $name, '', $connector1, $connector2);
+            $model = new Simple();
+            $model->setData($data)
+                ->setName($name)
+                ->setConnector1($connector1)
+                ->setConnector2($connector2);
+            return Variables::analyseFloat($model);
         }
 
         // Integer?
         if (is_int($data)) {
-            return Variables::analyseInteger($data, $name, '', $connector1, $connector2);
+            $model = new Simple();
+            $model->setData($data)
+                ->setName($name)
+                ->setConnector1($connector1)
+                ->setConnector2($connector2);
+            return Variables::analyseInteger($model);
         }
 
         // Boolean?
         if (is_bool($data)) {
-            return Variables::analyseBoolean($data, $name, '', $connector1, $connector2);
+            $model = new Simple();
+            $model->setData($data)
+                ->setName($name)
+                ->setConnector1($connector1)
+                ->setConnector2($connector2);
+            return Variables::analyseBoolean($model);
         }
 
         // Null ?
         if (is_null($data)) {
-            return Variables::analyseNull($name, '', $connector1, $connector2);
+            $model = new Simple();
+            $model->setName($name)
+                ->setConnector1($connector1)
+                ->setConnector2($connector2);
+            return Variables::analyseNull($model);
         }
 
         // Still here? This should not happen. Return empty string, just in case.
@@ -197,7 +252,12 @@ class Variables
                 continue;
             }
             $key = Toolbox::encodeString($key);
-            $output .= Variables::analysisHub($value, $key, '[', '] =');
+            $model = new Simple();
+            $model->setData($value)
+                ->setName($key)
+                ->setConnector1('[')
+                ->setConnector2('] =');
+            $output .= Variables::analysisHub($model);
         }
         $output .= OutputActions::$render->renderSingeChildHr();
         return $output;
@@ -207,31 +267,21 @@ class Variables
     /**
      * Render a 'dump' for a NULL value.
      *
-     * @param string $name
-     *   The Name, what we render here.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
+     * @param Simple $model
+     *   The model with the data for the output.
      *
      * @return string
      *   The rendered markup.
      */
-    public static function analyseNull($name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseNull($model)
     {
         $json = array();
         $json['type'] = 'NULL';
         $data = 'NULL';
 
-        $model = new Simple();
         $model->setData($data)
-            ->setName($name)
             ->setNormal($data)
-            ->setType($additional . 'null')
-            ->setConnector1($connector1)
-            ->setConnector2($connector2)
+            ->setType($model->getAdditional() . 'null')
             ->setJson($json);
 
         return OutputActions::$render->renderSingleChild($model);
@@ -240,69 +290,49 @@ class Variables
     /**
      * Render a dump for an array.
      *
-     * @param array $data
+     * @param Simple $model
      *   The data we are analysing.
-     * @param string $name
-     *   The name, what we render here.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The rendered markup.
      */
-    public static function analyseArray(array &$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseArray($model)
     {
         $json = array();
         $json['type'] = 'array';
-        $json['count'] = (string)count($data);
+        $json['count'] = (string)count($model->getData());
 
         // Dumping all Properties.
-        $model = new AnalyseArray();
-        $model->setName($name)
-            ->setType($additional . 'array')
-            ->setAdditional(count($data) . ' elements')
-            ->setConnector1($connector1)
-            ->setConnector2($connector2)
+        $arrayModel = new AnalyseArray();
+        $arrayModel->setName($model->getName())
+            ->setType($model->getAdditional() . 'array')
+            ->setAdditional($json['count'] . ' elements')
+            ->setConnector1($model->getConnector1())
+            ->setConnector2($model->getConnector2())
             ->setJson($json)
-            ->addParameter('data', $data);
+            ->addParameter('data', $model->getData());
 
-        return OutputActions::$render->renderExpandableChild($model);
+        return OutputActions::$render->renderExpandableChild($arrayModel);
     }
 
     /**
      * Analyses a resource.
      *
-     * @param resource $data
+     * @param Simple $model
      *   The data we are analysing.
-     * @param string $name
-     *   The name, what we render here.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The rendered markup.
      */
-    public static function analyseResource(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseResource($model)
     {
         $json = array();
         $json['type'] = 'resource';
-        $data = get_resource_type($data);
+        $data = get_resource_type($model->getData());
 
-        $model = new Simple();
         $model->setData($data)
-            ->setName($name)
             ->setNormal($data)
-            ->setType($additional . 'resource')
-            ->setConnector1($connector1)
-            ->setConnector2($connector2)
+            ->setType($model->getAdditional() . 'resource')
             ->setJson($json);
 
         return OutputActions::$render->renderSingleChild($model);
@@ -311,33 +341,22 @@ class Variables
     /**
      * Render a dump for a bool value.
      *
-     * @param bool $data
+     * @param Simple $model
      *   The data we are analysing.
-     * @param string $name
-     *   The name, what we render here.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The rendered markup.
      */
-    public static function analyseBoolean(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseBoolean($model)
     {
         $json = array();
         $json['type'] = 'boolean';
-        $data = $data ? 'TRUE' : 'FALSE';
+        $data = $model->getData() ? 'TRUE' : 'FALSE';
 
         $model = new Simple();
         $model->setData($data)
-            ->setName($name)
             ->setNormal($data)
-            ->setType($additional . 'boolean')
-            ->setConnector1($connector1)
-            ->setConnector2($connector2)
+            ->setType($model->getAdditional() . 'boolean')
             ->setJson($json);
 
         return OutputActions::$render->renderSingleChild($model);
@@ -346,32 +365,19 @@ class Variables
     /**
      * Render a dump for a integer value.
      *
-     * @param int $data
+     * @param Simple $model
      *   The data we are analysing.
-     * @param string $name
-     *   The name, what we render here.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The rendered markup.
      */
-    public static function analyseInteger(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseInteger($model)
     {
         $json = array();
         $json['type'] = 'integer';
 
-        $model = new Simple();
-        $model->setData($data)
-            ->setName($name)
-            ->setNormal($data)
-            ->setType($additional . 'integer')
-            ->setConnector1($connector1)
-            ->setConnector2($connector2)
+        $model->setNormal($model->getData())
+            ->setType($model->getAdditional() . 'integer')
             ->setJson($json);
 
         return OutputActions::$render->renderSingleChild($model);
@@ -380,32 +386,19 @@ class Variables
     /**
      * Render a dump for a float value.
      *
-     * @param float $data
+     * @param Simple $model
      *   The data we are analysing.
-     * @param string $name
-     *   The name, what we render here.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The rendered markup.
      */
-    public static function analyseFloat(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseFloat($model)
     {
         $json = array();
         $json['type'] = 'float';
 
-        $model = new Simple();
-        $model->setData($data)
-            ->setName($name)
-            ->setNormal($data)
-            ->setType($additional . 'float')
-            ->setConnector1($connector1)
-            ->setConnector2($connector2)
+        $model->setNormal($model->getData())
+            ->setType($model->getAdditional() . 'float')
             ->setJson($json);
 
         return OutputActions::$render->renderSingleChild($model);
@@ -414,24 +407,17 @@ class Variables
     /**
      * Render a dump for a string value.
      *
-     * @param string $data
+     * @param Simple $model
      *   The data we are analysing.
-     * @param string $name
-     *   The name, what we render here.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The rendered markup.
      */
-    public static function analyseString($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseString($model)
     {
         $json = array();
         $json['type'] = 'string';
+        $data = $model->getData();
 
         // Extra ?
         if (strlen($data) > 50) {
@@ -452,13 +438,9 @@ class Variables
 
         $data = Toolbox::encodeString($data);
 
-        $model = new Simple();
         $model->setData($data)
-            ->setName($name)
             ->setNormal($cut)
-            ->setType($additional . 'string' . ' ' . $strlen)
-            ->setConnector1($connector1)
-            ->setConnector2($connector2)
+            ->setType($model->getAdditional() . 'string' . ' ' . $strlen)
             ->setJson($json);
 
         return OutputActions::$render->renderSingleChild($model);
@@ -467,28 +449,15 @@ class Variables
     /**
      * Analyses a closure.
      *
-     * @param object $data
+     * @param Simple $model
      *   The closure we want to analyse.
-     * @param string $propName
-     *   The property name
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The generated markup.
      */
-    public static function analyseClosure(
-        &$data,
-        $propName = 'closure',
-        $additional = '',
-        $connector1 = '',
-        $connector2 = ''
-    ) {
-        $ref = new \ReflectionFunction($data);
+    public static function analyseClosure($model)
+    {
+        $ref = new \ReflectionFunction($model->getData());
 
         $result = array();
 
@@ -528,56 +497,49 @@ class Variables
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
 
-        $model = new AnalyseClosure();
-        $model->setName($propName)
-            ->setType($additional . ' closure')
-            ->setConnector1($connector1)
-            ->setConnector2($connector2 . '(' . $paramList . ') =')
+        $closureModel = new AnalyseClosure();
+        $closureModel->setName($model->getName())
+            ->setType($model->getAdditional() . ' closure')
+            ->setConnector1($model->getConnector1())
+            ->setConnector2($model->getconnector2() . '(' . $paramList . ') =')
             ->addParameter('data', $result);
 
-        return OutputActions::$render->renderExpandableChild($model);
+        return OutputActions::$render->renderExpandableChild($closureModel);
 
     }
 
     /**
      * Render a dump for an object.
      *
-     * @param mixed $data
+     * @param Simple $model
      *   The object we want to analyse.
-     * @param string $name
-     *   The name of the object.
-     * @param string $additional
-     *   Information about the declaration in the parent class / array.
-     * @param string $connector1
-     *   The connector1 type to the parent class / array.
-     * @param string $connector2
-     *   The connector2 type to the parent class / array.
      *
      * @return string
      *   The generated markup.
      */
-    public static function analyseObject(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    //public static function analyseObject(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseObject($model)
     {
         static $level = 0;
 
         $output = '';
         $level++;
 
-        $model = new AnalyseObject();
-        $model->setName($name)
-            ->setType($additional . 'class')
-            ->addParameter('data', $data)
-            ->addParameter('name', $name)
-            ->setAdditional(get_class($data))
-            ->setDomid(Toolbox::generateDomIdFromObject($data))
-            ->setConnector1($connector1)
-            ->setConnector2($connector2);
+        $objectModel = new AnalyseObject();
+        $objectModel->setName($model->getName())
+            ->setType($model->getAdditional() . 'class')
+            ->addParameter('data', $model->getData())
+            ->addParameter('name', $model->getName())
+            ->setAdditional(get_class($model->getData()))
+            ->setDomid(Toolbox::generateDomIdFromObject($model->getData()))
+            ->setConnector1($model->getConnector1())
+            ->setConnector2($model->getConnector2());
 
-        if (OutputActions::$recursionHandler->isInHive($data)) {
+        if (OutputActions::$recursionHandler->isInHive($model->getData())) {
             // Tell them, we've been here before
             // but also say who we are.
-            $model->setNormal(get_class($data));
-            $output .= OutputActions::$render->renderRecursion($model);
+            $objectModel->setNormal(get_class($model->getData()));
+            $output .= OutputActions::$render->renderRecursion($objectModel);
 
             // We will not render this one, but since we
             // return to wherever we came from, we need to decrease the level.
@@ -588,7 +550,7 @@ class Variables
             OutputActions::$recursionHandler->addToHive($data);
 
             // Output data from the class.
-            $output .= OutputActions::$render->renderExpandableChild($model);
+            $output .= OutputActions::$render->renderExpandableChild($objectModel);
             // We've finished this one, and can decrease the level setting.
             $level--;
             return $output;

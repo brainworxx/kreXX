@@ -140,8 +140,6 @@ class Simple
      *
      * @param mixed $data
      *   The current variable we are rendering.
-     * @param bool $escapeMe
-     *   Sets it the data must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -158,7 +156,7 @@ class Simple
      * @return mixed
      *   The variable, we are currently analysing.
      */
-    public function getData()
+    public function &getData()
     {
         return $this->data;
     }
@@ -168,8 +166,6 @@ class Simple
      *
      * @param int|string $name
      *   The name/key we are analysing.
-     * @param bool $escapeMe
-     *   Sets if the name must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -186,7 +182,7 @@ class Simple
      * @return int|string
      *   The name/key we are analysing.
      */
-    public function getName()
+    public function &getName()
     {
         return $this->name;
     }
@@ -196,8 +192,6 @@ class Simple
      *
      * @param string $normal
      *   The short result of the analysis.
-     * @param bool $escapeMe
-     *   Sets if the short result must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
@@ -224,8 +218,6 @@ class Simple
      *
      * @param string $additional
      *   The long result of the analysis.
-     * @param bool $escapeMe
-     *   Sets if the long result must be escaped.
      *
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.

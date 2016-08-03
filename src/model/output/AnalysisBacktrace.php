@@ -100,7 +100,10 @@ class AnalysisBacktrace extends Simple
         }
         // Object.
         if (isset($stepData['object'])) {
-            $output .= Variables::analyseObject($stepData['object'], 'Calling object');
+            $objectModel = new Simple();
+            $objectModel->setData($stepData['object'])
+                ->setName('Calling object');
+            $output .= Variables::analyseObject($objectModel);
         }
         // Type.
         if (isset($stepData['type'])) {
@@ -114,7 +117,10 @@ class AnalysisBacktrace extends Simple
         }
         // Args.
         if (isset($stepData['args'])) {
-            $output .= Variables::analyseArray($stepData['args'], 'Arguments from the call');
+            $argsModel = new Simple();
+            $argsModel->setData($stepData['args'])
+                ->setName('Arguments from the call');
+            $output .= Variables::analyseArray($argsModel);
         }
 
         return $output;

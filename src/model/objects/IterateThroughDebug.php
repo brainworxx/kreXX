@@ -51,6 +51,8 @@ class IterateThroughDebug extends Simple
      */
     public function renderMe()
     {
-        return Variables::analysisHub($this->parameters['result']);
+        $model = new Simple();
+        $model->setData($this->parameters['result']);
+        return Variables::analysisHub($model);
     }
 }

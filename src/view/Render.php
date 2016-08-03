@@ -380,8 +380,6 @@ class Render extends Help
     /**
      * Renders a simple editable child node.
      *
-     * @todo remove inconsistencies with the template placeholders
-     *
      * @param \Brainworxx\Krexx\Model\Simple $model
      *   The model, which hosts all the data we need.
      *

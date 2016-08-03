@@ -61,11 +61,16 @@ class AnalyseConstants extends Simple
         // Is it even possible to create a recursion here?
         // Iterate through.
         foreach ($data as $k => &$v) {
-            $output .= Variables::analysisHub($v, $k, $this->parameters['classname'] . '::', ' =');
+            $model = new Simple();
+            $model->setData($v)
+                ->setName($k)
+                ->setConnector1($this->parameters['classname'] . '::')
+                ->setConnector2(' =');
+            $output .= Variables::analysisHub($model);
         }
 
         $output .= OutputActions::$render->renderSingeChildHr();
         return $output;
-        
+
     }
 }
