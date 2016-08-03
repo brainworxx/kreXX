@@ -332,6 +332,8 @@ class Toolbox
                 $result = fread($file, $size);
                 fclose($file);
             }
+        } else {
+            Toolbox::formattedVarDump('Could not open file: ' . $path);
         }
 
         return $result;

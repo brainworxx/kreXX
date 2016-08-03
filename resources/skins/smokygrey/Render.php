@@ -96,16 +96,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         $template = str_replace('{ktype}', $cssType, $template);
 
         $template = str_replace('{additional}', $model->getAdditional(), $template);
-        // There is not much need for a connector to an empty name.
-        if ($model->getName() == '' && $model->getName() != 0) {
-            $template = str_replace('{connector1}', '', $template);
-            $template = str_replace('{connector2}', '', $template);
-        } else {
-            $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
-            $template = str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
-        }
-
-
+        
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
         $gencode = Codegen::generateSource($model);

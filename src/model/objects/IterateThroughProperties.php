@@ -82,6 +82,7 @@ class IterateThroughProperties extends Simple
                 Messages::addMessage("Emergency break for large output during analysis process.");
                 return '';
             }
+
             // Recursion tests are done in the analyseObject and
             // iterateThrough (for arrays).
             // We will not check them here.
@@ -109,138 +110,15 @@ class IterateThroughProperties extends Simple
                 // There is always a $ in front of a static property.
                 $propName = '$' . $propName;
             }
+            
+            // Stitch together our model
+            $model = new Simple();
+            $model->setData($value)
+                ->setName($propName)
+                ->setAdditional($additional)
+                ->setConnector1($connector1);
 
-            // Object?
-            // Closures are analysed separately.
-            if (is_object($value) && !is_a($value, '\Closure')) {
-                OutputActions::$nestingLevel++;
-                if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $model = new Simple();
-                    $model->setData($value)
-                        ->setName($propName)
-                        ->setAdditional($additional)
-                        ->setConnector1($connector1);
-                    $result = Variables::analyseObject($model);
-                    OutputActions::$nestingLevel--;
-                    $output .= $result;
-                } else {
-                    OutputActions::$nestingLevel--;
-                    $model = new Simple();
-                    $text = 'Object => ' . Help::getHelp('maximumLevelReached');
-                    $model->setData($text)
-                        ->setName($propName)
-                        ->setAdditional($additional)
-                        ->setConnector1($connector1);
-                    $output .= Variables::analyseString($model);
-                }
-            }
-
-            // Closure?
-            if (is_object($value) && is_a($value, '\Closure')) {
-                OutputActions::$nestingLevel++;
-                if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $model = new Simple();
-                    $model->setData($value)
-                        ->setName($propName)
-                        ->setAdditional($additional)
-                        ->setConnector1($connector1);
-                    $result = Variables::analyseClosure($model);
-                    OutputActions::$nestingLevel--;
-                    $output .= $result;
-                } else {
-                    OutputActions::$nestingLevel--;
-                    $model = new Simple();
-                    $text = 'Closure => ' . Help::getHelp('maximumLevelReached');
-                    $model->setData($text)
-                        ->setName($propName)
-                        ->setAdditional($additional)
-                        ->setConnector1($connector1);
-                    $output .= Variables::analyseString($model);
-                }
-            }
-
-            // Array?
-            if (is_array($value)) {
-                OutputActions::$nestingLevel++;
-                if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                    $model = new Simple();
-                    $model->setData($value)
-                        ->setName($propName)
-                        ->setAdditional($additional)
-                        ->setConnector1($connector1);
-                    $result = Variables::analyseArray($model);
-                    OutputActions::$nestingLevel--;
-                    $output .= $result;
-                } else {
-                    OutputActions::$nestingLevel--;
-                    $model = new Simple();
-                    $text = 'Array => ' . Help::getHelp('maximumLevelReached');
-                    $model->setData($text)
-                        ->setName($propName)
-                        ->setAdditional($additional)
-                        ->setConnector1($connector1);
-                    $output .= Variables::analyseString($model);
-                }
-            }
-
-            // Resource?
-            if (is_resource($value)) {
-                $model = new Simple();
-                $model->setData($value)
-                    ->setName($propName)
-                    ->setAdditional($additional)
-                    ->setConnector1($connector1);
-                $output .= Variables::analyseResource($model);
-            }
-
-            // String?
-            if (is_string($value)) {
-                $model = new Simple();
-                $model->setData($value)
-                    ->setName($propName)
-                    ->setAdditional($additional)
-                    ->setConnector1($connector1);
-                $output .= Variables::analyseString($model);
-            }
-
-            // Float?
-            if (is_float($value)) {
-                $model = new Simple();
-                $model->setData($value)
-                    ->setName($propName)
-                    ->setAdditional($additional)
-                    ->setConnector1($connector1);
-                $output .= Variables::analyseFloat($model);
-            }
-
-            // Integer?
-            if (is_int($value)) {
-                $model = new Simple();
-                $model->setData($value)
-                    ->setName($propName)
-                    ->setAdditional($additional)
-                    ->setConnector1($connector1);
-                $output .= Variables::analyseInteger($model);
-            }
-
-            // Boolean?
-            if (is_bool($value)) {
-                $model = new Simple();
-                $model->setData($value)
-                    ->setName($propName)
-                    ->setAdditional($additional)
-                    ->setConnector1($connector1);
-                $output .= Variables::analyseBoolean($model);
-            }
-
-            // Null ?
-            if (is_null($value)) {
-                $model = new Simple();
-                $model->setName($propName)
-                    ->setAdditional($additional)
-                    ->setConnector1($connector1);
-                $output .= Variables::analyseNull($model);
-            }
+            $output .= Variables::analysisHub($model);
         }
 
         return $output;

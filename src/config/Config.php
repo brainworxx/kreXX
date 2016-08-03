@@ -70,7 +70,6 @@ class Config extends Tools
         }
 
         // Check for ajax and cli.
-
         if (Toolbox::isRequestAjaxOrCli()) {
             return false;
         }

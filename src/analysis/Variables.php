@@ -64,7 +64,6 @@ class Variables
      * @return string
      *   The generated markup.
      */
-    //public static function analysisHub(&$data, $name = '', $connector1 = '', $connector2 = '')
     public static function analysisHub($model)
     {
         // Check memory and runtime.
@@ -85,132 +84,93 @@ class Variables
             $connector2 = "'" . $connector2;
         }
 
+        // Check nesting level
+        OutputActions::$nestingLevel++;
+        if (OutputActions::$nestingLevel >= (int)Config::getConfigValue('runtime', 'level')) {
+            OutputActions::$nestingLevel--;
+            $model = new Simple();
+            $text = gettype($data) . ' => ' . Help::getHelp('maximumLevelReached');
+            $model->setData($text)
+                ->setName($name);
+            return Variables::analyseString($model);
+        }
+
         // Object?
         // Closures are analysed separately.
         if (is_object($data) && !is_a($data, '\Closure')) {
-            OutputActions::$nestingLevel++;
-            if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                $model = new Simple();
-                $model->setData($data)
-                    ->setName($name)
-                    ->setConnector1($connector1)
-                    ->setConnector2($connector2);
-                $result = self::analyseObject($model);
-                OutputActions::$nestingLevel--;
-                return $result;
-            } else {
-                OutputActions::$nestingLevel--;
-                $model = new Simple();
-                $text = 'Object => ' . Help::getHelp('maximumLevelReached');
-                $model->setData($text)
-                    ->setName($name);
-                return Variables::analyseString($model);
-            }
+            $model->setConnector1($connector1)
+                ->setConnector2($connector2);
+            $result = self::analyseObject($model);
+            OutputActions::$nestingLevel--;
+            return $result;
         }
 
         // Closure?
         if (is_object($data) && is_a($data, '\Closure')) {
-            OutputActions::$nestingLevel++;
-            if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                if ($connector2 == '] =') {
-                    $connector2 = ']';
-                }
-                $model = new Simple();
-                $model->setData($data)
-                    ->setName($name)
-                    ->setConnector1($connector1)
-                    ->setConnector2($connector2);
-                $result = self::analyseClosure($model);
-                OutputActions::$nestingLevel--;
-                return $result;
-            } else {
-                OutputActions::$nestingLevel--;
-                $model = new Simple();
-                $text = 'Closure => ' . Help::getHelp('maximumLevelReached');
-                $model->setData($text)
-                    ->setName($name);
-                return Variables::analyseString($model);
+            if ($connector2 == '] =') {
+                $connector2 = ']';
             }
+            $model->setConnector1($connector1)
+                ->setConnector2($connector2);
+            $result = self::analyseClosure($model);
+            OutputActions::$nestingLevel--;
+            return $result;
         }
 
         // Array?
         if (is_array($data)) {
-            OutputActions::$nestingLevel++;
-            if (OutputActions::$nestingLevel <= (int)Config::getConfigValue('runtime', 'level')) {
-                $model = new Simple();
-                $model->setData($data)
-                    ->setName($name)
-                    ->setConnector1($connector1)
-                    ->setConnector2($connector2);
-                $result = Variables::analyseArray($model);
-                OutputActions::$nestingLevel--;
-                return $result;
-            } else {
-                OutputActions::$nestingLevel--;
-                $model = new Simple();
-                $text = 'Array => ' . Help::getHelp('maximumLevelReached');
-                $model->setData($text)
-                    ->setName($name);
-                return Variables::analyseString($model);
-            }
+            $model->setConnector1($connector1)
+                ->setConnector2($connector2);
+            $result = Variables::analyseArray($model);
+            OutputActions::$nestingLevel--;
+            return $result;
         }
 
         // Resource?
         if (is_resource($data)) {
-            $model = new Simple();
-            $model->setData($data)
-                ->setName($name)
-                ->setConnector1($connector1)
+            $model->setConnector1($connector1)
                 ->setConnector2($connector2);
+            OutputActions::$nestingLevel--;
             return Variables::analyseResource($model);
         }
 
         // String?
         if (is_string($data)) {
-            $model = new Simple();
-            $model->setData($data)
-                ->setName($name)
-                ->setConnector1($connector1)
+            $model->setConnector1($connector1)
                 ->setConnector2($connector2);
+            OutputActions::$nestingLevel--;
             return Variables::analyseString($model);
         }
 
         // Float?
         if (is_float($data)) {
-            $model = new Simple();
-            $model->setData($data)
-                ->setName($name)
-                ->setConnector1($connector1)
+            $model->setConnector1($connector1)
                 ->setConnector2($connector2);
+            OutputActions::$nestingLevel--;
             return Variables::analyseFloat($model);
         }
 
         // Integer?
         if (is_int($data)) {
-            $model = new Simple();
-            $model->setData($data)
-                ->setName($name)
-                ->setConnector1($connector1)
+            $model->setConnector1($connector1)
                 ->setConnector2($connector2);
+            OutputActions::$nestingLevel--;
             return Variables::analyseInteger($model);
         }
 
         // Boolean?
         if (is_bool($data)) {
-            $model = new Simple();
-            $model->setData($data)
-                ->setName($name)
-                ->setConnector1($connector1)
+            $model->setConnector1($connector1)
                 ->setConnector2($connector2);
+            OutputActions::$nestingLevel--;
             return Variables::analyseBoolean($model);
         }
 
         // Null ?
         if (is_null($data)) {
-            $model = new Simple();
-            $model->setName($name)
-                ->setConnector1($connector1)
+            $model->setConnector1($connector1)
                 ->setConnector2($connector2);
+            OutputActions::$nestingLevel--;
             return Variables::analyseNull($model);
         }
 
@@ -219,7 +179,7 @@ class Variables
     }
 
     /**
-     * Render a dump for the properties of an array or object.
+     * Render a dump for the properties of an array.
      *
      * @param array &$data
      *   The array we want to analyse.
