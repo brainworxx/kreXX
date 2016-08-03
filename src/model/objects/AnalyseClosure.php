@@ -56,7 +56,7 @@ class AnalyseClosure extends Simple
             $model = new Simple();
             // The source part contains HTML. Escaping it contra productive.
             if ($key === 'source') {
-                $model->setData($string, false)->setName($key)->setType('reflection')->setConnector2('=');
+                $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
             } else {
                 $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
             }

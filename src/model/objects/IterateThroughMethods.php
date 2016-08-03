@@ -73,7 +73,9 @@ class IterateThroughMethods extends Simple
                     $this->parameters['ref'],
                     $method
                 );
+                $methodData['comments'] = Toolbox::encodeString($methodData['comments']);
             }
+            
             // Get declaration place.
             $declaringClass = $reflection->getDeclaringClass();
             if (is_null($declaringClass->getFileName()) || $declaringClass->getFileName() == '') {

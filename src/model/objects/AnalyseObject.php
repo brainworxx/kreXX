@@ -170,7 +170,7 @@ class AnalyseObject extends Simple
             };
             usort($methods, $sortingCallback);
             $model = new IterateThroughMethods();
-            $model->setName('Methods', false)
+            $model->setName('Methods')
                 ->setType('class internals')
                 ->addParameter('ref', $ref)
                 ->addParameter('methods', $methods);
@@ -343,7 +343,7 @@ class AnalyseObject extends Simple
             // We've got some values, we will dump them.
             $model = new AnalyseConstants();
             $classname =$ref->getName();
-            $model->setName('Constants', false)
+            $model->setName('Constants')
                 ->setType('class internals')
                 ->setConnector1(' ')
                 ->addParameter('refConst', $refConst)
@@ -389,7 +389,7 @@ class AnalyseObject extends Simple
             // Public properties.
             // We render them directly in the object "root", so we call
             // the render directly.
-            $model->setAdditional($label);
+            // $model->setAdditional($label);
             return $model->renderMe();
         }
     }

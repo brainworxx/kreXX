@@ -188,15 +188,16 @@ class Variables
         $output .= OutputActions::$render->renderSingeChildHr();
 
         // Iterate through.
-        foreach ($data as $k => &$v) {
+        foreach ($data as $key => &$value) {
             // We will not output our recursion marker.
             // Meh, the only reason for the recursion marker
             // in arrays is because of the $GLOBAL array, which
             // we will only render once.
-            if ($k === $recursionMarker) {
+            if ($key === $recursionMarker) {
                 continue;
             }
-            $output .= Variables::analysisHub($v, $k, '[', '] =');
+            $key = Toolbox::encodeString($key);
+            $output .= Variables::analysisHub($value, $key, '[', '] =');
         }
         $output .= OutputActions::$render->renderSingeChildHr();
         return $output;
@@ -289,7 +290,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseResource($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseResource(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
     {
         $json = array();
         $json['type'] = 'resource';
@@ -324,7 +325,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseBoolean($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseBoolean(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
     {
         $json = array();
         $json['type'] = 'boolean';
@@ -359,7 +360,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseInteger($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseInteger(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
     {
         $json = array();
         $json['type'] = 'integer';
@@ -393,7 +394,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseFloat($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseFloat(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
     {
         $json = array();
         $json['type'] = 'float';
@@ -433,9 +434,10 @@ class Variables
         $json['type'] = 'string';
 
         // Extra ?
-        $cut = $data;
         if (strlen($data) > 50) {
-            $cut = substr($data, 0, 50 - 3) . '...';
+            $cut = substr(Toolbox::encodeString($data), 0, 50 - 3) . '...';
+        } else {
+            $cut = Toolbox::encodeString($data);
         }
 
         $json['encoding'] = @mb_detect_encoding($data);
@@ -447,6 +449,8 @@ class Variables
             $strlen = ' broken encoding ' . $json['length'];
             $json['encoding'] = 'broken';
         }
+
+        $data = Toolbox::encodeString($data);
 
         $model = new Simple();
         $model->setData($data)
@@ -478,7 +482,7 @@ class Variables
      *   The generated markup.
      */
     public static function analyseClosure(
-        $data,
+        &$data,
         $propName = 'closure',
         $additional = '',
         $connector1 = '',
@@ -552,7 +556,7 @@ class Variables
      * @return string
      *   The generated markup.
      */
-    public static function analyseObject($data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
+    public static function analyseObject(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
     {
         static $level = 0;
 
@@ -606,7 +610,7 @@ class Variables
      * @return string
      *   The rendered backtrace.
      */
-    public static function analysisBacktrace(array $backtrace, $offset = 0)
+    public static function analysisBacktrace(array &$backtrace, $offset = 0)
     {
         $output = '';
 

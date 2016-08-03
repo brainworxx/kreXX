@@ -55,6 +55,7 @@ class Render extends \Brainworxx\Krexx\View\Render
     {
 
         $template = parent::renderSingleChild($model);
+        $json = $model->getJson();
 
         $json['Help'] = $this->getHelp($model->getHelpid());
         // Prepare the json.
@@ -122,12 +123,13 @@ class Render extends \Brainworxx\Krexx\View\Render
         // This is done in the js.
         $template = str_replace('{isExpanded}', '', $template);
 
+        $json = $model->getJson();
         $json['Help'] = $this->getHelp($model->getHelpid());
         $json = json_encode($json);
         $template = str_replace('{addjson}', $json, $template);
 
         return str_replace('{nest}', Chunks::chunkMe($this->renderNest($model, false)), $template);
-        
+
     }
 
 

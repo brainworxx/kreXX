@@ -146,13 +146,9 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setData(&$data, $escapeMe = true)
+    public function setData(&$data)
     {
-        if (is_string($data) && $escapeMe) {
-            $this->data = Toolbox::encodeString($data);
-        } else {
-            $this->data = $data;
-        }
+        $this->data = $data;
         return $this;
     }
 
@@ -178,13 +174,9 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setName($name, $escapeMe = true)
+    public function setName($name)
     {
-        if (is_string($name) && $escapeMe) {
-            $this->name = Toolbox::encodeString($name);
-        } else {
-            $this->name = $name;
-        }
+        $this->name = $name;
         return $this;
     }
 
@@ -210,13 +202,9 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setNormal($normal, $escapeMe = true)
+    public function setNormal($normal)
     {
-        if ($escapeMe) {
-            $this->normal = Toolbox::encodeString($normal);
-        } else {
-            $this->normal = $normal;
-        }
+        $this->normal = $normal;
         return $this;
     }
 
@@ -242,14 +230,9 @@ class Simple
      * @return \Brainworxx\Krexx\Model\Simple
      *   $this, for chaining.
      */
-    public function setAdditional($additional, $escapeMe = true)
+    public function setAdditional($additional)
     {
-        if ($escapeMe) {
-            $this->additional = Toolbox::encodeString($additional);
-        } else {
-            $this->additional = $additional;
-        }
-
+        $this->additional = $additional;
         return $this;
     }
 

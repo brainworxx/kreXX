@@ -46,6 +46,34 @@ use Brainworxx\Krexx\View\Help;
 class Toolbox
 {
     /**
+     * List of all charsets that can be safely encoded via htmlentities().
+     *
+     * @var array
+     */
+    protected static $charsetList = array(
+        'UTF-8',
+        'ISO-8859-1',
+        'ISO-8859-5',
+        'ISO-8859-15',
+        'cp866',
+        'cp1251',
+        'Windows-1251',
+        'cp1252',
+        'Windows-1252',
+        'KOI8-R',
+        'koi8r',
+        'BIG5',
+        'GB2312',
+        'Shift_JIS',
+        'SJIS',
+        'SJIS-win',
+        'cp932',
+        'EUC-JP',
+        'EUCJP',
+        'eucJP-win',
+    );
+
+    /**
      * Returns the microtime timestamp for file operations.
      *
      * File operations are the logfiles and the chunk handling.
@@ -418,37 +446,9 @@ class Toolbox
      */
     public static function encodeString($data, $code = false)
     {
-        /**
-         * List of all charsets that can be safely encoded via htmlentities().
-         *
-         * @var array
-         */
-        $charsetList = array(
-            'UTF-8',
-            'ISO-8859-1',
-            'ISO-8859-5',
-            'ISO-8859-15',
-            'cp866',
-            'cp1251',
-            'Windows-1251',
-            'cp1252',
-            'Windows-1252',
-            'KOI8-R',
-            'koi8r',
-            'BIG5',
-            'GB2312',
-            'Shift_JIS',
-            'SJIS',
-            'SJIS-win',
-            'cp932',
-            'EUC-JP',
-            'EUCJP',
-            'eucJP-win',
-        );
-
         $result = '';
         // Try to encode it.
-        $encoding = mb_detect_encoding($data, $charsetList);
+        $encoding = mb_detect_encoding($data, self::$charsetList);
         if ($encoding !== false) {
             set_error_handler(function () {
                 /* do nothing. */

@@ -62,7 +62,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['file'])) {
             $fileModel = new Simple();
             $fileModel->setData($stepData['file'])
-                ->setName('File', false)
+                ->setName('File')
                 ->setNormal($stepData['file'])
                 ->setType('string ' . strlen($stepData['file']));
 
@@ -72,7 +72,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['line'])) {
             $lineModel = new Simple();
             $lineModel->setData($stepData['line'])
-                ->setName('Line no.', false)
+                ->setName('Line no.')
                 ->setNormal($stepData['line'])
                 ->setType('integer');
 
@@ -81,8 +81,8 @@ class AnalysisBacktrace extends Simple
         // Sourcecode, is escaped by now.
         if (isset($stepData['sourcecode'])) {
             $sourceModel = new Simple();
-            $sourceModel->setData($stepData['sourcecode'], false)
-                ->setName('Sourcecode', false)
+            $sourceModel->setData($stepData['sourcecode'])
+                ->setName('Sourcecode')
                 ->setNormal('. . .')
                 ->setType('PHP');
 
@@ -92,7 +92,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['function'])) {
             $functionModel = new Simple();
             $functionModel->setData($stepData['function'])
-                ->setName('Last called function', false)
+                ->setName('Last called function')
                 ->setNormal($stepData['function'])
                 ->setType('string ' . strlen($stepData['function']));
 
@@ -106,7 +106,7 @@ class AnalysisBacktrace extends Simple
         if (isset($stepData['type'])) {
             $typeModel = new Simple();
             $typeModel->setData($stepData['type'])
-                ->setName('Call type', false)
+                ->setName('Call type')
                 ->setNormal($stepData['type'])
                 ->setType('string ' . strlen($stepData['type']));
 
