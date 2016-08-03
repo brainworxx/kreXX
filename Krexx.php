@@ -131,11 +131,9 @@ class Krexx
         include_once $krexxdir . 'src/model/output/IterateThroughConfig.php';
         include_once $krexxdir . 'src/model/output/AnalysisBacktrace.php';
         include_once $krexxdir . 'src/model/variables/AnalyseArray.php';
-        include_once $krexxdir . 'src/model/variables/IterateThroughArray.php';
         include_once $krexxdir . 'src/model/objects/AnalyseObject.php';
         include_once $krexxdir . 'src/model/objects/IterateThroughProperties.php';
         include_once $krexxdir . 'src/model/objects/AnalyseConstants.php';
-        include_once $krexxdir . 'src/model/objects/IterateThroughConstants.php';
         include_once $krexxdir . 'src/model/objects/IterateThroughMethods.php';
         include_once $krexxdir . 'src/model/objects/AnalyseMethod.php';
         include_once $krexxdir . 'src/model/objects/IterateThroughTraversable.php';

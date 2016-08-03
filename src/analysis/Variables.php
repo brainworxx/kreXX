@@ -37,7 +37,6 @@ namespace Brainworxx\Krexx\Analysis;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Output\AnalysisBacktrace;
 use Brainworxx\Krexx\Model\Variables\AnalyseArray;
-use Brainworxx\Krexx\Model\Variables\IterateThroughArray;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
@@ -175,9 +174,33 @@ class Variables
      */
     public static function iterateThrough(&$data)
     {
-        $model = new IterateThroughArray();
-        $model->addParameter('data', $data);
-        return OutputActions::$render->renderExpandableChild($model);
+        $output = '';
+        $recursionMarker = OutputActions::$recursionHandler->getMarker();
+
+        // Recursion detection of objects are handled in the hub.
+        if (OutputActions::$recursionHandler->isInHive($data)) {
+            return OutputActions::$render->renderRecursion(new Simple());
+        }
+
+        // Remember, that we've already been here.
+        OutputActions::$recursionHandler->addToHive($data);
+
+        $output .= OutputActions::$render->renderSingeChildHr();
+
+        // Iterate through.
+        foreach ($data as $k => &$v) {
+            // We will not output our recursion marker.
+            // Meh, the only reason for the recursion marker
+            // in arrays is because of the $GLOBAL array, which
+            // we will only render once.
+            if ($k === $recursionMarker) {
+                continue;
+            }
+            $output .= Variables::analysisHub($v, $k, '[', '] =');
+        }
+        $output .= OutputActions::$render->renderSingeChildHr();
+        return $output;
+
     }
 
     /**

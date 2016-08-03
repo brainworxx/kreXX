@@ -387,8 +387,10 @@ class AnalyseObject extends Simple
             return OutputActions::$render->renderExpandableChild($model);
         } else {
             // Public properties.
+            // We render them directly in the object "root", so we call
+            // the render directly.
             $model->setAdditional($label);
-            return OutputActions::$render->renderExpandableChild($model);
+            return $model->renderMe();
         }
     }
 }

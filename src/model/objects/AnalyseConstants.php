@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Model\Objects;
 
+use Brainworxx\Krexx\Analysis\Variables;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 
@@ -51,11 +52,20 @@ class AnalyseConstants extends Simple
      */
     public function renderMe()
     {
+        $output = '';
+        $data = $this->parameters['refConst'];
 
-        $model = new IterateThroughConstants();
-        $model->addParameter('data', $this->parameters['refConst'])
-            ->addParameter('classname', $this->parameters['classname']);
+        $output .= OutputActions::$render->renderSingeChildHr();
 
-        return OutputActions::$render->renderExpandableChild($model);
+        // We do not need to check the recursionHandler, this is ome class internal stuff.
+        // Is it even possible to create a recursion here?
+        // Iterate through.
+        foreach ($data as $k => &$v) {
+            $output .= Variables::analysisHub($v, $k, $this->parameters['classname'] . '::', ' =');
+        }
+
+        $output .= OutputActions::$render->renderSingeChildHr();
+        return $output;
+        
     }
 }

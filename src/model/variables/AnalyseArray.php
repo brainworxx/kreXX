@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Model\Variables;
 
+use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Variables;
 
@@ -45,7 +46,7 @@ use Brainworxx\Krexx\Analysis\Variables;
 class AnalyseArray extends Simple
 {
     /**
-     * Renders the footer.
+     * Renders the expendable around the array analysis.
      *
      * @return string
      */

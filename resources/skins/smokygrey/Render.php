@@ -80,65 +80,54 @@ class Render extends \Brainworxx\Krexx\View\Render
             return '';
         }
 
+        // We need to render this one normally.
+        $template = $this->getTemplateFileContent('expandableChildNormal');
+        // Replace our stuff in the partial.
+        $template = str_replace('{name}', $model->getName(), $template);
+        $template = str_replace('{type}', $model->getType(), $template);
 
-        if ($model->getName() == '' && $model->getType() == '') {
-            // Without a Name or Type I only display the Child with a Node.
-            $template = $this->getTemplateFileContent('expandableChildSimple');
-            // Replace our stuff in the partial.
-            return str_replace('{mainfunction}', Chunks::chunkMe($model->renderMe()), $template);
-        } else {
-            // We need to render this one normally.
-            $template = $this->getTemplateFileContent('expandableChildNormal');
-            // Replace our stuff in the partial.
-            $template = str_replace('{name}', $model->getName(), $template);
-            $template = str_replace('{type}', $model->getType(), $template);
-
-            // Explode the type to get the class names right.
-            $types = explode(' ', $model->getType());
-            $cssType = '';
-            foreach ($types as $singleType) {
-                $cssType .= ' k' . $singleType;
-            }
-            $template = str_replace('{ktype}', $cssType, $template);
-
-            $template = str_replace('{additional}', $model->getAdditional(), $template);
-            // There is not much need for a connector to an empty name.
-            if ($model->getName() == '' && $model->getName() != 0) {
-                $template = str_replace('{connector1}', '', $template);
-                $template = str_replace('{connector2}', '', $template);
-            } else {
-                $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
-                $template = str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
-            }
-
-
-            // Generating our code and adding the Codegen button, if there is
-            // something to generate.
-            $gencode = Codegen::generateSource($model);
-            if ($gencode == '') {
-                // Remove the markers, because here is nothing to add.
-                $template = str_replace('{gensource}', '', $template);
-                $template = str_replace('{gencode}', '', $template);
-            } else {
-                // We add the buttton and the code.
-                $template = str_replace('{gensource}', $gencode, $template);
-                $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
-            }
-
-            // Is it expanded?
-            // This is done in the js.
-            $template = str_replace('{isExpanded}', '', $template);
-
-            $json['Help'] = $this->getHelp($model->getHelpid());
-            $json = json_encode($json);
-            $template = str_replace('{addjson}', $json, $template);
-
-            return str_replace(
-                '{nest}',
-                Chunks::chunkMe($this->renderNest($model, false)),
-                $template
-            );
+        // Explode the type to get the class names right.
+        $types = explode(' ', $model->getType());
+        $cssType = '';
+        foreach ($types as $singleType) {
+            $cssType .= ' k' . $singleType;
         }
+        $template = str_replace('{ktype}', $cssType, $template);
+
+        $template = str_replace('{additional}', $model->getAdditional(), $template);
+        // There is not much need for a connector to an empty name.
+        if ($model->getName() == '' && $model->getName() != 0) {
+            $template = str_replace('{connector1}', '', $template);
+            $template = str_replace('{connector2}', '', $template);
+        } else {
+            $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
+            $template = str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
+        }
+
+
+        // Generating our code and adding the Codegen button, if there is
+        // something to generate.
+        $gencode = Codegen::generateSource($model);
+        if ($gencode == '') {
+            // Remove the markers, because here is nothing to add.
+            $template = str_replace('{gensource}', '', $template);
+            $template = str_replace('{gencode}', '', $template);
+        } else {
+            // We add the buttton and the code.
+            $template = str_replace('{gensource}', $gencode, $template);
+            $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
+        }
+
+        // Is it expanded?
+        // This is done in the js.
+        $template = str_replace('{isExpanded}', '', $template);
+
+        $json['Help'] = $this->getHelp($model->getHelpid());
+        $json = json_encode($json);
+        $template = str_replace('{addjson}', $json, $template);
+
+        return str_replace('{nest}', Chunks::chunkMe($this->renderNest($model, false)), $template);
+        
     }
 
 
