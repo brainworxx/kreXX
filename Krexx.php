@@ -101,7 +101,6 @@ class Krexx
         include_once $krexxdir . 'src/model/callback/AnalyseConstants.php';
         include_once $krexxdir . 'src/model/callback/IterateThroughMethods.php';
         include_once $krexxdir . 'src/model/callback/AnalyseMethod.php';
-        include_once $krexxdir . 'src/model/callback/AnalyseClosure.php';
         include_once $krexxdir . 'src/model/callback/IterateThroughDebug.php';
         include_once $krexxdir . 'src/model/callback/AnalyseConstants.php';
         include_once $krexxdir . 'src/errorhandler/Error.php';

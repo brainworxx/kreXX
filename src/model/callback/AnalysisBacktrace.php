@@ -44,6 +44,9 @@ use Brainworxx\Krexx\Analysis\Routing;
  * The iterate-part takes place in the OutputActions::backtraceAction()
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses array stepData
+ *   The singe step from a backtrace.
  */
 class AnalysisBacktrace extends AbstractCallback
 {

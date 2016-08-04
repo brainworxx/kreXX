@@ -42,6 +42,11 @@ use Brainworxx\Krexx\Model\Simple;
  * Methods analysis methods. :rolleyes:
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses array methods
+ *   Array of reflection methods.
+ * @uses \reflectionClass ref
+ *   Reflection of the class we are analysing.
  */
 class IterateThroughMethods extends AbstractCallback
 {

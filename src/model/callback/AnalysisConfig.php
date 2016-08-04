@@ -42,6 +42,12 @@ use Brainworxx\Krexx\Config\FeConfig;
  * Configuration "analysis" methods. Meh, naming conventions suck sometimes.
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses array sectionData
+ *   The configuration section we are rendering
+ * @uses array source
+ *   The info of the source if the configuration
+ *   fallback, file, cookie.
  */
 class AnalysisConfig extends AbstractCallback
 {
@@ -53,10 +59,9 @@ class AnalysisConfig extends AbstractCallback
      */
     public function callMe()
     {
-        $sectionData = $this->parameters['sectionData'];
         $source = $this->parameters['source'];
         $sectionOutput = '';
-        foreach ($sectionData as $parameterName => $parameterValue) {
+        foreach ($this->parameters['sectionData'] as $parameterName => $parameterValue) {
             // Render the single value.
             // We need to find out where the value comes from.
             $config = FeConfig::getFeConfig($parameterName);

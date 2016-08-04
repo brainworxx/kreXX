@@ -42,6 +42,11 @@ use Brainworxx\Krexx\Model\Simple;
  * Constant analysis methods.
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses array refConst
+ *   Array of constants from the class we are analysing.
+ * @uses string classname
+ *   The classname we are analysing, for code generation purpose.
  */
 class AnalyseConstants extends AbstractCallback
 {
@@ -53,14 +58,11 @@ class AnalyseConstants extends AbstractCallback
     public function callMe()
     {
         $output = '';
-        $data = $this->parameters['refConst'];
-
-        $output .= OutputActions::$render->renderSingeChildHr();
 
         // We do not need to check the recursionHandler, this is ome class internal stuff.
         // Is it even possible to create a recursion here?
         // Iterate through.
-        foreach ($data as $k => &$v) {
+        foreach ($this->parameters['refConst'] as $k => &$v) {
             $model = new Simple();
             $model->setData($v)
                 ->setName($k)
@@ -69,7 +71,6 @@ class AnalyseConstants extends AbstractCallback
             $output .= Routing::analysisHub($model);
         }
 
-        $output .= OutputActions::$render->renderSingeChildHr();
         return $output;
 
     }

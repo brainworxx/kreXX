@@ -43,6 +43,13 @@ use Brainworxx\Krexx\Analysis\Routing;
  * Class properties analysis methods.
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses \ReflectionClass ref
+ *   A reflection of the class we are currently analysing.
+ * @uses object orgObject
+ *   The original object we are analysing
+ * @uses array refProps
+ *   Array of \reflectionProperties.
  */
 class IterateThroughProperties extends AbstractCallback
 {
@@ -55,19 +62,17 @@ class IterateThroughProperties extends AbstractCallback
     {
         // I need to preprocess them, since I do not want to render a
         // reflection property.
-        $refProps = $this->parameters['refProps'];
         /* @var \ReflectionClass $ref */
         $ref = $this->parameters['ref'];
-        $orgObject = $this->parameters['orgObject'];
         $output = '';
         $default = $ref->getDefaultProperties();
 
-        foreach ($refProps as $refProperty) {
+        foreach ($this->parameters['refProps'] as $refProperty) {
             /* @var \ReflectionProperty $refProperty */
             $refProperty->setAccessible(true);
 
             // Getting our values from the reflection.
-            $value = $refProperty->getValue($orgObject);
+            $value = $refProperty->getValue($this->parameters['orgObject']);
             $propName = $refProperty->name;
             if (is_null($value) && $refProperty->isDefault()) {
                 // We might want to look at the default value.

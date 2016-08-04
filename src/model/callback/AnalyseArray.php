@@ -43,6 +43,9 @@ use Brainworxx\Krexx\Analysis\Routing;
  * Array analysis methods.
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses array data
+ *   The array want to iterate.
  */
 class AnalyseArray extends AbstractCallback
 {

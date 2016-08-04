@@ -41,6 +41,9 @@ use Brainworxx\Krexx\Analysis\Routing;
  * Debug method result analysis methods.
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses mixed result
+ *   The result from one single configured debug method.
  */
 class IterateThroughDebug extends AbstractCallback
 {
@@ -52,7 +55,9 @@ class IterateThroughDebug extends AbstractCallback
     public function callMe()
     {
         $model = new Simple();
-        $model->setData($this->parameters['result']);
+        $model->setData($this->parameters['result'])
+            ->setName('result');
+        // This could be anything, we need to route it.
         return Routing::analysisHub($model);
     }
 }

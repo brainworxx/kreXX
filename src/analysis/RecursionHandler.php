@@ -41,7 +41,7 @@ namespace Brainworxx\Krexx\Analysis;
  *
  * Arrays are stored here only for the sake of
  * the $GLOBALS array.
- * Arrays are not handeled on the frontend, because
+ * Arrays are not handled on the frontend, because
  * they lack an object hash.
  *
  * @package Brainworxx\Krexx\Analysis
@@ -87,7 +87,7 @@ class RecursionHandler
         if (is_array($bee)) {
             // We are only tracking the $GLOBALS arrays, so we need to check this.
             // Other array recursions are handled by the nesting level.
-            $recursionMarker = self::getMarker();
+            $recursionMarker = $this->getMarker();
             if (!isset($bee[$recursionMarker])) {
                 $cleanCopy = $bee;
                 $bee[$recursionMarker] = 0;
@@ -121,7 +121,7 @@ class RecursionHandler
     public function __destruct()
     {
         // Remove all recursion marker inside of arrays.
-        $recursionMarker = self::getMarker();
+        $recursionMarker = $this->getMarker();
         if (!empty($this->recursionHive[0])) {
             foreach ($this->recursionHive[0] as $i => $bee) {
                 if (isset($this->recursionHive[0][$i][$recursionMarker])) {
@@ -145,7 +145,7 @@ class RecursionHandler
         // Test for references in order to
         // prevent endless recursion loops.
         $recursionValue = 0;
-        $recursionMarker = self::getMarker();
+        $recursionMarker = $this->getMarker();
         if (is_object($bee)) {
             // Retrieve a possible hash.
             $objectHash = spl_object_hash($bee);

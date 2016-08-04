@@ -44,6 +44,11 @@ use Brainworxx\Krexx\Analysis\Flection;
  * Object analysis methods.
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses object data
+ *   The class we are analysing.
+ * @uses string 'name'
+ *   The key of the class from the object/array holding this one.
  */
 class AnalyseObject extends AbstractCallback
 {

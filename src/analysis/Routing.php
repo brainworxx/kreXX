@@ -397,7 +397,7 @@ class Routing
             ->setAdditional('. . .')
             ->setConnector2($model->getConnector2() . '(' . $paramList . ') =')
             ->addParameter('data', $result)
-            ->initCallback('AnalyseClosure');
+            ->initCallback('AnalyseMethod');
 
         return OutputActions::$render->renderExpandableChild($model);
 

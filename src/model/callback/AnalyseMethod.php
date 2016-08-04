@@ -56,7 +56,7 @@ class AnalyseMethod extends AbstractCallback
             $model = new Simple();
             $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
 
-            if ($key !== 'comments' && $key !== 'declared in') {
+            if ($key !== 'comments' && $key !== 'declared in' && $key !== 'source') {
                 $model->setNormal($string);
             } else {
                 $model->setNormal('. . .');

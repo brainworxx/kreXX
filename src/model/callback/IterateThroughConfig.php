@@ -42,11 +42,17 @@ use Brainworxx\Krexx\Config\Config;
  * Configuration output methods.
  *
  * @package Brainworxx\Krexx\Model\Callback
+ *
+ * @uses array config
+ *   The configuration section we are rendering
+ * @uses array source
+ *   The info of the source if the configuration
+ *   fallback, file, cookie.
  */
 class IterateThroughConfig extends AbstractCallback
 {
     /**
-     * Renders the footer.
+     * Renders whole configuration.
      *
      * @return string
      */
