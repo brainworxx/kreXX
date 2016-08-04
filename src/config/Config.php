@@ -37,9 +37,9 @@ namespace Brainworxx\Krexx\Config;
 use Brainworxx\Krexx\Framework\Toolbox;
 
 /**
- * Debug settings access.
+ * Access the debug settings here.
  *
- * @package Brainworxx\Krexx\Framework
+ * @package Brainworxx\Krexx\Config
  */
 class Config extends Tools
 {

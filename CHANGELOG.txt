@@ -1,10 +1,9 @@
 1.4.3
 - Added sourcecode to the closure analysis.
 - Prettified the sourcecode display in the smokygrey skin.
-- Change: Removed the code generation for the SplObjectStorage.
-  Generating code for the SplObjectStorage is right now too
-  complicated.
-- Change: Removed the unnecessary stuff from the source generation.
+- Change: Removed the code generation for Traversabels that can
+  not be accessed via chaining.
+- Change: Removed the unnecessary fluff from the source generation.
   Stuff like '$kresult =' is now gone.
 - Change: Refactored pretty much everything and introduced something
   that looks remotely like MVC.

@@ -39,7 +39,7 @@ namespace Brainworxx\Krexx\Config;
  *
  * We have so much of them, they need an own class.
  *
- * @package Brainworxx\Krexx\Framework
+ * @package Brainworxx\Krexx\Config
  */
 class Fallback
 {

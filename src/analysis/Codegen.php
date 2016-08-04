@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Model\Simple;
 /**
  * Code generation methods.
  *
- * @package Brainworxx\Krexx\View
+ * @package Brainworxx\Krexx\Analysis
  */
 class Codegen
 {

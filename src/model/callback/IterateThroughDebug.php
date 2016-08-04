@@ -40,7 +40,7 @@ use Brainworxx\Krexx\Analysis\Routing;
 /**
  * Debug method result analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Objects
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class IterateThroughDebug extends AbstractCallback
 {

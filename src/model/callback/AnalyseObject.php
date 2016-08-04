@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Analysis\Flection;
 /**
  * Object analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Objects
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class AnalyseObject extends AbstractCallback
 {
@@ -346,9 +346,10 @@ class AnalyseObject extends AbstractCallback
             // We've got some values, we will dump them.
             $model = new Simple();
             $classname =$ref->getName();
+            // We need to set al least one connector here to activate
+            // code generation, even if it is a space.
             $model->setName('Constants')
                 ->setType('class internals')
-                // @todo space? why?
                 ->setConnector1(' ')
                 ->addParameter('refConst', $refConst)
                 ->addParameter('classname', $classname)

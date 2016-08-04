@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Config\Config;
 /**
  * Configuration output methods.
  *
- * @package Brainworxx\Krexx\Model\Output
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class IterateThroughConfig extends AbstractCallback
 {

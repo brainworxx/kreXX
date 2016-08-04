@@ -42,7 +42,7 @@ namespace Brainworxx\Krexx\Analysis;
  * reflection, so I can reuse the analysis methods which are based on reflection
  * properties.
  *
- * @package Brainworxx\Krexx\Framework
+ * @package Brainworxx\Krexx\Analysis
  */
 class Flection
 {

@@ -37,14 +37,13 @@ namespace Brainworxx\Krexx\Controller;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Toolbox;
-use Brainworxx\Krexx\Model\Output\IterateThroughConfig;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Render;
 
 /**
- * Controller actions toolbox.
+ * Methods for the "controller" that are not directly "actions".
  *
  * @package Brainworxx\Krexx\Controller
  */

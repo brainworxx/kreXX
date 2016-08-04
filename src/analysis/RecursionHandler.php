@@ -35,7 +35,14 @@
 namespace Brainworxx\Krexx\Analysis;
 
 /**
- * Recursion handler.
+ * Recursion handler, formerly known as Hive.
+ *
+ * We are tracking objects via object hash.
+ *
+ * Arrays are stored here only for the sake of
+ * the $GLOBALS array.
+ * Arrays are not handeled on the frontend, because
+ * they lack an object hash.
  *
  * @package Brainworxx\Krexx\Analysis
  */

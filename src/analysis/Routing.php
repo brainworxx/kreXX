@@ -35,20 +35,20 @@
 namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Model\Output\AnalysisBacktrace;
-use Brainworxx\Krexx\Model\Variables\AnalyseArray;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\Model\Objects\AnalyseObject;
-use Brainworxx\Krexx\Model\Objects\AnalyseClosure;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Config\Config;
 
 /**
- * Variables analysis functions methods.
+ * "Routing" for kreXX
  *
- * @package Brainworxx\Krexx\Framework
+ * The analysisHub decides what to do next with the model.
+ * The other method ara also used, in case it is known how
+ * to proceed next.
+ *
+ * @package Brainworxx\Krexx\Analysis
  */
 class Routing
 {

@@ -39,9 +39,9 @@ use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Config\FeConfig;
 
 /**
- * Configuration "analysis" methods. Meh, naminc conventions suck sometimes.
+ * Configuration "analysis" methods. Meh, naming conventions suck sometimes.
  *
- * @package Brainworxx\Krexx\Model\Output
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class AnalysisConfig extends AbstractCallback
 {

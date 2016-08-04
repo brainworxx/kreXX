@@ -34,6 +34,11 @@
 
 namespace Brainworxx\Krexx\Model\Callback;
 
+/**
+ * Abstract class for the callback classes inside the model.
+ *
+ * @package Brainworxx\Krexx\Model\Callback
+ */
 abstract class AbstractCallback
 {
 

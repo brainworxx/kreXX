@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Model\Simple;
 /**
  * Class MethodInfo
  *
- * @package Brainworxx\Krexx\Model\Objects
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class AnalyseMethod extends AbstractCallback
 {

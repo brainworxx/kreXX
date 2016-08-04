@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Model;
 
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 
 /**

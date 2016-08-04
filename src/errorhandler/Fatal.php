@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Errorhandler;
 
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Toolbox;
 
 /**
  * PHP 5.x fatal error handler.

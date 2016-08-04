@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Errorhandler;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Config\Config;
 
 /**

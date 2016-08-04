@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Analysis\Routing;
 /**
  * Class properties analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Objects
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class IterateThroughProperties extends AbstractCallback
 {

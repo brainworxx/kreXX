@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\View\Messages;
 
 /**
- * Sends the kreXX output in the shutdown phase.
+ * Triggers the kreXX output during shutdown phase.
  *
  * @package Brainworxx\Krexx\Framework
  */

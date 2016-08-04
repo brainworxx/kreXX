@@ -40,7 +40,7 @@ use Brainworxx\Krexx\Model\Simple;
 /**
  * Closure analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Objects
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class AnalyseClosure extends AbstractCallback
 {

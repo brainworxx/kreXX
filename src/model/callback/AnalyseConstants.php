@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Model\Simple;
 /**
  * Constant analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Objects
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class AnalyseConstants extends AbstractCallback
 {

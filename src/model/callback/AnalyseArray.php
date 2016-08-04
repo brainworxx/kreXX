@@ -40,9 +40,9 @@ use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Routing;
 
 /**
- * Array analysis methods (again).
+ * Array analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Closure
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class AnalyseArray extends AbstractCallback
 {

@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Model\Simple;
 /**
  * Methods analysis methods. :rolleyes:
  *
- * @package Brainworxx\Krexx\Model\Objects
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class IterateThroughMethods extends AbstractCallback
 {

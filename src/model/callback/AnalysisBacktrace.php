@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Analysis\Routing;
  *
  * The iterate-part takes place in the OutputActions::backtraceAction()
  *
- * @package Brainworxx\Krexx\Model\Output
+ * @package Brainworxx\Krexx\Model\Callback
  */
 class AnalysisBacktrace extends AbstractCallback
 {

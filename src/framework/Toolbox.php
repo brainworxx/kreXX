@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Help;
 
 /**
- * Toolbox methods
+ * Toolbox methods.
  *
  * @package Brainworxx\Krexx\Framework
  */
