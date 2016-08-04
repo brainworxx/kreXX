@@ -85,6 +85,21 @@ class Routing
             return Routing::analyseString($model);
         }
 
+        // Check for recursion.
+        if (is_object($data) || is_array($data)) {
+            if (OutputActions::$recursionHandler->isInHive($data)) {
+                // Render recursion.
+                $model->setNormal($model->getName())
+                    ->setDomid(Toolbox::generateDomIdFromObject($data))
+                    ->setType($model->getAdditional() . 'class');
+                $result = OutputActions::$render->renderRecursion($model);
+                OutputActions::$nestingLevel--;
+                return $result;
+            }
+            // Remember that we've been here before.
+            OutputActions::$recursionHandler->addToHive($data);
+        }
+
         $connector1 = $model->getConnector1();
         $connector2 = $model->getConnector2();
 
@@ -425,26 +440,11 @@ class Routing
             ->setDomid(Toolbox::generateDomIdFromObject($model->getData()))
             ->initCallback('AnalyseObject');
 
-        if (OutputActions::$recursionHandler->isInHive($model->getData())) {
-            // Tell them, we've been here before
-            // but also say who we are.
-            $model->setNormal(get_class($model->getData()));
-            $output .= OutputActions::$render->renderRecursion($model);
-
-            // We will not render this one, but since we
-            // return to wherever we came from, we need to decrease the level.
-            $level--;
-            return $output;
-        } else {
-            // Remember, that we've been here before.
-            OutputActions::$recursionHandler->addToHive($data);
-
-            // Output data from the class.
-            $output .= OutputActions::$render->renderExpandableChild($model);
-            // We've finished this one, and can decrease the level setting.
-            $level--;
-            return $output;
-        }
+        // Output data from the class.
+        $output .= OutputActions::$render->renderExpandableChild($model);
+        // We've finished this one, and can decrease the level setting.
+        $level--;
+        return $output;
     }
 
     /**

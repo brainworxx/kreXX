@@ -72,15 +72,6 @@ class AnalyseArray extends AbstractCallback
     {
         $output = '';
         $recursionMarker = OutputActions::$recursionHandler->getMarker();
-
-        // Recursion detection of objects are handled in the hub.
-        if (OutputActions::$recursionHandler->isInHive($data)) {
-            return OutputActions::$render->renderRecursion(new Simple());
-        }
-
-        // Remember, that we've already been here.
-        OutputActions::$recursionHandler->addToHive($data);
-
         $output .= OutputActions::$render->renderSingeChildHr();
 
         // Iterate through.

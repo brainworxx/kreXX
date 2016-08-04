@@ -34,15 +34,15 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
+use Brainworxx\Krexx\Framework\Toolbox;
+
 /**
  * Recursion handler, formerly known as Hive.
  *
  * We are tracking objects via object hash.
- *
  * Arrays are stored here only for the sake of
  * the $GLOBALS array.
- * Arrays are not handled on the frontend, because
- * they lack an object hash.
+ *
  *
  * @package Brainworxx\Krexx\Analysis
  */
@@ -71,48 +71,11 @@ class RecursionHandler
     protected $recursionMarker;
 
     /**
-     * Register objects and arrays.
-     *
-     * Adds a variable to the hive of arrays and objects which
-     * are tracked for whether they have recursive entries.
-     *
-     * @param mixed $bee
-     *   Either array or object.
-     *
-     * @return array
-     *   The object we are currently analysing, to prevent an error.
+     * Generate the recursion marker during class construction.
      */
-    public function &addToHive(&$bee)
+    public function __construct()
     {
-        if (is_array($bee)) {
-            // We are only tracking the $GLOBALS arrays, so we need to check this.
-            // Other array recursions are handled by the nesting level.
-            $recursionMarker = $this->getMarker();
-            if (!isset($bee[$recursionMarker])) {
-                $cleanCopy = $bee;
-                $bee[$recursionMarker] = 0;
-                // Check if the copy has the marker.
-                if (isset($cleanCopy[$recursionMarker])) {
-                    // We have a byRef array, so we keep track of it.
-                    $bee[$recursionMarker]++;
-                    $this->recursionHive[0][] = &$bee;
-                }
-            }
-        }
-
-        if (is_object($bee)) {
-            // We do something else for objects.
-            // Setting a recursion marker inside might trigger a magical function.
-            // Some Zend Framework objects throw an error, while Varien Objects
-            // redirect the recursion value to an internal array.
-            $objectHash = spl_object_hash($bee);
-            if (!isset($this->recursionHive[1][$objectHash])) {
-                $this->recursionHive[1][$objectHash] = 0;
-            }
-            $this->recursionHive[1][$objectHash]++;
-        }
-
-        return $bee;
+        $this->recursionMarker = 'Krexx' . substr(str_shuffle(md5(microtime())), 0, 10);
     }
 
     /**
@@ -121,12 +84,46 @@ class RecursionHandler
     public function __destruct()
     {
         // Remove all recursion marker inside of arrays.
-        $recursionMarker = $this->getMarker();
+        // Should only be the $GLOBALS array.
         if (!empty($this->recursionHive[0])) {
             foreach ($this->recursionHive[0] as $i => $bee) {
-                if (isset($this->recursionHive[0][$i][$recursionMarker])) {
-                    unset($this->recursionHive[0][$i][$recursionMarker]);
+                if (isset($this->recursionHive[0][$i][$this->recursionMarker])) {
+                    unset($this->recursionHive[0][$i][$this->recursionMarker]);
                 }
+            }
+        }
+    }
+
+    /**
+     * Register objects and arrays.
+     *
+     * Adds a variable to the hive of arrays and objects which
+     * are tracked for whether they have recursive entries.
+     *
+     * @param mixed $bee
+     *   Either array or object.
+     */
+    public function addToHive(&$bee)
+    {
+        if (is_array($bee)) {
+            // We are only tracking the $GLOBALS arrays, so we need to check this.
+            if (!isset($bee[$this->recursionMarker])) {
+                $cleanCopy = $bee;
+                $bee[$this->recursionMarker] = 1;
+                // Check if the copy has the marker.
+                if (isset($cleanCopy[$this->recursionMarker])) {
+                    // We have a byRef array, so we keep track of it.
+                    $this->recursionHive[0][] = &$bee;
+                }
+            }
+        }
+        if (is_object($bee)) {
+            // We do something else for objects.
+            // Setting a recursion marker inside might trigger a magical function.
+
+            $objectHash = spl_object_hash($bee);
+            if (!isset($this->recursionHive[1][$objectHash])) {
+                $this->recursionHive[1][$objectHash] = 1;
             }
         }
     }
@@ -142,31 +139,25 @@ class RecursionHandler
      */
     public function isInHive($bee)
     {
-        // Test for references in order to
-        // prevent endless recursion loops.
-        $recursionValue = 0;
-        $recursionMarker = $this->getMarker();
+        // Check objects.
         if (is_object($bee)) {
             // Retrieve a possible hash.
             $objectHash = spl_object_hash($bee);
             if (isset($this->recursionHive[1][$objectHash])) {
-                $recursionValue = $this->recursionHive[1][$objectHash];
-            }
-        } else {
-            // Retrieve a possible value.
-            if (isset($bee[$recursionMarker])) {
-                $recursionValue = $bee[$recursionMarker];
-            } else {
-                $recursionValue = 0;
+                return true;
             }
         }
 
-        $recursionValue = (int)$recursionValue;
-        if ($recursionValue > 0) {
-            return true;
-        } else {
-            return false;
+        // Check arrays (only the $GLOBAL array may apply).
+        if (is_array($bee)) {
+            // Retrieve a possible value.
+            if (isset($bee[$this->recursionMarker])) {
+                return true;
+            }
         }
+        // Still here? This is either not a recursion, or it is
+        // something we do not track.
+        return false;
     }
 
     /**
@@ -180,10 +171,6 @@ class RecursionHandler
      */
     public function getMarker()
     {
-        if (!isset($this->recursionMarker)) {
-            $this->recursionMarker = 'Krexx' . substr(str_shuffle(md5(microtime())), 0, 10);
-        }
-
         return $this->recursionMarker;
     }
 }
