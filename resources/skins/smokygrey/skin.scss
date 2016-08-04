@@ -394,9 +394,9 @@ $fontLight: lighter 10px tahoma, verdana;
         font: $fontLight;
         &.karrow {
           font: $fontBold;
-          background-color: $greyDark;
+          background-color: $greyLight;
           padding: 0 2px;
-          color: $whiteDark !important;
+          color: $greyDark !important;
           margin: 0 10px;
         }
       }

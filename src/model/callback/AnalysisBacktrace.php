@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Output;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
@@ -45,14 +45,14 @@ use Brainworxx\Krexx\Analysis\Variables;
  *
  * @package Brainworxx\Krexx\Model\Output
  */
-class AnalysisBacktrace extends Simple
+class AnalysisBacktrace extends AbstractCallback
 {
     /**
      * Renders a backtrace step.
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
         $output = '';
         // We are handling the following values here:

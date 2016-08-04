@@ -1,20 +1,19 @@
 <?php
 /**
- * kreXX: Krumo eXXtended
+ * @file
+ *   Model for the view rendering, hosting the object method info closure.
+ *   kreXX: Krumo eXXtended
  *
- * kreXX is a debugging tool, which displays structured information
- * about any PHP object. It is a nice replacement for print_r() or var_dump()
- * which are used by a lot of PHP developers.
+ *   This is a debugging tool, which displays structured information
+ *   about any PHP object. It is a nice replacement for print_r() or var_dump()
+ *   which are used by a lot of PHP developers.
  *
- * kreXX is a fork of Krumo, which was originally written by:
- * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ *   kreXX is a fork of Krumo, which was originally written by:
+ *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author
- *   brainworXX GmbH <info@brainworxx.de>
+ * @author brainworXX GmbH <info@brainworxx.de>
  *
- * @license
- *   http://opensource.org/licenses/LGPL-2.1
- *
+ * @license http://opensource.org/licenses/LGPL-2.1
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -32,34 +31,32 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Objects;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
- * Closure analysis methods.
+ * Class MethodInfo
  *
  * @package Brainworxx\Krexx\Model\Objects
  */
-class AnalyseClosure extends Simple
+class AnalyseMethod extends AbstractCallback
 {
     /**
-     * Render the analysis of a closure.
+     * Renders the info of a single method.
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
+        $data = $this->parameters['data'];
         $output = '';
-        foreach ($this->parameters['data'] as $key => $string) {
+        foreach ($data as $key => $string) {
             $model = new Simple();
-            $model->setData($string)
-                ->setName($key)
-                ->setType('reflection')
-                ->setConnector2('=');
-            
-            if ($key !== 'comments' && $key !== 'declared in' && $key !== 'source') {
+            $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
+
+            if ($key !== 'comments' && $key !== 'declared in') {
                 $model->setNormal($string);
             } else {
                 $model->setNormal('. . .');

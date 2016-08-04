@@ -32,45 +32,27 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Objects;
+namespace Brainworxx\Krexx\Model\Callback;
 
-use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Model\Simple;
-
-/**
- * Constant analysis methods.
- *
- * @package Brainworxx\Krexx\Model\Objects
- */
-class AnalyseConstants extends Simple
+abstract class AbstractCallback
 {
+
+    protected $parameters = array();
+
     /**
-     * Simply iterate though object constants.
+     * The actual callback function for the renderer.
      *
      * @return string
      */
-    public function renderMe()
+    abstract public function callMe();
+
+    /**
+     * Add callback parameters at class construction.
+     *
+     * @param array $params
+     */
+    public function setParams(array &$params)
     {
-        $output = '';
-        $data = $this->parameters['refConst'];
-
-        $output .= OutputActions::$render->renderSingeChildHr();
-
-        // We do not need to check the recursionHandler, this is ome class internal stuff.
-        // Is it even possible to create a recursion here?
-        // Iterate through.
-        foreach ($data as $k => &$v) {
-            $model = new Simple();
-            $model->setData($v)
-                ->setName($k)
-                ->setConnector1($this->parameters['classname'] . '::')
-                ->setConnector2(' =');
-            $output .= Variables::analysisHub($model);
-        }
-
-        $output .= OutputActions::$render->renderSingeChildHr();
-        return $output;
-
+        $this->parameters = $params;
     }
 }

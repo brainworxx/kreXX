@@ -204,14 +204,13 @@ class Variables
         $json['count'] = (string)count($model->getData());
 
         // Dumping all Properties.
-        // @todo optimization potential!
-        $arrayModel = new AnalyseArray($model);
-        $arrayModel->setType($model->getAdditional() . 'array')
+        $model->setType($model->getAdditional() . 'array')
             ->setAdditional($json['count'] . ' elements')
             ->setJson($json)
-            ->addParameter('data', $model->getData());
+            ->addParameter('data', $model->getData())
+            ->initCallback('AnalyseArray');
 
-        return OutputActions::$render->renderExpandableChild($arrayModel);
+        return OutputActions::$render->renderExpandableChild($model);
     }
 
     /**
@@ -394,15 +393,13 @@ class Variables
         }
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
-        // @todo optimization potential!
-        $closureModel = new AnalyseClosure();
-        $closureModel->setName($model->getName())
-            ->setType($model->getAdditional() . ' closure')
-            ->setConnector1($model->getConnector1())
+        $model->setType($model->getAdditional() . ' closure')
+            ->setAdditional('. . .')
             ->setConnector2($model->getConnector2() . '(' . $paramList . ') =')
-            ->addParameter('data', $result);
+            ->addParameter('data', $result)
+            ->initCallback('AnalyseClosure');
 
-        return OutputActions::$render->renderExpandableChild($closureModel);
+        return OutputActions::$render->renderExpandableChild($model);
 
     }
 
@@ -421,19 +418,18 @@ class Variables
 
         $output = '';
         $level++;
-        // @todo optimization potential!
-        $objectModel = new AnalyseObject($model);
-        $objectModel->setType($model->getAdditional() . 'class')
+        $model->setType($model->getAdditional() . 'class')
             ->addParameter('data', $model->getData())
             ->addParameter('name', $model->getName())
             ->setAdditional(get_class($model->getData()))
-            ->setDomid(Toolbox::generateDomIdFromObject($model->getData()));
+            ->setDomid(Toolbox::generateDomIdFromObject($model->getData()))
+            ->initCallback('AnalyseObject');
 
         if (OutputActions::$recursionHandler->isInHive($model->getData())) {
             // Tell them, we've been here before
             // but also say who we are.
-            $objectModel->setNormal(get_class($model->getData()));
-            $output .= OutputActions::$render->renderRecursion($objectModel);
+            $model->setNormal(get_class($model->getData()));
+            $output .= OutputActions::$render->renderRecursion($model);
 
             // We will not render this one, but since we
             // return to wherever we came from, we need to decrease the level.
@@ -444,7 +440,7 @@ class Variables
             OutputActions::$recursionHandler->addToHive($data);
 
             // Output data from the class.
-            $output .= OutputActions::$render->renderExpandableChild($objectModel);
+            $output .= OutputActions::$render->renderExpandableChild($model);
             // We've finished this one, and can decrease the level setting.
             $level--;
             return $output;
@@ -475,10 +471,11 @@ class Variables
 
         foreach ($backtrace as $step => $stepData) {
             // @todo why not directly from the controller?
-            $model = new AnalysisBacktrace();
+            $model = new Simple();
             $model->setName($step)
                 ->setType('Stack Frame')
-                ->addParameter('stepData', $stepData);
+                ->addParameter('stepData', $stepData)
+                ->initCallback('AnalysisBacktrace');
 
             $output .= OutputActions::$render->renderExpandableChild($model);
         }

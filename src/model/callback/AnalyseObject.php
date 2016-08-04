@@ -32,28 +32,27 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Objects;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Flection;
-use Brainworxx\Krexx\Model\Variables\AnalyseArray;
 
 /**
  * Object analysis methods.
  *
  * @package Brainworxx\Krexx\Model\Objects
  */
-class AnalyseObject extends Simple
+class AnalyseObject extends AbstractCallback
 {
     /**
      * Starts the dump of an object.
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
         $data = $this->parameters['data'];
         $name = $this->parameters['name'];
@@ -170,11 +169,12 @@ class AnalyseObject extends Simple
                 return strcmp($a->name, $b->name);
             };
             usort($methods, $sortingCallback);
-            $model = new IterateThroughMethods();
+            $model = new Simple();
             $model->setName('Methods')
                 ->setType('class internals')
                 ->addParameter('ref', $ref)
-                ->addParameter('methods', $methods);
+                ->addParameter('methods', $methods)
+                ->initCallback('IterateThroughMethods');
 
             return OutputActions::$render->renderExpandableChild($model);
         }
@@ -246,14 +246,15 @@ class AnalyseObject extends Simple
                         // Do nothing.
                     }
                     if (isset($result)) {
-                        $model = new IterateThroughDebug();
+                        $model = new Simple();
                         $model->setName($funcName)
                             ->setType('debug method')
                             ->setAdditional('. . .')
                             ->setHelpid($funcName)
                             ->setConnector1('->')
                             ->setConnector2('() =')
-                            ->addParameter('result', $result);
+                            ->addParameter('result', $result)
+                            ->initCallback('IterateThroughDebug');
 
                         $output .= OutputActions::$render->renderExpandableChild($model);
                         unset($result);
@@ -312,13 +313,14 @@ class AnalyseObject extends Simple
                 $connector2 = '. . .';
             }
 
-            $model = new AnalyseArray();
+            $model = new Simple();
             $parameter = iterator_to_array($data);
             $model->setName($name)
                 ->setType('Foreach')
                 ->setAdditional('Traversable Info')
                 ->setConnector2($connector2)
-                ->addParameter('data', $parameter);
+                ->addParameter('data', $parameter)
+                ->initCallback('AnalyseArray');
 
             return OutputActions::$render->renderExpandableChild($model);
         }
@@ -342,13 +344,15 @@ class AnalyseObject extends Simple
 
         if (count($refConst) > 0) {
             // We've got some values, we will dump them.
-            $model = new AnalyseConstants();
+            $model = new Simple();
             $classname =$ref->getName();
             $model->setName('Constants')
                 ->setType('class internals')
+                // @todo space? why?
                 ->setConnector1(' ')
                 ->addParameter('refConst', $refConst)
-                ->addParameter('classname', $classname);
+                ->addParameter('classname', $classname)
+                ->initCallback('AnalyseConstants');
 
             return OutputActions::$render->renderExpandableChild($model);
         }
@@ -376,10 +380,11 @@ class AnalyseObject extends Simple
     {
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
-        $model = new IterateThroughProperties();
+        $model = new Simple();
         $model->addParameter('refProps', $refProps)
             ->addParameter('ref', $ref)
-            ->addParameter('orgObject', $data);
+            ->addParameter('orgObject', $data)
+            ->initCallback('IterateThroughProperties');
 
         if (strpos(strtoupper($label), 'PUBLIC') === false) {
             // Protected or private properties.

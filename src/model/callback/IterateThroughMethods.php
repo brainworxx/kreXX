@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Objects;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
@@ -43,14 +43,14 @@ use Brainworxx\Krexx\Model\Simple;
  *
  * @package Brainworxx\Krexx\Model\Objects
  */
-class IterateThroughMethods extends Simple
+class IterateThroughMethods extends AbstractCallback
 {
     /**
      * Simply start to iterate through the methods.
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
         $result = '';
 
@@ -75,7 +75,7 @@ class IterateThroughMethods extends Simple
                 );
                 $methodData['comments'] = Toolbox::encodeString($methodData['comments']);
             }
-            
+
             // Get declaration place.
             $declaringClass = $reflection->getDeclaringClass();
             if (is_null($declaringClass->getFileName()) || $declaringClass->getFileName() == '') {
@@ -150,12 +150,13 @@ class IterateThroughMethods extends Simple
         }
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
-        $model = new AnalyseMethod();
+        $model = new Simple();
         $model->setName($name)
             ->setType($data['declaration keywords'] . ' method')
             ->setConnector1($connector1)
             ->setConnector2('(' . $paramList . ')')
-            ->addParameter('data', $data);
+            ->addParameter('data', $data)
+            ->initCallback('AnalyseMethod');
 
         return OutputActions::$render->renderExpandableChild($model);
     }

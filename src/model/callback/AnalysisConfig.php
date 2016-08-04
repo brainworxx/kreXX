@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Output;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Config\FeConfig;
  *
  * @package Brainworxx\Krexx\Model\Output
  */
-class AnalysisConfig extends Simple
+class AnalysisConfig extends AbstractCallback
 {
 
     /**
@@ -51,7 +51,7 @@ class AnalysisConfig extends Simple
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
         $sectionData = $this->parameters['sectionData'];
         $source = $this->parameters['source'];

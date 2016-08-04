@@ -307,9 +307,9 @@
         font: lighter 10px tahoma, verdana; }
         .kwrapper .kchild .kel em.karrow, .kfatalwrapper-outer .kchild .kel em.karrow {
           font: bold 12px tahoma, verdana;
-          background-color: #919191;
+          background-color: #E0E0E0;
           padding: 0 2px;
-          color: #F2F2F2 !important;
+          color: #919191 !important;
           margin: 0 10px; }
       .kwrapper .kchild .kel .kel-bg, .kfatalwrapper-outer .kchild .kel .kel-bg {
         /* white line */

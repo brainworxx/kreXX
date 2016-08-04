@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Variables;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
@@ -44,14 +44,14 @@ use Brainworxx\Krexx\Analysis\Variables;
  *
  * @package Brainworxx\Krexx\Model\Closure
  */
-class AnalyseArray extends Simple
+class AnalyseArray extends AbstractCallback
 {
     /**
      * Renders the expendable around the array analysis.
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
         return $this->iterateThrough($this->parameters['data']);
     }

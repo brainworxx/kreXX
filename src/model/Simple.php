@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Model;
 
 use Brainworxx\Krexx\Framework\Toolbox;
+use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 
 /**
  * Model for the view rendering
@@ -144,17 +145,28 @@ class Simple
             $this->json = $roleModel->getJson();
             $this->domid = $roleModel->getDomid();
         }
-
     }
 
     /**
-     * Placeholder for the render function. Overwrite this one
+     * Callback for the renderMe() method.
+     *
+     * @var AbstractCallback
+     */
+    protected $callback;
+
+    /**
+     * Triggers the callback (if set).
      *
      * @return string
      */
     public function renderMe()
     {
-        return '';
+        if (is_object($this->callback)) {
+            $this->callback->setParams($this->parameters);
+            return $this->callback->callMe();
+        } else {
+            return '';
+        }
     }
 
     /**
@@ -433,5 +445,16 @@ class Simple
     {
         $this->parameters[$name] = $value;
         return $this;
+    }
+
+    /**
+     * Initializes the callback for the renderMe method
+     *
+     * @param string $name
+     */
+    public function initCallback($name)
+    {
+        $classname = 'Brainworxx\\Krexx\\Model\\Callback\\' . $name;
+        $this->callback = new $classname;
     }
 }

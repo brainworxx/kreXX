@@ -333,7 +333,7 @@ class Render extends Help
             $template = str_replace('{gensource}', '', $template);
             $template = str_replace('{gencode}', '', $template);
         } else {
-            // We add the buttton and the code.
+            // We add the button and the code.
             $template = str_replace('{gensource}', $gencode, $template);
             $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
         }

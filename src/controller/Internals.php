@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Output\IterateThroughConfig;
+use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Render;
@@ -373,12 +374,13 @@ class Internals
         $source = $wholeConfig[0];
         $config = $wholeConfig[1];
 
-        $model = new IterateThroughConfig();
+        $model = new Simple();
         $model->setName($path)
             ->setType(Config::getPathToIni())
             ->setHelpid('currentSettings')
             ->addParameter('config', $config)
-            ->addParameter('source', $source);
+            ->addParameter('source', $source)
+            ->initCallback('IterateThroughConfig');
 
         $configOutput = self::$render->renderExpandableChild($model, $isExpanded);
         return self::$render->renderFooter($caller, $configOutput, $isExpanded);

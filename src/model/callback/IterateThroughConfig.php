@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Output;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
@@ -43,26 +43,28 @@ use Brainworxx\Krexx\Config\Config;
  *
  * @package Brainworxx\Krexx\Model\Output
  */
-class IterateThroughConfig extends Simple
+class IterateThroughConfig extends AbstractCallback
 {
     /**
      * Renders the footer.
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
         $config = $this->parameters['config'];
         $source = $this->parameters['source'];
         $configOutput = '';
         foreach ($config as $sectionName => $sectionData) {
             // Render a whole section.
-            $model = new AnalysisConfig();
+            $model = new Simple();
             $model->setName($sectionName)
                 ->setType('Config')
                 ->setAdditional('. . .')
                 ->addParameter('sectionData', $sectionData)
-                ->addParameter('source', $source[$sectionName]);
+                ->addParameter('source', $source[$sectionName])
+                ->initCallback('AnalysisConfig');
+
             $configOutput .= OutputActions::$render->renderExpandableChild($model);
         }
         // Render the dev-handle field.

@@ -32,28 +32,26 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Objects;
+namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Analysis\Variables;
-use Brainworxx\Krexx\View\Help;
 
 /**
  * Class properties analysis methods.
  *
  * @package Brainworxx\Krexx\Model\Objects
  */
-class IterateThroughProperties extends Simple
+class IterateThroughProperties extends AbstractCallback
 {
     /**
      * Renders the properties of a class.
      *
      * @return string
      */
-    public function renderMe()
+    public function callMe()
     {
         // I need to preprocess them, since I do not want to render a
         // reflection property.
@@ -110,7 +108,7 @@ class IterateThroughProperties extends Simple
                 // There is always a $ in front of a static property.
                 $propName = '$' . $propName;
             }
-            
+
             // Stitch together our model
             $model = new Simple();
             $model->setData($value)
