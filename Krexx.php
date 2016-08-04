@@ -100,7 +100,6 @@ class Krexx
         include_once $krexxdir . 'src/model/objects/AnalyseConstants.php';
         include_once $krexxdir . 'src/model/objects/IterateThroughMethods.php';
         include_once $krexxdir . 'src/model/objects/AnalyseMethod.php';
-        include_once $krexxdir . 'src/model/objects/IterateThroughTraversable.php';
         include_once $krexxdir . 'src/model/objects/AnalyseClosure.php';
         include_once $krexxdir . 'src/model/objects/IterateThroughDebug.php';
         include_once $krexxdir . 'src/model/objects/AnalyseConstants.php';

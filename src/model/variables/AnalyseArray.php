@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Model\Variables;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Variables;
@@ -52,6 +53,52 @@ class AnalyseArray extends Simple
      */
     public function renderMe()
     {
-        return Variables::iterateThrough($this->parameters['data']);
+        return $this->iterateThrough($this->parameters['data']);
+    }
+
+    /**
+     * Render a dump for the properties of an array.
+     *
+     * @param array &$data
+     *   The array we want to analyse.
+     *
+     * @return string
+     *   The generated markup.
+     */
+    protected static function iterateThrough(&$data)
+    {
+        $output = '';
+        $recursionMarker = OutputActions::$recursionHandler->getMarker();
+
+        // Recursion detection of objects are handled in the hub.
+        if (OutputActions::$recursionHandler->isInHive($data)) {
+            return OutputActions::$render->renderRecursion(new Simple());
+        }
+
+        // Remember, that we've already been here.
+        OutputActions::$recursionHandler->addToHive($data);
+
+        $output .= OutputActions::$render->renderSingeChildHr();
+
+        // Iterate through.
+        foreach ($data as $key => &$value) {
+            // We will not output our recursion marker.
+            // Meh, the only reason for the recursion marker
+            // in arrays is because of the $GLOBAL array, which
+            // we will only render once.
+            if ($key === $recursionMarker) {
+                continue;
+            }
+            $key = Toolbox::encodeString($key);
+            $model = new Simple();
+            $model->setData($value)
+                ->setName($key)
+                ->setConnector1('[')
+                ->setConnector2('] =');
+            $output .= Variables::analysisHub($model);
+        }
+        $output .= OutputActions::$render->renderSingeChildHr();
+        return $output;
+
     }
 }

@@ -575,9 +575,13 @@
   .kwrapper .ksearch-found-highlight, .kfatalwrapper-outer .ksearch-found-highlight {
     background-color: #fffda5 !important;
     color: #555555; }
+    .kwrapper .ksearch-found-highlight .kpre, .kfatalwrapper-outer .ksearch-found-highlight .kpre {
+      background-color: #fffda5 !important; }
   .kwrapper .highlight-jumpto, .kfatalwrapper-outer .highlight-jumpto {
     background-color: #FED300 !important;
     color: #555555 !important; }
+    .kwrapper .highlight-jumpto .kpre, .kfatalwrapper-outer .highlight-jumpto .kpre {
+      background-color: #FED300 !important; }
   .kwrapper .ksearch-found-highlight .kpre,
   .kwrapper .highlight-jumpto .kpre, .kfatalwrapper-outer .ksearch-found-highlight .kpre,
   .kfatalwrapper-outer .highlight-jumpto .kpre {

@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Flection;
+use Brainworxx\Krexx\Model\Variables\AnalyseArray;
 
 /**
  * Object analysis methods.
@@ -311,7 +312,7 @@ class AnalyseObject extends Simple
                 $connector2 = '. . .';
             }
 
-            $model = new IterateThroughTraversable();
+            $model = new AnalyseArray();
             $parameter = iterator_to_array($data);
             $model->setName($name)
                 ->setType('Foreach')

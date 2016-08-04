@@ -126,6 +126,28 @@ class Simple
     protected $parameters = array();
 
     /**
+     * Simple constructor.
+     *
+     * @param Simple|null $roleModel
+     *   The date we want to import to this model.
+     */
+    public function __construct(Simple $roleModel = null)
+    {
+        if (isset($roleModel)) {
+            $this->data = $roleModel->getData();
+            $this->name = $roleModel->getName();
+            $this->normal = $roleModel->getNormal();
+            $this->additional = $roleModel->getAdditional();
+            $this->type = $roleModel->getType();
+            $this->connector1 = $roleModel->getConnector1();
+            $this->connector2 = $roleModel->getConnector2();
+            $this->json = $roleModel->getJson();
+            $this->domid = $roleModel->getDomid();
+        }
+
+    }
+
+    /**
      * Placeholder for the render function. Overwrite this one
      *
      * @return string

@@ -64,7 +64,7 @@ class Variables
      * @return string
      *   The generated markup.
      */
-    public static function analysisHub($model)
+    public static function analysisHub(Simple $model)
     {
         // Check memory and runtime.
         if (!OutputActions::checkEmergencyBreak()) {
@@ -74,6 +74,17 @@ class Variables
         }
         $data = $model->getData();
         $name = $model->getName();
+
+        // Check nesting level
+        OutputActions::$nestingLevel++;
+        if (OutputActions::$nestingLevel >= (int)Config::getConfigValue('runtime', 'level')) {
+            OutputActions::$nestingLevel--;
+            $text = gettype($data) . ' => ' . Help::getHelp('maximumLevelReached');
+            $model->setData($text)
+                ->setName($name);
+            return Variables::analyseString($model);
+        }
+
         $connector1 = $model->getConnector1();
         $connector2 = $model->getConnector2();
 
@@ -83,23 +94,13 @@ class Variables
             $connector1 = $connector1 . "'";
             $connector2 = "'" . $connector2;
         }
+        $model->setConnector1($connector1)
+            ->setConnector2($connector2);
 
-        // Check nesting level
-        OutputActions::$nestingLevel++;
-        if (OutputActions::$nestingLevel >= (int)Config::getConfigValue('runtime', 'level')) {
-            OutputActions::$nestingLevel--;
-            $model = new Simple();
-            $text = gettype($data) . ' => ' . Help::getHelp('maximumLevelReached');
-            $model->setData($text)
-                ->setName($name);
-            return Variables::analyseString($model);
-        }
 
         // Object?
         // Closures are analysed separately.
         if (is_object($data) && !is_a($data, '\Closure')) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             $result = self::analyseObject($model);
             OutputActions::$nestingLevel--;
             return $result;
@@ -109,9 +110,8 @@ class Variables
         if (is_object($data) && is_a($data, '\Closure')) {
             if ($connector2 == '] =') {
                 $connector2 = ']';
+                $model->setConnector2($connector2);
             }
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             $result = self::analyseClosure($model);
             OutputActions::$nestingLevel--;
             return $result;
@@ -119,8 +119,6 @@ class Variables
 
         // Array?
         if (is_array($data)) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             $result = Variables::analyseArray($model);
             OutputActions::$nestingLevel--;
             return $result;
@@ -128,100 +126,43 @@ class Variables
 
         // Resource?
         if (is_resource($data)) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             OutputActions::$nestingLevel--;
             return Variables::analyseResource($model);
         }
 
         // String?
         if (is_string($data)) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             OutputActions::$nestingLevel--;
             return Variables::analyseString($model);
         }
 
         // Float?
         if (is_float($data)) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             OutputActions::$nestingLevel--;
             return Variables::analyseFloat($model);
         }
 
         // Integer?
         if (is_int($data)) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             OutputActions::$nestingLevel--;
             return Variables::analyseInteger($model);
         }
 
         // Boolean?
         if (is_bool($data)) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             OutputActions::$nestingLevel--;
             return Variables::analyseBoolean($model);
         }
 
         // Null ?
         if (is_null($data)) {
-            $model->setConnector1($connector1)
-                ->setConnector2($connector2);
             OutputActions::$nestingLevel--;
             return Variables::analyseNull($model);
         }
 
         // Still here? This should not happen. Return empty string, just in case.
+        OutputActions::$nestingLevel--;
         return '';
-    }
-
-    /**
-     * Render a dump for the properties of an array.
-     *
-     * @param array &$data
-     *   The array we want to analyse.
-     *
-     * @return string
-     *   The generated markup.
-     */
-    public static function iterateThrough(&$data)
-    {
-        $output = '';
-        $recursionMarker = OutputActions::$recursionHandler->getMarker();
-
-        // Recursion detection of objects are handled in the hub.
-        if (OutputActions::$recursionHandler->isInHive($data)) {
-            return OutputActions::$render->renderRecursion(new Simple());
-        }
-
-        // Remember, that we've already been here.
-        OutputActions::$recursionHandler->addToHive($data);
-
-        $output .= OutputActions::$render->renderSingeChildHr();
-
-        // Iterate through.
-        foreach ($data as $key => &$value) {
-            // We will not output our recursion marker.
-            // Meh, the only reason for the recursion marker
-            // in arrays is because of the $GLOBAL array, which
-            // we will only render once.
-            if ($key === $recursionMarker) {
-                continue;
-            }
-            $key = Toolbox::encodeString($key);
-            $model = new Simple();
-            $model->setData($value)
-                ->setName($key)
-                ->setConnector1('[')
-                ->setConnector2('] =');
-            $output .= Variables::analysisHub($model);
-        }
-        $output .= OutputActions::$render->renderSingeChildHr();
-        return $output;
-
     }
 
     /**
@@ -233,7 +174,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseNull($model)
+    public static function analyseNull(Simple $model)
     {
         $json = array();
         $json['type'] = 'NULL';
@@ -256,19 +197,17 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseArray($model)
+    public static function analyseArray(Simple $model)
     {
         $json = array();
         $json['type'] = 'array';
         $json['count'] = (string)count($model->getData());
 
         // Dumping all Properties.
-        $arrayModel = new AnalyseArray();
-        $arrayModel->setName($model->getName())
-            ->setType($model->getAdditional() . 'array')
+        // @todo optimization potential!
+        $arrayModel = new AnalyseArray($model);
+        $arrayModel->setType($model->getAdditional() . 'array')
             ->setAdditional($json['count'] . ' elements')
-            ->setConnector1($model->getConnector1())
-            ->setConnector2($model->getConnector2())
             ->setJson($json)
             ->addParameter('data', $model->getData());
 
@@ -284,7 +223,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseResource($model)
+    public static function analyseResource(Simple $model)
     {
         $json = array();
         $json['type'] = 'resource';
@@ -307,13 +246,12 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseBoolean($model)
+    public static function analyseBoolean(Simple $model)
     {
         $json = array();
         $json['type'] = 'boolean';
         $data = $model->getData() ? 'TRUE' : 'FALSE';
 
-        $model = new Simple();
         $model->setData($data)
             ->setNormal($data)
             ->setType($model->getAdditional() . 'boolean')
@@ -331,7 +269,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseInteger($model)
+    public static function analyseInteger(Simple $model)
     {
         $json = array();
         $json['type'] = 'integer';
@@ -352,7 +290,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseFloat($model)
+    public static function analyseFloat(Simple $model)
     {
         $json = array();
         $json['type'] = 'float';
@@ -373,7 +311,7 @@ class Variables
      * @return string
      *   The rendered markup.
      */
-    public static function analyseString($model)
+    public static function analyseString(Simple $model)
     {
         $json = array();
         $json['type'] = 'string';
@@ -415,7 +353,7 @@ class Variables
      * @return string
      *   The generated markup.
      */
-    public static function analyseClosure($model)
+    public static function analyseClosure(Simple $model)
     {
         $ref = new \ReflectionFunction($model->getData());
 
@@ -456,12 +394,12 @@ class Variables
         }
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
-
+        // @todo optimization potential!
         $closureModel = new AnalyseClosure();
         $closureModel->setName($model->getName())
             ->setType($model->getAdditional() . ' closure')
             ->setConnector1($model->getConnector1())
-            ->setConnector2($model->getconnector2() . '(' . $paramList . ') =')
+            ->setConnector2($model->getConnector2() . '(' . $paramList . ') =')
             ->addParameter('data', $result);
 
         return OutputActions::$render->renderExpandableChild($closureModel);
@@ -477,23 +415,19 @@ class Variables
      * @return string
      *   The generated markup.
      */
-    //public static function analyseObject(&$data, $name, $additional = '', $connector1 = '=>', $connector2 = '=')
-    public static function analyseObject($model)
+    public static function analyseObject(Simple $model)
     {
         static $level = 0;
 
         $output = '';
         $level++;
-
-        $objectModel = new AnalyseObject();
-        $objectModel->setName($model->getName())
-            ->setType($model->getAdditional() . 'class')
+        // @todo optimization potential!
+        $objectModel = new AnalyseObject($model);
+        $objectModel->setType($model->getAdditional() . 'class')
             ->addParameter('data', $model->getData())
             ->addParameter('name', $model->getName())
             ->setAdditional(get_class($model->getData()))
-            ->setDomid(Toolbox::generateDomIdFromObject($model->getData()))
-            ->setConnector1($model->getConnector1())
-            ->setConnector2($model->getConnector2());
+            ->setDomid(Toolbox::generateDomIdFromObject($model->getData()));
 
         if (OutputActions::$recursionHandler->isInHive($model->getData())) {
             // Tell them, we've been here before
@@ -540,6 +474,7 @@ class Variables
         $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace, $offset);
 
         foreach ($backtrace as $step => $stepData) {
+            // @todo why not directly from the controller?
             $model = new AnalysisBacktrace();
             $model->setName($step)
                 ->setType('Stack Frame')

@@ -46,34 +46,6 @@ use Brainworxx\Krexx\View\Help;
 class Toolbox
 {
     /**
-     * List of all charsets that can be safely encoded via htmlentities().
-     *
-     * @var array
-     */
-    protected static $charsetList = array(
-        'UTF-8',
-        'ISO-8859-1',
-        'ISO-8859-5',
-        'ISO-8859-15',
-        'cp866',
-        'cp1251',
-        'Windows-1251',
-        'cp1252',
-        'Windows-1252',
-        'KOI8-R',
-        'koi8r',
-        'BIG5',
-        'GB2312',
-        'Shift_JIS',
-        'SJIS',
-        'SJIS-win',
-        'cp932',
-        'EUC-JP',
-        'EUCJP',
-        'eucJP-win',
-    );
-
-    /**
      * Returns the microtime timestamp for file operations.
      *
      * File operations are the logfiles and the chunk handling.
@@ -323,7 +295,6 @@ class Toolbox
     public static function getFileContents($path)
     {
         $result = '';
-
         // Is it readable and does it have any content?
         if (is_readable($path)) {
             $size = filesize($path);
@@ -332,8 +303,6 @@ class Toolbox
                 $result = fread($file, $size);
                 fclose($file);
             }
-        } else {
-            Toolbox::formattedVarDump('Could not open file: ' . $path);
         }
 
         return $result;
@@ -448,23 +417,24 @@ class Toolbox
      */
     public static function encodeString($data, $code = false)
     {
-        $result = '';
-        // Try to encode it.
-        $encoding = mb_detect_encoding($data, self::$charsetList);
-        if ($encoding !== false) {
-            set_error_handler(function () {
-                /* do nothing. */
-            });
-            $result = @htmlentities($data, null, $encoding);
-            restore_error_handler();
-            // We are also encoding @, because we need them for our chunks.
-            $result = str_replace('@', '&#64;', $result);
-            // We ara also encoding the {, because we use it as markers for the skins.
-            $result = str_replace('{', '&#123;', $result);
+        if (strlen($data) === 0) {
+            return '';
         }
 
+        // Try to encode it.
+        set_error_handler(function () {
+            /* do nothing. */
+        });
+        $result = @htmlentities($data, ENT_DISALLOWED);
+        // We are also encoding @, because we need them for our chunks.
+        $result = str_replace('@', '&#64;', $result);
+        // We are also encoding the {, because we use it as markers for the skins.
+        $result = str_replace('{', '&#123;', $result);
+        restore_error_handler();
+
         // Check if encoding was successful.
-        if (strlen($result) === 0 && strlen($data) !== 0) {
+        // 99.99% of the time, the encoding works.
+        if (strlen($result) === 0) {
             // Something went wrong with the encoding, we need to
             // completely encode this one to be able to display it at all!
             $data = @mb_convert_encoding($data, 'UTF-32', mb_detect_encoding($data));

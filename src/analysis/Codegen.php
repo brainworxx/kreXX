@@ -167,7 +167,7 @@ class Codegen
     /**
      * Analyses the type and then decides what to do with it
      *
-     * @param simple $model
+     * @param Simple $model
      *   The type we are analysing, for example 'private array'.
      *
      * @return string
@@ -176,7 +176,7 @@ class Codegen
      *   - method
      *   - property
      */
-    protected static function analyseType($model)
+    protected static function analyseType(Simple $model)
     {
         $type = $model->getType();
 

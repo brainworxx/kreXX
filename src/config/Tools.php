@@ -511,6 +511,11 @@ class Tools extends Fallback
         // Not loaded?
         if (empty($config)) {
             $config = (array)parse_ini_string(Toolbox::getFileContents(Config::getPathToIni()), true);
+            if (empty($config)) {
+                // Still empty means that there is no ini file. We add a dummy.
+                // This will prevent the failing reload of the ini file.
+                $config[] = 'dummy';
+            }
         }
 
         // Do we have a value in the ini?

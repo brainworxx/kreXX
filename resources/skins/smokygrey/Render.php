@@ -96,7 +96,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         $template = str_replace('{ktype}', $cssType, $template);
 
         $template = str_replace('{additional}', $model->getAdditional(), $template);
-        
+
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
         $gencode = Codegen::generateSource($model);
@@ -210,5 +210,14 @@ class Render extends \Brainworxx\Krexx\View\Render
         // Add the search.
         $template = str_replace('{search}', $this->renderSearch(), $template);
         return str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function renderConnector($connector)
+    {
+        // Do nothing. There are no connectors in Smoky-Grey.
+        return '';
     }
 }

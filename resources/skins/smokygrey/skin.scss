@@ -772,11 +772,17 @@ $fontLight: lighter 10px tahoma, verdana;
   .ksearch-found-highlight {
     background-color: $yellow !important;
     color: $blackLight;
+    .kpre {
+      background-color: $yellow !important;
+    }
   }
 
   .highlight-jumpto {
     background-color: $yellowBwx !important;
     color: $blackLight !important;
+    .kpre {
+      background-color: $yellowBwx !important;
+    }
   }
 
   .ksearch-found-highlight .kpre,

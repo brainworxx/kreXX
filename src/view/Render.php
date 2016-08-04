@@ -70,8 +70,9 @@ class Render extends Help
         $partExpand = '';
         $partCallable = '';
         $partExtra = '';
+        $data = $model->getData();
 
-        if (strlen($model->getData()) > strlen($model->getNormal())) {
+        if (strlen($data) > strlen($model->getNormal())) {
             $extra = true;
         } else {
             $extra = false;
@@ -81,7 +82,7 @@ class Render extends Help
             // We have a lot of text, so we render this one expandable (yellow box).
             $partExpand = $this->getTemplateFileContent('singleChildExpand');
         }
-        if (is_callable($model->getData())) {
+        if (is_callable($data)) {
             // Add callable partial.
             $partCallable = $this->getTemplateFileContent('singleChildCallable');
         }
@@ -118,7 +119,7 @@ class Render extends Help
         $template = str_replace('{type}', $model->getType(), $template);
         $template = str_replace('{type-classes}', $typeClasses, $template);
         $template = str_replace('{normal}', $model->getNormal(), $template);
-        $template = str_replace('{data}', $model->getData(), $template);
+        $template = str_replace('{data}', $data, $template);
         $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
         $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
         $template = str_replace('{gensource}', $gensource, $template);
