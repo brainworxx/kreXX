@@ -299,10 +299,7 @@ class Render extends Help
     public function renderExpandableChild(Simple $model, $isExpanded = false)
     {
         // Check for emergency break.
-        if (!OutputActions::checkEmergencyBreak()) {
-            // Normally, this should not show up, because the Chunks class will not
-            // output anything, except a JS alert.
-            Messages::addMessage("Emergency break for large output during analysis process.");
+        if (!OutputActions::$emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
 

@@ -107,6 +107,7 @@ class Krexx
         include_once $krexxdir . 'src/errorhandler/Fatal.php';
         include_once $krexxdir . 'src/controller/Internals.php';
         include_once $krexxdir . 'src/controller/OutputActions.php';
+        include_once $krexxdir . 'src/controller/EmergencyHandler.php';
 
         Config::$krexxdir = $krexxdir;
 

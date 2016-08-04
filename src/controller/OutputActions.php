@@ -72,6 +72,7 @@ class OutputActions extends Internals
         }
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
+        self::$emergencyHandler = new EmergencyHandler();
         self::loadRendrerer();
 
         // Find caller.
@@ -113,9 +114,7 @@ class OutputActions extends Internals
 
         // We need to get the footer before the generating of the header,
         // because we need to display messages in the header from the configuration.
-        self::checkEmergencyBreak(false);
         $footer = self::outputFooter($caller);
-        self::checkEmergencyBreak(true);
 
         // Start the analysis itself.
         Codegen::resetCounter();
@@ -141,19 +140,12 @@ class OutputActions extends Internals
         $analysis = Routing::analysisHub($model);
         // Now that our analysis is done, we must check if there was an emergency
         // break.
-        $emergency = false;
-        if (!self::checkEmergencyBreak()) {
-            $emergency = true;
+        if (!self::$emergencyHandler->checkEmergencyBreak()) {
+            return;
         }
-        // Disable it, so we can send the "meta" stuff from the template, like
-        // header, messages and footer.
-        self::checkEmergencyBreak(false);
 
         self::$shutdownHandler->addChunkString(self::outputHeader($headline));
-        // We will not send the analysis if we have encountered an emergency break.
-        if (!$emergency) {
-            self::$shutdownHandler->addChunkString($analysis);
-        }
+        self::$shutdownHandler->addChunkString($analysis);
         self::$shutdownHandler->addChunkString($footer);
 
         // Add the caller as metadata to the chunks class. It will be saved as
@@ -164,9 +156,6 @@ class OutputActions extends Internals
 
         // Reset value for the code generation.
         Config::$allowCodegen = false;
-
-        // Enable emergency break for further use.
-        self::checkEmergencyBreak(true);
     }
 
     /**
@@ -180,6 +169,7 @@ class OutputActions extends Internals
         }
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
+        self::$emergencyHandler = new EmergencyHandler();
         self::loadRendrerer();
 
         Config::$allowCodegen = false;
@@ -195,26 +185,17 @@ class OutputActions extends Internals
         $backtrace = debug_backtrace();
         unset($backtrace[0]);
 
-        self::checkEmergencyBreak(false);
         $footer = self::outputFooter($caller);
-        self::checkEmergencyBreak(true);
 
         $analysis = Routing::analysisBacktrace($backtrace, -1);
         // Now that our analysis is done, we must check if there was an emergency
         // break.
-        $emergency = false;
-        if (!self::checkEmergencyBreak()) {
-            $emergency = true;
+        if (!self::$emergencyHandler->checkEmergencyBreak()) {
+            return;
         }
-        // Disable it, so we can send the "meta" stuff from the template, like
-        // header, messages and footer.
-        self::checkEmergencyBreak(false);
 
         self::$shutdownHandler->addChunkString(self::outputHeader($headline));
-        // We will not send the analysis if we have encountered an emergency break.
-        if (!$emergency) {
-            self::$shutdownHandler->addChunkString($analysis);
-        }
+        self::$shutdownHandler->addChunkString($analysis);
         self::$shutdownHandler->addChunkString($footer);
 
         // Add the caller as metadata to the chunks class. It will be saved as
@@ -223,8 +204,6 @@ class OutputActions extends Internals
             Chunks::addMetadata($caller);
         }
 
-        // Enable emergency break for use in further use.
-        self::checkEmergencyBreak(true);
     }
 
     /**
@@ -238,7 +217,13 @@ class OutputActions extends Internals
         }
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
+        self::$emergencyHandler = new EmergencyHandler();
         self::loadRendrerer();
+
+        // We will not check this for the cookie config, to avoid people locking
+        // themselves out.
+        self::$emergencyHandler->setEnable(false);
+
 
         // Find caller.
         $caller = self::findCaller();
@@ -249,6 +234,7 @@ class OutputActions extends Internals
         $footer = self::outputFooter($caller, true);
         self::$shutdownHandler->addChunkString(self::outputHeader('Edit local settings'));
         self::$shutdownHandler->addChunkString($footer);
+        self::$emergencyHandler->setEnable(true);
     }
 
     /**
@@ -262,6 +248,7 @@ class OutputActions extends Internals
     {
         self::resetTimer();
         self::$recursionHandler = new RecursionHandler();
+        self::$emergencyHandler = new EmergencyHandler();
         OutputActions::loadRendrerer();
 
         // We will not generate any code here!
@@ -284,6 +271,10 @@ class OutputActions extends Internals
 
         // Get the backtrace.
         $backtrace = Routing::analysisBacktrace($errorData['backtrace']);
+        if (!self::$emergencyHandler->checkEmergencyBreak()) {
+            return;
+        }
+
         // Get the footer.
         $footer = self::outputFooter('');
         // Get the messages.

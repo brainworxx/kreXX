@@ -94,6 +94,13 @@ class Internals
     public static $recursionHandler;
 
     /**
+     * Our emergency break handler.
+     *
+     * @var \Brainworxx\Krexx\Controller\EmergencyHandler
+     */
+    public static $emergencyHandler;
+
+    /**
      * The instance of the render class from the skin.
      *
      * Gets loaded in the output footer.
@@ -246,80 +253,6 @@ class Internals
             Messages::addMessage(Help::getHelp('maxCallReached'), 'critical');
         }
         self::$KrexxCount++;
-        return $result;
-    }
-
-    /**
-     * Checks if there is enough memory and time left on the Server.
-     *
-     * @param mixed $enable
-     *   Enables and disables the check itself. When disabled, it will always
-     *   return TRUE (all is OK).
-     *
-     * @return bool
-     *   Boolean to show if we have enough left.
-     *   TRUE = all is OK.
-     *   FALSE = we have a problem.
-     */
-    public static function checkEmergencyBreak($enable = null)
-    {
-        static $result = true;
-        static $isDisabled = false;
-
-        // We are saving the value of being enabled / disabled.
-        if ($enable === true) {
-            $isDisabled = false;
-        }
-        if ($enable === false) {
-            $isDisabled = true;
-        }
-
-        // Tell them everything is fine, when it is disabled.
-        if ($isDisabled) {
-            return true;
-        }
-
-        if ($result === false) {
-            // This has failed before!
-            // No need to check again!
-            return false;
-        }
-
-        // Check Runtime.
-        if (self::$timer + (int)Config::getConfigValue('runtime', 'maxRuntime') <= time()) {
-            // This is taking longer than expected.
-            $result = false;
-        }
-
-        if ($result) {
-            // Commence with the memory check.
-            // Check this only, if we have enough time left.
-            $limit = strtoupper(ini_get('memory_limit'));
-            $memoryLimit = 0;
-            if (preg_match('/^(\d+)(.)$/', $limit, $matches)) {
-                if ($matches[2] == 'M') {
-                    // Megabyte.
-                    $memoryLimit = $matches[1] * 1024 * 1024;
-                } elseif ($matches[2] == 'K') {
-                    // Kilobyte.
-                    $memoryLimit = $matches[1] * 1024;
-                }
-            }
-
-            // Were we able to determine a limit?
-            if ($memoryLimit > 2) {
-                $usage = memory_get_usage();
-                $left = $memoryLimit - $usage;
-                // Is more left than is configured?
-                $result = $left >= (int)Config::getConfigValue('runtime', 'memoryLeft') * 1024 * 1024;
-            }
-        }
-
-        if (!$result) {
-            // No more memory or time, we disable kreXX!
-            \Krexx::disable();
-        }
-
         return $result;
     }
 

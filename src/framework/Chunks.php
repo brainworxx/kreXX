@@ -168,13 +168,9 @@ class Chunks
      */
     public static function sendDechunkedToBrowser($string)
     {
-
-        // Do some housekeeping. Unless something dreadfull had appened, there
-        // sould not be anything to cleanup.
+        // Do some housekeeping. Unless something dreadful had happened, there
+        // should not be anything to cleanup.
         self::cleanupOldChunks();
-
-        // Check for an emergency break.
-        $allOk = OutputActions::checkEmergencyBreak();
 
         $chunkPos = strpos($string, '@@@');
 
@@ -191,12 +187,6 @@ class Chunks
 
         // No more chunk keys, we send what is left.
         echo $string;
-
-        if (!$allOk) {
-            // We had an emergency break. Not everything was send to the browser,
-            // so we need to do some housekeeping.
-            self::cleanupNewChunks();
-        }
     }
 
     /**
@@ -296,19 +286,7 @@ class Chunks
         }
 
     }
-
-    /**
-     * Deletes all chunks from the current run.
-     */
-    protected static function cleanupNewChunks()
-    {
-        $chunkList = glob(Config::$krexxdir . 'chunks/' . Toolbox::fileStamp() . '_*.Krexx.tmp');
-
-        foreach ($chunkList as $file) {
-            unlink($file);
-        }
-    }
-
+    
     /**
      * Setter for the self::$useChunks.
      *

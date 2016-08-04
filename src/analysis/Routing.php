@@ -67,9 +67,7 @@ class Routing
     public static function analysisHub(Simple $model)
     {
         // Check memory and runtime.
-        if (!OutputActions::checkEmergencyBreak()) {
-            // No more took too long, or not enough memory is left.
-            Messages::addMessage("Emergency break for large output during analysis process.");
+        if (!OutputActions::$emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
         $data = $model->getData();
