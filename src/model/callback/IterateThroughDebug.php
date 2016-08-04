@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Routing;
 
 /**
  * Debug method result analysis methods.
@@ -53,6 +53,6 @@ class IterateThroughDebug extends AbstractCallback
     {
         $model = new Simple();
         $model->setData($this->parameters['result']);
-        return Variables::analysisHub($model);
+        return Routing::analysisHub($model);
     }
 }

@@ -756,7 +756,7 @@
         kdt.addClass([this], 'kcurrent-additional');
 
         // Load the Json.
-        var json = kdt.getDataset(this, 'addjson');
+        var json = kdt.getDataset(this, 'addjson', false);
         json = kdt.parseJson(json);
 
         if (typeof json === 'object') {

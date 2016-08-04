@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Model\Callback;
 
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Routing;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 
@@ -66,7 +66,7 @@ class AnalyseConstants extends AbstractCallback
                 ->setName($k)
                 ->setConnector1($this->parameters['classname'] . '::')
                 ->setConnector2(' =');
-            $output .= Variables::analysisHub($model);
+            $output .= Routing::analysisHub($model);
         }
 
         $output .= OutputActions::$render->renderSingeChildHr();

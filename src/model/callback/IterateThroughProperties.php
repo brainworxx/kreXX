@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Model\Callback;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Routing;
 
 /**
  * Class properties analysis methods.
@@ -116,7 +116,7 @@ class IterateThroughProperties extends AbstractCallback
                 ->setAdditional($additional)
                 ->setConnector1($connector1);
 
-            $output .= Variables::analysisHub($model);
+            $output .= Routing::analysisHub($model);
         }
 
         return $output;

@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Model\Callback;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Routing;
 
 /**
  * Array analysis methods (again).
@@ -95,7 +95,7 @@ class AnalyseArray extends AbstractCallback
                 ->setName($key)
                 ->setConnector1('[')
                 ->setConnector2('] =');
-            $output .= Variables::analysisHub($model);
+            $output .= Routing::analysisHub($model);
         }
         $output .= OutputActions::$render->renderSingeChildHr();
         return $output;

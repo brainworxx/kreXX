@@ -89,7 +89,7 @@ class Krexx
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
         include_once $krexxdir . 'src/analysis/Flection.php';
         include_once $krexxdir . 'src/analysis/RecursionHandler.php';
-        include_once $krexxdir . 'src/analysis/Variables.php';
+        include_once $krexxdir . 'src/analysis/Routing.php';
         include_once $krexxdir . 'src/model/Simple.php';
         include_once $krexxdir . 'src/model/callback/AbstractCallback.php';
         include_once $krexxdir . 'src/model/callback/AnalysisConfig.php';

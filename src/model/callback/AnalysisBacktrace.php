@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Model\Callback;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Routing;
 
 /**
  * Backtrace analysis methods.
@@ -103,7 +103,7 @@ class AnalysisBacktrace extends AbstractCallback
             $objectModel = new Simple();
             $objectModel->setData($stepData['object'])
                 ->setName('Calling object');
-            $output .= Variables::analyseObject($objectModel);
+            $output .= Routing::analyseObject($objectModel);
         }
         // Type.
         if (isset($stepData['type'])) {
@@ -120,7 +120,7 @@ class AnalysisBacktrace extends AbstractCallback
             $argsModel = new Simple();
             $argsModel->setData($stepData['args'])
                 ->setName('Arguments from the call');
-            $output .= Variables::analyseArray($argsModel);
+            $output .= Routing::analyseArray($argsModel);
         }
 
         return $output;

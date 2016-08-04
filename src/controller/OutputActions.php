@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Errorhandler\Fatal;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Codegen;
-use Brainworxx\Krexx\Analysis\Variables;
+use Brainworxx\Krexx\Analysis\Routing;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
@@ -138,7 +138,7 @@ class OutputActions extends Internals
         $model->setData($data)
             ->setName($caller['varname'])
             ->setConnector2('=');
-        $analysis = Variables::analysisHub($model);
+        $analysis = Routing::analysisHub($model);
         // Now that our analysis is done, we must check if there was an emergency
         // break.
         $emergency = false;
@@ -199,7 +199,7 @@ class OutputActions extends Internals
         $footer = self::outputFooter($caller);
         self::checkEmergencyBreak(true);
 
-        $analysis = Variables::analysisBacktrace($backtrace, -1);
+        $analysis = Routing::analysisBacktrace($backtrace, -1);
         // Now that our analysis is done, we must check if there was an emergency
         // break.
         $emergency = false;
@@ -283,7 +283,7 @@ class OutputActions extends Internals
         );
 
         // Get the backtrace.
-        $backtrace = Variables::analysisBacktrace($errorData['backtrace']);
+        $backtrace = Routing::analysisBacktrace($errorData['backtrace']);
         // Get the footer.
         $footer = self::outputFooter('');
         // Get the messages.

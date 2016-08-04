@@ -50,7 +50,7 @@ use Brainworxx\Krexx\Config\Config;
  *
  * @package Brainworxx\Krexx\Framework
  */
-class Variables
+class Routing
 {
     /**
      * Dump information about a variable.
@@ -82,7 +82,7 @@ class Variables
             $text = gettype($data) . ' => ' . Help::getHelp('maximumLevelReached');
             $model->setData($text)
                 ->setName($name);
-            return Variables::analyseString($model);
+            return Routing::analyseString($model);
         }
 
         $connector1 = $model->getConnector1();
@@ -119,7 +119,7 @@ class Variables
 
         // Array?
         if (is_array($data)) {
-            $result = Variables::analyseArray($model);
+            $result = Routing::analyseArray($model);
             OutputActions::$nestingLevel--;
             return $result;
         }
@@ -127,37 +127,37 @@ class Variables
         // Resource?
         if (is_resource($data)) {
             OutputActions::$nestingLevel--;
-            return Variables::analyseResource($model);
+            return Routing::analyseResource($model);
         }
 
         // String?
         if (is_string($data)) {
             OutputActions::$nestingLevel--;
-            return Variables::analyseString($model);
+            return Routing::analyseString($model);
         }
 
         // Float?
         if (is_float($data)) {
             OutputActions::$nestingLevel--;
-            return Variables::analyseFloat($model);
+            return Routing::analyseFloat($model);
         }
 
         // Integer?
         if (is_int($data)) {
             OutputActions::$nestingLevel--;
-            return Variables::analyseInteger($model);
+            return Routing::analyseInteger($model);
         }
 
         // Boolean?
         if (is_bool($data)) {
             OutputActions::$nestingLevel--;
-            return Variables::analyseBoolean($model);
+            return Routing::analyseBoolean($model);
         }
 
         // Null ?
         if (is_null($data)) {
             OutputActions::$nestingLevel--;
-            return Variables::analyseNull($model);
+            return Routing::analyseNull($model);
         }
 
         // Still here? This should not happen. Return empty string, just in case.
@@ -470,7 +470,6 @@ class Variables
         $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace, $offset);
 
         foreach ($backtrace as $step => $stepData) {
-            // @todo why not directly from the controller?
             $model = new Simple();
             $model->setName($step)
                 ->setType('Stack Frame')
