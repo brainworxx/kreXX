@@ -270,7 +270,7 @@ class OutputActions extends Internals
         );
 
         // Get the backtrace.
-        $backtrace = Routing::analysisBacktrace($errorData['backtrace']);
+        $backtrace = Routing::analysisBacktrace($errorData['backtrace'], -1);
         if (!self::$emergencyHandler->checkEmergencyBreak()) {
             return;
         }
@@ -324,9 +324,9 @@ class OutputActions extends Internals
               'shutdownCallback',
             ));
         }
-        register_tick_function(array(self::$krexxFatal, 'tickCallback'));
         self::$krexxFatal->setIsActive(true);
         self::$fatalShouldActive = true;
+        register_tick_function(array(self::$krexxFatal, 'tickCallback'));
     }
 
     /**
@@ -375,7 +375,7 @@ class OutputActions extends Internals
     {
         self::timerAction('end');
         // And we are done. Feedback to the user.
-        OutputActions::dumpAction(Toolbox::miniBenchTo(self::$timekeeping), 'kreXX timer');
+        OutputActions::dumpAction(self::miniBenchTo(self::$timekeeping), 'kreXX timer');
         // Reset the timer vars.
         self::$timekeeping = array();
         self::$counterCache = array();

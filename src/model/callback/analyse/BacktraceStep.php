@@ -35,9 +35,11 @@
 namespace Brainworxx\Krexx\Model\Callback\Analyse;
 
 use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Routing;
+use Brainworxx\Krexx\View\Help;
 
 /**
  * Backtrace analysis methods.
@@ -82,16 +84,20 @@ class BacktraceStep extends AbstractCallback
 
             $output .= OutputActions::$render->renderSingleChild($lineModel);
         }
-        // Sourcecode, is escaped by now.
-        if (isset($stepData['sourcecode'])) {
-            $sourceModel = new Simple();
-            $sourceModel->setData($stepData['sourcecode'])
-                ->setName('Sourcecode')
-                ->setNormal('. . .')
-                ->setType('PHP');
 
-            $output .= OutputActions::$render->renderSingleChild($sourceModel);
+        // Sourcecode, is escaped by now.
+        $sourceModel = new Simple();
+        $lineNo = $stepData['line'] + $this->parameters['offset'];
+        $source = Toolbox::readSourcecode($stepData['file'], $lineNo, $lineNo -5, $lineNo +5);
+        if (strlen(trim($source)) == 0) {
+            $source = Help::getHelp('noSourceAvailable');
         }
+        $sourceModel->setData($source)
+            ->setName('Sourcecode')
+            ->setNormal('. . .')
+            ->setType('PHP');
+        $output .= OutputActions::$render->renderSingleChild($sourceModel);
+
         // Function.
         if (isset($stepData['function'])) {
             $functionModel = new Simple();

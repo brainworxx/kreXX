@@ -450,10 +450,15 @@ class Simple
      * Initializes the callback for the renderMe method
      *
      * @param string $name
+     *   The name and part of the namespace of the callback class.
+     *
+     * @return \Brainworxx\Krexx\Model\Simple
+     *   $this, for chaining.
      */
     public function initCallback($name)
     {
         $classname = 'Brainworxx\\Krexx\\Model\\Callback\\' . $name;
         $this->callback = new $classname;
+        return $this;
     }
 }

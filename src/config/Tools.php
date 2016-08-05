@@ -58,7 +58,7 @@ class Tools extends Fallback
      * @return bool
      *   If it was evaluated.
      */
-    public static function evaluateSetting($group, $name, $value)
+    protected static function evaluateSetting($group, $name, $value)
     {
         static $evaluated = array();
 
@@ -207,7 +207,7 @@ class Tools extends Fallback
                     // Directory with write access.
                     // We also need to check, if the folder is properly protected.
                     $isWritable = is_writable(self::$krexxdir . $value);
-                    $isProtected = Toolbox::isFolderProtected(self::$krexxdir . $value);
+                    $isProtected = self::isFolderProtected(self::$krexxdir . $value);
                     if ($isWritable && $isProtected) {
                         $result = true;
                     }
@@ -316,11 +316,10 @@ class Tools extends Fallback
                         $value = (int)$value;
                         if ($maxTime > 0 && $maxTime < $value) {
                             // Too big!
-                            // @todo Get the string via Help::getHelp();
                             Messages::addMessage(
-                                'Wrong configuration for: "runtime => maxRuntime"! Maximum for this server is: ' .
+                                Help::getHelp('configErrorMaxRuntimeBig1') .
                                 $maxTime .
-                                ' The configured setting was not applied!'
+                                Help::getHelp('configErrorMaxRuntimeBig2')
                             );
                             Messages::addKey('runtime.maxRuntime.error.maximum', array($maxTime));
                             $result = false;
@@ -347,7 +346,7 @@ class Tools extends Fallback
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    public static function getFeConfigFromFile($parameterName)
+    protected static function getFeConfigFromFile($parameterName)
     {
         static $config = array();
 
@@ -504,7 +503,7 @@ class Tools extends Fallback
      * @return string
      *   The value from the file.
      */
-    public static function getConfigFromFile($group, $name)
+    protected static function getConfigFromFile($group, $name)
     {
         static $config = array();
 
@@ -566,5 +565,63 @@ class Tools extends Fallback
         }
         // Still here?
         return null;
+    }
+
+    /**
+     * Check if the current request is an AJAX request.
+     *
+     * @return bool
+     *   TRUE when this is AJAX, FALSE if not
+     */
+    protected static function isRequestAjaxOrCli()
+    {
+        if (Config::getConfigValue('output', 'destination') != 'file') {
+            // When we are not going to create a logfile, we send it to the browser.
+            // Check for ajax.
+            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+            ) {
+                // Appending stuff after a ajax request will most likely
+                // cause a js error. But there are moments when you actually
+                // want to do this.
+                if (Config::getConfigValue('runtime', 'detectAjax') == 'true') {
+                    // We were supposed to detect ajax, and we did it right now.
+                    return true;
+                }
+            }
+            // Check for CLI.
+            if (php_sapi_name() == "cli") {
+                return true;
+            }
+        }
+        // Still here? This means it's neither.
+        return false;
+    }
+
+    /**
+     * Checks for a .htaccess file with a 'deny from all' statement.
+     *
+     * @param string $path
+     *   The path we want to check.
+     *
+     * @return bool
+     *   Whether the path is protected.
+     */
+    protected static function isFolderProtected($path)
+    {
+        $result = false;
+        if (is_readable($path . '/.htaccess')) {
+            $content = file($path . '/.htaccess');
+            foreach ($content as $line) {
+                // We have what we are looking for, a
+                // 'deny from all', not to be confuse with
+                // a '# deny from all'.
+                if (strtolower(trim($line)) == 'deny from all') {
+                    $result = true;
+                    break;
+                }
+            }
+        }
+        return $result;
     }
 }

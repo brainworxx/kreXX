@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Framework;
 
 use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Messages;
 
 /**
@@ -104,7 +103,7 @@ class Chunks
             // Get the key.
             $key = self::genKey();
             // Write the key to the chunks folder.
-            Toolbox::putFileContents(Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp', $string);
+            self::putFileContents(Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp', $string);
             // Return the first part plus the key.
             return '@@@' . $key . '@@@';
         } else {
@@ -124,7 +123,7 @@ class Chunks
         static $counter = 0;
         $counter++;
 
-        return Toolbox::fileStamp() . '_' . $counter;
+        return self::fileStamp() . '_' . $counter;
     }
 
     /**
@@ -209,14 +208,14 @@ class Chunks
         self::cleanupOldLogs($logDir);
 
         // Determine the filename.
-        $timestamp = Toolbox::fileStamp();
+        $timestamp = self::fileStamp();
         $filename = Config::$krexxdir . $logDir . $timestamp . '.Krexx.html';
 
         $chunkPos = strpos($string, '@@@');
 
         while ($chunkPos !== false) {
             // We have a chunk, we send the html part.
-            Toolbox::putFileContents($filename, substr($string, 0, $chunkPos));
+            self::putFileContents($filename, substr($string, 0, $chunkPos));
 
             $chunkPart = substr($string, $chunkPos);
 
@@ -229,10 +228,10 @@ class Chunks
         }
 
         // No more chunks, we save what is left.
-        Toolbox::putFileContents($filename, $string);
+        self::putFileContents($filename, $string);
         // Save our metadata, so a potential backend module can display it.
         if (!empty(self::$metadata)) {
-            Toolbox::putFileContents($filename . '.json', json_encode(self::$metadata));
+            self::putFileContents($filename . '.json', json_encode(self::$metadata));
             self::$metadata = array();
         }
     }
@@ -286,7 +285,7 @@ class Chunks
         }
 
     }
-    
+
     /**
      * Setter for the self::$useChunks.
      *
@@ -309,5 +308,69 @@ class Chunks
     public static function addMetadata($caller)
     {
         self::$metadata[] = $caller;
+    }
+
+    /**
+     * Returns the microtime timestamp for file operations.
+     *
+     * File operations are the logfiles and the chunk handling.
+     *
+     * @return string
+     *   The timestamp itself.
+     */
+    protected static function fileStamp()
+    {
+        static $timestamp = 0;
+        if ($timestamp == 0) {
+            $timestamp = explode(" ", microtime());
+            $timestamp = $timestamp[1] . str_replace("0.", "", $timestamp[0]);
+        }
+
+        return $timestamp;
+    }
+
+        /**
+     * Write the content of a string to a file.
+     *
+     * When the file already exists, we will append the content.
+     * Caches weather we are allowed to write, to reduce the overhead.
+     *
+     * @param string $path
+     *   Path and filename.
+     * @param string $string
+     *   The string we want to write.
+     */
+    protected static function putFileContents($path, $string)
+    {
+        // Do some caching, so we check a file or dir only once!
+        static $ops = array();
+        static $dir = array();
+
+        // Check the directory.
+        if (!isset($dir[dirname($path)])) {
+            $dir[dirname($path)]['canwrite'] = is_writable(dirname($path));
+        }
+
+        if (!isset($ops[$path])) {
+            // We need to do some checking:
+            $ops[$path]['append'] = is_file($path);
+            $ops[$path]['canwrite'] = is_writable($path);
+        }
+
+        // Do the writing!
+        if ($ops[$path]['append']) {
+            if ($ops[$path]['canwrite']) {
+                // Old file where we are allowed to write.
+                file_put_contents($path, $string, FILE_APPEND);
+            }
+        } else {
+            if ($dir[dirname($path)]['canwrite']) {
+                // New file we can create.
+                file_put_contents($path, $string);
+                // We will append it on the next write attempt!
+                $ops[$path]['append'] = true;
+                $ops[$path]['canwrite'] = true;
+            }
+        }
     }
 }

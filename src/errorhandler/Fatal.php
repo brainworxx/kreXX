@@ -123,18 +123,13 @@ class Fatal extends Error
             $this->getIsActive() &&
             Config::getEnabled()
         ) {
-
             // Do we need to check this one, according to our settings?
             $translatedError = $this->translateErrorType($error['type']);
             if ($translatedError[1] == 'traceFatals') {
-                // We don't want to analyse the errorhandler, that will only
-                // be misleading.
-                unset($this->tickedBacktrace[0]);
-
                 // We also need to prepare some Data we want to display.
                 $errorType = $this->translateErrorType($error['type']);
 
-                // We prepeare the error as far as we can here.
+                // We prepare the error as far as we can here.
                 // The adding of the sourcecode happens in the controller.
                 $errorData = array(
                     'type' => $errorType[0],

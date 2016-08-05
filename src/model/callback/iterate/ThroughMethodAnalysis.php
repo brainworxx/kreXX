@@ -41,6 +41,9 @@ use Brainworxx\Krexx\Model\Simple;
  * Class MethodInfo
  *
  * @package Brainworxx\Krexx\Model\Callback\Iterate
+ *
+ * @uses array data
+ *   Associative array, the analysis result.
  */
 class ThroughMethodAnalysis extends AbstractCallback
 {

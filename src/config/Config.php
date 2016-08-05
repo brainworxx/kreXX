@@ -65,12 +65,11 @@ class Config extends Tools
     {
         // Disabled in the ini or in the local settings?
         if (Config::getConfigValue('runtime', 'disabled') == 'true') {
-            // self::$isEnabled = FALSE;
             return false;
         }
 
         // Check for ajax and cli.
-        if (Toolbox::isRequestAjaxOrCli()) {
+        if (self::isRequestAjaxOrCli()) {
             return false;
         }
 
@@ -99,14 +98,11 @@ class Config extends Tools
 
         // Do we have a value in the cookies?
         $localSetting = self::getConfigFromCookies($group, $name);
-        // Do we have a value in the ini?
-        $iniSettings = self::getConfigFromFile($group, $name);
         if (isset($localSetting)) {
             // We must not overwrite a disabled=true with local cookie settings!
-            // Otherwise it could get enabled locally,
-            // which might be a security issue.
-            if (($name == 'disabled' && $localSetting == 'false') ||
-                ($name == 'destination' && !is_null($iniSettings))) {
+            // Otherwise it could get enabled locally, which might be a security
+            // issue.
+            if (($name == 'disabled' && $localSetting == 'false')) {
                 // Do nothing.
                 // We ignore this setting.
             } else {
@@ -115,7 +111,8 @@ class Config extends Tools
             }
         }
 
-
+        // Do we have a value in the ini?
+        $iniSettings = self::getConfigFromFile($group, $name);
         if (isset($iniSettings)) {
             self::$localConfig[$group][$name] = $iniSettings;
             return $iniSettings;

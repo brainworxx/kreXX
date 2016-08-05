@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Framework;
 
-use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\View\Help;
 
@@ -45,78 +44,6 @@ use Brainworxx\Krexx\View\Help;
  */
 class Toolbox
 {
-    /**
-     * Returns the microtime timestamp for file operations.
-     *
-     * File operations are the logfiles and the chunk handling.
-     *
-     * @return string
-     *   The timestamp itself.
-     */
-    public static function fileStamp()
-    {
-        static $timestamp = 0;
-        if ($timestamp == 0) {
-            $timestamp = explode(" ", microtime());
-            $timestamp = $timestamp[1] . str_replace("0.", "", $timestamp[0]);
-        }
-
-        return $timestamp;
-    }
-
-    /**
-     * Check if the current request is an AJAX request.
-     *
-     * @return bool
-     *   TRUE when this is AJAX, FALSE if not
-     */
-    public static function isRequestAjaxOrCli()
-    {
-        if (Config::getConfigValue('output', 'destination') != 'file') {
-            // When we are not going to create a logfile, we send it to the browser.
-            // Check for ajax.
-            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
-            ) {
-                // Appending stuff after a ajax request will most likely
-                // cause a js error. But there are moments when you actually
-                // want to do this.
-                if (Config::getConfigValue('runtime', 'detectAjax') == 'true') {
-                    // We were supposed to detect ajax, and we did it right now.
-                    return true;
-                }
-            }
-            // Check for CLI.
-            if (php_sapi_name() == "cli") {
-                return true;
-            }
-        }
-        // Still here? This means it's neither.
-        return false;
-    }
-
-    /**
-     * Generates a id for the DOM.
-     *
-     * This is used to jump from a recursion to the object analysis data.
-     * The ID is the object hash as well as the kruXX call number, to avoid
-     * collisions (even if they are unlikely).
-     *
-     * @param mixed $data
-     *   The object from which we want the ID.
-     *
-     * @return string
-     *   The generated id.
-     */
-    public static function generateDomIdFromObject($data)
-    {
-        if (is_object($data)) {
-            return 'k' . OutputActions::$KrexxCount . '_' . spl_object_hash($data);
-        } else {
-            // Do nothing.
-            return '';
-        }
-    }
 
     /**
      * Simply outputs a formatted var_dump.
@@ -133,61 +60,6 @@ class Toolbox
         echo '<pre>';
         var_dump($data);
         echo('</pre>');
-    }
-
-    /**
-     * Checks for a .htaccess file with a 'deny from all' statement.
-     *
-     * @param string $path
-     *   The path we want to check.
-     *
-     * @return bool
-     *   Whether the path is protected.
-     */
-    public static function isFolderProtected($path)
-    {
-        $result = false;
-        if (is_readable($path . '/.htaccess')) {
-            $content = file($path . '/.htaccess');
-            foreach ($content as $line) {
-                // We have what we are looking for, a
-                // 'deny from all', not to be confuse with
-                // a '# deny from all'.
-                if (strtolower(trim($line)) == 'deny from all') {
-                    $result = true;
-                    break;
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Adds source sample to a backtrace.
-     *
-     * @param array $backtrace
-     *   The backtrace from debug_backtrace().
-     * @param int $offset
-     *   When using the tick-backtrace, we are off by 1.
-     *
-     * @return array
-     *   The backtrace with the source samples.
-     */
-    public static function addSourcecodeToBacktrace(array $backtrace, $offset = 0)
-    {
-        foreach ($backtrace as &$trace) {
-            $trace['line'] = $trace['line'] + $offset;
-            $source = self::readSourcecode($trace['file'], $trace['line'], $trace['line'] -5, $trace['line'] +5);
-            // Add it only, if we have source code. Some internal functions do not
-            // provide any (call_user_func for example).
-            if (strlen(trim($source)) > 0) {
-                $trace['sourcecode'] = $source;
-            } else {
-                $trace['sourcecode'] = Help::getHelp('noSourceAvailable');
-            }
-        }
-
-        return $backtrace;
     }
 
     /**
@@ -250,40 +122,6 @@ class Toolbox
     }
 
     /**
-     * Removes the comment-chars from the comment string.
-     *
-     * @param string $comment
-     *   The original comment from the reflection
-     *   (or interface) in case if an inherited comment.
-     *
-     * @return string
-     *   The better readable comment
-     */
-    public static function prettifyComment($comment)
-    {
-        // We split our comment into single lines and remove the unwanted
-        // comment chars with the array_map callback.
-        $commentArray = explode("\n", $comment);
-        $result = array();
-        foreach ($commentArray as $commentLine) {
-            // We skip lines with /** and */
-            if ((strpos($commentLine, '/**') === false) && (strpos($commentLine, '*/') === false)) {
-                // Remove comment-chars, but we need to leave the whitespace intact.
-                $commentLine = trim($commentLine);
-                if (strpos($commentLine, '*') === 0) {
-                    // Remove the * by char position.
-                    $result[] = substr($commentLine, 1);
-                } else {
-                    // We are missing the *, so we just add the line.
-                    $result[] = $commentLine;
-                }
-            }
-        }
-
-        return implode(PHP_EOL, $result);
-    }
-
-    /**
      * Reads the content of a file.
      *
      * @param string $path
@@ -305,100 +143,6 @@ class Toolbox
             }
         }
 
-        return $result;
-    }
-
-    /**
-     * Write the content of a string to a file.
-     *
-     * When the file already exists, we will append the content.
-     * Caches weather we are allowed to write, to reduce the overhead.
-     *
-     * @param string $path
-     *   Path and filename.
-     * @param string $string
-     *   The string we want to write.
-     */
-    public static function putFileContents($path, $string)
-    {
-        // Do some caching, so we check a file or dir only once!
-        static $ops = array();
-        static $dir = array();
-
-        // Check the directory.
-        if (!isset($dir[dirname($path)])) {
-            $dir[dirname($path)]['canwrite'] = is_writable(dirname($path));
-        }
-
-        if (!isset($ops[$path])) {
-            // We need to do some checking:
-            $ops[$path]['append'] = is_file($path);
-            $ops[$path]['canwrite'] = is_writable($path);
-        }
-
-        // Do the writing!
-        if ($ops[$path]['append']) {
-            if ($ops[$path]['canwrite']) {
-                // Old file where we are allowed to write.
-                file_put_contents($path, $string, FILE_APPEND);
-            }
-        } else {
-            if ($dir[dirname($path)]['canwrite']) {
-                // New file we can create.
-                file_put_contents($path, $string);
-                // We will append it on the next write attempt!
-                $ops[$path]['append'] = true;
-                $ops[$path]['canwrite'] = true;
-            }
-        }
-    }
-
-    /**
-     * Return the current URL.
-     *
-     * @see http://stackoverflow.com/questions/6768793/get-the-full-url-in-php
-     * @author Timo Huovinen
-     *
-     * @return string
-     *   The current URL.
-     */
-    public static function getCurrentUrl()
-    {
-        static $result;
-
-        if (!isset($result)) {
-            $s = $_SERVER;
-
-            // SSL or no SSL.
-            if (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') {
-                $ssl = true;
-            } else {
-                $ssl = false;
-            }
-            $sp = strtolower($s['SERVER_PROTOCOL']);
-            $protocol = substr($sp, 0, strpos($sp, '/'));
-            if ($ssl) {
-                $protocol .= 's';
-            }
-
-            $port = $s['SERVER_PORT'];
-
-            if ((!$ssl && $port == '80') || ($ssl && $port == '443')) {
-                // Normal combo with port and protocol.
-                $port = '';
-            } else {
-                // We have a special port here.
-                $port = ':' . $port;
-            }
-
-            if (isset($s['HTTP_HOST'])) {
-                $host = $s['HTTP_HOST'];
-            } else {
-                $host = $s['SERVER_NAME'] . $port;
-            }
-
-            $result = htmlspecialchars($protocol . '://' . $host . $s['REQUEST_URI'], ENT_QUOTES, 'UTF-8');
-        }
         return $result;
     }
 
@@ -477,40 +221,6 @@ class Toolbox
             }
         }
 
-        return $result;
-    }
-
-    /**
-     * The benchmark main function.
-     *
-     * @param array $timeKeeping
-     *   The timekeeping array.
-     *
-     * @return array
-     *   The benchmark array.
-     *
-     * @see http://php.net/manual/de/function.microtime.php
-     * @author gomodo at free dot fr
-     */
-    public static function miniBenchTo(array $timeKeeping)
-    {
-        // Get the very first key.
-        $start = key($timeKeeping);
-        $totalTime = round((end($timeKeeping) - $timeKeeping[$start]) * 1000, 4);
-        $result['url'] = Toolbox::getCurrentUrl();
-        $result['total_time'] = $totalTime;
-        $prevMomentName = $start;
-        $prevMomentStart = $timeKeeping[$start];
-
-        foreach ($timeKeeping as $moment => $time) {
-            if ($moment != $start) {
-                // Calculate the time.
-                $percentageTime = round(((round(($time - $prevMomentStart) * 1000, 4) / $totalTime) * 100), 1);
-                $result[$prevMomentName . '->' . $moment] = $percentageTime . '%';
-                $prevMomentStart = $time;
-                $prevMomentName = $moment;
-            }
-        }
         return $result;
     }
 }

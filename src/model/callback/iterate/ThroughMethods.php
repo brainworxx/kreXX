@@ -68,7 +68,7 @@ class ThroughMethods extends AbstractCallback
             // Get the comment from the class, it's parents, interfaces or traits.
             $comments = trim($reflection->getDocComment());
             if ($comments != '') {
-                $methodData['comments'] = Toolbox::prettifyComment($comments);
+                $methodData['comments'] = $this->prettifyComment($comments);
                 $methodData['comments'] = $this->getParentalComment(
                     $methodData['comments'],
                     $this->parameters['ref'],
@@ -89,8 +89,8 @@ class ThroughMethods extends AbstractCallback
                     ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
             } else {
                 $methodData['declared in'] = $declaringClass->getFileName() . "\n";
-                $methodData['declared in'] .= $declaringClass->getName() . ' ';
-                $methodData['declared in'] .= 'in line ' . $reflection->getStartLine();
+                $methodData['declared in'] .= 'in class: ' .$declaringClass->getName() . "\n";
+                $methodData['declared in'] .= 'in line: ' . $reflection->getStartLine();
             }
 
             // Get parameters.
@@ -198,7 +198,7 @@ class ThroughMethods extends AbstractCallback
 
             try {
                 $parentMethod = $parentClass->getMethod($methodName);
-                $parentComment = Toolbox::prettifyComment($parentMethod->getDocComment());
+                $parentComment = $this->prettifyComment($parentMethod->getDocComment());
             } catch (\ReflectionException $e) {
                 // Looks like we are trying to inherit from a not existing method
                 // maybe a trait?
@@ -248,7 +248,7 @@ class ThroughMethods extends AbstractCallback
                                 $originalComment
                             );
                         } else {
-                            $interfacecomment = Toolbox::prettifyComment($interfaceMethod->getDocComment());
+                            $interfacecomment = $this->prettifyComment($interfaceMethod->getDocComment());
                             // Replace it.
                             $originalComment = str_ireplace('{@inheritdoc}', $interfacecomment, $originalComment);
                         }
@@ -314,7 +314,7 @@ class ThroughMethods extends AbstractCallback
                                 $originalComment
                             );
                         } else {
-                            $traitComment = Toolbox::prettifyComment($traitMethod->getDocComment());
+                            $traitComment = $this->prettifyComment($traitMethod->getDocComment());
                             // Replace it.
                             $originalComment = str_ireplace('{@inheritdoc}', $traitComment, $originalComment);
                         }
@@ -333,5 +333,39 @@ class ThroughMethods extends AbstractCallback
         } else {
             return $originalComment;
         }
+    }
+
+    /**
+     * Removes the comment-chars from the comment string.
+     *
+     * @param string $comment
+     *   The original comment from the reflection
+     *   (or interface) in case if an inherited comment.
+     *
+     * @return string
+     *   The better readable comment
+     */
+    public function prettifyComment($comment)
+    {
+        // We split our comment into single lines and remove the unwanted
+        // comment chars with the array_map callback.
+        $commentArray = explode("\n", $comment);
+        $result = array();
+        foreach ($commentArray as $commentLine) {
+            // We skip lines with /** and */
+            if ((strpos($commentLine, '/**') === false) && (strpos($commentLine, '*/') === false)) {
+                // Remove comment-chars, but we need to leave the whitespace intact.
+                $commentLine = trim($commentLine);
+                if (strpos($commentLine, '*') === 0) {
+                    // Remove the * by char position.
+                    $result[] = substr($commentLine, 1);
+                } else {
+                    // We are missing the *, so we just add the line.
+                    $result[] = $commentLine;
+                }
+            }
+        }
+
+        return implode(PHP_EOL, $result);
     }
 }

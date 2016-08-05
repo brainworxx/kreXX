@@ -98,6 +98,8 @@ class Help
         'configErrorBacktraceAnalysis' => 'Wrong configuration for: "backtraceAndError => backtraceAnalysis"! Expected "normal" or "deep". The configured setting was not applied!',
         'configErrorMemory' => 'Wrong configuration for: "runtime => memoryLeft"! Expected integer. The configured setting was not applied!',
         'configErrorMaxRuntime' => 'Wrong configuration for: "runtime => maxRuntime"! Expected integer. The configured setting was not applied!',
+        'configErrorMaxRuntimeBig1' => 'Wrong configuration for: "runtime => maxRuntime"! Maximum for this server is: ',
+        'configErrorMaxRuntimeBig2' => ' The configured setting was not applied!',
         'maxCallReached' => 'Maximum call-level reached. This is the last analysis for this request. To increase this value, please edit:<br />runtime => maxCall.',
         'noSourceAvailable' => 'No sourcecode available. Maybe this was an internal callback (call_user_func for example)?',
     );

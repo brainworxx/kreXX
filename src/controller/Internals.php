@@ -393,4 +393,87 @@ class Internals
             register_tick_function(array(self::$krexxFatal, 'tickCallback'));
         }
     }
+
+    /**
+     * The benchmark main function.
+     *
+     * @param array $timeKeeping
+     *   The timekeeping array.
+     *
+     * @return array
+     *   The benchmark array.
+     *
+     * @see http://php.net/manual/de/function.microtime.php
+     * @author gomodo at free dot fr
+     */
+    protected static function miniBenchTo(array $timeKeeping)
+    {
+        // Get the very first key.
+        $start = key($timeKeeping);
+        $totalTime = round((end($timeKeeping) - $timeKeeping[$start]) * 1000, 4);
+        $result['url'] = self::getCurrentUrl();
+        $result['total_time'] = $totalTime;
+        $prevMomentName = $start;
+        $prevMomentStart = $timeKeeping[$start];
+
+        foreach ($timeKeeping as $moment => $time) {
+            if ($moment != $start) {
+                // Calculate the time.
+                $percentageTime = round(((round(($time - $prevMomentStart) * 1000, 4) / $totalTime) * 100), 1);
+                $result[$prevMomentName . '->' . $moment] = $percentageTime . '%';
+                $prevMomentStart = $time;
+                $prevMomentName = $moment;
+            }
+        }
+        return $result;
+    }
+
+        /**
+     * Return the current URL.
+     *
+     * @see http://stackoverflow.com/questions/6768793/get-the-full-url-in-php
+     * @author Timo Huovinen
+     *
+     * @return string
+     *   The current URL.
+     */
+    protected static function getCurrentUrl()
+    {
+        static $result;
+
+        if (!isset($result)) {
+            $s = $_SERVER;
+
+            // SSL or no SSL.
+            if (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') {
+                $ssl = true;
+            } else {
+                $ssl = false;
+            }
+            $sp = strtolower($s['SERVER_PROTOCOL']);
+            $protocol = substr($sp, 0, strpos($sp, '/'));
+            if ($ssl) {
+                $protocol .= 's';
+            }
+
+            $port = $s['SERVER_PORT'];
+
+            if ((!$ssl && $port == '80') || ($ssl && $port == '443')) {
+                // Normal combo with port and protocol.
+                $port = '';
+            } else {
+                // We have a special port here.
+                $port = ':' . $port;
+            }
+
+            if (isset($s['HTTP_HOST'])) {
+                $host = $s['HTTP_HOST'];
+            } else {
+                $host = $s['SERVER_NAME'] . $port;
+            }
+
+            $result = htmlspecialchars($protocol . '://' . $host . $s['REQUEST_URI'], ENT_QUOTES, 'UTF-8');
+        }
+        return $result;
+    }
 }

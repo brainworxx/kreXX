@@ -35,9 +35,9 @@
 namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Model\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Help;
-use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Config\Config;
 
@@ -88,7 +88,7 @@ class Routing
             if (OutputActions::$recursionHandler->isInHive($data)) {
                 // Render recursion.
                 $model->setNormal($model->getName())
-                    ->setDomid(Toolbox::generateDomIdFromObject($data))
+                    ->setDomid(self::generateDomIdFromObject($data))
                     ->setType($model->getAdditional() . 'class');
                 $result = OutputActions::$render->renderRecursion($model);
                 OutputActions::$nestingLevel--;
@@ -372,10 +372,10 @@ class Routing
         $result = array();
 
         // Adding comments from the file.
-        $result['comments'] = Toolbox::prettifyComment($ref->getDocComment());
+        $methodclass = new ThroughMethods();
+        $result['comments'] =  $methodclass->prettifyComment($ref->getDocComment());
 
         // Adding the sourcecode
-
         $highlight = $ref->getStartLine() -1;
         $from = $highlight - 3;
         $to = $ref->getEndLine() -1;
@@ -435,7 +435,7 @@ class Routing
             ->addParameter('data', $model->getData())
             ->addParameter('name', $model->getName())
             ->setAdditional(get_class($model->getData()))
-            ->setDomid(Toolbox::generateDomIdFromObject($model->getData()))
+            ->setDomid(self::generateDomIdFromObject($model->getData()))
             ->initCallback('Analyse\Object');
 
         // Output data from the class.
@@ -464,19 +464,40 @@ class Routing
     {
         $output = '';
 
-        // Add the sourcecode to our backtrace.
-        $backtrace = Toolbox::addSourcecodeToBacktrace($backtrace, $offset);
-
         foreach ($backtrace as $step => $stepData) {
             $model = new Simple();
             $model->setName($step)
                 ->setType('Stack Frame')
                 ->addParameter('stepData', $stepData)
+                ->addParameter('offset', $offset)
                 ->initCallback('Analyse\BacktraceStep');
 
             $output .= OutputActions::$render->renderExpandableChild($model);
         }
 
         return $output;
+    }
+
+        /**
+     * Generates a id for the DOM.
+     *
+     * This is used to jump from a recursion to the object analysis data.
+     * The ID is the object hash as well as the kruXX call number, to avoid
+     * collisions (even if they are unlikely).
+     *
+     * @param mixed $data
+     *   The object from which we want the ID.
+     *
+     * @return string
+     *   The generated id.
+     */
+    protected static function generateDomIdFromObject($data)
+    {
+        if (is_object($data)) {
+            return 'k' . OutputActions::$KrexxCount . '_' . spl_object_hash($data);
+        } else {
+            // Do nothing.
+            return '';
+        }
     }
 }
