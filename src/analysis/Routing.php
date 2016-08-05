@@ -53,6 +53,13 @@ use Brainworxx\Krexx\Config\Config;
 class Routing
 {
     /**
+     * The current nesting level we are in.
+     *
+     * @var int
+     */
+    public static $nestingLevel = 0;
+
+    /**
      * Dump information about a variable.
      *
      * This function decides what functions analyse the data
@@ -74,9 +81,9 @@ class Routing
         $name = $model->getName();
 
         // Check nesting level
-        OutputActions::$nestingLevel++;
-        if (OutputActions::$nestingLevel >= (int)Config::getConfigValue('runtime', 'level')) {
-            OutputActions::$nestingLevel--;
+        self::$nestingLevel++;
+        if (self::$nestingLevel >= (int)Config::getConfigValue('runtime', 'level')) {
+            self::$nestingLevel--;
             $text = gettype($data) . ' => ' . OutputActions::$render->getHelp('maximumLevelReached');
             $model->setData($text)
                 ->setName($name);
@@ -91,7 +98,7 @@ class Routing
                     ->setDomid(self::generateDomIdFromObject($data))
                     ->setType($model->getAdditional() . 'class');
                 $result = OutputActions::$render->renderRecursion($model);
-                OutputActions::$nestingLevel--;
+                self::$nestingLevel--;
                 return $result;
             }
             // Remember that we've been here before.
@@ -115,7 +122,7 @@ class Routing
         // Closures are analysed separately.
         if (is_object($data) && !is_a($data, '\Closure')) {
             $result = self::analyseObject($model);
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return $result;
         }
 
@@ -126,55 +133,55 @@ class Routing
                 $model->setConnector2($connector2);
             }
             $result = self::analyseClosure($model);
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return $result;
         }
 
         // Array?
         if (is_array($data)) {
             $result = Routing::analyseArray($model);
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return $result;
         }
 
         // Resource?
         if (is_resource($data)) {
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return Routing::analyseResource($model);
         }
 
         // String?
         if (is_string($data)) {
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return Routing::analyseString($model);
         }
 
         // Float?
         if (is_float($data)) {
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return Routing::analyseFloat($model);
         }
 
         // Integer?
         if (is_int($data)) {
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return Routing::analyseInteger($model);
         }
 
         // Boolean?
         if (is_bool($data)) {
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return Routing::analyseBoolean($model);
         }
 
         // Null ?
         if (is_null($data)) {
-            OutputActions::$nestingLevel--;
+            self::$nestingLevel--;
             return Routing::analyseNull($model);
         }
 
         // Still here? This should not happen. Return empty string, just in case.
-        OutputActions::$nestingLevel--;
+        self::$nestingLevel--;
         return '';
     }
 

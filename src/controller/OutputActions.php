@@ -121,11 +121,11 @@ class OutputActions extends Internals
 
         // Enable code generation only if we were aqble to determine the varname.
         if ($caller['varname'] == '...') {
-            Config::$allowCodegen = false;
+            Codegen::$allowCodegen = false;
         } else {
             // We were able to determine the variable name and can generate some
             // sourcecode.
-            Config::$allowCodegen = true;
+            Codegen::$allowCodegen = true;
             $headline = $caller['varname'];
         }
 
@@ -155,7 +155,7 @@ class OutputActions extends Internals
         }
 
         // Reset value for the code generation.
-        Config::$allowCodegen = false;
+        Codegen::$allowCodegen = false;
     }
 
     /**
@@ -172,7 +172,7 @@ class OutputActions extends Internals
         self::$emergencyHandler = new EmergencyHandler();
         self::loadRendrerer();
 
-        Config::$allowCodegen = false;
+        Codegen::$allowCodegen = false;
 
         // Find caller.
         $caller = self::findCaller();
@@ -252,7 +252,7 @@ class OutputActions extends Internals
         OutputActions::loadRendrerer();
 
         // We will not generate any code here!
-        Config::$allowCodegen = false;
+        Codegen::$allowCodegen = false;
 
         // Get the header.
         if (self::$headerSend) {

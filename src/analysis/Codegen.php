@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
-use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -45,6 +43,12 @@ use Brainworxx\Krexx\Model\Simple;
  */
 class Codegen
 {
+    /**
+     * Is the code generation allowed? We only allow it during a normal analysis.
+     *
+     * @var bool
+     */
+    public static $allowCodegen = false;
 
      /**
      * The "scope" we are starting with. When it is $this in combination with a
@@ -77,7 +81,7 @@ class Codegen
      */
     public static function generateSource(Simple $model)
     {
-        if (!Config::$allowCodegen) {
+        if (!self::$allowCodegen) {
             return '';
         }
 
@@ -247,9 +251,9 @@ class Codegen
         // coming from the code generation. That is, because that class is currently
         // being analysed.
         if (strpos($type, 'class') === false && strpos($type, 'array') === false) {
-            $nestingLevel = OutputActions::$nestingLevel;
+            $nestingLevel = Routing::$nestingLevel;
         } else {
-            $nestingLevel = OutputActions::$nestingLevel - 1;
+            $nestingLevel = Routing::$nestingLevel - 1;
         }
 
         return $nestingLevel <= 1 && self::$scope == '$this';

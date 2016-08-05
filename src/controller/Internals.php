@@ -71,13 +71,6 @@ class Internals
     public static $shutdownHandler;
 
     /**
-     * The current nesting level we are in.
-     *
-     * @var int
-     */
-    public static $nestingLevel = 0;
-
-    /**
      * Have we already send the CSS and JS?
      *
      * @var bool

@@ -43,12 +43,6 @@ namespace Brainworxx\Krexx\Config;
  */
 class Fallback
 {
-    /**
-     * Is the code generation allowed? We only allow it during a normal analysis.
-     *
-     * @var bool
-     */
-    public static $allowCodegen = false;
 
     /**
      * Stores if kreXX is actually enabled.
