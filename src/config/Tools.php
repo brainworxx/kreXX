@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Config;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
@@ -80,7 +81,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorMethods'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorMethods'));
                         Messages::addKey('methods.analyseMethodsAtall.error');
                     }
                     break;
@@ -89,7 +90,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorMethodsProtected'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorMethodsProtected'));
                         Messages::addKey('methods.analyseProtectedMethods.error');
                     }
                     break;
@@ -98,7 +99,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorMethodsPrivate'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorMethodsPrivate'));
                         Messages::addKey('methods.analysePrivateMethods.error');
                     }
                     break;
@@ -107,7 +108,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorPropertiesProtected'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorPropertiesProtected'));
                         Messages::addKey('properties.analyseProtected.error');
                     }
                     break;
@@ -116,7 +117,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorPropertiesPrivate'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorPropertiesPrivate'));
                         Messages::addKey('properties.analysePrivate.error');
                     }
                     break;
@@ -125,7 +126,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorPropertiesConstants'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorPropertiesConstants'));
                         Messages::addKey('properties.analyseConstants.error');
                     }
                     break;
@@ -135,7 +136,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorTraversable'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorTraversable'));
                         Messages::addKey('properties.analyseTraversable.error');
                     }
                     break;
@@ -151,7 +152,7 @@ class Tools extends Fallback
                     // We expect an integer.
                     $result = self::evalInt($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorLevel'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorLevel'));
                         Messages::addKey('runtime.level.error');
                     }
                     break;
@@ -160,7 +161,7 @@ class Tools extends Fallback
                     // We expect an integer.
                     $result = self::evalInt($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorMaxCall'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorMaxCall'));
                         Messages::addKey('runtime.maxCall.error');
                     }
                     break;
@@ -169,7 +170,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorDisabled'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorDisabled'));
                         Messages::addKey('runtime.disabled.error');
                     }
                     break;
@@ -178,7 +179,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorDetectAjax'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorDetectAjax'));
                         Messages::addKey('runtime.detectAjax.error');
                     }
                     break;
@@ -189,7 +190,7 @@ class Tools extends Fallback
                         $result = true;
                     }
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorDestination'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorDestination'));
                         Messages::addKey('output.destination.error');
                     }
                     break;
@@ -198,7 +199,7 @@ class Tools extends Fallback
                     // We expect an integer.
                     $result = self::evalInt($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorMaxfiles'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorMaxfiles'));
                         Messages::addKey('output.maxfiles.error');
                     }
                     break;
@@ -212,11 +213,11 @@ class Tools extends Fallback
                         $result = true;
                     }
                     if (!$isWritable) {
-                        Messages::addMessage(Help::getHelp('configErrorFolderWritable'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorFolderWritable'));
                         Messages::addKey('output.folder.error.writable');
                     }
                     if (!$isProtected) {
-                        Messages::addMessage(Help::getHelp('configErrorFolderProtection'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorFolderProtection'));
                         Messages::addKey('output.folder.error.protected');
                     }
                     break;
@@ -227,7 +228,7 @@ class Tools extends Fallback
                         $result = true;
                     }
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorSkin'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorSkin'));
                         Messages::addKey('output.skin.error');
                     }
                     break;
@@ -242,7 +243,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorTraceFatals'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorTraceFatals'));
                         Messages::addKey('errorHandling.traceFatals.error');
                     }
                     break;
@@ -251,7 +252,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorTraceWarnings'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorTraceWarnings'));
                         Messages::addKey('errorHandling.traceWarnings.error');
                     }
                     break;
@@ -260,7 +261,7 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorTraceNotices'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorTraceNotices'));
                         Messages::addKey('errorHandling.traceNotices.error');
                     }
                     break;
@@ -269,14 +270,14 @@ class Tools extends Fallback
                     // We expect a bool.
                     $result = self::evalBool($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorRegisterAuto'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorRegisterAuto'));
                         Messages::addKey('backtraceAndError.registerAutomatically.error');
                     }
                     // We also expect the php version to be lower than 7.
                     if ($result) {
                         $result = self::evalPhp();
                         if (!$result) {
-                            Messages::addMessage(Help::getHelp('configErrorPhp7'));
+                            Messages::addMessage(OutputActions::$render->getHelp('configErrorPhp7'));
                             Messages::addKey('backtraceAndError.registerAutomatically.php7');
                         }
                     }
@@ -288,7 +289,7 @@ class Tools extends Fallback
                         $result = true;
                     }
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorBacktraceAnalysis'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorBacktraceAnalysis'));
                         Messages::addKey('backtraceAndError.backtraceAnalysis.error');
                     }
                     break;
@@ -297,7 +298,7 @@ class Tools extends Fallback
                     // We expect an integer.
                     $result = self::evalInt($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorMemory'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorMemory'));
                         Messages::addKey('runtime.memoryLeft.error');
                     }
                     break;
@@ -307,7 +308,7 @@ class Tools extends Fallback
                     // server.
                     $result = self::evalInt($value);
                     if (!$result) {
-                        Messages::addMessage(Help::getHelp('configErrorMaxRuntime'));
+                        Messages::addMessage(OutputActions::$render->getHelp('configErrorMaxRuntime'));
                         Messages::addKey('runtime.maxRuntime.error');
                     } else {
                         // OK, we got an int, now to see if it is smaller than the
@@ -317,9 +318,9 @@ class Tools extends Fallback
                         if ($maxTime > 0 && $maxTime < $value) {
                             // Too big!
                             Messages::addMessage(
-                                Help::getHelp('configErrorMaxRuntimeBig1') .
+                                OutputActions::$render->getHelp('configErrorMaxRuntimeBig1') .
                                 $maxTime .
-                                Help::getHelp('configErrorMaxRuntimeBig2')
+                                OutputActions::$render->getHelp('configErrorMaxRuntimeBig2')
                             );
                             Messages::addKey('runtime.maxRuntime.error.maximum', array($maxTime));
                             $result = false;

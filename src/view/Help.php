@@ -44,8 +44,7 @@ class Help
 
     // A simple array to hold the values.
     // There should not be any string collisions.
-    // @todo the keys here should be the same as the array keys we add.
-    protected static $helpArray = array(
+    protected $helpArray = array(
         'localFunction' => 'Here you can enter your own alias function for \krexx::open().<br/> Example: When you enter &apos;gue&apos;, the function will be \krexx::gue($myObject); [or krexx($myObject, &apos;gue&apos;);],<br/> which only devs can use who have set the same value.This is useful, to prevent other devs from calling your debug functions.',
         'analyseProtected' => 'Shall kreXX try to analyse the protected properties of a class?<br/> This may result in a lot of output.',
         'analysePrivate' => 'Shall kreXX try to analyse the private properties of a class?<br/> This may result in a lot of output.',
@@ -113,11 +112,11 @@ class Help
      * @return string
      *   The help text.
      */
-    public static function getHelp($what)
+    public function getHelp($what)
     {
         $result = '';
-        if (isset(self::$helpArray[$what])) {
-            $result = self::$helpArray[$what];
+        if (isset($this->helpArray[$what])) {
+            $result = $this->helpArray[$what];
         }
         return $result;
     }

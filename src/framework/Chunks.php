@@ -79,13 +79,6 @@ class Chunks
     protected static $useChunks = true;
 
     /**
-     * The minimum length of the chunk
-     *
-     * @var int
-     */
-    protected static $chunkLength = 10000;
-
-    /**
      * Splits a string into small chunks.
      *
      * The chunks are saved to disk and later on.
@@ -94,12 +87,12 @@ class Chunks
      *   The data we want to split into chunks.
      *
      * @return string
-     *   The key to the chunk, wrapped up in {}.
+     *   The key to the chunk, wrapped up in @@@@@@.
      */
     public static function chunkMe($string)
     {
 
-        if (self::$useChunks && strlen($string) > self::$chunkLength) {
+        if (self::$useChunks && strlen($string) > 10000) {
             // Get the key.
             $key = self::genKey();
             // Write the key to the chunks folder.
@@ -176,6 +169,8 @@ class Chunks
         while ($chunkPos !== false) {
             // We have a chunk, we send the html part.
             echo substr($string, 0, $chunkPos);
+            ob_flush();
+            flush();
             $chunkPart = substr($string, $chunkPos);
 
             // We translate the first chunk.
@@ -186,6 +181,8 @@ class Chunks
 
         // No more chunk keys, we send what is left.
         echo $string;
+        ob_flush();
+        flush();
     }
 
     /**
@@ -329,7 +326,7 @@ class Chunks
         return $timestamp;
     }
 
-        /**
+    /**
      * Write the content of a string to a file.
      *
      * When the file already exists, we will append the content.

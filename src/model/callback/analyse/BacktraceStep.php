@@ -90,7 +90,7 @@ class BacktraceStep extends AbstractCallback
         $lineNo = $stepData['line'] + $this->parameters['offset'];
         $source = Toolbox::readSourcecode($stepData['file'], $lineNo, $lineNo -5, $lineNo +5);
         if (strlen(trim($source)) == 0) {
-            $source = Help::getHelp('noSourceAvailable');
+            $source = OutputActions::$render->getHelp('noSourceAvailable');
         }
         $sourceModel->setData($source)
             ->setName('Sourcecode')

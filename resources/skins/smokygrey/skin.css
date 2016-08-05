@@ -278,7 +278,8 @@
     overflow: hidden;
     font: bold 12px tahoma, verdana;
     color: #919191;
-    position: relative; }
+    position: relative;
+    width: 100%; }
     .kwrapper .kchild .kel, .kfatalwrapper-outer .kchild .kel {
       cursor: default;
       display: block;

@@ -211,7 +211,7 @@ class Toolbox
             if (strlen($data) < 102400) {
                 $result = implode("", array_map($sortingCallback, unpack("N*", $data)));
             } else {
-                $result = Help::getHelp('stringTooLarge');
+                $result = OutputActions::$render->getHelp('stringTooLarge');
             }
         } else {
             if ($code) {

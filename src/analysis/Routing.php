@@ -77,7 +77,7 @@ class Routing
         OutputActions::$nestingLevel++;
         if (OutputActions::$nestingLevel >= (int)Config::getConfigValue('runtime', 'level')) {
             OutputActions::$nestingLevel--;
-            $text = gettype($data) . ' => ' . Help::getHelp('maximumLevelReached');
+            $text = gettype($data) . ' => ' . OutputActions::$render->getHelp('maximumLevelReached');
             $model->setData($text)
                 ->setName($name);
             return Routing::analyseString($model);

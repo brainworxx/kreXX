@@ -250,7 +250,7 @@ class Internals
         }
         // Give feedback if this is our last call.
         if (self::$KrexxCount == $maxCall - 1) {
-            Messages::addMessage(Help::getHelp('maxCallReached'), 'critical');
+            Messages::addMessage(OutputActions::$render->getHelp('maxCallReached'), 'critical');
         }
         self::$KrexxCount++;
         return $result;

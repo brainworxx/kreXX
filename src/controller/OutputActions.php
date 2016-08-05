@@ -308,8 +308,8 @@ class OutputActions extends Internals
         // Not to mention that fatals got removed anyway.
         if (version_compare(phpversion(), '7.0.0', '>=')) {
             // Too high! 420 Method Failure :-(
-            Messages::addMessage(Help::getHelp('php7yellow'));
-            krexx(Help::getHelp('php7'));
+            Messages::addMessage(OutputActions::$render->getHelp('php7yellow'));
+            krexx(OutputActions::$render->getHelp('php7'));
 
             // Just return, there is nothing more to do here.
             return;
