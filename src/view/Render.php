@@ -332,7 +332,12 @@ class Render extends Help
         } else {
             // We add the button and the code.
             $template = str_replace('{gensource}', $gencode, $template);
-            $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
+            if ($gencode =! '.stop.') {
+                // No code button for the constants.
+                $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
+            } else {
+                $template = str_replace('{gencode}', '', $template);
+            }
         }
 
         // Is it expanded?

@@ -356,7 +356,6 @@ class Object extends AbstractCallback
             // code generation, even if it is a space.
             $model->setName('Constants')
                 ->setType('class internals')
-                ->setConnector1(' ')
                 ->addParameter('refConst', $refConst)
                 ->addParameter('classname', $classname)
                 ->initCallback('Iterate\ThroughConstants');

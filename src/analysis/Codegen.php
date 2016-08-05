@@ -86,7 +86,7 @@ class Codegen
         $connector2 = trim($model->getConnector2(), ' = ');
 
         // We handle the first one special.
-        if ($model->getConnector1() . $connector2 == '' && self::$counter !== 0) {
+        if ($model->getConnector1() . $connector2 == '' && self::$counter !== 0 && $model->getName() != 'Constants') {
             // No connectors mean, we are dealing with some meta stuff, like functions
             // We will not add anything for them.
         } else {
