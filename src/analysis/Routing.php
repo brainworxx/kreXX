@@ -221,7 +221,7 @@ class Routing
             ->setAdditional($json['count'] . ' elements')
             ->setJson($json)
             ->addParameter('data', $model->getData())
-            ->initCallback('AnalyseArray');
+            ->initCallback('Iterate\ThroughArray');
 
         return OutputActions::$render->renderExpandableChild($model);
     }
@@ -410,7 +410,7 @@ class Routing
             ->setAdditional('. . .')
             ->setConnector2($model->getConnector2() . '(' . $paramList . ') =')
             ->addParameter('data', $result)
-            ->initCallback('AnalyseMethod');
+            ->initCallback('Iterate\ThroughMethodAnalysis');
 
         return OutputActions::$render->renderExpandableChild($model);
 
@@ -436,7 +436,7 @@ class Routing
             ->addParameter('name', $model->getName())
             ->setAdditional(get_class($model->getData()))
             ->setDomid(Toolbox::generateDomIdFromObject($model->getData()))
-            ->initCallback('AnalyseObject');
+            ->initCallback('Analyse\Object');
 
         // Output data from the class.
         $output .= OutputActions::$render->renderExpandableChild($model);
@@ -472,7 +472,7 @@ class Routing
             $model->setName($step)
                 ->setType('Stack Frame')
                 ->addParameter('stepData', $stepData)
-                ->initCallback('AnalysisBacktrace');
+                ->initCallback('Analyse\BacktraceStep');
 
             $output .= OutputActions::$render->renderExpandableChild($model);
         }

@@ -312,7 +312,7 @@ class Internals
             ->setHelpid('currentSettings')
             ->addParameter('config', $config)
             ->addParameter('source', $source)
-            ->initCallback('IterateThroughConfig');
+            ->initCallback('Iterate\ThroughConfig');
 
         $configOutput = self::$render->renderExpandableChild($model, $isExpanded);
         return self::$render->renderFooter($caller, $configOutput, $isExpanded);

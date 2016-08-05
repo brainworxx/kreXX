@@ -67,12 +67,17 @@ class EmergencyHandler extends Internals
     protected $maxRuntime = 0;
 
     /**
-     * The server memory limit, comming from the php.ini.
+     * The server memory limit, coming from the php.ini.
      *
      * @var int
      */
     protected $serverMemoryLimit = 0;
 
+    /**
+     * Cached configuration of the minimum leftover memory.
+     *
+     * @var int
+     */
     protected $minMemoryLeft = 0;
 
     /**
