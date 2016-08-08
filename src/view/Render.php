@@ -100,7 +100,7 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is something
         // to generate.
-        $gensource = Codegen::generateSource($model);
+        $gensource = OutputActions::$codegenHandler->generateSource($model);
         if ($gensource == '') {
             // Remove the markers, because here is nothing to add.
             $template = str_replace('{gensource}', '', $template);
@@ -144,7 +144,7 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = Codegen::generateSource($model);
+        $gencode = OutputActions::$codegenHandler->generateSource($model);
 
         if ($gencode == '') {
             // Remove the markers, because here is nothing to add.
@@ -324,7 +324,7 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = Codegen::generateSource($model);
+        $gencode = OutputActions::$codegenHandler->generateSource($model);
         $template = str_replace('{gensource}', $gencode, $template);
         if ($gencode == '.stop.' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.

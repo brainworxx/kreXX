@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Config;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Toolbox;
-use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 
 /**

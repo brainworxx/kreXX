@@ -79,7 +79,7 @@ class Krexx
         include_once $krexxdir . 'src/view/Help.php';
         include_once $krexxdir . 'src/view/Render.php';
         include_once $krexxdir . 'src/view/Messages.php';
-        include_once $krexxdir . 'src/analysis/Codegen.php';
+        include_once $krexxdir . 'src/analysis/CodegenHandler.php';
         include_once $krexxdir . 'src/config/Fallback.php';
         include_once $krexxdir . 'src/config/Tools.php';
         include_once $krexxdir . 'src/config/Config.php';

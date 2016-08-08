@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
+use Brainworxx\Krexx\Controller\EmergencyHandler;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Model\Simple;
@@ -52,12 +53,6 @@ use Brainworxx\Krexx\Config\Config;
  */
 class Routing
 {
-    /**
-     * The current nesting level we are in.
-     *
-     * @var int
-     */
-    public static $nestingLevel = 0;
 
     /**
      * Dump information about a variable.
@@ -81,9 +76,9 @@ class Routing
         $name = $model->getName();
 
         // Check nesting level
-        self::$nestingLevel++;
-        if (self::$nestingLevel >= (int)Config::getConfigValue('runtime', 'level')) {
-            self::$nestingLevel--;
+        OutputActions::$emergencyHandler->upOneNestingLevel();
+        if (OutputActions::$emergencyHandler->checkNesting()) {
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             $text = gettype($data) . ' => ' . OutputActions::$render->getHelp('maximumLevelReached');
             $model->setData($text)
                 ->setName($name);
@@ -98,7 +93,7 @@ class Routing
                     ->setDomid(self::generateDomIdFromObject($data))
                     ->setType($model->getAdditional() . 'class');
                 $result = OutputActions::$render->renderRecursion($model);
-                self::$nestingLevel--;
+                OutputActions::$emergencyHandler->downOneNestingLevel();
                 return $result;
             }
             // Remember that we've been here before.
@@ -122,7 +117,7 @@ class Routing
         // Closures are analysed separately.
         if (is_object($data) && !is_a($data, '\Closure')) {
             $result = self::analyseObject($model);
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return $result;
         }
 
@@ -133,55 +128,55 @@ class Routing
                 $model->setConnector2($connector2);
             }
             $result = self::analyseClosure($model);
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return $result;
         }
 
         // Array?
         if (is_array($data)) {
             $result = Routing::analyseArray($model);
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return $result;
         }
 
         // Resource?
         if (is_resource($data)) {
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return Routing::analyseResource($model);
         }
 
         // String?
         if (is_string($data)) {
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return Routing::analyseString($model);
         }
 
         // Float?
         if (is_float($data)) {
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return Routing::analyseFloat($model);
         }
 
         // Integer?
         if (is_int($data)) {
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return Routing::analyseInteger($model);
         }
 
         // Boolean?
         if (is_bool($data)) {
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return Routing::analyseBoolean($model);
         }
 
         // Null ?
         if (is_null($data)) {
-            self::$nestingLevel--;
+            OutputActions::$emergencyHandler->downOneNestingLevel();
             return Routing::analyseNull($model);
         }
 
         // Still here? This should not happen. Return empty string, just in case.
-        self::$nestingLevel--;
+        OutputActions::$emergencyHandler->downOneNestingLevel();
         return '';
     }
 
@@ -338,7 +333,7 @@ class Routing
 
         // Extra ?
         if (strlen($data) > 50) {
-            $cut = substr(Toolbox::encodeString($data), 0, 50 - 3) . '...';
+            $cut = substr(Toolbox::encodeString($data), 0, 50 - 3) . '. . .';
         } else {
             $cut = Toolbox::encodeString($data);
         }

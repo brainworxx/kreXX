@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -41,14 +42,14 @@ use Brainworxx\Krexx\Model\Simple;
  *
  * @package Brainworxx\Krexx\Analysis
  */
-class Codegen
+class CodegenHandler
 {
     /**
      * Is the code generation allowed? We only allow it during a normal analysis.
      *
      * @var bool
      */
-    public static $allowCodegen = false;
+    protected $allowCodegen = false;
 
      /**
      * The "scope" we are starting with. When it is $this in combination with a
@@ -57,14 +58,26 @@ class Codegen
      *
      * @var string
      */
-    public static $scope = '';
+    protected $scope = '';
 
     /**
      * We are counting the level of the object.
      *
      * @var int
      */
-    protected static $counter = 0;
+    protected $counter = 0;
+
+    /**
+     * Initializes the code generation.
+     *
+     * @param string $scope
+     */
+    public function __construct($scope = '. . .')
+    {
+        if ($scope != '. . .') {
+            $this->scope = $scope;
+        }
+    }
 
     /**
      * Generates PHP sourcecode.
@@ -79,9 +92,9 @@ class Codegen
      * @return string
      *   The generated PHP source.
      */
-    public static function generateSource(Simple $model)
+    public function generateSource(Simple $model)
     {
-        if (!self::$allowCodegen) {
+        if (!$this->allowCodegen) {
             return '';
         }
 
@@ -89,8 +102,8 @@ class Codegen
         // We will not generate anything for function analytic data.
         $connector2 = trim($model->getConnector2(), ' = ');
 
-        // We handle the first one special.
-        if ($model->getConnector1() . $connector2 == '' && self::$counter !== 0 && $model->getName() != 'Constants') {
+        $isConstants = $model->getType() === 'class internals' && $model->getName() === 'Constants';
+        if ($model->getConnector1() . $connector2 == '' && $this->counter !== 0 && !$isConstants) {
             // No connectors mean, we are dealing with some meta stuff, like functions
             // We will not add anything for them.
         } else {
@@ -124,7 +137,7 @@ class Codegen
             }
         }
 
-        self::$counter++;
+        $this->counter++;
         return $result;
     }
 
@@ -134,7 +147,7 @@ class Codegen
      * @return string
      *   Always retuns a '. . .'
      */
-    protected static function reflectProperty()
+    protected function reflectProperty()
     {
         // We stop the current codeline here.
         // This value is not reachable, and we will *not* create a refletion here.
@@ -154,7 +167,7 @@ class Codegen
      * @return string
      *   Always retuns a '. . .'
      */
-    protected static function reflectFunction()
+    protected function reflectFunction()
     {
         // We stop the current codeline here.
         // This value is not reachable, and we will *not* create a refletion here.
@@ -180,7 +193,7 @@ class Codegen
      *   - method
      *   - property
      */
-    protected static function analyseType(Simple $model)
+    protected function analyseType(Simple $model)
     {
         $type = $model->getType();
 
@@ -190,7 +203,7 @@ class Codegen
         $stop = 'stop';
 
         // Debug methods are always public.
-        if ($type == 'debug method' || self::$counter == 0) {
+        if ($type == 'debug method' || $this->counter == 0) {
             return $contagination;
         }
 
@@ -223,20 +236,6 @@ class Codegen
     }
 
     /**
-     * Here we reset the counter
-     *
-     * We are handling the first time a little bit different. If not we would
-     * get something like '$myClass->value->anotherValue'
-     *
-     * When we start the run, we need to generate something like:
-     * $result = $myClass->value
-     */
-    public static function resetCounter()
-    {
-        self::$counter = 0;
-    }
-
-    /**
      * We decide if a function is currently within a reachable scope.
      *
      * @param string $type
@@ -245,17 +244,24 @@ class Codegen
      * @return bool
      *   Whether it is within the scope or not.
      */
-    public static function isInScope($type = '')
+    public function isInScope($type = '')
     {
         // When analysing a class or array, we have + 1 on our nesting level, when
         // coming from the code generation. That is, because that class is currently
         // being analysed.
         if (strpos($type, 'class') === false && strpos($type, 'array') === false) {
-            $nestingLevel = Routing::$nestingLevel;
+            $nestingLevel = OutputActions::$emergencyHandler->getNestingLevel();
         } else {
-            $nestingLevel = Routing::$nestingLevel - 1;
+            $nestingLevel = OutputActions::$emergencyHandler->getNestingLevel() - 1;
         }
 
-        return $nestingLevel <= 1 && self::$scope == '$this';
+        return $nestingLevel <= 1 && $this->scope == '$this';
+    }
+
+    public function checkAllowCodegen()
+    {
+        if (!empty($this->scope)) {
+            $this->allowCodegen = true;
+        }
     }
 }

@@ -96,7 +96,7 @@ class Render extends \Brainworxx\Krexx\View\Render
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = Codegen::generateSource($model);
+        $gencode = OutputActions::$codegenHandler->generateSource($model);
         $template = str_replace('{gensource}', $gencode, $template);
         if ($gencode == '.stop.' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.

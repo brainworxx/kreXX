@@ -34,12 +34,12 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analysis\CodegenHandler;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Render;
 
 /**
@@ -69,6 +69,13 @@ class Internals
      * @var ShutdownHandler
      */
     public static $shutdownHandler;
+
+    /**
+     * Generates code, if the variable can be reached.
+     *
+     * @var CodegenHandler
+     */
+    public static $codegenHandler;
 
     /**
      * Have we already send the CSS and JS?
@@ -196,8 +203,8 @@ class Internals
         // I have no idea how to determine the actual call of krexx if we
         // are dealing with several calls per line.
         if (count($possibleCommands) > 1) {
-            // Fallback to '...'.
-            $varname = '...';
+            // Fallback to '. . .'.
+            $varname = '. . .';
         } else {
             $sourceCall = reset($possibleCommands);
 
@@ -221,7 +228,7 @@ class Internals
 
         // Check if we have a value.
         if (!isset($varname) || strlen($varname) == 0) {
-            $varname = '...';
+            $varname = '. . .';
         }
 
         return $varname;

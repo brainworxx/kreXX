@@ -101,7 +101,7 @@ class Object extends AbstractCallback
         }
 
         // Dumping protected properties.
-        if (Config::getConfigValue('properties', 'analyseProtected') == 'true' || Codegen::isInScope()) {
+        if (Config::getConfigValue('properties', 'analyseProtected') == 'true' || OutputActions::$codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
             usort($refProps, $sortingCallback);
 
@@ -111,7 +111,7 @@ class Object extends AbstractCallback
         }
 
         // Dumping private properties.
-        if (Config::getConfigValue('properties', 'analysePrivate') == 'true' || Codegen::isInScope()) {
+        if (Config::getConfigValue('properties', 'analysePrivate') == 'true' || OutputActions::$codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
             if (count($refProps)) {
@@ -159,10 +159,17 @@ class Object extends AbstractCallback
         if (Config::getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
             $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if (Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' || Codegen::isInScope()) {
+            if (
+                Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' ||
+                OutputActions::$codegenHandler->isInScope()
+            ) {
                 $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
             }
-            if (Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' || Codegen::isInScope()) {
+
+            if (
+                Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' ||
+                OutputActions::$codegenHandler->isInScope()
+            ) {
                 $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
             }
         }

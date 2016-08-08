@@ -1,19 +1,20 @@
 <?php
 /**
- * @file
- *   Controller actions for kreXX
- *   kreXX: Krumo eXXtended
+ * kreXX: Krumo eXXtended
  *
- *   This is a debugging tool, which displays structured information
- *   about any PHP object. It is a nice replacement for print_r() or var_dump()
- *   which are used by a lot of PHP developers.
+ * kreXX is a debugging tool, which displays structured information
+ * about any PHP object. It is a nice replacement for print_r() or var_dump()
+ * which are used by a lot of PHP developers.
  *
- *   kreXX is a fork of Krumo, which was originally written by:
- *   Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
+ * kreXX is a fork of Krumo, which was originally written by:
+ * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
  *
- * @author brainworXX GmbH <info@brainworxx.de>
+ * @author
+ *   brainworXX GmbH <info@brainworxx.de>
  *
- * @license http://opensource.org/licenses/LGPL-2.1
+ * @license
+ *   http://opensource.org/licenses/LGPL-2.1
+ *
  *   GNU Lesser General Public License Version 2.1
  *
  *   kreXX Copyright (C) 2014-2016 Brainworxx GmbH
@@ -33,15 +34,13 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analysis\CodegenHandler;
 use Brainworxx\Krexx\Analysis\RecursionHandler;
 use Brainworxx\Krexx\Errorhandler\Fatal;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Analysis\Routing;
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\View\Messages;
 
 /**
@@ -74,7 +73,6 @@ class OutputActions extends Internals
         self::$recursionHandler = new RecursionHandler();
         self::$emergencyHandler = new EmergencyHandler();
         self::loadRendrerer();
-
         // Find caller.
         $caller = self::findCaller();
         if ($headline != '') {
@@ -82,7 +80,7 @@ class OutputActions extends Internals
         } else {
             $caller['type'] = 'Analysis';
         }
-
+        self::$codegenHandler = new CodegenHandler($caller['varname']);
 
         // Set the headline, if it's not set already.
         if ($headline == '') {
@@ -115,22 +113,14 @@ class OutputActions extends Internals
         // We need to get the footer before the generating of the header,
         // because we need to display messages in the header from the configuration.
         $footer = self::outputFooter($caller);
-
-        // Start the analysis itself.
-        Codegen::resetCounter();
+        self::$codegenHandler->checkAllowCodegen();
 
         // Enable code generation only if we were aqble to determine the varname.
-        if ($caller['varname'] == '...') {
-            Codegen::$allowCodegen = false;
-        } else {
+        if ($caller['varname'] != '. . .') {
             // We were able to determine the variable name and can generate some
             // sourcecode.
-            Codegen::$allowCodegen = true;
             $headline = $caller['varname'];
         }
-
-        // Set the current scope.
-        Codegen::$scope = $caller['varname'];
 
         // Start the magic.
         $model = new Simple();
@@ -153,9 +143,6 @@ class OutputActions extends Internals
         if (Config::getConfigValue('output', 'destination') == 'file') {
             Chunks::addMetadata($caller);
         }
-
-        // Reset value for the code generation.
-        Codegen::$allowCodegen = false;
     }
 
     /**
@@ -172,11 +159,11 @@ class OutputActions extends Internals
         self::$emergencyHandler = new EmergencyHandler();
         self::loadRendrerer();
 
-        Codegen::$allowCodegen = false;
-
         // Find caller.
         $caller = self::findCaller();
         $caller['type'] = 'Backtrace';
+
+        self::$codegenHandler = new CodegenHandler($caller['varname']);
 
         $headline = 'Backtrace';
 
@@ -219,6 +206,7 @@ class OutputActions extends Internals
         self::$recursionHandler = new RecursionHandler();
         self::$emergencyHandler = new EmergencyHandler();
         self::loadRendrerer();
+        self::$codegenHandler = new CodegenHandler();
 
         // We will not check this for the cookie config, to avoid people locking
         // themselves out.
@@ -250,9 +238,7 @@ class OutputActions extends Internals
         self::$recursionHandler = new RecursionHandler();
         self::$emergencyHandler = new EmergencyHandler();
         OutputActions::loadRendrerer();
-
-        // We will not generate any code here!
-        Codegen::$allowCodegen = false;
+        self::$codegenHandler = new CodegenHandler();
 
         // Get the header.
         if (self::$headerSend) {

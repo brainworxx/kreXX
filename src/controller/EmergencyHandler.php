@@ -81,6 +81,13 @@ class EmergencyHandler extends Internals
     protected $minMemoryLeft = 0;
 
     /**
+     * The level inside the object/array hierarchy we are in.
+     *
+     * @var int
+     */
+    protected $nestingLevel = 0;
+
+    /**
      * Get some system and config data during construct.
      */
     public function __construct()
@@ -163,5 +170,42 @@ class EmergencyHandler extends Internals
 
         // Still here? Everything must be good  :-)
         return true;
+    }
+
+    /**
+     * Going up one level in the object/array hierarchy.
+     */
+    public function upOneNestingLevel()
+    {
+        $this->nestingLevel++;
+    }
+
+    /**
+     * Going down one level in the object/array hierarchy.
+     */
+    public function downOneNestingLevel()
+    {
+        $this->nestingLevel--;
+    }
+
+    /**
+     * Checks our currnt nesting level
+     *
+     * @return bool
+     *   TRUE if we are too deep.
+     */
+    public function checkNesting()
+    {
+        return $this->nestingLevel > (int)Config::getConfigValue('runtime', 'level');
+    }
+
+    /**
+     * Getter for the nesting level.
+     *
+     * @return int
+     */
+    public function getNestingLevel()
+    {
+        return $this->nestingLevel;
     }
 }
