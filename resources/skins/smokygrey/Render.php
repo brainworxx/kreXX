@@ -97,19 +97,13 @@ class Render extends \Brainworxx\Krexx\View\Render
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
         $gencode = Codegen::generateSource($model);
-        if ($gencode == '') {
-            // Remove the markers, because here is nothing to add.
-            $template = str_replace('{gensource}', '', $template);
-            $template = str_replace('{gencode}', '', $template);
+        $template = str_replace('{gensource}', $gencode, $template);
+        if ($gencode == '.stop.' || empty($gencode)) {
+            // Remove the button marker, because here is nothing to add.
+            $template = str_replace('{sourcebutton}', '', $template);
         } else {
-            // We add the button and the code.
-            $template = str_replace('{gensource}', $gencode, $template);
-            if ($gencode =! '.stop.') {
-                // No code button for the constants.
-                $template = str_replace('{gencode}', $this->getTemplateFileContent('gencode'), $template);
-            } else {
-                $template = str_replace('{gencode}', '', $template);
-            }
+            // Add the button.
+            $template = str_replace('{sourcebutton}', $this->getTemplateFileContent('sourcebutton'), $template);
         }
 
         // Is it expanded?
