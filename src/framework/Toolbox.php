@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Framework;
 
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\View\Help;
 
 /**
  * Toolbox methods.
@@ -70,7 +69,7 @@ class Toolbox
      * @param int $highlight
      *   The line number you want to highlight
      * @param int $from
-     *   The strarline.
+     *   The start line.
      * @param int $to
      *   The Endline.
      *

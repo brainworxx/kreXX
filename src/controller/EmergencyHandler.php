@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\View\Messages;
 
 /**
@@ -153,7 +152,7 @@ class EmergencyHandler extends Internals
 
         // Still here ? Commence with the memory check.
         // We will only check, if we were able to determine a memory limit
-        // in the frist place.
+        // in the first place.
         if ($this->serverMemoryLimit > 2) {
             $usage = memory_get_usage();
             $left = $this->serverMemoryLimit - $usage;
@@ -189,14 +188,14 @@ class EmergencyHandler extends Internals
     }
 
     /**
-     * Checks our currnt nesting level
+     * Checks our current nesting level
      *
      * @return bool
      *   TRUE if we are too deep.
      */
     public function checkNesting()
     {
-        return $this->nestingLevel > (int)Config::getConfigValue('runtime', 'level');
+        return ($this->nestingLevel > (int)Config::getConfigValue('runtime', 'level'));
     }
 
     /**

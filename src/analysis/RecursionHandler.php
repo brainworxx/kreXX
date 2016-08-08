@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
-use Brainworxx\Krexx\Framework\Toolbox;
-
 /**
  * Recursion handler, formerly known as Hive.
  *

@@ -66,8 +66,7 @@ class ThroughConstants extends AbstractCallback
             $model = new Simple();
             $model->setData($v)
                 ->setName($k)
-                ->setConnector1($this->parameters['classname'] . '::')
-                ->setConnector2(' =');
+                ->setConnector1($this->parameters['classname'] . '::');
             $output .= Routing::analysisHub($model);
         }
 

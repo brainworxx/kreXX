@@ -34,11 +34,9 @@
 
 namespace Brainworxx\Krexx\View\Smokygrey;
 
-use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\Messages;
 
 /**
  * Individual render class for the smokey-grey skin.

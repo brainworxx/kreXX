@@ -37,7 +37,6 @@ namespace Brainworxx\Krexx\Model\Callback\Analyse;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Codegen;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Flection;
 
@@ -101,7 +100,8 @@ class Object extends AbstractCallback
         }
 
         // Dumping protected properties.
-        if (Config::getConfigValue('properties', 'analyseProtected') == 'true' || OutputActions::$codegenHandler->isInScope()) {
+        if (Config::getConfigValue('properties', 'analyseProtected') == 'true' ||
+            OutputActions::$codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
             usort($refProps, $sortingCallback);
 
@@ -111,7 +111,8 @@ class Object extends AbstractCallback
         }
 
         // Dumping private properties.
-        if (Config::getConfigValue('properties', 'analysePrivate') == 'true' || OutputActions::$codegenHandler->isInScope()) {
+        if (Config::getConfigValue('properties', 'analysePrivate') == 'true' ||
+            OutputActions::$codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
             if (count($refProps)) {
@@ -159,17 +160,13 @@ class Object extends AbstractCallback
         if (Config::getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
             $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if (
-                Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' ||
-                OutputActions::$codegenHandler->isInScope()
-            ) {
+            if (Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' ||
+                OutputActions::$codegenHandler->isInScope()) {
                 $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
             }
 
-            if (
-                Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' ||
-                OutputActions::$codegenHandler->isInScope()
-            ) {
+            if (Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' ||
+                OutputActions::$codegenHandler->isInScope()) {
                 $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
             }
         }
@@ -265,7 +262,7 @@ class Object extends AbstractCallback
                             ->setAdditional('. . .')
                             ->setHelpid($funcName)
                             ->setConnector1('->')
-                            ->setConnector2('() =')
+                            ->setConnector2('()')
                             ->addParameter('result', $result)
                             ->initCallback('Analyse\Debug');
 

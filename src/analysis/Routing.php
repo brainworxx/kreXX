@@ -34,13 +34,10 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
-use Brainworxx\Krexx\Controller\EmergencyHandler;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\Help;
 use Brainworxx\Krexx\Framework\Toolbox;
-use Brainworxx\Krexx\Config\Config;
 
 /**
  * "Routing" for kreXX
@@ -73,16 +70,16 @@ class Routing
             return '';
         }
         $data = $model->getData();
-        $name = $model->getName();
 
         // Check nesting level
         OutputActions::$emergencyHandler->upOneNestingLevel();
-        if (OutputActions::$emergencyHandler->checkNesting()) {
-            OutputActions::$emergencyHandler->downOneNestingLevel();
-            $text = gettype($data) . ' => ' . OutputActions::$render->getHelp('maximumLevelReached');
-            $model->setData($text)
-                ->setName($name);
-            return Routing::analyseString($model);
+        if (is_array($data) || is_object($data)) {
+            if (OutputActions::$emergencyHandler->checkNesting()) {
+                OutputActions::$emergencyHandler->downOneNestingLevel();
+                $text = gettype($data) . ' => ' . OutputActions::$render->getHelp('maximumLevelReached');
+                $model->setData($text);
+                return Routing::analyseString($model);
+            }
         }
 
         // Check for recursion.
@@ -100,18 +97,6 @@ class Routing
             OutputActions::$recursionHandler->addToHive($data);
         }
 
-        $connector1 = $model->getConnector1();
-        $connector2 = $model->getConnector2();
-
-        // If we are currently analysing an array, we might need to add stuff to
-        // the connector.
-        if ($connector1 == '[' && is_string($name)) {
-            $connector1 = $connector1 . "'";
-            $connector2 = "'" . $connector2;
-        }
-        $model->setConnector1($connector1)
-            ->setConnector2($connector2);
-
 
         // Object?
         // Closures are analysed separately.
@@ -123,10 +108,6 @@ class Routing
 
         // Closure?
         if (is_object($data) && is_a($data, '\Closure')) {
-            if ($connector2 == '] =') {
-                $connector2 = ']';
-                $model->setConnector2($connector2);
-            }
             $result = self::analyseClosure($model);
             OutputActions::$emergencyHandler->downOneNestingLevel();
             return $result;
@@ -410,7 +391,7 @@ class Routing
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
         $model->setType($model->getAdditional() . ' closure')
             ->setAdditional('. . .')
-            ->setConnector2($model->getConnector2() . '(' . $paramList . ') =')
+            ->setConnector2($model->getConnector2() . '(' . $paramList . ')')
             ->addParameter('data', $result)
             ->initCallback('Iterate\ThroughMethodAnalysis');
 

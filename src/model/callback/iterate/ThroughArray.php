@@ -84,12 +84,22 @@ class ThroughArray extends AbstractCallback
             if ($key === $recursionMarker) {
                 continue;
             }
-            $key = Toolbox::encodeString($key);
+            if (is_string($key)) {
+                $key = Toolbox::encodeString($key);
+            }
             $model = new Simple();
-            $model->setData($value)
-                ->setName($key)
-                ->setConnector1('[')
-                ->setConnector2('] =');
+            if (is_string($key)) {
+                $model->setData($value)
+                    ->setName($key)
+                    ->setConnector1('[\'')
+                    ->setConnector2('\']');
+            } else {
+                $model->setData($value)
+                    ->setName($key)
+                    ->setConnector1('[')
+                    ->setConnector2(']');
+            }
+
             $output .= Routing::analysisHub($model);
         }
         $output .= OutputActions::$render->renderSingeChildHr();

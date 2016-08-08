@@ -71,7 +71,7 @@ class Chunks
     /**
      * Are we using chunks?
      *
-     * When we do, kreXX will store tempoary files in the chunks folder.
+     * When we do, kreXX will store temporary files in the chunks folder.
      * This saves a lot of memory!
      *
      * @var bool
@@ -287,7 +287,7 @@ class Chunks
      * Setter for the self::$useChunks.
      *
      * When the chunks folder is not writable, we will not use chunks.
-     * This will increase the memory usage significally!
+     * This will increase the memory usage significantly!
      *
      * @param boolean $bool
      *   Are we using chunks?

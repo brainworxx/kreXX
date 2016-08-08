@@ -39,7 +39,6 @@ use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Analysis\Routing;
-use Brainworxx\Krexx\View\Help;
 
 /**
  * Backtrace analysis methods.

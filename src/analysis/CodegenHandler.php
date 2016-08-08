@@ -117,6 +117,7 @@ class CodegenHandler
                     // first. Vunterslaush anyone?
                     $name = str_replace('"', '&#034;', addslashes(stripslashes($model->getName())));
                     $name = str_replace("'", '&#039;', $name);
+
                     $result = $model->getConnector1() . $name . $connector2;
                     break;
 
@@ -145,12 +146,12 @@ class CodegenHandler
      * Returns a '. . .' to tell our js that this property is not reachable.
      *
      * @return string
-     *   Always retuns a '. . .'
+     *   Always returns a '. . .'
      */
     protected function reflectProperty()
     {
         // We stop the current codeline here.
-        // This value is not reachable, and we will *not* create a refletion here.
+        // This value is not reachable, and we will *not* create a reflection here.
         // Some people would abuse this to break open protected and private values.
         // These values are protected for a reason.
         // Adding the '. . .' tells out js that is should not search through the
@@ -165,12 +166,12 @@ class CodegenHandler
      * Returns a '. . .' to tell our js that this function is not reachable.
      *
      * @return string
-     *   Always retuns a '. . .'
+     *   Always returns a '. . .'
      */
     protected function reflectFunction()
     {
         // We stop the current codeline here.
-        // This value is not reachable, and we will *not* create a refletion here.
+        // This value is not reachable, and we will *not* create a reflection here.
         // Some people would abuse this tho break open protected and private values.
         // These values are protected for a reason.
         // Adding the '. . .' tells out js that is should not search through the

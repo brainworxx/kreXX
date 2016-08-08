@@ -307,5 +307,4 @@ class Krexx
         }
         OutputActions::unregisterFatalAction();
     }
-
 }
