@@ -253,7 +253,7 @@ class Storage
      */
     public function encodeString($data, $code = false)
     {
-        if (strlen($data) === 0) {
+        if (empty($data)) {
             return '';
         }
 
@@ -270,7 +270,7 @@ class Storage
 
         // Check if encoding was successful.
         // 99.99% of the time, the encoding works.
-        if (strlen($result) === 0) {
+        if (empty($result)) {
             // Something went wrong with the encoding, we need to
             // completely encode this one to be able to display it at all!
             $data = @mb_convert_encoding($data, 'UTF-32', mb_detect_encoding($data));

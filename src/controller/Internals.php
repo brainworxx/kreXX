@@ -180,7 +180,7 @@ class Internals
         }
 
         // Check if we have a value.
-        if (!isset($varname) || strlen($varname) == 0) {
+        if (empty($varname)) {
             $varname = '. . .';
         }
 

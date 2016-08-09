@@ -52,30 +52,15 @@ class ThroughArray extends AbstractCallback
      *
      * @return string
      *   The generated markup.
-     * @todo Zusammenführen!
      */
     public function callMe()
-    {
-        return $this->iterateThrough($this->parameters['data']);
-    }
-
-    /**
-     * Render a dump for the properties of an array.
-     *
-     * @param array &$data
-     *   The array we want to analyse.
-     *
-     * @return string
-     *   The generated markup.
-     */
-    protected function iterateThrough(&$data)
     {
         $output = '';
         $recursionMarker = $this->storage->recursionHandler->getMarker();
         $output .= $this->storage->render->renderSingeChildHr();
 
         // Iterate through.
-        foreach ($data as $key => &$value) {
+        foreach ($this->parameters['data'] as $key => &$value) {
             // We will not output our recursion marker.
             // Meh, the only reason for the recursion marker
             // in arrays is because of the $GLOBAL array, which
@@ -102,7 +87,7 @@ class ThroughArray extends AbstractCallback
             $output .= $this->storage->routing->analysisHub($model);
         }
         $output .= $this->storage->render->renderSingeChildHr();
+        
         return $output;
-
     }
 }

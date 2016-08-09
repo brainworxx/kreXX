@@ -389,7 +389,7 @@ class Routing
 
         // Adding the namespace, but only if we have one.
         $namespace = $ref->getNamespaceName();
-        if (strlen($namespace) > 0) {
+        if (!empty($namespace)) {
             $result['namespace'] = $namespace;
         }
 
