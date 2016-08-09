@@ -34,10 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Iterate;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Config\Config;
 
 /**
  * Configuration output methods.
@@ -64,7 +62,7 @@ class ThroughConfig extends AbstractCallback
         $configOutput = '';
         foreach ($config as $sectionName => $sectionData) {
             // Render a whole section.
-            $model = new Simple();
+            $model = new Simple($this->storage);
             $model->setName($sectionName)
                 ->setType('Config')
                 ->setAdditional('. . .')
@@ -72,25 +70,25 @@ class ThroughConfig extends AbstractCallback
                 ->addParameter('source', $source[$sectionName])
                 ->initCallback('Analyse\ConfigSection');
 
-            $configOutput .= OutputActions::$render->renderExpandableChild($model);
+            $configOutput .= $this->storage->render->renderExpandableChild($model);
         }
         // Render the dev-handle field.
-        $editableModel = new Simple();
+        $editableModel = new Simple($this->storage);
         $data = 'Local open function';
         $editableModel->setData($data)
-            ->setName(Config::getDevHandler())
+            ->setName($this->storage->config->getDevHandler())
             ->setNormal('\krexx::')
             ->setType('Input')
             ->setHelpid('localFunction');
 
-        $configOutput .= OutputActions::$render->renderSingleEditableChild($editableModel);
+        $configOutput .= $this->storage->render->renderSingleEditableChild($editableModel);
         // Render the reset-button which will delete the debug-cookie.
-        $buttonModel = new Simple();
+        $buttonModel = new Simple($this->storage);
         $buttonModel->setName('resetbutton')
             ->setNormal('Reset local settings')
             ->setHelpid('resetbutton');
 
-        $configOutput .= OutputActions::$render->renderButton($buttonModel);
+        $configOutput .= $this->storage->render->renderButton($buttonModel);
         return $configOutput;
     }
 }

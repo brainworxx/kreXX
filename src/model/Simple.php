@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Model;
 
+use Brainworxx\Krexx\Framework\Storage;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 
 /**
@@ -43,6 +44,13 @@ use Brainworxx\Krexx\Model\Callback\AbstractCallback;
  */
 class Simple
 {
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
+
     /**
      * The object/string/arraqy/whatever we are analysing right now
      *
@@ -126,32 +134,16 @@ class Simple
     protected $parameters = array();
 
     /**
-     * Simple constructor.
-     *
-     * @param Simple|null $roleModel
-     *   The date we want to import to this model.
-     */
-    public function __construct(Simple $roleModel = null)
-    {
-        if (isset($roleModel)) {
-            $this->data = $roleModel->getData();
-            $this->name = $roleModel->getName();
-            $this->normal = $roleModel->getNormal();
-            $this->additional = $roleModel->getAdditional();
-            $this->type = $roleModel->getType();
-            $this->connector1 = $roleModel->getConnector1();
-            $this->connector2 = $roleModel->getConnector2();
-            $this->json = $roleModel->getJson();
-            $this->domid = $roleModel->getDomid();
-        }
-    }
-
-    /**
      * Callback for the renderMe() method.
      *
      * @var AbstractCallback
      */
     protected $callback;
+
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
 
     /**
      * Triggers the callback (if set).
@@ -458,7 +450,7 @@ class Simple
     public function initCallback($name)
     {
         $classname = 'Brainworxx\\Krexx\\Model\\Callback\\' . $name;
-        $this->callback = new $classname;
+        $this->callback = new $classname($this->storage);
         return $this;
     }
 }

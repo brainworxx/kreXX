@@ -34,16 +34,22 @@
 
 namespace Brainworxx\Krexx\Controller;
 
-use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\View\Messages;
+use Brainworxx\Krexx\Framework\Storage;
 
 /**
  * Emergency break handler for large output (runtime and memory usage).
  *
  * @package Brainworxx\Krexx\Controller
  */
-class EmergencyHandler extends Internals
+class EmergencyHandler
 {
+    /**
+     * Unix timestamp, used to determine if we need to do an emergency break.
+     *
+     * @var int
+     */
+    protected static $timer = 0;
+
     /**
      * Stores if the emergency break is enabled.
      *
@@ -87,14 +93,22 @@ class EmergencyHandler extends Internals
     protected $nestingLevel = 0;
 
     /**
-     * Get some system and config data during construct.
+     * @var \Brainworxx\Krexx\Framework\Storage
      */
-    public function __construct()
+    protected $storage;
+
+    /**
+     * Get some system and config data during construct.
+     *
+     * @param Storage $storage
+     */
+    public function __construct(Storage $storage)
     {
+        $this->storage = $storage;
         // Cache the configured maximum runtime.
-        $this->maxRuntime = (int)Config::getConfigValue('runtime', 'maxRuntime');
+        $this->maxRuntime = (int)$this->storage->config->getConfigValue('runtime', 'maxRuntime');
         // Cache the configured minimum left memory.
-        $this->minMemoryLeft = (int)Config::getConfigValue('runtime', 'memoryLeft');
+        $this->minMemoryLeft = (int)$this->storage->config->getConfigValue('runtime', 'memoryLeft');
 
         // Cache the server memory limit.
         $limit = strtoupper(ini_get('memory_limit'));
@@ -143,7 +157,7 @@ class EmergencyHandler extends Internals
         // Check Runtime.
         if (self::$timer + $this->maxRuntime <= time()) {
             // This is taking longer than expected.
-            Messages::addMessage('Emergency break due to extensive run time!');
+            $this->storage->messages->addMessage('Emergency break due to extensive run time!');
             \Krexx::editSettings();
             \Krexx::disable();
             self::$allIsOk = false;
@@ -158,7 +172,7 @@ class EmergencyHandler extends Internals
             $left = $this->serverMemoryLimit - $usage;
             // Is more left than is configured?
             if ($left < $this->minMemoryLeft * 1024 * 1024) {
-                Messages::addMessage('Emergency break due to extensive memory usage!');
+                $this->storage->messages->addMessage('Emergency break due to extensive memory usage!');
                 // Show settings to give the dev to repair the situation.
                 \Krexx::editSettings();
                 \Krexx::disable();
@@ -195,7 +209,7 @@ class EmergencyHandler extends Internals
      */
     public function checkNesting()
     {
-        return ($this->nestingLevel > (int)Config::getConfigValue('runtime', 'level'));
+        return ($this->nestingLevel > (int)$this->storage->config->getConfigValue('runtime', 'level'));
     }
 
     /**
@@ -206,5 +220,18 @@ class EmergencyHandler extends Internals
     public function getNestingLevel()
     {
         return $this->nestingLevel;
+    }
+
+    /**
+     * Resets the timer.
+     *
+     * When a certain time has passed, kreXX will use an emergency break to
+     * prevent too large output (or no output at all (WSOD)).
+     */
+    public static function resetTimer()
+    {
+        if (self::$timer == 0) {
+            self::$timer = time();
+        }
     }
 }

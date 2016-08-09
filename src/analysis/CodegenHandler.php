@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
-use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Framework\Storage;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -44,6 +44,14 @@ use Brainworxx\Krexx\Model\Simple;
  */
 class CodegenHandler
 {
+
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
+
     /**
      * Is the code generation allowed? We only allow it during a normal analysis.
      *
@@ -70,9 +78,19 @@ class CodegenHandler
     /**
      * Initializes the code generation.
      *
+     * @param Storage $storage
+     */
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
+     * Sets the scope in whivh we are moving ('$this' or something else).
+     *
      * @param string $scope
      */
-    public function __construct($scope = '. . .')
+    public function setScope($scope)
     {
         if ($scope != '. . .') {
             $this->scope = $scope;
@@ -251,9 +269,9 @@ class CodegenHandler
         // coming from the code generation. That is, because that class is currently
         // being analysed.
         if (strpos($type, 'class') === false && strpos($type, 'array') === false) {
-            $nestingLevel = OutputActions::$emergencyHandler->getNestingLevel();
+            $nestingLevel = $this->storage->emergencyHandler->getNestingLevel();
         } else {
-            $nestingLevel = OutputActions::$emergencyHandler->getNestingLevel() - 1;
+            $nestingLevel = $this->storage->emergencyHandler->getNestingLevel() - 1;
         }
 
         return $nestingLevel <= 1 && $this->scope == '$this';

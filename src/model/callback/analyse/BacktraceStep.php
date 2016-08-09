@@ -65,71 +65,71 @@ class BacktraceStep extends AbstractCallback
         $stepData = $this->parameters['stepData'];
         // File.
         if (isset($stepData['file'])) {
-            $fileModel = new Simple();
+            $fileModel = new Simple($this->storage);
             $fileModel->setData($stepData['file'])
                 ->setName('File')
                 ->setNormal($stepData['file'])
                 ->setType('string ' . strlen($stepData['file']));
 
-            $output .= OutputActions::$render->renderSingleChild($fileModel);
+            $output .= $this->storage->render->renderSingleChild($fileModel);
         }
         // Line.
         if (isset($stepData['line'])) {
-            $lineModel = new Simple();
+            $lineModel = new Simple($this->storage);
             $lineModel->setData($stepData['line'])
                 ->setName('Line no.')
                 ->setNormal($stepData['line'])
                 ->setType('integer');
 
-            $output .= OutputActions::$render->renderSingleChild($lineModel);
+            $output .= $this->storage->render->renderSingleChild($lineModel);
         }
 
         // Sourcecode, is escaped by now.
-        $sourceModel = new Simple();
+        $sourceModel = new Simple($this->storage);
         $lineNo = $stepData['line'] + $this->parameters['offset'];
-        $source = Toolbox::readSourcecode($stepData['file'], $lineNo, $lineNo -5, $lineNo +5);
+        $source = $this->storage->readSourcecode($stepData['file'], $lineNo, $lineNo -5, $lineNo +5);
         if (strlen(trim($source)) == 0) {
-            $source = OutputActions::$render->getHelp('noSourceAvailable');
+            $source = $this->storage->render->getHelp('noSourceAvailable');
         }
         $sourceModel->setData($source)
             ->setName('Sourcecode')
             ->setNormal('. . .')
             ->setType('PHP');
-        $output .= OutputActions::$render->renderSingleChild($sourceModel);
+        $output .= $this->storage->render->renderSingleChild($sourceModel);
 
         // Function.
         if (isset($stepData['function'])) {
-            $functionModel = new Simple();
+            $functionModel = new Simple($this->storage);
             $functionModel->setData($stepData['function'])
                 ->setName('Last called function')
                 ->setNormal($stepData['function'])
                 ->setType('string ' . strlen($stepData['function']));
 
-            $output .= OutputActions::$render->renderSingleChild($functionModel);
+            $output .= $this->storage->render->renderSingleChild($functionModel);
         }
         // Object.
         if (isset($stepData['object'])) {
-            $objectModel = new Simple();
+            $objectModel = new Simple($this->storage);
             $objectModel->setData($stepData['object'])
                 ->setName('Calling object');
-            $output .= Routing::analyseObject($objectModel);
+            $output .= $this->storage->routing->analyseObject($objectModel);
         }
         // Type.
         if (isset($stepData['type'])) {
-            $typeModel = new Simple();
+            $typeModel = new Simple($this->storage);
             $typeModel->setData($stepData['type'])
                 ->setName('Call type')
                 ->setNormal($stepData['type'])
                 ->setType('string ' . strlen($stepData['type']));
 
-            $output .= OutputActions::$render->renderSingleChild($typeModel);
+            $output .= $this->storage->render->renderSingleChild($typeModel);
         }
         // Args.
         if (isset($stepData['args'])) {
-            $argsModel = new Simple();
+            $argsModel = new Simple($this->storage);
             $argsModel->setData($stepData['args'])
                 ->setName('Arguments from the call');
-            $output .= Routing::analyseArray($argsModel);
+            $output .= $this->storage->routing->analyseArray($argsModel);
         }
 
         return $output;

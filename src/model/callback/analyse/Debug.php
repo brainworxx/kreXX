@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Model\Callback\Analyse;
 
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
-use Brainworxx\Krexx\Analysis\Routing;
 
 /**
  * Debug method result analysis methods.
@@ -55,10 +54,10 @@ class Debug extends AbstractCallback
      */
     public function callMe()
     {
-        $model = new Simple();
+        $model = new Simple($this->storage);
         $model->setData($this->parameters['result'])
             ->setName('result');
         // This could be anything, we need to route it.
-        return Routing::analysisHub($model);
+        return $this->storage->routing->analysisHub($model);
     }
 }

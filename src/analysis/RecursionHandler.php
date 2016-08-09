@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Analysis;
 
+use Brainworxx\Krexx\Framework\Storage;
+
 /**
  * Recursion handler, formerly known as Hive.
  *
@@ -46,6 +48,13 @@ namespace Brainworxx\Krexx\Analysis;
  */
 class RecursionHandler
 {
+
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
 
     /**
      * Storage for arrays ans objects, to prevent recursions.
@@ -70,10 +79,13 @@ class RecursionHandler
 
     /**
      * Generate the recursion marker during class construction.
+     *
+     * @param Storage $storage
      */
-    public function __construct()
+    public function __construct(Storage $storage)
     {
         $this->recursionMarker = 'Krexx' . substr(str_shuffle(md5(microtime())), 0, 10);
+        $this->storage = $storage;
     }
 
     /**

@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Framework\Storage;
 
 /**
  * Messaging system.
@@ -43,6 +44,13 @@ use Brainworxx\Krexx\Controller\OutputActions;
  */
 class Messages
 {
+
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
 
     /**
      * Here we store all messages, which gets send to the output.
@@ -59,6 +67,16 @@ class Messages
     protected static $keys = array();
 
     /**
+     * Injects the storage.
+     *
+     * @param \Brainworxx\Krexx\Framework\Storage $storage
+     */
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
      * The message we want to add. It will be displayed in the output.
      *
      * @param string $message
@@ -66,7 +84,7 @@ class Messages
      * @param string $class
      *   The class of the message.
      */
-    public static function addMessage($message, $class = 'normal')
+    public function addMessage($message, $class = 'normal')
     {
         self::$messages[$message] = array(
             'message' => $message,
@@ -85,7 +103,7 @@ class Messages
      * @param NULL|array $params
      *   The parameters for the string replacements inside the translation.
      */
-    public static function addKey($key, $params = null)
+    public function addKey($key, $params = null)
     {
         self::$keys[$key] = array('key' => $key, 'params' => $params);
     }
@@ -96,7 +114,7 @@ class Messages
      * @param string $key
      *   The key we want to remove
      */
-    public static function removeKey($key)
+    public function removeKey($key)
     {
         unset(self::$keys[$key]);
     }
@@ -107,7 +125,7 @@ class Messages
      * @return array
      *   The language keys we added beforehand.
      */
-    public static function getKeys()
+    public function getKeys()
     {
         return self::$keys;
     }
@@ -118,7 +136,7 @@ class Messages
      * @return string
      *   The rendered html output of the messages.
      */
-    public static function outputMessages()
+    public function outputMessages()
     {
         // Simple Wrapper for OutputActions::$render->renderMessages
         if (php_sapi_name() == "cli") {
@@ -133,7 +151,7 @@ class Messages
                 return $result;
             }
         } else {
-            return OutputActions::$render->renderMessages(self::$messages);
+            return $this->storage->render->renderMessages(self::$messages);
         }
         // Still here?
         return '';

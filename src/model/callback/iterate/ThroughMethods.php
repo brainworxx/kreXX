@@ -34,9 +34,7 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Iterate;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -79,7 +77,7 @@ class ThroughMethods extends AbstractCallback
                     $this->parameters['ref'],
                     $method
                 );
-                $methodData['comments'] = Toolbox::encodeString($methodData['comments']);
+                $methodData['comments'] = $this->storage->encodeString($methodData['comments']);
             }
 
             // Get declaration place.
@@ -156,7 +154,7 @@ class ThroughMethods extends AbstractCallback
         }
         // Remove the ',' after the last char.
         $paramList = '<small>' . trim($paramList, ', ') . '</small>';
-        $model = new Simple();
+        $model = new Simple($this->storage);
         $model->setName($name)
             ->setType($data['declaration keywords'] . ' method')
             ->setConnector1($connector1)
@@ -164,7 +162,7 @@ class ThroughMethods extends AbstractCallback
             ->addParameter('data', $data)
             ->initCallback('Iterate\ThroughMethodAnalysis');
 
-        return OutputActions::$render->renderExpandableChild($model);
+        return $this->storage->render->renderExpandableChild($model);
     }
 
     /**

@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Config;
 
+use Brainworxx\Krexx\Framework\Storage;
+
 /**
  * Configuration fallback settings.
  *
@@ -43,6 +45,23 @@ namespace Brainworxx\Krexx\Config;
  */
 class Fallback
 {
+
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
+
+    /**
+     * Injects the storage.
+     *
+     * @param Storage $storage
+     */
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
 
     /**
      * Stores if kreXX is actually enabled.

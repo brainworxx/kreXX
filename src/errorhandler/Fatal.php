@@ -121,7 +121,7 @@ class Fatal extends Error
         // Do we have an error at all?
         if (!is_null($error) &&
             $this->getIsActive() &&
-            Config::getEnabled()
+            $this->storage->config->getEnabled()
         ) {
             // Do we need to check this one, according to our settings?
             $translatedError = $this->translateErrorType($error['type']);
@@ -141,10 +141,10 @@ class Fatal extends Error
                     'backtrace' => $this->tickedBacktrace,
                 );
 
-                if (Config::getConfigValue('backtraceAndError', 'backtraceAnalysis') == 'deep') {
+                if ($this->storage->config->getConfigValue('backtraceAndError', 'backtraceAnalysis') == 'deep') {
                     // We overwrite the local settings, so we can get as much info from
                     // analysed objects as possible.
-                    Config::overwriteLocalSettings(self::$configFatal);
+                    $this->storage->config->overwriteLocalSettings(self::$configFatal);
                 }
 
                 OutputActions::errorAction($errorData);

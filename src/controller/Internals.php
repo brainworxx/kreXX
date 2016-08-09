@@ -34,13 +34,12 @@
 
 namespace Brainworxx\Krexx\Controller;
 
-use Brainworxx\Krexx\Analysis\CodegenHandler;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
+use Brainworxx\Krexx\Framework\Storage;
 use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\Render;
 
 /**
  * Methods for the "controller" that are not directly "actions".
@@ -49,12 +48,6 @@ use Brainworxx\Krexx\View\Render;
  */
 class Internals
 {
-    /**
-     * Unix timestamp, used to determine if we need to do an emergency break.
-     *
-     * @var int
-     */
-    protected static $timer = 0;
 
     /**
      * Counts how often kreXX was called.
@@ -71,43 +64,11 @@ class Internals
     public static $shutdownHandler;
 
     /**
-     * Generates code, if the variable can be reached.
-     *
-     * @var CodegenHandler
-     */
-    public static $codegenHandler;
-
-    /**
      * Have we already send the CSS and JS?
      *
      * @var bool
      */
     protected static $headerSend = false;
-
-    /**
-     * An instance of the recursion handler.
-     *
-     * It gets reinstantiated with every new call.
-     *
-     * @var \Brainworxx\Krexx\Analysis\RecursionHandler
-     */
-    public static $recursionHandler;
-
-    /**
-     * Our emergency break handler.
-     *
-     * @var \Brainworxx\Krexx\Controller\EmergencyHandler
-     */
-    public static $emergencyHandler;
-
-    /**
-     * The instance of the render class from the skin.
-     *
-     * Gets loaded in the output footer.
-     *
-     * @var Render
-     */
-    public static $render;
 
     /**
      * Here we store the fatal error handler.
@@ -135,16 +96,11 @@ class Internals
     protected static $counterCache = array();
 
     /**
-     * Loads the renderer from the skin.
+     * Our storage wher we keep al relevant classes.
+     *
+     * @var Storage
      */
-    public static function loadRendrerer()
-    {
-        $skin = Config::getConfigValue('output', 'skin');
-        $path = Config::$krexxdir . 'resources/skins/' . $skin . '/Render.php';
-        $classname = 'Brainworxx\Krexx\View\\' . ucfirst($skin) . '\\Render';
-        include_once $path;
-        self::$render = new $classname;
-    }
+    public static $storage;
 
     /**
      * Finds the place in the code from where krexx was called.
@@ -213,9 +169,9 @@ class Internals
             $possibleFunctionnames = array(
                 'krexx',
                 'krexx::open',
-                'krexx::' . Config::getDevHandler(),
+                'krexx::' . self::$storage->config->getDevHandler(),
                 'Krexx::open',
-                'Krexx::' . Config::getDevHandler()
+                'Krexx::' . self::$storage->config->getDevHandler()
             );
             foreach ($possibleFunctionnames as $funcname) {
                 preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', $sourceCall, $name);
@@ -243,14 +199,14 @@ class Internals
     protected static function checkMaxCall()
     {
         $result = false;
-        $maxCall = (int)Config::getConfigValue('runtime', 'maxCall');
+        $maxCall = (int)self::$storage->config->getConfigValue('runtime', 'maxCall');
         if (self::$KrexxCount >= $maxCall) {
             // Called too often, we might get into trouble here!
             $result = true;
         }
         // Give feedback if this is our last call.
         if (self::$KrexxCount == $maxCall - 1) {
-            Messages::addMessage(OutputActions::$render->getHelp('maxCallReached'), 'critical');
+            self::$storage->messages->addMessage(self::$storage->render->getHelp('maxCallReached'), 'critical');
         }
         self::$KrexxCount++;
         return $result;
@@ -271,9 +227,9 @@ class Internals
         if (!self::$headerSend) {
             // Send doctype and css/js only once.
             self::$headerSend = true;
-            return self::$render->renderHeader('<!DOCTYPE html>', $headline, self::outputCssAndJs());
+            return self::$storage->render->renderHeader('<!DOCTYPE html>', $headline, self::outputCssAndJs());
         } else {
-            return self::$render->renderHeader('', $headline, '');
+            return self::$storage->render->renderHeader('', $headline, '');
         }
     }
 
@@ -293,7 +249,7 @@ class Internals
     {
         // Now we need to stitch together the content of the ini file
         // as well as it's path.
-        if (!is_readable(Config::getPathToIni())) {
+        if (!is_readable(self::$storage->config->getPathToIni())) {
             // Project settings are not accessible
             // tell the user, that we are using fallback settings.
             $path = 'Krexx.ini not found, using factory settings';
@@ -302,20 +258,20 @@ class Internals
             $path = 'Current configuration';
         }
 
-        $wholeConfig = Config::getWholeConfiguration();
+        $wholeConfig = self::$storage->config->getWholeConfiguration();
         $source = $wholeConfig[0];
         $config = $wholeConfig[1];
 
-        $model = new Simple();
+        $model = new Simple(self::$storage);
         $model->setName($path)
-            ->setType(Config::getPathToIni())
+            ->setType(self::$storage->config->getPathToIni())
             ->setHelpid('currentSettings')
             ->addParameter('config', $config)
             ->addParameter('source', $source)
             ->initCallback('Iterate\ThroughConfig');
 
-        $configOutput = self::$render->renderExpandableChild($model, $isExpanded);
-        return self::$render->renderFooter($caller, $configOutput, $isExpanded);
+        $configOutput = self::$storage->render->renderExpandableChild($model, $isExpanded);
+        return self::$storage->render->renderFooter($caller, $configOutput, $isExpanded);
     }
 
     /**
@@ -327,8 +283,11 @@ class Internals
     protected static function outputCssAndJs()
     {
         // Get the css file.
-        $css = Toolbox::getFileContents(
-            Config::$krexxdir . 'resources/skins/' . Config::getConfigValue('output', 'skin') . '/skin.css'
+        $css = self::$storage->getFileContents(
+            Config::$krexxdir .
+            'resources/skins/' .
+            self::$storage->config->getConfigValue('output', 'skin') .
+            '/skin.css'
         );
         // Remove whitespace.
         $css = preg_replace('/\s+/', ' ', $css);
@@ -339,31 +298,18 @@ class Internals
         } else {
             $jsFile = Config::$krexxdir . 'resources/jsLibs/kdt.js';
         }
-        $js = Toolbox::getFileContents($jsFile);
+        $js = self::$storage->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
-        $path = Config::$krexxdir . 'resources/skins/' . Config::getConfigValue('output', 'skin');
+        $path = Config::$krexxdir . 'resources/skins/' . self::$storage->config->getConfigValue('output', 'skin');
         if (is_readable($path . '/krexx.min.js')) {
             $jsFile = $path . '/krexx.min.js';
         } else {
             $jsFile = $path . '/krexx.js';
         }
-        $js .= Toolbox::getFileContents($jsFile);
+        $js .= self::$storage->getFileContents($jsFile);
 
-        return self::$render->renderCssJs($css, $js);
-    }
-
-    /**
-     * Resets the timer.
-     *
-     * When a certain time has passed, kreXX will use an emergency break to
-     * prevent too large output (or no output at all (WSOD)).
-     */
-    protected static function resetTimer()
-    {
-        if (self::$timer == 0) {
-            self::$timer = time();
-        }
+        return self::$storage->render->renderCssJs($css, $js);
     }
 
     /**
@@ -476,4 +422,23 @@ class Internals
         }
         return $result;
     }
+
+    protected static function registerShutdown()
+    {
+        // Register our shutdown handler. He will handle the display
+        // of kreXX after the hosting CMS is finished.
+        OutputActions::$shutdownHandler = new ShutdownHandler(self::$storage);
+        register_shutdown_function(array(
+            OutputActions::$shutdownHandler,
+            'shutdownCallback'
+        ));
+    }
+
+    protected static function initStorage()
+    {
+        if (!is_object(self::$storage)) {
+            self::$storage = new Storage();
+        }
+    }
+
 }

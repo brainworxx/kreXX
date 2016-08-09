@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Errorhandler;
 
 use Brainworxx\Krexx\Config\Config;
+use Brainworxx\Krexx\Framework\Storage;
 
 /**
  * This class hosts all functions which all error handlers will share
@@ -43,6 +44,13 @@ use Brainworxx\Krexx\Config\Config;
  */
 abstract class Error
 {
+
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
 
     /**
      * Stores if the handler is active.
@@ -55,6 +63,11 @@ abstract class Error
      */
     protected $isActive = false;
 
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
+
     /**
      * Decides, if the handler does anything.
      *
@@ -64,7 +77,7 @@ abstract class Error
      */
     protected function getIsActive()
     {
-        if ($this->isActive && Config::getEnabled()) {
+        if ($this->isActive && $this->storage->config->getEnabled()) {
             // We will only handle errors when kreXX and the handler
             // itself is enabled.
             return true;

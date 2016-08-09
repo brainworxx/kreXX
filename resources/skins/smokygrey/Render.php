@@ -72,7 +72,7 @@ class Render extends \Brainworxx\Krexx\View\Render
     {
 
         // Check for emergency break.
-        if (!OutputActions::$emergencyHandler->checkEmergencyBreak()) {
+        if (!$this->storage->emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
 
@@ -94,7 +94,7 @@ class Render extends \Brainworxx\Krexx\View\Render
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = OutputActions::$codegenHandler->generateSource($model);
+        $gencode = $this->storage->codegenHandler->generateSource($model);
         $template = str_replace('{gensource}', $gencode, $template);
         if ($gencode == '.stop.' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.
@@ -113,7 +113,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         $json = json_encode($json);
         $template = str_replace('{addjson}', $json, $template);
 
-        return str_replace('{nest}', Chunks::chunkMe($this->renderNest($model, false)), $template);
+        return str_replace('{nest}', $this->storage->chunks->chunkMe($this->renderNest($model, false)), $template);
 
     }
 
@@ -203,7 +203,7 @@ class Render extends \Brainworxx\Krexx\View\Render
 
         // Add the search.
         $template = str_replace('{search}', $this->renderSearch(), $template);
-        return str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
+        return str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
     }
 
     /**

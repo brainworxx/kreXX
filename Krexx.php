@@ -81,12 +81,11 @@ class Krexx
         include_once $krexxdir . 'src/view/Messages.php';
         include_once $krexxdir . 'src/analysis/CodegenHandler.php';
         include_once $krexxdir . 'src/config/Fallback.php';
-        include_once $krexxdir . 'src/config/Tools.php';
         include_once $krexxdir . 'src/config/Config.php';
-        include_once $krexxdir . 'src/config/FeConfig.php';
         include_once $krexxdir . 'src/framework/Toolbox.php';
         include_once $krexxdir . 'src/framework/Chunks.php';
         include_once $krexxdir . 'src/framework/ShutdownHandler.php';
+        include_once $krexxdir . 'src/framework/Storage.php';
         include_once $krexxdir . 'src/analysis/Flection.php';
         include_once $krexxdir . 'src/analysis/RecursionHandler.php';
         include_once $krexxdir . 'src/analysis/Routing.php';
@@ -110,43 +109,7 @@ class Krexx
 
         Config::$krexxdir = $krexxdir;
 
-        // Register our shutdown handler. He will handle the display
-        // of kreXX after the hosting CMS is finished.
-        OutputActions::$shutdownHandler = new ShutdownHandler();
-        register_shutdown_function(array(
-            OutputActions::$shutdownHandler,
-            'shutdownCallback'
-        ));
-
-        // Check if the log and chunk folder are writable.
-        // If not, give feedback!
-        if (!is_writeable($krexxdir . 'chunks' . DIRECTORY_SEPARATOR)) {
-            $chunkFolder = $krexxdir . 'chunks' . DIRECTORY_SEPARATOR;
-            Messages::addMessage(
-                'Chunksfolder ' . $chunkFolder . ' is not writable!' .
-                'This will increase the memory usage of kreXX significantly!',
-                'critical'
-            );
-            Messages::addKey('protected.folder.chunk', array($krexxdir . 'chunks' . DIRECTORY_SEPARATOR));
-            // We can work without chunks, but this will require much more memory!
-            Chunks::setUseChunks(false);
-        }
-        if (!is_writeable($krexxdir . Config::getConfigValue('output', 'folder') . DIRECTORY_SEPARATOR)) {
-            $logFolder = $krexxdir . Config::getConfigValue('output', 'folder') . DIRECTORY_SEPARATOR;
-            Messages::addMessage('Logfolder ' . $logFolder . ' is not writable !', 'critical');
-            Messages::addKey(
-                'protected.folder.log',
-                array($krexxdir . Config::getConfigValue('output', 'folder') . DIRECTORY_SEPARATOR)
-            );
-        }
-        // At this point, we won't inform the dev right away. The error message
-        // will pop up, when kreXX is actually displayed, no need to bother the
-        // dev just now.
-        // We might need to register our fatal error handler.
-        if (Config::getConfigValue('backtraceAndError', 'registerAutomatically') == 'true') {
-            self::registerFatal();
-        }
-
+        OutputActions::checkEnvironmentAction();
     }
 
     /**
@@ -161,7 +124,7 @@ class Krexx
     {
         OutputActions::noFatalForKrexx();
         // Do we gave a handle?
-        $handle = Config::getDevHandler();
+        $handle = OutputActions::$storage->config->getDevHandler();
         if ($name == $handle) {
             // We do a standard-open.
             if (isset($arguments[0])) {
@@ -184,7 +147,7 @@ class Krexx
     {
         OutputActions::noFatalForKrexx();
         // Disabled?
-        if (!Config::getEnabled()) {
+        if (!OutputActions::$storage->config->getEnabled()) {
             return;
         }
         OutputActions::timerAction($string);
@@ -198,7 +161,7 @@ class Krexx
     {
         OutputActions::noFatalForKrexx();
         // Disabled ?
-        if (!Config::getEnabled()) {
+        if (!OutputActions::$storage->config->getEnabled()) {
             return;
         }
         OutputActions::timerEndAction();
@@ -215,7 +178,7 @@ class Krexx
     {
         OutputActions::noFatalForKrexx();
         // Disabled?
-        if (!Config::getEnabled()) {
+        if (!OutputActions::$storage->config->getEnabled()) {
             return;
         }
         OutputActions::dumpAction($data);
@@ -232,7 +195,7 @@ class Krexx
     {
         OutputActions::noFatalForKrexx();
         // Disabled?
-        if (!Config::getEnabled()) {
+        if (!OutputActions::$storage->config->getEnabled()) {
             return;
         }
         // Render it.
@@ -246,7 +209,7 @@ class Krexx
     public static function enable()
     {
         OutputActions::noFatalForKrexx();
-        Config::setEnabled(true);
+        OutputActions::$storage->config->setEnabled(true);
         OutputActions::reFatalAfterKrexx();
     }
 
@@ -256,7 +219,7 @@ class Krexx
     public static function disable()
     {
         OutputActions::noFatalForKrexx();
-        Config::setEnabled(false);
+        OutputActions::$storage->config->setEnabled(false);
         // We will not re-enable it afterwards, because kreXX
         // is disabled and the handler would not show up anyway.
     }
@@ -271,7 +234,7 @@ class Krexx
         OutputActions::noFatalForKrexx();
         // Disabled?
         // We are ignoring local settings here.
-        if (!Config::getEnabled()) {
+        if (!OutputActions::$storage->config->getEnabled()) {
             return;
         }
         OutputActions::editSettingsAction();
@@ -286,7 +249,7 @@ class Krexx
     public static function registerFatal()
     {
         // Disabled?
-        if (!Config::getEnabled()) {
+        if (!OutputActions::$storage->config->getEnabled()) {
             return;
         }
         OutputActions::registerFatalAction();
@@ -302,7 +265,7 @@ class Krexx
     public static function unregisterFatal()
     {
         // Disabled?
-        if (!Config::getEnabled()) {
+        if (!OutputActions::$storage->config->getEnabled()) {
             return;
         }
         OutputActions::unregisterFatalAction();

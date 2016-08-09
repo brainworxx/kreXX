@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Framework;
 
 use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\View\Messages;
 
 /**
  * Output string handling for kreXX, splitting strings into small tiny chunks.
@@ -57,6 +56,12 @@ use Brainworxx\Krexx\View\Messages;
  */
 class Chunks
 {
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
 
     /**
      * Here we store the metadata from the call.
@@ -78,6 +83,11 @@ class Chunks
      */
     protected static $useChunks = true;
 
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
+
     /**
      * Splits a string into small chunks.
      *
@@ -89,14 +99,14 @@ class Chunks
      * @return string
      *   The key to the chunk, wrapped up in @@@@@@.
      */
-    public static function chunkMe($string)
+    public function chunkMe($string)
     {
 
-        if (self::$useChunks && strlen($string) > 10000) {
+        if ($this::$useChunks && strlen($string) > 10000) {
             // Get the key.
-            $key = self::genKey();
+            $key = $this->genKey();
             // Write the key to the chunks folder.
-            self::putFileContents(Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp', $string);
+            $this->putFileContents(Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp', $string);
             // Return the first part plus the key.
             return '@@@' . $key . '@@@';
         } else {
@@ -111,12 +121,12 @@ class Chunks
      * @return string
      *   The generated key.
      */
-    protected static function genKey()
+    protected function genKey()
     {
         static $counter = 0;
         $counter++;
 
-        return self::fileStamp() . '_' . $counter;
+        return $this->fileStamp() . '_' . $counter;
     }
 
     /**
@@ -133,18 +143,18 @@ class Chunks
      *   The original date
      *
      */
-    protected static function dechunkMe($key)
+    protected function dechunkMe($key)
     {
         $filename = Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp';
         if (is_writable($filename)) {
             // Read the file.
-            $string = Toolbox::getFileContents($filename);
+            $string = $this->storage->getFileContents($filename);
             // Delete it, we don't need it anymore.
             unlink($filename);
         } else {
             // Huh, we can not fully access this one.
             $string = 'Could not access chunk file ' . $filename;
-            Messages::addMessage('Could not access chunk file ' . $filename);
+            $this->storage->messages->addMessage('Could not access chunk file ' . $filename);
         }
 
         return $string;
@@ -158,11 +168,11 @@ class Chunks
      * @param string $string
      *   The chunk string.
      */
-    public static function sendDechunkedToBrowser($string)
+    public function sendDechunkedToBrowser($string)
     {
         // Do some housekeeping. Unless something dreadful had happened, there
         // should not be anything to cleanup.
-        self::cleanupOldChunks();
+        $this->cleanupOldChunks();
 
         $chunkPos = strpos($string, '@@@');
 
@@ -175,7 +185,7 @@ class Chunks
 
             // We translate the first chunk.
             $result = explode('@@@', $chunkPart, 3);
-            $string = str_replace('@@@' . $result[1] . '@@@', self::dechunkMe($result[1]), $chunkPart);
+            $string = str_replace('@@@' . $result[1] . '@@@', $this->dechunkMe($result[1]), $chunkPart);
             $chunkPos = strpos($string, '@@@');
         }
 
@@ -193,26 +203,26 @@ class Chunks
      * @param string $string
      *   The chunked version of the output.
      */
-    public static function saveDechunkedToFile($string)
+    public function saveDechunkedToFile($string)
     {
-        self::cleanupOldChunks();
+        $this->cleanupOldChunks();
 
         // Cleanup old logfiles to prevent a overflow.
         static $logDir;
         if (is_null($logDir)) {
-            $logDir = Config::getConfigValue('output', 'folder') . DIRECTORY_SEPARATOR;
+            $logDir = $this->storage->config->getConfigValue('output', 'folder') . DIRECTORY_SEPARATOR;
         }
-        self::cleanupOldLogs($logDir);
+        $this->cleanupOldLogs($logDir);
 
         // Determine the filename.
-        $timestamp = self::fileStamp();
+        $timestamp = $this->fileStamp();
         $filename = Config::$krexxdir . $logDir . $timestamp . '.Krexx.html';
 
         $chunkPos = strpos($string, '@@@');
 
         while ($chunkPos !== false) {
             // We have a chunk, we send the html part.
-            self::putFileContents($filename, substr($string, 0, $chunkPos));
+            $this->putFileContents($filename, substr($string, 0, $chunkPos));
 
             $chunkPart = substr($string, $chunkPos);
 
@@ -220,15 +230,15 @@ class Chunks
             // Strangely, with a memory peak of 84MB, explode is
             // 2 mb cheaper than preg_match().
             $result = explode('@@@', $chunkPart, 3);
-            $string = str_replace('@@@' . $result[1] . '@@@', self::dechunkMe($result[1]), $chunkPart);
+            $string = str_replace('@@@' . $result[1] . '@@@', $this->dechunkMe($result[1]), $chunkPart);
             $chunkPos = strpos($string, '@@@');
         }
 
         // No more chunks, we save what is left.
-        self::putFileContents($filename, $string);
+        $this->putFileContents($filename, $string);
         // Save our metadata, so a potential backend module can display it.
         if (!empty(self::$metadata)) {
-            self::putFileContents($filename . '.json', json_encode(self::$metadata));
+            $this->putFileContents($filename . '.json', json_encode(self::$metadata));
             self::$metadata = array();
         }
     }
@@ -236,7 +246,7 @@ class Chunks
     /**
      * Deletes chunk files older then 1 hour, in case there are some left.
      */
-    protected static function cleanupOldChunks()
+    protected function cleanupOldChunks()
     {
         static $beenHere = false;
 
@@ -261,12 +271,12 @@ class Chunks
      * @param string $logDir
      *   The directory with the logfiles.
      */
-    protected static function cleanupOldLogs($logDir)
+    protected function cleanupOldLogs($logDir)
     {
         // Cleanup old logfiles to prevent a overflow.
         $logList = glob(Config::$krexxdir . $logDir . "*.Krexx.html");
         array_multisort(array_map('filemtime', $logList), SORT_DESC, $logList);
-        $maxFileCount = (int)Config::getConfigValue('output', 'maxfiles');
+        $maxFileCount = (int)$this->storage->config->getConfigValue('output', 'maxfiles');
         $count = 1;
         // Cleanup logfiles.
         foreach ($logList as $file) {
@@ -292,7 +302,7 @@ class Chunks
      * @param boolean $bool
      *   Are we using chunks?
      */
-    public static function setUseChunks($bool)
+    public function setUseChunks($bool)
     {
         self::$useChunks = $bool;
     }
@@ -302,7 +312,7 @@ class Chunks
      *
      * @param array $caller
      */
-    public static function addMetadata($caller)
+    public function addMetadata($caller)
     {
         self::$metadata[] = $caller;
     }
@@ -315,7 +325,7 @@ class Chunks
      * @return string
      *   The timestamp itself.
      */
-    protected static function fileStamp()
+    protected function fileStamp()
     {
         static $timestamp = 0;
         if ($timestamp == 0) {
@@ -337,7 +347,7 @@ class Chunks
      * @param string $string
      *   The string we want to write.
      */
-    protected static function putFileContents($path, $string)
+    protected function putFileContents($path, $string)
     {
         // Do some caching, so we check a file or dir only once!
         static $ops = array();

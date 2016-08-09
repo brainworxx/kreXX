@@ -35,9 +35,9 @@
 namespace Brainworxx\Krexx\Analysis;
 
 use Brainworxx\Krexx\Controller\OutputActions;
+use Brainworxx\Krexx\Framework\Storage;
 use Brainworxx\Krexx\Model\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Framework\Toolbox;
 
 /**
  * "Routing" for kreXX
@@ -52,6 +52,23 @@ class Routing
 {
 
     /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
+
+    /**
+     * Injects the storage.
+     *
+     * @param \Brainworxx\Krexx\Framework\Storage $storage
+     */
+    public function __construct(Storage $storage)
+    {
+         $this->storage = $storage;
+    }
+
+    /**
      * Dump information about a variable.
      *
      * This function decides what functions analyse the data
@@ -63,101 +80,101 @@ class Routing
      * @return string
      *   The generated markup.
      */
-    public static function analysisHub(Simple $model)
+    public function analysisHub(Simple $model)
     {
         // Check memory and runtime.
-        if (!OutputActions::$emergencyHandler->checkEmergencyBreak()) {
+        if (!$this->storage->emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
         $data = $model->getData();
 
         // Check nesting level
-        OutputActions::$emergencyHandler->upOneNestingLevel();
+        $this->storage->emergencyHandler->upOneNestingLevel();
         if (is_array($data) || is_object($data)) {
-            if (OutputActions::$emergencyHandler->checkNesting()) {
-                OutputActions::$emergencyHandler->downOneNestingLevel();
-                $text = gettype($data) . ' => ' . OutputActions::$render->getHelp('maximumLevelReached');
+            if ($this->storage->emergencyHandler->checkNesting()) {
+                $this->storage->emergencyHandler->downOneNestingLevel();
+                $text = gettype($data) . ' => ' . $this->storage->render->getHelp('maximumLevelReached');
                 $model->setData($text);
-                return Routing::analyseString($model);
+                return $this->analyseString($model);
             }
         }
 
         // Check for recursion.
         if (is_object($data) || is_array($data)) {
-            if (OutputActions::$recursionHandler->isInHive($data)) {
+            if ($this->storage->recursionHandler->isInHive($data)) {
                 // Render recursion.
                 $model->setNormal($model->getName())
-                    ->setDomid(self::generateDomIdFromObject($data))
+                    ->setDomid($this->generateDomIdFromObject($data))
                     ->setType($model->getAdditional() . 'class');
-                $result = OutputActions::$render->renderRecursion($model);
-                OutputActions::$emergencyHandler->downOneNestingLevel();
+                $result = $this->storage->render->renderRecursion($model);
+                $this->storage->emergencyHandler->downOneNestingLevel();
                 return $result;
             }
             // Remember that we've been here before.
-            OutputActions::$recursionHandler->addToHive($data);
+            $this->storage->recursionHandler->addToHive($data);
         }
 
 
         // Object?
         // Closures are analysed separately.
         if (is_object($data) && !is_a($data, '\Closure')) {
-            $result = self::analyseObject($model);
-            OutputActions::$emergencyHandler->downOneNestingLevel();
+            $result = $this->analyseObject($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
             return $result;
         }
 
         // Closure?
         if (is_object($data) && is_a($data, '\Closure')) {
-            $result = self::analyseClosure($model);
-            OutputActions::$emergencyHandler->downOneNestingLevel();
+            $result = $this->analyseClosure($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
             return $result;
         }
 
         // Array?
         if (is_array($data)) {
-            $result = Routing::analyseArray($model);
-            OutputActions::$emergencyHandler->downOneNestingLevel();
+            $result = $this->analyseArray($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
             return $result;
         }
 
         // Resource?
         if (is_resource($data)) {
-            OutputActions::$emergencyHandler->downOneNestingLevel();
-            return Routing::analyseResource($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
+            return $this->analyseResource($model);
         }
 
         // String?
         if (is_string($data)) {
-            OutputActions::$emergencyHandler->downOneNestingLevel();
-            return Routing::analyseString($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
+            return $this->analyseString($model);
         }
 
         // Float?
         if (is_float($data)) {
-            OutputActions::$emergencyHandler->downOneNestingLevel();
-            return Routing::analyseFloat($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
+            return $this->analyseFloat($model);
         }
 
         // Integer?
         if (is_int($data)) {
-            OutputActions::$emergencyHandler->downOneNestingLevel();
-            return Routing::analyseInteger($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
+            return $this->analyseInteger($model);
         }
 
         // Boolean?
         if (is_bool($data)) {
-            OutputActions::$emergencyHandler->downOneNestingLevel();
-            return Routing::analyseBoolean($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
+            return $this->analyseBoolean($model);
         }
 
         // Null ?
         if (is_null($data)) {
-            OutputActions::$emergencyHandler->downOneNestingLevel();
-            return Routing::analyseNull($model);
+            $this->storage->emergencyHandler->downOneNestingLevel();
+            return $this->analyseNull($model);
         }
 
         // Still here? This should not happen. Return empty string, just in case.
-        OutputActions::$emergencyHandler->downOneNestingLevel();
+        $this->storage->emergencyHandler->downOneNestingLevel();
         return '';
     }
 
@@ -170,7 +187,7 @@ class Routing
      * @return string
      *   The rendered markup.
      */
-    public static function analyseNull(Simple $model)
+    public function analyseNull(Simple $model)
     {
         $json = array();
         $json['type'] = 'NULL';
@@ -181,7 +198,7 @@ class Routing
             ->setType($model->getAdditional() . 'null')
             ->setJson($json);
 
-        return OutputActions::$render->renderSingleChild($model);
+        return $this->storage->render->renderSingleChild($model);
     }
 
     /**
@@ -193,7 +210,7 @@ class Routing
      * @return string
      *   The rendered markup.
      */
-    public static function analyseArray(Simple $model)
+    public function analyseArray(Simple $model)
     {
         $json = array();
         $json['type'] = 'array';
@@ -206,7 +223,7 @@ class Routing
             ->addParameter('data', $model->getData())
             ->initCallback('Iterate\ThroughArray');
 
-        return OutputActions::$render->renderExpandableChild($model);
+        return $this->storage->render->renderExpandableChild($model);
     }
 
     /**
@@ -218,7 +235,7 @@ class Routing
      * @return string
      *   The rendered markup.
      */
-    public static function analyseResource(Simple $model)
+    public function analyseResource(Simple $model)
     {
         $json = array();
         $json['type'] = 'resource';
@@ -229,7 +246,7 @@ class Routing
             ->setType($model->getAdditional() . 'resource')
             ->setJson($json);
 
-        return OutputActions::$render->renderSingleChild($model);
+        return $this->storage->render->renderSingleChild($model);
     }
 
     /**
@@ -241,7 +258,7 @@ class Routing
      * @return string
      *   The rendered markup.
      */
-    public static function analyseBoolean(Simple $model)
+    public function analyseBoolean(Simple $model)
     {
         $json = array();
         $json['type'] = 'boolean';
@@ -252,7 +269,7 @@ class Routing
             ->setType($model->getAdditional() . 'boolean')
             ->setJson($json);
 
-        return OutputActions::$render->renderSingleChild($model);
+        return $this->storage->render->renderSingleChild($model);
     }
 
     /**
@@ -264,7 +281,7 @@ class Routing
      * @return string
      *   The rendered markup.
      */
-    public static function analyseInteger(Simple $model)
+    public function analyseInteger(Simple $model)
     {
         $json = array();
         $json['type'] = 'integer';
@@ -273,7 +290,7 @@ class Routing
             ->setType($model->getAdditional() . 'integer')
             ->setJson($json);
 
-        return OutputActions::$render->renderSingleChild($model);
+        return $this->storage->render->renderSingleChild($model);
     }
 
     /**
@@ -285,7 +302,7 @@ class Routing
      * @return string
      *   The rendered markup.
      */
-    public static function analyseFloat(Simple $model)
+    public function analyseFloat(Simple $model)
     {
         $json = array();
         $json['type'] = 'float';
@@ -294,7 +311,7 @@ class Routing
             ->setType($model->getAdditional() . 'float')
             ->setJson($json);
 
-        return OutputActions::$render->renderSingleChild($model);
+        return $this->storage->render->renderSingleChild($model);
     }
 
     /**
@@ -306,7 +323,7 @@ class Routing
      * @return string
      *   The rendered markup.
      */
-    public static function analyseString(Simple $model)
+    public function analyseString(Simple $model)
     {
         $json = array();
         $json['type'] = 'string';
@@ -314,9 +331,9 @@ class Routing
 
         // Extra ?
         if (strlen($data) > 50) {
-            $cut = substr(Toolbox::encodeString($data), 0, 50 - 3) . '. . .';
+            $cut = substr($this->storage->encodeString($data), 0, 50 - 3) . '. . .';
         } else {
-            $cut = Toolbox::encodeString($data);
+            $cut = $this->storage->encodeString($data);
         }
 
         $json['encoding'] = @mb_detect_encoding($data);
@@ -329,14 +346,14 @@ class Routing
             $json['encoding'] = 'broken';
         }
 
-        $data = Toolbox::encodeString($data);
+        $data = $this->storage->encodeString($data);
 
         $model->setData($data)
             ->setNormal($cut)
             ->setType($model->getAdditional() . 'string' . ' ' . $strlen)
             ->setJson($json);
 
-        return OutputActions::$render->renderSingleChild($model);
+        return $this->storage->render->renderSingleChild($model);
     }
 
     /**
@@ -348,14 +365,14 @@ class Routing
      * @return string
      *   The generated markup.
      */
-    public static function analyseClosure(Simple $model)
+    public function analyseClosure(Simple $model)
     {
         $ref = new \ReflectionFunction($model->getData());
 
         $result = array();
 
         // Adding comments from the file.
-        $methodclass = new ThroughMethods();
+        $methodclass = new ThroughMethods($this->storage);
         $result['comments'] =  $methodclass->prettifyComment($ref->getDocComment());
 
         // Adding the sourcecode
@@ -363,7 +380,7 @@ class Routing
         $from = $highlight - 3;
         $to = $ref->getEndLine() -1;
         $file = $ref->getFileName();
-        $result['source'] = Toolbox::readSourcecode($file, $highlight, $from, $to);
+        $result['source'] = $this->storage->readSourcecode($file, $highlight, $from, $to);
 
         // Adding the place where it was declared.
         $result['declared in'] = $ref->getFileName() . "\n";
@@ -395,7 +412,7 @@ class Routing
             ->addParameter('data', $result)
             ->initCallback('Iterate\ThroughMethodAnalysis');
 
-        return OutputActions::$render->renderExpandableChild($model);
+        return $this->storage->render->renderExpandableChild($model);
 
     }
 
@@ -408,23 +425,18 @@ class Routing
      * @return string
      *   The generated markup.
      */
-    public static function analyseObject(Simple $model)
+    public function analyseObject(Simple $model)
     {
-        static $level = 0;
-
         $output = '';
-        $level++;
         $model->setType($model->getAdditional() . 'class')
             ->addParameter('data', $model->getData())
             ->addParameter('name', $model->getName())
             ->setAdditional(get_class($model->getData()))
-            ->setDomid(self::generateDomIdFromObject($model->getData()))
+            ->setDomid($this->generateDomIdFromObject($model->getData()))
             ->initCallback('Analyse\Object');
 
         // Output data from the class.
-        $output .= OutputActions::$render->renderExpandableChild($model);
-        // We've finished this one, and can decrease the level setting.
-        $level--;
+        $output .= $this->storage->render->renderExpandableChild($model);
         return $output;
     }
 
@@ -443,19 +455,19 @@ class Routing
      * @return string
      *   The rendered backtrace.
      */
-    public static function analysisBacktrace(array &$backtrace, $offset = 0)
+    public function analysisBacktrace(array &$backtrace, $offset = 0)
     {
         $output = '';
 
         foreach ($backtrace as $step => $stepData) {
-            $model = new Simple();
+            $model = new Simple($this->storage);
             $model->setName($step)
                 ->setType('Stack Frame')
                 ->addParameter('stepData', $stepData)
                 ->addParameter('offset', $offset)
                 ->initCallback('Analyse\BacktraceStep');
 
-            $output .= OutputActions::$render->renderExpandableChild($model);
+            $output .= $this->storage->render->renderExpandableChild($model);
         }
 
         return $output;
@@ -474,7 +486,7 @@ class Routing
      * @return string
      *   The generated id.
      */
-    protected static function generateDomIdFromObject($data)
+    protected function generateDomIdFromObject($data)
     {
         if (is_object($data)) {
             return 'k' . OutputActions::$KrexxCount . '_' . spl_object_hash($data);

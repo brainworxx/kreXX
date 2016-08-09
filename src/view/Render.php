@@ -99,7 +99,7 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is something
         // to generate.
-        $gensource = OutputActions::$codegenHandler->generateSource($model);
+        $gensource = $this->storage->codegenHandler->generateSource($model);
         if ($gensource == '') {
             // Remove the markers, because here is nothing to add.
             $template = str_replace('{gensource}', '', $template);
@@ -143,7 +143,7 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = OutputActions::$codegenHandler->generateSource($model);
+        $gencode = $this->storage->codegenHandler->generateSource($model);
 
         if ($gencode == '') {
             // Remove the markers, because here is nothing to add.
@@ -185,9 +185,9 @@ class Render extends Help
         $template = str_replace('{KrexxCount}', OutputActions::$KrexxCount, $template);
         $template = str_replace('{headline}', $headline, $template);
         $template = str_replace('{cssJs}', $cssJs, $template);
-        $template = str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
+        $template = str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
         $template = str_replace('{search}', $this->renderSearch(), $template);
-        $template = str_replace('{messages}', Messages::outputMessages(), $template);
+        $template = str_replace('{messages}', $this->storage->messages->outputMessages(), $template);
 
         return $template;
     }
@@ -201,7 +201,7 @@ class Render extends Help
     public function renderSearch()
     {
         $template = $this->getTemplateFileContent('search');
-        $template = str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
+        $template = str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
         return $template;
     }
 
@@ -298,7 +298,7 @@ class Render extends Help
     public function renderExpandableChild(Simple $model, $isExpanded = false)
     {
         // Check for emergency break.
-        if (!OutputActions::$emergencyHandler->checkEmergencyBreak()) {
+        if (!$this->storage->emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
 
@@ -323,7 +323,7 @@ class Render extends Help
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = OutputActions::$codegenHandler->generateSource($model);
+        $gencode = $this->storage->codegenHandler->generateSource($model);
         $template = str_replace('{gensource}', $gencode, $template);
         if ($gencode == '.stop.' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.
@@ -339,7 +339,11 @@ class Render extends Help
         } else {
             $template = str_replace('{isExpanded}', '', $template);
         }
-        return str_replace('{nest}', Chunks::chunkMe($this->renderNest($model, $isExpanded)), $template);
+        return str_replace(
+            '{nest}',
+            $this->storage->chunks->chunkMe($this->renderNest($model, $isExpanded)),
+            $template
+        );
 
     }
 
@@ -360,10 +364,10 @@ class Render extends Help
             $fileCache[$what] = preg_replace(
                 '/\s+/',
                 ' ',
-                Toolbox::getFileContents(
+                $this->storage->getFileContents(
                     Config::$krexxdir .
                     'resources/skins/' .
-                    Config::getConfigValue('output', 'skin') .
+                    $this->storage->config->getConfigValue('output', 'skin') .
                     '/' .
                     $what .
                     '.html'
@@ -408,7 +412,7 @@ class Render extends Help
 
                 case "skin":
                     // Get a list of all skin folders.
-                    $valueList = Config::getSkinList();
+                    $valueList = $this->storage->config->getSkinList();
                     break;
 
                 default:
@@ -488,7 +492,7 @@ class Render extends Help
 
         $from = $errline -5;
         $to = $errline +5;
-        $source = Toolbox::readSourcecode($errfile, $errline -1, $from -1, $to -1);
+        $source = $this->storage->readSourcecode($errfile, $errline -1, $from -1, $to -1);
 
         // Insert our values.
         $template = str_replace('{type}', $type, $template);
@@ -521,7 +525,7 @@ class Render extends Help
         $template = str_replace('{doctype}', $doctype, $template);
         $template = str_replace('{search}', $this->renderSearch(), $template);
 
-        return str_replace('{KrexxId}', OutputActions::$recursionHandler->getMarker(), $template);
+        return str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
     }
 
     /**

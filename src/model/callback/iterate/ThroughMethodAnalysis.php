@@ -33,7 +33,6 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Iterate;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
 
@@ -57,7 +56,7 @@ class ThroughMethodAnalysis extends AbstractCallback
         $data = $this->parameters['data'];
         $output = '';
         foreach ($data as $key => $string) {
-            $model = new Simple();
+            $model = new Simple($this->storage);
             $model->setData($string)->setName($key)->setType('reflection')->setConnector2('=');
 
             if ($key !== 'comments' && $key !== 'declared in' && $key !== 'source') {
@@ -66,7 +65,7 @@ class ThroughMethodAnalysis extends AbstractCallback
                 $model->setNormal('. . .');
             }
 
-            $output .= OutputActions::$render->renderSingleChild($model);
+            $output .= $this->storage->render->renderSingleChild($model);
         }
         return $output;
     }

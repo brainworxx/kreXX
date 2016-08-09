@@ -34,10 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Analyse;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Analysis\Flection;
 
 /**
@@ -61,7 +59,7 @@ class Object extends AbstractCallback
     {
         $data = $this->parameters['data'];
         $name = $this->parameters['name'];
-        $output = OutputActions::$render->renderSingeChildHr();
+        $output = $this->storage->render->renderSingeChildHr();
 
         $ref = new \ReflectionClass($data);
 
@@ -96,12 +94,12 @@ class Object extends AbstractCallback
             $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Public properties');
             // Adding a HR to reflect that the following stuff are not public
             // properties anymore.
-            $output .= OutputActions::$render->renderSingeChildHr();
+            $output .= $this->storage->render->renderSingeChildHr();
         }
 
         // Dumping protected properties.
-        if (Config::getConfigValue('properties', 'analyseProtected') == 'true' ||
-            OutputActions::$codegenHandler->isInScope()) {
+        if ($this->storage->config->getConfigValue('properties', 'analyseProtected') == 'true' ||
+            $this->storage->codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
             usort($refProps, $sortingCallback);
 
@@ -111,8 +109,8 @@ class Object extends AbstractCallback
         }
 
         // Dumping private properties.
-        if (Config::getConfigValue('properties', 'analysePrivate') == 'true' ||
-            OutputActions::$codegenHandler->isInScope()) {
+        if ($this->storage->config->getConfigValue('properties', 'analysePrivate') == 'true' ||
+            $this->storage->codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
             if (count($refProps)) {
@@ -121,7 +119,7 @@ class Object extends AbstractCallback
         }
 
         // Dumping class constants.
-        if (Config::getConfigValue('properties', 'analyseConstants') == 'true') {
+        if ($this->storage->config->getConfigValue('properties', 'analyseConstants') == 'true') {
             $output .= $this->getReflectionConstantsData($ref);
         }
 
@@ -129,7 +127,7 @@ class Object extends AbstractCallback
         $output .= $this->getMethodData($data);
 
         // Dumping traversable data.
-        if (Config::getConfigValue('properties', 'analyseTraversable') == 'true') {
+        if ($this->storage->config->getConfigValue('properties', 'analyseTraversable') == 'true') {
             $output .= $this->getTraversableData($data, $name);
         }
 
@@ -137,7 +135,7 @@ class Object extends AbstractCallback
         $output .= $this->pollAllConfiguredDebugMethods($data);
 
         // Adding a HR for a better readability.
-        $output .= OutputActions::$render->renderSingeChildHr();
+        $output .= $this->storage->render->renderSingeChildHr();
         return $output;
     }
 
@@ -157,16 +155,16 @@ class Object extends AbstractCallback
         $protected = array();
         $private = array();
         $ref = new \ReflectionClass($data);
-        if (Config::getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
+        if ($this->storage->config->getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
             $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if (Config::getConfigValue('methods', 'analyseProtectedMethods') == 'true' ||
-                OutputActions::$codegenHandler->isInScope()) {
+            if ($this->storage->config->getConfigValue('methods', 'analyseProtectedMethods') == 'true' ||
+                $this->storage->codegenHandler->isInScope()) {
                 $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
             }
 
-            if (Config::getConfigValue('methods', 'analysePrivateMethods') == 'true' ||
-                OutputActions::$codegenHandler->isInScope()) {
+            if ($this->storage->config->getConfigValue('methods', 'analysePrivateMethods') == 'true' ||
+                $this->storage->codegenHandler->isInScope()) {
                 $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
             }
         }
@@ -179,14 +177,14 @@ class Object extends AbstractCallback
                 return strcmp($a->name, $b->name);
             };
             usort($methods, $sortingCallback);
-            $model = new Simple();
+            $model = new Simple($this->storage);
             $model->setName('Methods')
                 ->setType('class internals')
                 ->addParameter('ref', $ref)
                 ->addParameter('methods', $methods)
                 ->initCallback('Iterate\ThroughMethods');
 
-            return OutputActions::$render->renderExpandableChild($model);
+            return $this->storage->render->renderExpandableChild($model);
         }
         return '';
     }
@@ -209,12 +207,12 @@ class Object extends AbstractCallback
     {
         $output = '';
 
-        $funcList = explode(',', Config::getConfigValue('methods', 'debugMethods'));
+        $funcList = explode(',', $this->storage->config->getConfigValue('methods', 'debugMethods'));
         foreach ($funcList as $funcName) {
             if (is_callable(array(
                     $data,
                     $funcName,
-                )) && Config::isAllowedDebugCall($data, $funcName)
+                )) && $this->storage->config->isAllowedDebugCall($data, $funcName)
             ) {
                 $foundRequired = false;
                 // We need to check if this method actually exists. Just because it is
@@ -256,7 +254,7 @@ class Object extends AbstractCallback
                         // Do nothing.
                     }
                     if (isset($result)) {
-                        $model = new Simple();
+                        $model = new Simple($this->storage);
                         $model->setName($funcName)
                             ->setType('debug method')
                             ->setAdditional('. . .')
@@ -266,7 +264,7 @@ class Object extends AbstractCallback
                             ->addParameter('result', $result)
                             ->initCallback('Analyse\Debug');
 
-                        $output .= OutputActions::$render->renderExpandableChild($model);
+                        $output .= $this->storage->render->renderExpandableChild($model);
                         unset($result);
                     }
                 }
@@ -323,7 +321,7 @@ class Object extends AbstractCallback
                 $connector2 = '. . .';
             }
 
-            $model = new Simple();
+            $model = new Simple($this->storage);
             $parameter = iterator_to_array($data);
             $model->setName($name)
                 ->setType('Foreach')
@@ -332,7 +330,7 @@ class Object extends AbstractCallback
                 ->addParameter('data', $parameter)
                 ->initCallback('Iterate\ThroughArray');
 
-            return OutputActions::$render->renderExpandableChild($model);
+            return $this->storage->render->renderExpandableChild($model);
         }
         return '';
     }
@@ -354,7 +352,7 @@ class Object extends AbstractCallback
 
         if (count($refConst) > 0) {
             // We've got some values, we will dump them.
-            $model = new Simple();
+            $model = new Simple($this->storage);
             $classname =$ref->getName();
             // We need to set al least one connector here to activate
             // code generation, even if it is a space.
@@ -364,7 +362,7 @@ class Object extends AbstractCallback
                 ->addParameter('classname', $classname)
                 ->initCallback('Iterate\ThroughConstants');
 
-            return OutputActions::$render->renderExpandableChild($model);
+            return $this->storage->render->renderExpandableChild($model);
         }
 
         // Nothing to see here, return an empty string.
@@ -390,7 +388,7 @@ class Object extends AbstractCallback
     {
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
-        $model = new Simple();
+        $model = new Simple($this->storage);
         $model->addParameter('refProps', $refProps)
             ->addParameter('ref', $ref)
             ->addParameter('orgObject', $data)
@@ -400,7 +398,7 @@ class Object extends AbstractCallback
             // Protected or private properties.
             $model->setName($label)
                 ->setType('class internals');
-            return OutputActions::$render->renderExpandableChild($model);
+            return $this->storage->render->renderExpandableChild($model);
         } else {
             // Public properties.
             // We render them directly in the object "root", so we call

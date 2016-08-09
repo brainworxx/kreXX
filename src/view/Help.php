@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\View;
 
+use Brainworxx\Krexx\Framework\Storage;
+
 /**
  * Help texts.
  *
@@ -41,6 +43,13 @@ namespace Brainworxx\Krexx\View;
  */
 class Help
 {
+
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
 
     // A simple array to hold the values.
     // There should not be any string collisions.
@@ -102,6 +111,11 @@ class Help
         'maxCallReached' => 'Maximum call-level reached. This is the last analysis for this request. To increase this value, please edit:<br />runtime => maxCall.',
         'noSourceAvailable' => 'No sourcecode available. Maybe this was an internal callback (call_user_func for example)?',
     );
+
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
 
     /**
      * Returns the help text when found, otherwise returns an empty string.

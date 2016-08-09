@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Callback;
 
+use Brainworxx\Krexx\Framework\Storage;
+
 /**
  * Abstract class for the callback classes inside the model.
  *
@@ -42,6 +44,18 @@ namespace Brainworxx\Krexx\Model\Callback;
 abstract class AbstractCallback
 {
 
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
+
+    /**
+     * The parameters for the callback.
+     *
+     * @var array
+     */
     protected $parameters = array();
 
     /**
@@ -50,6 +64,11 @@ abstract class AbstractCallback
      * @return string
      */
     abstract public function callMe();
+
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
 
     /**
      * Add callback parameters at class construction.

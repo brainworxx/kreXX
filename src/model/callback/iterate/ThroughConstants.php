@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Iterate;
 
-use Brainworxx\Krexx\Analysis\Routing;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
 
@@ -63,11 +62,11 @@ class ThroughConstants extends AbstractCallback
         // internal stuff. Is it even possible to create a recursion here?
         // Iterate through.
         foreach ($this->parameters['refConst'] as $k => &$v) {
-            $model = new Simple();
+            $model = new Simple($this->storage);
             $model->setData($v)
                 ->setName($k)
                 ->setConnector1($this->parameters['classname'] . '::');
-            $output .= Routing::analysisHub($model);
+            $output .= $this->storage->routing->analysisHub($model);
         }
 
         return $output;

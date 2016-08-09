@@ -46,6 +46,13 @@ class ShutdownHandler
 {
 
     /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
+
+    /**
      * [0] -> The chunkedup string, that we intend to send to
      *        the browser.
      * [1] -> Are we ignoring local settings?
@@ -60,6 +67,11 @@ class ShutdownHandler
      *   This means, that every output is split in 4 parts
      */
     protected $chunkStrings = array();
+
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
 
     /**
      * Adds output to our shutdown handler.
@@ -83,7 +95,7 @@ class ShutdownHandler
     {
         // Check for CLI and messages.
         if (php_sapi_name() == "cli") {
-            $messages = Messages::outputMessages();
+            $messages = $this->storage->messages->outputMessages();
             // Since we are in CLI mode, these messages are not in HTML.
             // We can output them right away.
             echo $messages;
@@ -93,12 +105,12 @@ class ShutdownHandler
         // Every output is split into 4 chunk strings (header, messages,
         // data, footer).
         foreach ($this->chunkStrings as $chunkString) {
-            if (Config::getConfigValue('output', 'destination') == 'file') {
+            if ($this->storage->config->getConfigValue('output', 'destination') == 'file') {
                 // Save it to a file.
-                Chunks::saveDechunkedToFile($chunkString);
+                $this->storage->chunks->saveDechunkedToFile($chunkString);
             } else {
                 // Send it to the browser.
-                Chunks::sendDechunkedToBrowser($chunkString);
+                $this->storage->chunks->sendDechunkedToBrowser($chunkString);
             }
         }
     }

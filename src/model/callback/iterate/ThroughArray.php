@@ -34,11 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Iterate;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Routing;
 
 /**
  * Array analysis methods.
@@ -69,11 +66,11 @@ class ThroughArray extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    protected static function iterateThrough(&$data)
+    protected function iterateThrough(&$data)
     {
         $output = '';
-        $recursionMarker = OutputActions::$recursionHandler->getMarker();
-        $output .= OutputActions::$render->renderSingeChildHr();
+        $recursionMarker = $this->storage->recursionHandler->getMarker();
+        $output .= $this->storage->render->renderSingeChildHr();
 
         // Iterate through.
         foreach ($data as $key => &$value) {
@@ -85,9 +82,9 @@ class ThroughArray extends AbstractCallback
                 continue;
             }
             if (is_string($key)) {
-                $key = Toolbox::encodeString($key);
+                $key = $this->storage->encodeString($key);
             }
-            $model = new Simple();
+            $model = new Simple($this->storage);
             if (is_string($key)) {
                 $model->setData($value)
                     ->setName($key)
@@ -100,9 +97,9 @@ class ThroughArray extends AbstractCallback
                     ->setConnector2(']');
             }
 
-            $output .= Routing::analysisHub($model);
+            $output .= $this->storage->routing->analysisHub($model);
         }
-        $output .= OutputActions::$render->renderSingeChildHr();
+        $output .= $this->storage->render->renderSingeChildHr();
         return $output;
 
     }

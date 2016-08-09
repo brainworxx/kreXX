@@ -34,10 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Analyse;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Config\FeConfig;
 
 /**
  * Configuration "analysis" methods. Meh, naming conventions suck sometimes.
@@ -65,12 +63,12 @@ class ConfigSection extends AbstractCallback
         foreach ($this->parameters['sectionData'] as $parameterName => $parameterValue) {
             // Render the single value.
             // We need to find out where the value comes from.
-            $config = FeConfig::getFeConfig($parameterName);
+            $config = $this->storage->config->getFeConfig($parameterName);
             $editable = $config[0];
             $type = $config[1];
 
             if ($type != 'None') {
-                $model = new Simple();
+                $model = new Simple($this->storage);
                 if ($editable) {
                     $model->setData($parameterName)
                         ->setName($parameterValue)
@@ -78,14 +76,14 @@ class ConfigSection extends AbstractCallback
                         ->setType($type)
                         ->setHelpid($parameterName);
 
-                    $sectionOutput .= OutputActions::$render->renderSingleEditableChild($model);
+                    $sectionOutput .= $this->storage->render->renderSingleEditableChild($model);
                 } else {
                     $model->setData($parameterValue)
                         ->setName($parameterName)
                         ->setNormal($parameterValue)
                         ->setType($source[$parameterName])
                         ->setHelpid($parameterName);
-                    $sectionOutput .= OutputActions::$render->renderSingleChild($model);
+                    $sectionOutput .= $this->storage->render->renderSingleChild($model);
                 }
             }
         }
