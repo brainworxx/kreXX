@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\View\Smokygrey;
 
-use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Model\Simple;
 
 /**

@@ -36,8 +36,6 @@ namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\config\Config;
-use Brainworxx\Krexx\Framework\Toolbox;
-use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -180,7 +178,7 @@ class Render extends Help
     {
         $template = $this->getTemplateFileContent('header');
         // Replace our stuff in the partial.
-        $template = str_replace('{version}', Config::$version, $template);
+        $template = str_replace('{version}', $this->storage->config->version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
         $template = str_replace('{KrexxCount}', OutputActions::$KrexxCount, $template);
         $template = str_replace('{headline}', $headline, $template);
@@ -365,7 +363,7 @@ class Render extends Help
                 '/\s+/',
                 ' ',
                 $this->storage->getFileContents(
-                    Config::$krexxdir .
+                    $this->storage->config->krexxdir .
                     'resources/skins/' .
                     $this->storage->config->getConfigValue('output', 'skin') .
                     '/' .
@@ -521,7 +519,7 @@ class Render extends Help
 
         // Insert our values.
         $template = str_replace('{cssJs}', $cssJs, $template);
-        $template = str_replace('{version}', Config::$version, $template);
+        $template = str_replace('{version}', $this->storage->config->version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
         $template = str_replace('{search}', $this->renderSearch(), $template);
 

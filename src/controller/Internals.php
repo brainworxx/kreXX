@@ -37,9 +37,7 @@ namespace Brainworxx\Krexx\Controller;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Storage;
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\Messages;
 
 /**
  * Methods for the "controller" that are not directly "actions".
@@ -282,9 +280,10 @@ class Internals
      */
     protected static function outputCssAndJs()
     {
+        $krexxDir = self::$storage->config->krexxdir;
         // Get the css file.
         $css = self::$storage->getFileContents(
-            Config::$krexxdir .
+            $krexxDir .
             'resources/skins/' .
             self::$storage->config->getConfigValue('output', 'skin') .
             '/skin.css'
@@ -293,15 +292,15 @@ class Internals
         $css = preg_replace('/\s+/', ' ', $css);
 
         // Adding our DOM tools to the js.
-        if (is_readable(Config::$krexxdir . 'resources/jsLibs/kdt.min.js')) {
-            $jsFile = Config::$krexxdir . 'resources/jsLibs/kdt.min.js';
+        if (is_readable($krexxDir . 'resources/jsLibs/kdt.min.js')) {
+            $jsFile = $krexxDir . 'resources/jsLibs/kdt.min.js';
         } else {
-            $jsFile = Config::$krexxdir . 'resources/jsLibs/kdt.js';
+            $jsFile = $krexxDir . 'resources/jsLibs/kdt.js';
         }
         $js = self::$storage->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
-        $path = Config::$krexxdir . 'resources/skins/' . self::$storage->config->getConfigValue('output', 'skin');
+        $path = $krexxDir . 'resources/skins/' . self::$storage->config->getConfigValue('output', 'skin');
         if (is_readable($path . '/krexx.min.js')) {
             $jsFile = $path . '/krexx.min.js';
         } else {
@@ -434,11 +433,22 @@ class Internals
         ));
     }
 
-    protected static function initStorage()
+    /**
+     * Checks if we need a new storage, or simply need to reset the current one.
+     *
+     * @param string $krexxDir
+     *   The directory where kreXX ist installed.
+     */
+    protected static function initStorage($krexxDir = '')
     {
         if (!is_object(self::$storage)) {
-            self::$storage = new Storage();
+            // We need a new storage.
+            self::$storage = new Storage($krexxDir);
+        } else {
+            // Reset the ones that need to be resetted.
+            self::$storage->reset();
         }
+
     }
 
 }

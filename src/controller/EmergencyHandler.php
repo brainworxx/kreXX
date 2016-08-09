@@ -48,7 +48,7 @@ class EmergencyHandler
      *
      * @var int
      */
-    protected static $timer = 0;
+    protected $timer = 0;
 
     /**
      * Stores if the emergency break is enabled.
@@ -155,7 +155,7 @@ class EmergencyHandler
         }
 
         // Check Runtime.
-        if (self::$timer + $this->maxRuntime <= time()) {
+        if ($this->timer + $this->maxRuntime <= time()) {
             // This is taking longer than expected.
             $this->storage->messages->addMessage('Emergency break due to extensive run time!');
             \Krexx::editSettings();
@@ -228,10 +228,10 @@ class EmergencyHandler
      * When a certain time has passed, kreXX will use an emergency break to
      * prevent too large output (or no output at all (WSOD)).
      */
-    public static function resetTimer()
+    public function resetTimer()
     {
-        if (self::$timer == 0) {
-            self::$timer = time();
+        if ($this->timer == 0) {
+            $this->timer = time();
         }
     }
 }

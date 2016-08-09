@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\View;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Framework\Storage;
 
 /**
@@ -57,14 +56,14 @@ class Messages
      *
      * @var array
      */
-    protected static $messages = array();
+    protected $messages = array();
 
     /**
      * The translatable keys for backend integration.
      *
      * @var array
      */
-    protected static $keys = array();
+    protected $keys = array();
 
     /**
      * Injects the storage.
@@ -86,7 +85,7 @@ class Messages
      */
     public function addMessage($message, $class = 'normal')
     {
-        self::$messages[$message] = array(
+        $this->messages[$message] = array(
             'message' => $message,
             'class' => $class
         );
@@ -105,7 +104,7 @@ class Messages
      */
     public function addKey($key, $params = null)
     {
-        self::$keys[$key] = array('key' => $key, 'params' => $params);
+        $this->keys[$key] = array('key' => $key, 'params' => $params);
     }
 
     /**
@@ -116,7 +115,7 @@ class Messages
      */
     public function removeKey($key)
     {
-        unset(self::$keys[$key]);
+        unset($this->keys[$key]);
     }
 
     /**
@@ -127,7 +126,7 @@ class Messages
      */
     public function getKeys()
     {
-        return self::$keys;
+        return $this->keys;
     }
 
     /**
@@ -140,10 +139,10 @@ class Messages
     {
         // Simple Wrapper for OutputActions::$render->renderMessages
         if (php_sapi_name() == "cli") {
-            if (count(self::$messages)) {
+            if (count($this->messages)) {
                 $result = "\n\nkreXX messages\n";
                 $result .= "==============\n";
-                foreach (self::$messages as $message) {
+                foreach ($this->messages as $message) {
                     $message = $message['message'];
                     $result .= "$message\n";
                 }
@@ -151,7 +150,7 @@ class Messages
                 return $result;
             }
         } else {
-            return $this->storage->render->renderMessages(self::$messages);
+            return $this->storage->render->renderMessages($this->messages);
         }
         // Still here?
         return '';

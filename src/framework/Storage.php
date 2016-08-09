@@ -107,10 +107,11 @@ class Storage
     /**
      * Initializes all needed classes.
      */
-    public function __construct()
+    public function __construct($krexxDir)
     {
         // Initializes the configuration
         $this->config = new Config($this);
+        $this->config->krexxdir = $krexxDir;
         // Initialize the emergency handler.
         $this->emergencyHandler = new EmergencyHandler($this);
         // Initialize the routing.
@@ -128,12 +129,22 @@ class Storage
     }
 
     /**
+     * Renew the classes that need to be renewed.
+     */
+    public function reset()
+    {
+        // We need to reset our recursion handler, because
+        // the content of classes might change with another run.
+        $this->recursionHandler = new RecursionHandler($this);
+    }
+
+    /**
      * Loads the renderer from the skin.
      */
     protected function initRendrerer()
     {
         $skin = $this->config->getConfigValue('output', 'skin');
-        $path = Config::$krexxdir . 'resources/skins/' . $skin . '/Render.php';
+        $path = $this->config->krexxdir . 'resources/skins/' . $skin . '/Render.php';
         $classname = 'Brainworxx\Krexx\View\\' . ucfirst($skin) . '\\Render';
         include_once $path;
         $this->render = new $classname($this);
@@ -150,7 +161,7 @@ class Storage
      * @param int $from
      *   The start line.
      * @param int $to
-     *   The Endline.
+     *   The end line.
      *
      * @return string
      *   The source code.

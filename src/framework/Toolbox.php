@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Framework;
 
-use Brainworxx\Krexx\Controller\OutputActions;
-
 /**
  * Toolbox methods.
  *

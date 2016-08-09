@@ -71,7 +71,7 @@ class Chunks
      *
      * @var array
      */
-    protected static $metadata = array();
+    protected $metadata = array();
 
     /**
      * Are we using chunks?
@@ -81,11 +81,19 @@ class Chunks
      *
      * @var bool
      */
-    protected static $useChunks = true;
+    protected $useChunks = true;
+
+    /**
+     * The cached krexx directory
+     *
+     * @var string
+     */
+    protected $krexxDir;
 
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;
+        $this->krexxDir = $storage->config->krexxdir;
     }
 
     /**
@@ -101,12 +109,11 @@ class Chunks
      */
     public function chunkMe($string)
     {
-
-        if ($this::$useChunks && strlen($string) > 10000) {
+        if ($this->useChunks && strlen($string) > 10000) {
             // Get the key.
             $key = $this->genKey();
             // Write the key to the chunks folder.
-            $this->putFileContents(Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp', $string);
+            $this->putFileContents($this->krexxDir . 'chunks/' . $key . '.Krexx.tmp', $string);
             // Return the first part plus the key.
             return '@@@' . $key . '@@@';
         } else {
@@ -145,7 +152,7 @@ class Chunks
      */
     protected function dechunkMe($key)
     {
-        $filename = Config::$krexxdir . 'chunks/' . $key . '.Krexx.tmp';
+        $filename = $this->krexxDir . 'chunks/' . $key . '.Krexx.tmp';
         if (is_writable($filename)) {
             // Read the file.
             $string = $this->storage->getFileContents($filename);
@@ -216,7 +223,7 @@ class Chunks
 
         // Determine the filename.
         $timestamp = $this->fileStamp();
-        $filename = Config::$krexxdir . $logDir . $timestamp . '.Krexx.html';
+        $filename = $this->krexxDir . $logDir . $timestamp . '.Krexx.html';
 
         $chunkPos = strpos($string, '@@@');
 
@@ -237,9 +244,9 @@ class Chunks
         // No more chunks, we save what is left.
         $this->putFileContents($filename, $string);
         // Save our metadata, so a potential backend module can display it.
-        if (!empty(self::$metadata)) {
-            $this->putFileContents($filename . '.json', json_encode(self::$metadata));
-            self::$metadata = array();
+        if (!empty($this->metadata)) {
+            $this->putFileContents($filename . '.json', json_encode($this->metadata));
+            $this->metadata = array();
         }
     }
 
@@ -253,7 +260,7 @@ class Chunks
         // We only do this once.
         if (!$beenHere) {
             // Clean up leftover files.
-            $chunkList = glob(Config::$krexxdir . 'chunks/*.Krexx.tmp');
+            $chunkList = glob($this->krexxDir . 'chunks/*.Krexx.tmp');
             foreach ($chunkList as $file) {
                 // We delete everything that is older than one hour.
                 if ((filemtime($file) + 3600) < time()) {
@@ -274,7 +281,7 @@ class Chunks
     protected function cleanupOldLogs($logDir)
     {
         // Cleanup old logfiles to prevent a overflow.
-        $logList = glob(Config::$krexxdir . $logDir . "*.Krexx.html");
+        $logList = glob($this->krexxDir . $logDir . "*.Krexx.html");
         array_multisort(array_map('filemtime', $logList), SORT_DESC, $logList);
         $maxFileCount = (int)$this->storage->config->getConfigValue('output', 'maxfiles');
         $count = 1;
@@ -304,7 +311,7 @@ class Chunks
      */
     public function setUseChunks($bool)
     {
-        self::$useChunks = $bool;
+        $this->useChunks = $bool;
     }
 
     /**
@@ -314,7 +321,7 @@ class Chunks
      */
     public function addMetadata($caller)
     {
-        self::$metadata[] = $caller;
+        $this->metadata[] = $caller;
     }
 
     /**

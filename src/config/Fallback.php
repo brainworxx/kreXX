@@ -68,14 +68,14 @@ class Fallback
      *
      * @var bool
      */
-    protected static $isEnabled = true;
+    protected $isEnabled = true;
 
     /**
      * Fallback settings, in case there is nothing in the config ini.
      *
      * @var array
      */
-    public static $configFallback = array(
+    public $configFallback = array(
         'runtime' => array(
             'disabled' => 'false',
             'detectAjax' => 'true',
@@ -113,7 +113,7 @@ class Fallback
      *
      * @var array
      */
-    public static $feConfigFallback = array(
+    public $feConfigFallback = array(
         'analyseMethodsAtall' => array(
             'type' => 'Select',
             'editable' => 'true',
@@ -209,7 +209,7 @@ class Fallback
      *
      * @var array
      */
-    protected static $feConfigNoEdit = array(
+    protected $feConfigNoEdit = array(
         'destination',
         'folder',
         'maxfiles',
@@ -221,7 +221,7 @@ class Fallback
      *
      * @var string
      */
-    public static $krexxdir;
+    public $krexxdir;
 
     /**
      * Known Problems with debug functions, which will most likely cause a fatal.
@@ -231,7 +231,7 @@ class Fallback
      *
      * @var array
      */
-    protected static $debugMethodsBlacklist = array(
+    protected $debugMethodsBlacklist = array(
 
         // TYPO3 viewhelpers dislike this function.
         // In the TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper the private
@@ -253,19 +253,19 @@ class Fallback
      *
      * @var array
      */
-    protected static $localConfig = array();
+    protected $localConfig = array();
 
     /**
      * Path to the configuration file.
      *
      * @var string
      */
-    protected static $pathToIni;
+    protected $pathToIni;
 
     /**
      * The kreXX version.
      *
      * @var string
      */
-    public static $version = '1.4.3 dev';
+    public $version = '1.4.3 dev';
 }

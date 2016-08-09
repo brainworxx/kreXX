@@ -34,11 +34,8 @@
 
 namespace Brainworxx\Krexx\Model\Callback\Analyse;
 
-use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\Framework\Toolbox;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Routing;
 
 /**
  * Backtrace analysis methods.

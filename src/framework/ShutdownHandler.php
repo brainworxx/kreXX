@@ -34,9 +34,6 @@
 
 namespace Brainworxx\Krexx\Framework;
 
-use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\View\Messages;
-
 /**
  * Triggers the kreXX output during shutdown phase.
  *

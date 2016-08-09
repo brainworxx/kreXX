@@ -31,11 +31,6 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-
-use Brainworxx\Krexx\config\Config;
-use Brainworxx\Krexx\Framework\ShutdownHandler;
-use Brainworxx\Krexx\Framework\Chunks;
-use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Controller\OutputActions;
 
 /**
@@ -75,41 +70,39 @@ class Krexx
     public static function bootstrapKrexx()
     {
 
-        $krexxdir = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-        include_once $krexxdir . 'src/view/Help.php';
-        include_once $krexxdir . 'src/view/Render.php';
-        include_once $krexxdir . 'src/view/Messages.php';
-        include_once $krexxdir . 'src/analysis/CodegenHandler.php';
-        include_once $krexxdir . 'src/config/Fallback.php';
-        include_once $krexxdir . 'src/config/Config.php';
-        include_once $krexxdir . 'src/framework/Toolbox.php';
-        include_once $krexxdir . 'src/framework/Chunks.php';
-        include_once $krexxdir . 'src/framework/ShutdownHandler.php';
-        include_once $krexxdir . 'src/framework/Storage.php';
-        include_once $krexxdir . 'src/analysis/Flection.php';
-        include_once $krexxdir . 'src/analysis/RecursionHandler.php';
-        include_once $krexxdir . 'src/analysis/Routing.php';
-        include_once $krexxdir . 'src/model/Simple.php';
-        include_once $krexxdir . 'src/model/callback/AbstractCallback.php';
-        include_once $krexxdir . 'src/model/callback/analyse/BacktraceStep.php';
-        include_once $krexxdir . 'src/model/callback/analyse/ConfigSection.php';
-        include_once $krexxdir . 'src/model/callback/analyse/Debug.php';
-        include_once $krexxdir . 'src/model/callback/analyse/Object.php';
-        include_once $krexxdir . 'src/model/callback/iterate/ThroughArray.php';
-        include_once $krexxdir . 'src/model/callback/iterate/ThroughConfig.php';
-        include_once $krexxdir . 'src/model/callback/iterate/ThroughConstants.php';
-        include_once $krexxdir . 'src/model/callback/iterate/ThroughMethodAnalysis.php';
-        include_once $krexxdir . 'src/model/callback/iterate/ThroughMethods.php';
-        include_once $krexxdir . 'src/model/callback/iterate/ThroughProperties.php';
-        include_once $krexxdir . 'src/errorhandler/Error.php';
-        include_once $krexxdir . 'src/errorhandler/Fatal.php';
-        include_once $krexxdir . 'src/controller/Internals.php';
-        include_once $krexxdir . 'src/controller/OutputActions.php';
-        include_once $krexxdir . 'src/controller/EmergencyHandler.php';
+        $krexxDir = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+        include_once $krexxDir . 'src/view/Help.php';
+        include_once $krexxDir . 'src/view/Render.php';
+        include_once $krexxDir . 'src/view/Messages.php';
+        include_once $krexxDir . 'src/analysis/CodegenHandler.php';
+        include_once $krexxDir . 'src/config/Fallback.php';
+        include_once $krexxDir . 'src/config/Config.php';
+        include_once $krexxDir . 'src/framework/Toolbox.php';
+        include_once $krexxDir . 'src/framework/Chunks.php';
+        include_once $krexxDir . 'src/framework/ShutdownHandler.php';
+        include_once $krexxDir . 'src/framework/Storage.php';
+        include_once $krexxDir . 'src/analysis/Flection.php';
+        include_once $krexxDir . 'src/analysis/RecursionHandler.php';
+        include_once $krexxDir . 'src/analysis/Routing.php';
+        include_once $krexxDir . 'src/model/Simple.php';
+        include_once $krexxDir . 'src/model/callback/AbstractCallback.php';
+        include_once $krexxDir . 'src/model/callback/analyse/BacktraceStep.php';
+        include_once $krexxDir . 'src/model/callback/analyse/ConfigSection.php';
+        include_once $krexxDir . 'src/model/callback/analyse/Debug.php';
+        include_once $krexxDir . 'src/model/callback/analyse/Object.php';
+        include_once $krexxDir . 'src/model/callback/iterate/ThroughArray.php';
+        include_once $krexxDir . 'src/model/callback/iterate/ThroughConfig.php';
+        include_once $krexxDir . 'src/model/callback/iterate/ThroughConstants.php';
+        include_once $krexxDir . 'src/model/callback/iterate/ThroughMethodAnalysis.php';
+        include_once $krexxDir . 'src/model/callback/iterate/ThroughMethods.php';
+        include_once $krexxDir . 'src/model/callback/iterate/ThroughProperties.php';
+        include_once $krexxDir . 'src/errorhandler/Error.php';
+        include_once $krexxDir . 'src/errorhandler/Fatal.php';
+        include_once $krexxDir . 'src/controller/Internals.php';
+        include_once $krexxDir . 'src/controller/OutputActions.php';
+        include_once $krexxDir . 'src/controller/EmergencyHandler.php';
 
-        Config::$krexxdir = $krexxdir;
-
-        OutputActions::checkEnvironmentAction();
+        OutputActions::checkEnvironmentAction($krexxDir);
     }
 
     /**

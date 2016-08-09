@@ -35,10 +35,8 @@
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Errorhandler\Fatal;
-use Brainworxx\Krexx\Framework\Chunks;
 use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\View\Messages;
 
 /**
  * Controller actions (if you want to call them that).
@@ -362,12 +360,14 @@ class OutputActions extends Internals
     /**
      * Yes, we do have an output here. We are generation messagesd to
      * inform the dev that the environment is not as it should be.
+     *
+     * @param string $krexxDir
+     *   The directory where kreXX ist installed.
      */
-    public static function checkEnvironmentAction()
+    public static function checkEnvironmentAction($krexxDir)
     {
-        self::initStorage();
+        self::initStorage($krexxDir);
 
-        $krexxDir = Config::$krexxdir;
         // Check chunk folder is writable.
         // If not, give feedback!
         $logFolder = $krexxDir . 'chunks' . DIRECTORY_SEPARATOR;

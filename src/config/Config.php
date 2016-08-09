@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Config;
 
-use Brainworxx\Krexx\Framework\Toolbox;
-
 /**
  * Access the debug settings here.
  *
@@ -52,7 +50,7 @@ class Config extends Fallback
      */
     public function setEnabled($state)
     {
-        self::$isEnabled = $state;
+        $this->isEnabled = $state;
     }
 
     /**
@@ -75,7 +73,7 @@ class Config extends Fallback
 
         // We will only return the real value, if there are no other,
         // more important settings.
-        return self::$isEnabled;
+        return $this->isEnabled;
     }
 
     /**
@@ -92,8 +90,8 @@ class Config extends Fallback
     public function getConfigValue($group, $name)
     {
         // Do some caching.
-        if (isset(self::$localConfig[$group][$name])) {
-            return self::$localConfig[$group][$name];
+        if (isset($this->localConfig[$group][$name])) {
+            return $this->localConfig[$group][$name];
         }
 
         // Do we have a value in the cookies?
@@ -106,7 +104,7 @@ class Config extends Fallback
                 // Do nothing.
                 // We ignore this setting.
             } else {
-                self::$localConfig[$group][$name] = $localSetting;
+                $this->localConfig[$group][$name] = $localSetting;
                 return $localSetting;
             }
         }
@@ -114,13 +112,13 @@ class Config extends Fallback
         // Do we have a value in the ini?
         $iniSettings = $this->getConfigFromFile($group, $name);
         if (isset($iniSettings)) {
-            self::$localConfig[$group][$name] = $iniSettings;
+            $this->localConfig[$group][$name] = $iniSettings;
             return $iniSettings;
         }
 
         // Nothing yet? Give back factory settings.
-        self::$localConfig[$group][$name] = self::$configFallback[$group][$name];
-        return self::$configFallback[$group][$name];
+        $this->localConfig[$group][$name] = $this->configFallback[$group][$name];
+        return $this->configFallback[$group][$name];
     }
 
     /**
@@ -135,7 +133,7 @@ class Config extends Fallback
      */
     public function overwriteLocalSettings(array $newSettings)
     {
-        $this->arrayMerge(self::$localConfig, $newSettings);
+        $this->arrayMerge($this->localConfig, $newSettings);
     }
 
     /**
@@ -179,7 +177,7 @@ class Config extends Fallback
         $configini = (array)parse_ini_string($this->storage->getFileContents($this->getPathToIni()), true);
 
         // Overwrite the settings from the fallback.
-        foreach (self::$configFallback as $sectionName => $sectionData) {
+        foreach ($this->configFallback as $sectionName => $sectionData) {
             foreach ($sectionData as $parameterName => $parameterValue) {
                 // Get cookie settings.
                 if (isset($cookieConfig[$parameterName])) {
@@ -237,18 +235,18 @@ class Config extends Fallback
      */
     public function getPathToIni()
     {
-        if (!isset(self::$pathToIni)) {
+        if (!isset($this->pathToIni)) {
             $configini = (array)parse_ini_string(
-                $this->storage->getFileContents(self::$krexxdir . 'KrexxConfig.ini'),
+                $this->storage->getFileContents($this->krexxdir . 'KrexxConfig.ini'),
                 true
             );
             if (isset($configini['pathtoini']['pathtoini'])) {
-                self::$pathToIni = $configini['pathtoini']['pathtoini'];
+                $this->pathToIni = $configini['pathtoini']['pathtoini'];
             } else {
-                self::$pathToIni = self::$krexxdir . 'Krexx.ini';
+                $this->pathToIni = $this->krexxdir . 'Krexx.ini';
             }
         }
-        return self::$pathToIni;
+        return $this->pathToIni;
     }
 
     /**
@@ -261,7 +259,7 @@ class Config extends Fallback
      */
     public function setPathToIni($path)
     {
-        self::$pathToIni = $path;
+        $this->pathToIni = $path;
     }
 
     /**
@@ -278,7 +276,7 @@ class Config extends Fallback
     public function isAllowedDebugCall($data, $call)
     {
 
-        foreach (self::$debugMethodsBlacklist as $classname => $method) {
+        foreach ($this->debugMethodsBlacklist as $classname => $method) {
             if (is_a($data, $classname) && $call == $method) {
                 // We have a winner, this one is blacklisted!
                 return false;
@@ -301,10 +299,10 @@ class Config extends Fallback
 
         if (count($list) == 0) {
             // Get the list.
-            $list = array_filter(glob(self::$krexxdir . 'resources/skins/*'), 'is_dir');
+            $list = array_filter(glob($this->krexxdir . 'resources/skins/*'), 'is_dir');
             // Now we need to filter it, we only want the names, not the full path.
             foreach ($list as &$path) {
-                $path = str_replace(self::$krexxdir . 'resources/skins/', '', $path);
+                $path = str_replace($this->krexxdir . 'resources/skins/', '', $path);
             }
         }
 
@@ -338,9 +336,9 @@ class Config extends Fallback
             $editable = $config[$parameterName]['editable'];
         } else {
             // Fallback to factory settings.
-            if (isset(self::$feConfigFallback[$parameterName])) {
-                $type = self::$feConfigFallback[$parameterName]['type'];
-                $editable = self::$feConfigFallback[$parameterName]['editable'];
+            if (isset($this->feConfigFallback[$parameterName])) {
+                $type = $this->feConfigFallback[$parameterName]['type'];
+                $editable = $this->feConfigFallback[$parameterName]['editable'];
             } else {
                 // Unknown parameter.
                 $type = 'None';
@@ -376,7 +374,7 @@ class Config extends Fallback
         if ($group == 'feEditing') {
             // Logging options can never be changed in the frontend.
             // The debug methods will also not be editable.
-            if (in_array($name, self::$feConfigNoEdit)) {
+            if (in_array($name, $this->feConfigNoEdit)) {
                 return false;
             } else {
                 return true;
@@ -543,8 +541,8 @@ class Config extends Fallback
                 case 'folder':
                     // Directory with write access.
                     // We also need to check, if the folder is properly protected.
-                    $isWritable = is_writable(self::$krexxdir . $value);
-                    $isProtected = $this->isFolderProtected(self::$krexxdir . $value);
+                    $isWritable = is_writable($this->krexxdir . $value);
+                    $isProtected = $this->isFolderProtected($this->krexxdir . $value);
                     if ($isWritable && $isProtected) {
                         $result = true;
                     }
@@ -564,7 +562,7 @@ class Config extends Fallback
 
                 case 'skin':
                     // We check the directory and one of the files for readability.
-                    if (is_readable(self::$krexxdir . 'resources/skins/' . $value . '/header.html')) {
+                    if (is_readable($this->krexxdir . 'resources/skins/' . $value . '/header.html')) {
                         $result = true;
                     }
                     if (!$result) {
@@ -728,7 +726,7 @@ class Config extends Fallback
 
                     default:
                         // Nothing special, we get our value from the config class.
-                        $type = self::$feConfigFallback[$parameterName]['type'];
+                        $type = $this->feConfigFallback[$parameterName]['type'];
                 }
                 // Stitch together the setting.
                 switch ($value) {
