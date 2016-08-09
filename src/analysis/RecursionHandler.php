@@ -81,6 +81,7 @@ class RecursionHandler
      * Generate the recursion marker during class construction.
      *
      * @param Storage $storage
+     *   The storage, where we store the classes we need.
      */
     public function __construct(Storage $storage)
     {
@@ -177,7 +178,7 @@ class RecursionHandler
      * already iterated, to prevent recursions.
      *
      * @return string
-     *   The marker
+     *   The marker.
      */
     public function getMarker()
     {

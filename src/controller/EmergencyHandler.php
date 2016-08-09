@@ -93,7 +93,9 @@ class EmergencyHandler
     protected $nestingLevel = 0;
 
     /**
-     * @var \Brainworxx\Krexx\Framework\Storage
+     * The storage, where we store the classes we need.
+     *
+     * @var Storage
      */
     protected $storage;
 
@@ -101,6 +103,7 @@ class EmergencyHandler
      * Get some system and config data during construct.
      *
      * @param Storage $storage
+     *   The storage, where we store the classes we need.
      */
     public function __construct(Storage $storage)
     {
@@ -127,6 +130,7 @@ class EmergencyHandler
      * Setter for the enabling of the break.
      *
      * @param $bool
+     *  Whether it is enabled, or not.
      */
     public function setEnable($bool)
     {

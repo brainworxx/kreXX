@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Errorhandler\Fatal;
-use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -221,7 +220,7 @@ class OutputActions extends Internals
      * Renders the info to the error, warning or notice.
      *
      * @param array $errorData
-     *   The data frm the error. This should be a backtrace
+     *   The data from the error. This should be a backtrace
      *   with code samples.
      */
     public static function errorAction(array $errorData)
@@ -404,5 +403,22 @@ class OutputActions extends Internals
         if (self::$storage->config->getConfigValue('backtraceAndError', 'registerAutomatically') == 'true') {
             self::registerFatalAction();
         }
+    }
+
+    /**
+     * Simply outputs a formatted var_dump.
+     *
+     * This is an internal debugging function, because it is
+     * rather difficult to debug a debugger, when your tool of
+     * choice is the debugger itself.
+     *
+     * @param mixed $data
+     *   The data for the var_dump.
+     */
+    public static function formattedVarDump($data)
+    {
+        echo '<pre>';
+        var_dump($data);
+        echo('</pre>');
     }
 }

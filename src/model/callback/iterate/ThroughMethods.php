@@ -53,6 +53,7 @@ class ThroughMethods extends AbstractCallback
      * Simply start to iterate through the methods.
      *
      * @return string
+     *   The rendered markup.
      */
     public function callMe()
     {

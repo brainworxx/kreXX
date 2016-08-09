@@ -140,6 +140,12 @@ class Simple
      */
     protected $callback;
 
+    /**
+     * Injects the storage.
+     *
+     * @param Storage $storage
+     *   The storage, where we store the classes we need.
+     */
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;
@@ -166,7 +172,7 @@ class Simple
      * @param mixed $data
      *   The current variable we are rendering.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setData(&$data)
@@ -192,7 +198,7 @@ class Simple
      * @param int|string $name
      *   The name/key we are analysing.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setName($name)
@@ -218,7 +224,7 @@ class Simple
      * @param string $normal
      *   The short result of the analysis.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setNormal($normal)
@@ -244,7 +250,7 @@ class Simple
      * @param string $additional
      *   The long result of the analysis.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setAdditional($additional)
@@ -270,7 +276,7 @@ class Simple
      * @param string $type
      *   The type of the variable we are analysing.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setType($type)
@@ -297,7 +303,7 @@ class Simple
      * @param string $helpid
      *   The ID of the help text.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setHelpid($helpid)
@@ -323,7 +329,7 @@ class Simple
      * @param string $connector1
      *   The first connector.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setConnector1($connector1)
@@ -349,7 +355,7 @@ class Simple
      * @param string $connector2
      *   The second connector.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setConnector2($connector2)
@@ -375,7 +381,7 @@ class Simple
      * @param array $json
      *   More analysis data.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setJson($json)
@@ -401,7 +407,7 @@ class Simple
      * @param string $domid
      *   The dom id, of cause.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function setDomid($domid)
@@ -429,7 +435,7 @@ class Simple
      * @param $value
      *   The value of the parameter, by referance.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function addParameter($name, &$value)
@@ -444,7 +450,7 @@ class Simple
      * @param string $name
      *   The name and part of the namespace of the callback class.
      *
-     * @return \Brainworxx\Krexx\Model\Simple
+     * @return Simple
      *   $this, for chaining.
      */
     public function initCallback($name)

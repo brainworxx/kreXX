@@ -55,6 +55,7 @@ class ConfigSection extends AbstractCallback
      * Renders each section of the footer.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {

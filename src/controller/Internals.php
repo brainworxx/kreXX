@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Controller;
 
-use Brainworxx\Krexx\Config\Config;
 use Brainworxx\Krexx\Framework\ShutdownHandler;
 use Brainworxx\Krexx\Framework\Storage;
 use Brainworxx\Krexx\Model\Simple;
@@ -450,5 +449,4 @@ class Internals
         }
 
     }
-
 }

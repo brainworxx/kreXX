@@ -54,7 +54,7 @@ class Storage
     /**
      * An instance of the recursion handler.
      *
-     * It gets reinstantiated with every new call.
+     * It gets re-new()-d with every new call.
      *
      * @var \Brainworxx\Krexx\Analysis\RecursionHandler
      */
@@ -70,7 +70,7 @@ class Storage
     /**
      * Our emergency break handler.
      *
-     * @var \Brainworxx\Krexx\Controller\EmergencyHandler
+     * @var EmergencyHandler
      */
     public $emergencyHandler;
 
@@ -106,6 +106,9 @@ class Storage
 
     /**
      * Initializes all needed classes.
+     *
+     * @param $krexxDir
+     *   The directory, where kreXX is stored.
      */
     public function __construct($krexxDir)
     {
@@ -129,7 +132,7 @@ class Storage
     }
 
     /**
-     * Renew the classes that need to be renewed.
+     * Re-new() the classes that need to be re-new()-ed.
      */
     public function reset()
     {

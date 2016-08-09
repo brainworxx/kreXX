@@ -50,6 +50,7 @@ class ThroughMethodAnalysis extends AbstractCallback
      * Renders the info of a single method.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {

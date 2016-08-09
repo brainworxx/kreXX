@@ -77,7 +77,6 @@ class Krexx
         include_once $krexxDir . 'src/analysis/CodegenHandler.php';
         include_once $krexxDir . 'src/config/Fallback.php';
         include_once $krexxDir . 'src/config/Config.php';
-        include_once $krexxDir . 'src/framework/Toolbox.php';
         include_once $krexxDir . 'src/framework/Chunks.php';
         include_once $krexxDir . 'src/framework/ShutdownHandler.php';
         include_once $krexxDir . 'src/framework/Storage.php';

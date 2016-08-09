@@ -53,6 +53,7 @@ class ThroughConstants extends AbstractCallback
      * Simply iterate though object constants.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {

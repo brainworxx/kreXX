@@ -51,6 +51,7 @@ class Debug extends AbstractCallback
      * Iterate though the result of the polled debug methods.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {

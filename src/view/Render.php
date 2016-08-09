@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Controller\OutputActions;
-use Brainworxx\Krexx\config\Config;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -53,7 +52,7 @@ class Render extends Help
      *
      * Depending on how many characters are in there, it may be toggelable.
      *
-     * @param \Brainworxx\Krexx\Model\Simple $model
+     * @param Simple $model
      *   The model, which hosts all the data we need.
      *
      * @return string
@@ -129,7 +128,7 @@ class Render extends Help
      * If the recursion is an object, a click should jump to the original
      * analysis data.
      *
-     * @param \Brainworxx\Krexx\Model\Simple $model
+     * @param Simple $model
      *   The model, which hosts all the data we need.
      *
      * @return string
@@ -233,7 +232,7 @@ class Render extends Help
     /**
      * Renders a nest with a anonymous function in the middle.
      *
-     * @param \Brainworxx\Krexx\Model\Simple $model
+     * @param Simple $model
      *   The model, which hosts all the data we need.
      * @param bool $isExpanded
      *   The only expanded nest is the settings menu, when we render only the
@@ -284,7 +283,7 @@ class Render extends Help
     /**
      * Renders a expandable child with a callback in the middle.
      *
-     * @param \Brainworxx\Krexx\Model\Simple $model
+     * @param Simple $model
      *   The model, which hosts all the data we need.
      * @param bool $isExpanded
      *   Is this one expanded from the beginning?
@@ -378,7 +377,7 @@ class Render extends Help
     /**
      * Renders a simple editable child node.
      *
-     * @param \Brainworxx\Krexx\Model\Simple $model
+     * @param Simple $model
      *   The model, which hosts all the data we need.
      *
      * @return string
@@ -454,7 +453,7 @@ class Render extends Help
     /**
      * Renders a simple button.
      *
-     * @param \Brainworxx\Krexx\Model\Simple $model
+     * @param Simple $model
      *   The model, which hosts all the data we need.
      *
      * @return string
@@ -572,7 +571,7 @@ class Render extends Help
      * @param string $helpid
      *   The ID of the helptext.
      *
-     * @see \Krexx\Help
+     * @see Help
      *
      * @return string
      *   The generated markup from the template files.

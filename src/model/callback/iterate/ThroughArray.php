@@ -51,6 +51,8 @@ class ThroughArray extends AbstractCallback
      * Renders the expendable around the array analysis.
      *
      * @return string
+     *   The generated markup.
+     * @todo Zusammenführen!
      */
     public function callMe()
     {

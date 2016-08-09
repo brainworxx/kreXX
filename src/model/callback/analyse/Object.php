@@ -54,6 +54,7 @@ class Object extends AbstractCallback
      * Starts the dump of an object.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {

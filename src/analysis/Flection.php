@@ -96,7 +96,7 @@ class Flection
      * Undeclared properties do not have a default value.
      *
      * @return bool
-     *   It's always FALSE.
+     *   It's always FALSE :rolleyes: .
      */
     public function isDefault()
     {

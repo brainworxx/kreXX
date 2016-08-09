@@ -62,6 +62,12 @@ abstract class Error
      */
     protected $isActive = false;
 
+    /**
+     * Injects the storage.
+     *
+     * @param Storage $storage
+     *   The storage, where we store the classes we need.
+     */
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;

@@ -62,9 +62,16 @@ abstract class AbstractCallback
      * The actual callback function for the renderer.
      *
      * @return string
+     *   The generated markup.
      */
     abstract public function callMe();
 
+    /**
+     * Injects the storage.
+     *
+     * @param Storage $storage
+     *   The storage, where we store the classes we need.
+     */
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;
@@ -74,6 +81,7 @@ abstract class AbstractCallback
      * Add callback parameters at class construction.
      *
      * @param array $params
+     *   The parameters for the callMe() method.
      */
     public function setParams(array &$params)
     {

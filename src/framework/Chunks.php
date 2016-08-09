@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Framework;
 
-use Brainworxx\Krexx\Config\Config;
-
 /**
  * Output string handling for kreXX, splitting strings into small tiny chunks.
  *
@@ -90,6 +88,12 @@ class Chunks
      */
     protected $krexxDir;
 
+    /**
+     * Injects the storage.
+     *
+     * @param Storage $storage
+     *   The storage, where we store the classes we need.
+     */
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;
@@ -318,6 +322,7 @@ class Chunks
      * We add some metadata that we will store in a separate file.
      *
      * @param array $caller
+     *   The caller from the OutputActions::findCaller();
      */
     public function addMetadata($caller)
     {

@@ -47,6 +47,7 @@ class Config extends Fallback
      * Will only set it to true, if the
      *
      * @param bool $state
+     *   Whether it it enabled, or not.
      */
     public function setEnabled($state)
     {
@@ -354,7 +355,7 @@ class Config extends Fallback
         return array($editable, $type);
     }
 
-        /**
+    /**
      * Evaluate a single setting from the cookies or the ini file.
      *
      * @param string $group

@@ -68,7 +68,8 @@ class Messages
     /**
      * Injects the storage.
      *
-     * @param \Brainworxx\Krexx\Framework\Storage $storage
+     * @param Storage $storage
+     *   The storage, where we store the classes we need.
      */
     public function __construct(Storage $storage)
     {

@@ -55,6 +55,7 @@ class ThroughProperties extends AbstractCallback
      * Renders the properties of a class.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {

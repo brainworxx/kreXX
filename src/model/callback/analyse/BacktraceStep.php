@@ -53,6 +53,7 @@ class BacktraceStep extends AbstractCallback
      * Renders a backtrace step.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {

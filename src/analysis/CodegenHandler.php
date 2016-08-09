@@ -79,6 +79,7 @@ class CodegenHandler
      * Initializes the code generation.
      *
      * @param Storage $storage
+     *   The storage, where we store the classes we need.
      */
     public function __construct(Storage $storage)
     {
@@ -86,9 +87,10 @@ class CodegenHandler
     }
 
     /**
-     * Sets the scope in whivh we are moving ('$this' or something else).
+     * Sets the scope in which we are moving ('$this' or something else).
      *
      * @param string $scope
+     *   The scope ('$this' or something else) .
      */
     public function setScope($scope)
     {

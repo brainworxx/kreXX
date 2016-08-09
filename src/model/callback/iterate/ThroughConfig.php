@@ -54,6 +54,7 @@ class ThroughConfig extends AbstractCallback
      * Renders whole configuration.
      *
      * @return string
+     *   The generated markup.
      */
     public function callMe()
     {
