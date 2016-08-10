@@ -32,7 +32,9 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service;
+namespace Brainworxx\Krexx\Service\Flow;
+
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Recursion handler, formerly known as Hive.
@@ -42,7 +44,7 @@ namespace Brainworxx\Krexx\Service;
  * the $GLOBALS array.
  *
  *
- * @package Brainworxx\Krexx\Service
+ * @package Brainworxx\Krexx\Service\Flow
  */
 class Recursion
 {

@@ -32,12 +32,14 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service;
+namespace Brainworxx\Krexx\Service\Flow;
+
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Emergency break handler for large output (runtime and memory usage).
  *
- * @package Brainworxx\Krexx\Controller
+ * @package Brainworxx\Krexx\Service\Flow
  */
 class Emergency
 {

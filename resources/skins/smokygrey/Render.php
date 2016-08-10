@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Model\Simple;
  *
  * @package Brainworxx\Krexx\View
  */
-class Render extends \Brainworxx\Krexx\View\Render
+class Render extends \Brainworxx\Krexx\Service\View\Render
 {
 
     /**

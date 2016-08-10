@@ -32,12 +32,12 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Config;
+namespace Brainworxx\Krexx\Service\Config;
 
 /**
  * Access the debug settings here.
  *
- * @package Brainworxx\Krexx\Config
+ * @package Brainworxx\Krexx\Service\Config
  */
 class Config extends Fallback
 {

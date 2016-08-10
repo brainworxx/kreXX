@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View;
+namespace Brainworxx\Krexx\Service\View;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Model\Simple;
  * It get extended by the render class of the used skin, so every skin can do
  * some special stuff.
  *
- * @package Brainworxx\Krexx\View
+ * @package Brainworxx\Krexx\Service\View
  */
 class Render extends Help
 {

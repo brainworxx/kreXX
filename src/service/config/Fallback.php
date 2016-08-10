@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Config;
+namespace Brainworxx\Krexx\Service\Config;
 
 use Brainworxx\Krexx\Service\Storage;
 
@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Service\Storage;
  *
  * We have so much of them, they need an own class.
  *
- * @package Brainworxx\Krexx\Config
+ * @package Brainworxx\Krexx\Service\Config
  */
 class Fallback
 {

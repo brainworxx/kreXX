@@ -34,9 +34,14 @@
 
 namespace Brainworxx\Krexx\Service;
 
-use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\Render;
+use Brainworxx\Krexx\Service\Config\Config;
+use Brainworxx\Krexx\Service\Flow\Emergency;
+use Brainworxx\Krexx\Service\Flow\Recursion;
+use Brainworxx\Krexx\Service\Flow\Routing;
+use Brainworxx\Krexx\Service\Misc\Chunks;
+use Brainworxx\Krexx\Service\Misc\Codegen;
+use Brainworxx\Krexx\Service\View\Messages;
+use Brainworxx\Krexx\Service\View\Render;
 
 /**
  * Here we store all classes that we need.

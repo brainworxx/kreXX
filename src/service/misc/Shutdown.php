@@ -32,12 +32,14 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service;
+namespace Brainworxx\Krexx\Service\Misc;
+
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Triggers the kreXX output during shutdown phase.
  *
- * @package Brainworxx\Krexx\Service
+ * @package rainworxx\Krexx\Service\Misc
  */
 class Shutdown
 {

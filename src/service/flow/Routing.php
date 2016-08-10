@@ -32,11 +32,12 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service;
+namespace Brainworxx\Krexx\Service\Flow;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * "Routing" for kreXX
@@ -45,7 +46,7 @@ use Brainworxx\Krexx\Model\Simple;
  * The other method ara also used, in case it is known how
  * to proceed next.
  *
- * @package Brainworxx\Krexx\Service
+ * @package Brainworxx\Krexx\Service\Flow
  */
 class Routing
 {

@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Controller;
 
-use Brainworxx\Krexx\Service\Shutdown;
+use Brainworxx\Krexx\Service\Misc\Shutdown;
 use Brainworxx\Krexx\Service\Storage;
 use Brainworxx\Krexx\Model\Simple;
 

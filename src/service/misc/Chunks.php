@@ -32,7 +32,9 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service;
+namespace Brainworxx\Krexx\Service\Misc;
+
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Output string handling for kreXX, splitting strings into small tiny chunks.
@@ -50,7 +52,7 @@ namespace Brainworxx\Krexx\Service;
  *   We use '@@@' to mark a chunk key. This function escapes the @
  *   so we have no collusion with data from strings.
  *
- * @package Brainworxx\Krexx\Service
+ * @package Brainworxx\Krexx\Service\Misc
  */
 class Chunks
 {
