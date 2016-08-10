@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Model;
 
-use Brainworxx\Krexx\Framework\Storage;
+use Brainworxx\Krexx\Service\Storage;
 use Brainworxx\Krexx\Model\Callback\AbstractCallback;
 
 /**

@@ -32,17 +32,16 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analysis;
+namespace Brainworxx\Krexx\Service;
 
-use Brainworxx\Krexx\Framework\Storage;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
  * Code generation methods.
  *
- * @package Brainworxx\Krexx\Analysis
+ * @package Brainworxx\Krexx\Service
  */
-class CodegenHandler
+class Codegen
 {
 
     /**

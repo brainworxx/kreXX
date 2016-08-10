@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Model\Callback;
 
-use Brainworxx\Krexx\Framework\Storage;
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Abstract class for the callback classes inside the model.

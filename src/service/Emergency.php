@@ -32,16 +32,14 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Controller;
-
-use Brainworxx\Krexx\Framework\Storage;
+namespace Brainworxx\Krexx\Service;
 
 /**
  * Emergency break handler for large output (runtime and memory usage).
  *
  * @package Brainworxx\Krexx\Controller
  */
-class EmergencyHandler
+class Emergency
 {
     /**
      * Unix timestamp, used to determine if we need to do an emergency break.

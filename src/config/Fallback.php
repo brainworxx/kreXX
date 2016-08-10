@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Config;
 
-use Brainworxx\Krexx\Framework\Storage;
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Configuration fallback settings.

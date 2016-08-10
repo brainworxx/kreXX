@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Errorhandler;
 
-use Brainworxx\Krexx\Framework\Storage;
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * This class hosts all functions which all error handlers will share

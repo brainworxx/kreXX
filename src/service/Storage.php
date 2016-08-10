@@ -32,16 +32,17 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Framework;
+namespace Brainworxx\Krexx\Service;
 
-use Brainworxx\Krexx\Analysis\CodegenHandler;
-use Brainworxx\Krexx\Analysis\RecursionHandler;
-use Brainworxx\Krexx\Analysis\Routing;
 use Brainworxx\Krexx\Config\Config;
-use Brainworxx\Krexx\Controller\EmergencyHandler;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Render;
 
+/**
+ * Here we store all classes that we need.
+ *
+ * @package Brainworxx\Krexx\Service
+ */
 class Storage
 {
     /**
@@ -56,21 +57,21 @@ class Storage
      *
      * It gets re-new()-d with every new call.
      *
-     * @var \Brainworxx\Krexx\Analysis\RecursionHandler
+     * @var Recursion
      */
     public $recursionHandler;
 
     /**
      * Generates code, if the variable can be reached.
      *
-     * @var CodegenHandler
+     * @var Codegen
      */
     public $codegenHandler;
 
     /**
      * Our emergency break handler.
      *
-     * @var EmergencyHandler
+     * @var Emergency
      */
     public $emergencyHandler;
 
@@ -116,13 +117,13 @@ class Storage
         $this->config = new Config($this);
         $this->config->krexxdir = $krexxDir;
         // Initialize the emergency handler.
-        $this->emergencyHandler = new EmergencyHandler($this);
+        $this->emergencyHandler = new Emergency($this);
         // Initialize the routing.
         $this->routing = new Routing($this);
         // Initialize the recursionHandler.
-        $this->recursionHandler = new RecursionHandler($this);
+        $this->recursionHandler = new Recursion($this);
         // Initialize the code generation.
-        $this->codegenHandler = new CodegenHandler($this);
+        $this->codegenHandler = new Codegen($this);
         // Initializes the messages.
         $this->messages = new Messages($this);
         // Initializesd the chunks handler
@@ -138,7 +139,7 @@ class Storage
     {
         // We need to reset our recursion handler, because
         // the content of classes might change with another run.
-        $this->recursionHandler = new RecursionHandler($this);
+        $this->recursionHandler = new Recursion($this);
     }
 
     /**

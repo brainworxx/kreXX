@@ -74,15 +74,16 @@ class Krexx
         include_once $krexxDir . 'src/view/Help.php';
         include_once $krexxDir . 'src/view/Render.php';
         include_once $krexxDir . 'src/view/Messages.php';
-        include_once $krexxDir . 'src/analysis/CodegenHandler.php';
         include_once $krexxDir . 'src/config/Fallback.php';
         include_once $krexxDir . 'src/config/Config.php';
-        include_once $krexxDir . 'src/framework/Chunks.php';
-        include_once $krexxDir . 'src/framework/ShutdownHandler.php';
-        include_once $krexxDir . 'src/framework/Storage.php';
-        include_once $krexxDir . 'src/analysis/Flection.php';
-        include_once $krexxDir . 'src/analysis/RecursionHandler.php';
-        include_once $krexxDir . 'src/analysis/Routing.php';
+        include_once $krexxDir . 'src/service/Codegen.php';
+        include_once $krexxDir . 'src/service/Chunks.php';
+        include_once $krexxDir . 'src/service/Shutdown.php';
+        include_once $krexxDir . 'src/service/Storage.php';
+        include_once $krexxDir . 'src/service/Recursion.php';
+        include_once $krexxDir . 'src/service/Routing.php';
+        include_once $krexxDir . 'src/service/Emergency.php';
+        include_once $krexxDir . 'src/model/Flection.php';
         include_once $krexxDir . 'src/model/Simple.php';
         include_once $krexxDir . 'src/model/callback/AbstractCallback.php';
         include_once $krexxDir . 'src/model/callback/analyse/BacktraceStep.php';
@@ -99,8 +100,7 @@ class Krexx
         include_once $krexxDir . 'src/errorhandler/Fatal.php';
         include_once $krexxDir . 'src/controller/Internals.php';
         include_once $krexxDir . 'src/controller/OutputActions.php';
-        include_once $krexxDir . 'src/controller/EmergencyHandler.php';
-
+        
         OutputActions::checkEnvironmentAction($krexxDir);
     }
 

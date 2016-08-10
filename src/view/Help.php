@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\View;
 
-use Brainworxx\Krexx\Framework\Storage;
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Help texts.

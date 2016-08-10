@@ -34,8 +34,8 @@
 
 namespace Brainworxx\Krexx\Controller;
 
-use Brainworxx\Krexx\Framework\ShutdownHandler;
-use Brainworxx\Krexx\Framework\Storage;
+use Brainworxx\Krexx\Service\Shutdown;
+use Brainworxx\Krexx\Service\Storage;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -56,7 +56,7 @@ class Internals
     /**
      * Sends the output to the browser during shutdown phase.
      *
-     * @var ShutdownHandler
+     * @var Shutdown
      */
     public static $shutdownHandler;
 
@@ -425,7 +425,7 @@ class Internals
     {
         // Register our shutdown handler. He will handle the display
         // of kreXX after the hosting CMS is finished.
-        OutputActions::$shutdownHandler = new ShutdownHandler(self::$storage);
+        OutputActions::$shutdownHandler = new Shutdown(self::$storage);
         register_shutdown_function(array(
             OutputActions::$shutdownHandler,
             'shutdownCallback'

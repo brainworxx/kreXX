@@ -87,7 +87,7 @@ class ThroughArray extends AbstractCallback
             $output .= $this->storage->routing->analysisHub($model);
         }
         $output .= $this->storage->render->renderSingeChildHr();
-        
+
         return $output;
     }
 }
