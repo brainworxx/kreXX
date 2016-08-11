@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\View\Hans;
 /**
  * Individual render class for the Hans skin.
  *
- * @package Brainworxx\Krexx\View
+ * @package Brainworxx\Krexx\View\Hans
  */
 class Render extends \Brainworxx\Krexx\Service\View\Render
 {

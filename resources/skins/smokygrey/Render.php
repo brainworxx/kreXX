@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Model\Simple;
 /**
  * Individual render class for the smokey-grey skin.
  *
- * @package Brainworxx\Krexx\View
+ * @package Brainworxx\Krexx\View\Smokygrey
  */
 class Render extends \Brainworxx\Krexx\Service\View\Render
 {

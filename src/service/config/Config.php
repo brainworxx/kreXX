@@ -368,7 +368,7 @@ class Config extends Fallback
      * @return bool
      *   If it was evaluated.
      */
-    protected function evaluateSetting($group, $name, $value)
+    public function evaluateSetting($group, $name, $value)
     {
         static $evaluated = array();
 
@@ -704,7 +704,7 @@ class Config extends Fallback
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    protected function getFeConfigFromFile($parameterName)
+    public function getFeConfigFromFile($parameterName)
     {
         static $config = array();
 
@@ -861,7 +861,7 @@ class Config extends Fallback
      * @return string
      *   The value from the file.
      */
-    protected function getConfigFromFile($group, $name)
+    public function getConfigFromFile($group, $name)
     {
         static $config = array();
 
