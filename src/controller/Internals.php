@@ -51,21 +51,21 @@ class Internals
      *
      * @var Shutdown
      */
-    protected static $shutdownHandler;
+    protected $shutdownHandler;
 
     /**
      * Have we already send the CSS and JS?
      *
      * @var bool
      */
-    protected static $headerSend = false;
+    protected $headerSend = false;
 
     /**
      * Here we store the fatal error handler.
      *
      * @var \Brainworxx\Krexx\Errorhandler\Fatal
      */
-    protected static $krexxFatal;
+    protected $krexxFatal;
 
     /**
      * Stores whether out fatal error handler should be active.
@@ -75,22 +75,41 @@ class Internals
      *
      * @var boolean
      */
-    protected static $fatalShouldActive = false;
+    protected $fatalShouldActive = false;
 
     /**
      * Here we save all timekeeping stuff.
      *
      * @var string array
      */
-    protected static $timekeeping = array();
-    protected static $counterCache = array();
+    protected $timekeeping = array();
+    protected $counterCache = array();
 
     /**
      * Our storage wher we keep al relevant classes.
      *
      * @var Storage
      */
-    public static $storage;
+    protected $storage;
+
+    /**
+     * Injects the storage.
+     *
+     * @param Storage $storage
+     *   The storage, where we store the classes we need.
+     */
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+
+        // Register our shutdown handler. He will handle the display
+        // of kreXX after the hosting CMS is finished.
+        $this->shutdownHandler = new Shutdown($this->storage);
+        register_shutdown_function(array(
+            $this->shutdownHandler,
+            'shutdownCallback'
+        ));
+    }
 
     /**
      * Finds the place in the code from where krexx was called.
@@ -98,7 +117,7 @@ class Internals
      * @return array
      *   The code, from where krexx was called
      */
-    protected static function findCaller()
+    protected function findCaller()
     {
         $backtrace = debug_backtrace();
         while ($caller = array_pop($backtrace)) {
@@ -117,7 +136,7 @@ class Internals
             'line' => (int)$caller['line'],
             // We don't need to escape the varname, this will be done in
             // the model.
-            'varname' => self::getVarName($caller['file'], $caller['line']),
+            'varname' => $this->getVarName($caller['file'], $caller['line']),
         );
     }
 
@@ -132,7 +151,7 @@ class Internals
      * @return string
      *   The name of the variable.
      */
-    protected static function getVarName($file, $line)
+    protected function getVarName($file, $line)
     {
         // Retrieve the call from the sourcecode file.
         $source = file($file);
@@ -159,9 +178,9 @@ class Internals
             $possibleFunctionnames = array(
                 'krexx',
                 'krexx::open',
-                'krexx::' . self::$storage->config->getDevHandler(),
+                'krexx::' . $this->storage->config->getDevHandler(),
                 'Krexx::open',
-                'Krexx::' . self::$storage->config->getDevHandler()
+                'Krexx::' . $this->storage->config->getDevHandler()
             );
             foreach ($possibleFunctionnames as $funcname) {
                 preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', $sourceCall, $name);
@@ -189,15 +208,15 @@ class Internals
      * @return string
      *   The generated markup
      */
-    protected static function outputHeader($headline)
+    protected function outputHeader($headline)
     {
         // Do we do an output as file?
-        if (!self::$headerSend) {
+        if (!$this->headerSend) {
             // Send doctype and css/js only once.
-            self::$headerSend = true;
-            return self::$storage->render->renderHeader('<!DOCTYPE html>', $headline, self::outputCssAndJs());
+            $this->headerSend = true;
+            return $this->storage->render->renderHeader('<!DOCTYPE html>', $headline, $this->outputCssAndJs());
         } else {
-            return self::$storage->render->renderHeader('', $headline, '');
+            return $this->storage->render->renderHeader('', $headline, '');
         }
     }
 
@@ -213,11 +232,11 @@ class Internals
      * @return string
      *   The generated markup.
      */
-    protected static function outputFooter($caller, $isExpanded = false)
+    protected function outputFooter($caller, $isExpanded = false)
     {
         // Now we need to stitch together the content of the ini file
         // as well as it's path.
-        if (!is_readable(self::$storage->config->getPathToIni())) {
+        if (!is_readable($this->storage->config->getPathToIni())) {
             // Project settings are not accessible
             // tell the user, that we are using fallback settings.
             $path = 'Krexx.ini not found, using factory settings';
@@ -226,20 +245,20 @@ class Internals
             $path = 'Current configuration';
         }
 
-        $wholeConfig = self::$storage->config->getWholeConfiguration();
+        $wholeConfig = $this->storage->config->getWholeConfiguration();
         $source = $wholeConfig[0];
         $config = $wholeConfig[1];
 
-        $model = new Simple(self::$storage);
+        $model = new Simple($this->storage);
         $model->setName($path)
-            ->setType(self::$storage->config->getPathToIni())
+            ->setType($this->storage->config->getPathToIni())
             ->setHelpid('currentSettings')
             ->addParameter('data', $config)
             ->addParameter('source', $source)
             ->initCallback('Iterate\ThroughConfig');
 
-        $configOutput = self::$storage->render->renderExpandableChild($model, $isExpanded);
-        return self::$storage->render->renderFooter($caller, $configOutput, $isExpanded);
+        $configOutput = $this->storage->render->renderExpandableChild($model, $isExpanded);
+        return $this->storage->render->renderFooter($caller, $configOutput, $isExpanded);
     }
 
     /**
@@ -248,14 +267,14 @@ class Internals
      * @return string
      *   The generated markup.
      */
-    protected static function outputCssAndJs()
+    protected function outputCssAndJs()
     {
-        $krexxDir = self::$storage->config->krexxdir;
+        $krexxDir = $this->storage->config->krexxdir;
         // Get the css file.
-        $css = self::$storage->getFileContents(
+        $css = $this->storage->getFileContents(
             $krexxDir .
             'resources/skins/' .
-            self::$storage->config->getConfigValue('output', 'skin') .
+            $this->storage->config->getConfigValue('output', 'skin') .
             '/skin.css'
         );
         // Remove whitespace.
@@ -267,18 +286,18 @@ class Internals
         } else {
             $jsFile = $krexxDir . 'resources/jsLibs/kdt.js';
         }
-        $js = self::$storage->getFileContents($jsFile);
+        $js = $this->storage->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
-        $path = $krexxDir . 'resources/skins/' . self::$storage->config->getConfigValue('output', 'skin');
+        $path = $krexxDir . 'resources/skins/' . $this->storage->config->getConfigValue('output', 'skin');
         if (is_readable($path . '/krexx.min.js')) {
             $jsFile = $path . '/krexx.min.js';
         } else {
             $jsFile = $path . '/krexx.js';
         }
-        $js .= self::$storage->getFileContents($jsFile);
+        $js .= $this->storage->getFileContents($jsFile);
 
-        return self::$storage->render->renderCssJs($css, $js);
+        return $this->storage->render->renderCssJs($css, $js);
     }
 
     /**
@@ -287,11 +306,11 @@ class Internals
      * We disable the tick callback and the error handler during
      * a analysis, to generate faster output.
      */
-    public static function noFatalForKrexx()
+    public function noFatalForKrexx()
     {
-        if (self::$fatalShouldActive) {
-            self::$krexxFatal->setIsActive(false);
-            unregister_tick_function(array(self::$krexxFatal, 'tickCallback'));
+        if ($this->fatalShouldActive) {
+            $this->krexxFatal->setIsActive(false);
+            unregister_tick_function(array($this->krexxFatal, 'tickCallback'));
         }
     }
 
@@ -301,11 +320,11 @@ class Internals
      * We disable the tick callback and the error handler during
      * a analysis, to generate faster output.
      */
-    public static function reFatalAfterKrexx()
+    public function reFatalAfterKrexx()
     {
-        if (self::$fatalShouldActive) {
-            self::$krexxFatal->setIsActive(true);
-            register_tick_function(array(self::$krexxFatal, 'tickCallback'));
+        if ($this->fatalShouldActive) {
+            $this->krexxFatal->setIsActive(true);
+            register_tick_function(array($this->krexxFatal, 'tickCallback'));
         }
     }
 
@@ -321,12 +340,12 @@ class Internals
      * @see http://php.net/manual/de/function.microtime.php
      * @author gomodo at free dot fr
      */
-    protected static function miniBenchTo(array $timeKeeping)
+    protected function miniBenchTo(array $timeKeeping)
     {
         // Get the very first key.
         $start = key($timeKeeping);
         $totalTime = round((end($timeKeeping) - $timeKeeping[$start]) * 1000, 4);
-        $result['url'] = self::getCurrentUrl();
+        $result['url'] = $this->getCurrentUrl();
         $result['total_time'] = $totalTime;
         $prevMomentName = $start;
         $prevMomentStart = $timeKeeping[$start];
@@ -352,7 +371,7 @@ class Internals
      * @return string
      *   The current URL.
      */
-    protected static function getCurrentUrl()
+    protected function getCurrentUrl()
     {
         static $result;
 
@@ -390,34 +409,5 @@ class Internals
             $result = htmlspecialchars($protocol . '://' . $host . $s['REQUEST_URI'], ENT_QUOTES, 'UTF-8');
         }
         return $result;
-    }
-
-    protected static function registerShutdown()
-    {
-        // Register our shutdown handler. He will handle the display
-        // of kreXX after the hosting CMS is finished.
-        OutputActions::$shutdownHandler = new Shutdown(self::$storage);
-        register_shutdown_function(array(
-            OutputActions::$shutdownHandler,
-            'shutdownCallback'
-        ));
-    }
-
-    /**
-     * Checks if we need a new storage, or simply need to reset the current one.
-     *
-     * @param string $krexxDir
-     *   The directory where kreXX ist installed.
-     */
-    protected static function initStorage($krexxDir = '')
-    {
-        if (!is_object(self::$storage)) {
-            // We need a new storage.
-            self::$storage = new Storage($krexxDir);
-        } else {
-            // Reset the ones that need to be resetted.
-            self::$storage->reset();
-        }
-
     }
 }
