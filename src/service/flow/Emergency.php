@@ -123,10 +123,10 @@ class Emergency
         // Cache the server memory limit.
         $limit = strtoupper(ini_get('memory_limit'));
         if (preg_match('/^(\d+)(.)$/', $limit, $matches)) {
-            if ($matches[2] == 'M') {
+            if ($matches[2] === 'M') {
                 // Megabyte.
                 $this->serverMemoryLimit = $matches[1] * 1024 * 1024;
-            } elseif ($matches[2] == 'K') {
+            } elseif ($matches[2] === 'K') {
                 // Kilobyte.
                 $this->serverMemoryLimit = $matches[1] * 1024;
             }
@@ -241,7 +241,7 @@ class Emergency
      */
     public function resetTimer()
     {
-        if ($this->timer == 0) {
+        if (empty($this->timer)) {
             $this->timer = time();
         }
     }
@@ -261,7 +261,7 @@ class Emergency
             $result = true;
         }
         // Give feedback if this is our last call.
-        if ($this->krexxCount == $maxCall - 1) {
+        if ($this->krexxCount === $maxCall - 1) {
             $this->storage->messages->addMessage($this->storage->render->getHelp('maxCallReached'), 'critical');
         }
         $this->krexxCount++;

@@ -345,7 +345,8 @@ class Chunks
     protected function fileStamp()
     {
         static $timestamp = 0;
-        if ($timestamp == 0) {
+
+        if (empty($timestamp)) {
             $timestamp = explode(" ", microtime());
             $timestamp = $timestamp[1] . str_replace("0.", "", $timestamp[0]);
         }

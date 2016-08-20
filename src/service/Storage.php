@@ -197,7 +197,7 @@ class Storage
                     // Escape it.
                     $contentArray[$currentLineNo] = $this->encodeString($contentArray[$currentLineNo], true);
 
-                    if ($currentLineNo == $highlight) {
+                    if ($currentLineNo === $highlight) {
                         $result .= $this->render->renderBacktraceSourceLine(
                             'highlight',
                             $realLineNo,
@@ -285,7 +285,7 @@ class Storage
                 // We are displaying sourcecode, so we need
                 // to do some formatting.
                 $sortingCallback = function ($n) {
-                    if ($n == 9) {
+                    if ($n === 9) {
                         // Replace TAB with two spaces, it's better readable that way.
                         $result = '&nbsp;&nbsp;';
                     } else {

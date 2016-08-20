@@ -90,7 +90,7 @@ class Object extends AbstractCallback
             return strcmp($a->name, $b->name);
         };
 
-        if (count($refProps)) {
+        if (!empty($refProps)) {
             usort($refProps, $sortingCallback);
             $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Public properties');
             // Adding a HR to reflect that the following stuff are not public
@@ -99,28 +99,28 @@ class Object extends AbstractCallback
         }
 
         // Dumping protected properties.
-        if ($this->storage->config->getConfigValue('properties', 'analyseProtected') == 'true' ||
+        if ($this->storage->config->getConfigValue('properties', 'analyseProtected') === 'true' ||
             $this->storage->codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
             usort($refProps, $sortingCallback);
 
-            if (count($refProps)) {
+            if (!empty($refProps)) {
                 $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Protected properties');
             }
         }
 
         // Dumping private properties.
-        if ($this->storage->config->getConfigValue('properties', 'analysePrivate') == 'true' ||
+        if ($this->storage->config->getConfigValue('properties', 'analysePrivate') === 'true' ||
             $this->storage->codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
-            if (count($refProps)) {
+            if (!empty($refProps)) {
                 $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Private properties');
             }
         }
 
         // Dumping class constants.
-        if ($this->storage->config->getConfigValue('properties', 'analyseConstants') == 'true') {
+        if ($this->storage->config->getConfigValue('properties', 'analyseConstants') === 'true') {
             $output .= $this->getReflectionConstantsData($ref);
         }
 
@@ -128,7 +128,7 @@ class Object extends AbstractCallback
         $output .= $this->getMethodData($data);
 
         // Dumping traversable data.
-        if ($this->storage->config->getConfigValue('properties', 'analyseTraversable') == 'true') {
+        if ($this->storage->config->getConfigValue('properties', 'analyseTraversable') === 'true') {
             $output .= $this->getTraversableData($data, $name);
         }
 
@@ -156,15 +156,15 @@ class Object extends AbstractCallback
         $protected = array();
         $private = array();
         $ref = new \ReflectionClass($data);
-        if ($this->storage->config->getConfigValue('methods', 'analyseMethodsAtall') == 'true') {
+        if ($this->storage->config->getConfigValue('methods', 'analyseMethodsAtall') === 'true') {
             $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if ($this->storage->config->getConfigValue('methods', 'analyseProtectedMethods') == 'true' ||
+            if ($this->storage->config->getConfigValue('methods', 'analyseProtectedMethods') === 'true' ||
                 $this->storage->codegenHandler->isInScope()) {
                 $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
             }
 
-            if ($this->storage->config->getConfigValue('methods', 'analysePrivateMethods') == 'true' ||
+            if ($this->storage->config->getConfigValue('methods', 'analysePrivateMethods') === 'true' ||
                 $this->storage->codegenHandler->isInScope()) {
                 $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
             }
@@ -172,7 +172,7 @@ class Object extends AbstractCallback
 
         // Is there anything to analyse?
         $methods = array_merge($public, $protected, $private);
-        if (count($methods)) {
+        if (!empty($methods)) {
             // We need to sort these alphabetically.
             $sortingCallback = function ($a, $b) {
                 return strcmp($a->name, $b->name);
@@ -240,7 +240,7 @@ class Object extends AbstractCallback
                     $foundRequired = true;
                 }
 
-                if ($foundRequired == false) {
+                if (!$foundRequired) {
                     // Add a try to prevent the hosting CMS from doing something stupid.
                     try {
                         // We need to deactivate the current error handling to
@@ -351,7 +351,7 @@ class Object extends AbstractCallback
         // an array, so we need to process it like the return from an iterator.
         $refConst = $ref->getConstants();
 
-        if (count($refConst) > 0) {
+        if (!empty($refConst)) {
             // We've got some values, we will dump them.
             $model = new Simple($this->storage);
             $classname =$ref->getName();

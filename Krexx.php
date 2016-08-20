@@ -47,7 +47,7 @@ use Brainworxx\Krexx\Controller\OutputActions;
  */
 function krexx($data = null, $handle = '')
 {
-    if ($handle == '') {
+    if (empty($handle)) {
         \Krexx::open($data);
     } else {
         \Krexx::$handle($data);
@@ -117,7 +117,7 @@ class Krexx
         OutputActions::noFatalForKrexx();
         // Do we gave a handle?
         $handle = OutputActions::$storage->config->getDevHandler();
-        if ($name == $handle) {
+        if ($name === $handle) {
             // We do a standard-open.
             if (isset($arguments[0])) {
                 self::open($arguments[0]);

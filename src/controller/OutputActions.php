@@ -77,7 +77,7 @@ class OutputActions extends Internals
         self::$storage->codegenHandler->setScope($caller['varname']);
 
         // Set the headline, if it's not set already.
-        if ($headline == '') {
+        if (empty($headline)) {
             if (is_object($data)) {
                 $headline = get_class($data);
             }
@@ -134,7 +134,7 @@ class OutputActions extends Internals
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
-        if (self::$storage->config->getConfigValue('output', 'destination') == 'file') {
+        if (self::$storage->config->getConfigValue('output', 'destination') === 'file') {
             self::$storage->chunks->addMetadata($caller);
         }
     }
@@ -180,7 +180,7 @@ class OutputActions extends Internals
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
-        if (self::$storage->config->getConfigValue('output', 'destination') == 'file') {
+        if (self::$storage->config->getConfigValue('output', 'destination') === 'file') {
             self::$storage->chunks->addMetadata($caller);
         }
 
@@ -255,7 +255,7 @@ class OutputActions extends Internals
         // Get the messages.
         $messages = self::$storage->messages->outputMessages();
 
-        if (self::$storage->config->getConfigValue('output', 'destination') == 'file') {
+        if (self::$storage->config->getConfigValue('output', 'destination') === 'file') {
             // Add the caller as metadata to the chunks class. It will be saved as
             // additional info, in case we are logging to a file.
             self::$storage->chunks->addMetadata(array(
@@ -357,7 +357,7 @@ class OutputActions extends Internals
     }
 
     /**
-     * Yes, we do have an output here. We are generation messagesd to
+     * Yes, we do have an output here. We are generation messages to
      * inform the dev that the environment is not as it should be.
      *
      * @param string $krexxDir
@@ -400,7 +400,7 @@ class OutputActions extends Internals
         // will pop up, when kreXX is actually displayed, no need to bother the
         // dev just now.
         // We might need to register our fatal error handler.
-        if (self::$storage->config->getConfigValue('backtraceAndError', 'registerAutomatically') == 'true') {
+        if (self::$storage->config->getConfigValue('backtraceAndError', 'registerAutomatically') === 'true') {
             self::registerFatalAction();
         }
     }

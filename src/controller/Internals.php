@@ -102,10 +102,10 @@ class Internals
     {
         $backtrace = debug_backtrace();
         while ($caller = array_pop($backtrace)) {
-            if (isset($caller['function']) && strtolower($caller['function']) == 'krexx') {
+            if (isset($caller['function']) && strtolower($caller['function']) === 'krexx') {
                 break;
             }
-            if (isset($caller['class']) && strtolower($caller['class']) == 'krexx') {
+            if (isset($caller['class']) && strtolower($caller['class']) === 'krexx') {
                 break;
             }
         }
@@ -360,7 +360,7 @@ class Internals
             $s = $_SERVER;
 
             // SSL or no SSL.
-            if (!empty($s['HTTPS']) && $s['HTTPS'] == 'on') {
+            if (!empty($s['HTTPS']) && $s['HTTPS'] === 'on') {
                 $ssl = true;
             } else {
                 $ssl = false;

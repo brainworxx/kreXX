@@ -63,7 +63,7 @@ class Config extends Fallback
     public function getEnabled()
     {
         // Disabled in the ini or in the local settings?
-        if ($this->getConfigValue('runtime', 'disabled') == 'true') {
+        if ($this->getConfigValue('runtime', 'disabled') === 'true') {
             return false;
         }
 
@@ -101,7 +101,7 @@ class Config extends Fallback
             // We must not overwrite a disabled=true with local cookie settings!
             // Otherwise it could get enabled locally, which might be a security
             // issue.
-            if (($name == 'disabled' && $localSetting == 'false')) {
+            if (($name == 'disabled' && $localSetting === 'false')) {
                 // Do nothing.
                 // We ignore this setting.
             } else {
@@ -278,7 +278,7 @@ class Config extends Fallback
     {
 
         foreach ($this->debugMethodsBlacklist as $classname => $method) {
-            if (is_a($data, $classname) && $call == $method) {
+            if (is_a($data, $classname) && $call === $method) {
                 // We have a winner, this one is blacklisted!
                 return false;
             }
@@ -298,7 +298,7 @@ class Config extends Fallback
         // Static cache to make it a little bit faster.
         static $list = array();
 
-        if (count($list) == 0) {
+        if (empty($list)) {
             // Get the list.
             $list = array_filter(glob($this->krexxdir . 'resources/skins/*'), 'is_dir');
             // Now we need to filter it, we only want the names, not the full path.
@@ -372,7 +372,7 @@ class Config extends Fallback
     {
         static $evaluated = array();
 
-        if ($group == 'feEditing') {
+        if ($group === 'feEditing') {
             // Logging options can never be changed in the frontend.
             // The debug methods will also not be editable.
             if (in_array($name, $this->feConfigNoEdit)) {
@@ -517,7 +517,7 @@ class Config extends Fallback
 
                 case 'destination':
                     // We expect 'frontend' or 'file'
-                    if ($value == 'frontend' || $value == 'file') {
+                    if ($value === 'frontend' || $value === 'file') {
                         $result = true;
                     }
                     if (!$result) {
@@ -636,7 +636,7 @@ class Config extends Fallback
 
                 case 'backtraceAnalysis':
                     // We expect "normal" or "deep"
-                    if ($value == 'normal' || $value == 'deep') {
+                    if ($value === 'normal' || $value === 'deep') {
                         $result = true;
                     }
                     if (!$result) {
@@ -942,13 +942,13 @@ class Config extends Fallback
                 // Appending stuff after a ajax request will most likely
                 // cause a js error. But there are moments when you actually
                 // want to do this.
-                if ($this->getConfigValue('runtime', 'detectAjax') == 'true') {
+                if ($this->getConfigValue('runtime', 'detectAjax') === 'true') {
                     // We were supposed to detect ajax, and we did it right now.
                     return true;
                 }
             }
             // Check for CLI.
-            if (php_sapi_name() == "cli") {
+            if (php_sapi_name() === "cli") {
                 return true;
             }
         }
@@ -974,7 +974,7 @@ class Config extends Fallback
                 // We have what we are looking for, a
                 // 'deny from all', not to be confuse with
                 // a '# deny from all'.
-                if (strtolower(trim($line)) == 'deny from all') {
+                if (strtolower(trim($line)) === 'deny from all') {
                     $result = true;
                     break;
                 }

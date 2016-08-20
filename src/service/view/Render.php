@@ -97,7 +97,7 @@ class Render extends Help
         // Generating our code and adding the Codegen button, if there is something
         // to generate.
         $gensource = $this->storage->codegenHandler->generateSource($model);
-        if ($gensource == '') {
+        if (empty($gensource)) {
             // Remove the markers, because here is nothing to add.
             $template = str_replace('{gensource}', '', $template);
             $template = str_replace('{sourcebutton}', '', $template);
@@ -142,7 +142,7 @@ class Render extends Help
         // something to generate.
         $gencode = $this->storage->codegenHandler->generateSource($model);
 
-        if ($gencode == '') {
+        if (empty($gencode)) {
             // Remove the markers, because here is nothing to add.
             $template = str_replace('{gensource}', '', $template);
             $template = str_replace('{sourcebutton}', '', $template);
@@ -322,7 +322,7 @@ class Render extends Help
         // something to generate.
         $gencode = $this->storage->codegenHandler->generateSource($model);
         $template = str_replace('{gensource}', $gencode, $template);
-        if ($gencode == '.stop.' || empty($gencode)) {
+        if ($gencode === '.stop.' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.
             $template = str_replace('{sourcebutton}', '', $template);
         } else {
@@ -392,7 +392,7 @@ class Render extends Help
         $element = str_replace('{value}', $model->getName(), $element);
 
         // For dropdown elements, we need to render the options.
-        if ($model->getType() == 'Select') {
+        if ($model->getType() === 'Select') {
             $option = $this->getTemplateFileContent('single' . $model->getType() . 'Options');
 
             // Here we store what the list of possible values.
@@ -421,7 +421,7 @@ class Render extends Help
             // Paint it.
             $options = '';
             foreach ($valueList as $value) {
-                if ($value == $model->getName()) {
+                if ($value === $model->getName()) {
                     // This one is selected.
                     $selected = 'selected="selected"';
                 } else {
