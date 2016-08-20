@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
+use Brainworxx\Krexx\Controller\OutputActions;
+
 /**
  * Access the debug settings here.
  *
@@ -575,9 +577,20 @@ class Config extends Fallback
                     break;
 
                 case 'Local open function':
-                    // The Developer handle,
-                    // we are not going to check this one, could be anything you can type.
-                    $result = true;
+                    // The Developer handle, we check it for values that are not
+                    // a-z and A-Z.
+                    if (empty(preg_match('/[^a-zA-Z]/', $value))) {
+                        $result = true;
+
+                    } else {
+                        $result = false;
+                    }
+                    if (!$result) {
+                        $this->storage->messages->addMessage(
+                            $this->storage->render->getHelp('configErrorHandle')
+                        );
+                        $this->storage->messages->addKey('output.haqndle.error');
+                    }
                     break;
 
                 case 'traceFatals':

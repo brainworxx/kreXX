@@ -69,7 +69,7 @@ class Krexx
      *
      * @var Storage
      */
-    protected static $storage;
+    public static $storage;
 
     /**
      * Includes all needed files and sets some internal values.
