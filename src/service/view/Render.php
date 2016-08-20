@@ -179,7 +179,7 @@ class Render extends Help
         // Replace our stuff in the partial.
         $template = str_replace('{version}', $this->storage->config->version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
-        $template = str_replace('{KrexxCount}', OutputActions::$KrexxCount, $template);
+        $template = str_replace('{KrexxCount}', $this->storage->emergencyHandler->getKrexxCount(), $template);
         $template = str_replace('{headline}', $headline, $template);
         $template = str_replace('{cssJs}', $cssJs, $template);
         $template = str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
@@ -496,7 +496,7 @@ class Render extends Help
         $template = str_replace('{errstr}', $errstr, $template);
         $template = str_replace('{file}', $errfile, $template);
         $template = str_replace('{source}', $source, $template);
-        $template = str_replace('{KrexxCount}', OutputActions::$KrexxCount, $template);
+        $template = str_replace('{KrexxCount}', $this->storage->emergencyHandler->getKrexxCount(), $template);
 
         return str_replace('{line}', $errline, $template);
     }

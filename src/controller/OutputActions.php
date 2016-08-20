@@ -60,7 +60,7 @@ class OutputActions extends Internals
     public static function dumpAction($data, $headline = '')
     {
 
-        if (self::checkMaxCall()) {
+        if (self::$storage->emergencyHandler->checkMaxCall()) {
             // Called too often, we might get into trouble here!
             return;
         }
@@ -144,7 +144,7 @@ class OutputActions extends Internals
      */
     public static function backtraceAction()
     {
-        if (self::checkMaxCall()) {
+        if (self::$storage->emergencyHandler->checkMaxCall()) {
             // Called too often, we might get into trouble here!
             return;
         }
@@ -191,7 +191,7 @@ class OutputActions extends Internals
      */
     public static function editSettingsAction()
     {
-        if (self::checkMaxCall()) {
+        if (self::$storage->emergencyHandler->checkMaxCall()) {
             // Called too often, we might get into trouble here!
             return;
         }

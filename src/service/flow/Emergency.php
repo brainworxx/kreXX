@@ -44,6 +44,13 @@ use Brainworxx\Krexx\Service\Storage;
 class Emergency
 {
     /**
+     * Counts how often kreXX was called.
+     *
+     * @var int
+     */
+    protected $krexxCount = 0;
+
+    /**
      * Unix timestamp, used to determine if we need to do an emergency break.
      *
      * @var int
@@ -237,5 +244,38 @@ class Emergency
         if ($this->timer == 0) {
             $this->timer = time();
         }
+    }
+
+    /**
+     * Finds out, if krexx was called too often, to prevent large output.
+     *
+     * @return bool
+     *   Whether kreXX was called too often or not.
+     */
+    public function checkMaxCall()
+    {
+        $result = false;
+        $maxCall = (int)$this->storage->config->getConfigValue('runtime', 'maxCall');
+        if ($this->krexxCount >= $maxCall) {
+            // Called too often, we might get into trouble here!
+            $result = true;
+        }
+        // Give feedback if this is our last call.
+        if ($this->krexxCount == $maxCall - 1) {
+            $this->storage->messages->addMessage($this->storage->render->getHelp('maxCallReached'), 'critical');
+        }
+        $this->krexxCount++;
+        return $result;
+    }
+
+    /**
+     * Getter for the krexxCount.
+     *
+     * @return int
+     *   How often kreXX was called.
+     */
+    public function getKrexxCount()
+    {
+        return $this->krexxCount;
     }
 }

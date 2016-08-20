@@ -45,7 +45,7 @@ use Brainworxx\Krexx\Analysis\Flection;
  *
  * @uses object data
  *   The class we are analysing.
- * @uses string 'name'
+ * @uses string name
  *   The key of the class from the object/array holding this one.
  */
 class Object extends AbstractCallback
@@ -181,8 +181,8 @@ class Object extends AbstractCallback
             $model = new Simple($this->storage);
             $model->setName('Methods')
                 ->setType('class internals')
+                ->addParameter('data', $methods)
                 ->addParameter('ref', $ref)
-                ->addParameter('methods', $methods)
                 ->initCallback('Iterate\ThroughMethods');
 
             return $this->storage->render->renderExpandableChild($model);
@@ -262,7 +262,7 @@ class Object extends AbstractCallback
                             ->setHelpid($funcName)
                             ->setConnector1('->')
                             ->setConnector2('()')
-                            ->addParameter('result', $result)
+                            ->addParameter('data', $result)
                             ->initCallback('Analyse\Debug');
 
                         $output .= $this->storage->render->renderExpandableChild($model);
@@ -359,7 +359,7 @@ class Object extends AbstractCallback
             // code generation, even if it is a space.
             $model->setName('Constants')
                 ->setType('class internals')
-                ->addParameter('refConst', $refConst)
+                ->addParameter('data', $refConst)
                 ->addParameter('classname', $classname)
                 ->initCallback('Iterate\ThroughConstants');
 
@@ -390,7 +390,7 @@ class Object extends AbstractCallback
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
         $model = new Simple($this->storage);
-        $model->addParameter('refProps', $refProps)
+        $model->addParameter('data', $refProps)
             ->addParameter('ref', $ref)
             ->addParameter('orgObject', $data)
             ->initCallback('Iterate\ThroughProperties');

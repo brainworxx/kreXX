@@ -47,18 +47,11 @@ class Internals
 {
 
     /**
-     * Counts how often kreXX was called.
-     *
-     * @var int
-     */
-    public static $KrexxCount = 0;
-
-    /**
      * Sends the output to the browser during shutdown phase.
      *
      * @var Shutdown
      */
-    public static $shutdownHandler;
+    protected static $shutdownHandler;
 
     /**
      * Have we already send the CSS and JS?
@@ -188,28 +181,6 @@ class Internals
     }
 
     /**
-     * Finds out, if krexx was called too often, to prevent large output.
-     *
-     * @return bool
-     *   Whether kreXX was called too often or not.
-     */
-    protected static function checkMaxCall()
-    {
-        $result = false;
-        $maxCall = (int)self::$storage->config->getConfigValue('runtime', 'maxCall');
-        if (self::$KrexxCount >= $maxCall) {
-            // Called too often, we might get into trouble here!
-            $result = true;
-        }
-        // Give feedback if this is our last call.
-        if (self::$KrexxCount == $maxCall - 1) {
-            self::$storage->messages->addMessage(self::$storage->render->getHelp('maxCallReached'), 'critical');
-        }
-        self::$KrexxCount++;
-        return $result;
-    }
-
-    /**
      * Simply outputs the Header of kreXX.
      *
      * @param string $headline
@@ -263,7 +234,7 @@ class Internals
         $model->setName($path)
             ->setType(self::$storage->config->getPathToIni())
             ->setHelpid('currentSettings')
-            ->addParameter('config', $config)
+            ->addParameter('data', $config)
             ->addParameter('source', $source)
             ->initCallback('Iterate\ThroughConfig');
 

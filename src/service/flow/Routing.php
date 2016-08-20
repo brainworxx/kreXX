@@ -464,7 +464,7 @@ class Routing
             $model = new Simple($this->storage);
             $model->setName($step)
                 ->setType('Stack Frame')
-                ->addParameter('stepData', $stepData)
+                ->addParameter('data', $stepData)
                 ->addParameter('offset', $offset)
                 ->initCallback('Analyse\BacktraceStep');
 
@@ -490,7 +490,7 @@ class Routing
     protected function generateDomIdFromObject($data)
     {
         if (is_object($data)) {
-            return 'k' . OutputActions::$KrexxCount . '_' . spl_object_hash($data);
+            return 'k' . $this->storage->emergencyHandler->getKrexxCount() . '_' . spl_object_hash($data);
         } else {
             // Do nothing.
             return '';
