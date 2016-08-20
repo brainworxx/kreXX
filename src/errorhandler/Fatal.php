@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Errorhandler;
 
-use Brainworxx\Krexx\Controller\OutputActions;
-
 /**
  * PHP 5.x fatal error handler.
  *
@@ -145,8 +143,7 @@ class Fatal extends Error
                     // analysed objects as possible.
                     $this->storage->config->overwriteLocalSettings(self::$configFatal);
                 }
-
-                OutputActions::errorAction($errorData);
+                $this->storage->controller->errorAction($errorData);
             }
         }
         // Clean exit.

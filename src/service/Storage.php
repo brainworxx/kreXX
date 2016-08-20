@@ -139,7 +139,7 @@ class Storage
         $this->codegenHandler = new Codegen($this);
         // Initializes the messages.
         $this->messages = new Messages($this);
-        // Initializesd the chunks handler.
+        // Initializes the chunks handler.
         $this->chunks = new Chunks($this);
         // Initializes the controller.
         $this->controller = new OutputActions($this);
@@ -149,7 +149,7 @@ class Storage
         $this->checkEnvironmentAction($krexxDir);
     }
 
-        /**
+    /**
      * Yes, we do have an output here. We are generation messages to
      * inform the dev that the environment is not as it should be.
      *

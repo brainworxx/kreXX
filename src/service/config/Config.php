@@ -101,7 +101,7 @@ class Config extends Fallback
             // We must not overwrite a disabled=true with local cookie settings!
             // Otherwise it could get enabled locally, which might be a security
             // issue.
-            if (($name == 'disabled' && $localSetting === 'false')) {
+            if (($name === 'disabled' && $localSetting === 'false')) {
                 // Do nothing.
                 // We ignore this setting.
             } else {
@@ -785,7 +785,7 @@ class Config extends Fallback
     }
 
     /**
-     * Checks if the php veriosn is lower then 7.0.0.
+     * Checks if the php version is lower then 7.0.0.
      *
      * @return bool
      *   Whether it does evaluate or not.

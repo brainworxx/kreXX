@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\View;
 
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Model\Simple;
 
 /**
@@ -154,7 +153,7 @@ class Render extends Help
         // Replace our stuff in the partial.
         $template = str_replace('{name}', $model->getName(), $template);
         $template = str_replace('{domId}', $model->getDomid(), $template);
-        $template = str_replace('{value}', $model->getNormal(), $template);
+        $template = str_replace('{normal}', $model->getType(), $template);
         $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
 
         return str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
