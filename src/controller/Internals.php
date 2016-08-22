@@ -155,6 +155,8 @@ class Internals
     {
         // Retrieve the call from the sourcecode file.
         $source = file($file);
+        // Fallback to '. . .'.
+        $varname = '. . .';
 
         // Now that we have the line where it was called, we must check if
         // we have several commands in there.
@@ -167,10 +169,7 @@ class Internals
         }
         // I have no idea how to determine the actual call of krexx if we
         // are dealing with several calls per line.
-        if (count($possibleCommands) > 1) {
-            // Fallback to '. . .'.
-            $varname = '. . .';
-        } else {
+        if (count($possibleCommands) === 1) {
             $sourceCall = reset($possibleCommands);
 
             // Now that we have our actual call, we must remove the krexx-part
@@ -191,6 +190,7 @@ class Internals
             }
         }
 
+        $varname = trim($varname);
         // Check if we have a value.
         if (empty($varname)) {
             $varname = '. . .';
