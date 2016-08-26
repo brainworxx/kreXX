@@ -182,6 +182,8 @@ class Internals
                 'Krexx::' . $this->storage->config->getDevHandler()
             );
             foreach ($possibleFunctionnames as $funcname) {
+                // This little baby tries to resolve everything inside the
+                // brackets of the kreXX call.
                 preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', $sourceCall, $name);
                 if (isset($name[1])) {
                     $varname = $name[1];
@@ -190,7 +192,8 @@ class Internals
             }
         }
 
-        $varname = trim($varname);
+        $varname = $this->storage->encodeString(trim($varname, " \t\n\r\0\x0B'\""));
+
         // Check if we have a value.
         if (empty($varname)) {
             $varname = '. . .';
