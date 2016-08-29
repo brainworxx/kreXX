@@ -332,7 +332,6 @@ class Storage
         // Check if encoding was successful.
         // 99.99% of the time, the encoding works.
         if (empty($result)) {
-            OutputActions::formattedVarDump('Encoding Failed!');
             // Something went wrong with the encoding, we need to
             // completely encode this one to be able to display it at all!
             $data = @mb_convert_encoding($data, 'UTF-32', mb_detect_encoding($data));
