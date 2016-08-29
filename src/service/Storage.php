@@ -146,7 +146,7 @@ class Storage
         // Initializes the render class.
         $this->initRendrerer();
         // Check our environment.
-        $this->checkEnvironmentAction($krexxDir);
+        $this->checkEnvironment($krexxDir);
     }
 
     /**
@@ -156,7 +156,7 @@ class Storage
      * @param string $krexxDir
      *   The directory where kreXX ist installed.
      */
-    protected function checkEnvironmentAction($krexxDir)
+    protected function checkEnvironment($krexxDir)
     {
         // Check chunk folder is writable.
         // If not, give feedback!
@@ -322,7 +322,7 @@ class Storage
         set_error_handler(function () {
             /* do nothing. */
         });
-        $result = @htmlentities($data, ENT_DISALLOWED);
+        $result = @htmlentities($data);
         // We are also encoding @, because we need them for our chunks.
         $result = str_replace('@', '&#64;', $result);
         // We are also encoding the {, because we use it as markers for the skins.
@@ -332,6 +332,7 @@ class Storage
         // Check if encoding was successful.
         // 99.99% of the time, the encoding works.
         if (empty($result)) {
+            OutputActions::formattedVarDump('Encoding Failed!');
             // Something went wrong with the encoding, we need to
             // completely encode this one to be able to display it at all!
             $data = @mb_convert_encoding($data, 'UTF-32', mb_detect_encoding($data));
