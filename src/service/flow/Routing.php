@@ -336,7 +336,8 @@ class Routing
 
         // Extra ?
         if (strlen($data) > 50) {
-            $cut = substr($this->storage->encodeString($data), 0, 50 - 3) . '. . .';
+            $cut = substr($this->storage->encodeString($data), 0, 50) . '. . .';
+            $model->hasExtras();
         } else {
             $cut = $this->storage->encodeString($data);
         }

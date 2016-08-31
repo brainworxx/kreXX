@@ -141,6 +141,15 @@ class Simple
     protected $callback;
 
     /**
+     * Info, if we have "extra" data to render.
+     *
+     * @see render->renderSingleChild()
+     *
+     * @var bool
+     */
+    protected $hasExtra = false;
+
+    /**
      * Injects the storage.
      *
      * @param Storage $storage
@@ -458,5 +467,24 @@ class Simple
         $classname = 'Brainworxx\\Krexx\\Model\\Callback\\' . $name;
         $this->callback = new $classname($this->storage);
         return $this;
+    }
+
+    /**
+     * Getter for the hasExtras property.
+     *
+     * @return bool
+     *   Info for the render class, if we need to render the extras part.
+     */
+    public function getHasExtras()
+    {
+        return $this->hasExtra;
+    }
+
+    /**
+     * "Setter" for the hasExtras property.
+     */
+    public function hasExtras()
+    {
+        $this->hasExtra = true;
     }
 }

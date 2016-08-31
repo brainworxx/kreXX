@@ -100,7 +100,7 @@ class Fallback
             'analyseMethodsAtall' => 'true',
             'analyseProtectedMethods' => 'false',
             'analysePrivateMethods' => 'false',
-            'debugMethods' => 'debug,__toArray,toArray,__toString,toString,_getProperties,__debugInfo',
+            'debugMethods' => 'debug,__toArray,toArray,__toString,toString,_getProperties,__debugInfo,getProperties',
         ),
         'backtraceAndError' => array(
             'registerAutomatically' => 'false',
@@ -267,5 +267,5 @@ class Fallback
      *
      * @var string
      */
-    public $version = '2.0.0';
+    public $version = '2.0.1 dev';
 }

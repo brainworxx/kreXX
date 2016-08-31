@@ -66,12 +66,7 @@ class Render extends Help
         $partCallable = '';
         $partExtra = '';
         $data = $model->getData();
-
-        if (strlen($data) > strlen($model->getNormal())) {
-            $extra = true;
-        } else {
-            $extra = false;
-        }
+        $extra = $model->getHasExtras();
 
         if ($extra) {
             // We have a lot of text, so we render this one expandable (yellow box).
