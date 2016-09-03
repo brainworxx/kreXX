@@ -223,7 +223,7 @@ class Chunks
         // Cleanup old logfiles to prevent a overflow.
         static $logDir;
         if (is_null($logDir)) {
-            $logDir = $this->storage->config->getConfigValue('output', 'folder') . DIRECTORY_SEPARATOR;
+            $logDir = $this->storage->settings['folder']->getValue() . DIRECTORY_SEPARATOR;
         }
         $this->cleanupOldLogs($logDir);
 
@@ -292,7 +292,7 @@ class Chunks
         $logList = glob($this->krexxDir . $logDir . "*.Krexx.html");
         if (!empty($logList)) {
             array_multisort(array_map('filemtime', $logList), SORT_DESC, $logList);
-            $maxFileCount = (int)$this->storage->config->getConfigValue('output', 'maxfiles');
+            $maxFileCount = (int)$this->storage->settings['maxfiles']->getValue();
             $count = 1;
             // Cleanup logfiles.
             foreach ($logList as $file) {

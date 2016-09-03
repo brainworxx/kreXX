@@ -99,7 +99,7 @@ class Objects extends AbstractCallback
         }
 
         // Dumping protected properties.
-        if ($this->storage->config->getConfigValue('properties', 'analyseProtected') === 'true' ||
+        if ($this->storage->settings['analyseProtected']->getValue() === 'true' ||
             $this->storage->codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
             usort($refProps, $sortingCallback);
@@ -110,7 +110,7 @@ class Objects extends AbstractCallback
         }
 
         // Dumping private properties.
-        if ($this->storage->config->getConfigValue('properties', 'analysePrivate') === 'true' ||
+        if ($this->storage->settings['analysePrivate']->getValue() === 'true' ||
             $this->storage->codegenHandler->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
@@ -120,7 +120,7 @@ class Objects extends AbstractCallback
         }
 
         // Dumping class constants.
-        if ($this->storage->config->getConfigValue('properties', 'analyseConstants') === 'true') {
+        if ($this->storage->settings['analyseConstants']->getValue() === 'true') {
             $output .= $this->getReflectionConstantsData($ref);
         }
 
@@ -128,7 +128,7 @@ class Objects extends AbstractCallback
         $output .= $this->getMethodData($data);
 
         // Dumping traversable data.
-        if ($this->storage->config->getConfigValue('properties', 'analyseTraversable') === 'true') {
+        if ($this->storage->settings['analyseTraversable']->getValue() === 'true') {
             $output .= $this->getTraversableData($data, $name);
         }
 
@@ -156,15 +156,15 @@ class Objects extends AbstractCallback
         $protected = array();
         $private = array();
         $ref = new \ReflectionClass($data);
-        if ($this->storage->config->getConfigValue('methods', 'analyseMethodsAtall') === 'true') {
+        if ($this->storage->settings['analyseMethodsAtall']->getValue() === 'true') {
             $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if ($this->storage->config->getConfigValue('methods', 'analyseProtectedMethods') === 'true' ||
+            if ($this->storage->settings['analyseProtectedMethods']->getValue() === 'true' ||
                 $this->storage->codegenHandler->isInScope()) {
                 $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
             }
 
-            if ($this->storage->config->getConfigValue('methods', 'analysePrivateMethods') === 'true' ||
+            if ($this->storage->settings['analysePrivateMethods']->getValue() === 'true' ||
                 $this->storage->codegenHandler->isInScope()) {
                 $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
             }
@@ -208,7 +208,7 @@ class Objects extends AbstractCallback
     {
         $output = '';
 
-        $funcList = explode(',', $this->storage->config->getConfigValue('methods', 'debugMethods'));
+        $funcList = explode(',', $this->storage->settings['debugMethods']->getValue());
         foreach ($funcList as $funcName) {
             if (is_callable(array(
                     $data,

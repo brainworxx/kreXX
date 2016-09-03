@@ -119,6 +119,13 @@ class Storage
     public $controller;
 
     /**
+     * Here we store our settings.
+     *
+     * @var array
+     */
+    public $settings = array();
+
+    /**
      * Initializes all needed classes.
      *
      * @param $krexxDir
@@ -126,9 +133,10 @@ class Storage
      */
     public function __construct($krexxDir)
     {
+        // Initializes the messages.
+        $this->messages = new Messages($this);
         // Initializes the configuration
-        $this->config = new Config($this);
-        $this->config->krexxdir = $krexxDir;
+        $this->config = new Config($this, $krexxDir);
         // Initialize the emergency handler.
         $this->emergencyHandler = new Emergency($this);
         // Initialize the routing.
@@ -137,8 +145,6 @@ class Storage
         $this->recursionHandler = new Recursion($this);
         // Initialize the code generation.
         $this->codegenHandler = new Codegen($this);
-        // Initializes the messages.
-        $this->messages = new Messages($this);
         // Initializes the chunks handler.
         $this->chunks = new Chunks($this);
         // Initializes the controller.
@@ -174,7 +180,7 @@ class Storage
 
         // Check if the log folder is writable.
         // If not, give feedback!
-        $logFolder = $krexxDir . $this->config->getConfigValue('output', 'folder') . DIRECTORY_SEPARATOR;
+        $logFolder = $krexxDir . $this->settings['folder']->getValue() . DIRECTORY_SEPARATOR;
         if (!is_writeable($logFolder)) {
             $this->messages->addMessage('Logfolder ' . $logFolder . ' is not writable !', 'critical');
             $this->messages->addKey('protected.folder.log', array($logFolder));
@@ -183,7 +189,7 @@ class Storage
         // will pop up, when kreXX is actually displayed, no need to bother the
         // dev just now.
         // We might need to register our fatal error handler.
-        if ($this->config->getConfigValue('backtraceAndError', 'registerAutomatically') === 'true') {
+        if ($this->settings['registerAutomatically']->getValue() === 'true') {
             $this->controller->registerFatalAction();
         }
     }
@@ -207,7 +213,7 @@ class Storage
      */
     protected function initRenderer()
     {
-        $skin = $this->config->getConfigValue('output', 'skin');
+        $skin = $this->settings['skin']->getValue();
         $path = $this->config->krexxdir . 'resources/skins/' . $skin . '/Render.php';
         $classname = 'Brainworxx\Krexx\View\\' . ucfirst($skin) . '\\Render';
         include_once $path;
@@ -364,7 +370,7 @@ class Storage
             if (strlen($data) < 102400) {
                 $result = implode("", array_map($sortingCallback, unpack("N*", $data)));
             } else {
-                $result = $this->render->getHelp('stringTooLarge');
+                $result = $this->messages->getHelp('stringTooLarge');
             }
         } else {
             if ($code) {

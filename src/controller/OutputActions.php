@@ -132,7 +132,7 @@ class OutputActions extends Internals
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
-        if ($this->storage->config->getConfigValue('output', 'destination') === 'file') {
+        if ($this->storage->settings['destination']->getValue() === 'file') {
             $this->storage->chunks->addMetadata($caller);
         }
     }
@@ -177,7 +177,7 @@ class OutputActions extends Internals
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
-        if ($this->storage->config->getConfigValue('output', 'destination') === 'file') {
+        if ($this->storage->settings['destination']->getValue() === 'file') {
             $this->storage->chunks->addMetadata($caller);
         }
 
@@ -249,7 +249,7 @@ class OutputActions extends Internals
         // Get the messages.
         $messages = $this->storage->messages->outputMessages();
 
-        if ($this->storage->config->getConfigValue('output', 'destination') === 'file') {
+        if ($this->storage->settings['destination']->getValue() === 'file') {
             // Add the caller as metadata to the chunks class. It will be saved as
             // additional info, in case we are logging to a file.
             $this->storage->chunks->addMetadata(array(
@@ -277,8 +277,8 @@ class OutputActions extends Internals
         // Not to mention that fatals got removed anyway.
         if (version_compare(phpversion(), '7.0.0', '>=')) {
             // Too high! 420 Method Failure :-(
-            $this->storage->messages->addMessage($this->storage->render->getHelp('php7yellow'));
-            krexx($this->storage->render->getHelp('php7'));
+            $this->storage->messages->addMessage($this->storage->messages->getHelp('php7yellow'));
+            krexx($this->storage->messages->getHelp('php7'));
 
             // Just return, there is nothing more to do here.
             return;

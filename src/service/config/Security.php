@@ -41,6 +41,12 @@ namespace Brainworxx\Krexx\Service\Config;
  */
 class Security extends Fallback
 {
+    /**
+     * Our already evaluated settings.
+     *
+     * @var array
+     */
+    protected $evaluated = array();
 
     /**
      * Evaluate a single setting from the cookies or the ini file.
@@ -57,8 +63,6 @@ class Security extends Fallback
      */
     public function evaluateSetting($group, $name, $value)
     {
-        static $evaluated = array();
-
         if ($group === 'feEditing') {
             // Logging options can never be changed in the frontend.
             // The debug methods will also not be editable.
@@ -69,7 +73,7 @@ class Security extends Fallback
             }
         }
 
-        if (!isset($evaluated[$name])) {
+        if (!isset($this->evaluated[$name])) {
             // We must evaluate it.
             $result = false;
             switch ($name) {
@@ -78,7 +82,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorMethods')
+                            $this->storage->messages->getHelp('configErrorMethods')
                         );
                         $this->storage->messages->addKey('methods.analyseMethodsAtall.error');
                     }
@@ -89,7 +93,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorMethodsProtected')
+                            $this->storage->messages->getHelp('configErrorMethodsProtected')
                         );
                         $this->storage->messages->addKey('methods.analyseProtectedMethods.error');
                     }
@@ -100,7 +104,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorMethodsPrivate')
+                            $this->storage->messages->getHelp('configErrorMethodsPrivate')
                         );
                         $this->storage->messages->addKey('methods.analysePrivateMethods.error');
                     }
@@ -111,7 +115,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorPropertiesProtected')
+                            $this->storage->messages->getHelp('configErrorPropertiesProtected')
                         );
                         $this->storage->messages->addKey('properties.analyseProtected.error');
                     }
@@ -122,7 +126,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorPropertiesPrivate')
+                            $this->storage->messages->getHelp('configErrorPropertiesPrivate')
                         );
                         $this->storage->messages->addKey('properties.analysePrivate.error');
                     }
@@ -133,7 +137,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorPropertiesConstants')
+                            $this->storage->messages->getHelp('configErrorPropertiesConstants')
                         );
                         $this->storage->messages->addKey('properties.analyseConstants.error');
                     }
@@ -145,7 +149,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorTraversable')
+                            $this->storage->messages->getHelp('configErrorTraversable')
                         );
                         $this->storage->messages->addKey('properties.analyseTraversable.error');
                     }
@@ -163,7 +167,7 @@ class Security extends Fallback
                     $result = $this->evalInt($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorLevel')
+                            $this->storage->messages->getHelp('configErrorLevel')
                         );
                         $this->storage->messages->addKey('runtime.level.error');
                     }
@@ -174,7 +178,7 @@ class Security extends Fallback
                     $result = $this->evalInt($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorMaxCall')
+                            $this->storage->messages->getHelp('configErrorMaxCall')
                         );
                         $this->storage->messages->addKey('runtime.maxCall.error');
                     }
@@ -185,7 +189,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorDisabled')
+                            $this->storage->messages->getHelp('configErrorDisabled')
                         );
                         $this->storage->messages->addKey('runtime.disabled.error');
                     }
@@ -196,7 +200,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorDetectAjax')
+                            $this->storage->messages->getHelp('configErrorDetectAjax')
                         );
                         $this->storage->messages->addKey('runtime.detectAjax.error');
                     }
@@ -209,7 +213,7 @@ class Security extends Fallback
                     }
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorDestination')
+                            $this->storage->messages->getHelp('configErrorDestination')
                         );
                         $this->storage->messages->addKey('output.destination.error');
                     }
@@ -220,7 +224,7 @@ class Security extends Fallback
                     $result = $this->evalInt($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorMaxfiles')
+                            $this->storage->messages->getHelp('configErrorMaxfiles')
                         );
                         $this->storage->messages->addKey('output.maxfiles.error');
                     }
@@ -236,13 +240,13 @@ class Security extends Fallback
                     }
                     if (!$isWritable) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorFolderWritable')
+                            $this->storage->messages->getHelp('configErrorFolderWritable')
                         );
                         $this->storage->messages->addKey('output.folder.error.writable');
                     }
                     if (!$isProtected) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorFolderProtection')
+                            $this->storage->messages->getHelp('configErrorFolderProtection')
                         );
                         $this->storage->messages->addKey('output.folder.error.protected');
                     }
@@ -250,12 +254,12 @@ class Security extends Fallback
 
                 case 'skin':
                     // We check the directory and one of the files for readability.
-                    if (is_readable($this->storage->config->krexxdir . 'resources/skins/' . $value . '/header.html')) {
+                    if (is_readable($this->krexxdir . 'resources/skins/' . $value . '/header.html')) {
                         $result = true;
                     }
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorSkin')
+                            $this->storage->messages->getHelp('configErrorSkin')
                         );
                         $this->storage->messages->addKey('output.skin.error');
                     }
@@ -272,7 +276,7 @@ class Security extends Fallback
                     }
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorHandle')
+                            $this->storage->messages->getHelp('configErrorHandle')
                         );
                         $this->storage->messages->addKey('output.haqndle.error');
                     }
@@ -283,7 +287,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorTraceFatals')
+                            $this->storage->messages->getHelp('configErrorTraceFatals')
                         );
                         $this->storage->messages->addKey('errorHandling.traceFatals.error');
                     }
@@ -294,7 +298,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorTraceWarnings')
+                            $this->storage->messages->getHelp('configErrorTraceWarnings')
                         );
                         $this->storage->messages->addKey('errorHandling.traceWarnings.error');
                     }
@@ -305,7 +309,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorTraceNotices')
+                            $this->storage->messages->getHelp('configErrorTraceNotices')
                         );
                         $this->storage->messages->addKey('errorHandling.traceNotices.error');
                     }
@@ -316,7 +320,7 @@ class Security extends Fallback
                     $result = $this->evalBool($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorRegisterAuto')
+                            $this->storage->messages->getHelp('configErrorRegisterAuto')
                         );
                         $this->storage->messages->addKey('backtraceAndError.registerAutomatically.error');
                     }
@@ -325,7 +329,7 @@ class Security extends Fallback
                         $result = $this->evalPhp();
                         if (!$result) {
                             $this->storage->messages->addMessage(
-                                $this->storage->render->getHelp('configErrorPhp7')
+                                $this->storage->messages->getHelp('configErrorPhp7')
                             );
                             $this->storage->messages->addKey('backtraceAndError.registerAutomatically.php7');
                         }
@@ -339,7 +343,7 @@ class Security extends Fallback
                     }
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorBacktraceAnalysis')
+                            $this->storage->messages->getHelp('configErrorBacktraceAnalysis')
                         );
                         $this->storage->messages->addKey('backtraceAndError.backtraceAnalysis.error');
                     }
@@ -350,7 +354,7 @@ class Security extends Fallback
                     $result = $this->evalInt($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorMemory')
+                            $this->storage->messages->getHelp('configErrorMemory')
                         );
                         $this->storage->messages->addKey('runtime.memoryLeft.error');
                     }
@@ -362,7 +366,7 @@ class Security extends Fallback
                     $result = $this->evalInt($value);
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->render->getHelp('configErrorMaxRuntime')
+                            $this->storage->messages->getHelp('configErrorMaxRuntime')
                         );
                         $this->storage->messages->addKey('runtime.maxRuntime.error');
                     } else {
@@ -373,9 +377,9 @@ class Security extends Fallback
                         if ($maxTime > 0 && $maxTime < $value) {
                             // Too big!
                             $this->storage->messages->addMessage(
-                                $this->storage->render->getHelp('configErrorMaxRuntimeBig1') .
+                                $this->storage->messages->getHelp('configErrorMaxRuntimeBig1') .
                                 $maxTime .
-                                $this->storage->render->getHelp('configErrorMaxRuntimeBig2')
+                                $this->storage->messages->getHelp('configErrorMaxRuntimeBig2')
                             );
                             $this->storage->messages->addKey('runtime.maxRuntime.error.maximum', array($maxTime));
                             $result = false;
@@ -388,9 +392,9 @@ class Security extends Fallback
                     // return false, just in case.
                     break;
             }
-            $evaluated[$name] = $result;
+            $this->evaluated[$name] = $result;
         }
-        return $evaluated[$name];
+        return $this->evaluated[$name];
     }
 
     /**

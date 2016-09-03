@@ -43,14 +43,7 @@ use Brainworxx\Krexx\Service\Storage;
  */
 class Help
 {
-
-    /**
-     * Here we store all relevant data.
-     *
-     * @var Storage
-     */
-    protected $storage;
-
+    
     // A simple array to hold the values.
     // There should not be any string collisions.
     protected $helpArray = array(
@@ -113,17 +106,6 @@ class Help
         'configErrorHandle' => 'You have entered a wrong developer handle. Please unse only letters between a-z and A-Z.',
         'configErrorLocal' => 'Coulkd not read the Local Cookie configuration. Sorry :-/',
     );
-
-    /**
-     * Injects the storage.
-     *
-     * @param Storage $storage
-     *   The storage, where we store the classes we need.
-     */
-    public function __construct(Storage $storage)
-    {
-        $this->storage = $storage;
-    }
 
     /**
      * Returns the help text when found, otherwise returns an empty string.

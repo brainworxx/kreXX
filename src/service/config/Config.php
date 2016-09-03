@@ -45,30 +45,23 @@ class Config extends Fallback
 {
 
     /**
-     * The directory where kreXX is stored.
-     *
-     * @var string
-     */
-    public $krexxdir;
-
-    /**
      * Our security class.
      *
      * @var Security
      */
     public $security;
 
-    /**
-     * Caching for the local settings.
-     *
-     * @var array
-     */
-    protected $localConfig = array();
-
-    public function __construct(Storage $storage)
+    public function __construct(Storage $storage, $krexxdir)
     {
-        parent::__construct($storage);
-        $this->security = new Security($storage);
+        parent::__construct($storage, $krexxdir);
+        $this->security = new Security($storage, $krexxdir);
+
+        // Loading the configuration.
+        foreach ($this->configFallback as $section => $settings) {
+            foreach ($settings as $name => $setting) {
+                $this->getConfigValue($section, $name);
+            }
+        }
     }
 
     /**
@@ -76,15 +69,15 @@ class Config extends Fallback
      *
      * Will only set it to true, if the
      *
-     * @param bool $state
+     * @param bool $value
      *   Whether it it enabled, or not.
      */
-    public function setDisabled($state)
+    public function setDisabled($value)
     {
-        if ($state) {
-            $this->localConfig['runtime']['disabled'] = 'true';
+        if ($value) {
+            $this->storage->settings['disabled']->setValue('true');
         } else {
-            $this->localConfig['runtime']['disabled'] = 'false';
+            $this->storage->settings['disabled']->setValue('false');
         }
     }
 
@@ -96,62 +89,11 @@ class Config extends Fallback
      */
     public function getDisabled()
     {
-        // Check for ajax and cli.
-        if ($this->isRequestAjaxOrCli()) {
-            return true;
-        }
-
-        // Disabled in the ini or in the local settings?
-        if ($this->getConfigValue('runtime', 'disabled') === 'true') {
+        if ($this->storage->settings['disabled']->getValue() === 'true') {
             return true;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Returns values from kreXX's configuration.
-     *
-     * @param string $group
-     *   The group inside the ini of the value that we want to read.
-     * @param string $name
-     *   The name of the config value.
-     *
-     * @return string
-     *   The value.
-     */
-    public function getConfigValue($group, $name)
-    {
-        // Do some caching.
-        if (isset($this->localConfig[$group][$name])) {
-            return $this->localConfig[$group][$name];
-        }
-
-        // Do we have a value in the cookies?
-        $localSetting = $this->getConfigFromCookies($group, $name);
-        if (isset($localSetting)) {
-            // We must not overwrite a disabled=true with local cookie settings!
-            // Otherwise it could get enabled locally, which might be a security
-            // issue.
-            if (($name === 'disabled' && $localSetting === 'false')) {
-                // Do nothing.
-                // We ignore this setting.
-            } else {
-                $this->localConfig[$group][$name] = $localSetting;
-                return $localSetting;
-            }
-        }
-
-        // Do we have a value in the ini?
-        $iniSettings = $this->getConfigFromFile($group, $name);
-        if (isset($iniSettings)) {
-            $this->localConfig[$group][$name] = $iniSettings;
-            return $iniSettings;
-        }
-
-        // Nothing yet? Give back factory settings.
-        $this->localConfig[$group][$name] = $this->configFallback[$group][$name];
-        return $this->configFallback[$group][$name];
     }
 
     /**
@@ -166,87 +108,9 @@ class Config extends Fallback
      */
     public function overwriteLocalSettings(array $newSettings)
     {
-        $this->arrayMerge($this->localConfig, $newSettings);
-    }
-
-    /**
-     * Returns the whole configuration as an array.
-     *
-     * The source of the value (factory, ini or cookie)
-     * is also included. We need this one for the display
-     * on the frontend.
-     * We display here the invalid settings (if we have
-     * any,so the user can correct it.
-     *
-     * @return array
-     *   The configuration with the source.
-     */
-    public function getWholeConfiguration()
-    {
-        // We may have some project settings in the ini
-        // as well as some in the cookies, but some may be missing.
-        $source = array();
-        $config = array();
-        $cookieConfig = array();
-
-        // Get Settings from the cookies. We do not correct them,
-        // so the dev can correct them, in case there are wrong values.
-        if (isset($_COOKIE['KrexxDebugSettings'])) {
-            $cookieConfig = json_decode($_COOKIE['KrexxDebugSettings'], true);
-            if (!is_array($cookieConfig)) {
-                // Looks like we do not have a valid config here.
-                $cookieConfig = array();
-                $this->storage->messages->addMessage($this->storage->render->getHelp('configErrorLocal'));
-            }
+        foreach ($newSettings as $name => $value) {
+            $this->storage->settings[$name]->setValue($value);
         }
-
-        // We must remove the cookie settings for which we do not accept
-        // any values. They might contain wrong values.
-        foreach ($cookieConfig as $name => $data) {
-            $paramConfig = $this->getFeConfig($name);
-            if ($paramConfig[0] === false) {
-                // We act as if we have not found the value. Configurations that are
-                // not editable on the frontend will be ignored!
-                unset($cookieConfig[$name]);
-            }
-        }
-
-        // Get Settings from the ini file.
-        $configini = (array)parse_ini_string($this->storage->getFileContents($this->krexxdir . 'Krexx.ini'), true);
-
-        // Overwrite the settings from the fallback.
-        foreach ($this->configFallback as $sectionName => $sectionData) {
-            foreach ($sectionData as $parameterName => $parameterValue) {
-                // Get cookie settings.
-                if (isset($cookieConfig[$parameterName])) {
-                    // We check them, if they are correct. Normally, we would do this,
-                    // when we get the value via self::getConfigFromCookies(), but we
-                    // should feedback the dev about the settings.
-                    $this->security->evaluateSetting('', $parameterName, $cookieConfig[$parameterName]);
-                    $config[$sectionName][$parameterName] = htmlspecialchars($cookieConfig[$parameterName]);
-                    $source[$sectionName][$parameterName] = 'local cookie settings';
-                } else {
-                    // File settings.
-                    if (isset($configini[$sectionName][$parameterName])) {
-                        $config[$sectionName][$parameterName] = htmlspecialchars(
-                            $configini[$sectionName][$parameterName]
-                        );
-                        $source[$sectionName][$parameterName] = 'Krexx ini settings';
-                        continue;
-                    } else {
-                        // Nothing yet? Return factory settings.
-                        $config[$sectionName][$parameterName] = $parameterValue;
-                        $source[$sectionName][$parameterName] = 'factory settings';
-                    }
-                }
-            }
-        }
-
-        $result = array(
-            $source,
-            $config,
-        );
-        return $result;
     }
 
     /**
@@ -269,7 +133,7 @@ class Config extends Fallback
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    public function getFeConfig($parameterName)
+    protected function getFeConfig($parameterName)
     {
         static $config = array();
 
@@ -303,6 +167,70 @@ class Config extends Fallback
         }
 
         return array($editable, $type);
+    }
+
+    /**
+     * Returns values from kreXX's configuration.
+     *
+     * @param string $section
+     *   The group inside the ini of the value that we want to read.
+     * @param string $name
+     *   The name of the config value.
+     *
+     * @return string
+     *   The value.
+     */
+    protected function getConfigValue($section, $name)
+    {
+        // Check if we already have this value.
+        if (!empty($this->storage->settings[$name])) {
+            return $this->storage->settings[$name]->getValue();
+        }
+
+        $feConfig = $this->getFeConfig($name);
+        $model = new Setting();
+        $model->setSection($section)
+            ->setEditable($feConfig[0])
+            ->setType($feConfig[1]);
+
+        // Check for ajax.
+        if ($name === 'disabled') {
+            // Check for ajax and cli.
+            if ($this->isRequestAjaxOrCli()) {
+                $model->setValue('true')->setSource('Ajax request frontend');
+                $this->storage->settings[$name] = $model;
+                return 'true';
+            }
+        }
+
+        // Do we have a value in the cookies?
+        $cookieSetting = $this->getConfigFromCookies($section, $name);
+        if (isset($cookieSetting)) {
+            // We must not overwrite a disabled=true with local cookie settings!
+            // Otherwise it could get enabled locally, which might be a security
+            // issue.
+            if (($name === 'disabled' && $cookieSetting === 'false')) {
+                // Do nothing.
+                // We ignore this setting.
+            } else {
+                $model->setValue($cookieSetting)->setSource('Local cookie settings');
+                $this->storage->settings[$name] = $model;
+                return $cookieSetting;
+            }
+        }
+
+        // Do we have a value in the ini?
+        $iniSettings = $this->getConfigFromFile($section, $name);
+        if (isset($iniSettings)) {
+            $model->setValue($iniSettings)->setSource('Krexx.ini settings');
+            $this->storage->settings[$name] = $model;
+            return $iniSettings;
+        }
+
+        // Nothing yet? Give back factory settings.
+        $model->setValue($this->configFallback[$section][$name])->setSource('Factory settings');
+        $this->storage->settings[$name] = $model;
+        return $this->configFallback[$section][$name];
     }
 
     /**
@@ -377,36 +305,6 @@ class Config extends Fallback
     }
 
     /**
-     * We merge recursively two arrays.
-     *
-     * We keep the keys and overwrite the original values
-     * of the $oldArray.
-     *
-     * @param array $oldArray
-     *   The array we want to change.
-     * @param array $newArray
-     *   The new values for the $oldArray.
-     */
-    protected function arrayMerge(array &$oldArray, array &$newArray)
-    {
-        foreach ($newArray as $key => $value) {
-            if (!isset($oldArray[$key])) {
-                // We simply add it.
-                $oldArray[$key] = $value;
-            } else {
-                // We have already a value.
-                if (is_array($value)) {
-                    // Add our array recursively.
-                    $this->arrayMerge($oldArray[$key], $value);
-                } else {
-                    // It's not an array, we simply overwrite the value.
-                    $oldArray[$key] = $value;
-                }
-            }
-        }
-    }
-
-    /**
      * Returns settings from the ini file.
      *
      * @param string $group
@@ -417,7 +315,7 @@ class Config extends Fallback
      * @return string
      *   The value from the file.
      */
-    public function getConfigFromFile($group, $name)
+    protected function getConfigFromFile($group, $name)
     {
         static $config = array();
 

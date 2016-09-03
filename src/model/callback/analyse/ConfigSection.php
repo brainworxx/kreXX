@@ -59,31 +59,27 @@ class ConfigSection extends AbstractCallback
      */
     public function callMe()
     {
-        $source = $this->parameters['source'];
         $sectionOutput = '';
-        foreach ($this->parameters['data'] as $parameterName => $parameterValue) {
+        foreach ($this->parameters['data'] as $name => $setting) {
             // Render the single value.
             // We need to find out where the value comes from.
-            $config = $this->storage->config->getFeConfig($parameterName);
-            $editable = $config[0];
-            $type = $config[1];
-
-            if ($type != 'None') {
+            $value = $setting->getValue();
+            if ($setting->getType() != 'None') {
                 $model = new Simple($this->storage);
-                if ($editable) {
-                    $model->setData($parameterName)
-                        ->setName($parameterValue)
-                        ->setNormal($source[$parameterName])
-                        ->setType($type)
-                        ->setHelpid($parameterName);
+                if ($setting->getEditable()) {
+                    $model->setData($name)
+                        ->setName($value)
+                        ->setNormal($setting->getSource())
+                        ->setType($setting->getType())
+                        ->setHelpid($name);
 
                     $sectionOutput .= $this->storage->render->renderSingleEditableChild($model);
                 } else {
-                    $model->setData($parameterValue)
-                        ->setName($parameterName)
-                        ->setNormal($parameterValue)
-                        ->setType($source[$parameterName])
-                        ->setHelpid($parameterName);
+                    $model->setData($value)
+                        ->setName($name)
+                        ->setNormal($value)
+                        ->setType($setting->getSource())
+                        ->setHelpid($name);
                     $sectionOutput .= $this->storage->render->renderSingleChild($model);
                 }
             }

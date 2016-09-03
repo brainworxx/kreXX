@@ -53,7 +53,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = parent::renderSingleChild($model);
         $json = $model->getJson();
 
-        $json['Help'] = $this->getHelp($model->getHelpid());
+        $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
         // Prepare the json.
         $json = json_encode($json);
 
@@ -107,7 +107,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = str_replace('{isExpanded}', '', $template);
 
         $json = $model->getJson();
-        $json['Help'] = $this->getHelp($model->getHelpid());
+        $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
         $json = json_encode($json);
         $template = str_replace('{addjson}', $json, $template);
 
@@ -126,7 +126,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         // Prepare the json. Not much do display for form elements.
         $json = json_encode(array(
-            'Help' => $this->getHelp($model->getHelpid()),
+            'Help' => $this->storage->messages->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 
@@ -143,7 +143,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         // Prepare the json. Not much do display for form elements.
         $json = json_encode(array(
-            'Help' => $this->getHelp($model->getHelpid()),
+            'Help' => $this->storage->messages->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 

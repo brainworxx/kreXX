@@ -52,17 +52,13 @@ class Fatal extends Error
      * @var array
      */
     protected static $configFatal = array(
-        'properties' => array(
-            'analyseProtected' => 'true',
-            'analysePrivate' => 'true',
-            'analyseTraversable' => 'true',
-            'analyseConstants' => 'true',
-        ),
-        'methods' => array(
-            'analyseMethodsAtall' => 'true',
-            'analyseProtectedMethods' => 'true',
-            'analysePrivateMethods' => 'true',
-        ),
+        'analyseProtected' => 'true',
+        'analysePrivate' => 'true',
+        'analyseTraversable' => 'true',
+        'analyseConstants' => 'true',
+        'analyseMethodsAtall' => 'true',
+        'analyseProtectedMethods' => 'true',
+        'analysePrivateMethods' => 'true',
     );
 
     /**
@@ -137,7 +133,7 @@ class Fatal extends Error
                     'backtrace' => $this->tickedBacktrace,
                 );
 
-                if ($this->storage->config->getConfigValue('backtraceAndError', 'backtraceAnalysis') === 'deep') {
+                if ($this->storage->settings['backtraceAnalysis']->getValue() === 'deep') {
                     // We overwrite the local settings, so we can get as much info from
                     // analysed objects as possible.
                     $this->storage->config->overwriteLocalSettings(self::$configFatal);

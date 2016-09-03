@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Service\View;
 
 use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Render methods.
@@ -44,8 +45,26 @@ use Brainworxx\Krexx\Model\Simple;
  *
  * @package Brainworxx\Krexx\Service\View
  */
-class Render extends Help
+class Render
 {
+
+    /**
+     * Here we store all relevant data.
+     *
+     * @var Storage
+     */
+    protected $storage;
+
+    /**
+     * Injects the storage.
+     *
+     * @param Storage $storage
+     *   The storage, where we store the classes we need.
+     */
+    public function __construct(Storage $storage)
+    {
+        $this->storage = $storage;
+    }
     /**
      * Renders a "single child", containing a single not expandable value.
      *
@@ -358,7 +377,7 @@ class Render extends Help
                 $this->storage->getFileContents(
                     $this->storage->config->krexxdir .
                     'resources/skins/' .
-                    $this->storage->config->getConfigValue('output', 'skin') .
+                    $this->storage->settings['skin']->getValue() .
                     '/' .
                     $what .
                     '.html'
@@ -572,7 +591,7 @@ class Render extends Help
      */
     protected function renderHelp($helpid)
     {
-        $helpText = $this->getHelp($helpid);
+        $helpText = $this->storage->messages->getHelp($helpid);
         if ($helpText != '') {
             return str_replace('{help}', $helpText, $this->getTemplateFileContent('help'));
         } else {

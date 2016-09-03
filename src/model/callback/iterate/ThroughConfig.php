@@ -58,17 +58,22 @@ class ThroughConfig extends AbstractCallback
      */
     public function callMe()
     {
-        $config = $this->parameters['data'];
-        $source = $this->parameters['source'];
         $configOutput = '';
-        foreach ($config as $sectionName => $sectionData) {
+
+        // We need to "explode" our config array into the
+        // sections again, for better readability.
+        $sections = array();
+        foreach ($this->storage->settings as $name => $setting) {
+            $sections[$setting->getSection()][$name] = $setting;
+        }
+
+        foreach ($sections as $sectionName => $sectionData) {
             // Render a whole section.
             $model = new Simple($this->storage);
             $model->setName($sectionName)
                 ->setType('Config')
                 ->setAdditional('. . .')
                 ->addParameter('data', $sectionData)
-                ->addParameter('source', $source[$sectionName])
                 ->initCallback('Analyse\ConfigSection');
 
             $configOutput .= $this->storage->render->renderExpandableChild($model);

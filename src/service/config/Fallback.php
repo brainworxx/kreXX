@@ -45,6 +45,12 @@ use Brainworxx\Krexx\Service\Storage;
  */
 class Fallback
 {
+    /**
+     * The directory where kreXX is stored.
+     *
+     * @var string
+     */
+    public $krexxdir;
 
     /**
      * Here we store all relevant data.
@@ -57,10 +63,12 @@ class Fallback
      * Injects the storage and initializes the security.
      *
      * @param Storage $storage
+     * @param string $krexxdir
      */
-    public function __construct(Storage $storage)
+    public function __construct(Storage $storage, $krexxdir)
     {
         $this->storage = $storage;
+        $this->krexxdir = $krexxdir;
     }
 
     /**
@@ -192,7 +200,6 @@ class Fallback
             'editable' => 'true',
         ),
     );
-
 
     /**
      * List of stuff who's fe-editing status can not be changed. Never.

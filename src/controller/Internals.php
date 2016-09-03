@@ -248,16 +248,10 @@ class Internals
             $path = 'Current configuration';
         }
 
-        $wholeConfig = $this->storage->config->getWholeConfiguration();
-        $source = $wholeConfig[0];
-        $config = $wholeConfig[1];
-
         $model = new Simple($this->storage);
         $model->setName($path)
             ->setType($this->storage->config->krexxdir . 'Krexx.ini')
             ->setHelpid('currentSettings')
-            ->addParameter('data', $config)
-            ->addParameter('source', $source)
             ->initCallback('Iterate\ThroughConfig');
 
         $configOutput = $this->storage->render->renderExpandableChild($model, $isExpanded);
@@ -277,7 +271,7 @@ class Internals
         $css = $this->storage->getFileContents(
             $krexxDir .
             'resources/skins/' .
-            $this->storage->config->getConfigValue('output', 'skin') .
+            $this->storage->settings['skin']->getValue() .
             '/skin.css'
         );
         // Remove whitespace.
@@ -292,7 +286,7 @@ class Internals
         $js = $this->storage->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
-        $path = $krexxDir . 'resources/skins/' . $this->storage->config->getConfigValue('output', 'skin');
+        $path = $krexxDir . 'resources/skins/' . $this->storage->settings['skin']->getValue();
         if (is_readable($path . '/krexx.min.js')) {
             $jsFile = $path . '/krexx.min.js';
         } else {

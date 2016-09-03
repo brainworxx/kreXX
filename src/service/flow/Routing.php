@@ -93,7 +93,7 @@ class Routing
         if (is_array($data) || is_object($data)) {
             if ($this->storage->emergencyHandler->checkNesting()) {
                 $this->storage->emergencyHandler->downOneNestingLevel();
-                $text = gettype($data) . ' => ' . $this->storage->render->getHelp('maximumLevelReached');
+                $text = gettype($data) . ' => ' . $this->storage->messages->getHelp('maximumLevelReached');
                 $model->setData($text);
                 return $this->analyseString($model);
             }

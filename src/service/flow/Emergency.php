@@ -116,9 +116,9 @@ class Emergency
     {
         $this->storage = $storage;
         // Cache the configured maximum runtime.
-        $this->maxRuntime = (int)$this->storage->config->getConfigValue('runtime', 'maxRuntime');
+        $this->maxRuntime = (int)$this->storage->settings['maxRuntime']->getValue();
         // Cache the configured minimum left memory.
-        $this->minMemoryLeft = (int)$this->storage->config->getConfigValue('runtime', 'memoryLeft');
+        $this->minMemoryLeft = (int)$this->storage->settings['memoryLeft']->getValue();
 
         // Cache the server memory limit.
         $limit = strtoupper(ini_get('memory_limit'));
@@ -220,7 +220,7 @@ class Emergency
      */
     public function checkNesting()
     {
-        return ($this->nestingLevel > (int)$this->storage->config->getConfigValue('runtime', 'level'));
+        return ($this->nestingLevel > (int)$this->storage->settings['level']->getValue());
     }
 
     /**
@@ -255,14 +255,14 @@ class Emergency
     public function checkMaxCall()
     {
         $result = false;
-        $maxCall = (int)$this->storage->config->getConfigValue('runtime', 'maxCall');
+        $maxCall = (int)$this->storage->settings['maxCall']->getValue();
         if ($this->krexxCount >= $maxCall) {
             // Called too often, we might get into trouble here!
             $result = true;
         }
         // Give feedback if this is our last call.
         if ($this->krexxCount === $maxCall - 1) {
-            $this->storage->messages->addMessage($this->storage->render->getHelp('maxCallReached'), 'critical');
+            $this->storage->messages->addMessage($this->storage->messages->getHelp('maxCallReached'), 'critical');
         }
         $this->krexxCount++;
         return $result;
