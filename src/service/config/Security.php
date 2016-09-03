@@ -34,48 +34,13 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
-use Brainworxx\Krexx\Service\Storage;
-
 /**
  * Security measures for the configuration
  *
  * @package Brainworxx\Krexx\Service\Config
  */
-class Security
+class Security extends Fallback
 {
-
-    /**
-     * List of stuff who's fe-editing status can not be changed. Never.
-     *
-     * @see Tools::evaluateSetting
-     *   Evaluating everything in here will fail, meaning that the
-     *   setting will not be accepted.
-     *
-     * @var array
-     */
-    protected $feConfigNoEdit = array(
-        'destination',
-        'folder',
-        'maxfiles',
-        'debugMethods',
-    );
-
-    /**
-     * Here we store all relevant data.
-     *
-     * @var Storage
-     */
-    protected $storage;
-
-    /**
-     * Injects the storage.
-     *
-     * @param Storage $storage
-     */
-    public function __construct(Storage $storage)
-    {
-        $this->storage = $storage;
-    }
 
     /**
      * Evaluate a single setting from the cookies or the ini file.
@@ -532,29 +497,4 @@ class Security
         // Nothing found?
         return true;
     }
-
-    /**
-     * Known Problems with debug functions, which will most likely cause a fatal.
-     *
-     * Used by Objects::pollAllConfiguredDebugMethods() to determine
-     * if we might expect problems.
-     *
-     * @var array
-     */
-    protected $debugMethodsBlacklist = array(
-
-        // TYPO3 viewhelpers dislike this function.
-        // In the TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper the private
-        // $viewHelperNode might not be an object, and trying to render it might
-        // cause a fatal error!
-        'TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper' => '__toString',
-
-        // Will throw an error.
-        'ReflectionClass' => '__toString',
-
-        // Deleting all rows from the DB via typo3 reopsitory is NOT a good
-        // debug method!
-        'RepositoryInterface' => 'removeAll',
-        'Tx_Extbase_Persistence_RepositoryInterface' => 'removeAll',
-    );
 }

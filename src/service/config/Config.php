@@ -41,6 +41,27 @@ namespace Brainworxx\Krexx\Service\Config;
  */
 class Config extends Fallback
 {
+
+    /**
+     * The directory where kreXX is stored.
+     *
+     * @var string
+     */
+    public $krexxdir;
+
+    /**
+     * Caching for the local settings.
+     *
+     * @var array
+     */
+    protected $localConfig = array();
+
+    public function __construct(\Brainworxx\Krexx\Service\Storage $storage)
+    {
+        parent::__construct($storage);
+        $this->security = new Security($storage);
+    }
+
     /**
      * Setter for the enabling from sourcecode.
      *
@@ -307,7 +328,7 @@ class Config extends Fallback
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    public function getFeConfigFromFile($parameterName)
+    protected function getFeConfigFromFile($parameterName)
     {
         static $config = array();
 

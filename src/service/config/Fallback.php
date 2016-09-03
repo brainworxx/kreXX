@@ -54,20 +54,12 @@ class Fallback
     protected $storage;
 
     /**
-     * Security measures for the configuration.
-     *
-     * @var \Brainworxx\Krexx\Service\Config\Security
-     */
-    public $security;
-
-    /**
      * Injects the storage and initializes the security.
      *
      * @param Storage $storage
      */
     public function __construct(Storage $storage)
     {
-        $this->security = new Security($storage);
         $this->storage = $storage;
     }
 
@@ -201,26 +193,47 @@ class Fallback
         ),
     );
 
-    /**
-     * The directory where kreXX is stored.
-     *
-     * @var string
-     */
-    public $krexxdir;
 
     /**
-     * Caching for the local settings.
+     * List of stuff who's fe-editing status can not be changed. Never.
+     *
+     * @see Tools::evaluateSetting
+     *   Evaluating everything in here will fail, meaning that the
+     *   setting will not be accepted.
      *
      * @var array
      */
-    protected $localConfig = array();
+    protected $feConfigNoEdit = array(
+        'destination',
+        'folder',
+        'maxfiles',
+        'debugMethods',
+    );
 
     /**
-     * Path to the configuration file.
+     * Known Problems with debug functions, which will most likely cause a fatal.
      *
-     * @var string
+     * Used by Objects::pollAllConfiguredDebugMethods() to determine
+     * if we might expect problems.
+     *
+     * @var array
      */
-    protected $pathToIni;
+    protected $debugMethodsBlacklist = array(
+
+        // TYPO3 viewhelpers dislike this function.
+        // In the TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper the private
+        // $viewHelperNode might not be an object, and trying to render it might
+        // cause a fatal error!
+        'TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper' => '__toString',
+
+        // Will throw an error.
+        'ReflectionClass' => '__toString',
+
+        // Deleting all rows from the DB via typo3 reopsitory is NOT a good
+        // debug method!
+        'RepositoryInterface' => 'removeAll',
+        'Tx_Extbase_Persistence_RepositoryInterface' => 'removeAll',
+    );
 
     /**
      * The kreXX version.
