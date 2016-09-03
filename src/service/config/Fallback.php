@@ -54,12 +54,20 @@ class Fallback
     protected $storage;
 
     /**
-     * Injects the storage.
+     * Security measures for the configuration.
+     *
+     * @var \Brainworxx\Krexx\Service\Config\Security
+     */
+    public $security;
+
+    /**
+     * Injects the storage and initializes the security.
      *
      * @param Storage $storage
      */
     public function __construct(Storage $storage)
     {
+        $this->security = new Security($storage);
         $this->storage = $storage;
     }
 
@@ -198,22 +206,6 @@ class Fallback
             'type' => 'Input',
             'editable' => 'true',
         ),
-    );
-
-    /**
-     * List of stuff who's fe-editing status can not be changed. Never.
-     *
-     * @see Tools::evaluateSetting
-     *   Evaluating everything in here will fail, meaning that the
-     *   setting will not be accepted.
-     *
-     * @var array
-     */
-    protected $feConfigNoEdit = array(
-        'destination',
-        'folder',
-        'maxfiles',
-        'debugMethods',
     );
 
     /**

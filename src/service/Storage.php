@@ -144,7 +144,7 @@ class Storage
         // Initializes the controller.
         $this->controller = new OutputActions($this);
         // Initializes the render class.
-        $this->initRendrerer();
+        $this->initRenderer();
         // Check our environment.
         $this->checkEnvironment($krexxDir);
     }
@@ -205,7 +205,7 @@ class Storage
     /**
      * Loads the renderer from the skin.
      */
-    protected function initRendrerer()
+    protected function initRenderer()
     {
         $skin = $this->config->getConfigValue('output', 'skin');
         $path = $this->config->krexxdir . 'resources/skins/' . $skin . '/Render.php';
