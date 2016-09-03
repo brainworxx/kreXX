@@ -51,7 +51,11 @@ class Config extends Fallback
      */
     public function setDisabled($state)
     {
-        $this->isDisabled = $state;
+        if ($state) {
+            $this->localConfig['runtime']['disabled'] = 'true';
+        } else {
+            $this->localConfig['runtime']['disabled'] = 'false';
+        }
     }
 
     /**
@@ -62,19 +66,17 @@ class Config extends Fallback
      */
     public function getDisabled()
     {
-        // Disabled in the ini or in the local settings?
-        if ($this->getConfigValue('runtime', 'disabled') === 'true') {
-            return true;
-        }
-
         // Check for ajax and cli.
         if ($this->isRequestAjaxOrCli()) {
             return true;
         }
 
-        // We will only return the real value, if there are no other,
-        // more important settings.
-        return $this->isDisabled;
+        // Disabled in the ini or in the local settings?
+        if ($this->getConfigValue('runtime', 'disabled') === 'true') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

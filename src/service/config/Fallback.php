@@ -72,13 +72,6 @@ class Fallback
     }
 
     /**
-     * Stores if kreXX is actually enabled.
-     *
-     * @var bool
-     */
-    protected $isDisabled = false;
-
-    /**
      * Fallback settings, in case there is nothing in the config ini.
      *
      * @var array
