@@ -1,6 +1,7 @@
 2.0.1
 - Bugfix: Rendering of the 'extra' part for long string works
   now correctly.
+- Refactored the configuration and introduced models there.
 
 2.0.0
 - Added sourcecode to the closure analysis.

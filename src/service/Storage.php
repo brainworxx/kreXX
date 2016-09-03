@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Service;
 
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Config\Config;
+use Brainworxx\Krexx\Service\Config\Setting;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Service\Flow\Routing;
@@ -121,7 +122,7 @@ class Storage
     /**
      * Here we store our settings.
      *
-     * @var array
+     * @var Setting[]
      */
     public $settings = array();
 

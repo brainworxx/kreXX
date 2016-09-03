@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\View;
 
-use Brainworxx\Krexx\Service\Storage;
-
 /**
  * Help texts.
  *
@@ -43,7 +41,7 @@ use Brainworxx\Krexx\Service\Storage;
  */
 class Help
 {
-    
+
     // A simple array to hold the values.
     // There should not be any string collisions.
     protected $helpArray = array(

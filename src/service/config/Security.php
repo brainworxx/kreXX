@@ -41,12 +41,6 @@ namespace Brainworxx\Krexx\Service\Config;
  */
 class Security extends Fallback
 {
-    /**
-     * Our already evaluated settings.
-     *
-     * @var array
-     */
-    protected $evaluated = array();
 
     /**
      * Evaluate a single setting from the cookies or the ini file.
@@ -73,328 +67,323 @@ class Security extends Fallback
             }
         }
 
-        if (!isset($this->evaluated[$name])) {
-            // We must evaluate it.
-            $result = false;
-            switch ($name) {
-                case 'analyseMethodsAtall':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMethods')
-                        );
-                        $this->storage->messages->addKey('methods.analyseMethodsAtall.error');
-                    }
-                    break;
 
-                case 'analyseProtectedMethods':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMethodsProtected')
-                        );
-                        $this->storage->messages->addKey('methods.analyseProtectedMethods.error');
-                    }
-                    break;
+        // We must evaluate it.
+        $result = false;
+        switch ($name) {
+            case 'analyseMethodsAtall':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage($this->storage->messages->getHelp('configErrorMethods'));
+                    $this->storage->messages->addKey('methods.analyseMethodsAtall.error');
+                }
+                break;
 
-                case 'analysePrivateMethods':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMethodsPrivate')
-                        );
-                        $this->storage->messages->addKey('methods.analysePrivateMethods.error');
-                    }
-                    break;
+            case 'analyseProtectedMethods':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorMethodsProtected')
+                    );
+                    $this->storage->messages->addKey('methods.analyseProtectedMethods.error');
+                }
+                break;
 
-                case 'analyseProtected':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorPropertiesProtected')
-                        );
-                        $this->storage->messages->addKey('properties.analyseProtected.error');
-                    }
-                    break;
+            case 'analysePrivateMethods':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorMethodsPrivate')
+                    );
+                    $this->storage->messages->addKey('methods.analysePrivateMethods.error');
+                }
+                break;
 
-                case 'analysePrivate':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorPropertiesPrivate')
-                        );
-                        $this->storage->messages->addKey('properties.analysePrivate.error');
-                    }
-                    break;
+            case 'analyseProtected':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorPropertiesProtected')
+                    );
+                    $this->storage->messages->addKey('properties.analyseProtected.error');
+                }
+                break;
 
-                case 'analyseConstants':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorPropertiesConstants')
-                        );
-                        $this->storage->messages->addKey('properties.analyseConstants.error');
-                    }
-                    break;
+            case 'analysePrivate':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorPropertiesPrivate')
+                    );
+                    $this->storage->messages->addKey('properties.analysePrivate.error');
+                }
+                break;
+
+            case 'analyseConstants':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorPropertiesConstants')
+                    );
+                    $this->storage->messages->addKey('properties.analyseConstants.error');
+                }
+                break;
 
 
-                case 'analyseTraversable':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorTraversable')
-                        );
-                        $this->storage->messages->addKey('properties.analyseTraversable.error');
-                    }
-                    break;
+            case 'analyseTraversable':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorTraversable')
+                    );
+                    $this->storage->messages->addKey('properties.analyseTraversable.error');
+                }
+                break;
 
-                case 'debugMethods':
-                    // String that can get exploded, separated by a comma,
-                    // might as well be a single function.
-                    // We are not going to check this one.
+            case 'debugMethods':
+                // String that can get exploded, separated by a comma,
+                // might as well be a single function.
+                // We are not going to check this one.
+                $result = true;
+                break;
+
+            case 'level':
+                // We expect an integer.
+                $result = $this->evalInt($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorLevel')
+                    );
+                    $this->storage->messages->addKey('runtime.level.error');
+                }
+                break;
+
+            case 'maxCall':
+                // We expect an integer.
+                $result = $this->evalInt($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorMaxCall')
+                    );
+                    $this->storage->messages->addKey('runtime.maxCall.error');
+                }
+                break;
+
+            case 'disabled':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorDisabled')
+                    );
+                    $this->storage->messages->addKey('runtime.disabled.error');
+                }
+                break;
+
+            case 'detectAjax':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorDetectAjax')
+                    );
+                    $this->storage->messages->addKey('runtime.detectAjax.error');
+                }
+                break;
+
+            case 'destination':
+                // We expect 'frontend' or 'file'
+                if ($value === 'frontend' || $value === 'file') {
                     $result = true;
-                    break;
+                }
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorDestination')
+                    );
+                    $this->storage->messages->addKey('output.destination.error');
+                }
+                break;
 
-                case 'level':
-                    // We expect an integer.
-                    $result = $this->evalInt($value);
+            case 'maxfiles':
+                // We expect an integer.
+                $result = $this->evalInt($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorMaxfiles')
+                    );
+                    $this->storage->messages->addKey('output.maxfiles.error');
+                }
+                break;
+
+            case 'folder':
+                // Directory with write access.
+                // We also need to check, if the folder is properly protected.
+                $isWritable = is_writable($this->storage->config->krexxdir . $value);
+                $isProtected = $this->isFolderProtected($this->storage->config->krexxdir . $value);
+                if ($isWritable && $isProtected) {
+                    $result = true;
+                }
+                if (!$isWritable) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorFolderWritable')
+                    );
+                    $this->storage->messages->addKey('output.folder.error.writable');
+                }
+                if (!$isProtected) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorFolderProtection')
+                    );
+                    $this->storage->messages->addKey('output.folder.error.protected');
+                }
+                break;
+
+            case 'skin':
+                // We check the directory and one of the files for readability.
+                if (is_readable($this->krexxdir . 'resources/skins/' . $value . '/header.html')) {
+                    $result = true;
+                }
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorSkin')
+                    );
+                    $this->storage->messages->addKey('output.skin.error');
+                }
+                break;
+
+            case 'Local open function':
+                // The Developer handle, we check it for values that are not
+                // a-z and A-Z.
+                $devHandle = preg_match('/[^a-zA-Z]/', $value);
+                if (empty($devHandle)) {
+                    $result = true;
+                } else {
+                    $result = false;
+                }
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorHandle')
+                    );
+                    $this->storage->messages->addKey('output.haqndle.error');
+                }
+                break;
+
+            case 'traceFatals':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorTraceFatals')
+                    );
+                    $this->storage->messages->addKey('errorHandling.traceFatals.error');
+                }
+                break;
+
+            case 'traceWarnings':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorTraceWarnings')
+                    );
+                    $this->storage->messages->addKey('errorHandling.traceWarnings.error');
+                }
+                break;
+
+            case 'traceNotices':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorTraceNotices')
+                    );
+                    $this->storage->messages->addKey('errorHandling.traceNotices.error');
+                }
+                break;
+
+            case 'registerAutomatically':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorRegisterAuto')
+                    );
+                    $this->storage->messages->addKey('backtraceAndError.registerAutomatically.error');
+                }
+                // We also expect the php version to be lower than 7.
+                if ($result) {
+                    $result = $this->evalPhp();
                     if (!$result) {
                         $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorLevel')
+                            $this->storage->messages->getHelp('configErrorPhp7')
                         );
-                        $this->storage->messages->addKey('runtime.level.error');
+                        $this->storage->messages->addKey('backtraceAndError.registerAutomatically.php7');
                     }
-                    break;
+                }
+                break;
 
-                case 'maxCall':
-                    // We expect an integer.
-                    $result = $this->evalInt($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMaxCall')
-                        );
-                        $this->storage->messages->addKey('runtime.maxCall.error');
-                    }
-                    break;
+            case 'backtraceAnalysis':
+                // We expect "normal" or "deep"
+                if ($value === 'normal' || $value === 'deep') {
+                    $result = true;
+                }
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorBacktraceAnalysis')
+                    );
+                    $this->storage->messages->addKey('backtraceAndError.backtraceAnalysis.error');
+                }
+                break;
 
-                case 'disabled':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorDisabled')
-                        );
-                        $this->storage->messages->addKey('runtime.disabled.error');
-                    }
-                    break;
+            case 'memoryLeft':
+                // We expect an integer.
+                $result = $this->evalInt($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorMemory')
+                    );
+                    $this->storage->messages->addKey('runtime.memoryLeft.error');
+                }
+                break;
 
-                case 'detectAjax':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
+            case 'maxRuntime':
+                // We expect an integer not greater than the max runtime of the
+                // server.
+                $result = $this->evalInt($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage($this->storage->messages->getHelp('configErrorMaxRuntime'));
+                    $this->storage->messages->addKey('runtime.maxRuntime.error');
+                } else {
+                    // OK, we got an int, now to see if it is smaller than the
+                    // configured max runtime.
+                    $maxTime = (int)ini_get('max_execution_time');
+                    $value = (int)$value;
+                    if ($maxTime > 0 && $maxTime < $value) {
+                        // Too big!
                         $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorDetectAjax')
+                            $this->storage->messages->getHelp('configErrorMaxRuntimeBig1') .
+                            $maxTime .
+                            $this->storage->messages->getHelp('configErrorMaxRuntimeBig2')
                         );
-                        $this->storage->messages->addKey('runtime.detectAjax.error');
-                    }
-                    break;
-
-                case 'destination':
-                    // We expect 'frontend' or 'file'
-                    if ($value === 'frontend' || $value === 'file') {
-                        $result = true;
-                    }
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorDestination')
-                        );
-                        $this->storage->messages->addKey('output.destination.error');
-                    }
-                    break;
-
-                case 'maxfiles':
-                    // We expect an integer.
-                    $result = $this->evalInt($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMaxfiles')
-                        );
-                        $this->storage->messages->addKey('output.maxfiles.error');
-                    }
-                    break;
-
-                case 'folder':
-                    // Directory with write access.
-                    // We also need to check, if the folder is properly protected.
-                    $isWritable = is_writable($this->storage->config->krexxdir . $value);
-                    $isProtected = $this->isFolderProtected($this->storage->config->krexxdir . $value);
-                    if ($isWritable && $isProtected) {
-                        $result = true;
-                    }
-                    if (!$isWritable) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorFolderWritable')
-                        );
-                        $this->storage->messages->addKey('output.folder.error.writable');
-                    }
-                    if (!$isProtected) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorFolderProtection')
-                        );
-                        $this->storage->messages->addKey('output.folder.error.protected');
-                    }
-                    break;
-
-                case 'skin':
-                    // We check the directory and one of the files for readability.
-                    if (is_readable($this->krexxdir . 'resources/skins/' . $value . '/header.html')) {
-                        $result = true;
-                    }
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorSkin')
-                        );
-                        $this->storage->messages->addKey('output.skin.error');
-                    }
-                    break;
-
-                case 'Local open function':
-                    // The Developer handle, we check it for values that are not
-                    // a-z and A-Z.
-                    $devHandle = preg_match('/[^a-zA-Z]/', $value);
-                    if (empty($devHandle)) {
-                        $result = true;
-                    } else {
+                        $this->storage->messages->addKey('runtime.maxRuntime.error.maximum', array($maxTime));
                         $result = false;
                     }
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorHandle')
-                        );
-                        $this->storage->messages->addKey('output.haqndle.error');
-                    }
-                    break;
+                }
+                break;
 
-                case 'traceFatals':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorTraceFatals')
-                        );
-                        $this->storage->messages->addKey('errorHandling.traceFatals.error');
-                    }
-                    break;
-
-                case 'traceWarnings':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorTraceWarnings')
-                        );
-                        $this->storage->messages->addKey('errorHandling.traceWarnings.error');
-                    }
-                    break;
-
-                case 'traceNotices':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorTraceNotices')
-                        );
-                        $this->storage->messages->addKey('errorHandling.traceNotices.error');
-                    }
-                    break;
-
-                case 'registerAutomatically':
-                    // We expect a bool.
-                    $result = $this->evalBool($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorRegisterAuto')
-                        );
-                        $this->storage->messages->addKey('backtraceAndError.registerAutomatically.error');
-                    }
-                    // We also expect the php version to be lower than 7.
-                    if ($result) {
-                        $result = $this->evalPhp();
-                        if (!$result) {
-                            $this->storage->messages->addMessage(
-                                $this->storage->messages->getHelp('configErrorPhp7')
-                            );
-                            $this->storage->messages->addKey('backtraceAndError.registerAutomatically.php7');
-                        }
-                    }
-                    break;
-
-                case 'backtraceAnalysis':
-                    // We expect "normal" or "deep"
-                    if ($value === 'normal' || $value === 'deep') {
-                        $result = true;
-                    }
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorBacktraceAnalysis')
-                        );
-                        $this->storage->messages->addKey('backtraceAndError.backtraceAnalysis.error');
-                    }
-                    break;
-
-                case 'memoryLeft':
-                    // We expect an integer.
-                    $result = $this->evalInt($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMemory')
-                        );
-                        $this->storage->messages->addKey('runtime.memoryLeft.error');
-                    }
-                    break;
-
-                case 'maxRuntime':
-                    // We expect an integer not greater than the max runtime of the
-                    // server.
-                    $result = $this->evalInt($value);
-                    if (!$result) {
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMaxRuntime')
-                        );
-                        $this->storage->messages->addKey('runtime.maxRuntime.error');
-                    } else {
-                        // OK, we got an int, now to see if it is smaller than the
-                        // configured max runtime.
-                        $maxTime = (int)ini_get('max_execution_time');
-                        $value = (int)$value;
-                        if ($maxTime > 0 && $maxTime < $value) {
-                            // Too big!
-                            $this->storage->messages->addMessage(
-                                $this->storage->messages->getHelp('configErrorMaxRuntimeBig1') .
-                                $maxTime .
-                                $this->storage->messages->getHelp('configErrorMaxRuntimeBig2')
-                            );
-                            $this->storage->messages->addKey('runtime.maxRuntime.error.maximum', array($maxTime));
-                            $result = false;
-                        }
-                    }
-                    break;
-
-                default:
-                    // Unknown settings,
-                    // return false, just in case.
-                    break;
-            }
-            $this->evaluated[$name] = $result;
+            default:
+                // Unknown settings,
+                // return false, just in case.
+                break;
         }
-        return $this->evaluated[$name];
+
+        return $result;
     }
 
     /**
