@@ -213,7 +213,7 @@ class Objects extends AbstractCallback
             if (is_callable(array(
                     $data,
                     $funcName,
-                )) && $this->storage->config->isAllowedDebugCall($data, $funcName)
+                )) && $this->storage->config->security->isAllowedDebugCall($data, $funcName)
             ) {
                 $foundRequired = false;
                 // We need to check if this method actually exists. Just because it is

@@ -269,30 +269,6 @@ class Config extends Fallback
     }
 
     /**
-     * Determines if a debug function is blacklisted in s specific class.
-     *
-     * @param object $data
-     *   The class we are analysing.
-     * @param string $call
-     *   The function name we want to call.
-     *
-     * @return bool
-     *   Whether the function is allowed to be called.
-     */
-    public function isAllowedDebugCall($data, $call)
-    {
-
-        foreach ($this->debugMethodsBlacklist as $classname => $method) {
-            if (is_a($data, $classname) && $call === $method) {
-                // We have a winner, this one is blacklisted!
-                return false;
-            }
-        }
-        // Nothing found?
-        return true;
-    }
-
-    /**
      * Gets a list of all available skins for the frontend config.
      *
      * @return array

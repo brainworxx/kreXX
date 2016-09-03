@@ -428,7 +428,7 @@ class Security
         return $evaluated[$name];
     }
 
-        /**
+    /**
      * Evaluates a string of 'true' or 'false'.
      *
      * @param string $value
@@ -508,4 +508,53 @@ class Security
         }
         return $result;
     }
+
+    /**
+     * Determines if a debug function is blacklisted in s specific class.
+     *
+     * @param object $data
+     *   The class we are analysing.
+     * @param string $call
+     *   The function name we want to call.
+     *
+     * @return bool
+     *   Whether the function is allowed to be called.
+     */
+    public function isAllowedDebugCall($data, $call)
+    {
+
+        foreach ($this->debugMethodsBlacklist as $classname => $method) {
+            if (is_a($data, $classname) && $call === $method) {
+                // We have a winner, this one is blacklisted!
+                return false;
+            }
+        }
+        // Nothing found?
+        return true;
+    }
+
+    /**
+     * Known Problems with debug functions, which will most likely cause a fatal.
+     *
+     * Used by Objects::pollAllConfiguredDebugMethods() to determine
+     * if we might expect problems.
+     *
+     * @var array
+     */
+    protected $debugMethodsBlacklist = array(
+
+        // TYPO3 viewhelpers dislike this function.
+        // In the TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper the private
+        // $viewHelperNode might not be an object, and trying to render it might
+        // cause a fatal error!
+        'TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper' => '__toString',
+
+        // Will throw an error.
+        'ReflectionClass' => '__toString',
+
+        // Deleting all rows from the DB via typo3 reopsitory is NOT a good
+        // debug method!
+        'RepositoryInterface' => 'removeAll',
+        'Tx_Extbase_Persistence_RepositoryInterface' => 'removeAll',
+    );
 }
