@@ -239,7 +239,7 @@ class Internals
     {
         // Now we need to stitch together the content of the ini file
         // as well as it's path.
-        if (!is_readable($this->storage->config->getPathToIni())) {
+        if (!is_readable($this->storage->config->krexxdir . 'Krexx.ini')) {
             // Project settings are not accessible
             // tell the user, that we are using fallback settings.
             $path = 'Krexx.ini not found, using factory settings';
@@ -254,7 +254,7 @@ class Internals
 
         $model = new Simple($this->storage);
         $model->setName($path)
-            ->setType($this->storage->config->getPathToIni())
+            ->setType($this->storage->config->krexxdir . 'Krexx.ini')
             ->setHelpid('currentSettings')
             ->addParameter('data', $config)
             ->addParameter('source', $source)

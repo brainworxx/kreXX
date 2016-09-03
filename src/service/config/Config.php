@@ -180,7 +180,7 @@ class Config extends Fallback
         }
 
         // Get Settings from the ini file.
-        $configini = (array)parse_ini_string($this->storage->getFileContents($this->getPathToIni()), true);
+        $configini = (array)parse_ini_string($this->storage->getFileContents($this->krexxdir . 'Krexx.ini'), true);
 
         // Overwrite the settings from the fallback.
         foreach ($this->configFallback as $sectionName => $sectionData) {
@@ -226,46 +226,6 @@ class Config extends Fallback
     public function getDevHandler()
     {
         return $this->getConfigFromCookies('deep', 'Local open function');
-    }
-
-    /**
-     * Gets the path to the ini file.
-     *
-     * In typo3, it is not a good idea to store the config
-     * settings inside the module directory. When an update is
-     * triggered, all settings will be lost. So wen need a functionality
-     * to point kreXX to another directory for it's config.
-     *
-     * @return string
-     *   The path to the ini file.
-     */
-    public function getPathToIni()
-    {
-        if (!isset($this->pathToIni)) {
-            $configini = (array)parse_ini_string(
-                $this->storage->getFileContents($this->krexxdir . 'KrexxConfig.ini'),
-                true
-            );
-            if (isset($configini['pathtoini']['pathtoini'])) {
-                $this->pathToIni = $configini['pathtoini']['pathtoini'];
-            } else {
-                $this->pathToIni = $this->krexxdir . 'Krexx.ini';
-            }
-        }
-        return $this->pathToIni;
-    }
-
-    /**
-     * Setter for the path to the ini file.
-     *
-     * Useful, if you don't want to save your ini file in the kreXX directory.
-     *
-     * @param string $path
-     *   The path to the ini file
-     */
-    public function setPathToIni($path)
-    {
-        $this->pathToIni = $path;
     }
 
     /**
@@ -454,7 +414,7 @@ class Config extends Fallback
 
         // Not loaded?
         if (empty($config)) {
-            $config = (array)parse_ini_string($this->storage->getFileContents($this->getPathToIni()), true);
+            $config = (array)parse_ini_string($this->storage->getFileContents($this->krexxdir . 'Krexx.ini'), true);
             if (empty($config)) {
                 // Still empty means that there is no ini file. We add a dummy.
                 // This will prevent the failing reload of the ini file.
