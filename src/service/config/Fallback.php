@@ -76,7 +76,7 @@ class Fallback
      *
      * @var bool
      */
-    protected $isEnabled = true;
+    protected $isDisabled = false;
 
     /**
      * Fallback settings, in case there is nothing in the config ini.

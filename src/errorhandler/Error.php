@@ -82,7 +82,7 @@ abstract class Error
      */
     protected function getIsActive()
     {
-        if ($this->isActive && $this->storage->config->getEnabled()) {
+        if ($this->isActive && !$this->storage->config->getDisabled()) {
             // We will only handle errors when kreXX and the handler
             // itself is enabled.
             return true;

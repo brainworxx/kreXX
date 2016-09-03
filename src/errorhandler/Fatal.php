@@ -117,8 +117,7 @@ class Fatal extends Error
 
         // Do we have an error at all?
         if (!is_null($error) &&
-            $this->getIsActive() &&
-            $this->storage->config->getEnabled()
+            $this->getIsActive()
         ) {
             // Do we need to check this one, according to our settings?
             $translatedError = $this->translateErrorType($error['type']);

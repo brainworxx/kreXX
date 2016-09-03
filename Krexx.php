@@ -148,7 +148,7 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
-        if (!self::$storage->config->getEnabled()) {
+        if (self::$storage->config->getDisabled()) {
             return;
         }
         self::$storage->controller->timerAction($string);
@@ -162,7 +162,7 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled ?
-        if (!self::$storage->config->getEnabled()) {
+        if (self::$storage->config->getDisabled()) {
             return;
         }
         self::$storage->controller->timerEndAction();
@@ -179,7 +179,7 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
-        if (!self::$storage->config->getEnabled()) {
+        if (self::$storage->config->getDisabled()) {
             return;
         }
         self::$storage->controller->dumpAction($data);
@@ -196,7 +196,7 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
-        if (!self::$storage->config->getEnabled()) {
+        if (self::$storage->config->getDisabled()) {
             return;
         }
         // Render it.
@@ -210,7 +210,7 @@ class Krexx
     public static function enable()
     {
         self::$storage->controller->noFatalForKrexx();
-        self::$storage->config->setEnabled(true);
+        self::$storage->config->setDisabled(false);
         self::$storage->controller->reFatalAfterKrexx();
     }
 
@@ -220,7 +220,7 @@ class Krexx
     public static function disable()
     {
         self::$storage->controller->noFatalForKrexx();
-        self::$storage->config->setEnabled(false);
+        self::$storage->config->setDisabled(true);
         // We will not re-enable it afterwards, because kreXX
         // is disabled and the handler would not show up anyway.
     }
@@ -235,7 +235,7 @@ class Krexx
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
         // We are ignoring local settings here.
-        if (!self::$storage->config->getEnabled()) {
+        if (self::$storage->config->getDisabled()) {
             return;
         }
         self::$storage->controller->editSettingsAction();
@@ -250,7 +250,7 @@ class Krexx
     public static function registerFatal()
     {
         // Disabled?
-        if (!self::$storage->config->getEnabled()) {
+        if (self::$storage->config->getDisabled()) {
             return;
         }
         self::$storage->controller->registerFatalAction();
@@ -266,7 +266,7 @@ class Krexx
     public static function unregisterFatal()
     {
         // Disabled?
-        if (!self::$storage->config->getEnabled()) {
+        if (self::$storage->config->getDisabled()) {
             return;
         }
         self::$storage->controller->unregisterFatalAction();

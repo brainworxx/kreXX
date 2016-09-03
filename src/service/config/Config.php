@@ -49,9 +49,9 @@ class Config extends Fallback
      * @param bool $state
      *   Whether it it enabled, or not.
      */
-    public function setEnabled($state)
+    public function setDisabled($state)
     {
-        $this->isEnabled = $state;
+        $this->isDisabled = $state;
     }
 
     /**
@@ -60,21 +60,21 @@ class Config extends Fallback
      * @return bool
      *   Returns whether kreXX is enabled or not.
      */
-    public function getEnabled()
+    public function getDisabled()
     {
         // Disabled in the ini or in the local settings?
         if ($this->getConfigValue('runtime', 'disabled') === 'true') {
-            return false;
+            return true;
         }
 
         // Check for ajax and cli.
         if ($this->isRequestAjaxOrCli()) {
-            return false;
+            return true;
         }
 
         // We will only return the real value, if there are no other,
         // more important settings.
-        return $this->isEnabled;
+        return $this->isDisabled;
     }
 
     /**
