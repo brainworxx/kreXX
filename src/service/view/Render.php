@@ -403,7 +403,7 @@ class Render extends Help
 
                 case "skin":
                     // Get a list of all skin folders.
-                    $valueList = $this->storage->config->getSkinList();
+                    $valueList = $this->getSkinList();
                     break;
 
                 default:
@@ -630,5 +630,28 @@ class Render extends Help
         } else {
             return '';
         }
+    }
+
+    /**
+     * Gets a list of all available skins for the frontend config.
+     *
+     * @return array
+     *   An array with the skinnames.
+     */
+    protected function getSkinList()
+    {
+        // Static cache to make it a little bit faster.
+        static $list = array();
+
+        if (empty($list)) {
+            // Get the list.
+            $list = array_filter(glob($this->storage->config->krexxdir . 'resources/skins/*'), 'is_dir');
+            // Now we need to filter it, we only want the names, not the full path.
+            foreach ($list as &$path) {
+                $path = str_replace($this->storage->config->krexxdir . 'resources/skins/', '', $path);
+            }
+        }
+
+        return $list;
     }
 }

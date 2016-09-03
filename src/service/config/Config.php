@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
+use Brainworxx\Krexx\Service\Storage;
+
 /**
  * Access the debug settings here.
  *
@@ -50,13 +52,20 @@ class Config extends Fallback
     public $krexxdir;
 
     /**
+     * Our security class.
+     *
+     * @var Security
+     */
+    public $security;
+
+    /**
      * Caching for the local settings.
      *
      * @var array
      */
     protected $localConfig = array();
 
-    public function __construct(\Brainworxx\Krexx\Service\Storage $storage)
+    public function __construct(Storage $storage)
     {
         parent::__construct($storage);
         $this->security = new Security($storage);
@@ -249,29 +258,6 @@ class Config extends Fallback
     public function getDevHandler()
     {
         return $this->getConfigFromCookies('deep', 'Local open function');
-    }
-
-    /**
-     * Gets a list of all available skins for the frontend config.
-     *
-     * @return array
-     *   An array with the skinnames.
-     */
-    public function getSkinList()
-    {
-        // Static cache to make it a little bit faster.
-        static $list = array();
-
-        if (empty($list)) {
-            // Get the list.
-            $list = array_filter(glob($this->krexxdir . 'resources/skins/*'), 'is_dir');
-            // Now we need to filter it, we only want the names, not the full path.
-            foreach ($list as &$path) {
-                $path = str_replace($this->krexxdir . 'resources/skins/', '', $path);
-            }
-        }
-
-        return $list;
     }
 
     /**
