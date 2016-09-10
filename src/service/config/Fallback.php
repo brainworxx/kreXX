@@ -82,13 +82,10 @@ class Fallback
             'detectAjax' => 'true',
             'level' => '5',
             'maxCall' => '10',
-            'memoryLeft' => '64',
-            'maxRuntime' => '60',
         ),
         'output' => array(
             'skin' => 'smokygrey',
             'destination' => 'frontend',
-            'folder' => 'log',
             'maxfiles' => '10',
         ),
         'properties' => array(
@@ -105,7 +102,6 @@ class Fallback
         ),
         'backtraceAndError' => array(
             'registerAutomatically' => 'false',
-            'backtraceAnalysis' => 'deep',
         ),
     );
 
@@ -167,10 +163,6 @@ class Fallback
             'type' => 'None',
             'editable' => 'false',
         ),
-        'folder' => array(
-            'type' => 'None',
-            'editable' => 'false',
-        ),
         'skin' => array(
             'type' => 'Select',
             'editable' => 'true',
@@ -181,18 +173,6 @@ class Fallback
         ),
         'detectAjax' => array(
             'type' => 'Select',
-            'editable' => 'true',
-        ),
-        'backtraceAnalysis' => array(
-            'type' => 'Select',
-            'editable' => 'true',
-        ),
-        'memoryLeft' => array(
-            'type' => 'Input',
-            'editable' => 'true',
-        ),
-        'maxRuntime' => array(
-            'type' => 'Input',
             'editable' => 'true',
         ),
         'Local open function' => array(
@@ -212,7 +192,6 @@ class Fallback
      */
     protected $feConfigNoEdit = array(
         'destination',
-        'folder',
         'maxfiles',
         'debugMethods',
     );
@@ -247,5 +226,5 @@ class Fallback
      *
      * @var string
      */
-    public $version = '2.0.1 dev';
+    public $version = '2.1.0 dev';
 }

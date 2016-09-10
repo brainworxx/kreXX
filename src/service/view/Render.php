@@ -415,11 +415,6 @@ class Render
                     $valueList = array('frontend', 'file');
                     break;
 
-                case "backtraceAnalysis":
-                    // Normal or deep analysis.
-                    $valueList = array('deep', 'normal');
-                    break;
-
                 case "skin":
                     // Get a list of all skin folders.
                     $valueList = $this->getSkinList();

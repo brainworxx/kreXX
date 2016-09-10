@@ -91,6 +91,11 @@ class Chunks
     protected $krexxDir;
 
     /**
+     * @var string
+     */
+    protected $logDir = 'log';
+
+    /**
      * Injects the storage.
      *
      * @param Storage $storage
@@ -221,15 +226,11 @@ class Chunks
         $this->cleanupOldChunks();
 
         // Cleanup old logfiles to prevent a overflow.
-        static $logDir;
-        if (is_null($logDir)) {
-            $logDir = $this->storage->config->getSetting('folder') . DIRECTORY_SEPARATOR;
-        }
-        $this->cleanupOldLogs($logDir);
+        $this->cleanupOldLogs($this->logDir);
 
         // Determine the filename.
         $timestamp = $this->fileStamp();
-        $filename = $this->krexxDir . $logDir . $timestamp . '.Krexx.html';
+        $filename = $this->krexxDir . $this->logDir . $timestamp . '.Krexx.html';
 
         $chunkPos = strpos($string, '@@@');
 

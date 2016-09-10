@@ -76,7 +76,7 @@ class Emergency
      *
      * @var int
      */
-    protected $maxRuntime = 0;
+    protected $maxRuntime = 60;
 
     /**
      * The server memory limit, coming from the php.ini.
@@ -86,11 +86,11 @@ class Emergency
     protected $serverMemoryLimit = 0;
 
     /**
-     * Cached configuration of the minimum leftover memory.
+     * Cached configuration of the minimum leftover memory (MB).
      *
      * @var int
      */
-    protected $minMemoryLeft = 0;
+    protected $minMemoryLeft = 64;
 
     /**
      * The level inside the object/array hierarchy we are in.
@@ -115,10 +115,6 @@ class Emergency
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;
-        // Cache the configured maximum runtime.
-        $this->maxRuntime = (int)$this->storage->config->getSetting('maxRuntime');
-        // Cache the configured minimum left memory.
-        $this->minMemoryLeft = (int)$this->storage->config->getSetting('memoryLeft');
 
         // Cache the server memory limit.
         $limit = strtoupper(ini_get('memory_limit'));

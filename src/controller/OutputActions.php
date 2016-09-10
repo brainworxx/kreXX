@@ -46,6 +46,21 @@ class OutputActions extends Internals
 {
 
     /**
+     * Config for the 'deep' backtrace analysis.
+     *
+     * @var array
+     */
+    protected $configFatal = array(
+        'analyseProtected' => 'true',
+        'analysePrivate' => 'true',
+        'analyseTraversable' => 'true',
+        'analyseConstants' => 'true',
+        'analyseMethodsAtall' => 'true',
+        'analyseProtectedMethods' => 'true',
+        'analysePrivateMethods' => 'true',
+    );
+
+    /**
      * Dump information about a variable.
      *
      * Here everything starts and ends (well, unless we are only outputting
@@ -148,6 +163,9 @@ class OutputActions extends Internals
         }
 
         $this->storage->reset();
+        // We overwrite the local settings, so we can get as much info from
+        // analysed objects as possible.
+        $this->storage->config->overwriteLocalSettings($this->configFatal);
 
         // Find caller.
         $caller = $this->findCaller();
@@ -181,6 +199,8 @@ class OutputActions extends Internals
             $this->storage->chunks->addMetadata($caller);
         }
 
+        // Reset our configuration for the other analysis calls.
+        $this->storage->resetConfig();
     }
 
     /**
@@ -222,6 +242,10 @@ class OutputActions extends Internals
     public function errorAction(array $errorData)
     {
         $this->storage->reset();
+
+        // We overwrite the local settings, so we can get as much info from
+        // analysed objects as possible.
+        $this->storage->config->overwriteLocalSettings($this->configFatal);
 
         // Get the header.
         if ($this->headerSend) {

@@ -65,8 +65,6 @@ class ConfigSection extends AbstractCallback
             // We need to find out where the value comes from.
             $value = $setting->getValue();
             if ($setting->getType() != 'None') {
-                $model = new Model($this->storage);
-
                 // We need to re-translate booleans to something the
                 // frontend can understand.
                 if ($value === true) {
@@ -76,6 +74,7 @@ class ConfigSection extends AbstractCallback
                     $value = 'false';
                 }
 
+                $model = new Model($this->storage);
                 if ($setting->getEditable()) {
                     $model->setData($name)
                         ->setName($value)

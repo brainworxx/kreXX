@@ -224,7 +224,7 @@ class Config extends Fallback
 
         // Do we have a value in the cookies?
         $cookieSetting = $this->getConfigFromCookies($section, $name);
-        if (isset($cookieSetting)) {
+        if (!is_null($cookieSetting)) {
             // We must not overwrite a disabled=true with local cookie settings!
             // Otherwise it could get enabled locally, which might be a security
             // issue.
@@ -274,10 +274,6 @@ class Config extends Fallback
                 // We need to translate it to a "real" setting.
                 // Get the html control name.
                 switch ($parameterName) {
-                    case 'folder':
-                        $type = 'Input';
-                        break;
-
                     case 'maxfiles':
                         $type = 'Input';
                         break;
@@ -387,13 +383,15 @@ class Config extends Fallback
             // not editable on the frontend will be ignored!
             return null;
         }
+
+
         // Do we have a value in the cookies?
         if (isset($config[$name]) && $this->security->evaluateSetting($group, $name, $config[$name])) {
             // We escape them, just in case.
             $value = htmlspecialchars($config[$name]);
-
             return $value;
         }
+
         // Still here?
         return null;
     }

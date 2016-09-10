@@ -222,28 +222,6 @@ class Security extends Fallback
                 }
                 break;
 
-            case 'folder':
-                // Directory with write access.
-                // We also need to check, if the folder is properly protected.
-                $isWritable = is_writable($this->storage->config->krexxdir . $value);
-                $isProtected = $this->isFolderProtected($this->storage->config->krexxdir . $value);
-                if ($isWritable && $isProtected) {
-                    $result = true;
-                }
-                if (!$isWritable) {
-                    $this->storage->messages->addMessage(
-                        $this->storage->messages->getHelp('configErrorFolderWritable')
-                    );
-                    $this->storage->messages->addKey('output.folder.error.writable');
-                }
-                if (!$isProtected) {
-                    $this->storage->messages->addMessage(
-                        $this->storage->messages->getHelp('configErrorFolderProtection')
-                    );
-                    $this->storage->messages->addKey('output.folder.error.protected');
-                }
-                break;
-
             case 'skin':
                 // We check the directory and one of the files for readability.
                 if (is_readable($this->krexxdir . 'resources/skins/' . $value . '/header.html')) {
@@ -324,55 +302,6 @@ class Security extends Fallback
                             $this->storage->messages->getHelp('configErrorPhp7')
                         );
                         $this->storage->messages->addKey('backtraceAndError.registerAutomatically.php7');
-                    }
-                }
-                break;
-
-            case 'backtraceAnalysis':
-                // We expect "normal" or "deep"
-                if ($value === 'normal' || $value === 'deep') {
-                    $result = true;
-                }
-                if (!$result) {
-                    $this->storage->messages->addMessage(
-                        $this->storage->messages->getHelp('configErrorBacktraceAnalysis')
-                    );
-                    $this->storage->messages->addKey('backtraceAndError.backtraceAnalysis.error');
-                }
-                break;
-
-            case 'memoryLeft':
-                // We expect an integer.
-                $result = $this->evalInt($value);
-                if (!$result) {
-                    $this->storage->messages->addMessage(
-                        $this->storage->messages->getHelp('configErrorMemory')
-                    );
-                    $this->storage->messages->addKey('runtime.memoryLeft.error');
-                }
-                break;
-
-            case 'maxRuntime':
-                // We expect an integer not greater than the max runtime of the
-                // server.
-                $result = $this->evalInt($value);
-                if (!$result) {
-                    $this->storage->messages->addMessage($this->storage->messages->getHelp('configErrorMaxRuntime'));
-                    $this->storage->messages->addKey('runtime.maxRuntime.error');
-                } else {
-                    // OK, we got an int, now to see if it is smaller than the
-                    // configured max runtime.
-                    $maxTime = (int)ini_get('max_execution_time');
-                    $value = (int)$value;
-                    if ($maxTime > 0 && $maxTime < $value) {
-                        // Too big!
-                        $this->storage->messages->addMessage(
-                            $this->storage->messages->getHelp('configErrorMaxRuntimeBig1') .
-                            $maxTime .
-                            $this->storage->messages->getHelp('configErrorMaxRuntimeBig2')
-                        );
-                        $this->storage->messages->addKey('runtime.maxRuntime.error.maximum', array($maxTime));
-                        $result = false;
                     }
                 }
                 break;

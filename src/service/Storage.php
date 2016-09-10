@@ -37,7 +37,6 @@ namespace Brainworxx\Krexx\Service;
 use Brainworxx\Krexx\Analyse\Routing;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Config\Config;
-use Brainworxx\Krexx\Service\Config\Model;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Service\Misc\Chunks;
@@ -174,7 +173,7 @@ class Storage
 
         // Check if the log folder is writable.
         // If not, give feedback!
-        $logFolder = $krexxDir . $this->config->getSetting('folder') . DIRECTORY_SEPARATOR;
+        $logFolder = $krexxDir . 'log' . DIRECTORY_SEPARATOR;
         if (!is_writeable($logFolder)) {
             $this->messages->addMessage('Logfolder ' . $logFolder . ' is not writable !', 'critical');
             $this->messages->addKey('protected.folder.log', array($logFolder));
@@ -200,6 +199,14 @@ class Storage
         $this->emergencyHandler->resetTimer();
         // Initialize the code generation.
         $this->codegenHandler = new Codegen($this);
+    }
+
+    /**
+     * Reload the configuration.
+     */
+    public function resetConfig()
+    {
+        $this->config = new Config($this, $this->config->krexxdir);
     }
 
     /**
