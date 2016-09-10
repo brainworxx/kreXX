@@ -133,7 +133,7 @@ class Fatal extends Error
                     'backtrace' => $this->tickedBacktrace,
                 );
 
-                if ($this->storage->settings['backtraceAnalysis']->getValue() === 'deep') {
+                if ($this->storage->config->getSetting('backtraceAnalysis') === 'deep') {
                     // We overwrite the local settings, so we can get as much info from
                     // analysed objects as possible.
                     $this->storage->config->overwriteLocalSettings(self::$configFatal);

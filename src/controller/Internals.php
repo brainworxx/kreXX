@@ -271,7 +271,7 @@ class Internals
         $css = $this->storage->getFileContents(
             $krexxDir .
             'resources/skins/' .
-            $this->storage->settings['skin']->getValue() .
+            $this->storage->config->getSetting('skin') .
             '/skin.css'
         );
         // Remove whitespace.
@@ -286,7 +286,7 @@ class Internals
         $js = $this->storage->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
-        $path = $krexxDir . 'resources/skins/' . $this->storage->settings['skin']->getValue();
+        $path = $krexxDir . 'resources/skins/' . $this->storage->config->getSetting('skin');
         if (is_readable($path . '/krexx.min.js')) {
             $jsFile = $path . '/krexx.min.js';
         } else {

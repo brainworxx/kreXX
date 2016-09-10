@@ -132,7 +132,7 @@ class OutputActions extends Internals
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
-        if ($this->storage->settings['destination']->getValue() === 'file') {
+        if ($this->storage->config->getSetting('destination') === 'file') {
             $this->storage->chunks->addMetadata($caller);
         }
     }
@@ -177,7 +177,7 @@ class OutputActions extends Internals
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
-        if ($this->storage->settings['destination']->getValue() === 'file') {
+        if ($this->storage->config->getSetting('destination') === 'file') {
             $this->storage->chunks->addMetadata($caller);
         }
 
@@ -249,7 +249,7 @@ class OutputActions extends Internals
         // Get the messages.
         $messages = $this->storage->messages->outputMessages();
 
-        if ($this->storage->settings['destination']->getValue() === 'file') {
+        if ($this->storage->config->getSetting('destination') === 'file') {
             // Add the caller as metadata to the chunks class. It will be saved as
             // additional info, in case we are logging to a file.
             $this->storage->chunks->addMetadata(array(

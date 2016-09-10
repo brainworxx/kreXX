@@ -46,7 +46,7 @@ use Brainworxx\Krexx\Service\Storage;
  *
  * @package Brainworxx\Krexx\Analysis
  */
-class Simple
+class Routing
 {
 
     /**

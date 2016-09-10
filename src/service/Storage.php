@@ -34,12 +34,12 @@
 
 namespace Brainworxx\Krexx\Service;
 
+use Brainworxx\Krexx\Analyse\Routing;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Config\Config;
-use Brainworxx\Krexx\Service\Config\Setting;
+use Brainworxx\Krexx\Service\Config\Model;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
-use Brainworxx\Krexx\Analyse\Simple;
 use Brainworxx\Krexx\Service\Misc\Chunks;
 use Brainworxx\Krexx\Service\Misc\Codegen;
 use Brainworxx\Krexx\Service\View\Messages;
@@ -55,9 +55,9 @@ class Storage
     /**
      * The routing class.
      *
-     * @var Simple
+     * @var Routing
      */
-    public $simple;
+    public $routing;
 
     /**
      * An instance of the recursion handler.
@@ -120,13 +120,6 @@ class Storage
     public $controller;
 
     /**
-     * Here we store our settings.
-     *
-     * @var Setting[]
-     */
-    public $settings = array();
-
-    /**
      * Initializes all needed classes.
      *
      * @param $krexxDir
@@ -141,7 +134,7 @@ class Storage
         // Initialize the emergency handler.
         $this->emergencyHandler = new Emergency($this);
         // Initialize the routing.
-        $this->routing = new Simple($this);
+        $this->routing = new Routing($this);
         // Initialize the recursionHandler.
         $this->recursionHandler = new Recursion($this);
         // Initialize the code generation.
@@ -181,7 +174,7 @@ class Storage
 
         // Check if the log folder is writable.
         // If not, give feedback!
-        $logFolder = $krexxDir . $this->settings['folder']->getValue() . DIRECTORY_SEPARATOR;
+        $logFolder = $krexxDir . $this->config->getSetting('folder') . DIRECTORY_SEPARATOR;
         if (!is_writeable($logFolder)) {
             $this->messages->addMessage('Logfolder ' . $logFolder . ' is not writable !', 'critical');
             $this->messages->addKey('protected.folder.log', array($logFolder));
@@ -190,7 +183,7 @@ class Storage
         // will pop up, when kreXX is actually displayed, no need to bother the
         // dev just now.
         // We might need to register our fatal error handler.
-        if ($this->settings['registerAutomatically']->getValue() === 'true') {
+        if ($this->config->getSetting('registerAutomatically')) {
             $this->controller->registerFatalAction();
         }
     }
@@ -214,7 +207,7 @@ class Storage
      */
     protected function initRenderer()
     {
-        $skin = $this->settings['skin']->getValue();
+        $skin = $this->config->getSetting('skin');
         $path = $this->config->krexxdir . 'resources/skins/' . $skin . '/Render.php';
         $classname = 'Brainworxx\Krexx\View\\' . ucfirst($skin) . '\\Render';
         include_once $path;

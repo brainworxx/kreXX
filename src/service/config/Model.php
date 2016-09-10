@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
-class Setting
+class Model
 {
     /**
      * The value of this setting.
@@ -109,6 +109,12 @@ class Setting
      */
     public function setValue($value)
     {
+        if ($value === 'true') {
+            $value = true;
+        }
+        if ($value === 'false') {
+            $value = false;
+        }
         $this->value = $value;
         return $this;
     }

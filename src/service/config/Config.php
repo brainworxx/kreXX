@@ -51,6 +51,26 @@ class Config extends Fallback
      */
     public $security;
 
+    /**
+     * The current position of our iterator array.
+     *
+     * @var int
+     */
+    protected $position = 0;
+
+    /**
+     * Our current settings.
+     *
+     * @var Model[]
+     */
+    public $settings = array();
+
+    /**
+     * Injection the storage and loading the configuration.
+     *
+     * @param \Brainworxx\Krexx\Service\Storage $storage
+     * @param string $krexxdir
+     */
     public function __construct(Storage $storage, $krexxdir)
     {
         parent::__construct($storage, $krexxdir);
@@ -75,24 +95,9 @@ class Config extends Fallback
     public function setDisabled($value)
     {
         if ($value) {
-            $this->storage->settings['disabled']->setValue('true');
+            $this->settings['disabled']->setValue('true');
         } else {
-            $this->storage->settings['disabled']->setValue('false');
-        }
-    }
-
-    /**
-     * Get\Set kreXX state: whether it is enabled or disabled.
-     *
-     * @return bool
-     *   Returns whether kreXX is enabled or not.
-     */
-    public function getDisabled()
-    {
-        if ($this->storage->settings['disabled']->getValue() === 'true') {
-            return true;
-        } else {
-            return false;
+            $this->settings['disabled']->setValue('false');
         }
     }
 
@@ -109,7 +114,7 @@ class Config extends Fallback
     public function overwriteLocalSettings(array $newSettings)
     {
         foreach ($newSettings as $name => $value) {
-            $this->storage->settings[$name]->setValue($value);
+            $this->settings[$name]->setValue($value);
         }
     }
 
@@ -122,6 +127,20 @@ class Config extends Fallback
     public function getDevHandler()
     {
         return $this->getConfigFromCookies('deep', 'Local open function');
+    }
+
+    /**
+     * Wrapper arroun+d the stored settings array, to intercept settings calls.
+     *
+     * @param string $name
+     *   The nbame of the setting.
+     *
+     * @return string
+     *   The setting.
+     */
+    public function getSetting($name)
+    {
+        return $this->settings[$name]->getValue();
     }
 
     /**
@@ -183,12 +202,12 @@ class Config extends Fallback
     protected function getConfigValue($section, $name)
     {
         // Check if we already have this value.
-        if (!empty($this->storage->settings[$name])) {
-            return $this->storage->settings[$name]->getValue();
+        if (!empty($this->settings[$name])) {
+            return $this->settings[$name]->getValue();
         }
 
         $feConfig = $this->getFeConfig($name);
-        $model = new Setting();
+        $model = new Model();
         $model->setSection($section)
             ->setEditable($feConfig[0])
             ->setType($feConfig[1]);
@@ -197,9 +216,9 @@ class Config extends Fallback
         if ($name === 'disabled') {
             // Check for ajax and cli.
             if ($this->isRequestAjaxOrCli()) {
-                $model->setValue('true')->setSource('Ajax request frontend');
-                $this->storage->settings[$name] = $model;
-                return 'true';
+                $model->setValue(true)->setSource('Ajax request frontend');
+                $this->settings[$name] = $model;
+                return true;
             }
         }
 
@@ -214,7 +233,7 @@ class Config extends Fallback
                 // We ignore this setting.
             } else {
                 $model->setValue($cookieSetting)->setSource('Local cookie settings');
-                $this->storage->settings[$name] = $model;
+                $this->settings[$name] = $model;
                 return $cookieSetting;
             }
         }
@@ -223,13 +242,13 @@ class Config extends Fallback
         $iniSettings = $this->getConfigFromFile($section, $name);
         if (isset($iniSettings)) {
             $model->setValue($iniSettings)->setSource('Krexx.ini settings');
-            $this->storage->settings[$name] = $model;
+            $this->settings[$name] = $model;
             return $iniSettings;
         }
 
         // Nothing yet? Give back factory settings.
         $model->setValue($this->configFallback[$section][$name])->setSource('Factory settings');
-        $this->storage->settings[$name] = $model;
+        $this->settings[$name] = $model;
         return $this->configFallback[$section][$name];
     }
 
@@ -396,7 +415,7 @@ class Config extends Fallback
                 // Appending stuff after a ajax request will most likely
                 // cause a js error. But there are moments when you actually
                 // want to do this.
-                if ($this->getConfigValue('runtime', 'detectAjax') === 'true') {
+                if ($this->getConfigValue('runtime', 'detectAjax')) {
                     // We were supposed to detect ajax, and we did it right now.
                     return true;
                 }

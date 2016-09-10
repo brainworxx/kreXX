@@ -63,7 +63,7 @@ class ThroughConfig extends AbstractCallback
         // We need to "explode" our config array into the
         // sections again, for better readability.
         $sections = array();
-        foreach ($this->storage->settings as $name => $setting) {
+        foreach ($this->storage->config->settings as $name => $setting) {
             $sections[$setting->getSection()][$name] = $setting;
         }
 

@@ -81,7 +81,7 @@ class Krexx
         include_once $krexxDir . 'src/service/view/Help.php';
         include_once $krexxDir . 'src/service/view/Render.php';
         include_once $krexxDir . 'src/service/view/Messages.php';
-        include_once $krexxDir . 'src/service/config/Setting.php';
+        include_once $krexxDir . 'src/service/config/Model.php';
         include_once $krexxDir . 'src/service/config/Fallback.php';
         include_once $krexxDir . 'src/service/config/Security.php';
         include_once $krexxDir . 'src/service/config/Config.php';
@@ -93,7 +93,7 @@ class Krexx
 
         include_once $krexxDir . 'src/service/flow/Emergency.php';
         include_once $krexxDir . 'src/analysis/Flection.php';
-        include_once $krexxDir . 'src/analysis/Simple.php';
+        include_once $krexxDir . 'src/analysis/Routing.php';
         include_once $krexxDir . 'src/analysis/Model.php';
         include_once $krexxDir . 'src/analysis/callback/AbstractCallback.php';
         include_once $krexxDir . 'src/analysis/callback/analyse/BacktraceStep.php';
@@ -150,7 +150,7 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
-        if (self::$storage->config->getDisabled()) {
+        if (self::$storage->config->getSetting('disabled')) {
             return;
         }
         self::$storage->controller->timerAction($string);
@@ -164,7 +164,7 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled ?
-        if (self::$storage->config->getDisabled()) {
+        if (self::$storage->config->getSetting('disabled')) {
             return;
         }
         self::$storage->controller->timerEndAction();
@@ -181,7 +181,7 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
-        if (self::$storage->config->getDisabled()) {
+        if (self::$storage->config->getSetting('disabled')) {
             return;
         }
         self::$storage->controller->dumpAction($data);
@@ -198,21 +198,11 @@ class Krexx
     {
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
-        if (self::$storage->config->getDisabled()) {
+        if (self::$storage->config->getSetting('disabled')) {
             return;
         }
         // Render it.
         self::$storage->controller->backtraceAction();
-        self::$storage->controller->reFatalAfterKrexx();
-    }
-
-    /**
-     * Enable kreXX.
-     */
-    public static function enable()
-    {
-        self::$storage->controller->noFatalForKrexx();
-        self::$storage->config->setDisabled(false);
         self::$storage->controller->reFatalAfterKrexx();
     }
 
@@ -237,7 +227,7 @@ class Krexx
         self::$storage->controller->noFatalForKrexx();
         // Disabled?
         // We are ignoring local settings here.
-        if (self::$storage->config->getDisabled()) {
+        if (self::$storage->config->getSetting('disabled')) {
             return;
         }
         self::$storage->controller->editSettingsAction();
@@ -252,7 +242,7 @@ class Krexx
     public static function registerFatal()
     {
         // Disabled?
-        if (self::$storage->config->getDisabled()) {
+        if (self::$storage->config->getSetting('disabled')) {
             return;
         }
         self::$storage->controller->registerFatalAction();
@@ -268,7 +258,7 @@ class Krexx
     public static function unregisterFatal()
     {
         // Disabled?
-        if (self::$storage->config->getDisabled()) {
+        if (self::$storage->config->getSetting('disabled')) {
             return;
         }
         self::$storage->controller->unregisterFatalAction();

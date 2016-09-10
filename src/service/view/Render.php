@@ -377,7 +377,7 @@ class Render
                 $this->storage->getFileContents(
                     $this->storage->config->krexxdir .
                     'resources/skins/' .
-                    $this->storage->settings['skin']->getValue() .
+                    $this->storage->config->getSetting('skin') .
                     '/' .
                     $what .
                     '.html'
