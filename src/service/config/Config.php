@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Storage;
 
 /**
@@ -135,12 +136,17 @@ class Config extends Fallback
      * @param string $name
      *   The nbame of the setting.
      *
-     * @return string
+     * @return string|null
      *   The setting.
      */
     public function getSetting($name)
     {
-        return $this->settings[$name]->getValue();
+        if (isset($this->settings[$name])) {
+            return $this->settings[$name]->getValue();
+        } else {
+            return null;
+        }
+
     }
 
     /**
@@ -261,7 +267,7 @@ class Config extends Fallback
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    protected function getFeConfigFromFile($parameterName)
+    public function getFeConfigFromFile($parameterName)
     {
         static $config = array();
 
@@ -330,7 +336,7 @@ class Config extends Fallback
      * @return string
      *   The value from the file.
      */
-    protected function getConfigFromFile($group, $name)
+    public function getConfigFromFile($group, $name)
     {
         static $config = array();
 

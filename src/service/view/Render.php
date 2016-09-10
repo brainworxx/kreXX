@@ -652,7 +652,7 @@ class Render
      * @return array
      *   An array with the skinnames.
      */
-    protected function getSkinList()
+    public function getSkinList()
     {
         // Static cache to make it a little bit faster.
         static $list = array();
