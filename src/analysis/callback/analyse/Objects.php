@@ -32,16 +32,16 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Callback\Analyse;
+namespace Brainworxx\Krexx\Analyse\Callback\Analyse;
 
-use Brainworxx\Krexx\Model\Callback\AbstractCallback;
-use Brainworxx\Krexx\Model\Simple;
-use Brainworxx\Krexx\Analysis\Flection;
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Flection;
 
 /**
  * Object analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Callback\Analysis
+ * @package Brainworxx\Krexx\Analyse\Callback\Analysis
  *
  * @uses object data
  *   The class we are analysing.
@@ -178,7 +178,7 @@ class Objects extends AbstractCallback
                 return strcmp($a->name, $b->name);
             };
             usort($methods, $sortingCallback);
-            $model = new Simple($this->storage);
+            $model = new Model($this->storage);
             $model->setName('Methods')
                 ->setType('class internals')
                 ->addParameter('data', $methods)
@@ -255,7 +255,7 @@ class Objects extends AbstractCallback
                         // Do nothing.
                     }
                     if (isset($result)) {
-                        $model = new Simple($this->storage);
+                        $model = new Model($this->storage);
                         $model->setName($funcName)
                             ->setType('debug method')
                             ->setAdditional('. . .')
@@ -322,7 +322,7 @@ class Objects extends AbstractCallback
                 $connector2 = '. . .';
             }
 
-            $model = new Simple($this->storage);
+            $model = new Model($this->storage);
             $parameter = iterator_to_array($data);
             $model->setName($name)
                 ->setType('Foreach')
@@ -353,7 +353,7 @@ class Objects extends AbstractCallback
 
         if (!empty($refConst)) {
             // We've got some values, we will dump them.
-            $model = new Simple($this->storage);
+            $model = new Model($this->storage);
             $classname =$ref->getName();
             // We need to set al least one connector here to activate
             // code generation, even if it is a space.
@@ -389,7 +389,7 @@ class Objects extends AbstractCallback
     {
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
-        $model = new Simple($this->storage);
+        $model = new Model($this->storage);
         $model->addParameter('data', $refProps)
             ->addParameter('ref', $ref)
             ->addParameter('orgObject', $data)

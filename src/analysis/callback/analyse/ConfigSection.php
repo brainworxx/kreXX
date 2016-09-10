@@ -32,15 +32,15 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Callback\Analyse;
+namespace Brainworxx\Krexx\Analyse\Callback\Analyse;
 
-use Brainworxx\Krexx\Model\Callback\AbstractCallback;
-use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Configuration "analysis" methods. Meh, naming conventions suck sometimes.
  *
- * @package Brainworxx\Krexx\Model\Callback\Analysis
+ * @package Brainworxx\Krexx\Analyse\Callback\Analysis
  *
  * @uses array data
  *   The configuration section we are rendering
@@ -65,7 +65,7 @@ class ConfigSection extends AbstractCallback
             // We need to find out where the value comes from.
             $value = $setting->getValue();
             if ($setting->getType() != 'None') {
-                $model = new Simple($this->storage);
+                $model = new Model($this->storage);
                 if ($setting->getEditable()) {
                     $model->setData($name)
                         ->setName($value)

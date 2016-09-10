@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Service\Misc\Shutdown;
 use Brainworxx\Krexx\Service\Storage;
-use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Methods for the "controller" that are not directly "actions".
@@ -248,7 +248,7 @@ class Internals
             $path = 'Current configuration';
         }
 
-        $model = new Simple($this->storage);
+        $model = new Model($this->storage);
         $model->setName($path)
             ->setType($this->storage->config->krexxdir . 'Krexx.ini')
             ->setHelpid('currentSettings')

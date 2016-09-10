@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Errorhandler\Fatal;
-use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Controller actions (if you want to call them that).
@@ -115,7 +115,7 @@ class OutputActions extends Internals
         }
 
         // Start the magic.
-        $model = new Simple($this->storage);
+        $model = new Model($this->storage);
         $model->setData($data)
             ->setName($caller['varname'])
             ->setConnector2('=');

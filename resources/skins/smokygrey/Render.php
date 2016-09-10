@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\View\Smokygrey;
 
-use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Individual render class for the smokey-grey skin.
@@ -47,7 +47,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
     /**
      * {@inheritDoc}
      */
-    public function renderSingleChild(Simple $model)
+    public function renderSingleChild(Model $model)
     {
 
         $template = parent::renderSingleChild($model);
@@ -66,7 +66,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
     /**
      * {@inheritDoc}
      */
-    public function renderExpandableChild(Simple $model, $isExpanded = false)
+    public function renderExpandableChild(Model $model, $isExpanded = false)
     {
 
         // Check for emergency break.
@@ -119,7 +119,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
     /**
      * {@inheritDoc}
      */
-    public function renderSingleEditableChild(Simple $model)
+    public function renderSingleEditableChild(Model $model)
     {
 
         $template = parent::renderSingleEditableChild($model);
@@ -136,7 +136,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
     /**
      * {@inheritDoc}
      */
-    public function renderButton(Simple $model)
+    public function renderButton(Model $model)
     {
 
         $template = parent::renderButton($model);

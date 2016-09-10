@@ -32,15 +32,15 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Callback\Iterate;
+namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
-use Brainworxx\Krexx\Model\Callback\AbstractCallback;
-use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Constant analysis methods.
  *
- * @package Brainworxx\Krexx\Model\Callback\Iterate
+ * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  *
  * @uses array data
  *   Array of constants from the class we are analysing.
@@ -63,7 +63,7 @@ class ThroughConstants extends AbstractCallback
         // internal stuff. Is it even possible to create a recursion here?
         // Iterate through.
         foreach ($this->parameters['data'] as $k => &$v) {
-            $model = new Simple($this->storage);
+            $model = new Model($this->storage);
             $model->setData($v)
                 ->setName($k)
                 ->setConnector1($this->parameters['classname'] . '::');

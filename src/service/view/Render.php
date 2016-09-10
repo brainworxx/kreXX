@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\View;
 
-use Brainworxx\Krexx\Model\Simple;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Storage;
 
 /**
@@ -70,13 +70,13 @@ class Render
      *
      * Depending on how many characters are in there, it may be toggelable.
      *
-     * @param Simple $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderSingleChild(Simple $model)
+    public function renderSingleChild(Model $model)
     {
         // This one is a little bit more complicated than the others,
         // because it assembles some partials and stitches them together.
@@ -141,13 +141,13 @@ class Render
      * If the recursion is an object, a click should jump to the original
      * analysis data.
      *
-     * @param Simple $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderRecursion(Simple $model)
+    public function renderRecursion(Model $model)
     {
         $template = $this->getTemplateFileContent('recursion');
 
@@ -245,7 +245,7 @@ class Render
     /**
      * Renders a nest with a anonymous function in the middle.
      *
-     * @param Simple $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      * @param bool $isExpanded
      *   The only expanded nest is the settings menu, when we render only the
@@ -254,7 +254,7 @@ class Render
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderNest(Simple $model, $isExpanded = false)
+    public function renderNest(Model $model, $isExpanded = false)
     {
         $template = $this->getTemplateFileContent('nest');
         // Replace our stuff in the partial.
@@ -296,7 +296,7 @@ class Render
     /**
      * Renders a expandable child with a callback in the middle.
      *
-     * @param Simple $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      * @param bool $isExpanded
      *   Is this one expanded from the beginning?
@@ -305,7 +305,7 @@ class Render
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderExpandableChild(Simple $model, $isExpanded = false)
+    public function renderExpandableChild(Model $model, $isExpanded = false)
     {
         // Check for emergency break.
         if (!$this->storage->emergencyHandler->checkEmergencyBreak()) {
@@ -390,13 +390,13 @@ class Render
     /**
      * Renders a simple editable child node.
      *
-     * @param Simple $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderSingleEditableChild(Simple $model)
+    public function renderSingleEditableChild(Model $model)
     {
         $template = $this->getTemplateFileContent('singleEditableChild');
         $element = $this->getTemplateFileContent('single' . $model->getType());
@@ -466,13 +466,13 @@ class Render
     /**
      * Renders a simple button.
      *
-     * @param Simple $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderButton(Simple $model)
+    public function renderButton(Model $model)
     {
         $template = $this->getTemplateFileContent('singleButton');
         $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);

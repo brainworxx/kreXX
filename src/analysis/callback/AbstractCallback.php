@@ -32,14 +32,14 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Model\Callback;
+namespace Brainworxx\Krexx\Analyse\Callback;
 
 use Brainworxx\Krexx\Service\Storage;
 
 /**
  * Abstract class for the callback classes inside the model.
  *
- * @package Brainworxx\Krexx\Model\Callback
+ * @package Brainworxx\Krexx\Analyse\Callback
  */
 abstract class AbstractCallback
 {

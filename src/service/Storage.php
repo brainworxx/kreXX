@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\Setting;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
-use Brainworxx\Krexx\Service\Flow\Routing;
+use Brainworxx\Krexx\Analyse\Simple;
 use Brainworxx\Krexx\Service\Misc\Chunks;
 use Brainworxx\Krexx\Service\Misc\Codegen;
 use Brainworxx\Krexx\Service\View\Messages;
@@ -55,9 +55,9 @@ class Storage
     /**
      * The routing class.
      *
-     * @var Routing
+     * @var Simple
      */
-    public $routing;
+    public $simple;
 
     /**
      * An instance of the recursion handler.
@@ -141,7 +141,7 @@ class Storage
         // Initialize the emergency handler.
         $this->emergencyHandler = new Emergency($this);
         // Initialize the routing.
-        $this->routing = new Routing($this);
+        $this->routing = new Simple($this);
         // Initialize the recursionHandler.
         $this->recursionHandler = new Recursion($this);
         // Initialize the code generation.
