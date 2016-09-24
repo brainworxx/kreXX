@@ -296,18 +296,6 @@ class Objects extends AbstractCallback
             $multiline = true;
             $connector2 = '';
 
-            // If we are facing a IteratorAggregate, we can not access the array
-            // directly. To do this, we must get the Iterator from the class.
-            // For our analysis is it not really important, because it does not
-            // change anything. We need this for the automatic code generation.
-            if (is_a($data, 'IteratorAggregate')) {
-                $connector2 = '->getIterator()';
-                // Remove the name, because this would then get added to the source
-                // generation, resulting in unusable code.
-                $name = '';
-                $multiline = false;
-            }
-
             // Normal ArrayAccess, direct access to the array. Nothing special
             if (is_a($data, 'ArrayAccess')) {
                 $multiline = false;
