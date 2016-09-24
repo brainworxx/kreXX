@@ -156,18 +156,15 @@ class Objects extends AbstractCallback
         $protected = array();
         $private = array();
         $ref = new \ReflectionClass($data);
-        if ($this->storage->config->getSetting('analyseMethodsAtall')) {
-            $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if ($this->storage->config->getSetting('analyseProtectedMethods') ||
-                $this->storage->codegenHandler->isInScope()) {
-                $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
-            }
+        $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-            if ($this->storage->config->getSetting('analysePrivateMethods') ||
-                $this->storage->codegenHandler->isInScope()) {
-                $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
-            }
+        if ($this->storage->config->getSetting('analyseProtectedMethods') || $this->storage->codegenHandler->isInScope()) {
+            $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
+        }
+
+        if ($this->storage->config->getSetting('analysePrivateMethods') || $this->storage->codegenHandler->isInScope()) {
+            $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
         }
 
         // Is there anything to analyse?
