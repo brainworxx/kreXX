@@ -64,6 +64,7 @@ class ThroughMethodAnalysis extends AbstractCallback
                 $model->setNormal($string);
             } else {
                 $model->setNormal('. . .');
+                $model->hasExtras();
             }
 
             $output .= $this->storage->render->renderSingleChild($model);

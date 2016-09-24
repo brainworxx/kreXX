@@ -482,9 +482,13 @@ class Model
 
     /**
      * "Setter" for the hasExtras property.
+     *
+     * @return Model
+     *   $this, for chaining.
      */
     public function hasExtras()
     {
         $this->hasExtra = true;
+        return $this;
     }
 }
