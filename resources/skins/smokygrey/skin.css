@@ -552,7 +552,6 @@
         color: #B2B2B2; }
   .kwrapper .search-wrapper, .kfatalwrapper-outer .search-wrapper {
     list-style: none;
-    position: absolute;
     z-index: 1; }
     .kwrapper .search-wrapper.khidden, .kfatalwrapper-outer .search-wrapper.khidden {
       display: none !important;
@@ -564,7 +563,22 @@
       font: normal 12px tahoma, verdana;
       z-index: 10;
       margin-left: 2px;
-      margin-top: 2px; }
+      margin-top: 2px;
+      position: absolute; }
+      .kwrapper .search-wrapper .ksearch .ksearchhr, .kfatalwrapper-outer .search-wrapper .ksearch .ksearchhr {
+        background-color: #555555;
+        margin: 10px 5px;
+        height: 1px; }
+      .kwrapper .search-wrapper .ksearch .koptionleft,
+      .kwrapper .search-wrapper .ksearch .koptionright, .kfatalwrapper-outer .search-wrapper .ksearch .koptionleft,
+      .kfatalwrapper-outer .search-wrapper .ksearch .koptionright {
+        width: 45%;
+        display: inline-block;
+        margin: 2px; }
+        .kwrapper .search-wrapper .ksearch .koptionleft input,
+        .kwrapper .search-wrapper .ksearch .koptionright input, .kfatalwrapper-outer .search-wrapper .ksearch .koptionleft input,
+        .kfatalwrapper-outer .search-wrapper .ksearch .koptionright input {
+          margin-right: 5px; }
       .kwrapper .search-wrapper .ksearch .kclose, .kfatalwrapper-outer .search-wrapper .ksearch .kclose {
         cursor: pointer;
         display: inline-table;

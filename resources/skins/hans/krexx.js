@@ -178,6 +178,34 @@
          */
         kdt.addEvent('.kcodedisplay', 'click', kdt.preventBubble);
 
+        /**
+         * Clear our search results, because we now have new options.
+         *
+         * @event change
+         */
+        kdt.addEvent('.ksearchcase', 'change', krexx.clearSearch);
+
+        /**
+         * Clear our search results, because we now have new options.
+         *
+         * @event change
+         */
+        kdt.addEvent('.ksearchkeys', 'change', krexx.clearSearch);
+
+        /**
+         * Clear our search results, because we now have new options.
+         *
+         * @event change
+         */
+        kdt.addEvent('.ksearchshort', 'change', krexx.clearSearch);
+
+        /**
+         * Clear our search results, because we now have new options.
+         *
+         * @event change
+         */
+        kdt.addEvent('.ksearchlong', 'change', krexx.clearSearch);
+
         // Disable form-buttons in case a logfile is opened local.
         if (window.location.protocol === 'file:') {
             krexx.disableForms();
@@ -341,7 +369,12 @@
         // Prevents the event from propagating (ie: "bubbling").
         event.stopPropagation();
 
-        var searchtext = this.parentNode.querySelector('.ksearchfield').value.toLowerCase();
+        // Stitching together our configuration.
+        var searchtext = this.parentNode.querySelector('.ksearchfield').value;
+        var caseSensitive = this.parentNode.parentNode.querySelector('.ksearchcase').checked;
+        var searchKeys = this.parentNode.parentNode.querySelector('.ksearchkeys').checked;
+        var searchShort = this.parentNode.parentNode.querySelector('.ksearchshort').checked;
+        var searchLong = this.parentNode.parentNode.querySelector('.ksearchlong').checked;
 
         // we only search for more than 3 chars.
         if (searchtext.length > 2) {
@@ -403,15 +436,37 @@
         function refreshResultlist() {
             // Remove all previous highlights
             kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
+
+            // Appy our configuration
+            if (caseSensitive === false) {
+                searchtext = searchtext.toLowerCase();
+            }
+            var selector = [];
+            if (searchKeys === true) {
+                selector.push('li.kchild span.kname');
+            }
+            if (searchShort === true) {
+                selector.push('li.kchild span.kshort')
+            }
+            if (searchLong === true) {
+                selector.push('li div.kpreview');
+            }
+
             // Get a new list of elements
             results[instance] = [];
             results[instance][searchtext] = [];
             results[instance][searchtext]['data'] = [];
+
             // Poll out payload for elements to search
-            var list = payload.querySelectorAll("li span, li div.kpreview");
+            var list = payload.querySelectorAll(selector.join(', '));
+            var textContent = '';
             for (var i = 0; i < list.length; ++i) {
                 // Does it contain our search string?
-                if (list[i].textContent.toLowerCase().indexOf(searchtext) > -1) {
+                textContent = list[i].textContent;
+                if (caseSensitive === false) {
+                    textContent = textContent.toLowerCase();
+                }
+                if (textContent.indexOf(searchtext) > -1) {
                     kdt.toggleClass(list[i], 'ksearch-found-highlight');
                     results[instance][searchtext]['data'].push(list[i]);
                 }
@@ -420,6 +475,13 @@
             results[instance][searchtext]['pointer'] = -1;
         }
 
+    };
+
+    /**
+     * Reset the searchresults, because we now have new search options.
+     */
+    krexx.clearSearch = function () {
+        results = [];
     };
 
     /**
