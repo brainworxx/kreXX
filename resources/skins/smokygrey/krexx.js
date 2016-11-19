@@ -542,7 +542,7 @@
     };
 
     /**
-     * Displays the options for the search.
+     * Toggle the display of the search options.
      *
      * @param {Event} event
      */

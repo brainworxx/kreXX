@@ -1,4 +1,5 @@
 2.0.2
+- Added search options to both skins.
 - Bugfix: Added LazyLoadingProxy->__toString() to the debug
   blacklist to prevent a fatal.
 - Bugfix: Fixed the (XX) logo interference with the search box

@@ -828,3 +828,15 @@ div.kwrapper {
     height: 1px;
     margin: 4px;
 }
+
+.kwrapper .ksearch .koptions {
+    height: 24px;
+    width: 24px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.kwrapper .ksearch .koptions:before {
+    content: '\26ED';
+    font-weight: bolder;
+}

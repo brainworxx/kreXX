@@ -206,6 +206,13 @@
          */
         kdt.addEvent('.ksearchlong', 'change', krexx.clearSearch);
 
+        /**
+         * Display our search options.
+         *
+         * @event click
+         */
+        kdt.addEvent('.koptions', 'click', krexx.displaySearchOptions);
+
         // Disable form-buttons in case a logfile is opened local.
         if (window.location.protocol === 'file:') {
             krexx.disableForms();
@@ -513,6 +520,21 @@
             // Clear the results.
             results = [];
         }
+    };
+
+    /**
+     * Toggle the display of the search options.
+     *
+     * @param {Event} event
+     */
+    krexx.displaySearchOptions = function (event) {
+        // Prevents the default event behavior (ie: click).
+        event.preventDefault();
+        // Prevents the event from propagating (ie: "bubbling").
+        event.stopPropagation();
+
+        // Get the options and switch the display class.
+        kdt.toggleClass(this.parentNode.nextElementSibling, 'khidden');
     };
 
     /**
