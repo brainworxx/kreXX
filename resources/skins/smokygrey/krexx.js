@@ -208,6 +208,13 @@
          */
         kdt.addEvent('.ksearchlong', 'change', krexx.clearSearch);
 
+        /**
+         * Display our search options.
+         *
+         * @event click
+         */
+        kdt.addEvent('.koptions', 'click', krexx.displaySearchOptions);
+
         // Expand the configuration info, we have enough space here!
         krexx.expandConfig();
 
@@ -532,6 +539,21 @@
             kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
             results = [];
         }
+    };
+
+    /**
+     * Displays the options for the search.
+     *
+     * @param {Event} event
+     */
+    krexx.displaySearchOptions = function (event) {
+        // Prevents the default event behavior (ie: click).
+        event.preventDefault();
+        // Prevents the event from propagating (ie: "bubbling").
+        event.stopPropagation();
+
+        // Get the options and switch the display class.
+        kdt.toggleClass(this.parentNode.nextElementSibling, 'khidden');
     };
 
     /**

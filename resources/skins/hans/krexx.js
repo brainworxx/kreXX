@@ -497,7 +497,6 @@
 
         var instance = kdt.getDataset(this, 'instance');
         var search = document.querySelector('#search-' + instance);
-        var searchtab = document.querySelector('#' + instance + ' .ksearchbutton');
 
         // Toggle display / hidden.
         if (kdt.hasClass(search, 'hidden')) {
