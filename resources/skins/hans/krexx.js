@@ -376,6 +376,9 @@
         // Prevents the event from propagating (ie: "bubbling").
         event.stopPropagation();
 
+        // Hide the search options.
+        kdt.addClass([this.parentNode.nextElementSibling], 'khidden');
+
         // Stitching together our configuration.
         var searchtext = this.parentNode.querySelector('.ksearchfield').value;
         var caseSensitive = this.parentNode.parentNode.querySelector('.ksearchcase').checked;
