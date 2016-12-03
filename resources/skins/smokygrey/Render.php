@@ -114,9 +114,20 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = str_replace('{addjson}', $json, $template);
 
         return str_replace('{nest}', $this->storage->chunks->chunkMe($this->renderNest($model, false)), $template);
-
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function renderRecursion(Model $model)
+    {
+        $template = parent::renderRecursion($model);
+        // We add our json to the output.
+        $json = $model->getJson();
+        $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
+        $json = json_encode($json);
+        return str_replace('{addjson}', $json, $template);
+    }
 
     /**
      * {@inheritDoc}
