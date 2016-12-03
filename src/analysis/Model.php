@@ -414,6 +414,23 @@ class Model
     }
 
     /**
+     * We simply add more info to our info json.
+     *
+     * @param $key
+     *   The array key.
+     * @param $value
+     *   The value we want to set.
+     *
+     * @return $this
+     *   $this for chaining.
+     */
+    public function addToJson($key, $value)
+    {
+        $this->json[$key] = $value;
+        return $this;
+    }
+
+    /**
      * Getter for json.
      *
      * @return array

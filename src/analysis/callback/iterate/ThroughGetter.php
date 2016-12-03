@@ -63,59 +63,103 @@ class ThroughGetter extends AbstractCallback
         $ref = $this->parameters['ref'];
 
         foreach ($this->parameters['methodList'] as $methodName) {
-            $propertyName = substr($methodName, 3);
-            // We may be facing different writing styles.
-            // The property we want from getMyProperty() should be named
-            // myProperty, but we can not rely on this.
-            // We will check:
-            // MyProperty
-            // myProperty
-            // myproperty
-            // my_property
+            $refProp = $this->getReflectionProperty($ref, $methodName);
 
-            if ($ref->hasProperty($propertyName)) {
-                $refProp = $ref->getProperty($propertyName);
-            }
-            $realName = lcfirst($propertyName);
-            if ($ref->hasProperty(lcfirst($realName))) {
-                $refProp = $ref->getProperty($realName);
-            }
-            $realName = strtolower($propertyName);
-            if ($ref->hasProperty(strtolower($realName))) {
-                $refProp = $ref->getProperty($realName);
-            }
-            $realName = $this->convertToSnakeCase($propertyName);
-            if ($ref->hasProperty($this->convertToSnakeCase($realName))) {
-                $refProp = $ref->getProperty($realName);
-            }
-
-            if (empty($refProp)) {
-                // Found nothing  :-(
-                $value = null;
-            } else {
-                // We've got ourself a possible result!
-                $refProp->setAccessible(true);
-                $value = $refProp->getValue($this->parameters['data']);
-            }
-
-            // We need to decide if we are handling static getters.
-
+            // Now we have three possible outcomes:
+            // 1.) We have an actual value
+            // 2.) We got NULL as a value
+            // 3.) We were unable to get any info at all.
 
             $model = new Model($this->storage);
-            $model->setData($value)
-                ->setName($methodName)
+            $model->setName($methodName)
                 ->setConnector2('()');
 
+            // We need to decide if we are handling static getters.
             if ($ref->getMethod($methodName)->isStatic()) {
                 $model->setConnector1('::');
             } else {
                 $model->setConnector1('->');
             }
 
-            $output .= $this->storage->routing->analysisHub($model);
+            if (empty($refProp)) {
+                // Found nothing  :-(
+                $value = $this->storage->messages->getHelp('unknownValue');
+
+                // We literally have no info. We need to tell the user.
+                $model->setNormal('unknown')
+                    ->setType('unknown')
+                    ->hasExtras();
+            } else {
+                // We've got ourself a possible result!
+                $refProp->setAccessible(true);
+                $value = $refProp->getValue($this->parameters['data']);
+            }
+            $model->setData($value);
+            
+            if (empty($refProp)) {
+                // We render this right away, without any routing.
+                $output .= $this->storage->render->renderSingleChild($model);
+            } else {
+                if (is_null($value)) {
+                    // A NULL value might mean that the values does not
+                    // exist, until the getter computes it.
+                    $model->addToJson('hint', $this->storage->messages->getHelp('getterNull'));
+                }
+                $output .= $this->storage->routing->analysisHub($model);
+            }
         }
 
         return $output;
+    }
+
+    /**
+     * We try to coax the reflection property from the current object.
+     *
+     * @param \ReflectionClass $classReflection
+     *   The reflection class oof the object we are analysing.
+     * @param string $propertyName
+     *   The name of the property that we want to get.
+     *
+     * @return \ReflectionProperty|null
+     */
+    protected function getReflectionProperty(\ReflectionClass $classReflection, $getterName)
+    {
+        // We may be facing different writing styles.
+        // The property we want from getMyProperty() should be named
+        // myProperty, but we can not rely on this.
+        // We will check:
+        // - MyProperty
+        // - myProperty
+        // - myproperty
+        // - my_property
+
+        // myProperty
+        $propertyName = lcfirst(substr($getterName, 3));
+        if ($classReflection->hasProperty($propertyName)) {
+            return $classReflection->getProperty($propertyName);
+        }
+
+        // MyProperty
+        $propertyName = ucfirst($propertyName);
+        if ($classReflection->hasProperty($propertyName)) {
+            return $classReflection->getProperty($propertyName);
+        }
+
+        // myproperty
+        $propertyName = strtolower($propertyName);
+        if ($classReflection->hasProperty($propertyName)) {
+            return $classReflection->getProperty($propertyName);
+        }
+
+        // my_property
+        $propertyName = $this->convertToSnakeCase($propertyName);
+        if ($classReflection->hasProperty($propertyName)) {
+            return $classReflection->getProperty($propertyName);
+        }
+
+        // Still nothing? Return null, to tell the main method that we were
+        // unable to get any info.
+        return null;
     }
 
     /**
