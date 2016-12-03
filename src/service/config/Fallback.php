@@ -81,8 +81,8 @@ class Fallback
             'disabled' => 'false',
             'iprange' => '*',
             'detectAjax' => 'true',
-            'level' => '5',
-            'maxCall' => '10',
+            'level' => '10',
+            'maxCall' => '20',
         ),
         'output' => array(
             'skin' => 'smokygrey',

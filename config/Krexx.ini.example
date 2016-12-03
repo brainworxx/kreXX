@@ -22,12 +22,12 @@ detectAjax = "true"
 
 ; How deep shall we analyse objects?
 ; When we reach a certain level, we simply stop there and won't go any further.
-level = "5"
+level = "10"
 
 ; How often can you call kreXX in one run?
 ; kreXX can generate a lot of data, and depending on your settings
 ; increasing this number might not be a good idea.
-maxCall = "10"
+maxCall = "15"
 
 ; ------------------------------------------------------------------------------
 [output]
