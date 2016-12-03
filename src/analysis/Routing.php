@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Analyse;
 
-use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Service\Storage;
 
 /**
@@ -370,8 +369,8 @@ class Routing
         $result = array();
 
         // Adding comments from the file.
-        $methodclass = new ThroughMethods($this->storage);
-        $result['comments'] =  $methodclass->prettifyComment($ref->getDocComment());
+        $comments = new Functions($this->storage);
+        $result['comments'] =  $comments->getComment($ref);
 
         // Adding the sourcecode
         $highlight = $ref->getStartLine() -1;

@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Methods;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
@@ -70,12 +71,15 @@ class ThroughGetter extends AbstractCallback
             // 2.) We got NULL as a value
             // 3.) We were unable to get any info at all.
 
+            $comments = new Methods($this->storage);
+            $reflectionMethod = $ref->getMethod($methodName);
             $model = new Model($this->storage);
             $model->setName($methodName)
-                ->setConnector2('()');
+                ->setConnector2('()')
+                ->addToJson('method comment', $comments->getComment($reflectionMethod, $ref));
 
             // We need to decide if we are handling static getters.
-            if ($ref->getMethod($methodName)->isStatic()) {
+            if ($reflectionMethod->isStatic()) {
                 $model->setConnector1('::');
             } else {
                 $model->setConnector1('->');
@@ -95,7 +99,7 @@ class ThroughGetter extends AbstractCallback
                 $value = $refProp->getValue($this->parameters['data']);
             }
             $model->setData($value);
-            
+
             if (empty($refProp)) {
                 // We render this right away, without any routing.
                 $output .= $this->storage->render->renderSingleChild($model);
