@@ -629,7 +629,7 @@
      * object1 and object2 stay as they are.
      *
      * @param {object} object1
-     *   The strting one.
+     *   The starting one.
      * @param {object} object2
      *   We merge this one into the first one, possibly overwriting it's attributes.
      *

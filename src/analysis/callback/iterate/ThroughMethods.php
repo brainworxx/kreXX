@@ -37,7 +37,6 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Methods;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Controller\OutputActions;
 
 /**
  * Methods analysis methods. :rolleyes:

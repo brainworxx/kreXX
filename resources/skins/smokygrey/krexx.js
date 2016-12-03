@@ -86,7 +86,7 @@
         kdt.addEvent('.kwrapper .kel', 'click', krexx.setAdditionalData);
 
         /**
-         * Register the Collapse-All funfions on it's symbol
+         * Register the Collapse-All functions on it's symbol
          *
          * @event click
          */
@@ -479,7 +479,7 @@
             // Remove all previous highlights
             kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
 
-            // Appy our configuration
+            // Apply our configuration.
             if (caseSensitive === false) {
                 searchtext = searchtext.toLowerCase();
             }

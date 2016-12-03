@@ -108,7 +108,7 @@ abstract class AbstractComment
     /**
      * We replace the @ inheritdoc in the comment.
      *
-     * The inheritdoc may be mistyped. We will repalce the following:
+     * The inheritdoc may be mistyped. We will replace the following:
      * - inheritdoc
      * - @inheritdoc
      * - {inheritdoc}
@@ -140,10 +140,10 @@ abstract class AbstractComment
     protected function checkComment($comment)
     {
         if (stripos($comment, 'inheritdoc') === false) {
-            // Not found means we ahve done our job.
+            // Not found means we have done our job.
             return true;
         } else {
-            // We need to go deeper into the rabit hole.
+            // We need to go deeper into the rabbit hole.
             return false;
         }
     }

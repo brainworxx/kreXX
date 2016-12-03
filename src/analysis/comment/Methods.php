@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Analyse;
 
 /**
- * We get the comment of a method and try toresolve the inheritdoc stuff.
+ * We get the comment of a method and try to resolve the inheritdoc stuff.
  *
  * @package Brainworxx\Krexx\Analyse
  */
@@ -181,9 +181,9 @@ class Methods extends AbstractComment
                         // We've gone too far.
                         // We should try the next interface.
                     } else {
-                        $interfacecomment = $this->prettifyComment($interfaceMethod->getDocComment());
+                        $interfaceComment = $this->prettifyComment($interfaceMethod->getDocComment());
                         // Replace it.
-                        $originalComment = $this->replaceInheritComment($originalComment, $interfacecomment);
+                        $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
                     }
                 } catch (\ReflectionException $e) {
                     // Method not found.

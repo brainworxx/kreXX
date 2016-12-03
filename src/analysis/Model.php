@@ -157,7 +157,7 @@ class Model
     protected $multiLineCodeGen = '';
 
     /**
-     * Defines it the content of thecariable qualifies as a callback.
+     * Defines if the content of the variable qualifies as a callback.
      *
      * @var bool
      */

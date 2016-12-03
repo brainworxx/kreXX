@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\View\Smokygrey;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Controller\OutputActions;
 
 /**
  * Individual render class for the smokey-grey skin.
@@ -224,7 +223,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
     {
         if (strlen($connector) > 17) {
             // Something big, we should display it.
-            // Most likely the parametes of a method.
+            // Most likely the parameters of a method.
             return parent::renderConnector($connector);
         }
         return '';

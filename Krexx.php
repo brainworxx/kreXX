@@ -66,7 +66,7 @@ function krexx($data = null, $handle = '')
 class Krexx
 {
     /**
-     * Our storage wher we keep al relevant classes.
+     * Our storage where we keep all relevant classes.
      *
      * @var Storage
      */
@@ -116,7 +116,7 @@ class Krexx
         include_once $krexxDir . 'src/controller/Internals.php';
         include_once $krexxDir . 'src/controller/OutputActions.php';
 
-        // Create a new storage where we sotre all our classes.
+        // Create a new storage where we store all our classes.
         self::$storage = new Storage($krexxDir);
     }
 

@@ -71,12 +71,14 @@ class ThroughGetter extends AbstractCallback
             // 2.) We got NULL as a value
             // 3.) We were unable to get any info at all.
 
-            $comments = new Methods($this->storage);
+            $commentsAnalysis = new Methods($this->storage);
             $reflectionMethod = $ref->getMethod($methodName);
+            $comments = nl2br($commentsAnalysis->getComment($reflectionMethod, $ref));
+
             $model = new Model($this->storage);
             $model->setName($methodName)
                 ->setConnector2('()')
-                ->addToJson('method comment', $comments->getComment($reflectionMethod, $ref));
+                ->addToJson('method comment', $comments);
 
             // We need to decide if we are handling static getters.
             if ($reflectionMethod->isStatic()) {
@@ -94,7 +96,7 @@ class ThroughGetter extends AbstractCallback
                     ->setType('unknown')
                     ->hasExtras();
             } else {
-                // We've got ourself a possible result!
+                // We've got ourselves a possible result!
                 $refProp->setAccessible(true);
                 $value = $refProp->getValue($this->parameters['data']);
             }
@@ -121,7 +123,7 @@ class ThroughGetter extends AbstractCallback
      *
      * @param \ReflectionClass $classReflection
      *   The reflection class oof the object we are analysing.
-     * @param string $propertyName
+     * @param string $getterName
      *   The name of the property that we want to get.
      *
      * @return \ReflectionProperty|null
@@ -180,6 +182,6 @@ class ThroughGetter extends AbstractCallback
      */
     protected function convertToSnakeCase($string)
     {
-        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
+        return strtolower(preg_replace(array('/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'), '$1_$2', $string));
     }
 }
