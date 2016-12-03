@@ -68,7 +68,10 @@ class ThroughMethods extends AbstractCallback
             $method = $reflection->name;
             // Get the comment from the class, it's parents, interfaces or traits.
             $comments = new Methods($this->storage);
-            $methodData['comments'] = $comments->getComment($reflection, $this->parameters['ref']);
+            $methodComment = $comments->getComment($reflection, $this->parameters['ref']);
+            if (!empty($methodComment)) {
+                $methodData['comments'] = $comments->getComment($reflection, $this->parameters['ref']);
+            }
 
             // Get declaration place.
             $declaringClass = $reflection->getDeclaringClass();
