@@ -1,4 +1,4 @@
-2.0.2 dev
+2.1.0
 - Added getter method analysis for models.
 - Added search options to both skins.
 - Bugfix: Added LazyLoadingProxy->__toString() to the debug
