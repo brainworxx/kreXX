@@ -3,6 +3,8 @@
   json.
 - Bugfix: Removed a warning in case kreXX was called fromn eval'd
   code.
+- Change: Reworked some of the configurations (disable, maxRuntime,
+  memoryLeft, iprange)
 
 2.1.0
 - Added getter method analysis for models.
