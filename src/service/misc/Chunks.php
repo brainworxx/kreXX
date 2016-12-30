@@ -166,7 +166,7 @@ class Chunks
         $filename = $this->krexxDir . 'chunks/' . $key . '.Krexx.tmp';
         if (is_writable($filename)) {
             // Read the file.
-            $string = $this->storage->getFileContents($filename);
+            $string = $this->storage->file->getFileContents($filename);
             // Delete it, we don't need it anymore.
             unlink($filename);
         } else {
