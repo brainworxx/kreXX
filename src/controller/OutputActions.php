@@ -86,7 +86,7 @@ class OutputActions extends Internals
         } else {
             $caller['type'] = 'Analysis';
         }
-        $this->storage->codegenHandler->setScope($caller['varname']);
+        $this->storage->scope->setScope($caller['varname']);
 
         // Set the headline, if it's not set already.
         if (empty($headline)) {
@@ -169,7 +169,7 @@ class OutputActions extends Internals
         $caller = $this->storage->callerFinder->findCaller();
         $caller['type'] = 'Backtrace';
 
-        $this->storage->codegenHandler->setScope($caller['varname']);
+        $this->storage->scope->setScope($caller['varname']);
 
         $headline = 'Backtrace';
 
@@ -267,7 +267,7 @@ class OutputActions extends Internals
         }
 
         // Get the footer.
-        $footer = $this->outputFooter('');
+        $footer = $this->outputFooter(array());
         // Get the messages.
         $messages = $this->storage->messages->outputMessages();
 

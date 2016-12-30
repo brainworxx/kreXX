@@ -32,32 +32,36 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analyse\Caller;
+namespace Brainworxx\Krexx\Analyse;
 
 use Brainworxx\Krexx\Service\Storage;
 
-abstract class AbstractCaller
+/**
+ * Scope analysis decides if a property of method is accessible in the current
+ * analysis scope.
+ *
+ * @package Brainworxx\Krexx\Analyse
+ */
+class Scope
 {
     /**
-     * Our storage where we keep al relevant classes.
+     * Here we store all relevant data.
      *
      * @var Storage
      */
     protected $storage;
 
     /**
-     * Pattern that we use to identify the caller.
-     * This is normally 'krexx'. With our direct integration
-     * into the debug() method of the TYPO3 core, this may as
-     * well be 'debug' or something else entirely, depending
-     * on the system used and it's internal debug call.
+     * The "scope" we are starting with. When it is $this in combination with a
+     * nesting level of 1, we treat protected and private variables and functions
+     * as public, because they are reachable from the current scope.
      *
      * @var string
      */
-    protected $pattern = 'krexx';
+    protected $scope = '';
 
     /**
-     * Injects the storage.
+     * Initializes the code generation.
      *
      * @param Storage $storage
      *   The storage, where we store the classes we need.
@@ -68,35 +72,38 @@ abstract class AbstractCaller
     }
 
     /**
-     * Setter for the identifier pattern.
+     * Sets the scope in which we are moving ('$this' or something else).
      *
-     * @param $pattern
-     *   The pattern, duh!
-     *
-     * @return $this
-     *   Return this for chaining.
+     * @param string $scope
+     *   The scope ('$this' or something else) .
      */
-    public function setPattern($pattern)
+    public function setScope($scope)
     {
-        $this->pattern = $pattern;
-        return $this;
+        if ($scope != '. . .') {
+            $this->scope = $scope;
+        }
     }
 
     /**
-     * Getter for the current recognition pattern.
+     * We decide if a function is currently within a reachable scope.
      *
-     * @return string
+     * @param string $type
+     *   The type we are looking at, either class or array.
+     *
+     * @return bool
+     *   Whether it is within the scope or not.
      */
-    public function getPattern()
+    public function isInScope($type = '')
     {
-        return $this->pattern;
-    }
+        // When analysing a class or array, we have + 1 on our nesting level, when
+        // coming from the code generation. That is, because that class is currently
+        // being analysed.
+        if (strpos($type, 'class') === false && strpos($type, 'array') === false) {
+            $nestingLevel = $this->storage->emergencyHandler->getNestingLevel();
+        } else {
+            $nestingLevel = $this->storage->emergencyHandler->getNestingLevel() - 1;
+        }
 
-    /**
-     * Finds the place in the code from where krexx was called.
-     *
-     * @return array
-     *   The code, from where krexx was called
-     */
-    abstract public function findCaller();
+        return $nestingLevel <= 1 && $this->scope === '$this';
+    }
 }

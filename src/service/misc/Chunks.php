@@ -310,7 +310,7 @@ class Chunks
     }
 
     /**
-     * Setter for the self::$useChunks.
+     * Setter for the $useChunks.
      *
      * When the chunks folder is not writable, we will not use chunks.
      * This will increase the memory usage significantly!

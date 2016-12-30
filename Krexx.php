@@ -95,6 +95,7 @@ class Krexx
         include_once $krexxDir . 'src/analysis/Flection.php';
         include_once $krexxDir . 'src/analysis/Routing.php';
         include_once $krexxDir . 'src/analysis/Model.php';
+        include_once $krexxDir . 'src/analysis/Scope.php';
         include_once $krexxDir . 'src/analysis/callback/AbstractCallback.php';
         include_once $krexxDir . 'src/analysis/callback/analyse/BacktraceStep.php';
         include_once $krexxDir . 'src/analysis/callback/analyse/ConfigSection.php';

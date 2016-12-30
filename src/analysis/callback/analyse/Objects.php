@@ -105,7 +105,7 @@ class Objects extends AbstractCallback
 
         // Dumping protected properties.
         if ($this->storage->config->getSetting('analyseProtected') ||
-            $this->storage->codegenHandler->isInScope()) {
+            $this->storage->scope->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
             usort($refProps, $sortingCallback);
 
@@ -116,7 +116,7 @@ class Objects extends AbstractCallback
 
         // Dumping private properties.
         if ($this->storage->config->getSetting('analysePrivate') ||
-            $this->storage->codegenHandler->isInScope()) {
+            $this->storage->scope->isInScope()) {
             $refProps = $ref->getProperties(\ReflectionProperty::IS_PRIVATE);
             usort($refProps, $sortingCallback);
             if (!empty($refProps)) {
@@ -164,12 +164,12 @@ class Objects extends AbstractCallback
         $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
         if ($this->storage->config->getSetting('analyseProtectedMethods') ||
-            $this->storage->codegenHandler->isInScope()) {
+            $this->storage->scope->isInScope()) {
             $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
         }
 
         if ($this->storage->config->getSetting('analysePrivateMethods') ||
-            $this->storage->codegenHandler->isInScope()) {
+            $this->storage->scope->isInScope()) {
             $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
         }
 

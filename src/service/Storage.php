@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Service;
 use Brainworxx\Krexx\Analyse\Caller\AbstractCaller;
 use Brainworxx\Krexx\Analyse\Caller\Php;
 use Brainworxx\Krexx\Analyse\Routing;
+use Brainworxx\Krexx\Analyse\Scope;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Flow\Emergency;
@@ -136,6 +137,13 @@ class Storage
     public $file;
 
     /**
+     * Scope analysis class.
+     *
+     * @var Scope
+     */
+    public $scope;
+
+    /**
      * Initializes all needed classes.
      *
      * @param $krexxDir
@@ -163,6 +171,8 @@ class Storage
         $this->controller = new OutputActions($this);
         // Initialize the caller finder. We start with the php finder.
         $this->callerFinder = new Php($this);
+        // Initializes the scope analysis
+        $this->scope = new Scope($this);
 
         // Initializes the render class.
         $this->initRenderer();
@@ -221,6 +231,7 @@ class Storage
         $this->emergencyHandler->resetTimer();
         // Initialize the code generation.
         $this->codegenHandler = new Codegen($this);
+        $this->scope = new Scope($this);
     }
 
     /**
