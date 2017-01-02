@@ -106,7 +106,9 @@ class Scope
      */
     public function isInScope()
     {
-        return  $this->storage->emergencyHandler->getNestingLevel() <= 1 && $this->scope === '$this';
+        return  $this->storage->emergencyHandler->getNestingLevel() <= 1 &&
+            $this->scope === '$this' &&
+            $this->storage->config->getSetting('useScopeAnalysis');
     }
 
     /**

@@ -358,6 +358,17 @@ class Security extends Fallback
                 }
                 break;
 
+            case 'useScopeAnalysis':
+                // We expect a bool.
+                $result = $this->evalBool($value);
+                if (!$result) {
+                    $this->storage->messages->addMessage(
+                        $this->storage->messages->getHelp('configErrorUseScopeAnalysis')
+                    );
+                    $this->storage->messages->addKey('backtraceAndError.useScopeAnalysis.error');
+                }
+                break;
+
             default:
                 // Unknown settings,
                 // return false, just in case.

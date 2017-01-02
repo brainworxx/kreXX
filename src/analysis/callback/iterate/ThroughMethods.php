@@ -106,6 +106,13 @@ class ThroughMethods extends AbstractCallback
             }
             if ($reflection->getDeclaringClass()->getName() !== $ref->getName()) {
                 $methodData['declaration keywords'] .= ' inherited';
+                // We need to recheck our scope.
+                // Private inherited methods are never within the scope.
+                if (strpos($methodData['declaration keywords'], 'private') !== false &&
+                    $this->storage->config->getSetting('analysePrivate') === false) {
+                    // Do nothing. We ignore this one.
+                    continue;
+                }
             }
             if ($reflection->isStatic()) {
                 $methodData['declaration keywords'] .= ' static';
