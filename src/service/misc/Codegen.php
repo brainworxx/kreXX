@@ -253,7 +253,7 @@ class Codegen
         }
 
         // Test if we are inside the scope.
-        if ($this->storage->scope->allowCodegen($type)) {
+        if ($this->storage->scope->testModelForCodegen($model)) {
             // We are inside the scope, this value, function or class is reachable.
             return $concatenation;
         }

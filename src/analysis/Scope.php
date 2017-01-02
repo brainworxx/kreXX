@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse;
 
+use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Storage;
 
 /**
@@ -111,22 +112,32 @@ class Scope
     /**
      * Decide if we allow code generation for this property.
      *
-     * @param string $type
+     * @param Model $model
      *   The type we want to generate the code for.
      *
      * @return bool
      *   Can we allow code generation here?
      */
-    public function allowCodegen($type)
+    public function testModelForCodegen($model)
     {
+        // Inherited private properties or methods are not accessible from the
+        // $this scope. We need to make sure that we do not generate any code
+        // for them.
+        if (strpos($model->getType(), 'private inherited') !== false) {
+            // No source generation for you!
+            return false;
+        }
+
         // When analysing a class or array, we have + 1 on our nesting level, when
         // coming from the code generation. That is, because that class is currently
         // being analysed.
-        if (strpos($type, 'class') === false && strpos($type, 'array') === false) {
+        if (strpos($model->getType(), 'class') === false && strpos($model->getType(), 'array') === false) {
             $nestingLevel = $this->storage->emergencyHandler->getNestingLevel();
         } else {
             $nestingLevel = $this->storage->emergencyHandler->getNestingLevel() - 1;
         }
+
+
 
         return $nestingLevel <= 1 && $this->scope === '$this';
     }

@@ -200,7 +200,7 @@ class Objects extends AbstractCallback
         }
         foreach (get_object_vars($data) as $key => $value) {
             if (!isset($publicProps[$key])) {
-                $refProps[] = new Flection($value, $key);
+                $refProps[] = new Flection($value, $key, $ref);
             }
         }
 
