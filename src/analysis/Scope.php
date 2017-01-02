@@ -81,6 +81,9 @@ class Scope
     {
         if ($scope != '. . .') {
             $this->scope = $scope;
+            // Now that we have a scope, we can actually generate code to
+            // reach the variables inside the analysis.
+            $this->storage->codegenHandler->setAllowCodegen(true);
         }
     }
 

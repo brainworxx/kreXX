@@ -268,12 +268,12 @@ class Codegen
     }
 
     /**
-     * We check if we are allowed to generate code at all.
+     * Gets set, as soon as we have a scope to come from.
+     *
+     * @param boolean $bool
      */
-    public function checkAllowCodegen()
+    public function setAllowCodegen($bool)
     {
-        if (!empty($this->storage->scope->getScope())) {
-            $this->allowCodegen = true;
-        }
+        $this->allowCodegen = $bool;
     }
 }

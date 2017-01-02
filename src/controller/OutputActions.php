@@ -86,7 +86,7 @@ class OutputActions extends Internals
         } else {
             $caller['type'] = 'Analysis';
         }
-        $this->storage->scope->setScope($caller['varname']);
+
 
         // Set the headline, if it's not set already.
         if (empty($headline)) {
@@ -119,7 +119,7 @@ class OutputActions extends Internals
         // We need to get the footer before the generating of the header,
         // because we need to display messages in the header from the configuration.
         $footer = $this->outputFooter($caller);
-        $this->storage->codegenHandler->checkAllowCodegen();
+        $this->storage->scope->setScope($caller['varname']);
 
         // Enable code generation only if we were able to determine the varname.
         if ($caller['varname'] != '. . .') {
