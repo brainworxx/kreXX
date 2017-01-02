@@ -365,7 +365,7 @@ class Security extends Fallback
                     $this->storage->messages->addMessage(
                         $this->storage->messages->getHelp('configErrorUseScopeAnalysis')
                     );
-                    $this->storage->messages->addKey('backtraceAndError.useScopeAnalysis.error');
+                    $this->storage->messages->addKey('runtime.useScopeAnalysis.error');
                 }
                 break;
 
