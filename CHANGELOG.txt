@@ -3,6 +3,7 @@
   json.
 - Bugfix: Removed a warning in case kreXX was called fromn eval'd
   code.
+- Bugfix: Dumping of inherited private properties works works now.
 - Change: Reworked some of the configurations (disable, maxRuntime,
   memoryLeft, iprange)
 
