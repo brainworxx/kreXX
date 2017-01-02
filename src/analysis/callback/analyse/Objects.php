@@ -120,14 +120,22 @@ class Objects extends AbstractCallback
         $refProps = array();
         $reflectionClass = $ref;
 
-        // The main problem here is, that you only get the private proerties of
+        // The main problem here is, that you only get the private properties of
         // the current class, but not the inherited private properties.
         // We need to get all parent classes and then poll them for private
         // properties to get the whole picture.
         do {
             $refProps = array_merge($refProps, $reflectionClass->getProperties(\ReflectionProperty::IS_PRIVATE));
             // And now for the parent class.
-            $reflectionClass = $reflectionClass->getParentClass();
+            // Inherited private properties are not accessible from inside
+            // the class. We will only dump them, if we are analysing private
+            // properties.
+            if ($this->storage->config->getSetting('analysePrivate')) {
+                $reflectionClass = $reflectionClass->getParentClass();
+            } else {
+                // This should break the do while.
+                $reflectionClass = false;
+            }
         } while (is_object($reflectionClass));
 
         usort($refProps, array($this, 'sortingCallback'));

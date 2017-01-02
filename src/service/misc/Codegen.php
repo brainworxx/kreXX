@@ -251,9 +251,9 @@ class Codegen
             // Is not protected.
             return $concatenation;
         }
-        
+
         // Test if we are inside the scope.
-        if ($this->storage->scope->isInScope($type)) {
+        if ($this->storage->scope->allowCodegen($type)) {
             // We are inside the scope, this value, function or class is reachable.
             return $concatenation;
         }
@@ -267,12 +267,12 @@ class Codegen
         }
     }
 
-        /**
+    /**
      * We check if we are allowed to generate code at all.
      */
     public function checkAllowCodegen()
     {
-        if (!empty($this->scope)) {
+        if (!empty($this->storage->scope->getScope())) {
             $this->allowCodegen = true;
         }
     }

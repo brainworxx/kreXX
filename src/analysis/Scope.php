@@ -85,15 +85,36 @@ class Scope
     }
 
     /**
-     * We decide if a function is currently within a reachable scope.
+     * Getter for the scope string.
      *
-     * @param string $type
-     *   The type we are looking at, either class or array.
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * We decide if a method or property is currently within a reachable scope.
      *
      * @return bool
      *   Whether it is within the scope or not.
      */
-    public function isInScope($type = '')
+    public function isInScope()
+    {
+        return  $this->storage->emergencyHandler->getNestingLevel() <= 1 && $this->scope === '$this';
+    }
+
+    /**
+     * Decide if we allow code generation for this property.
+     *
+     * @param string $type
+     *   The type we want to generate the code for.
+     *
+     * @return bool
+     *   Can we allow code generation here?
+     */
+    public function allowCodegen($type)
     {
         // When analysing a class or array, we have + 1 on our nesting level, when
         // coming from the code generation. That is, because that class is currently
