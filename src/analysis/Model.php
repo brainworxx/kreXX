@@ -411,15 +411,7 @@ class Model
      */
     public function addToJson($key, $value)
     {
-        // Our js has some problems with single quotes and escaped quotes.
-        // We remove them as well as linebreaks.
-        $value = str_replace('"', "\\u0027", $value);
-        $value = str_replace("'", "\\u0022", $value);
-        $value = str_replace('&quot;', "\\u0027", $value);
-        // Unicode greater-than aund smaller-then values.
-        $value = str_replace('&lt;', "\\u276E", $value);
-        $value = str_replace('&gt;', "\\u02C3", $value);
-
+        // Remove leftover linebreaks.
         $this->json[$key] = preg_replace("/\r|\n/", "", $value);
         return $this;
     }

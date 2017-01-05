@@ -129,7 +129,7 @@ class Render
         $template = str_replace('{type-classes}', $typeClasses, $template);
         $template = str_replace('{normal}', $model->getNormal(), $template);
         $template = str_replace('{data}', $data, $template);
-        $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
+        $template = str_replace('{help}', $this->renderHelp($model), $template);
         $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
         $template = str_replace('{gensource}', $gensource, $template);
         return str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
@@ -169,6 +169,7 @@ class Render
         $template = str_replace('{domId}', $model->getDomid(), $template);
         $template = str_replace('{normal}', $model->getType(), $template);
         $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
+        $template = str_replace('{help}', $this->renderHelp($model), $template);
 
         return str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
     }
@@ -327,7 +328,7 @@ class Render
         $template = str_replace('{ktype}', $cssType, $template);
 
         $template = str_replace('{additional}', $model->getAdditional(), $template);
-        $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
+        $template = str_replace('{help}', $this->renderHelp($model), $template);
         $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
         $template = str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
 
@@ -453,7 +454,7 @@ class Render
         $template = str_replace('{source}', $model->getNormal(), $template);
         $template = str_replace('{normal}', $element, $template);
         $template = str_replace('{type}', 'editable', $template);
-        $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
+        $template = str_replace('{help}', $this->renderHelp($model), $template);
 
         return $template;
     }
@@ -470,7 +471,7 @@ class Render
     public function renderButton(Model $model)
     {
         $template = $this->getTemplateFileContent('singleButton');
-        $template = str_replace('{help}', $this->renderHelp($model->getHelpid()), $template);
+        $template = str_replace('{help}', $this->renderHelp($model), $template);
 
         $template = str_replace('{text}', $model->getNormal(), $template);
         return str_replace('{class}', $model->getName(), $template);
@@ -576,7 +577,7 @@ class Render
     /**
      * Renders the helptext.
      *
-     * @param string $helpid
+     * @param Model $model
      *   The ID of the helptext.
      *
      * @see Help
@@ -584,14 +585,34 @@ class Render
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderHelp($helpid)
+    protected function renderHelp($model)
     {
-        $helpText = $this->storage->messages->getHelp($helpid);
-        if ($helpText != '') {
-            return str_replace('{help}', $helpText, $this->getTemplateFileContent('help'));
-        } else {
+        $helpId = $model->getHelpid();
+        $data = $model->getJson();
+        $helpcontent = '';
+
+        // Test if we have anything to display at all.
+        if (empty($helpId) && empty($data)) {
             return '';
         }
+
+        $helpRow = $this->getTemplateFileContent('helprow');
+
+        // Add the normal help info
+        if (!empty($helpId)){
+            $helpcontent .= str_replace('{helptitle}', 'Help', $helpRow);
+            $helpcontent = str_replace('{helptext}', $this->storage->messages->getHelp($helpId), $helpcontent);
+        }
+
+        // Add the stuff from the json here.
+        foreach ($data as $title => $text) {
+            $helpcontent .= str_replace('{helptitle}', $title, $helpRow);
+            $helpcontent = str_replace('{helptext}', $text, $helpcontent);
+        }
+
+        // Add it into the wrapper.
+        return str_replace('{help}', $helpcontent, $helpWrapper = $this->getTemplateFileContent('help'));
+
     }
 
     /**
@@ -636,7 +657,7 @@ class Render
      * @return string
      *   The rendered connector.
      */
-    public function renderConnector($connector)
+    protected function renderConnector($connector)
     {
         if (!empty($connector)) {
             $template = $this->getTemplateFileContent('connector');

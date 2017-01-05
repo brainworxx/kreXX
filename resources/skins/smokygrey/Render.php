@@ -55,7 +55,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
         // Prepare the json.
-        $json = json_encode($json);
+        $json = $this->encodeJson($json);
         $template = str_replace('{addjson}', $json, $template);
 
         return $template;
@@ -108,7 +108,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         $json = $model->getJson();
         $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
-        $json = json_encode($json);
+        $json = $this->encodeJson($json);
         $template = str_replace('{addjson}', $json, $template);
 
         return str_replace('{nest}', $this->storage->chunks->chunkMe($this->renderNest($model, false)), $template);
@@ -123,7 +123,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         // We add our json to the output.
         $json = $model->getJson();
         $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
-        $json = json_encode($json);
+        $json = $this->encodeJson($json);
         return str_replace('{addjson}', $json, $template);
     }
 
@@ -136,7 +136,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = parent::renderSingleEditableChild($model);
 
         // Prepare the json. Not much do display for form elements.
-        $json = json_encode(array(
+        $json = $this->encodeJson(array(
             'Help' => $this->storage->messages->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
@@ -153,7 +153,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = parent::renderButton($model);
 
         // Prepare the json. Not much do display for form elements.
-        $json = json_encode(array(
+        $json = $this->encodeJson(array(
             'Help' => $this->storage->messages->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
@@ -218,7 +218,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
     /**
      * {@inheritDoc}
      */
-    public function renderConnector($connector)
+    protected function renderConnector($connector)
     {
         if (strlen($connector) > 17) {
             // Something big, we should display it.
@@ -228,4 +228,38 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         return '';
     }
 
+    /**
+     * Do nothing. Help stuff is implemented vis javascript json.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @return string
+     */
+    protected function renderHelp($model)
+    {
+         return '';
+    }
+
+    /**
+     * Some special escaping for the json output
+     *
+     * @param array $array
+     *   The string we want to special-escape
+     * @return string
+     *   The json from the array.
+     */
+    protected function encodeJson(array $array)
+    {
+        foreach ($array as &$string) {
+            // Our js has some problems with single quotes and escaped quotes.
+            // We remove them as well as linebreaks.
+            $string = str_replace('"', "\\u0027", $string);
+            $string = str_replace("'", "\\u0022", $string);
+            $string = str_replace('&quot;', "\\u0027", $string);
+            // Unicode greater-than aund smaller-then values.
+            $string = str_replace('&lt;', "\\u276E", $string);
+            $string = str_replace('&gt;', "\\u02C3", $string);
+        }
+
+        return json_encode($array);
+    }
 }
