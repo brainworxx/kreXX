@@ -65,8 +65,8 @@ class Factory
     public function createClass($classname)
     {
         // Check for possible overwrite.
-        if (!empty($rewrite[$classname])) {
-            $classname = $rewrite[$classname];
+        if (!empty($this->rewrite[$classname])) {
+            $classname = $this->rewrite[$classname];
         }
         // The model has no need for the pool.
         // Meh, that does not sound right   ;-)

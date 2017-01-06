@@ -496,15 +496,6 @@ class Security extends Fallback
     {
         $remote = $_SERVER['REMOTE_ADDR'];
 
-        // Use TYPO3 v6+ cmpIP if possible.
-        if (is_callable(array('\\TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'cmpIP'))) {
-            return \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($remote, $whitelist);
-        }
-        // Use TYPO3 v6- cmpIP if possible.
-        if (is_callable(array('t3lib_div', 'cmpIP'))) {
-            return \t3lib_div::cmpIP($remote, $whitelist);
-        }
-
         // Fallback to the Chin Leung implementation.
         // @author Chin Leung
         // @see https://stackoverflow.com/questions/35559119/php-ip-address-whitelist-with-wildcards
