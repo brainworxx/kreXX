@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback;
 
-use Brainworxx\Krexx\Service\Storage;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Abstract class for the callback classes inside the model.
@@ -47,9 +47,9 @@ abstract class AbstractCallback
     /**
      * Here we store all relevant data.
      *
-     * @var Storage
+     * @var Pool
      */
-    protected $storage;
+    protected $pool;
 
     /**
      * The parameters for the callback.
@@ -67,14 +67,14 @@ abstract class AbstractCallback
     abstract public function callMe();
 
     /**
-     * Injects the storage.
+     * Injects the pool.
      *
-     * @param Storage $storage
-     *   The storage, where we store the classes we need.
+     * @param Pool $pool
+     *   The pool, where we store the classes we need.
      */
-    public function __construct(Storage $storage)
+    public function __construct(Pool $pool)
     {
-        $this->storage = $storage;
+        $this->pool = $pool;
     }
 
     /**

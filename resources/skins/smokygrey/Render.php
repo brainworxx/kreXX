@@ -53,7 +53,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = parent::renderSingleChild($model);
         $json = $model->getJson();
 
-        $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
+        $json['Help'] = $this->pool->messages->getHelp($model->getHelpid());
         // Prepare the json.
         $json = $this->encodeJson($json);
         $template = str_replace('{addjson}', $json, $template);
@@ -69,7 +69,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
     {
 
         // Check for emergency break.
-        if (!$this->storage->emergencyHandler->checkEmergencyBreak()) {
+        if (!$this->pool->emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
 
@@ -92,7 +92,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = $this->storage->codegenHandler->generateSource($model);
+        $gencode = $this->pool->codegenHandler->generateSource($model);
         $template = str_replace('{gensource}', $gencode, $template);
         if ($gencode == ';stop;' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.
@@ -107,11 +107,11 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = str_replace('{isExpanded}', '', $template);
 
         $json = $model->getJson();
-        $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
+        $json['Help'] = $this->pool->messages->getHelp($model->getHelpid());
         $json = $this->encodeJson($json);
         $template = str_replace('{addjson}', $json, $template);
 
-        return str_replace('{nest}', $this->storage->chunks->chunkMe($this->renderNest($model, false)), $template);
+        return str_replace('{nest}', $this->pool->chunks->chunkMe($this->renderNest($model, false)), $template);
     }
 
     /**
@@ -122,7 +122,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
         $template = parent::renderRecursion($model);
         // We add our json to the output.
         $json = $model->getJson();
-        $json['Help'] = $this->storage->messages->getHelp($model->getHelpid());
+        $json['Help'] = $this->pool->messages->getHelp($model->getHelpid());
         $json = $this->encodeJson($json);
         return str_replace('{addjson}', $json, $template);
     }
@@ -137,7 +137,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         // Prepare the json. Not much do display for form elements.
         $json = $this->encodeJson(array(
-            'Help' => $this->storage->messages->getHelp($model->getHelpid()),
+            'Help' => $this->pool->messages->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 
@@ -154,7 +154,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         // Prepare the json. Not much do display for form elements.
         $json = $this->encodeJson(array(
-            'Help' => $this->storage->messages->getHelp($model->getHelpid()),
+            'Help' => $this->pool->messages->getHelp($model->getHelpid()),
         ));
         $template = str_replace('{addjson}', $json, $template);
 
@@ -212,7 +212,7 @@ class Render extends \Brainworxx\Krexx\Service\View\Render
 
         // Add the search.
         $template = str_replace('{search}', $this->renderSearch(), $template);
-        return str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
+        return str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
     }
 
     /**

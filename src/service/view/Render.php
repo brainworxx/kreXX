@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Service\View;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Service\Storage;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Render methods.
@@ -51,19 +51,19 @@ class Render
     /**
      * Here we store all relevant data.
      *
-     * @var Storage
+     * @var Pool
      */
-    protected $storage;
+    protected $pool;
 
     /**
-     * Injects the storage.
+     * Injects the pool.
      *
-     * @param Storage $storage
-     *   The storage, where we store the classes we need.
+     * @param Pool $pool
+     *   The pool, where we store the classes we need.
      */
-    public function __construct(Storage $storage)
+    public function __construct(Pool $pool)
     {
-        $this->storage = $storage;
+        $this->pool = $pool;
     }
     /**
      * Renders a "single child", containing a single not expandable value.
@@ -109,7 +109,7 @@ class Render
 
         // Generating our code and adding the Codegen button, if there is something
         // to generate.
-        $gensource = $this->storage->codegenHandler->generateSource($model);
+        $gensource = $this->pool->codegenHandler->generateSource($model);
         if (empty($gensource)) {
             // Remove the markers, because here is nothing to add.
             $template = str_replace('{gensource}', '', $template);
@@ -153,7 +153,7 @@ class Render
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = $this->storage->codegenHandler->generateSource($model);
+        $gencode = $this->pool->codegenHandler->generateSource($model);
 
         if (empty($gencode)) {
             // Remove the markers, because here is nothing to add.
@@ -191,14 +191,14 @@ class Render
     {
         $template = $this->getTemplateFileContent('header');
         // Replace our stuff in the partial.
-        $template = str_replace('{version}', $this->storage->config->version, $template);
+        $template = str_replace('{version}', $this->pool->config->version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
-        $template = str_replace('{KrexxCount}', $this->storage->emergencyHandler->getKrexxCount(), $template);
+        $template = str_replace('{KrexxCount}', $this->pool->emergencyHandler->getKrexxCount(), $template);
         $template = str_replace('{headline}', $headline, $template);
         $template = str_replace('{cssJs}', $cssJs, $template);
-        $template = str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
+        $template = str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
         $template = str_replace('{search}', $this->renderSearch(), $template);
-        $template = str_replace('{messages}', $this->storage->messages->outputMessages(), $template);
+        $template = str_replace('{messages}', $this->pool->messages->outputMessages(), $template);
 
         return $template;
     }
@@ -212,7 +212,7 @@ class Render
     public function renderSearch()
     {
         $template = $this->getTemplateFileContent('search');
-        $template = str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
+        $template = str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
         return $template;
     }
 
@@ -309,7 +309,7 @@ class Render
     public function renderExpandableChild(Model $model, $isExpanded = false)
     {
         // Check for emergency break.
-        if (!$this->storage->emergencyHandler->checkEmergencyBreak()) {
+        if (!$this->pool->emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
 
@@ -334,7 +334,7 @@ class Render
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
-        $gencode = $this->storage->codegenHandler->generateSource($model);
+        $gencode = $this->pool->codegenHandler->generateSource($model);
         $template = str_replace('{gensource}', $gencode, $template);
         if ($gencode === ';stop;' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.
@@ -352,7 +352,7 @@ class Render
         }
         return str_replace(
             '{nest}',
-            $this->storage->chunks->chunkMe($this->renderNest($model, $isExpanded)),
+            $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
             $template
         );
 
@@ -375,10 +375,10 @@ class Render
             $fileCache[$what] = preg_replace(
                 '/\s+/',
                 ' ',
-                $this->storage->file->getFileContents(
-                    $this->storage->config->krexxdir .
+                $this->pool->file->getFileContents(
+                    $this->pool->krexxDir .
                     'resources/skins/' .
-                    $this->storage->config->getSetting('skin') .
+                    $this->pool->config->getSetting('skin') .
                     '/' .
                     $what .
                     '.html'
@@ -498,14 +498,14 @@ class Render
 
         $from = $errline -5;
         $to = $errline +5;
-        $source = $this->storage->file->readSourcecode($errfile, $errline -1, $from -1, $to -1);
+        $source = $this->pool->file->readSourcecode($errfile, $errline -1, $from -1, $to -1);
 
         // Insert our values.
         $template = str_replace('{type}', $type, $template);
         $template = str_replace('{errstr}', $errstr, $template);
         $template = str_replace('{file}', $errfile, $template);
         $template = str_replace('{source}', $source, $template);
-        $template = str_replace('{KrexxCount}', $this->storage->emergencyHandler->getKrexxCount(), $template);
+        $template = str_replace('{KrexxCount}', $this->pool->emergencyHandler->getKrexxCount(), $template);
 
         return str_replace('{line}', $errline, $template);
     }
@@ -527,11 +527,11 @@ class Render
 
         // Insert our values.
         $template = str_replace('{cssJs}', $cssJs, $template);
-        $template = str_replace('{version}', $this->storage->config->version, $template);
+        $template = str_replace('{version}', $this->pool->config->version, $template);
         $template = str_replace('{doctype}', $doctype, $template);
         $template = str_replace('{search}', $this->renderSearch(), $template);
 
-        return str_replace('{KrexxId}', $this->storage->recursionHandler->getMarker(), $template);
+        return str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
     }
 
     /**
@@ -601,7 +601,7 @@ class Render
         // Add the normal help info
         if (!empty($helpId)){
             $helpcontent .= str_replace('{helptitle}', 'Help', $helpRow);
-            $helpcontent = str_replace('{helptext}', $this->storage->messages->getHelp($helpId), $helpcontent);
+            $helpcontent = str_replace('{helptext}', $this->pool->messages->getHelp($helpId), $helpcontent);
         }
 
         // Add the stuff from the json here.
@@ -680,10 +680,10 @@ class Render
 
         if (empty($list)) {
             // Get the list.
-            $list = array_filter(glob($this->storage->config->krexxdir . 'resources/skins/*'), 'is_dir');
+            $list = array_filter(glob($this->pool->krexxDir . 'resources/skins/*'), 'is_dir');
             // Now we need to filter it, we only want the names, not the full path.
             foreach ($list as &$path) {
-                $path = str_replace($this->storage->config->krexxdir . 'resources/skins/', '', $path);
+                $path = str_replace($this->pool->krexxDir . 'resources/skins/', '', $path);
             }
         }
 
