@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Service\Misc\File;
 
 /**
  * Class properties analysis methods.
@@ -50,6 +51,14 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
  */
 class ThroughProperties extends AbstractCallback
 {
+
+    /**
+     * The file service, used to read and write files.
+     *
+     * @var File
+     */
+    protected $fileService;
+
     /**
      * Renders the properties of a class.
      *

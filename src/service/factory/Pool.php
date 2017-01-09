@@ -43,7 +43,6 @@ use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Service\Misc\Chunks;
 use Brainworxx\Krexx\Service\Misc\Codegen;
-use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Service\View\Messages;
 use Brainworxx\Krexx\Service\View\Render;
 
@@ -129,13 +128,6 @@ class Pool extends Factory
     public $callerFinder;
 
     /**
-     * Fileservice for reading stuff from files.
-     *
-     * @var File
-     */
-    public $file;
-
-    /**
      * Scope analysis class.
      *
      * @var Scope
@@ -173,8 +165,6 @@ class Pool extends Factory
         $this->krexxDir = $krexxDir;
         // Initializes the messages.
         $this->messages = $this->createClass('Brainworxx\\Krexx\\Service\\View\\Messages');
-        // Initializes the file service.
-        $this->file = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
         // Initializes the configuration
         $this->config = $this->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
         // Initialize the emergency handler.

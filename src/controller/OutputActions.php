@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Controller;
 
-use Brainworxx\Krexx\Errorhandler\Fatal;
-
 /**
  * Controller actions (if you want to call them that).
  *

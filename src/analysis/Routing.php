@@ -127,7 +127,7 @@ class Routing
         }
 
         // Closure?
-        if (is_object($data) && is_a($data, '\\Closure')) {
+        if (is_a($data, '\\Closure')) {
             $result = $this->analyseClosure($model);
             $this->pool->emergencyHandler->downOneNestingLevel();
             return $result;
@@ -380,7 +380,9 @@ class Routing
         $from = $highlight - 3;
         $to = $ref->getEndLine() -1;
         $file = $ref->getFileName();
-        $result['source'] = $this->pool->file->readSourcecode($file, $highlight, $from, $to);
+        $result['source'] = $this->pool
+            ->createClass('Brainworxx\\Krexx\\Service\\Misc\\File')
+            ->readSourcecode($file, $highlight, $from, $to);
 
         // Adding the place where it was declared.
         $result['declared in'] = $ref->getFileName() . "\n";
