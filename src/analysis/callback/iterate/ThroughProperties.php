@@ -134,7 +134,9 @@ class ThroughProperties extends AbstractCallback
                 ->setAdditional($additional)
                 ->setConnector1($connector1);
 
-            $output .= $this->pool->routing->analysisHub($model);
+            $output .= $this->pool
+                ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Routing')
+                ->analysisHub($model);
         }
 
         return $output;

@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Service\Factory;
 
 use Brainworxx\Krexx\Analyse\Caller\AbstractCaller;
-use Brainworxx\Krexx\Analyse\Routing;
+use Brainworxx\Krexx\Analyse\Routing\Routing;
 use Brainworxx\Krexx\Analyse\Scope;
 use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Config\Config;
@@ -53,12 +53,6 @@ use Brainworxx\Krexx\Service\View\Render;
  */
 class Pool extends Factory
 {
-    /**
-     * The routing class.
-     *
-     * @var Routing
-     */
-    public $routing;
 
     /**
      * An instance of the recursion handler.
@@ -161,6 +155,10 @@ class Pool extends Factory
      */
     public function init($krexxDir)
     {
+        // Get the rewrites from the $GLOBALS.
+        if (!empty($GLOBALS['kreXXoverwrites'])) {
+            $this->rewrite = $GLOBALS['kreXXoverwrites'];
+        }
         // Set the directory.
         $this->krexxDir = $krexxDir;
         // Initializes the messages.
@@ -169,8 +167,6 @@ class Pool extends Factory
         $this->config = $this->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
         // Initialize the emergency handler.
         $this->emergencyHandler = $this->createClass('Brainworxx\\Krexx\\Service\\Flow\\Emergency');
-        // Initialize the routing.
-        $this->routing = $this->createClass('Brainworxx\\Krexx\\Analyse\\Routing');
         // Initialize the recursionHandler.
         $this->recursionHandler = $this->createClass('Brainworxx\\Krexx\\Service\\Flow\\Recursion');
         // Initialize the code generation.

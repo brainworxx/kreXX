@@ -133,7 +133,9 @@ class BacktraceStep extends AbstractCallback
             $objectModel = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setData($stepData['object'])
                 ->setName('Calling object');
-            $output .= $this->pool->routing->analyseObject($objectModel);
+            $output .= $this->pool
+                ->createClass('Brainworxx\\Krexx\\Analyse\\Process\\ProcessObject')
+                ->process($objectModel);
         }
         // Type.
         if (isset($stepData['type'])) {
@@ -150,7 +152,9 @@ class BacktraceStep extends AbstractCallback
             $argsModel = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setData($stepData['args'])
                 ->setName('Arguments from the call');
-            $output .= $this->pool->routing->analyseArray($argsModel);
+            $output .= $this->pool
+                ->createClass('Brainworxx\\Krexx\\Analyse\\Process\\ProcessArray')
+                ->process($argsModel);
         }
 
         return $output;

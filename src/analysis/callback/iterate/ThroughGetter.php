@@ -112,7 +112,9 @@ class ThroughGetter extends AbstractCallback
                     // exist, until the getter computes it.
                     $model->addToJson('hint', $this->pool->messages->getHelp('getterNull'));
                 }
-                $output .= $this->pool->routing->analysisHub($model);
+                $output .= $this->pool
+                    ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Routing')
+                    ->analysisHub($model);
             }
         }
 
