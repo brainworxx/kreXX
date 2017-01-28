@@ -46,6 +46,8 @@ use Brainworxx\Krexx\Analyse\Model;
  *   The list of all methods we are analysing
  * @uses \ReflectionClass $ref
  *   A reflection class of the object we are analysing.
+ * @uses object $data
+ *   The object we are currently analysing
  */
 class ThroughGetter extends AbstractCallback
 {
