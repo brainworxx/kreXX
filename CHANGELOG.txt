@@ -11,10 +11,12 @@
 - Bugfix: Dumping of inherited private properties works now.
 - Bugfix: Inherited properties and methods are now regarded by the
   scope analysis.
+- Bugfix: Blacklisted all reflection classes for configured debug
+  methods.
 - Change: Reworked some of the configurations (disable, maxRuntime,
   memoryLeft, iprange)
-- Change: Refactored what did not makle it into v2.0.0 due to time
-  constraints, and introduced a factory.
+- Change: Refactored what did not make it into v2.0.0 due to time
+  constraints and introduced a factory.
 - Change: Removed the type-spam in the additional data.
 
 2.1.0
