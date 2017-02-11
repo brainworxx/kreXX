@@ -13,6 +13,8 @@
   scope analysis.
 - Bugfix: Blacklisted all reflection classes for configured debug
   methods.
+- Bugfix: Getter analysis is now respecting the scope analysis
+  result.
 - Change: Reworked some of the configurations (disable, maxRuntime,
   memoryLeft, iprange)
 - Change: Refactored what did not make it into v2.0.0 due to time
