@@ -190,8 +190,8 @@ class Security extends Fallback
                 break;
 
             case 'destination':
-                // We expect 'frontend' or 'file'
-                if ($value === 'frontend' || $value === 'file') {
+                // We expect 'frontend', 'file' or 'direct.
+                if ($value === 'shutdown' || $value === 'file' || $value === 'direct') {
                     $result = true;
                 }
                 if (!$result) {

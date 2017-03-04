@@ -137,9 +137,9 @@ class OutputActions extends Internals
             return;
         }
 
-        $this->shutdownHandler->addChunkString($this->outputHeader($headline));
-        $this->shutdownHandler->addChunkString($analysis);
-        $this->shutdownHandler->addChunkString($footer);
+        $this->outputService->addChunkString($this->outputHeader($headline));
+        $this->outputService->addChunkString($analysis);
+        $this->outputService->addChunkString($footer);
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
@@ -186,9 +186,9 @@ class OutputActions extends Internals
             return;
         }
 
-        $this->shutdownHandler->addChunkString($this->outputHeader($headline));
-        $this->shutdownHandler->addChunkString($analysis);
-        $this->shutdownHandler->addChunkString($footer);
+        $this->outputService->addChunkString($this->outputHeader($headline));
+        $this->outputService->addChunkString($analysis);
+        $this->outputService->addChunkString($footer);
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
@@ -224,8 +224,8 @@ class OutputActions extends Internals
 
         // Render it.
         $footer = $this->outputFooter($caller, true);
-        $this->shutdownHandler->addChunkString($this->outputHeader('Edit local settings'));
-        $this->shutdownHandler->addChunkString($footer);
+        $this->outputService->addChunkString($this->outputHeader('Edit local settings'));
+        $this->outputService->addChunkString($footer);
         $this->pool->emergencyHandler->setEnable(true);
     }
 

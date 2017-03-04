@@ -421,8 +421,8 @@ class Render
             // Here we store what the list of possible values.
             switch ($model->getData()) {
                 case "destination":
-                    // Frontend or file.
-                    $valueList = array('frontend', 'file');
+                    // At php shutdown, logfile or direct after analysis.
+                    $valueList = array('shutdown', 'file', 'direct');
                     break;
 
                 case "skin":

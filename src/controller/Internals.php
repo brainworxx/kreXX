@@ -36,8 +36,8 @@ namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Analyse\Caller\AbstractCaller;
 use Brainworxx\Krexx\Service\Misc\File;
-use Brainworxx\Krexx\Service\Misc\Shutdown;
 use Brainworxx\Krexx\Service\Factory\Pool;
+use Brainworxx\Krexx\Service\Output\AbstractOutput;
 
 /**
  * Methods for the "controller" that are not directly "actions".
@@ -57,9 +57,9 @@ class Internals
     /**
      * Sends the output to the browser during shutdown phase.
      *
-     * @var Shutdown
+     * @var AbstractOutput
      */
-    protected $shutdownHandler;
+    protected $outputService;
 
     /**
      * Have we already send the CSS and JS?
@@ -125,13 +125,18 @@ class Internals
         $this->callerFinder = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Caller\\Php');
         $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
 
-        // Register our shutdown handler. He will handle the display
-        // of kreXX after the hosting CMS is finished.
-        $this->shutdownHandler = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\Shutdown');
-        register_shutdown_function(array(
-            $this->shutdownHandler,
-            'shutdownCallback'
-        ));
+        // Register our output service.
+        // Depending on the setting, we use another class here.
+        $outputSetting = $pool->config->getSetting('destination');
+        if ($outputSetting === 'shutdown') {
+            $this->outputService = $pool->createClass('Brainworxx\\Krexx\\Service\\Output\\Shutdown');
+        }
+        if ($outputSetting === 'file') {
+            $this->outputService = $pool->createClass('Brainworxx\\Krexx\\Service\\Output\\File');
+        }
+        if ($outputSetting === 'direct') {
+            $this->outputService = $pool->createClass('Brainworxx\\Krexx\\Service\\Output\\Direct');
+        }
     }
 
     /**

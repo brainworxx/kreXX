@@ -88,9 +88,12 @@ class Krexx
         include $krexxDir . 'src/service/config/Config.php';
         include $krexxDir . 'src/service/code/Codegen.php';
         include $krexxDir . 'src/service/code/Connectors.php';
-        include $krexxDir . 'src/service/misc/Chunks.php';
         include $krexxDir . 'src/service/misc/File.php';
-        include $krexxDir . 'src/service/misc/Shutdown.php';
+        include $krexxDir . 'src/service/output/Chunks.php';
+        include $krexxDir . 'src/service/output/AbstractOutput.php';
+        include $krexxDir . 'src/service/output/Shutdown.php';
+        include $krexxDir . 'src/service/output/Direct.php';
+        include $krexxDir . 'src/service/output/File.php';
         include $krexxDir . 'src/service/factory/Factory.php';
         include $krexxDir . 'src/service/factory/Pool.php';
         include $krexxDir . 'src/service/flow/Recursion.php';

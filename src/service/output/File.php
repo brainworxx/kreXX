@@ -34,61 +34,20 @@
 
 namespace Brainworxx\Krexx\Service\Output;
 
-use Brainworxx\Krexx\Service\Factory\Pool;
-
 /**
- * Triggers the kreXX output during shutdown phase.
+ * File output, directly after the analysis.
  *
  * @package Brainworxx\Krexx\Service\Output
  */
-class Shutdown extends AbstractOutput
+class File extends AbstractOutput
 {
-    /**
-     * [0] -> The chunkedup string, that we intend to send to
-     *        the browser.
-     * [1] -> Are we ignoring local settings?
-     *
-     * @var array
-     *   An array of all chunk strings.
-     *   A chunk string are be:
-     *   - header
-     *   - messages
-     *   - data part
-     *   - footer
-     *   This means, that every output is split in 4 parts
-     */
-    protected $chunkStrings = array();
 
     /**
-     * Inject the pool and register the shutdown function.
+     * Adding a chunk string here will result in writing to a logfile.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
-     */
-    public function __construct(Pool $pool)
-    {
-        parent::__construct($pool);
-        register_shutdown_function(array($this, 'shutdownCallback'));
-    }
-
-    /**
-     * Adds output to our shutdown handler.
-     *
-     * @param string $chunkString
-     *   The chunked output string.
+     * {@inheritdoc}
      */
     public function addChunkString($chunkString)
-    {
-        $this->chunkStrings[] = $chunkString;
-    }
-
-    /**
-     * The shutdown callback.
-     *
-     * It gets called when PHP is shutting down. It will render
-     * out kreXX output, to guarantee minimal interference with
-     * the hosting CMS.
-     */
-    public function shutdownCallback()
     {
         // Check for CLI and messages.
         if (php_sapi_name() === "cli") {
@@ -98,12 +57,7 @@ class Shutdown extends AbstractOutput
             echo $messages;
         }
 
-        // Output our chunks.
-        // Every output is split into 4 chunk strings (header, messages,
-        // data, footer).
-        foreach ($this->chunkStrings as $chunkString) {
-            // Send it to the browser.
-            $this->pool->chunks->sendDechunkedToBrowser($chunkString);
-        }
+        // We save them directly after the analysis.
+        $this->pool->chunks->saveDechunkedToFile($chunkString);
     }
 }

@@ -171,7 +171,7 @@ class Pool extends Factory
         // Initialize the code generation.
         $this->codegenHandler = $this->createClass('Brainworxx\\Krexx\\Service\\Code\\Codegen');
         // Initializes the chunks handler.
-        $this->chunks = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\Chunks');
+        $this->chunks = $this->createClass('Brainworxx\\Krexx\\Service\\Output\\Chunks');
         // Initializes the controller.
         $this->controller = $this->createClass('Brainworxx\\Krexx\\Controller\\OutputActions');
         // Initializes the scope analysis
