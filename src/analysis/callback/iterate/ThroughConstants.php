@@ -62,10 +62,11 @@ class ThroughConstants extends AbstractCallback
         // internal stuff. Is it even possible to create a recursion here?
         // Iterate through.
         foreach ($this->parameters['data'] as $k => &$v) {
+            /** @var \Brainworxx\Krexx\Analyse\Model $model */
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setData($v)
                 ->setName($k)
-                ->setConnector1($this->parameters['classname'] . '::');
+                ->setCustomConnector1($this->parameters['classname'] . '::');
 
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Routing')

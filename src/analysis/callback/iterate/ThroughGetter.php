@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Code\Connectors;
 use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
@@ -107,17 +108,16 @@ class ThroughGetter extends AbstractCallback
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Methods')
                 ->getComment($reflectionMethod, $ref));
 
-            /** @var Model $model */
+            /** @var \Brainworxx\Krexx\Analyse\Model $model */
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setName($reflectionMethod->getName())
-                ->setConnector2('()')
                 ->addToJson('method comment', $comments);
 
             // We need to decide if we are handling static getters.
             if ($reflectionMethod->isStatic()) {
-                $model->setConnector1('::');
+                $model->setConnectorType(Connectors::STATIC_METHOD);
             } else {
-                $model->setConnector1('->');
+                $model->setConnectorType(Connectors::METHOD);
             }
 
             if (empty($refProp)) {

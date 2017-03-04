@@ -1,6 +1,7 @@
 2.1.2
 - Added more search pattern and source code parsing to the
   getter analysis.
+- Change: Moved code generation to it's own namespace.
 
 2.1.1
 - Added the info, if a property / method is inherited.
