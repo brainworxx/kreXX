@@ -78,12 +78,11 @@ class OutputActions extends Internals
 
         // Find caller.
         $caller = $this->callerFinder->findCaller();
-        if ($headline != '') {
-            $caller['type'] = $headline;
-        } else {
+        if ($headline === '') {
             $caller['type'] = 'Analysis';
+        } else {
+            $caller['type'] = $headline;
         }
-
 
         // Set the headline, if it's not set already.
         if (empty($headline)) {
@@ -119,7 +118,7 @@ class OutputActions extends Internals
         $this->pool->scope->setScope($caller['varname']);
 
         // Enable code generation only if we were able to determine the varname.
-        if ($caller['varname'] != '. . .') {
+        if ($caller['varname'] !== '. . .') {
             // We were able to determine the variable name and can generate some
             // sourcecode.
             $headline = $caller['varname'];

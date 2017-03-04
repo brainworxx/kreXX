@@ -282,7 +282,7 @@ class Internals
         $prevMomentStart = $timeKeeping[$start];
 
         foreach ($timeKeeping as $moment => $time) {
-            if ($moment != $start) {
+            if ($moment !== $start) {
                 // Calculate the time.
                 $percentageTime = round(((round(($time - $prevMomentStart) * 1000, 4) / $totalTime) * 100), 1);
                 $result[$prevMomentName . '->' . $moment] = $percentageTime . '%';
@@ -323,7 +323,7 @@ class Internals
 
             $port = $s['SERVER_PORT'];
 
-            if ((!$ssl && $port == '80') || ($ssl && $port == '443')) {
+            if ((!$ssl && $port === '80') || ($ssl && $port === '443')) {
                 // Normal combo with port and protocol.
                 $port = '';
             } else {

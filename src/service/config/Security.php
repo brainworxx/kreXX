@@ -517,7 +517,7 @@ class Security extends Fallback
                 $ip = trim($ip);
                 $wildcardPos = strpos($ip, "*");
                 # Check if the ip has a wildcard
-                if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . "*" == $ip) {
+                if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . "*" === $ip) {
                     return true;
                 }
             }

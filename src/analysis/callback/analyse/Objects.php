@@ -519,14 +519,14 @@ class Objects extends AbstractCallback
         if (!empty($methodList)) {
             // Filter them.
             foreach ($methodList as $key => $method) {
-                if (strpos($method->getName(), 'get') !== 0) {
-                    unset($methodList[$key]);
-                } else {
+                if (strpos($method->getName(), 'get') === 0) {
                     // We only dump those that have no parameters.
                     $parameters = $method->getParameters();
                     if (!empty($parameters)) {
                         unset($methodList[$key]);
                     }
+                } else {
+                    unset($methodList[$key]);
                 }
             }
 
