@@ -1,6 +1,9 @@
 2.1.2
 - Added more search pattern and source code parsing to the
   getter analysis.
+- Added a metatag to both skins to prevent crawler from indexing
+  a kreXX output. Remember kids: never debug a productive site.
+  This will only lead to trouble.
 - Change: Moved code generation to it's own namespace.
 
 2.1.1
