@@ -1,3 +1,7 @@
+2.1.2
+- Added more search pattern and source code parsing to the
+  getter analysis.
+
 2.1.1
 - Added the info, if a property / method is inherited.
 - Added a configuration for the scope analysis.

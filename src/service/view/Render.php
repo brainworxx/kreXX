@@ -57,7 +57,7 @@ class Render
     protected $pool;
 
     /**
-     * The filkeservice, used to read and write files.
+     * The file service, used to read and write files.
      *
      * @var File
      */
@@ -608,7 +608,7 @@ class Render
         $helpRow = $this->getTemplateFileContent('helprow');
 
         // Add the normal help info
-        if (!empty($helpId)){
+        if (!empty($helpId)) {
             $helpcontent .= str_replace('{helptitle}', 'Help', $helpRow);
             $helpcontent = str_replace('{helptext}', $this->pool->messages->getHelp($helpId), $helpcontent);
         }
