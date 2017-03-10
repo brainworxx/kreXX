@@ -40,7 +40,7 @@ use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
-use Brainworxx\Krexx\Service\Misc\Chunks;
+use Brainworxx\Krexx\Service\Output\Chunks;
 use Brainworxx\Krexx\Service\Code\Codegen;
 use Brainworxx\Krexx\Service\View\Messages;
 use Brainworxx\Krexx\Service\View\Render;
