@@ -151,14 +151,14 @@ class DumpController extends AbstractController
     public function timerAction($string)
     {
         // Did we use this one before?
-        if (isset($this->counterCache[$string])) {
+        if (isset(self::$counterCache[$string])) {
             // Add another to the counter.
-            $this->counterCache[$string]++;
-            $this->timekeeping['[' . $this->counterCache[$string] . ']' . $string] = microtime(true);
+            self::$counterCache[$string]++;
+            self::$timekeeping['[' . self::$counterCache[$string] . ']' . $string] = microtime(true);
         } else {
             // First time counter, set it to 1.
-            $this->counterCache[$string] = 1;
-            $this->timekeeping[$string] = microtime(true);
+            self::$counterCache[$string] = 1;
+            self::$timekeeping[$string] = microtime(true);
         }
 
         return $this;
@@ -174,10 +174,10 @@ class DumpController extends AbstractController
     {
         $this->timerAction('end');
         // And we are done. Feedback to the user.
-        $this->dumpAction($this->miniBenchTo($this->timekeeping), 'kreXX timer');
+        $this->dumpAction($this->miniBenchTo(self::$timekeeping), 'kreXX timer');
         // Reset the timer vars.
-        $this->timekeeping = array();
-        $this->counterCache = array();
+        self::$timekeeping = array();
+        self::$counterCache = array();
 
         return $this;
     }

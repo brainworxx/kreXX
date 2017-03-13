@@ -60,7 +60,7 @@ class ErrorController extends AbstractController
         $this->pool->config->overwriteLocalSettings($this->configFatal);
 
         // Get the header.
-        if ($this->headerSend) {
+        if (self::$headerSend) {
             $header = $this->pool->render->renderFatalHeader('', '<!DOCTYPE html>');
         } else {
             $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs(), '<!DOCTYPE html>');

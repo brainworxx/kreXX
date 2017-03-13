@@ -12,6 +12,7 @@
   the analysis.
 - Change: Renamed the Output -> Frontend configuration to
   Output -> shutdown.
+- Change: Splitted the ActionController to several sub classes.
 
 
 2.1.1

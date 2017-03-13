@@ -79,7 +79,7 @@ abstract class AbstractController
      *
      * @var bool
      */
-    protected $headerSend = false;
+    protected static $headerSend = false;
 
     /**
      * Here we store the fatal error handler.
@@ -103,14 +103,14 @@ abstract class AbstractController
      *
      * @var array
      */
-    protected $timekeeping = array();
+    protected static $timekeeping = array();
 
     /**
      * More timekeeping stuff.
      *
      * @var array
      */
-    protected $counterCache = array();
+    protected static $counterCache = array();
 
     /**
      * Our pool where we keep all relevant classes.
@@ -161,9 +161,9 @@ abstract class AbstractController
     protected function outputHeader($headline)
     {
         // Do we do an output as file?
-        if (!$this->headerSend) {
+        if (!self::$headerSend) {
             // Send doctype and css/js only once.
-            $this->headerSend = true;
+            self::$headerSend = true;
             return $this->pool->render->renderHeader('<!DOCTYPE html>', $headline, $this->outputCssAndJs());
         } else {
             return $this->pool->render->renderHeader('', $headline, '');
