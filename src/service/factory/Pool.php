@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Scope;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
+use Brainworxx\Krexx\Service\Misc\Registry;
 use Brainworxx\Krexx\Service\Output\Chunks;
 use Brainworxx\Krexx\Service\Code\Codegen;
 use Brainworxx\Krexx\Service\View\Messages;
@@ -120,6 +121,13 @@ class Pool extends Factory
     public $scope;
 
     /**
+     * Our registry. It will not be reset by the init().
+     *
+     * @var Registry
+     */
+    public $registry;
+
+    /**
      * The directory where kreXX is installed.
      *
      * @var string
@@ -134,6 +142,7 @@ class Pool extends Factory
      */
     public function __construct($krexxDir)
     {
+        $this->registry = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\Registry');
         $this->init($krexxDir);
     }
 
@@ -146,9 +155,6 @@ class Pool extends Factory
      */
     public function init($krexxDir)
     {
-        // Load all files we need.
-
-
         // Get the rewrites from the $GLOBALS.
         if (!empty($GLOBALS['kreXXoverwrites'])) {
             $this->rewrite = $GLOBALS['kreXXoverwrites'];

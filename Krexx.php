@@ -68,6 +68,7 @@ class Krexx
         include_once $krexxDir . 'src/service/code/Codegen.php';
         include_once $krexxDir . 'src/service/code/Connectors.php';
         include_once $krexxDir . 'src/service/misc/File.php';
+        include_once $krexxDir . 'src/service/misc/Registry.php';
         include_once $krexxDir . 'src/service/output/Chunks.php';
         include_once $krexxDir . 'src/service/output/AbstractOutput.php';
         include_once $krexxDir . 'src/service/output/Shutdown.php';
