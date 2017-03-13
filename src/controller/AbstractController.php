@@ -44,8 +44,21 @@ use Brainworxx\Krexx\Service\Output\AbstractOutput;
  *
  * @package Brainworxx\Krexx\Controller
  */
-class Internals
+abstract class AbstractController
 {
+    /**
+     * Config for the 'deep' backtrace analysis.
+     *
+     * @var array
+     */
+    protected $configFatal = array(
+        'analyseProtected' => 'true',
+        'analysePrivate' => 'true',
+        'analyseTraversable' => 'true',
+        'analyseConstants' => 'true',
+        'analyseProtectedMethods' => 'true',
+        'analysePrivateMethods' => 'true',
+    );
 
     /**
      * The fileservice, used to read and write files.
@@ -238,6 +251,9 @@ class Internals
      *
      * We disable the tick callback and the error handler during
      * a analysis, to generate faster output.
+     *
+     * @return $this
+     *   Return $this for chaining.
      */
     public function noFatalForKrexx()
     {
@@ -245,6 +261,8 @@ class Internals
             $this->krexxFatal->setIsActive(false);
             unregister_tick_function(array($this->krexxFatal, 'tickCallback'));
         }
+
+        return $this;
     }
 
     /**
@@ -342,5 +360,22 @@ class Internals
             $result = htmlspecialchars($protocol . '://' . $host . $s['REQUEST_URI'], ENT_QUOTES, 'UTF-8');
         }
         return $result;
+    }
+
+    /**
+     * Simply outputs a formatted var_dump.
+     *
+     * This is an internal debugging function, because it is
+     * rather difficult to debug a debugger, when your tool of
+     * choice is the debugger itself.
+     *
+     * @param mixed $data
+     *   The data for the var_dump.
+     */
+    public static function formattedVarDump($data)
+    {
+        echo '<pre>';
+        var_dump($data);
+        echo('</pre>');
     }
 }

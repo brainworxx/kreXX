@@ -109,10 +109,13 @@ class Krexx
         include_once $krexxDir . 'src/analysis/comment/AbstractComment.php';
         include_once $krexxDir . 'src/analysis/comment/Methods.php';
         include_once $krexxDir . 'src/analysis/comment/Functions.php';
-        include_once $krexxDir . 'src/errorhandler/Error.php';
+        include_once $krexxDir . 'src/errorhandler/AbstractError.php';
         include_once $krexxDir . 'src/errorhandler/Fatal.php';
-        include_once $krexxDir . 'src/controller/Internals.php';
-        include_once $krexxDir . 'src/controller/OutputActions.php';
+        include_once $krexxDir . 'src/controller/AbstractController.php';
+        include_once $krexxDir . 'src/controller/BacktraceController.php';
+        include_once $krexxDir . 'src/controller/DumpController.php';
+        include_once $krexxDir . 'src/controller/EditSettingsController.php';
+        include_once $krexxDir . 'src/controller/ErrorController.php';
 
         if (!function_exists('krexx')) {
             /**
@@ -141,8 +144,11 @@ class Krexx
         self::$pool = new Pool($krexxDir);
 
         // We might need to register our fatal error handler.
-        if (self::$pool->config->getSetting('registerAutomatically')) {
-            self::$pool->controller->registerFatalAction();
+        if (self::$pool->config->getSetting('registerAutomatically') &&
+            !self::$pool->config->getSetting('disabled')) {
+            self::$pool
+                ->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
+                ->registerFatalAction();
         }
     }
 
@@ -156,7 +162,6 @@ class Krexx
      */
     public static function __callStatic($name, array $arguments)
     {
-        self::$pool->controller->noFatalForKrexx();
         // Do we gave a handle?
         $handle = self::$pool->config->getDevHandler();
         if ($name === $handle) {
@@ -167,7 +172,6 @@ class Krexx
                 self::open();
             }
         }
-        self::$pool->controller->reFatalAfterKrexx();
     }
 
     /**
@@ -179,13 +183,16 @@ class Krexx
      */
     public static function timerMoment($string)
     {
-        self::$pool->controller->noFatalForKrexx();
+        /** @var \Brainworxx\Krexx\Controller\DumpController $controller */
+        $controller = self::$pool
+            ->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+            ->noFatalForKrexx();
+
         // Disabled?
         if (self::$pool->config->getSetting('disabled')) {
             return;
         }
-        self::$pool->controller->timerAction($string);
-        self::$pool->controller->reFatalAfterKrexx();
+        $controller->timerAction($string)->reFatalAfterKrexx();
     }
 
     /**
@@ -193,13 +200,16 @@ class Krexx
      */
     public static function timerEnd()
     {
-        self::$pool->controller->noFatalForKrexx();
+        /** @var \Brainworxx\Krexx\Controller\DumpController $controller */
+        $controller = self::$pool
+            ->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+            ->noFatalForKrexx();
+
         // Disabled ?
         if (self::$pool->config->getSetting('disabled')) {
             return;
         }
-        self::$pool->controller->timerEndAction();
-        self::$pool->controller->reFatalAfterKrexx();
+        $controller->timerEndAction()->reFatalAfterKrexx();
     }
 
     /**
@@ -210,13 +220,16 @@ class Krexx
      */
     public static function open($data = null)
     {
-        self::$pool->controller->noFatalForKrexx();
+        /** @var \Brainworxx\Krexx\Controller\DumpController $controller */
+        $controller = self::$pool
+            ->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+            ->noFatalForKrexx();
+
         // Disabled?
         if (self::$pool->config->getSetting('disabled')) {
             return;
         }
-        self::$pool->controller->dumpAction($data);
-        self::$pool->controller->reFatalAfterKrexx();
+        $controller->dumpAction($data)->reFatalAfterKrexx();
     }
 
     /**
@@ -227,14 +240,17 @@ class Krexx
      */
     public static function backtrace()
     {
-        self::$pool->controller->noFatalForKrexx();
+        /** @var \Brainworxx\Krexx\Controller\BacktraceController $controller */
+        $controller = self::$pool
+            ->createClass('Brainworxx\\Krexx\\Controller\\BacktraceController')
+            ->noFatalForKrexx();
+
         // Disabled?
         if (self::$pool->config->getSetting('disabled')) {
             return;
         }
         // Render it.
-        self::$pool->controller->backtraceAction();
-        self::$pool->controller->reFatalAfterKrexx();
+        $controller->backtraceAction()->reFatalAfterKrexx();
     }
 
     /**
@@ -242,7 +258,8 @@ class Krexx
      */
     public static function disable()
     {
-        self::$pool->controller->noFatalForKrexx();
+        self::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+            ->noFatalForKrexx();
         self::$pool->config->setDisabled(true);
         // We will not re-enable it afterwards, because kreXX
         // is disabled and the handler would not show up anyway.
@@ -255,14 +272,17 @@ class Krexx
      */
     public static function editSettings()
     {
-        self::$pool->controller->noFatalForKrexx();
+         /** @var \Brainworxx\Krexx\Controller\EditSettingsController $controller */
+        $controller = self::$pool
+            ->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+            ->noFatalForKrexx();
+
         // Disabled?
         // We are ignoring local settings here.
         if (self::$pool->config->getSetting('disabled')) {
             return;
         }
-        self::$pool->controller->editSettingsAction();
-        self::$pool->controller->reFatalAfterKrexx();
+        $controller->editSettingsAction()->reFatalAfterKrexx();
     }
 
     /**
@@ -276,7 +296,8 @@ class Krexx
         if (self::$pool->config->getSetting('disabled')) {
             return;
         }
-        self::$pool->controller->registerFatalAction();
+        self::$pool->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
+            ->registerFatalAction();
     }
 
     /**
@@ -292,6 +313,7 @@ class Krexx
         if (self::$pool->config->getSetting('disabled')) {
             return;
         }
-        self::$pool->controller->unregisterFatalAction();
+        self::$pool->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
+            ->unregisterFatalAction();
     }
 }

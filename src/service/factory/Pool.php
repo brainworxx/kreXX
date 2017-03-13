@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Service\Factory;
 
 use Brainworxx\Krexx\Analyse\Caller\AbstractCaller;
 use Brainworxx\Krexx\Analyse\Scope;
-use Brainworxx\Krexx\Controller\OutputActions;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
@@ -107,13 +106,6 @@ class Pool extends Factory
     public $chunks;
 
     /**
-     * Our output controller.
-     *
-     * @var OutputActions
-     */
-    public $controller;
-
-    /**
      * Finds the script caller.
      *
      * @var AbstractCaller
@@ -175,8 +167,6 @@ class Pool extends Factory
         $this->codegenHandler = $this->createClass('Brainworxx\\Krexx\\Service\\Code\\Codegen');
         // Initializes the chunks handler.
         $this->chunks = $this->createClass('Brainworxx\\Krexx\\Service\\Output\\Chunks');
-        // Initializes the controller.
-        $this->controller = $this->createClass('Brainworxx\\Krexx\\Controller\\OutputActions');
         // Initializes the scope analysis
         $this->scope = $this->createClass('Brainworxx\\Krexx\\Analyse\\Scope');
         // Initializes the render class.
