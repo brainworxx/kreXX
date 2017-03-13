@@ -96,7 +96,12 @@ abstract class AbstractCaller
      * Finds the place in the code from where krexx was called.
      *
      * @return array
-     *   The code, from where krexx was called
+     *   The code, from where krexx was called.
+     *   array(
+     *     'file' => 'someFile.php',
+     *     'line' => 123,
+     *     'varname' => '$myVar'
+     *   );
      */
     abstract public function findCaller();
 }

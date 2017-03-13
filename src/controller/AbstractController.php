@@ -135,7 +135,7 @@ abstract class AbstractController
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->callerFinder = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Caller\\Php');
+        $this->callerFinder = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Caller\\CallerFinder');
         $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
 
         // Register our output service.
