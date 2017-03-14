@@ -106,7 +106,7 @@ class ThroughGetter extends AbstractCallback
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Methods')
                 ->getComment($reflectionMethod, $ref));
 
-            /** @var \Brainworxx\Krexx\Analyse\Model $model */
+            /** @var Model $model */
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setName($reflectionMethod->getName())
                 ->addToJson('method comment', $comments);
@@ -142,11 +142,10 @@ class ThroughGetter extends AbstractCallback
 
         if (empty($refProp)) {
             // Found nothing  :-(
-            $value = $this->pool->messages->getHelp('unknownValue');
-
             // We literally have no info. We need to tell the user.
             $model->setNormal('unknown')
                 ->setType('unknown')
+                ->setData($this->pool->messages->getHelp('unknownValue'))
                 ->hasExtras();
             // We render this right away, without any routing.
             return $this->pool->render->renderSingleChild($model);
