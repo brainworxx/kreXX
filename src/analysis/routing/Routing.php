@@ -90,7 +90,7 @@ class Routing extends AbstractRouting
                     $type = '$GLOBALS';
                 }
                 $model->setDomid($this->generateDomIdFromObject($data))
-                    ->setType($type);
+                    ->setNormal($type);
                 $result = $this->pool->render->renderRecursion($model);
                 $this->pool->emergencyHandler->downOneNestingLevel();
                 return $result;

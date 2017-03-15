@@ -9,6 +9,8 @@
 - The log chunk and config folder are now configurable.
 - Bugfix: Removed a warning in the IP-Whitelisting, in case there
   is no actual IP available.
+- Bugfix: Source generation for resolved recursions works now as
+  expected.
 - Change: Moved code generation to it's own namespace.
 - Change: Output -> File will now save the logfile directly after
   the analysis.

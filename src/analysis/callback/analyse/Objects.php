@@ -349,7 +349,7 @@ class Objects extends AbstractCallback
                         $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                             ->setName($funcName)
                             ->setType('debug method')
-                            ->setAdditional('. . .')
+                            ->setNormal('. . .')
                             ->setHelpid($funcName)
                             ->setConnectorType(Connectors::METHOD)
                             ->addParameter('data', $result)
@@ -402,7 +402,7 @@ class Objects extends AbstractCallback
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setName($name)
                 ->setType('Foreach')
-                ->setAdditional('Traversable Info')
+                ->setNormal('Traversable Info')
                 ->addParameter('data', $parameter)
                 ->addParameter('multiline', $multiline)
                 ->injectCallback(
