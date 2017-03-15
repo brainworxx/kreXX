@@ -547,7 +547,7 @@ class Model
      * @param string $string
      *
      * @return $this
-     *   Return $this for cjhaining.
+     *   Return $this for chaining.
      */
     public function setCustomConnector1($string)
     {

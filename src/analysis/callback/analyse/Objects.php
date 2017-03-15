@@ -222,7 +222,7 @@ class Objects extends AbstractCallback
      * @param \ReflectionProperty $a
      *   A string we want to sort.
      * @param \ReflectionProperty $b
-     *   Another streing for comparioson
+     *   Another string for comparison
      *
      * @return int
      */

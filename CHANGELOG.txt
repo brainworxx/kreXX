@@ -6,6 +6,7 @@
   This will only lead to trouble.
 - Added a Registry class, so the overwrites can actually access
   additional data from the outside.
+- The log chunk and config folder are now configurable.
 - Bugfix: Removed a warning in the IP-Whitelisting, in case there
   is no actual IP available.
 - Change: Moved code generation to it's own namespace.
@@ -14,6 +15,7 @@
 - Change: Renamed the Output -> Frontend configuration to
   Output -> shutdown.
 - Change: Splitted the ActionController to several sub classes.
+- Change: The help texts are now in a separate file.
 
 
 2.1.1

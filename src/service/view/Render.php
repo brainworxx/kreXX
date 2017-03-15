@@ -77,7 +77,7 @@ class Render
     /**
      * Renders a "single child", containing a single not expandable value.
      *
-     * Depending on how many characters are in there, it may be toggelable.
+     * Depending on how many characters are in there, it may be toggleable.
      *
      * @param Model $model
      *   The model, which hosts all the data we need.
