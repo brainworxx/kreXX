@@ -13,6 +13,8 @@
   is no actual IP available.
 - Bugfix: Source generation for resolved recursions works now as
   expected.
+- Bugfix: Removed a warnings and some notices in case the $_SERVER
+  variable was messed with.
 - Change: Moved code generation to it's own namespace.
 - Change: Output -> File will now save the logfile directly after
   the analysis.
