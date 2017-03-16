@@ -67,10 +67,32 @@ class CallerFinder extends AbstractCaller
         // We will not keep the whole backtrace im memory. We only return what we
         // actually need.
         return array(
-            'file' => htmlspecialchars($caller['file']),
+            'file' => htmlspecialchars($this->filterFilePath($caller['file'])),
             'line' => (int)$caller['line'],
             'varname' => $this->getVarName($caller['file'], $caller['line']),
         );
+    }
+
+    /**
+     * We will remove the $_SERVER['DOCUMENT_ROOT'] from the absolute
+     * path of the calling file.
+     * Return the original path, in case we can not determine the
+     * $_SERVER['DOCUMENT_ROOT']
+     *
+     * @param $path
+     *   The path we want to filter
+     *
+     * @return string
+     *   The filtered path to the calling file.
+     */
+    protected function filterFilePath($path)
+    {
+        if (isset($_SERVER['DOCUMENT_ROOT']) && strpos($path, $_SERVER['DOCUMENT_ROOT']) === 0) {
+            // Found it on position 0.
+            $path = '. . ./' . substr($path, strlen($_SERVER['DOCUMENT_ROOT']) + 1);
+        }
+
+        return $path;
     }
 
     /**

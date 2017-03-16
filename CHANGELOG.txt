@@ -7,6 +7,8 @@
 - Added a Registry class, so the overwrites can actually access
   additional data from the outside.
 - The log chunk and config folder are now configurable.
+- Added a Filter for the server document root from the file path
+  of the calling file.
 - Bugfix: Removed a warning in the IP-Whitelisting, in case there
   is no actual IP available.
 - Bugfix: Source generation for resolved recursions works now as
