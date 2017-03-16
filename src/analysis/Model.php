@@ -480,10 +480,15 @@ class Model
      * Setter for the multiline code generation.
      *
      * @param string $multiLineCodeGen
+     *   The constant from the Codegen class.
+     *
+     * @return $this
+     *   $this, for chaining.
      */
     public function setMultiLineCodeGen($multiLineCodeGen)
     {
         $this->multiLineCodeGen = $multiLineCodeGen;
+        return $this;
     }
 
     /**
