@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Code\Connectors;
+use Brainworxx\Krexx\Service\Code\ReflectionParameterWrapper;
 
 /**
  * Methods analysis methods. :rolleyes:
@@ -59,142 +60,143 @@ class ThroughMethods extends AbstractCallback
     public function callMe()
     {
         $result = '';
-        /** @var \ReflectionClass $ref */
-        $ref = $this->parameters['ref'];
+        /** @var \ReflectionClass $reflectionClass */
+        $reflectionClass = $this->parameters['ref'];
 
         // Deep analysis of the methods.
-        foreach ($this->parameters['data'] as $reflection) {
+        /* @var \ReflectionMethod $reflectionMethod */
+        foreach ($this->parameters['data'] as $reflectionMethod) {
             $methodData = array();
-            /* @var \ReflectionMethod $reflection */
-            $method = $reflection->name;
+
             // Get the comment from the class, it's parents, interfaces or traits.
             $methodComment = $this->pool
-                ->createClass('Brainworxx\\Krexx\\Analyse\\Methods')
-                ->getComment($reflection, $ref);
+                ->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods')
+                ->getComment($reflectionMethod, $reflectionClass);
             if (!empty($methodComment)) {
                 $methodData['comments'] = $methodComment;
             }
 
             // Get declaration place.
-            $declaringClass = $reflection->getDeclaringClass();
-            $filename = $declaringClass->getFileName();
-            if (is_null($filename) || empty($filename)) {
-                $methodData['declared in'] =
-                    ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
-            } else {
-                $methodData['declared in'] = $filename . "\n";
-                $methodData['declared in'] .= 'in class: ' .$declaringClass->getName() . "\n";
-                $methodData['declared in'] .= 'in line: ' . $reflection->getStartLine();
-            }
+            $declaringClass = $reflectionMethod->getDeclaringClass();
+            $methodData['declared in'] = $this->getDeclarationPlace($reflectionMethod, $declaringClass);
 
             // Get parameters.
-            $parameters = $reflection->getParameters();
-            AbstractController::formattedVarDump($parameters);
+            $paramList = '';
+            foreach ($reflectionMethod->getParameters() as $key => $reflectionParameter) {
+                $key++;
+                $reflectionParameterWrapper = $this->pool
+                    ->createClass('Brainworxx\\Krexx\\Service\\Code\\ReflectionParameterWrapper')
+                    ->setReflectionParameter($reflectionParameter);
+                $methodData['Parameter #' . $key] = $reflectionParameterWrapper;
 
-            foreach ($parameters as $key => $parameter) {
-//                preg_match('/(.*)(?= \[ )/', $parameter, $key);
-//                $parameter = str_replace($key[0], '', $parameter);
-                /** @var \Brainworxx\Krexx\Service\Code\Parameter\Model $parameterModel */
-                $parameterModel = $this->pool->createClass('Brainworxx\\Krexx\\Service\\Code\\Parameter\\Model');
-                $parameterModel->setName($parameter->getName())
-                    ->setIsOptional($parameter->isOptional());
+                $paramList .= $reflectionParameterWrapper . ', ';
+            }
+            // Remove the ',' after the last char.
+            $paramList = '<small>' . trim($paramList, ', ') . '</small>';
 
-                if ($parameter->hasType()) {
-                    $parameterModel->setType($parameter->getType());
-                }
+            // Get declaring keywords.
+            $methodData['declaration keywords'] = $this->getDeclarationKeywords(
+                $reflectionMethod,
+                $declaringClass,
+                $reflectionClass
+            );
 
-                if (!$parameter->isOptional()) {
-                    $default = $parameter->getDefaultValue();
-                    if (is_object($default)) {
-                        $parameterModel->setDefaultValue(get_class($parameter->getDefaultValue()));
-                    } else {
-                        $parameterModel->setDefaultValue((string) $parameter->getDefaultValue());
-                    }
-                }
+            // Get the connector.
+            if ($reflectionMethod->isStatic()) {
+                $connectorType = Connectors::STATIC_METHOD;
+            } else {
+                $connectorType = Connectors::METHOD;
+            }
 
-                $methodData['Parameter #' . $key] = $parameterModel;
-            }
-            // Get visibility.
-            $methodData['declaration keywords'] = '';
-            if ($reflection->isPrivate()) {
-                $methodData['declaration keywords'] .= ' private';
-            }
-            if ($reflection->isProtected()) {
-                $methodData['declaration keywords'] .= ' protected';
-            }
-            if ($reflection->isPublic()) {
-                $methodData['declaration keywords'] .= ' public';
-            }
-            if ($reflection->getDeclaringClass()->getName() !== $ref->getName()) {
-                $methodData['declaration keywords'] .= ' inherited';
-                // We need to recheck our scope.
-                // Private inherited methods are never within the scope.
-                if (strpos($methodData['declaration keywords'], 'private') !== false &&
-                    $this->pool->config->getSetting('analysePrivate') === false) {
-                    // Do nothing. We ignore this one.
-                    continue;
-                }
-            }
-            if ($reflection->isStatic()) {
-                $methodData['declaration keywords'] .= ' static';
-            }
-            if ($reflection->isFinal()) {
-                $methodData['declaration keywords'] .= ' final';
-            }
-            if ($reflection->isAbstract()) {
-                $methodData['declaration keywords'] .= ' abstract';
-            }
-            $methodData['declaration keywords'] = trim($methodData['declaration keywords']);
-            $result .= $this->dumpMethodInfo($methodData, $method);
+            // Render it!
+            $result .= $this->pool->render->renderExpandableChild(
+                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    ->setName($reflectionMethod->name)
+                    ->setType($methodData['declaration keywords'] . ' method')
+                    ->setConnectorType($connectorType)
+                    ->setConnectorParameters($paramList)
+                    ->addParameter('data', $methodData)
+                    ->injectCallback(
+                        $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethodAnalysis')
+                    )
+            );
         }
         return $result;
-
     }
 
     /**
-     * Render a dump for method info.
+     * Get the declaration place of theis method.
      *
-     * @param array $data
-     *   The method analysis results in an array.
-     * @param string $name
-     *   The name of the object.
+     * @param \ReflectionMethod $reflectionMethod
+     * @param \ReflectionClass $declaringClass
+     */
+    protected function getDeclarationPlace(\ReflectionMethod $reflectionMethod, \ReflectionClass $declaringClass)
+    {
+        $filename = $declaringClass->getFileName();
+        if (is_null($filename) || empty($filename)) {
+            $methodData['declared in'] =
+                ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
+        } else {
+            $methodData['declared in'] = $filename . "\n";
+            $methodData['declared in'] .= 'in class: ' . $declaringClass->getName() . "\n";
+            $methodData['declared in'] .= 'in line: ' . $reflectionMethod->getStartLine();
+        }
+    }
+
+    /**
+     * Getting the declaring keywords (and other stuff).
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     *   The reflection of the method that we are analysing.
+     * @param \ReflectionClass $declaringClass
+     *   The class in wigh this method was declared.
+     * @param \ReflectionClass $reflectionClass
+     *   The class that we are currently analysing.
      *
      * @return string
-     *   The generated markup.
+     *   All declaring keywards + the info if this method was inherited.
      */
-    protected function dumpMethodInfo(array $data, $name)
-    {
-        $paramList = '';
-        $connectorType = Connectors::METHOD;
-        foreach ($data as $key => $string) {
-            // Getting the parameter list.
-            if (strpos($key, 'Parameter') === 0) {
-                $paramList .= trim($string) . ', ';
+    protected function getDeclarationKeywords(
+        \ReflectionMethod $reflectionMethod,
+        \ReflectionClass $declaringClass,
+        \ReflectionClass $reflectionClass
+    ) {
+        $result = '';
 
-            }
-            if (strpos($data['declaration keywords'], 'static') !== false) {
-                $connectorType = Connectors::STATIC_METHOD;
+        if ($declaringClass->getName() !== $reflectionClass->getName()) {
+            $result .= ' inherited';
+            // We need to recheck our scope.
+            // Private inherited methods are never within the scope.
+            if ($reflectionMethod->isPrivate() && $this->pool->config->getSetting('analysePrivate') === false) {
+                // Do nothing. We ignore this one.
+                return '';
             }
         }
 
-        $paramList = str_replace(
-            array('&lt;required&gt; ', '&lt;optional&gt; '),
-            '',
-            $this->pool->encodeString($paramList)
-        );
-        // Remove the ',' after the last char.
-        $paramList = '<small>' . trim($paramList, ', ') . '</small>';
-        /** @var \Brainworxx\Krexx\Analyse\Model $model */
-        $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-            ->setName($name)
-            ->setType($data['declaration keywords'] . ' method')
-            ->setConnectorType($connectorType)
-            ->setConnectorParameters($paramList)
-            ->addParameter('data', $data)
-            ->injectCallback(
-                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethodAnalysis')
-            );
+        if ($reflectionMethod->isPrivate()) {
+                $result .= ' private';
+        }
 
-        return $this->pool->render->renderExpandableChild($model);
+        if ($reflectionMethod->isProtected()) {
+            $result .= ' protected';
+        }
+
+        if ($reflectionMethod->isPublic()) {
+            $result .= ' public';
+        }
+
+        if ($reflectionMethod->isStatic()) {
+            $result .= ' static';
+        }
+
+        if ($reflectionMethod->isFinal()) {
+            $result .= ' final';
+        }
+
+        if ($reflectionMethod->isAbstract()) {
+            $result .= ' abstract';
+        }
+
+        return trim($result);
     }
 }
