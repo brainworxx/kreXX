@@ -577,4 +577,14 @@ class Model
     {
         return $this->connectorService->getLanguage();
     }
+
+    /**
+     * Getter for all parameters for the internal callback.
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
 }
