@@ -423,7 +423,7 @@ class Render
             switch ($model->getData()) {
                 case "destination":
                     // At php shutdown, logfile or direct after analysis.
-                    $valueList = array('shutdown', 'file');
+                    $valueList = array('browser', 'file');
                     break;
 
                 case "skin":
