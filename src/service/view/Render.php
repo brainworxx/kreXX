@@ -47,44 +47,11 @@ use Brainworxx\Krexx\Service\Misc\File;
  *
  * @package Brainworxx\Krexx\Service\View
  */
-class Render
+class Render extends AbstractRender
 {
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected $pool;
-
-    /**
-     * The file service, used to read and write files.
-     *
-     * @var File
-     */
-    protected $fileService;
-
-    /**
-     * Injects the pool.
-     *
-     * @param Pool $pool
-     *   The pool, where we store the classes we need.
-     */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-        $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
-    }
-    /**
-     * Renders a "single child", containing a single not expandable value.
-     *
-     * Depending on how many characters are in there, it may be toggleable.
-     *
-     * @param Model $model
-     *   The model, which hosts all the data we need.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderSingleChild(Model $model)
     {
@@ -146,16 +113,7 @@ class Render
     }
 
     /**
-     * Render a block of a detected recursion.
-     *
-     * If the recursion is an object, a click should jump to the original
-     * analysis data.
-     *
-     * @param Model $model
-     *   The model, which hosts all the data we need.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderRecursion(Model $model)
     {
@@ -185,17 +143,7 @@ class Render
     }
 
     /**
-     * Renders the kreXX header.
-     *
-     * @param string $doctype
-     *   The doctype from the configuration.
-     * @param string $headline
-     *   The headline, what is actually analysed.
-     * @param string $cssJs
-     *   The CSS and JS in a string.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderHeader($doctype, $headline, $cssJs)
     {
@@ -214,30 +162,7 @@ class Render
     }
 
     /**
-     * Renders the search button and the search menu.
-     *
-     * @return string
-     *   The generated markup from the template files.
-     */
-    public function renderSearch()
-    {
-        $template = $this->getTemplateFileContent('search');
-        $template = str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
-        return $template;
-    }
-
-    /**
-     * Renders the kreXX footer.
-     *
-     * @param array $caller
-     *   The caller of kreXX.
-     * @param string $configOutput
-     *   The pregenerated configuration markup.
-     * @param boolean $configOnly
-     *   Info if we are only displaying the configuration
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderFooter($caller, $configOutput, $configOnly = false)
     {
@@ -254,46 +179,7 @@ class Render
     }
 
     /**
-     * Renders a nest with a anonymous function in the middle.
-     *
-     * @param Model $model
-     *   The model, which hosts all the data we need.
-     * @param bool $isExpanded
-     *   The only expanded nest is the settings menu, when we render only the
-     *   settings menu.
-     *
-     * @return string
-     *   The generated markup from the template files.
-     */
-    public function renderNest(Model $model, $isExpanded = false)
-    {
-        $template = $this->getTemplateFileContent('nest');
-        // Replace our stuff in the partial.
-        $domid = '';
-        if (strlen($model->getDomid())) {
-            $domid = 'id="' . $model->getDomid() . '"';
-        }
-        $template = str_replace('{domId}', $domid, $template);
-        // Are we expanding this one?
-        if ($isExpanded) {
-            $style = '';
-        } else {
-            $style = 'khidden';
-        }
-        $template = str_replace('{style}', $style, $template);
-        return str_replace('{mainfunction}', $model->renderMe(), $template);
-    }
-
-    /**
-     * Simply outputs the css and js stuff.
-     *
-     * @param string $css
-     *   The CSS, rendered into the template.
-     * @param string $js
-     *   The JS, rendered into the template.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderCssJs($css, $js)
     {
@@ -305,16 +191,7 @@ class Render
     }
 
     /**
-     * Renders a expandable child with a callback in the middle.
-     *
-     * @param Model $model
-     *   The model, which hosts all the data we need.
-     * @param bool $isExpanded
-     *   Is this one expanded from the beginning?
-     *   TRUE when we render the settings menu only.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderExpandableChild(Model $model, $isExpanded = false)
     {
@@ -369,43 +246,7 @@ class Render
     }
 
     /**
-     * Loads a template file from the skin folder.
-     *
-     * @param string $what
-     *   Filename in the skin folder without the ".html" at the end.
-     *
-     * @return string
-     *   The template file, without whitespaces.
-     */
-    protected function getTemplateFileContent($what)
-    {
-        static $fileCache = array();
-
-        if (!isset($fileCache[$what])) {
-            $fileCache[$what] = preg_replace(
-                '/\s+/',
-                ' ',
-                $this->fileService->getFileContents(
-                    $this->pool->krexxDir .
-                    'resources/skins/' .
-                    $this->pool->config->getSetting('skin') .
-                    '/' .
-                    $what .
-                    '.html'
-                )
-            );
-        }
-        return $fileCache[$what];
-    }
-
-    /**
-     * Renders a simple editable child node.
-     *
-     * @param Model $model
-     *   The model, which hosts all the data we need.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderSingleEditableChild(Model $model)
     {
@@ -470,13 +311,7 @@ class Render
     }
 
     /**
-     * Renders a simple button.
-     *
-     * @param Model $model
-     *   The model, which hosts all the data we need.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderButton(Model $model)
     {
@@ -488,19 +323,7 @@ class Render
     }
 
     /**
-     * Renders the second part of the fatal error handler.
-     *
-     * @param string $type
-     *   The type of the error (should always be fatal).
-     * @param string $errstr
-     *   The string from the error.
-     * @param string $errfile
-     *   The file where the error occurred.
-     * @param int $errline
-     *   The line number where the error occurred.
-     *
-     * @return string
-     *   The template file, with all markers replaced.
+     * {@inheritdoc}
      */
     public function renderFatalMain($type, $errstr, $errfile, $errline)
     {
@@ -521,15 +344,7 @@ class Render
     }
 
     /**
-     * Renders the header part of the fatal error handler.
-     *
-     * @param string $cssJs
-     *   The css and js from the template.
-     * @param string $doctype
-     *   The configured doctype.
-     *
-     * @return string
-     *   The templatefile, with all markers replaced.
+     * {@inheritdoc}
      */
     public function renderFatalHeader($cssJs, $doctype)
     {
@@ -545,13 +360,7 @@ class Render
     }
 
     /**
-     * Renders all internal messages.
-     *
-     * @param array $messages
-     *   The current messages.
-     *
-     * @return string
-     *   The generates html output
+     * {@inheritdoc}
      */
     public function renderMessages(array $messages)
     {
@@ -567,76 +376,7 @@ class Render
     }
 
     /**
-     * Renders the footer part, where we display from where krexx was called.
-     *
-     * @param string $file
-     *   The file from where krexx was called.
-     * @param string $line
-     *   The line number from where krexx was called.
-     *
-     * @return string
-     *   The generated markup from the template files.
-     */
-    protected function renderCaller($file, $line)
-    {
-        $template = $this->getTemplateFileContent('caller');
-        $template = str_replace('{callerFile}', $file, $template);
-        return str_replace('{callerLine}', $line, $template);
-    }
-
-    /**
-     * Renders the helptext.
-     *
-     * @param Model $model
-     *   The ID of the helptext.
-     *
-     * @see Help
-     *
-     * @return string
-     *   The generated markup from the template files.
-     */
-    protected function renderHelp($model)
-    {
-        $helpId = $model->getHelpid();
-        $data = $model->getJson();
-        $helpcontent = '';
-
-        // Test if we have anything to display at all.
-        if (empty($helpId) && empty($data)) {
-            return '';
-        }
-
-        $helpRow = $this->getTemplateFileContent('helprow');
-
-        // Add the normal help info
-        if (!empty($helpId)) {
-            $helpcontent .= str_replace('{helptitle}', 'Help', $helpRow);
-            $helpcontent = str_replace('{helptext}', $this->pool->messages->getHelp($helpId), $helpcontent);
-        }
-
-        // Add the stuff from the json here.
-        foreach ($data as $title => $text) {
-            $helpcontent .= str_replace('{helptitle}', $title, $helpRow);
-            $helpcontent = str_replace('{helptext}', $text, $helpcontent);
-        }
-
-        // Add it into the wrapper.
-        return str_replace('{help}', $helpcontent, $helpWrapper = $this->getTemplateFileContent('help'));
-
-    }
-
-    /**
-     * Renders the line of the sourcecode, from where the backtrace is coming.
-     *
-     * @param string $className
-     *   The class name where the sourcecode is from.
-     * @param string $lineNo
-     *   The kine number from the file.
-     * @param string $sourceCode
-     *   Part of the sourcecode, where the backtrace is coming from.
-     *
-     * @return string
-     *   The generated markup from the template files.
+     * {@inheritdoc}
      */
     public function renderBacktraceSourceLine($className, $lineNo, $sourceCode)
     {
@@ -648,55 +388,10 @@ class Render
     }
 
     /**
-     * Renders the hr.
-     *
-     * @return string
-     *   The generated markup from the template file.
+     * {@inheritdoc}
      */
     public function renderSingeChildHr()
     {
         return $this->getTemplateFileContent('singleChildHr');
-    }
-
-    /**
-     * Renders the connector between analysis objects, params and results.
-     *
-     * @param string $connector
-     *   The data to be displayed.
-     *
-     * @return string
-     *   The rendered connector.
-     */
-    protected function renderConnector($connector)
-    {
-        if (!empty($connector)) {
-            $template = $this->getTemplateFileContent('connector');
-            return str_replace('{connector}', $connector, $template);
-        } else {
-            return '';
-        }
-    }
-
-    /**
-     * Gets a list of all available skins for the frontend config.
-     *
-     * @return array
-     *   An array with the skinnames.
-     */
-    public function getSkinList()
-    {
-        // Static cache to make it a little bit faster.
-        static $list = array();
-
-        if (empty($list)) {
-            // Get the list.
-            $list = array_filter(glob($this->pool->krexxDir . 'resources/skins/*'), 'is_dir');
-            // Now we need to filter it, we only want the names, not the full path.
-            foreach ($list as &$path) {
-                $path = str_replace($this->pool->krexxDir . 'resources/skins/', '', $path);
-            }
-        }
-
-        return $list;
     }
 }
