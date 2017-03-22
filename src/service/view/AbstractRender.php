@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\View;
 
-
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Misc\File;
@@ -67,37 +66,8 @@ abstract class AbstractRender
         $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
     }
 
+
     /**
-     * Loads a template file from the skin folder.
-     *
-     * @param string $what
-     *   Filename in the skin folder without the ".html" at the end.
-     *
-     * @return string
-     *   The template file, without whitespaces.
-     */
-    protected function getTemplateFileContent($what)
-    {
-        static $fileCache = array();
-
-        if (!isset($fileCache[$what])) {
-            $fileCache[$what] = preg_replace(
-                '/\s+/',
-                ' ',
-                $this->fileService->getFileContents(
-                    $this->pool->krexxDir .
-                    'resources/skins/' .
-                    $this->pool->config->getSetting('skin') .
-                    '/' .
-                    $what .
-                    '.html'
-                )
-            );
-        }
-        return $fileCache[$what];
-    }
-
-        /**
      * Renders the footer part, where we display from where krexx was called.
      *
      * @param string $file
@@ -110,9 +80,8 @@ abstract class AbstractRender
      */
     protected function renderCaller($file, $line)
     {
-        $template = $this->getTemplateFileContent('caller');
-        $template = str_replace('{callerFile}', $file, $template);
-        return str_replace('{callerLine}', $line, $template);
+        $result = str_replace('{callerFile}', $file, $this->getTemplateFileContent('caller'));
+        return str_replace('{callerLine}', $line, $result);
     }
 
     /**
@@ -130,30 +99,34 @@ abstract class AbstractRender
     {
         $helpId = $model->getHelpid();
         $data = $model->getJson();
-        $helpcontent = '';
+        $helpContent = '';
 
         // Test if we have anything to display at all.
         if (empty($helpId) && empty($data)) {
             return '';
         }
 
+         // Add the normal help info
         $helpRow = $this->getTemplateFileContent('helprow');
-
-        // Add the normal help info
         if (!empty($helpId)) {
-            $helpcontent .= str_replace('{helptitle}', 'Help', $helpRow);
-            $helpcontent = str_replace('{helptext}', $this->pool->messages->getHelp($helpId), $helpcontent);
+            $helpContent = str_replace(
+                array('{helptitle}', '{helptext}'),
+                array('Help', $this->pool->messages->getHelp($helpId)),
+                $helpRow
+            );
         }
 
         // Add the stuff from the json here.
         foreach ($data as $title => $text) {
-            $helpcontent .= str_replace('{helptitle}', $title, $helpRow);
-            $helpcontent = str_replace('{helptext}', $text, $helpcontent);
+            $helpContent .= str_replace(
+                array('{helptitle}', '{helptext}'),
+                array($title, $text),
+                $helpRow
+            );
         }
 
         // Add it into the wrapper.
-        return str_replace('{help}', $helpcontent, $helpWrapper = $this->getTemplateFileContent('help'));
-
+        return str_replace('{help}', $helpContent, $this->getTemplateFileContent('help'));
     }
 
     /**
@@ -168,8 +141,11 @@ abstract class AbstractRender
     protected function renderConnector($connector)
     {
         if (!empty($connector)) {
-            $template = $this->getTemplateFileContent('connector');
-            return str_replace('{connector}', $connector, $template);
+            return str_replace(
+                '{connector}',
+                $connector,
+                $this->getTemplateFileContent('connector')
+            );
         } else {
             return '';
         }
@@ -183,9 +159,11 @@ abstract class AbstractRender
      */
     protected function renderSearch()
     {
-        $template = $this->getTemplateFileContent('search');
-        $template = str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
-        return $template;
+        return str_replace(
+            '{KrexxId}',
+            $this->pool->recursionHandler->getMarker(),
+            $this->getTemplateFileContent('search')
+        );
     }
 
     /**
@@ -225,21 +203,62 @@ abstract class AbstractRender
      */
     protected function renderNest(Model $model, $isExpanded = false)
     {
-        $template = $this->getTemplateFileContent('nest');
-        // Replace our stuff in the partial.
-        $domid = '';
-        if (strlen($model->getDomid())) {
-            $domid = 'id="' . $model->getDomid() . '"';
+        // Get the dom id.
+        $domid = $model->getDomid();
+        if ($domid !== '') {
+            $domid = 'id="' . $domid . '"';
         }
-        $template = str_replace('{domId}', $domid, $template);
+
         // Are we expanding this one?
         if ($isExpanded) {
             $style = '';
         } else {
             $style = 'khidden';
         }
-        $template = str_replace('{style}', $style, $template);
-        return str_replace('{mainfunction}', $model->renderMe(), $template);
+
+        return str_replace(
+            array(
+                '{style}',
+                '{mainfunction}',
+                '{domId}',
+            ),
+            array(
+                $style,
+                $model->renderMe(),
+                $domid,
+            ),
+            $this->getTemplateFileContent('nest')
+        );
+    }
+
+    /**
+     * Loads a template file from the skin folder.
+     *
+     * @param string $what
+     *   Filename in the skin folder without the ".html" at the end.
+     *
+     * @return string
+     *   The template file, without whitespaces.
+     */
+    protected function getTemplateFileContent($what)
+    {
+        static $fileCache = array();
+
+        if (!isset($fileCache[$what])) {
+            $fileCache[$what] = preg_replace(
+                '/\s+/',
+                ' ',
+                $this->fileService->getFileContents(
+                    $this->pool->krexxDir .
+                    'resources/skins/' .
+                    $this->pool->config->getSetting('skin') .
+                    '/' .
+                    $what .
+                    '.html'
+                )
+            );
+        }
+        return $fileCache[$what];
     }
 
     /**
@@ -312,7 +331,7 @@ abstract class AbstractRender
      * @return string
      *   The generated markup from the template files.
      */
-    abstract public function renderCssJs($css, $js);
+    abstract public function renderCssJs(&$css, &$js);
 
     /**
      * Renders a expandable child with a callback in the middle.

@@ -35,9 +35,6 @@
 namespace Brainworxx\Krexx\Service\View;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Controller\AbstractController;
-use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Service\Misc\File;
 
 /**
  * Render methods.
@@ -57,24 +54,27 @@ class Render extends AbstractRender
     {
         // This one is a little bit more complicated than the others,
         // because it assembles some partials and stitches them together.
-        $template = $this->getTemplateFileContent('singleChild');
         $partExpand = '';
         $partCallable = '';
         $partExtra = '';
-        $data = $model->getData();
-        $extra = $model->getHasExtras();
 
-        if ($extra) {
+        if ($model->getHasExtras()) {
             // We have a lot of text, so we render this one expandable (yellow box).
-            $partExpand = $this->getTemplateFileContent('singleChildExpand');
+            $partExpand = 'kexpand';
+            // Add the yellow box for large output text.
+            $partExtra = str_replace(
+                '{data}',
+                $model->getData(),
+                $this->getTemplateFileContent('singleChildExtra')
+            );
         }
         if ($model->getIsCallback()) {
             // Add callable partial.
-            $partCallable = $this->getTemplateFileContent('singleChildCallable');
-        }
-        if ($extra) {
-            // Add the yellow box for large output text.
-            $partExtra = $this->getTemplateFileContent('singleChildExtra');
+            $partCallable = str_replace(
+                '{normal}',
+                $model->getNormal(),
+                $this->getTemplateFileContent('singleChildCallable')
+            );
         }
         // Stitching the classes together, depending on the types.
         $typeArray = explode(' ', $model->getType());
@@ -87,29 +87,48 @@ class Render extends AbstractRender
         // Generating our code and adding the Codegen button, if there is something
         // to generate.
         $gensource = $this->pool->codegenHandler->generateSource($model);
+
         if (empty($gensource)) {
             // Remove the markers, because here is nothing to add.
-            $template = str_replace('{gensource}', '', $template);
-            $template = str_replace('{sourcebutton}', '', $template);
+            $sourcebutton = '';
         } else {
             // We add the buttton and the code.
-            $template = str_replace('{gensource}', $gensource, $template);
-            $template = str_replace('{sourcebutton}', $this->getTemplateFileContent('sourcebutton'), $template);
+            $sourcebutton = $this->getTemplateFileContent('sourcebutton');
         }
 
         // Stitching it together.
-        $template = str_replace('{expand}', $partExpand, $template);
-        $template = str_replace('{callable}', $partCallable, $template);
-        $template = str_replace('{extra}', $partExtra, $template);
-        $template = str_replace('{name}', $model->getName(), $template);
-        $template = str_replace('{type}', $model->getType(), $template);
-        $template = str_replace('{type-classes}', $typeClasses, $template);
-        $template = str_replace('{normal}', $model->getNormal(), $template);
-        $template = str_replace('{data}', $data, $template);
-        $template = str_replace('{help}', $this->renderHelp($model), $template);
-        $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
-        $template = str_replace('{gensource}', $gensource, $template);
-        return str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
+        return str_replace(
+            array(
+                '{gensource}',
+                '{sourcebutton}',
+                '{expand}',
+                '{callable}',
+                '{extra}',
+                '{name}',
+                '{type}',
+                '{type-classes}',
+                '{normal}',
+                '{help}',
+                '{connector1}',
+                '{connector2}',
+                ),
+            array(
+                $gensource,
+                $sourcebutton,
+                $partExpand,
+                $partCallable,
+                $partExtra,
+                $model->getName(),
+                $model->getType(),
+                $typeClasses,
+                $model->getNormal(),
+                $this->renderHelp($model),
+                $this->renderConnector($model->getConnector1()),
+                $model->getConnector2()
+            ),
+            $this->getTemplateFileContent('singleChild')
+        );
+
     }
 
     /**
@@ -117,29 +136,27 @@ class Render extends AbstractRender
      */
     public function renderRecursion(Model $model)
     {
-        $template = $this->getTemplateFileContent('recursion');
-
-        // Generating our code and adding the Codegen button, if there is
-        // something to generate.
-        $gencode = $this->pool->codegenHandler->generateSource($model);
-
-        if (empty($gencode)) {
-            // Remove the markers, because here is nothing to add.
-            $template = str_replace('{gensource}', '', $template);
-            $template = str_replace('{sourcebutton}', '', $template);
-        } else {
-            // We add the buttton and the code.
-            $template = str_replace('{gensource}', $gencode, $template);
-        }
-
-        // Replace our stuff in the partial.
-        $template = str_replace('{name}', $model->getName(), $template);
-        $template = str_replace('{domId}', $model->getDomid(), $template);
-        $template = str_replace('{normal}', $model->getNormal(), $template);
-        $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
-        $template = str_replace('{help}', $this->renderHelp($model), $template);
-
-        return str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
+        return str_replace(
+            array(
+                '{name}',
+                '{domId}',
+                '{normal}',
+                '{connector1}',
+                '{help}',
+                '{connector2}',
+                '{gensource}',
+            ),
+            array(
+                $model->getName(),
+                $model->getDomid(),
+                $model->getNormal(),
+                $this->renderConnector($model->getConnector1()),
+                $this->renderHelp($model),
+                $this->renderConnector($model->getConnector2()),
+                $this->pool->codegenHandler->generateSource($model),
+            ),
+            $this->getTemplateFileContent('recursion')
+        );
     }
 
     /**
@@ -147,18 +164,29 @@ class Render extends AbstractRender
      */
     public function renderHeader($doctype, $headline, $cssJs)
     {
-        $template = $this->getTemplateFileContent('header');
-        // Replace our stuff in the partial.
-        $template = str_replace('{version}', $this->pool->config->version, $template);
-        $template = str_replace('{doctype}', $doctype, $template);
-        $template = str_replace('{KrexxCount}', $this->pool->emergencyHandler->getKrexxCount(), $template);
-        $template = str_replace('{headline}', $headline, $template);
-        $template = str_replace('{cssJs}', $cssJs, $template);
-        $template = str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
-        $template = str_replace('{search}', $this->renderSearch(), $template);
-        $template = str_replace('{messages}', $this->pool->messages->outputMessages(), $template);
-
-        return $template;
+        return str_replace(
+            array(
+                '{version}',
+                '{doctype}',
+                '{KrexxCount}',
+                '{headline}',
+                '{cssJs}',
+                '{KrexxId}',
+                '{search}',
+                '{messages}',
+            ),
+            array(
+                $this->pool->config->version,
+                $doctype,
+                $this->pool->emergencyHandler->getKrexxCount(),
+                $headline,
+                $cssJs,
+                $this->pool->recursionHandler->getMarker(),
+                $this->renderSearch(),
+                $this->pool->messages->outputMessages(),
+            ),
+            $this->getTemplateFileContent('header')
+        );
     }
 
     /**
@@ -166,28 +194,36 @@ class Render extends AbstractRender
      */
     public function renderFooter($caller, $configOutput, $configOnly = false)
     {
-        $template = $this->getTemplateFileContent('footer');
-        // Replace our stuff in the partial.
         if (!isset($caller['file'])) {
             // When we have no caller, we will not render it.
-            $template = str_replace('{caller}', '', $template);
+            $caller = '';
         } else {
-            $template = str_replace('{caller}', $this->renderCaller($caller['file'], $caller['line']), $template);
+            $caller = $this->renderCaller($caller['file'], $caller['line']);
         }
-        $template = str_replace('{configInfo}', $configOutput, $template);
-        return $template;
+
+        return str_replace(
+            array(
+                '{configInfo}',
+                '{caller}',
+            ),
+            array(
+                $configOutput,
+                $caller,
+            ),
+            $this->getTemplateFileContent('footer')
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function renderCssJs($css, $js)
+    public function renderCssJs(&$css, &$js)
     {
-        $template = $this->getTemplateFileContent('cssJs');
-        // Replace our stuff in the partial.
-        $template = str_replace('{css}', $css, $template);
-        $template = str_replace('{js}', $js, $template);
-        return $template;
+        return str_replace(
+            array('{css}', '{js}'),
+            array($css, $js),
+            $this->getTemplateFileContent('cssJs')
+        );
     }
 
     /**
@@ -200,49 +236,60 @@ class Render extends AbstractRender
             return '';
         }
 
-        // We need to render this one normally.
-        $template = $this->getTemplateFileContent('expandableChildNormal');
-        // Replace our stuff in the partial.
-        $template = str_replace('{name}', $model->getName(), $template);
-        $template = str_replace('{type}', $model->getType(), $template);
-
         // Explode the type to get the class names right.
         $types = explode(' ', $model->getType());
         $cssType = '';
         foreach ($types as $singleType) {
             $cssType .= ' k' . $singleType;
         }
-        $template = str_replace('{ktype}', $cssType, $template);
-
-        $template = str_replace('{normal}', $model->getNormal(), $template);
-        $template = str_replace('{help}', $this->renderHelp($model), $template);
-        $template = str_replace('{connector1}', $this->renderConnector($model->getConnector1()), $template);
-        $template = str_replace('{connector2}', $this->renderConnector($model->getConnector2()), $template);
 
         // Generating our code and adding the Codegen button, if there is
         // something to generate.
         $gencode = $this->pool->codegenHandler->generateSource($model);
-        $template = str_replace('{gensource}', $gencode, $template);
         if ($gencode === ';stop;' || empty($gencode)) {
             // Remove the button marker, because here is nothing to add.
-            $template = str_replace('{sourcebutton}', '', $template);
+            $sourceButton = '';
         } else {
             // Add the button.
-            $template = str_replace('{sourcebutton}', $this->getTemplateFileContent('sourcebutton'), $template);
+            $sourceButton = $this->getTemplateFileContent('sourcebutton');
         }
 
         // Is it expanded?
         if ($isExpanded) {
-            $template = str_replace('{isExpanded}', 'kopened', $template);
+            $expandedClass = 'kopened';
         } else {
-            $template = str_replace('{isExpanded}', '', $template);
+            $expandedClass = '';
         }
-        return str_replace(
-            '{nest}',
-            $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
-            $template
-        );
 
+        return str_replace(
+            array(
+                '{name}',
+                '{type}',
+                '{ktype}',
+                '{normal}',
+                '{help}',
+                '{connector1}',
+                '{connector2}',
+                '{gensource}',
+                '{sourcebutton}',
+                '{isExpanded}',
+                '{nest}'
+            ),
+            array(
+                $model->getName(),
+                $model->getType(),
+                $cssType,
+                $model->getNormal(),
+                $this->renderHelp($model),
+                $this->renderConnector($model->getConnector1()),
+                $this->renderConnector($model->getConnector2()),
+                $gencode,
+                $sourceButton,
+                $expandedClass,
+                $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded))
+            ),
+            $this->getTemplateFileContent('expandableChildNormal')
+        );
     }
 
     /**
@@ -250,16 +297,15 @@ class Render extends AbstractRender
      */
     public function renderSingleEditableChild(Model $model)
     {
-        $template = $this->getTemplateFileContent('singleEditableChild');
-        $element = $this->getTemplateFileContent('single' . $model->getType());
-
-        $element = str_replace('{name}', $model->getData(), $element);
-        $element = str_replace('{value}', $model->getName(), $element);
+        $element = str_replace(
+            array('{name}', '{value}'),
+            array($model->getData(), $model->getName()),
+            $this->getTemplateFileContent('single' . $model->getType())
+        );
+        $options = '';
 
         // For dropdown elements, we need to render the options.
         if ($model->getType() === 'Select') {
-            $option = $this->getTemplateFileContent('single' . $model->getType() . 'Options');
-
             // Here we store what the list of possible values.
             switch ($model->getData()) {
                 case "destination":
@@ -279,7 +325,7 @@ class Render extends AbstractRender
             }
 
             // Paint it.
-            $options = '';
+            $optionTemplateName = 'single' . $model->getType() . 'Options';
             foreach ($valueList as $value) {
                 if ($value === $model->getName()) {
                     // This one is selected.
@@ -287,27 +333,31 @@ class Render extends AbstractRender
                 } else {
                     $selected = '';
                 }
-                $options .= str_replace(array(
-                    '{text}',
-                    '{value}',
-                    '{selected}',
-                ), array(
-                    $value,
-                    $value,
-                    $selected,
-                ), $option);
+                $options .= str_replace(
+                    array('{text}', '{value}', '{selected}'),
+                    array($value, $value, $selected),
+                    $this->getTemplateFileContent($optionTemplateName)
+                );
             }
-            // Now we replace the options in the output.
-            $element = str_replace('{options}', $options, $element);
         }
 
-        $template = str_replace('{name}', $model->getData(), $template);
-        $template = str_replace('{source}', $model->getNormal(), $template);
-        $template = str_replace('{normal}', $element, $template);
-        $template = str_replace('{type}', 'editable', $template);
-        $template = str_replace('{help}', $this->renderHelp($model), $template);
-
-        return $template;
+        return str_replace(
+            array(
+                '{name}',
+                '{source}',
+                '{normal}',
+                '{type}',
+                '{help}',
+            ),
+            array(
+                $model->getData(),
+                $model->getNormal(),
+                str_replace('{options}', $options, $element),
+                'editable',
+                $this->renderHelp($model),
+            ),
+            $this->getTemplateFileContent('singleEditableChild')
+        );
     }
 
     /**
@@ -315,11 +365,19 @@ class Render extends AbstractRender
      */
     public function renderButton(Model $model)
     {
-        $template = $this->getTemplateFileContent('singleButton');
-        $template = str_replace('{help}', $this->renderHelp($model), $template);
-
-        $template = str_replace('{text}', $model->getNormal(), $template);
-        return str_replace('{class}', $model->getName(), $template);
+        return str_replace(
+            array(
+                '{help}',
+                '{text}',
+                '{class}',
+            ),
+            array(
+                $this->renderHelp($model),
+                $model->getNormal(),
+                $model->getName()
+            ),
+            $this->getTemplateFileContent('singleButton')
+        );
     }
 
     /**
@@ -327,20 +385,29 @@ class Render extends AbstractRender
      */
     public function renderFatalMain($type, $errstr, $errfile, $errline)
     {
-        $template = $this->getTemplateFileContent('fatalMain');
-
-        $from = $errline -5;
+        $from = $errline -6;
         $to = $errline +5;
-        $source = $this->fileService->readSourcecode($errfile, $errline -1, $from -1, $to -1);
+        $source = $this->fileService->readSourcecode($errfile, $errline -1, $from, $to -1);
 
-        // Insert our values.
-        $template = str_replace('{type}', $type, $template);
-        $template = str_replace('{errstr}', $errstr, $template);
-        $template = str_replace('{file}', $errfile, $template);
-        $template = str_replace('{source}', $source, $template);
-        $template = str_replace('{KrexxCount}', $this->pool->emergencyHandler->getKrexxCount(), $template);
-
-        return str_replace('{line}', $errline, $template);
+        return str_replace(
+            array(
+                '{type}',
+                '{errstr}',
+                '{file}',
+                '{source}',
+                '{KrexxCount}',
+                '{line}',
+            ),
+            array(
+                $type,
+                $errstr,
+                $errfile,
+                $source,
+                $this->pool->emergencyHandler->getKrexxCount(),
+                $errline,
+            ),
+            $this->getTemplateFileContent('fatalMain')
+        );
     }
 
     /**
@@ -348,15 +415,23 @@ class Render extends AbstractRender
      */
     public function renderFatalHeader($cssJs, $doctype)
     {
-        $template = $this->getTemplateFileContent('fatalHeader');
-
-        // Insert our values.
-        $template = str_replace('{cssJs}', $cssJs, $template);
-        $template = str_replace('{version}', $this->pool->config->version, $template);
-        $template = str_replace('{doctype}', $doctype, $template);
-        $template = str_replace('{search}', $this->renderSearch(), $template);
-
-        return str_replace('{KrexxId}', $this->pool->recursionHandler->getMarker(), $template);
+        return str_replace(
+            array(
+                '{cssJs}',
+                '{version}',
+                '{doctype}',
+                '{search}',
+                '{KrexxId}',
+            ),
+            array(
+                $cssJs,
+                $this->pool->config->version,
+                $doctype,
+                $this->renderSearch(),
+                $this->pool->recursionHandler->getMarker()
+            ),
+            $this->getTemplateFileContent('fatalHeader')
+        );
     }
 
     /**
@@ -364,14 +439,14 @@ class Render extends AbstractRender
      */
     public function renderMessages(array $messages)
     {
-        $template = $this->getTemplateFileContent('message');
         $result = '';
-
         foreach ($messages as $message) {
-            $temp = str_replace('{class}', $message['class'], $template);
-            $result .= str_replace('{message}', $message['message'], $temp);
+            $result .= str_replace(
+                array('{class}', '{message}'),
+                array($message['class'], $message['message']),
+                $this->getTemplateFileContent('message')
+            );
         }
-
         return $result;
     }
 
@@ -380,11 +455,19 @@ class Render extends AbstractRender
      */
     public function renderBacktraceSourceLine($className, $lineNo, $sourceCode)
     {
-        $template = $this->getTemplateFileContent('backtraceSourceLine');
-        $template = str_replace('{className}', $className, $template);
-        $template = str_replace('{lineNo}', $lineNo, $template);
-
-        return str_replace('{sourceCode}', $sourceCode, $template);
+        return str_replace(
+            array(
+                '{className}',
+                '{lineNo}',
+                '{sourceCode}',
+            ),
+            array(
+                $className,
+                $lineNo,
+                $sourceCode,
+            ),
+            $this->getTemplateFileContent('backtraceSourceLine')
+        );
     }
 
     /**
