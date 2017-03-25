@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Debug method result analysis methods.
@@ -54,13 +55,11 @@ class Debug extends AbstractCallback
      */
     public function callMe()
     {
-        $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-            ->setData($this->parameters['data'])
-            ->setName('result');
         // This could be anything, we need to route it.
-
-        return $this->pool
-            ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Routing')
-            ->analysisHub($model);
+        return $this->pool->routing->analysisHub(
+            $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                ->setData($this->parameters['data'])
+                ->setName('result')
+        );
     }
 }

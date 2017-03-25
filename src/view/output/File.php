@@ -32,12 +32,12 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service\Output;
+namespace Brainworxx\Krexx\View\Output;
 
 /**
  * File output, directly after the analysis.
  *
- * @package Brainworxx\Krexx\Service\Output
+ * @package Brainworxx\Krexx\View\Output
  */
 class File extends AbstractOutput
 {
