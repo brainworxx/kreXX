@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Analyse\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Controller\AbstractController;
 
 /**
  * Processing of strings.
