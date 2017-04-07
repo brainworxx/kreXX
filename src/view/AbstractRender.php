@@ -432,5 +432,4 @@ abstract class AbstractRender
      *   The generated markup from the template file.
      */
     abstract public function renderSingeChildHr();
-
 }

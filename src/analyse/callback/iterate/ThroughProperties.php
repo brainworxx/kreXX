@@ -37,7 +37,6 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Service\Misc\File;
-use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Class properties analysis methods.

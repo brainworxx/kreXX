@@ -191,6 +191,8 @@ class File
      *   Path and filename.
      * @param string $string
      *   The string we want to write.
+     * @param bool $overwrite
+     *   Are we overwriting the file?
      */
     public function putFileContents($path, $string, $overwrite = false)
     {
