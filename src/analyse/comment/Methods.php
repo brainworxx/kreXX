@@ -125,19 +125,11 @@ class Methods extends AbstractComment
             // traits in the class we are currently looking at.
             foreach ($traitArray as $trait) {
                 if (!$this->checkComment($originalComment)) {
-                    try {
+                    if ($trait->hasMethod($methodName)) {
                         $traitMethod = $trait->getMethod($methodName);
-                        if (is_object($traitMethod)) {
-                            // We've gone too far.
-                            // We should check the next trait.
-                        } else {
-                            $traitComment = $this->prettifyComment($traitMethod->getDocComment());
-                            // Replace it.
-                            $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
-                        }
-                    } catch (\ReflectionException $e) {
-                        // Method not found.
-                        // We should try the next trait.
+                        $traitComment = $this->prettifyComment($traitMethod->getDocComment());
+                        // Replace it.
+                        $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
                     }
                 } else {
                     // Looks like we've resolved them all.
@@ -174,19 +166,11 @@ class Methods extends AbstractComment
         $interfaceArray = $reflectionClass->getInterfaces();
         foreach ($interfaceArray as $interface) {
             if (!$this->checkComment($originalComment)) {
-                try {
+                if ($interface->hasMethod($methodName)) {
                     $interfaceMethod = $interface->getMethod($methodName);
-                    if (!is_object($interfaceMethod)) {
-                        // We've gone too far.
-                        // We should try the next interface.
-                    } else {
-                        $interfaceComment = $this->prettifyComment($interfaceMethod->getDocComment());
-                        // Replace it.
-                        $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
-                    }
-                } catch (\ReflectionException $e) {
-                    // Method not found.
-                    // We should try the next interface.
+                    $interfaceComment = $this->prettifyComment($interfaceMethod->getDocComment());
+                    // Replace it.
+                    $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
                 }
             } else {
                 // Looks like we've resolved them all.
