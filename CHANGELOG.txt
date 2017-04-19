@@ -1,6 +1,7 @@
 2.2.1 dev
 - Bugfix: Better cleanup of HTML fragments left open from
   the hosting CMS.
+- Bugfix: Reverted the 'Output -> File' change from 2.2.0
 
 2.2.0
 - Added more search pattern and source code parsing to the

@@ -194,7 +194,7 @@ class File
      * @param bool $overwrite
      *   Are we overwriting the file?
      */
-    public function putFileContents($path, $string, $overwrite = false)
+    public function putFileContents($path, $string)
     {
         // Do some caching, so we check a file or dir only once!
         static $ops = array();
@@ -203,15 +203,6 @@ class File
         // Check the directory.
         if (!isset($dir[dirname($path)])) {
             $dir[dirname($path)]['canwrite'] = is_writable(dirname($path));
-        }
-
-        // When we overwrite a file, we need to delete it and remove the
-        // caching.
-        if ($overwrite) {
-            if ($ops[$path]['append']) {
-                unlink($path);
-            }
-            unset($ops[$path]);
         }
 
         if (!isset($ops[$path])) {

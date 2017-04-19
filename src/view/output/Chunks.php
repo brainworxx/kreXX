@@ -263,9 +263,7 @@ class Chunks
         // Save our metadata, so a potential backend module can display it.
         // We may or may not have already some output for this file.
         if (!empty($this->metadata)) {
-            $oldData = (array) json_decode($this->fileService->getFileContents($filename . '.json'), true);
-            $mergedData = array_merge($oldData, $this->metadata);
-            $this->fileService->putFileContents($filename . '.json', json_encode($mergedData), true);
+            $this->fileService->putFileContents($filename . '.json', json_encode($this->metadata));
             $this->metadata = array();
         }
     }
