@@ -98,6 +98,7 @@ class Fallback
         ),
         'backtraceAndError' => array(
             'registerAutomatically' => 'false',
+            'maxStepNumber' => 10,
         ),
     );
 
@@ -189,6 +190,10 @@ class Fallback
         ),
         'useScopeAnalysis' => array(
             'type' => 'Select',
+            'editable' => 'true',
+        ),
+        'maxStepNumber' => array(
+            'type' => 'Input',
             'editable' => 'true',
         ),
     );
