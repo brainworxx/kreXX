@@ -2,6 +2,8 @@
 - Bugfix: Better cleanup of HTML fragments left open from
   the hosting CMS.
 - Bugfix: Reverted the 'Output -> File' change from 2.2.0
+- Bugfix: Prevent a notice in case a property has a default value
+  which is NULL.
 
 2.2.0
 - Added more search pattern and source code parsing to the
