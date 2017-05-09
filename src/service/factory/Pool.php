@@ -108,13 +108,6 @@ class Pool extends Factory
     public $chunks;
 
     /**
-     * Finds the script caller.
-     *
-     * @var AbstractCaller
-     */
-    public $callerFinder;
-
-    /**
      * Scope analysis class.
      *
      * @var Scope

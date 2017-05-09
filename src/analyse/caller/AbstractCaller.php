@@ -98,13 +98,16 @@ abstract class AbstractCaller
      * Return the original path, in case we can not determine the
      * $_SERVER['DOCUMENT_ROOT']
      *
+     * @see Megento 2 extiosion, we use it to 'sanitize' the path to just saved
+     *   config file.
+     *
      * @param $path
      *   The path we want to filter
      *
      * @return string
      *   The filtered path to the calling file.
      */
-    protected function filterFilePath($path)
+    public function filterFilePath($path)
     {
         // There may or may not be a trailing '/'.
         // We remove it, just in case, to make sure that we remove the doc root
