@@ -107,7 +107,9 @@ class Config extends Fallback
      */
     public function setDisabled($value)
     {
-        $this->settings['disabled']->setValue($value);
+        $this->settings['disabled']
+            ->setValue($value)
+            ->setSource('Internal flow');
     }
 
     /**

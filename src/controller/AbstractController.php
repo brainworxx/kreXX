@@ -264,9 +264,6 @@ abstract class AbstractController
             unregister_tick_function(array($this->krexxFatal, 'tickCallback'));
         }
 
-        // Disable kreXX to prevent it from calling itself.
-        $this->pool->config->setDisabled(true);
-
         return $this;
     }
 
@@ -286,9 +283,6 @@ abstract class AbstractController
             $this->krexxFatal->setIsActive(true);
             register_tick_function(array($this->krexxFatal, 'tickCallback'));
         }
-
-        // Re-enable kreXX for further use.
-        $this->pool->config->setDisabled(false);
 
         return $this;
     }
