@@ -44,6 +44,25 @@ class Methods extends AbstractComment
     /**
      * Get the method comment and resolve the inheritdoc.
      *
+     * Simple wrapper around the getMethodComment() to make sure
+     * we only escape it once!
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     *   An already existing reflection of the method.
+     * @param \ReflectionClass $reflectionClass
+     *   An already existing reflection of the original class.
+     *
+     * @return string
+     *   The prettified and escaped comment.
+     */
+    public function getComment($reflectionMethod, \ReflectionClass $reflectionClass = null)
+    {
+        return $this->pool->encodeString($this->getMethodComment($reflectionMethod, $reflectionClass));
+    }
+
+    /**
+     * Get the method comment and resolve the inheritdoc.
+     *
      * @param \ReflectionMethod $reflectionMethod
      *   An already existing reflection of the method.
      * @param \ReflectionClass $reflectionClass
@@ -52,14 +71,14 @@ class Methods extends AbstractComment
      * @return string
      *   The prettified comment.
      */
-    public function getComment($reflectionMethod, \ReflectionClass $reflectionClass = null)
+    protected function getMethodComment($reflectionMethod, \ReflectionClass $reflectionClass = null)
     {
         // Get a first impression.
         $comment = $this->prettifyComment($reflectionMethod->getDocComment());
 
         if ($this->checkComment($comment)) {
             // Found it!
-            return $this->pool->encodeString(trim($comment));
+            return trim($comment);
         } else {
             // Check for interfaces.
             $comment = $this->getInterfaceComment($comment, $reflectionClass, $reflectionMethod->name);
@@ -67,7 +86,7 @@ class Methods extends AbstractComment
 
         if ($this->checkComment($comment)) {
             // Found it!
-            return $this->pool->encodeString(trim($comment));
+            return trim($comment);
         } else {
             // Check for traits.
             $comment = $this->getTraitComment($comment, $reflectionClass, $reflectionMethod->name);
@@ -75,7 +94,7 @@ class Methods extends AbstractComment
 
         if ($this->checkComment($comment)) {
             // Found it!
-            return $this->pool->encodeString(trim($comment));
+            return trim($comment);
         } else {
             // Nothing on this level, we need to take a look at the parent.
             try {
@@ -84,7 +103,7 @@ class Methods extends AbstractComment
                     $parentMethod = $parentReflection->getMethod($reflectionMethod->name);
                     if (is_object($parentMethod)) {
                         // Going deeper into the rabid hole!
-                        $comment = trim($this->getComment($parentMethod, $parentReflection));
+                        $comment = trim($this->getMethodComment($parentMethod, $parentReflection));
                     }
                 }
             } catch (\ReflectionException $e) {
@@ -93,7 +112,7 @@ class Methods extends AbstractComment
 
             // Still here? Tell the dev that we could not resolve the comment.
             $comment = $this->replaceInheritComment($comment, '::could not resolve {@inheritdoc} comment::');
-            return $this->pool->encodeString(trim($comment));
+            return trim($comment);
         }
     }
 
