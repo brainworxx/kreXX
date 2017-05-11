@@ -10,6 +10,8 @@
   which is NULL.
 - Bufix: Fixed a possible endless loop when iterating a traversable
   object.
+- Bugfix: limit the preview of method analysis with a lot of
+  parameters or long namespaces.
 
 2.2.0
 - Added more search pattern and source code parsing to the
