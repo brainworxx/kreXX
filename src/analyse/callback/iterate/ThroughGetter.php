@@ -336,11 +336,7 @@ class ThroughGetter extends AbstractCallback
         preg_match_all($regex, $haystack, $findings);
 
         // Return the file name as well as stuff from the path.
-        $result = array();
-        foreach ($findings[0] as $name) {
-            $result[] =  $name;
-        }
-        return $result;
+        return $findings[0];
     }
 
     /**
