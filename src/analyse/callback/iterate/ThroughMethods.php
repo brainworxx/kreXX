@@ -143,7 +143,12 @@ class ThroughMethods extends AbstractCallback
      */
     protected function getDeclarationPlace(\ReflectionMethod $reflectionMethod, \ReflectionClass $declaringClass)
     {
-        $filename = $declaringClass->getFileName();
+        /** @var \Brainworxx\Krexx\Service\Misc\File $fileService */
+
+        $filename = $this->pool
+            ->createClass('Brainworxx\\Krexx\\Service\\Misc\\File')
+            ->filterFilePath($declaringClass->getFileName());
+
         if (is_null($filename) || empty($filename)) {
             $result = ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
         } else {
