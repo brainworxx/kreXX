@@ -277,7 +277,7 @@ class ThroughGetter extends AbstractCallback
             if ($classReflection->hasMethod($methodName)) {
                 // We need to be careful not to goo too deep, we might end up
                 // in a loop.
-                $this->deep++;
+                ++$this->deep;
                 if ($this->deep < 3) {
                     return $this->getReflectionProperty($classReflection, $classReflection->getMethod($methodName));
                 }
