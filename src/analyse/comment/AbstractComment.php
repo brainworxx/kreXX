@@ -138,7 +138,7 @@ abstract class AbstractComment
      */
     protected function checkComment($comment)
     {
-        if (stripos($comment, 'inheritdoc') === false) {
+        if (strpos($comment, 'inheritdoc') === false) {
             // Not found means we have done our job.
             return true;
         } else {
