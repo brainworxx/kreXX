@@ -145,8 +145,9 @@ class Methods extends AbstractComment
             foreach ($traitArray as $trait) {
                 if (!$this->checkComment($originalComment)) {
                     if ($trait->hasMethod($methodName)) {
-                        $traitMethod = $trait->getMethod($methodName);
-                        $traitComment = $this->prettifyComment($traitMethod->getDocComment());
+                        $traitComment = $this->prettifyComment(
+                            $trait->getMethod($methodName)->getDocComment()
+                        );
                         // Replace it.
                         $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
                     }
