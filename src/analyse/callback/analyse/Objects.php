@@ -323,6 +323,7 @@ class Objects extends AbstractCallback
                             // We've got a required parameter!
                             // We will not call this one.
                             $foundRequired = true;
+                            break;
                         }
                     }
                     unset($ref);
