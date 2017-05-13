@@ -182,13 +182,13 @@ class Methods extends AbstractComment
      */
     protected function getInterfaceComment($originalComment, \ReflectionClass $reflectionClass, $methodName)
     {
-
         $interfaceArray = $reflectionClass->getInterfaces();
         foreach ($interfaceArray as $interface) {
             if (!$this->checkComment($originalComment)) {
                 if ($interface->hasMethod($methodName)) {
-                    $interfaceMethod = $interface->getMethod($methodName);
-                    $interfaceComment = $this->prettifyComment($interfaceMethod->getDocComment());
+                    $interfaceComment = $this->prettifyComment(
+                        $interface->getMethod($methodName)->getDocComment()
+                    );
                     // Replace it.
                     $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
                 }
