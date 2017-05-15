@@ -287,7 +287,7 @@ class Render extends AbstractRender
                 $model->getNormal(),
                 $this->renderHelp($model),
                 $this->renderConnector($model->getConnector1()),
-                $this->renderConnector($model->getConnector2()),
+                $this->renderConnector($model->getConnector2(128)),
                 $this->generateDataAttribute('source', $gencode),
                 $sourceButton,
                 $expandedClass,

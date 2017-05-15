@@ -124,7 +124,7 @@ class Render extends \Brainworxx\Krexx\View\Render
                 $model->getType(),
                 $cssType,
                 $model->getNormal(),
-                $this->renderConnector($model->getConnector2()),
+                $this->renderConnector($model->getConnector2(128)),
                 $this->generateDataAttribute('source', $gencode),
                 '',
                 $this->generateDataAttribute('addjson', $this->encodeJson($json)),

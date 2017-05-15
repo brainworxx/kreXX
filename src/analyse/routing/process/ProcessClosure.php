@@ -98,7 +98,7 @@ class ProcessClosure extends AbstractProcess
         }
 
         // Remove the ',' after the last char.
-        $paramList = '<small>' . trim($paramList, ', ') . '</small>';
+        $paramList = trim($paramList, ', ');
         $model->setType('closure')
             ->setNormal('. . .')
             ->setConnectorParameters($paramList)
