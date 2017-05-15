@@ -227,26 +227,6 @@ class File
     }
 
     /**
-     * Returns the microtime timestamp for file operations.
-     *
-     * File operations are the logfiles and the chunk handling.
-     *
-     * @return string
-     *   The timestamp itself.
-     */
-    public function fileStamp()
-    {
-        static $timestamp = 0;
-
-        if (empty($timestamp)) {
-            $timestamp = explode(' ', microtime());
-            $timestamp = $timestamp[1] . str_replace('0.', '', $timestamp[0]);
-        }
-
-        return $timestamp;
-    }
-
-    /**
      * Tries to delete a file.
      *
      * @param string $filename

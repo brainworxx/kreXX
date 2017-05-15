@@ -105,6 +105,13 @@ class Chunks
     protected $chunkDir;
 
     /**
+     * Microtime stamp for chunk operations.
+     *
+     * @var string
+     */
+    protected $fileStamp;
+
+    /**
      * Injects the pool.
      *
      * @param Pool $pool
@@ -116,6 +123,8 @@ class Chunks
         $this->chunkDir = $pool->config->getChunkDir();
         $this->logDir = $pool->config->getLogDir();
         $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
+        $this->fileStamp = explode(' ', microtime());
+        $this->fileStamp = $this->fileStamp[1] . str_replace('0.', '', $this->fileStamp[0]);
     }
 
     /**
@@ -155,7 +164,7 @@ class Chunks
         static $counter = 0;
         ++$counter;
 
-        return $this->fileService->fileStamp() . '_' . $counter;
+        return $this->fileStamp . '_' . $counter;
     }
 
     /**
@@ -242,8 +251,7 @@ class Chunks
         $this->cleanupOldLogs($this->logDir);
 
         // Determine the filename.
-        $timestamp = $this->fileService->fileStamp();
-        $filename = $this->logDir . $timestamp . '.Krexx.html';
+        $filename = $this->logDir . $this->fileStamp . '.Krexx.html';
         $chunkPos = strpos($string, '@@@');
 
         while ($chunkPos !== false) {
