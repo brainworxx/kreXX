@@ -51,7 +51,7 @@ class Functions extends AbstractComment
     {
         // Do some static caching. The comment will not change during a run.
         static $cache = array();
-        $cachingKey = $reflectionClass->getName();
+        $cachingKey = $reflection->getName();
 
         if (!isset($cache[$cachingKey])) {
             // Cache not found. We need to generate this one.
