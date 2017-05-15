@@ -71,7 +71,7 @@ class Render extends \Brainworxx\Krexx\View\Render
     {
 
         // Check for emergency break.
-        if (!$this->pool->emergencyHandler->checkEmergencyBreak()) {
+        if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
 

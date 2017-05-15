@@ -417,7 +417,7 @@ class Objects extends AbstractCallback
 
             if (isset($parameter)) {
                 // Check memory and runtime.
-                if (!$this->pool->emergencyHandler->checkEmergencyBreak()) {
+                if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
                     return '';
                 }
                 // Check nesting level

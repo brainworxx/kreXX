@@ -157,20 +157,20 @@ class Emergency
      *
      * @return bool
      *   Boolean to show if we have enough left.
-     *   TRUE = all is OK.
-     *   FALSE = we have a problem.
+     *   FALSE = all is OK.
+     *   TRUE = we have a problem.
      */
     public function checkEmergencyBreak()
     {
         if (!$this->enabled) {
             // Tell them, everything is OK!
-            return true;
+            return false;
         }
 
         if (self::$allIsOk === false) {
             // This has failed before!
             // No need to check again!
-            return false;
+            return true;
         }
 
         // Check Runtime.
@@ -182,7 +182,7 @@ class Emergency
             \Krexx::editSettings();
             \Krexx::disable();
             self::$allIsOk = false;
-            return false;
+            return true;
         }
 
         // Still here ? Commence with the memory check.
@@ -199,12 +199,12 @@ class Emergency
                 \Krexx::editSettings();
                 \Krexx::disable();
                 self::$allIsOk = false;
-                return false;
+                return true;
             }
         }
 
         // Still here? Everything must be good  :-)
-        return true;
+        return false;
     }
 
     /**
