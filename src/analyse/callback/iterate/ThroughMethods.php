@@ -143,7 +143,7 @@ class ThroughMethods extends AbstractCallback
             ->filterFilePath($declaringClass->getFileName());
 
         if (is_null($filename) || empty($filename)) {
-            $result = ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
+            $result = ':: unable to determine declaration ::\n\nMaybe this is a predeclared class?';
         } else {
             $result = $filename . "\n";
             $result .= 'in class: ' . $declaringClass->getName() . "\n";

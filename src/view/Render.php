@@ -315,12 +315,12 @@ class Render extends AbstractRender
         if ($model->getType() === 'Select') {
             // Here we store what the list of possible values.
             switch ($model->getData()) {
-                case "destination":
+                case 'destination':
                     // At php shutdown, logfile or direct after analysis.
                     $valueList = array('browser', 'file');
                     break;
 
-                case "skin":
+                case 'skin':
                     // Get a list of all skin folders.
                     $valueList = $this->getSkinList();
                     break;

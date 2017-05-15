@@ -126,14 +126,14 @@ class Codegen
                     // We will not create a reflection in the generated code.
                     // The dots tell the js to stop the code concatination right
                     // there.
-                    $result = ". . .";
+                    $result = '. . .';
                     break;
 
                 case self::PROPERTY:
                     // We will not create a reflection in the generated code.
                     // The dots tell the js to stop the code concatination right
                     // there.
-                    $result = ". . .";
+                    $result = '. . .';
                     break;
 
                 case self::STOP:
@@ -189,7 +189,7 @@ class Codegen
         // We simply add the connectors for public access.
         // Escape the quotes. This is not done by the model.
         $name = str_replace(
-            array('"', "'"),
+            array('"', '\''),
             array('&#034;', '&#039;'),
             $model->getName()
         );

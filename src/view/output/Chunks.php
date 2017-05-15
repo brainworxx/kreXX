@@ -304,7 +304,7 @@ class Chunks
     protected function cleanupOldLogs($logDir)
     {
         // Cleanup old logfiles to prevent a overflow.
-        $logList = glob($logDir . "*.Krexx.html");
+        $logList = glob($logDir . '*.Krexx.html');
         if (!empty($logList)) {
             array_multisort(array_map('filemtime', $logList), SORT_DESC, $logList);
             $maxFileCount = (int)$this->pool->config->getSetting('maxfiles');

@@ -172,7 +172,7 @@ class File
         if (is_readable($path)) {
             $size = filesize($path);
             if ($size > 0) {
-                $file = fopen($path, "r");
+                $file = fopen($path, 'r');
                 $result = fread($file, $size);
                 fclose($file);
             }
@@ -239,8 +239,8 @@ class File
         static $timestamp = 0;
 
         if (empty($timestamp)) {
-            $timestamp = explode(" ", microtime());
-            $timestamp = $timestamp[1] . str_replace("0.", "", $timestamp[0]);
+            $timestamp = explode(' ', microtime());
+            $timestamp = $timestamp[1] . str_replace('0.', '', $timestamp[0]);
         }
 
         return $timestamp;
