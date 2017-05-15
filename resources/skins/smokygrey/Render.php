@@ -53,7 +53,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         $json = $model->getJson();
         $help = $this->pool->messages->getHelp($model->getHelpid());
         if (!empty($help)) {
-            $json['Help'] = $this->pool->messages->getHelp($model->getHelpid());
+            $json['Help'] = $help;
         }
 
         return str_replace(
@@ -101,7 +101,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         $json = $model->getJson();
         $help = $this->pool->messages->getHelp($model->getHelpid());
         if (!empty($help)) {
-            $json['Help'] = $this->pool->messages->getHelp($model->getHelpid());
+            $json['Help'] = $help;
         }
 
         return str_replace(
@@ -147,7 +147,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         $json = $model->getJson();
         $help = $this->pool->messages->getHelp($model->getHelpid());
         if (!empty($help)) {
-            $json['Help'] = $this->pool->messages->getHelp($model->getHelpid());
+            $json['Help'] = $help;
         }
         return str_replace('{addjson}', $this->generateDataAttribute('addjson', $this->encodeJson($json)), $template);
     }
@@ -158,15 +158,15 @@ class Render extends \Brainworxx\Krexx\View\Render
     public function renderSingleEditableChild(Model $model)
     {
 
-        $template = parent::renderSingleEditableChild($model);
-
         // Prepare the json. Not much do display for form elements.
         $json = $this->encodeJson(array(
             'Help' => $this->pool->messages->getHelp($model->getHelpid()),
         ));
-        $template = str_replace('{addjson}', $this->generateDataAttribute('addjson', $json), $template);
-
-        return $template;
+        return str_replace(
+            '{addjson}',
+            $this->generateDataAttribute('addjson', $json),
+            parent::renderSingleEditableChild($model)
+        );
     }
 
     /**

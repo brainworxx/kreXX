@@ -174,8 +174,7 @@ class Render extends AbstractRender
         $typeArray = explode(' ', $model->getType());
         $typeClasses = '';
         foreach ($typeArray as $typeClass) {
-            $typeClass = 'k' . $typeClass;
-            $typeClasses .= $typeClass . ' ';
+            $typeClasses .= 'k' . $typeClass . ' ';
         }
 
         // Generating our code and adding the Codegen button, if there is something
