@@ -262,7 +262,9 @@ class File
             chmod($filename, 0777);
             if (!unlink($filename)) {
                 // We have a permission problem here!
-                $this->pool->messages->addMessage('Unable to delete file: ' . $this->filterFilePath($filename));
+                $this->pool->messages->addMessage(
+                    $this->pool->messages->getHelp('fileserviceDelete') . $this->filterFilePath($filename)
+                );
             }
 
             restore_error_handler();

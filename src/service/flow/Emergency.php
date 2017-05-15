@@ -176,7 +176,9 @@ class Emergency
         // Check Runtime.
         if ($this->timer < time()) {
             // This is taking longer than expected.
-            $this->pool->messages->addMessage('Emergency break due to extensive run time!');
+            $this->pool->messages->addMessage(
+                $this->pool->messages->getHelp('emergencyTimer')
+            );
             \Krexx::editSettings();
             \Krexx::disable();
             self::$allIsOk = false;
@@ -190,7 +192,9 @@ class Emergency
             $left = $this->serverMemoryLimit - memory_get_usage();
             // Is more left than is configured?
             if ($left < $this->minMemoryLeft) {
-                $this->pool->messages->addMessage('Emergency break due to extensive memory usage!');
+                $this->pool->messages->addMessage(
+                    $this->pool->messages->getHelp('emergencyMemory')
+                );
                 // Show settings to give the dev to repair the situation.
                 \Krexx::editSettings();
                 \Krexx::disable();

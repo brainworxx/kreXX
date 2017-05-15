@@ -183,7 +183,9 @@ class Chunks
         } else {
             // Huh, we can not fully access this one.
             $string = 'Could not access chunk file ' . $filename;
-            $this->pool->messages->addMessage('Could not access chunk file ' . $filename);
+            $this->pool->messages->addMessage(
+                $this->pool->messages->getHelp('chunkserviceAccess') . $filename
+            );
         }
 
         return $string;
