@@ -88,14 +88,12 @@ abstract class AbstractComment
         }
         // We split our comment into single lines and remove the unwanted
         // comment chars with the array_map callback.
-        $commentArray = explode("\n", $comment);
+        // We skip lines with /** and */
+        $commentArray = array_slice(explode("\n", $comment), 1, -1);
         $result = array();
         foreach ($commentArray as $commentLine) {
-            // We skip lines with /** and */
-            if ((strpos($commentLine, '/**') === false) && (strpos($commentLine, '*/') === false)) {
-                // Remove comment-chars and trim the whitespace.
-                $result[] = trim($commentLine, "* \t\n\r\0\x0B");
-            }
+            // Remove comment-chars and trim the whitespace.
+            $result[] = trim($commentLine, "* \t\n\r\0\x0B");
         }
         // Sadly, we must not escape this here, or glue it with <br /> for a
         // direct display. The thing is, we may resolve several @inheritdoc
