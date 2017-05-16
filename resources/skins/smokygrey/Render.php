@@ -296,29 +296,26 @@ class Render extends \Brainworxx\Krexx\View\Render
         if (empty($array)) {
             return '';
         }
-        foreach ($array as &$string) {
-            // Our js has some problems with single quotes and escaped quotes.
-            // We remove them as well as linebreaks.
-            // Unicode greater-than aund smaller-then values.
-            $string = str_replace(
-                array(
-                    '"',
-                    "'",
-                    '&quot;',
-                    '&lt;',
-                    '&gt;',
-                ),
-                array(
-                    "\\u0027",
-                    "\\u0022",
-                    "\\u0027",
-                    "\\u276E",
-                    "\\u02C3",
-                ),
-                $string
-            );
-        }
 
-        return json_encode($array);
+        // Our js has some problems with single quotes and escaped quotes.
+        // We remove them as well as linebreaks.
+        // Unicode greater-than aund smaller-then values.
+        return json_encode(str_replace(
+            array(
+                '"',
+                "'",
+                '&quot;',
+                '&lt;',
+                '&gt;',
+            ),
+            array(
+                "\\u0027",
+                "\\u0022",
+                "\\u0027",
+                "\\u276E",
+                "\\u02C3",
+            ),
+            $array
+        ));
     }
 }
