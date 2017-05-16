@@ -150,10 +150,9 @@ class Methods extends AbstractComment
         // We need to check if we can get traits here.
         if (method_exists($reflection, 'getTraits')) {
             // Get the traits from this class.
-            $traitArray = $reflection->getTraits();
             // Now we should have an array with reflections of all
             // traits in the class we are currently looking at.
-            foreach ($traitArray as $trait) {
+            foreach ($reflection->getTraits() as $trait) {
                 if (!$this->checkComment($originalComment)) {
                     if ($trait->hasMethod($methodName)) {
                         $traitComment = $this->prettifyComment(
@@ -193,8 +192,7 @@ class Methods extends AbstractComment
      */
     protected function getInterfaceComment($originalComment, \ReflectionClass $reflectionClass, $methodName)
     {
-        $interfaceArray = $reflectionClass->getInterfaces();
-        foreach ($interfaceArray as $interface) {
+        foreach ($reflectionClass->getInterfaces() as $interface) {
             if (!$this->checkComment($originalComment)) {
                 if ($interface->hasMethod($methodName)) {
                     $interfaceComment = $this->prettifyComment(
