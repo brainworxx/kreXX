@@ -46,6 +46,8 @@ use Brainworxx\Krexx\Analyse\Model;
  *
  * @uses array data
  *   The array want to iterate.
+ * @uses bool multiline
+ *   Do we need a multiline code generation?
  */
 class ThroughArray extends AbstractCallback
 {
