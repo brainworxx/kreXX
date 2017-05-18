@@ -425,6 +425,7 @@ class Objects extends AbstractCallback
                 if ($this->pool->emergencyHandler->checkNesting()) {
                     return '';
                 }
+
                 $result = $this->pool->render->renderExpandableChild(
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setName($name)

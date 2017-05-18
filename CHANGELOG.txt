@@ -23,6 +23,7 @@
 - Bugfix: Use the filepath filter in the method and function
   analysis
 - Bugfix: Made use of the language file (nearly) everywhere.
+- Bugfix: Make sure that there are no leftover chunks after a run.
 
 2.2.0
 - Added more search pattern and source code parsing to the

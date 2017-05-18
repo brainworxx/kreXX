@@ -293,9 +293,10 @@ class Chunks
             // Clean up leftover files.
             $chunkList = glob($this->chunkDir . '*.Krexx.tmp');
             if (!empty($chunkList)) {
+                $now = time();
                 foreach ($chunkList as $file) {
                     // We delete everything that is older than one hour.
-                    if ((filemtime($file) + 3600) < time()) {
+                    if ((filemtime($file) + 3600) < $now) {
                         $this->fileService->deleteFile($file);
                     }
                 }
@@ -353,5 +354,22 @@ class Chunks
     public function addMetadata($caller)
     {
         $this->metadata[] = $caller;
+    }
+
+    /**
+     * When we are done, delete all leftover chunks, just in case.
+     */
+    public function __destruct()
+    {
+        // Get a list of all chunk files from thei run
+        $chunkList = glob($this->chunkDir . $this->fileStamp . '_*');
+        if (!empty($chunkList)) {
+            // Delete them all!
+            foreach ($chunkList as $file) {
+                $this->fileService->deleteFile($file);
+            }
+        }
+
+
     }
 }
