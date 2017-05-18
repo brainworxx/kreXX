@@ -371,7 +371,7 @@ class Objects extends AbstractCallback
     /**
      * Dumps all available traversable data.
      *
-     * @param \Iterator $data
+     * @param \Iterator|\Countable $data
      *   The object we are analysing.
      * @param string $name
      *   The name of the object we want to analyse.
@@ -410,7 +410,9 @@ class Objects extends AbstractCallback
                 });
                 $parameter = iterator_to_array($data);
                 // Setting the count.
-                $count = count($data);
+                if (is_a($data, 'Countable')) {
+                    $count = count($data);
+                }
             } catch (\Exception $e) {
                 // Do nothing.
             }
@@ -438,7 +440,7 @@ class Objects extends AbstractCallback
                     ->addParameter('data', $parameter)
                     ->addParameter('multiline', $multiline);
                 // This one is huge!
-                if ($count > 100) {
+                if ($count > $this->pool->config->arrayCountLimit) {
                     $model->injectCallback(
                         $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray')
                     )->setNormal('Simplified Traversable Info')

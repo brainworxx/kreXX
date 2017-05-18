@@ -269,4 +269,15 @@ class Fallback
      * @var string
      */
     public $version = '2.2.1 dev';
+
+    /**
+     * Limit for the couint in an array. If an array is larger that this,
+     * we will use the ThroughLargeArray callback
+     *
+     * @see \Brainworxx\Krexx\Analyse\Routing\Process\ProcessArray
+     * @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
+     *
+     * @var int
+     */
+    public $arrayCountLimit = 100;
 }
