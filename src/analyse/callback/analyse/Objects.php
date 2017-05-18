@@ -401,6 +401,7 @@ class Objects extends AbstractCallback
             }
 
             // Add a try to prevent the hosting CMS from doing something stupid.
+            $count = 0;
             try {
                 // We need to deactivate the current error handling to
                 // prevent the host system to do anything stupid.
@@ -408,9 +409,12 @@ class Objects extends AbstractCallback
                     // Do nothing.
                 });
                 $parameter = iterator_to_array($data);
+                // Setting the count.
+                $count = count($data);
             } catch (\Exception $e) {
                 // Do nothing.
             }
+
 
             // Reactivate whatever error handling we had previously.
             restore_error_handler();
@@ -426,17 +430,26 @@ class Objects extends AbstractCallback
                     return '';
                 }
 
-                $result = $this->pool->render->renderExpandableChild(
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-                        ->setName($name)
-                        ->setType('Foreach')
-                        ->setNormal('Traversable Info')
-                        ->addParameter('data', $parameter)
-                        ->addParameter('multiline', $multiline)
-                        ->injectCallback(
-                            $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughArray')
-                        )
-                );
+                /** @var Model $model */
+                $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    ->setName($name)
+                    ->setType('Foreach')
+
+                    ->addParameter('data', $parameter)
+                    ->addParameter('multiline', $multiline);
+                // This one is huge!
+                if ($count > 100) {
+                    $model->injectCallback(
+                        $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray')
+                    )->setNormal('Simplified Traversable Info')
+                        ->addToJson('Help', $this->pool->messages->getHelp('simpleArray'));
+                } else {
+                    $model->injectCallback(
+                        $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughArray')
+                    )->setNormal('Traversable Info');
+                }
+
+                $result = $this->pool->render->renderExpandableChild($model);
                 $this->pool->emergencyHandler->downOneNestingLevel();
                 return $result;
             }

@@ -111,6 +111,7 @@ class Krexx
         include_once $krexxDir . 'src/analyse/callback/analyse/Debug.php';
         include_once $krexxDir . 'src/analyse/callback/analyse/Objects.php';
         include_once $krexxDir . 'src/analyse/callback/iterate/ThroughArray.php';
+        include_once $krexxDir . 'src/analyse/callback/iterate/ThroughLargeArray.php';
         include_once $krexxDir . 'src/analyse/callback/iterate/ThroughConfig.php';
         include_once $krexxDir . 'src/analyse/callback/iterate/ThroughConstants.php';
         include_once $krexxDir . 'src/analyse/callback/iterate/ThroughMethodAnalysis.php';
