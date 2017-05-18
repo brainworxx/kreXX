@@ -143,11 +143,9 @@ class ThroughGetter extends AbstractCallback
         if (empty($refProp)) {
             // Found nothing  :-(
             // We literally have no info. We need to tell the user.
-            $noInfoMessage = $this->pool->messages->getHelp('unknownValue');
-            $model->setNormal('unknown')
-                ->setType('unknown')
-                ->setData($noInfoMessage)
-                ->hasExtras();
+            $noInfoMessage = 'unknown';
+            $model->setType($noInfoMessage)
+                ->setNormal($noInfoMessage);
             // We render this right away, without any routing.
             return $this->pool->render->renderSingleChild($model);
         } else {
