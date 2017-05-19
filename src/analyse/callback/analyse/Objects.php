@@ -303,35 +303,30 @@ class Objects extends AbstractCallback
         $funcList = explode(',', $this->pool->config->getSetting('debugMethods'));
         $security = $this->pool->config->security;
         foreach ($funcList as $funcName) {
-            if (is_callable(array($data, $funcName)) && $security->isAllowedDebugCall($data, $funcName)
+            // Check if:
+            // 1.) Method exists
+            // 2.) Method can be called
+            // 3.) It's not blacklisted.
+            if (method_exists($data, $funcName) &&
+                is_callable(array($data, $funcName)) &&
+                $security->isAllowedDebugCall($data, $funcName)
             ) {
-                $foundRequired = false;
-                // We need to check if this method actually exists. Just because it is
-                // callable does not mean it exists!
-                if (method_exists($data, $funcName)) {
-                    // We need to check if the callable function requires any parameters.
-                    // We will not call those, because we simply can not provide them.
-                    // Interestingly, some methods of a class are callable, but are not
-                    // implemented. This means, that when I try to get a reflection,
-                    // it will result in a WSOD.
-                    $ref = new \ReflectionMethod($data, $funcName);
-                    $params = $ref->getParameters();
-                    foreach ($params as $param) {
-                        if (!$param->isOptional()) {
-                            // We've got a required parameter!
-                            // We will not call this one.
-                            $foundRequired = true;
-                            break;
-                        }
+                $onlyOptionalParams = true;
+                // We need to check if the callable function requires any parameters.
+                // We will not call those, because we simply can not provide them.
+                $ref = new \ReflectionMethod($data, $funcName);
+                $params = $ref->getParameters();
+                /** @var \ReflectionParameter $param */
+                foreach ($params as $param) {
+                    if (!$param->isOptional()) {
+                        // We've got a required parameter!
+                        // We will not call this one.
+                        $onlyOptionalParams = false;
+                        break;
                     }
-                    unset($ref);
-                } else {
-                    // It's callable, but does not exist. Looks like a __call fallback.
-                    // We will not poll it for data.
-                    $foundRequired = true;
                 }
 
-                if (!$foundRequired) {
+                if ($onlyOptionalParams) {
                     // Add a try to prevent the hosting CMS from doing something stupid.
                     try {
                         // We need to deactivate the current error handling to
