@@ -151,12 +151,7 @@ class Config extends Fallback
      */
     public function getSetting($name)
     {
-        if (isset($this->settings[$name])) {
-            return $this->settings[$name]->getValue();
-        } else {
-            return null;
-        }
-
+        return $this->settings[$name]->getValue();
     }
 
     /**
