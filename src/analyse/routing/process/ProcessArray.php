@@ -68,7 +68,7 @@ class ProcessArray extends AbstractProcess
             // Budget array analysis.
             $model->injectCallback(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray')
-            );
+            )->addToJson('Help', $this->pool->messages->getHelp('simpleArray'));
         } else {
             // Complete array analysis.
             $model->injectCallback(

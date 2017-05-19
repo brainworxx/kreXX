@@ -401,7 +401,6 @@ class Objects extends AbstractCallback
             }
 
             // Add a try to prevent the hosting CMS from doing something stupid.
-            $count = 0;
             try {
                 // We need to deactivate the current error handling to
                 // prevent the host system to do anything stupid.
@@ -409,14 +408,9 @@ class Objects extends AbstractCallback
                     // Do nothing.
                 });
                 $parameter = iterator_to_array($data);
-                // Setting the count.
-                if (is_a($data, 'Countable')) {
-                    $count = count($data);
-                }
             } catch (\Exception $e) {
                 // Do nothing.
             }
-
 
             // Reactivate whatever error handling we had previously.
             restore_error_handler();
@@ -431,6 +425,8 @@ class Objects extends AbstractCallback
                 if ($this->pool->emergencyHandler->checkNesting()) {
                     return '';
                 }
+
+                $count = count($parameter);
 
                 /** @var Model $model */
                 $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')

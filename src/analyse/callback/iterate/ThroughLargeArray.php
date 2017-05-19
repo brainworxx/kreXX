@@ -110,13 +110,13 @@ class ThroughLargeArray extends AbstractCallback
             } elseif (is_array($value)) {
                 // Adding another array to the output may be as bad as a
                 // complete object analysis.
-                $array = 'array';
+                $array = 'simplified array analysis';
                 $model->setType($array)
                     ->setNormal('count: ' . count($value));
 
                 $output .= $this->pool->render->renderSingleChild($model);
             } else {
-                // We hande the simple type normally with the analysis hub.
+                // We handle the simple type normally with the analysis hub.
                 $output .= $this->pool->routing->analysisHub($model->setData($value));
             }
         }
