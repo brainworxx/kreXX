@@ -240,14 +240,16 @@ class File
             });
             // Make sure it is unlinkable.
             chmod($filename, 0777);
-            if (!unlink($filename)) {
+            if (unlink($filename)) {
+                restore_error_handler();
+                return;
+            } else {
                 // We have a permission problem here!
                 $this->pool->messages->addMessage(
                     $this->pool->messages->getHelp('fileserviceDelete') . $this->filterFilePath($filename)
                 );
+                restore_error_handler();
             }
-
-            restore_error_handler();
         }
     }
 
