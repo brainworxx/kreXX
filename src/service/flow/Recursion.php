@@ -158,7 +158,7 @@ class Recursion
             }
         }
 
-        // Should be a normalk array. We do not track these, because we can not
+        // Should be a normal array. We do not track these, because we can not
         // resolve them via JS recursion handling.
         return false;
     }

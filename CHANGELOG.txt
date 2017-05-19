@@ -26,6 +26,7 @@
 - Bugfix: Escaped info text about the maximum resting level.
 - Bugfix: Missing leading backslash in classname display in several
   places.
+- Bugfix: Code generation respects the scope analysis.
 
 2.2.0
 - Added more search pattern and source code parsing to the

@@ -121,6 +121,15 @@ class Scope
      */
     public function testModelForCodegen($model)
     {
+        $nestingLevel = $this->pool->emergencyHandler->getNestingLevel();
+
+        // If we are too deep at this moment, we will stop right here!
+        // Also, anything not comming fro $this is not reachable, since
+        // we are testing protected stuff here.
+        if ($nestingLevel > 2 || $this->scope !== '$this') {
+            return false;
+        }
+
         // Inherited private properties or methods are not accessible from the
         // $this scope. We need to make sure that we do not generate any code
         // for them.
@@ -132,14 +141,10 @@ class Scope
         // When analysing a class or array, we have + 1 on our nesting level, when
         // coming from the code generation. That is, because that class is currently
         // being analysed.
-        if (strpos($model->getType(), 'class') === false && strpos($model->getType(), 'array') === false) {
-            $nestingLevel = $this->pool->emergencyHandler->getNestingLevel();
-        } else {
-            $nestingLevel = $this->pool->emergencyHandler->getNestingLevel() - 1;
+        if (is_object($model->getData()) || is_array($model->getData())) {
+            --$nestingLevel;
         }
 
-
-
-        return $nestingLevel <= 1 && $this->scope === '$this';
+        return $nestingLevel === 1 && $this->scope === '$this';
     }
 }
