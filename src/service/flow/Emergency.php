@@ -100,6 +100,13 @@ class Emergency
     protected $nestingLevel = 0;
 
     /**
+     * Caqching the setting of the maximum nesting level.
+     *
+     * @var int
+     */
+    protected $maxNestingLevel;
+
+    /**
      * The pool, where we store the classes we need.
      *
      * @var Pool
@@ -138,7 +145,8 @@ class Emergency
         // Cache some settings.
         $this->maxRuntime = (int) $pool->config->getSetting('maxRuntime');
         $this->minMemoryLeft = ((int) $pool->config->getSetting('memoryLeft'))  * 1024 * 1024;
-        $this->maxCall = (int)$this->pool->config->getSetting('maxCall');
+        $this->maxCall = (int) $this->pool->config->getSetting('maxCall');
+        $this->maxNestingLevel = (int) $this->pool->config->getSetting('level');
     }
 
     /**
@@ -231,7 +239,7 @@ class Emergency
      */
     public function checkNesting()
     {
-        return ($this->nestingLevel > (int)$this->pool->config->getSetting('level'));
+        return ($this->nestingLevel > $this->maxNestingLevel);
     }
 
     /**
