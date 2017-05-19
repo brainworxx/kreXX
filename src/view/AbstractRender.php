@@ -55,6 +55,13 @@ abstract class AbstractRender
     protected $fileService;
 
     /**
+     * The name of the current skin.
+     *
+     * @var string
+     */
+    protected $skinPath;
+
+    /**
      * Injects the pool.
      *
      * @param Pool $pool
@@ -64,6 +71,7 @@ abstract class AbstractRender
     {
         $this->pool = $pool;
         $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
+        $this->skinPath = $this->pool->krexxDir . 'resources/skins/' . $this->pool->config->getSetting('skin') . '/';
     }
 
 
@@ -248,14 +256,7 @@ abstract class AbstractRender
             $fileCache[$what] = preg_replace(
                 '/\s+/',
                 ' ',
-                $this->fileService->getFileContents(
-                    $this->pool->krexxDir .
-                    'resources/skins/' .
-                    $this->pool->config->getSetting('skin') .
-                    '/' .
-                    $what .
-                    '.html'
-                )
+                $this->fileService->getFileContents($this->skinPath . $what . '.html')
             );
         }
         return $fileCache[$what];
