@@ -58,7 +58,7 @@ class ProcessObject extends AbstractProcess
         $model->setType('class')
             ->addParameter('data', $model->getData())
             ->addParameter('name', $model->getName())
-            ->setNormal(get_class($model->getData()))
+            ->setNormal('\\' . get_class($model->getData()))
             ->setDomid($this->generateDomIdFromObject($model->getData()))
             ->injectCallback(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects')

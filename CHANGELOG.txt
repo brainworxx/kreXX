@@ -24,6 +24,8 @@
 - Bugfix: Prevent large output in case of arrays with more than 100
   items.
 - Bugfix: Escaped info text about the maximum resting level.
+- Bugfix: Missing leading backslash in classname display in several
+  places.
 
 2.2.0
 - Added more search pattern and source code parsing to the

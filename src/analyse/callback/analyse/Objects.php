@@ -467,11 +467,8 @@ class Objects extends AbstractCallback
         $refConst = $ref->getConstants();
 
         if (!empty($refConst)) {
-            // We need to set al least one connector here to activate
-            // code generation, even if it is a space.
             // We've got some values, we will dump them.
-            $classname = $ref->getName();
-
+            $classname = '\\' . $ref->getName();
             return $this->pool->render->renderExpandableChild(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName('Constants')
