@@ -103,9 +103,13 @@ class Routing extends AbstractRouting
 
             if ($this->pool->emergencyHandler->checkNesting()) {
                 $this->pool->emergencyHandler->downOneNestingLevel();
-                $text = gettype($data) . ' => ' . $this->pool->messages->getHelp('maximumLevelReached');
-                $model->setData($text);
-                return $this->processString->process($model);
+                $text = $this->pool->messages->getHelp('maximumLevelReached2');
+                $model->setData($text)
+                    ->setNormal($this->pool->messages->getHelp('maximumLevelReached1'))
+                    ->setType(gettype($data))
+                    ->hasExtras();
+                // Render it directly.
+                return $this->pool->render->renderSingleChild($model);
             }
             // Handle the non simple types like array and object.
             $result = $this->handleNoneSimpleTypes($data, $model);
