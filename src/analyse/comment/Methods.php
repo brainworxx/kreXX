@@ -153,7 +153,11 @@ class Methods extends AbstractComment
             // Now we should have an array with reflections of all
             // traits in the class we are currently looking at.
             foreach ($reflection->getTraits() as $trait) {
-                if (!$this->checkComment($originalComment)) {
+                if ($this->checkComment($originalComment)) {
+                    // Looks like we've resolved them all.
+                    return $originalComment;
+                } else {
+                    // We need to look further!
                     if ($trait->hasMethod($methodName)) {
                         $traitComment = $this->prettifyComment(
                             $trait->getMethod($methodName)->getDocComment()
@@ -161,9 +165,6 @@ class Methods extends AbstractComment
                         // Replace it.
                         $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
                     }
-                } else {
-                    // Looks like we've resolved them all.
-                    return $originalComment;
                 }
             }
             // Return what we could resolve so far.
@@ -194,6 +195,10 @@ class Methods extends AbstractComment
     {
         foreach ($reflectionClass->getInterfaces() as $interface) {
             if (!$this->checkComment($originalComment)) {
+                // Looks like we've resolved them all.
+                return $originalComment;
+            } else {
+                // We need to look further.
                 if ($interface->hasMethod($methodName)) {
                     $interfaceComment = $this->prettifyComment(
                         $interface->getMethod($methodName)->getDocComment()
@@ -201,9 +206,6 @@ class Methods extends AbstractComment
                     // Replace it.
                     $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
                 }
-            } else {
-                // Looks like we've resolved them all.
-                return $originalComment;
             }
         }
         // Return what we could resolve so far.

@@ -132,16 +132,11 @@ abstract class AbstractComment
      *   The comment that we check for {@ inheritdoc}
      *
      * @return bool
-     *   Do we need to check further?
+     *   true = found them all
+     *   false = we need to look further
      */
     protected function checkComment($comment)
     {
-        if (strpos($comment, 'inheritdoc') === false) {
-            // Not found means we have done our job.
-            return true;
-        } else {
-            // We need to go deeper into the rabbit hole.
-            return false;
-        }
+        return (strpos($comment, 'inheritdoc') === false);
     }
 }
