@@ -60,11 +60,7 @@ class Security extends Fallback
         if ($group === 'feEditing') {
             // Logging options can never be changed in the frontend.
             // The debug methods will also not be editable.
-            if (in_array($name, $this->feConfigNoEdit)) {
-                return false;
-            } else {
-                return true;
-            }
+            return in_array($name, $this->feConfigNoEdit);
         }
 
 
@@ -230,11 +226,7 @@ class Security extends Fallback
                 // The Developer handle, we check it for values that are not
                 // a-z and A-Z.
                 $devHandle = preg_match('/[^a-zA-Z]/', $value);
-                if (empty($devHandle)) {
-                    $result = true;
-                } else {
-                    $result = false;
-                }
+                $result = empty($devHandle);
                 if (!$result) {
                     $this->pool->messages->addMessage(
                         $this->pool->messages->getHelp('configErrorHandle')
@@ -401,11 +393,7 @@ class Security extends Fallback
      */
     protected function evalBool($value)
     {
-        if ($value === 'true' || $value === 'false') {
-            return true;
-        } else {
-            return false;
-        }
+        return ($value === 'true' || $value === 'false');
     }
 
     /**
@@ -418,9 +406,9 @@ class Security extends Fallback
     {
         if (version_compare(phpversion(), '7.0.0', '>=')) {
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -436,12 +424,7 @@ class Security extends Fallback
      */
     protected function evalInt($value)
     {
-        $value = (int)$value;
-        if ($value > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return ((int) $value > 0);
     }
 
     /**
@@ -500,15 +483,15 @@ class Security extends Fallback
         if (in_array($remote, $whitelist)) {
             // If the ip is matched, return true.
             return true;
-        } else {
-            // Check the wildcards.
-            foreach ($whitelist as $ip) {
-                $ip = trim($ip);
-                $wildcardPos = strpos($ip, '*');
-                # Check if the ip has a wildcard
-                if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . '*' === $ip) {
-                    return true;
-                }
+        }
+        
+        // Check the wildcards.
+        foreach ($whitelist as $ip) {
+            $ip = trim($ip);
+            $wildcardPos = strpos($ip, '*');
+            # Check if the ip has a wildcard
+            if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . '*' === $ip) {
+                return true;
             }
         }
 

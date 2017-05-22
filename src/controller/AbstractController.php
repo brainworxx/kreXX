@@ -165,9 +165,8 @@ abstract class AbstractController
             // Send doctype and css/js only once.
             self::$headerSend = true;
             return $this->pool->render->renderHeader('<!DOCTYPE html>', $headline, $this->outputCssAndJs());
-        } else {
-            return $this->pool->render->renderHeader('', $headline, '');
         }
+        return $this->pool->render->renderHeader('', $headline, '');
     }
 
     /**

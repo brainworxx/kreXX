@@ -187,9 +187,8 @@ class Model
         if (is_object($this->callback)) {
             $this->callback->setParams($this->parameters);
             return $this->callback->callMe();
-        } else {
-            return '';
         }
+        return '';
     }
 
     /**

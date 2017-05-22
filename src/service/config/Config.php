@@ -450,13 +450,13 @@ class Config extends Fallback
      */
     public function getChunkDir()
     {
-        if (!empty($GLOBALS['kreXXoverwrites']['directories']['chunks'])) {
-            // Return the Overwrites
-            return $GLOBALS['kreXXoverwrites']['directories']['chunks'] . DIRECTORY_SEPARATOR;
-        } else {
+        if (empty($GLOBALS['kreXXoverwrites']['directories']['chunks'])) {
             // Return the standard settings.
             return $this->pool->krexxDir . 'chunks' . DIRECTORY_SEPARATOR;
         }
+        // Return the Overwrites
+        return $GLOBALS['kreXXoverwrites']['directories']['chunks'] . DIRECTORY_SEPARATOR;
+
     }
 
     /**
@@ -467,12 +467,12 @@ class Config extends Fallback
      */
     public function getLogDir()
     {
-        if (!empty($GLOBALS['kreXXoverwrites']['directories']['log'])) {
-            // Return the Overwrites
-            return $GLOBALS['kreXXoverwrites']['directories']['log'] . DIRECTORY_SEPARATOR;
-        } else {
+        if (empty($GLOBALS['kreXXoverwrites']['directories']['log'])) {
+            // Return the standard settings.
             return $this->pool->krexxDir . 'log' . DIRECTORY_SEPARATOR;
         }
+        // Return the Overwrites
+        return $GLOBALS['kreXXoverwrites']['directories']['log'] . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -483,11 +483,11 @@ class Config extends Fallback
      */
     public function getPathToIniFile()
     {
-        if (!empty($GLOBALS['kreXXoverwrites']['directories']['config'])) {
-            // Return the Overwrites
-            return $GLOBALS['kreXXoverwrites']['directories']['config'] . DIRECTORY_SEPARATOR . 'Krexx.ini';
-        } else {
+        if (empty($GLOBALS['kreXXoverwrites']['directories']['config'])) {
+            // Return the standard settings.
             return $this->pool->krexxDir . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
         }
+        // Return the Overwrites
+        return $GLOBALS['kreXXoverwrites']['directories']['config'] . DIRECTORY_SEPARATOR . 'Krexx.ini';
     }
 }

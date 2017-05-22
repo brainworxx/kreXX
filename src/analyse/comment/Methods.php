@@ -90,41 +90,41 @@ class Methods extends AbstractComment
         if ($this->checkComment($comment)) {
             // Found it!
             return trim($comment);
-        } else {
-            // Check for interfaces.
-            $comment = $this->getInterfaceComment($comment, $reflectionClass, $reflectionMethod->name);
         }
+
+        // Check for interfaces.
+        $comment = $this->getInterfaceComment($comment, $reflectionClass, $reflectionMethod->name);
 
         if ($this->checkComment($comment)) {
             // Found it!
             return trim($comment);
-        } else {
-            // Check for traits.
-            $comment = $this->getTraitComment($comment, $reflectionClass, $reflectionMethod->name);
         }
+
+        // Check for traits.
+        $comment = $this->getTraitComment($comment, $reflectionClass, $reflectionMethod->name);
 
         if ($this->checkComment($comment)) {
             // Found it!
             return trim($comment);
-        } else {
-            // Nothing on this level, we need to take a look at the parent.
-            try {
-                $parentReflection = $reflectionClass->getParentClass();
-                if (is_object($parentReflection)) {
-                    $parentMethod = $parentReflection->getMethod($reflectionMethod->name);
-                    if (is_object($parentMethod)) {
-                        // Going deeper into the rabid hole!
-                        $comment = trim($this->getMethodComment($parentMethod, $parentReflection));
-                    }
+        }
+
+        // Nothing on this level, we need to take a look at the parent.
+        try {
+            $parentReflection = $reflectionClass->getParentClass();
+            if (is_object($parentReflection)) {
+                $parentMethod = $parentReflection->getMethod($reflectionMethod->name);
+                if (is_object($parentMethod)) {
+                    // Going deeper into the rabid hole!
+                    $comment = trim($this->getMethodComment($parentMethod, $parentReflection));
                 }
-            } catch (\ReflectionException $e) {
-                // Too deep, comment not found :-(
             }
-
-            // Still here? Tell the dev that we could not resolve the comment.
-            $comment = $this->replaceInheritComment($comment, '::could not resolve {@inheritdoc} comment::');
-            return trim($comment);
+        } catch (\ReflectionException $e) {
+            // Too deep, comment not found :-(
         }
+
+        // Still here? Tell the dev that we could not resolve the comment.
+        $comment = $this->replaceInheritComment($comment, '::could not resolve {@inheritdoc} comment::');
+        return trim($comment);
     }
 
     /**
@@ -156,23 +156,22 @@ class Methods extends AbstractComment
                 if ($this->checkComment($originalComment)) {
                     // Looks like we've resolved them all.
                     return $originalComment;
-                } else {
-                    // We need to look further!
-                    if ($trait->hasMethod($methodName)) {
-                        $traitComment = $this->prettifyComment(
-                            $trait->getMethod($methodName)->getDocComment()
-                        );
-                        // Replace it.
-                        $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
-                    }
+                }
+                // We need to look further!
+                if ($trait->hasMethod($methodName)) {
+                    $traitComment = $this->prettifyComment(
+                        $trait->getMethod($methodName)->getDocComment()
+                    );
+                    // Replace it.
+                    $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
                 }
             }
             // Return what we could resolve so far.
             return $originalComment;
-        } else {
-            // Wrong PHP version. Traits are not available.
-            return $originalComment;
         }
+
+        // Wrong PHP version. Traits are not available.
+        return $originalComment;
     }
 
     /**
@@ -197,15 +196,12 @@ class Methods extends AbstractComment
             if (!$this->checkComment($originalComment)) {
                 // Looks like we've resolved them all.
                 return $originalComment;
-            } else {
-                // We need to look further.
-                if ($interface->hasMethod($methodName)) {
-                    $interfaceComment = $this->prettifyComment(
-                        $interface->getMethod($methodName)->getDocComment()
-                    );
-                    // Replace it.
-                    $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
-                }
+            }
+            // We need to look further.
+            if ($interface->hasMethod($methodName)) {
+                $interfaceComment = $this->prettifyComment($interface->getMethod($methodName)->getDocComment());
+                // Replace it.
+                $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
             }
         }
         // Return what we could resolve so far.

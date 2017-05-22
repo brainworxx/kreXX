@@ -133,10 +133,10 @@ class Objects extends AbstractCallback
             // properties.
             if ($this->pool->config->getSetting('analysePrivate')) {
                 $reflectionClass = $reflectionClass->getParentClass();
-            } else {
-                // This should break the do while.
-                $reflectionClass = false;
             }
+
+            // This should break the do while.
+            $reflectionClass = false;
         } while (is_object($reflectionClass));
 
         usort($refProps, array($this, 'sortingCallback'));
@@ -518,13 +518,13 @@ class Objects extends AbstractCallback
             $model->setName($label)
                 ->setType('class internals');
             return $this->pool->render->renderExpandableChild($model);
-        } else {
-            // Public properties.
-            // We render them directly in the object "root", so we call
-            // the render directly.
-            // $model->setAdditional($label);
-            return $model->renderMe();
         }
+
+        // Public properties.
+        // We render them directly in the object "root", so we call
+        // the render directly.
+        // $model->setAdditional($label);
+        return $model->renderMe();
     }
 
     /**

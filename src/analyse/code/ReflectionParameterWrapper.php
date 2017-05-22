@@ -122,11 +122,9 @@ class ReflectionParameterWrapper
         $parameterClass = $reflectionParameter->getClass();
         if (is_a($parameterClass, 'ReflectionClass')) {
             $this->parameterType = $reflectionParameter->getClass()->name;
-        } else {
+        } elseif ($reflectionParameter->isArray()) {
             // Check for array
-            if ($reflectionParameter->isArray()) {
-                $this->parameterType = 'array';
-            }
+            $this->parameterType = 'array';
         }
 
         // Check for default value.

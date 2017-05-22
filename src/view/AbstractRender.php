@@ -154,9 +154,9 @@ abstract class AbstractRender
                 $connector,
                 $this->getTemplateFileContent('connector')
             );
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -278,10 +278,9 @@ abstract class AbstractRender
     {
         if ($data  === '') {
             return '';
-        } else {
-            return ' data-' . $name . '=\'' . $data . '\' ';
         }
 
+        return ' data-' . $name . '=\'' . $data . '\' ';
     }
 
     /**

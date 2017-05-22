@@ -245,9 +245,10 @@ class Codegen
         if (strpos($type, 'method') === false) {
             // This is not a method.
             return self::PROPERTY;
-        } else {
-            return self::METHOD;
         }
+        // Looks like a method to me.
+        return self::METHOD;
+
     }
 
     /**

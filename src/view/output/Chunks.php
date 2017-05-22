@@ -147,10 +147,10 @@ class Chunks
             $this->fileService->putFileContents($this->chunkDir . $key . '.Krexx.tmp', $string);
             // Return the first part plus the key.
             return '@@@' . $key . '@@@';
-        } else {
-            // Return the original, because it's too small.
-            return $string;
         }
+
+        // Return the original, because it's too small.
+        return $string;
     }
 
     /**
@@ -189,15 +189,15 @@ class Chunks
             $string = $this->fileService->getFileContents($filename);
             // Delete it, we don't need it anymore.
             $this->fileService->deleteFile($filename);
-        } else {
-            // Huh, we can not fully access this one.
-            $string = 'Could not access chunk file ' . $filename;
-            $this->pool->messages->addMessage(
-                $this->pool->messages->getHelp('chunkserviceAccess') . $filename
-            );
-        }
 
-        return $string;
+            return $string;
+        }
+        // Huh, we can not fully access this one.
+        $this->pool->messages->addMessage(
+            $this->pool->messages->getHelp('chunkserviceAccess') . $filename
+        );
+        return 'Could not access chunk file ' . $filename;;
+
     }
 
     /**

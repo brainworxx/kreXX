@@ -139,12 +139,10 @@ class Recursion
         // Check objects.
         if (is_object($bee)) {
             // Retrieve a possible hash.
-            $objectHash = spl_object_hash($bee);
-            if (isset($this->recursionHive[$objectHash])) {
+            if (isset($this->recursionHive[spl_object_hash($bee)])) {
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
 
         // Check arrays (only the $GLOBAL array may apply).
@@ -152,10 +150,10 @@ class Recursion
             // We render the $GLOBALS only once.
             if ($this->globalsWereRendered) {
                 return true;
-            } else {
-                $this->globalsWereRendered = true;
-                return false;
             }
+            
+            $this->globalsWereRendered = true;
+            return false;
         }
 
         // Should be a normal array. We do not track these, because we can not

@@ -148,18 +148,17 @@ class ThroughGetter extends AbstractCallback
                 ->setNormal($noInfoMessage);
             // We render this right away, without any routing.
             return $this->pool->render->renderSingleChild($model);
-        } else {
-             // We've got ourselves a possible result!
-            $refProp->setAccessible(true);
-            $value = $refProp->getValue($this->parameters['data']);
-            $model->setData($value);
-            if (is_null($value)) {
-                // A NULL value might mean that the values does not
-                // exist, until the getter computes it.
-                $model->addToJson('hint', $this->pool->messages->getHelp('getterNull'));
-            }
-            return $this->pool->routing->analysisHub($model);
         }
+        // We've got ourselves a possible result!
+        $refProp->setAccessible(true);
+        $value = $refProp->getValue($this->parameters['data']);
+        $model->setData($value);
+        if (is_null($value)) {
+            // A NULL value might mean that the values does not
+            // exist, until the getter computes it.
+            $model->addToJson('hint', $this->pool->messages->getHelp('getterNull'));
+        }
+        return $this->pool->routing->analysisHub($model);
     }
 
     /**

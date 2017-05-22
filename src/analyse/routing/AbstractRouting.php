@@ -128,9 +128,9 @@ abstract class AbstractRouting
     {
         if (is_object($data)) {
             return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_' . spl_object_hash($data);
-        } else {
-            // Do nothing.
-            return '';
         }
+
+        // Do nothing.
+        return '';
     }
 }

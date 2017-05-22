@@ -176,13 +176,13 @@ class Routing extends AbstractRouting
             if (is_a($data, '\\Closure')) {
                 // Closures are handled differently than normal objects
                 return $this->processClosure->process($model);
-            } else {
-                // Normal object.
-                return $this->processObject->process($model);
             }
-        } else {
-            // Array?
-            return $this->processArray->process($model);
+            // Normal object.
+            return $this->processObject->process($model);
         }
+
+        // Must be an array.
+        return $this->processArray->process($model);
+
     }
 }

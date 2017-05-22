@@ -62,7 +62,7 @@ class Emergency
      *
      * @var bool
      */
-    protected $enabled = true;
+    protected $disabled = false;
 
     /**
      * Has this one failed before?
@@ -155,9 +155,9 @@ class Emergency
      * @param $bool
      *  Whether it is enabled, or not.
      */
-    public function setEnable($bool)
+    public function setDisable($bool)
     {
-        $this->enabled = $bool;
+        $this->disabled = $bool;
     }
 
     /**
@@ -170,7 +170,7 @@ class Emergency
      */
     public function checkEmergencyBreak()
     {
-        if (!$this->enabled) {
+        if ($this->disabled) {
             // Tell them, everything is OK!
             return false;
         }
