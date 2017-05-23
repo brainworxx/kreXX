@@ -78,8 +78,8 @@ class Fallback
         ),
         'runtime' => array(
             'detectAjax' => 'true',
-            'level' => '10',
-            'maxCall' => '20',
+            'level' => '5',
+            'maxCall' => '10',
             'maxRuntime' => '60',
             'memoryLeft' => '64',
             'useScopeAnalysis' => 'true',
