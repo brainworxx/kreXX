@@ -198,10 +198,16 @@ class Connectors
                 break;
 
             case $this::METHOD:
+                if (empty($params)) {
+                    return '()';
+                }
                 return '(<small>' . $params . '</small>)';
                 break;
 
             case $this::STATIC_METHOD:
+                if (empty($params)) {
+                    return '()';
+                }
                 return '(<small>' . $params . '</small>)';
                 break;
 
