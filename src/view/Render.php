@@ -68,7 +68,10 @@ class Render extends AbstractRender
                 $this->renderConnector($model->getConnector1()),
                 $this->renderHelp($model),
                 $this->renderConnector($model->getConnector2()),
-                $this->generateDataAttribute('source', $this->pool->codegenHandler->generateSource($model)),
+                $this->generateDataAttribute(
+                    'source',
+                    $this->pool->codegenHandler->generateSource($model)
+                ),
             ),
             $this->getTemplateFileContent('recursion')
         );

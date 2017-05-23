@@ -272,7 +272,7 @@ class Render extends \Brainworxx\Krexx\View\Render
     }
 
     /**
-     * Do nothing. Help stuff is implemented vis javascript json.
+     * Do nothing. Help stuff is implemented via javascript json.
      *
      * @param \Brainworxx\Krexx\Analyse\Model $model
      * @return string
@@ -282,40 +282,4 @@ class Render extends \Brainworxx\Krexx\View\Render
          return '';
     }
 
-    /**
-     * Some special escaping for the json output
-     *
-     * @param array $array
-     *   The string we want to special-escape
-     * @return string
-     *   The json from the array.
-     */
-    protected function encodeJson(array $array)
-    {
-        // No data, no json!
-        if (empty($array)) {
-            return '';
-        }
-
-        // Our js has some problems with single quotes and escaped quotes.
-        // We remove them as well as linebreaks.
-        // Unicode greater-than aund smaller-then values.
-        return json_encode(str_replace(
-            array(
-                '"',
-                "'",
-                '&quot;',
-                '&lt;',
-                '&gt;',
-            ),
-            array(
-                "\\u0027",
-                "\\u0022",
-                "\\u0027",
-                "\\u276E",
-                "\\u02C3",
-            ),
-            $array
-        ));
-    }
 }

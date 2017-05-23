@@ -263,8 +263,59 @@ abstract class AbstractRender
     }
 
     /**
+     * Some special escaping for the json output
+     *
+     * @param array $array
+     *   The string we want to special-escape
+     * @return string
+     *   The json from the array.
+     */
+    protected function encodeJson(array $array)
+    {
+        // No data, no json!
+        if (empty($array)) {
+            return '';
+        }
+
+        return json_encode($this->jsonEscape($array));
+    }
+
+    /**
+     * Do some special escaping for the json and data attribute output.
+     *
+     * @param string|array $data
+     *
+     * @return string|array
+     *   The escaped json
+     */
+    protected function jsonEscape($data)
+    {
+        // Our js has some problems with single quotes and escaped quotes.
+        // We remove them as well as linebreaks.
+        // Unicode greater-than aund smaller-then values.
+        return str_replace(
+            array(
+                '"',
+                "'",
+                '&quot;',
+                '&lt;',
+                '&gt;',
+            ),
+            array(
+                "\\u0027",
+                "\\u0022",
+                "\\u0027",
+                "\\u276E",
+                "\\u02C3",
+            ),
+            $data
+        );
+    }
+
+    /**
      * Generates a data attribute, to be inserted into the HTML tags.
      * If no value is in the data, we return an empty string.
+     * Double quotes gets replaced by &#34;
      *
      * @param string $name
      *   The name of the attribute (without the 'data-' in front
@@ -280,7 +331,7 @@ abstract class AbstractRender
             return '';
         }
 
-        return ' data-' . $name . '=\'' . $data . '\' ';
+        return ' data-' . $name . '="' . str_replace('"', '&#34;', $data) . '" ';
     }
 
     /**
