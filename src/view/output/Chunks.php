@@ -196,7 +196,7 @@ class Chunks
         $this->pool->messages->addMessage(
             $this->pool->messages->getHelp('chunkserviceAccess') . $filename
         );
-        return 'Could not access chunk file ' . $filename;;
+        return 'Could not access chunk file ' . $filename;
 
     }
 
@@ -295,8 +295,8 @@ class Chunks
             if (!empty($chunkList)) {
                 $now = time();
                 foreach ($chunkList as $file) {
-                    // We delete everything that is older than one hour.
-                    if ((filemtime($file) + 3600) < $now) {
+                    // We delete everything that is older than 15 minutes.
+                    if ((filemtime($file) + 900) < $now) {
                         $this->fileService->deleteFile($file);
                     }
                 }
