@@ -102,16 +102,14 @@ class ThroughLargeArray extends AbstractCallback
 
             if (is_object($value)) {
                 // We will not go too deep here, and say only what it is.
-                $className = get_class($value);
                 $model->setType('simplified class analysis')
-                    ->setNormal($className);
+                    ->setNormal(get_class($value));
 
                 $output .= $this->pool->render->renderSingleChild($model);
             } elseif (is_array($value)) {
                 // Adding another array to the output may be as bad as a
                 // complete object analysis.
-                $array = 'simplified array analysis';
-                $model->setType($array)
+                $model->setType('simplified array analysis')
                     ->setNormal('count: ' . count($value));
 
                 $output .= $this->pool->render->renderSingleChild($model);

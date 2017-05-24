@@ -250,7 +250,7 @@ abstract class AbstractController
      *
      * We disable the tick callback and the error handler during
      * a analysis, to generate faster output. We also disable
-     * other kreeXX calles, which may be caused by the debug callbacks
+     * other kreXX calls, which may be caused by the debug callbacks
      * to prevent kreXX from starting other kreXX calls.
      *
      * @return $this
@@ -270,7 +270,7 @@ abstract class AbstractController
      * Re-enable the fatal handler and the tick callback.
      *
      * We disable the tick callback and the error handler during
-     * a analysis, to generate faster output. We reenable kreXX
+     * a analysis, to generate faster output. We re-enable kreXX
      * afterwards, so the dev can use it again.
      *
      * @return $this

@@ -82,10 +82,9 @@ class Help
      */
     public function getHelp($what)
     {
-        $result = '';
         if (isset($this->helpArray[$what])) {
-            $result = $this->helpArray[$what];
+            return $this->helpArray[$what];
         }
-        return $result;
+        return '';
     }
 }

@@ -50,6 +50,18 @@ abstract class AbstractComment
     protected $pool;
 
     /**
+     * Pattern for the finding of inherited comments.
+     *
+     * @var array
+     */
+    protected $inheritedCommentPattern = array(
+        '{@inheritdoc}',
+        '{inheritdoc}',
+        '@inheritdoc',
+        'inheritdoc'
+    );
+
+    /**
      * Inject the pool
      *
      * @param Pool $pool
@@ -116,13 +128,7 @@ abstract class AbstractComment
      */
     protected function replaceInheritComment($originalComment, $comment)
     {
-        $search = array(
-            '{@inheritdoc}',
-            '{inheritdoc}',
-            '@inheritdoc',
-            'inheritdoc'
-        );
-        return str_ireplace($search, $comment, $originalComment);
+        return str_ireplace($this->inheritedCommentPattern, $comment, $originalComment);
     }
 
     /**

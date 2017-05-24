@@ -403,8 +403,7 @@ class Config extends Fallback
         // Do we have a value in the cookies?
         if (isset($config[$name]) && $this->security->evaluateSetting($group, $name, $config[$name])) {
             // We escape them, just in case.
-            $value = htmlspecialchars($config[$name]);
-            return $value;
+            return htmlspecialchars($config[$name]);
         }
 
         // Still here?

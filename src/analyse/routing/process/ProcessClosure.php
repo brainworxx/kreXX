@@ -65,12 +65,9 @@ class ProcessClosure extends AbstractProcess
 
         // Adding the sourcecode
         $highlight = $ref->getStartLine() -1;
-        $from = $highlight - 3;
-        $to = $ref->getEndLine() -1;
-        $file = $ref->getFileName();
         $result['source'] = $this->pool
             ->createClass('Brainworxx\\Krexx\\Service\\Misc\\File')
-            ->readSourcecode($file, $highlight, $from, $to);
+            ->readSourcecode($ref->getFileName(), $highlight, $highlight - 3, $ref->getEndLine() -1);
 
         // Adding the place where it was declared.
         $result['declared in'] = $this->pool

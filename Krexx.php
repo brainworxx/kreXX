@@ -192,8 +192,7 @@ class Krexx
     public static function __callStatic($name, array $arguments)
     {
         // Do we gave a handle?
-        $handle = self::$pool->config->getDevHandler();
-        if ($name === $handle) {
+        if ($name === self::$pool->config->getDevHandler()) {
             // We do a standard-open.
             if (isset($arguments[0])) {
                 self::open($arguments[0]);

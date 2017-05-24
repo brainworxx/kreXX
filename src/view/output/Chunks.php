@@ -276,7 +276,7 @@ class Chunks
             // Remove the old metadata file. We still have all it's content
             // available in $this->metadata.
             $this->fileService->deleteFile($filename . '.json');
-            // Create a new metadata file with new infos.
+            // Create a new metadata file with new info.
             $this->fileService->putFileContents($filename . '.json', json_encode($this->metadata));
         }
     }
@@ -361,7 +361,7 @@ class Chunks
      */
     public function __destruct()
     {
-        // Get a list of all chunk files from thei run
+        // Get a list of all chunk files from the run.
         $chunkList = glob($this->chunkDir . $this->fileStamp . '_*');
         if (!empty($chunkList)) {
             // Delete them all!
@@ -369,7 +369,5 @@ class Chunks
                 $this->fileService->deleteFile($file);
             }
         }
-
-
     }
 }

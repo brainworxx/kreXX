@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\Flow;
 
-use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -151,7 +150,7 @@ class Recursion
             if ($this->globalsWereRendered) {
                 return true;
             }
-            
+
             $this->globalsWereRendered = true;
             return false;
         }

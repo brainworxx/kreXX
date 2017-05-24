@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
-use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**

@@ -60,7 +60,6 @@ class Objects extends AbstractCallback
     public function callMe()
     {
         $data = $this->parameters['data'];
-        $name = $this->parameters['name'];
         $output = $this->pool->render->renderSingeChildHr();
 
         $ref = new \ReflectionClass($data);
@@ -95,7 +94,7 @@ class Objects extends AbstractCallback
 
         // Dumping traversable data.
         if ($this->pool->config->getSetting('analyseTraversable')) {
-            $output .= $this->getTraversableData($data, $name);
+            $output .= $this->getTraversableData($data, $this->parameters['name']);
         }
 
         // Dumping all configured debug functions.
@@ -117,9 +116,9 @@ class Objects extends AbstractCallback
     protected function getPrivateProperties(\ReflectionClass $ref)
     {
         $output = '';
-        $data = $this->parameters['data'];
         $refProps = array();
         $reflectionClass = $ref;
+        $analysePrivate = $this->pool->config->getSetting('analysePrivate');
 
         // The main problem here is, that you only get the private properties of
         // the current class, but not the inherited private properties.
@@ -131,17 +130,22 @@ class Objects extends AbstractCallback
             // Inherited private properties are not accessible from inside
             // the class. We will only dump them, if we are analysing private
             // properties.
-            if ($this->pool->config->getSetting('analysePrivate')) {
+            if ($analysePrivate) {
                 $reflectionClass = $reflectionClass->getParentClass();
+            } else {
+                // This should break the do while.
+                break;
             }
-
-            // This should break the do while.
-            $reflectionClass = false;
         } while (is_object($reflectionClass));
 
         usort($refProps, array($this, 'sortingCallback'));
         if (!empty($refProps)) {
-            $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Private properties');
+            $output .= $this->getReflectionPropertiesData(
+                $refProps,
+                $ref,
+                $this->parameters['data'],
+                'Private properties'
+            );
         }
 
         return $output;
@@ -158,17 +162,19 @@ class Objects extends AbstractCallback
      */
     protected function getProtectedProperties(\ReflectionClass $ref)
     {
-        $output = '';
-        $data = $this->parameters['data'];
-
         $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
         usort($refProps, array($this, 'sortingCallback'));
 
         if (!empty($refProps)) {
-            $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Protected properties');
+            return $this->getReflectionPropertiesData(
+                $refProps,
+                $ref,
+                $this->parameters['data'],
+                'Protected properties'
+            );
         }
 
-        return $output;
+        return '';
     }
 
     /**
@@ -182,7 +188,6 @@ class Objects extends AbstractCallback
      */
     protected function getPublicProperties(\ReflectionClass $ref)
     {
-        $output = '';
         $data = $this->parameters['data'];
 
         $refProps = $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
@@ -208,13 +213,13 @@ class Objects extends AbstractCallback
 
         if (!empty($refProps)) {
             usort($refProps, array($this, 'sortingCallback'));
-            $output .= $this->getReflectionPropertiesData($refProps, $ref, $data, 'Public properties');
             // Adding a HR to reflect that the following stuff are not public
             // properties anymore.
-            $output .= $this->pool->render->renderSingeChildHr();
+            return $this->getReflectionPropertiesData($refProps, $ref, $data, 'Public properties') .
+                $this->pool->render->renderSingeChildHr();
         }
 
-        return $output;
+        return '';
     }
 
     /**
@@ -421,8 +426,6 @@ class Objects extends AbstractCallback
                     return '';
                 }
 
-                $count = count($parameter);
-
                 /** @var Model $model */
                 $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName($name)
@@ -431,7 +434,7 @@ class Objects extends AbstractCallback
                     ->addParameter('data', $parameter)
                     ->addParameter('multiline', $multiline);
                 // This one is huge!
-                if ($count > $this->pool->config->arrayCountLimit) {
+                if (count($parameter) > $this->pool->config->arrayCountLimit) {
                     $model->injectCallback(
                         $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray')
                     )->setNormal('Simplified Traversable Info')
@@ -556,7 +559,8 @@ class Objects extends AbstractCallback
             foreach ($methodList as $key => $method) {
                 if (strpos($method->getName(), 'get') === 0) {
                     // We only dump those that have no parameters.
-                    if (!empty($method->getParameters())) {
+                    $parameters = $method->getParameters();
+                    if (!empty($parameters)) {
                         unset($methodList[$key]);
                     }
                 } else {

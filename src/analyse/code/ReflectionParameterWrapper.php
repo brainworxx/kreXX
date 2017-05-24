@@ -119,8 +119,7 @@ class ReflectionParameterWrapper
         $this->isOptional = $reflectionParameter->isOptional();
 
         // Check for type value
-        $parameterClass = $reflectionParameter->getClass();
-        if (is_a($parameterClass, 'ReflectionClass')) {
+        if (is_a($reflectionParameter->getClass(), 'ReflectionClass')) {
             $this->parameterType = $reflectionParameter->getClass()->name;
         } elseif ($reflectionParameter->isArray()) {
             // Check for array
@@ -131,9 +130,9 @@ class ReflectionParameterWrapper
         if ($reflectionParameter->isDefaultValueAvailable()) {
             $default = $reflectionParameter->getDefaultValue();
             if (is_object($default)) {
-                $this->defaultValue = get_class($reflectionParameter->getDefaultValue());
+                $this->defaultValue = get_class($default);
             } else {
-                $this->defaultValue = $this->pool->encodeString($reflectionParameter->getDefaultValue());
+                $this->defaultValue = $this->pool->encodeString($default);
             }
         }
         return $this;

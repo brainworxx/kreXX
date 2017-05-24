@@ -177,8 +177,7 @@ class Connectors
      */
     public function getConnector2($cap)
     {
-        $length = strlen($this->params);
-        if ($cap > 0 && $length > $cap) {
+        if ($cap > 0 && strlen($this->params) > $cap) {
             $params = substr($this->params, 0, $cap) . ' . . . ';
         } else {
             $params = $this->params;

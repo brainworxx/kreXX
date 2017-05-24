@@ -131,8 +131,7 @@ class Emergency
         $this->pool = $pool;
 
         // Cache the server memory limit.
-        $limit = strtoupper(ini_get('memory_limit'));
-        if (preg_match('/^(\d+)(.)$/', $limit, $matches)) {
+        if (preg_match('/^(\d+)(.)$/', strtoupper(ini_get('memory_limit')), $matches)) {
             if ($matches[2] === 'M') {
                 // Megabyte.
                 $this->serverMemoryLimit = $matches[1] * 1024 * 1024;

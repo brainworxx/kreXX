@@ -65,12 +65,11 @@ class Factory
     public function createClass($classname)
     {
         // Check for possible overwrite.
-        if (!empty($this->rewrite[$classname])) {
+        if (isset($this->rewrite[$classname])) {
             $classname = $this->rewrite[$classname];
         }
-        $object = new $classname($this);
-
-        return $object;
+        
+        return new $classname($this);
     }
 
     /**

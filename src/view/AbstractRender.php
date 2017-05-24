@@ -292,7 +292,7 @@ abstract class AbstractRender
     {
         // Our js has some problems with single quotes and escaped quotes.
         // We remove them as well as linebreaks.
-        // Unicode greater-than aund smaller-then values.
+        // Unicode greater-than and smaller-then values.
         return str_replace(
             array(
                 '"',
@@ -468,7 +468,7 @@ abstract class AbstractRender
      *   The configured doctype.
      *
      * @return string
-     *   The templatefile, with all markers replaced.
+     *   The template file, with all markers replaced.
      */
     abstract public function renderFatalHeader($cssJs, $doctype);
 

@@ -51,7 +51,7 @@ class Codegen
     const STOP = 'stop';
     const PROPERTY = 'property';
     const METHOD = 'method';
-    const CONCATINATION = 'concatenation';
+    const CONCATENATION = 'concatenation';
 
 
     /**
@@ -107,30 +107,28 @@ class Codegen
 
         $result = '';
         // We will not generate anything for function analytic data.
-        $connector2 = trim($model->getConnector2(), ' = ');
-
         $isConstants = $model->getType() === 'class internals' && $model->getName() === 'Constants';
-        if ($model->getConnector1() . $connector2 === '' && $this->counter !== 0 && !$isConstants) {
+        if ($model->getConnector1() . $model->getConnector2() === '' && $this->counter !== 0 && !$isConstants) {
             // No connectors mean, we are dealing with some meta stuff, like functions
             // We will not add anything for them.
         } else {
             // Simply fuse the connectors.
             // The connectors are a representation of the current used "language".
             switch ($this->analyseType($model)) {
-                case self::CONCATINATION:
+                case self::CONCATENATION:
                     $result = $this->concatenation($model);
                     break;
 
                 case self::METHOD:
                     // We will not create a reflection in the generated code.
-                    // The dots tell the js to stop the code concatination right
+                    // The dots tell the js to stop the code concatenation right
                     // there.
                     $result = '. . .';
                     break;
 
                 case self::PROPERTY:
                     // We will not create a reflection in the generated code.
-                    // The dots tell the js to stop the code concatination right
+                    // The dots tell the js to stop the code concatenation right
                     // there.
                     $result = '. . .';
                     break;
@@ -211,11 +209,11 @@ class Codegen
     protected function analyseType(Model $model)
     {
         $type = $model->getType();
-        $multiline = $model->getMultiLineCodeGen();
+
 
         // Debug methods are always public.
         if ($type === 'debug method' || $this->counter === 0) {
-            return self::CONCATINATION;
+            return self::CONCATENATION;
         }
 
         // Test for constants.
@@ -225,6 +223,7 @@ class Codegen
         }
 
         // Test for  multiline code generation.
+        $multiline = $model->getMultiLineCodeGen();
         if (!empty($multiline)) {
             return $multiline;
         }
@@ -232,13 +231,13 @@ class Codegen
         // Test for protected or private.
         if (strpos($type, 'protected') === false && strpos($type, 'private') === false) {
             // Is not protected.
-            return self::CONCATINATION;
+            return self::CONCATENATION;
         }
 
         // Test if we are inside the scope.
         if ($this->pool->scope->testModelForCodegen($model)) {
             // We are inside the scope, this value, function or class is reachable.
-            return self::CONCATINATION;
+            return self::CONCATENATION;
         }
 
         // We are still here? Must be a protected method or property.

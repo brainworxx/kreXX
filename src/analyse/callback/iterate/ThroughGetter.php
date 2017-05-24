@@ -89,8 +89,6 @@ class ThroughGetter extends AbstractCallback
     public function callMe()
     {
         $output = '';
-        /** @var \reflectionClass $ref */
-        $ref = $this->parameters['ref'];
 
         /** @var \ReflectionMethod $reflectionMethod */
         foreach ($this->parameters['methodList'] as $reflectionMethod) {
@@ -104,7 +102,7 @@ class ThroughGetter extends AbstractCallback
             $comments = nl2br($this
                 ->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods')
-                ->getComment($reflectionMethod, $ref));
+                ->getComment($reflectionMethod, $this->parameters['ref']));
 
             /** @var Model $model */
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
@@ -261,8 +259,7 @@ class ThroughGetter extends AbstractCallback
         // Execute our search pattern.
         // Right now, we are trying to get to properties that way.
         // Later on, we may also try to parse deeper for stuff.
-        $pattern = array('return $this->', ';');
-        $findings = $this->findIt($pattern, $sourcecode);
+        $findings = $this->findIt(array('return $this->', ';'), $sourcecode);
 
         foreach ($findings as $propertyName) {
             // Check if this is a property and return the first we find.

@@ -85,8 +85,8 @@ class ThroughMethods extends AbstractCallback
                 $reflectionParameterWrapper = $this->pool
                     ->createClass('Brainworxx\\Krexx\\Analyse\\Code\\ReflectionParameterWrapper')
                     ->setReflectionParameter($reflectionParameter);
-                $methodData['Parameter #' . $key] = $reflectionParameterWrapper;
 
+                $methodData['Parameter #' . $key] = $reflectionParameterWrapper;
                 $paramList .= $reflectionParameterWrapper . ', ';
             }
 
@@ -142,13 +142,12 @@ class ThroughMethods extends AbstractCallback
             ->createClass('Brainworxx\\Krexx\\Service\\Misc\\File')
             ->filterFilePath($declaringClass->getFileName());
 
-        if (is_null($filename) || empty($filename)) {
-            $result = ':: unable to determine declaration ::\n\nMaybe this is a predeclared class?';
-        } else {
-            $result = $filename . "\n";
-            $result .= 'in class: ' . $declaringClass->getName() . "\n";
-            $result .= 'in line: ' . $reflectionMethod->getStartLine();
+        if (empty($filename)) {
+            return ':: unable to determine declaration ::\n\nMaybe this is a predeclared class?';
         }
+        $result = $filename . "\n";
+        $result .= 'in class: ' . $declaringClass->getName() . "\n";
+        $result .= 'in line: ' . $reflectionMethod->getStartLine();
 
         return $result;
     }
