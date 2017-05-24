@@ -101,9 +101,8 @@ abstract class AbstractComment
         // We split our comment into single lines and remove the unwanted
         // comment chars with the array_map callback.
         // We skip lines with /** and */
-        $commentArray = array_slice(explode("\n", $comment), 1, -1);
         $result = array();
-        foreach ($commentArray as $commentLine) {
+        foreach (array_slice(explode("\n", $comment), 1, -1) as $commentLine) {
             // Remove comment-chars and trim the whitespace.
             $result[] = trim($commentLine, "* \t\n\r\0\x0B");
         }

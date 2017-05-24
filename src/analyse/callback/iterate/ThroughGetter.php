@@ -256,12 +256,11 @@ class ThroughGetter extends AbstractCallback
             $reflectionMethod->getStartLine(),
             $reflectionMethod->getEndLine()
         );
+        
         // Execute our search pattern.
         // Right now, we are trying to get to properties that way.
         // Later on, we may also try to parse deeper for stuff.
-        $findings = $this->findIt(array('return $this->', ';'), $sourcecode);
-
-        foreach ($findings as $propertyName) {
+        foreach ($this->findIt(array('return $this->', ';'), $sourcecode) as $propertyName) {
             // Check if this is a property and return the first we find.
             if ($classReflection->hasProperty($propertyName)) {
                 return $classReflection->getProperty($propertyName);

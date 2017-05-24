@@ -192,8 +192,7 @@ class Methods extends AbstractComment
      */
     protected function getInterfaceComment($originalComment, \ReflectionClass $reflectionClass, $methodName)
     {
-        $interfaces = $reflectionClass->getInterfaces();
-        foreach ($interfaces as $interface) {
+        foreach ($reflectionClass->getInterfaces() as $interface) {
             if ($this->checkComment($originalComment)) {
                 // Looks like we've resolved them all.
                 return $originalComment;

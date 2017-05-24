@@ -320,9 +320,9 @@ class Objects extends AbstractCallback
                 // We need to check if the callable function requires any parameters.
                 // We will not call those, because we simply can not provide them.
                 $ref = new \ReflectionMethod($data, $funcName);
-                $params = $ref->getParameters();
+
                 /** @var \ReflectionParameter $param */
-                foreach ($params as $param) {
+                foreach ($ref->getParameters() as $param) {
                     if (!$param->isOptional()) {
                         // We've got a required parameter!
                         // We will not call this one.

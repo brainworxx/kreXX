@@ -174,9 +174,8 @@ class Render extends AbstractRender
             );
         }
         // Stitching the classes together, depending on the types.
-        $typeArray = explode(' ', $model->getType());
         $typeClasses = '';
-        foreach ($typeArray as $typeClass) {
+        foreach (explode(' ', $model->getType()) as $typeClass) {
             $typeClasses .= 'k' . $typeClass . ' ';
         }
 
@@ -242,9 +241,8 @@ class Render extends AbstractRender
         }
 
         // Explode the type to get the class names right.
-        $types = explode(' ', $model->getType());
         $cssType = '';
-        foreach ($types as $singleType) {
+        foreach (explode(' ', $model->getType()) as $singleType) {
             $cssType .= ' k' . $singleType;
         }
 
