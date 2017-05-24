@@ -123,7 +123,7 @@ class Methods extends AbstractComment
         }
 
         // Still here? Tell the dev that we could not resolve the comment.
-        $comment = $this->replaceInheritComment($comment, '::could not resolve {@inheritdoc} comment::');
+        $comment = $this->replaceInheritComment($comment, '::could not resolve the inherited comment comment::');
         return trim($comment);
     }
 
@@ -192,8 +192,9 @@ class Methods extends AbstractComment
      */
     protected function getInterfaceComment($originalComment, \ReflectionClass $reflectionClass, $methodName)
     {
-        foreach ($reflectionClass->getInterfaces() as $interface) {
-            if (!$this->checkComment($originalComment)) {
+        $interfaces = $reflectionClass->getInterfaces();
+        foreach ($interfaces as $interface) {
+            if ($this->checkComment($originalComment)) {
                 // Looks like we've resolved them all.
                 return $originalComment;
             }
@@ -206,6 +207,5 @@ class Methods extends AbstractComment
         }
         // Return what we could resolve so far.
         return $originalComment;
-
     }
 }
