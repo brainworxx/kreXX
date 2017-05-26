@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Code\ReflectionParameterWrapper;
 
 /**
  * Processing of closures.
@@ -86,12 +87,13 @@ class ProcessClosure extends AbstractProcess
 
         foreach ($ref->getParameters() as $key => $reflectionParameter) {
             ++$key;
+            /** @var ReflectionParameterWrapper $reflectionParameterWrapper */
             $reflectionParameterWrapper = $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Code\\ReflectionParameterWrapper')
                 ->setReflectionParameter($reflectionParameter);
 
-            $result['Parameter #' . $key] = $reflectionParameterWrapper;
-            $paramList .= $reflectionParameterWrapper . ', ';
+            $result['Parameter #' . $key] = $reflectionParameterWrapper->toString();
+            $paramList .= $reflectionParameterWrapper->toString() . ', ';
         }
 
         // Remove the ',' after the last char.

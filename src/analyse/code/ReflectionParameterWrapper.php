@@ -34,49 +34,17 @@
 
 namespace Brainworxx\Krexx\Analyse\Code;
 
+use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
- * Wrapper arround the \ReflectionParameter, with a standardized __toString
+ * Wrapper around the \ReflectionParameter, with a standardized __toString
  * method, so that we can get the analysis string from it without any fuzz.
  *
  * @package Brainworxx\Krexx\Service\Code
  */
 class ReflectionParameterWrapper
 {
-    /**
-     * @var \ReflectionParameter
-     */
-    protected $reflectionParameter;
-
-    /**
-     * Is this parameter optional?
-     *
-     * @var bool
-     */
-    protected $isOptional;
-
-    /**
-     * Type of the parameter, like 'array' or
-     * \Brainworxx\Krexx\Whatever\Class
-     *
-     * @var string
-     */
-    protected $parameterType;
-
-    /**
-     * Name of the parameter, like '$myParameter' from the declaration.
-     *
-     * @var string
-     */
-    protected $parameterName;
-
-    /**
-     * The default value for the parameter
-     *
-     * @var string
-     */
-    protected $defaultValue;
 
     /**
      * Our pool.
@@ -103,101 +71,77 @@ class ReflectionParameterWrapper
     }
 
     /**
-     * Setter for the rflection parameter
+     * Setter for the reflection parameter, it also calculates the
+     * __toString() return value.
      *
      * @param \ReflectionParameter $reflectionParameter
+     *   The reflection parameter we want to wrap.
      *
      * @return $this
      *   Return $this for chaining.
      */
     public function setReflectionParameter(\ReflectionParameter $reflectionParameter)
     {
-        $this->reflectionParameter = $reflectionParameter;
+        // Fun fact:
+        // I tried to add a static cache here, but it was counter productive.
+        // Things were not faster, memory usage went up!
 
-
-        $this->parameterName = $reflectionParameter->getName();
-        $this->isOptional = $reflectionParameter->isOptional();
+        $parameterType = '';
 
         // Check for type value
         if (is_a($reflectionParameter->getClass(), 'ReflectionClass')) {
-            $this->parameterType = $reflectionParameter->getClass()->name;
+            $parameterType = $reflectionParameter->getClass()->name;
         } elseif ($reflectionParameter->isArray()) {
             // Check for array
-            $this->parameterType = 'array';
+            $parameterType = 'array';
         }
+
+        $this->toString = $parameterType . ' $' . $reflectionParameter->getName();
 
         // Check for default value.
         if ($reflectionParameter->isDefaultValueAvailable()) {
             $default = $reflectionParameter->getDefaultValue();
-            if (is_object($default)) {
-                $this->defaultValue = get_class($default);
-            } else {
-                $this->defaultValue = $this->pool->encodeString($default);
+
+
+            switch (gettype($default)) {
+                case 'string':
+                    $default = '\'' . $this->pool->encodeString($default) . '\'';
+                    break;
+
+                case 'array':
+                    $default = 'array()';
+                    break;
+
+                case 'boolean':
+                    if ($default === true) {
+                        $default = 'TRUE';
+                    } else {
+                        $default = 'FALSE';
+                    }
+                    break;
+
+                case 'NULL':
+                    $default = 'NULL';
+                    break;
             }
+
+            $this->toString .= ' = ' . $default;
         }
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultValue()
-    {
-        return $this->defaultValue;
-    }
-
-    /**
-     * @return string
-     */
-    public function getParameterName()
-    {
-        return $this->parameterName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getParameterType()
-    {
-        return $this->parameterType;
-    }
-
-    /**
-     * @return \ReflectionParameter
-     */
-    public function getReflectionParameter()
-    {
-        return $this->reflectionParameter;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsOptional()
-    {
-        return $this->isOptional;
-    }
 
     /**
      * Output everything we have so far in a human readable form.
      *
      * @return string
-     *   '\Brainworxx\Krexx\Whatever $varName
+     *   \Brainworxx\Krexx\Whatever $varName
      *   or
      *   $varName = 'stuff'
      */
-    public function __toString()
+    public function toString()
     {
-
-        if (empty($this->toString)) {
-            $this->toString = $this->parameterType . ' $' . $this->parameterName;
-
-            if (!empty($this->defaultValue)) {
-                $this->toString .= ' = ' . $this->defaultValue;
-            }
-            $this->toString = trim($this->toString);
-        }
-
         return $this->toString;
     }
 }
