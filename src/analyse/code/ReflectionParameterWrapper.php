@@ -189,16 +189,14 @@ class ReflectionParameterWrapper
     public function __toString()
     {
 
-        if (!empty($this->toString)) {
-            return $this->toString;
-        }
+        if (empty($this->toString)) {
+            $this->toString = $this->parameterType . ' $' . $this->parameterName;
 
-        $this->toString = $this->parameterType . ' $' . $this->parameterName;
-
-        if (!empty($this->defaultValue)) {
-            $this->toString .= ' = ' . $this->defaultValue;
+            if (!empty($this->defaultValue)) {
+                $this->toString .= ' = ' . $this->defaultValue;
+            }
+            $this->toString = trim($this->toString);
         }
-        $this->toString = trim($this->toString);
 
         return $this->toString;
     }

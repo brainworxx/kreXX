@@ -119,9 +119,10 @@ class Recursion
         // We do something else for objects.
         // Setting a recursion marker inside might trigger a magical function.
         $objectHash = spl_object_hash($bee);
-        if (!isset($this->recursionHive[$objectHash])) {
-            $this->recursionHive[$objectHash] = true;
+        if (isset($this->recursionHive[$objectHash])) {
+            return;
         }
+        $this->recursionHive[$objectHash] = true;
     }
 
     /**

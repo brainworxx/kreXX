@@ -274,12 +274,11 @@ class Render extends \Brainworxx\Krexx\View\Render
     /**
      * Do nothing. Help stuff is implemented via javascript json.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      * @return string
      */
-    protected function renderHelp($model)
+    protected function renderHelp(Model $model)
     {
          return '';
     }
-
 }

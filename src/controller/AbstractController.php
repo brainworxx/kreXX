@@ -161,12 +161,13 @@ abstract class AbstractController
     protected function outputHeader($headline)
     {
         // Do we do an output as file?
-        if (!self::$headerSend) {
-            // Send doctype and css/js only once.
-            self::$headerSend = true;
-            return $this->pool->render->renderHeader('<!DOCTYPE html>', $headline, $this->outputCssAndJs());
+        if (self::$headerSend) {
+            return $this->pool->render->renderHeader('', $headline, '');
         }
-        return $this->pool->render->renderHeader('', $headline, '');
+
+        // Send doctype and css/js only once.
+        self::$headerSend = true;
+        return $this->pool->render->renderHeader('<!DOCTYPE html>', $headline, $this->outputCssAndJs());
     }
 
     /**
@@ -181,22 +182,22 @@ abstract class AbstractController
      * @return string
      *   The generated markup.
      */
-    protected function outputFooter($caller, $isExpanded = false)
+    protected function outputFooter(array $caller, $isExpanded = false)
     {
         // Now we need to stitch together the content of the ini file
         // as well as it's path.
-        if (!is_readable($this->pool->config->getPathToIniFile())) {
+        $pathToIni = $this->pool->config->getPathToIniFile();
+        if (is_readable($pathToIni)) {
+            $path = 'Current configuration';
+        } else {
             // Project settings are not accessible
             // tell the user, that we are using fallback settings.
             $path = 'Krexx.ini not found, using factory settings';
-            // $config = array();
-        } else {
-            $path = 'Current configuration';
         }
 
         $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
             ->setName($path)
-            ->setType($this->pool->config->getPathToIniFile())
+            ->setType($pathToIni)
             ->setHelpid('currentSettings')
             ->injectCallback(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughConfig')
@@ -342,40 +343,41 @@ abstract class AbstractController
             $result = 'n/a';
         }
 
-        if (!isset($result)) {
-            $s = $_SERVER;
-
-            // SSL or no SSL.
-            if (!empty($s['HTTPS']) && $s['HTTPS'] === 'on') {
-                $ssl = true;
-            } else {
-                $ssl = false;
-            }
-            $sp = strtolower($s['SERVER_PROTOCOL']);
-            $protocol = substr($sp, 0, strpos($sp, '/'));
-            if ($ssl) {
-                $protocol .= 's';
-            }
-
-            $port = $s['SERVER_PORT'];
-
-            if ((!$ssl && $port === '80') || ($ssl && $port === '443')) {
-                // Normal combo with port and protocol.
-                $port = '';
-            } else {
-                // We have a special port here.
-                $port = ':' . $port;
-            }
-
-            if (isset($s['HTTP_HOST'])) {
-                $host = $s['HTTP_HOST'];
-            } else {
-                $host = $s['SERVER_NAME'] . $port;
-            }
-
-            $result = htmlspecialchars($protocol . '://' . $host . $s['REQUEST_URI'], ENT_QUOTES, 'UTF-8');
+        if (isset($result)) {
+            return $result;
         }
+
+        // SSL or no SSL.
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            $ssl = true;
+        } else {
+            $ssl = false;
+        }
+        $sp = strtolower($_SERVER['SERVER_PROTOCOL']);
+        $protocol = substr($sp, 0, strpos($sp, '/'));
+        if ($ssl) {
+            $protocol .= 's';
+        }
+
+        $port = $_SERVER['SERVER_PORT'];
+
+        if ((!$ssl && $port === '80') || ($ssl && $port === '443')) {
+            // Normal combo with port and protocol.
+            $port = '';
+        } else {
+            // We have a special port here.
+            $port = ':' . $port;
+        }
+
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $host = $_SERVER['HTTP_HOST'];
+        } else {
+            $host = $_SERVER['SERVER_NAME'] . $port;
+        }
+
+        $result = htmlspecialchars($protocol . '://' . $host . $_SERVER['REQUEST_URI'], ENT_QUOTES, 'UTF-8');
         return $result;
+
     }
 
     /**

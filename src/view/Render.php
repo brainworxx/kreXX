@@ -112,11 +112,11 @@ class Render extends AbstractRender
      */
     public function renderFooter($caller, $configOutput, $configOnly = false)
     {
-        if (!isset($caller['file'])) {
-            // When we have no caller, we will not render it.
-            $caller = '';
-        } else {
+        if (isset($caller['file'])) {
             $caller = $this->renderCaller($caller['file'], $caller['line']);
+        } else {
+             // When we have no caller, we will not render it.
+            $caller = '';
         }
 
         return str_replace(

@@ -101,52 +101,52 @@ class Codegen
      */
     public function generateSource(Model $model)
     {
-        if (!$this->allowCodegen) {
-            return '';
-        }
+        if ($this->allowCodegen) {
+            $result = '';
+            // We will not generate anything for function analytic data.
+            $isConstants = $model->getType() === 'class internals' && $model->getName() === 'Constants';
+            if ($model->getConnector1() . $model->getConnector2() === '' && $this->counter !== 0 && !$isConstants) {
+                // No connectors mean, we are dealing with some meta stuff, like functions
+                // We will not add anything for them.
+            } else {
+                // Simply fuse the connectors.
+                // The connectors are a representation of the current used "language".
+                switch ($this->analyseType($model)) {
+                    case self::CONCATENATION:
+                        $result = $this->concatenation($model);
+                        break;
 
-        $result = '';
-        // We will not generate anything for function analytic data.
-        $isConstants = $model->getType() === 'class internals' && $model->getName() === 'Constants';
-        if ($model->getConnector1() . $model->getConnector2() === '' && $this->counter !== 0 && !$isConstants) {
-            // No connectors mean, we are dealing with some meta stuff, like functions
-            // We will not add anything for them.
-        } else {
-            // Simply fuse the connectors.
-            // The connectors are a representation of the current used "language".
-            switch ($this->analyseType($model)) {
-                case self::CONCATENATION:
-                    $result = $this->concatenation($model);
-                    break;
+                    case self::METHOD:
+                        // We will not create a reflection in the generated code.
+                        // The dots tell the js to stop the code concatenation right
+                        // there.
+                        $result = '. . .';
+                        break;
 
-                case self::METHOD:
-                    // We will not create a reflection in the generated code.
-                    // The dots tell the js to stop the code concatenation right
-                    // there.
-                    $result = '. . .';
-                    break;
+                    case self::PROPERTY:
+                        // We will not create a reflection in the generated code.
+                        // The dots tell the js to stop the code concatenation right
+                        // there.
+                        $result = '. . .';
+                        break;
 
-                case self::PROPERTY:
-                    // We will not create a reflection in the generated code.
-                    // The dots tell the js to stop the code concatenation right
-                    // there.
-                    $result = '. . .';
-                    break;
+                    case self::STOP:
+                        // This tells the JS to stop iterating for previous gencode.
+                        $result =';stop;';
+                        break;
 
-                case self::STOP:
-                    // This tells the JS to stop iterating for previous gencode.
-                    $result =';stop;';
-                    break;
-
-                // Multiline code generation starts here.
-                case self::ITERATOR_TO_ARRAY:
-                    $result = 'iterator_to_array(;firstMarker;)' . $this->concatenation($model);
-                    break;
+                    // Multiline code generation starts here.
+                    case self::ITERATOR_TO_ARRAY:
+                        $result = 'iterator_to_array(;firstMarker;)' . $this->concatenation($model);
+                        break;
+                }
             }
+
+            ++$this->counter;
+            return $result;
         }
 
-        ++$this->counter;
-        return $result;
+        return '';
     }
 
     /**
@@ -224,30 +224,29 @@ class Codegen
 
         // Test for  multiline code generation.
         $multiline = $model->getMultiLineCodeGen();
-        if (!empty($multiline)) {
-            return $multiline;
+        if (empty($multiline)) {
+            // Test for protected or private.
+            if (strpos($type, 'protected') === false && strpos($type, 'private') === false) {
+                // Is not protected.
+                return self::CONCATENATION;
+            }
+
+            // Test if we are inside the scope.
+            if ($this->pool->scope->testModelForCodegen($model)) {
+                // We are inside the scope, this value, function or class is reachable.
+                return self::CONCATENATION;
+            }
+
+            // We are still here? Must be a protected method or property.
+            if (strpos($type, 'method') === false) {
+                // This is not a method.
+                return self::PROPERTY;
+            }
+            // Looks like a method to me.
+            return self::METHOD;
         }
 
-        // Test for protected or private.
-        if (strpos($type, 'protected') === false && strpos($type, 'private') === false) {
-            // Is not protected.
-            return self::CONCATENATION;
-        }
-
-        // Test if we are inside the scope.
-        if ($this->pool->scope->testModelForCodegen($model)) {
-            // We are inside the scope, this value, function or class is reachable.
-            return self::CONCATENATION;
-        }
-
-        // We are still here? Must be a protected method or property.
-        if (strpos($type, 'method') === false) {
-            // This is not a method.
-            return self::PROPERTY;
-        }
-        // Looks like a method to me.
-        return self::METHOD;
-
+        return $multiline;
     }
 
     /**

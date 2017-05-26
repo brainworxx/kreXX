@@ -89,7 +89,6 @@ class Krexx
         include_once $krexxDir . 'src/service/factory/Pool.php';
         include_once $krexxDir . 'src/service/flow/Recursion.php';
         include_once $krexxDir . 'src/service/flow/Emergency.php';
-        include_once $krexxDir . 'src/analyse/Flection.php';
         include_once $krexxDir . 'src/analyse/routing/AbstractRouting.php';
         include_once $krexxDir . 'src/analyse/routing/Routing.php';
         include_once $krexxDir . 'src/analyse/routing/process/AbstractProcess.php';

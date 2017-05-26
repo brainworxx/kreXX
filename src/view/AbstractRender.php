@@ -103,7 +103,7 @@ abstract class AbstractRender
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderHelp($model)
+    protected function renderHelp(Model $model)
     {
         $helpId = $model->getHelpid();
         $data = $model->getJson();
@@ -148,15 +148,15 @@ abstract class AbstractRender
      */
     protected function renderConnector($connector)
     {
-        if (!empty($connector)) {
-            return str_replace(
-                '{connector}',
-                $connector,
-                $this->getTemplateFileContent('connector')
-            );
+        if (empty($connector)) {
+            return '';
         }
 
-        return '';
+        return str_replace(
+            '{connector}',
+            $connector,
+            $this->getTemplateFileContent('connector')
+        );
     }
 
     /**
@@ -252,13 +252,15 @@ abstract class AbstractRender
     {
         static $fileCache = array();
 
-        if (!isset($fileCache[$what])) {
-            $fileCache[$what] = preg_replace(
-                '/\s+/',
-                ' ',
-                $this->fileService->getFileContents($this->skinPath . $what . '.html')
-            );
+        if (isset($fileCache[$what])) {
+            return $fileCache[$what];
         }
+
+        $fileCache[$what] = preg_replace(
+            '/\s+/',
+            ' ',
+            $this->fileService->getFileContents($this->skinPath . $what . '.html')
+        );
         return $fileCache[$what];
     }
 

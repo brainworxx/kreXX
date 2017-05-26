@@ -68,16 +68,16 @@ class Factory
         if (isset($this->rewrite[$classname])) {
             $classname = $this->rewrite[$classname];
         }
-        
+
         return new $classname($this);
     }
 
     /**
      * Adds another value to the overwrite.
      *
-     * @param $originalClassName
+     * @param string $originalClassName
      *   The original class name, we want to overwrite this one.
-     * @param $newClassName
+     * @param string $newClassName
      *   The new class name, the factory will then return this class via get();
      *
      * @return $this
@@ -94,7 +94,7 @@ class Factory
      */
     public function flushRewrite()
     {
-        if (!empty($GLOBALS['kreXXoverwrites']) && is_array($GLOBALS['kreXXoverwrites']['classes'])) {
+        if (isset($GLOBALS['kreXXoverwrites']) && isset($GLOBALS['kreXXoverwrites']['classes'])) {
             $this->rewrite = $GLOBALS['kreXXoverwrites']['classes'];
         } else {
             $this->rewrite = array();

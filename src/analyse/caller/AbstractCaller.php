@@ -77,7 +77,7 @@ abstract class AbstractCaller
     /**
      * Setter for the identifier pattern.
      *
-     * @param $pattern
+     * @param string $pattern
      *   The pattern, duh!
      *
      * @return $this

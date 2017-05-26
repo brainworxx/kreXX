@@ -119,7 +119,7 @@ class Scope
      * @return bool
      *   Can we allow code generation here?
      */
-    public function testModelForCodegen($model)
+    public function testModelForCodegen(Model $model)
     {
         $nestingLevel = $this->pool->emergencyHandler->getNestingLevel();
 

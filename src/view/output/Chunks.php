@@ -289,21 +289,22 @@ class Chunks
         static $beenHere = false;
 
         // We only do this once.
-        if (!$beenHere) {
-            // Clean up leftover files.
-            $chunkList = glob($this->chunkDir . '*.Krexx.tmp');
-            if (!empty($chunkList)) {
-                $now = time();
-                foreach ($chunkList as $file) {
-                    // We delete everything that is older than 15 minutes.
-                    if ((filemtime($file) + 900) < $now) {
-                        $this->fileService->deleteFile($file);
-                    }
-                }
-            }
+        if ($beenHere) {
+            return;
         }
 
         $beenHere = true;
+        // Clean up leftover files.
+        $chunkList = glob($this->chunkDir . '*.Krexx.tmp');
+        if (!empty($chunkList)) {
+            $now = time();
+            foreach ($chunkList as $file) {
+                // We delete everything that is older than 15 minutes.
+                if ((filemtime($file) + 900) < $now) {
+                    $this->fileService->deleteFile($file);
+                }
+            }
+        }
     }
 
     /**
@@ -316,18 +317,20 @@ class Chunks
     {
         // Cleanup old logfiles to prevent a overflow.
         $logList = glob($logDir . '*.Krexx.html');
-        if (!empty($logList)) {
-            array_multisort(array_map('filemtime', $logList), SORT_DESC, $logList);
-            $maxFileCount = (int)$this->pool->config->getSetting('maxfiles');
-            $count = 1;
-            // Cleanup logfiles.
-            foreach ($logList as $file) {
-                if ($count > $maxFileCount) {
-                    $this->fileService->deleteFile($file);
-                    $this->fileService->deleteFile($file . '.json');
-                }
-                ++$count;
+        if (empty($logList)) {
+            return;
+        }
+
+        array_multisort(array_map('filemtime', $logList), SORT_DESC, $logList);
+        $maxFileCount = (int)$this->pool->config->getSetting('maxfiles');
+        $count = 1;
+        // Cleanup logfiles.
+        foreach ($logList as $file) {
+            if ($count > $maxFileCount) {
+                $this->fileService->deleteFile($file);
+                $this->fileService->deleteFile($file . '.json');
             }
+            ++$count;
         }
     }
 
@@ -363,11 +366,13 @@ class Chunks
     {
         // Get a list of all chunk files from the run.
         $chunkList = glob($this->chunkDir . $this->fileStamp . '_*');
-        if (!empty($chunkList)) {
-            // Delete them all!
-            foreach ($chunkList as $file) {
-                $this->fileService->deleteFile($file);
-            }
+        if (empty($chunkList)) {
+            return;
+        }
+
+        // Delete them all!
+        foreach ($chunkList as $file) {
+            $this->fileService->deleteFile($file);
         }
     }
 }

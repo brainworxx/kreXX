@@ -256,7 +256,7 @@ class ThroughGetter extends AbstractCallback
             $reflectionMethod->getStartLine(),
             $reflectionMethod->getEndLine()
         );
-        
+
         // Execute our search pattern.
         // Right now, we are trying to get to properties that way.
         // Later on, we may also try to parse deeper for stuff.
@@ -311,7 +311,7 @@ class ThroughGetter extends AbstractCallback
      * @return array
      *   The findings.
      */
-    protected function findIt($searchArray, $haystack)
+    protected function findIt(array $searchArray, $haystack)
     {
 
         // Defining our regex.

@@ -75,14 +75,17 @@ abstract class AbstractComment
      * We get the comment.
      *
      * @param $reflection
-     *   A already existing reflection of the method or property.
+     *   A already existing reflection of the method or function.
      * @param \ReflectionClass $reflectionClass
      *   An already existing reflection of the original class.
      *
      * @return @return string
      *   The prettified comment.
      */
-    abstract public function getComment($reflection, \ReflectionClass $reflectionClass = null);
+    abstract public function getComment(
+        \ReflectionFunctionAbstract $reflection,
+        \ReflectionClass $reflectionClass = null
+    );
 
     /**
      * Removes the comment-chars from the comment string.

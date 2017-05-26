@@ -138,7 +138,7 @@ class Pool extends Factory
     /**
      * Initializes all needed classes.
      *
-     * @param $krexxDir
+     * @param string $krexxDir
      *   The directory, where kreXX is stored.
      */
     public function __construct($krexxDir)
@@ -151,7 +151,7 @@ class Pool extends Factory
      * (Re)initializes everything in the pool, in case in-runtime
      * factory overwrites.
      *
-     * @param $krexxDir
+     * @param string $krexxDir
      *   The dir where kreXX is stored.
      */
     public function init($krexxDir)
@@ -289,20 +289,10 @@ class Pool extends Factory
             if ($code) {
                 // We are displaying sourcecode, so we need
                 // to do some formatting.
-                $sortingCallback = function ($n) {
-                    if ($n === 9) {
-                        // Replace TAB with two spaces, it's better readable that way.
-                        $result = '&nbsp;&nbsp;';
-                    } else {
-                        $result = '&#' . $n . ';';
-                    }
-                    return $result;
-                };
+                $sortingCallback = $sortingCallback = array($this, 'arrayMapCallbackCode');
             } else {
                 // No formatting.
-                $sortingCallback = function ($n) {
-                    return '&#' . $n . ';';
-                };
+                $sortingCallback = array($this, 'arrayMapCallbackNormal');
             }
 
             // Here we have another SPOF. When the string is large enough
@@ -328,5 +318,40 @@ class Pool extends Factory
         restore_error_handler();
 
         return $result;
+    }
+
+    /**
+     * Callback for the complete escaping of strings.
+     * Complete means every single char gets escaped.
+     * This one dies some extra stuff for code display.
+     *
+     * @param integer $n
+     *
+     * @return string
+     *   The extra escaped result for code.
+     */
+    protected function arrayMapCallbackCode($n)
+    {
+        if ($n === 9) {
+            // Replace TAB with two spaces, it's better readable that way.
+            $result = '&nbsp;&nbsp;';
+        } else {
+            $result = '&#' . $n . ';';
+        }
+        return $result;
+    }
+
+    /**
+     * Callback for the complete escaping of strings.
+     * Complete means every single char gets escaped.
+     *
+     * @param integer $n
+     *
+     * @return string
+     *   The extra escaped result.
+     */
+    protected function arrayMapCallbackNormal($n)
+    {
+        return '&#' . $n . ';';
     }
 }

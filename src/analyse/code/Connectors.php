@@ -122,48 +122,49 @@ class Connectors
      */
     public function getConnector1()
     {
-        if (!empty($this->customConnector1)) {
-            return $this->customConnector1;
+        if (empty($this->customConnector1)) {
+            switch ($this->type) {
+                case '':
+                    return '';
+                    break;
+
+                case $this::NORMAL_ARRAY:
+                    return '[';
+                    break;
+
+                case $this::ASSOCIATIVE_ARRAY:
+                    return '[\'';
+                    break;
+
+                case $this::NORMAL_PROPERTY:
+                    return '->';
+                    break;
+
+                case $this::METHOD:
+                    return '->';
+                    break;
+
+                case $this::STATIC_METHOD:
+                    return '::';
+                    break;
+
+                case $this::STATIC_PROPERTY:
+                    return '::';
+                    break;
+
+                case $this::CONSTANT:
+                    return '::';
+                    break;
+
+                default:
+                    // Unknown type, return empty string.
+                    return '';
+                    break;
+            }
         }
 
-        switch ($this->type) {
-            case '':
-                return '';
-                break;
+        return $this->customConnector1;
 
-            case $this::NORMAL_ARRAY:
-                return '[';
-                break;
-
-            case $this::ASSOCIATIVE_ARRAY:
-                return '[\'';
-                break;
-
-            case $this::NORMAL_PROPERTY:
-                return '->';
-                break;
-
-            case $this::METHOD:
-                return '->';
-                break;
-
-            case $this::STATIC_METHOD:
-                return '::';
-                break;
-
-            case $this::STATIC_PROPERTY:
-                return '::';
-                break;
-
-            case $this::CONSTANT:
-                return '::';
-                break;
-
-            default:
-                // Unknown type, return empty string.
-                return '';
-                break;
-        }
     }
 
     /**
