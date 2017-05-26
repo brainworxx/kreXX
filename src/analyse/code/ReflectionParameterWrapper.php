@@ -72,7 +72,7 @@ class ReflectionParameterWrapper
 
     /**
      * Setter for the reflection parameter, it also calculates the
-     * __toString() return value.
+     * toString() return value.
      *
      * @param \ReflectionParameter $reflectionParameter
      *   The reflection parameter we want to wrap.
@@ -89,46 +89,58 @@ class ReflectionParameterWrapper
         $parameterType = '';
 
         // Check for type value
-        if (is_a($reflectionParameter->getClass(), 'ReflectionClass')) {
-            $parameterType = $reflectionParameter->getClass()->name;
-        } elseif ($reflectionParameter->isArray()) {
-            // Check for array
+        if ($reflectionParameter->isArray()) {
             $parameterType = 'array';
+        } elseif (!is_null($reflectionParameter->getClass())) {
+            // We got ourselves an object!
+            $parameterType = $reflectionParameter->getClass()->name;
         }
 
-        $this->toString = $parameterType . ' $' . $reflectionParameter->getName();
+        $this->toString .= $parameterType . ' $' . $reflectionParameter->getName();
 
         // Check for default value.
         if ($reflectionParameter->isDefaultValueAvailable()) {
-            $default = $reflectionParameter->getDefaultValue();
-
-
-            switch (gettype($default)) {
-                case 'string':
-                    $default = '\'' . $this->pool->encodeString($default) . '\'';
-                    break;
-
-                case 'array':
-                    $default = 'array()';
-                    break;
-
-                case 'boolean':
-                    if ($default === true) {
-                        $default = 'TRUE';
-                    } else {
-                        $default = 'FALSE';
-                    }
-                    break;
-
-                case 'NULL':
-                    $default = 'NULL';
-                    break;
-            }
-
-            $this->toString .= ' = ' . $default;
+            $this->toString .= ' = ' . $this->prepareDefaultValue($reflectionParameter->getDefaultValue());
         }
 
         return $this;
+    }
+
+    /**
+     * Convert the default value into a human readabla form.
+     *
+     * @param mixed $default
+     * The default value we need to bring into a human readable form.
+     *
+     * @return string
+     *  The human readable form.
+     */
+    protected function prepareDefaultValue($default)
+    {
+        if (is_string($default)) {
+            // We need to escape this one.
+            return '\'' . $this->pool->encodeString($default) . '\'';
+        }
+
+        if (is_null($default)) {
+            return 'NULL';
+        }
+
+        if (is_array($default)) {
+            return 'array()';
+        }
+
+        if (is_bool($default)) {
+            // Transform it to readable values.
+            if ($default === true) {
+                return 'TRUE';
+            } else {
+                return 'FALSE';
+            }
+        }
+
+        // Still here ?!?
+        return (string) $default;
     }
 
 
