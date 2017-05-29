@@ -350,10 +350,13 @@ class Config extends Fallback
 
         // Not loaded?
         if (empty($config)) {
-            $config = (array)parse_ini_string(
-                $this->pool->fileService->getFileContents($this->getPathToIniFile()),
-                true
-            );
+            $pathToIni = $this->getPathToIniFile();
+            if (is_file($pathToIni)) {
+                $config = (array)parse_ini_string(
+                    $this->pool->fileService->getFileContents($this->getPathToIniFile()),
+                    true
+                );
+            }
             if (empty($config)) {
                 // Still empty means that there is no ini file. We add a dummy.
                 // This will prevent the failing reload of the ini file.

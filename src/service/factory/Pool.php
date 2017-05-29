@@ -217,6 +217,9 @@ class Pool extends Factory
             $logFolder = $this->fileService->filterFilePath($logFolder);
             $this->messages->addMessage('Logfolder ' . $logFolder . ' is not writable !', 'critical');
             $this->messages->addKey('protected.folder.log', array($logFolder));
+            // Tell the chunk output that we have no write access in the logging
+            // folder.
+            $this->chunks->setUseLogging(false);
         }
         // At this point, we won't inform the dev right away. The error message
         // will pop up, when kreXX is actually displayed, no need to bother the

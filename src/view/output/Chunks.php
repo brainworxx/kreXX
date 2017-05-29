@@ -74,7 +74,7 @@ class Chunks
     protected $metadata = array();
 
     /**
-     * Are we using chunks?
+     * Is the chunks folder write protected?
      *
      * When we do, kreXX will store temporary files in the chunks folder.
      * This saves a lot of memory!
@@ -82,6 +82,13 @@ class Chunks
      * @var bool
      */
     protected $useChunks = true;
+
+    /**
+     * Is the log folder write protected?
+     *
+     * @var bool
+     */
+    protected $useLogging = true;
 
     /**
      * The logfolder.
@@ -176,20 +183,11 @@ class Chunks
     protected function dechunkMe($key)
     {
         $filename = $this->chunkDir . $key . '.Krexx.tmp';
-        if (is_readable($filename)) {
-            // Read the file.
-            $string = $this->pool->fileService->getFileContents($filename);
-            // Delete it, we don't need it anymore.
-            $this->pool->fileService->deleteFile($filename);
-
-            return $string;
-        }
-        // Huh, we can not fully access this one.
-        $this->pool->messages->addMessage(
-            $this->pool->messages->getHelp('chunkserviceAccess') . $filename
-        );
-        return 'Could not access chunk file ' . $filename;
-
+        // Read the file.
+        $string = $this->pool->fileService->getFileContents($filename);
+        // Delete it, we don't need it anymore.
+        $this->pool->fileService->deleteFile($filename);
+        return $string;
     }
 
     /**
@@ -239,6 +237,11 @@ class Chunks
     {
         $this->cleanupOldChunks();
 
+        if (!$this->useLogging) {
+            // We have no write access. Do nothing.
+            return;
+        }
+
         // Cleanup old logfiles to prevent a overflow.
         $this->cleanupOldLogs($this->logDir);
 
@@ -278,6 +281,11 @@ class Chunks
      */
     protected function cleanupOldChunks()
     {
+        if (!$this->useChunks) {
+            // We have no write access. Do nothing.
+            return;
+        }
+
         static $beenHere = false;
 
         // We only do this once.
@@ -307,6 +315,11 @@ class Chunks
      */
     protected function cleanupOldLogs($logDir)
     {
+        if (!$this->useLogging) {
+            // We have no write access. Do nothing.
+            return;
+        }
+
         // Cleanup old logfiles to prevent a overflow.
         $logList = glob($logDir . '*.Krexx.html');
         if (empty($logList)) {
@@ -338,6 +351,11 @@ class Chunks
     public function setUseChunks($bool)
     {
         $this->useChunks = $bool;
+    }
+
+    public function setUseLogging($bool)
+    {
+        $this->useLogging = $bool;
     }
 
     /**
