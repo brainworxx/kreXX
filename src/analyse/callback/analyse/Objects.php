@@ -204,8 +204,7 @@ class Objects extends AbstractCallback
         foreach ($refProps as $refProp) {
             $publicProps[$refProp->name] = true;
         }
-        // For every not-declared property, we add a 'flection', which is a
-        // mockup of a reflectionProperty.
+        // For every not-declared property, we add a another reflection.
         foreach (array_diff_key(get_object_vars($data), $publicProps) as $key => $value) {
             $refProps[] = new \ReflectionProperty($data, $key);
         }
