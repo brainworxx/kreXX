@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analyse\comment;
+namespace Brainworxx\Krexx\Analyse\Comment;
 
 /**
  * We get the comment of a method and try to resolve the inheritdoc stuff.
@@ -47,7 +47,7 @@ class Methods extends AbstractComment
      * Simple wrapper around the getMethodComment() to make sure
      * we only escape it once!
      *
-     * @param \ReflectionMethod $reflectionMethod
+     * @param \ReflectionFunctionAbstract $reflectionMethod
      *   An already existing reflection of the method.
      * @param \ReflectionClass $reflectionClass
      *   An already existing reflection of the original class.

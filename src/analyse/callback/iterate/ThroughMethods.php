@@ -62,15 +62,15 @@ class ThroughMethods extends AbstractCallback
         /** @var \ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters['ref'];
 
+        $commentAnalysis = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods');
+
         // Deep analysis of the methods.
         /* @var \ReflectionMethod $reflectionMethod */
         foreach ($this->parameters['data'] as $reflectionMethod) {
             $methodData = array();
 
             // Get the comment from the class, it's parents, interfaces or traits.
-            $methodComment = $this->pool
-                ->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods')
-                ->getComment($reflectionMethod, $reflectionClass);
+            $methodComment = $commentAnalysis->getComment($reflectionMethod, $reflectionClass);
             if (!empty($methodComment)) {
                 $methodData['comments'] = $methodComment;
             }

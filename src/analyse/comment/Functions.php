@@ -32,14 +32,14 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analyse\comment;
+namespace Brainworxx\Krexx\Analyse\Comment;
 
 class Functions extends AbstractComment
 {
     /**
      * Get the prettified comment from a function.
      *
-     * @param \ReflectionFunction $reflection
+     * @param \ReflectionFunctionAbstract $reflection
      *   The reflection of the function with the comment.
      * @param \ReflectionClass|null $reflectionClass
      *   Nothing, null. We do not have a hosting class.
