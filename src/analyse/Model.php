@@ -184,7 +184,7 @@ class Model
      */
     public function renderMe()
     {
-        if (is_object($this->callback)) {
+        if (isset($this->callback)) {
             $this->callback->setParams($this->parameters);
             return $this->callback->callMe();
         }

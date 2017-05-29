@@ -111,9 +111,9 @@ class Methods extends AbstractComment
         // Nothing on this level, we need to take a look at the parent.
         try {
             $parentReflection = $reflectionClass->getParentClass();
-            if (is_object($parentReflection)) {
+            if (isset($parentReflection)) {
                 $parentMethod = $parentReflection->getMethod($reflectionMethod->name);
-                if (is_object($parentMethod)) {
+                if (isset($parentMethod)) {
                     // Going deeper into the rabid hole!
                     $comment = trim($this->getMethodComment($parentMethod, $parentReflection));
                 }
