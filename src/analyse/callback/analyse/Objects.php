@@ -486,6 +486,7 @@ class Objects extends AbstractCallback
             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setName('Constants')
                 ->setType('class internals')
+                ->setIsMetaConstants(true)
                 ->addParameter('data', $refConst)
                 ->addParameter('classname', $classname)
                 ->injectCallback(

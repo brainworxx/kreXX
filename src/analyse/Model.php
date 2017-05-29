@@ -151,6 +151,14 @@ class Model
     protected $connectorService;
 
     /**
+     * We need to know, if we are rendering the expandable child for the
+     * constants. The code generation does special stuff there.
+     *
+     * @var bool
+     */
+    protected $isMetaConstants = false;
+
+    /**
      * Inject the pool and create the connector service.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
@@ -588,5 +596,29 @@ class Model
     public function getParameters()
     {
         return $this->parameters;
+    }
+
+    /**
+     * Getter for the isMetaConstants.
+     *
+     * @return bool
+     *   True means that we are currently rendering the expandable child for
+     *   the constants.
+     */
+    public function getIsMetaConstants()
+    {
+        return $this->isMetaConstants;
+    }
+
+    /**
+     * Setter for the isMetaConstants.
+     *
+     * @return $this
+     *   Return $this for chaining.
+     */
+    public function setIsMetaConstants($bool)
+    {
+        $this->isMetaConstants = $bool;
+        return $this;
     }
 }
