@@ -47,11 +47,6 @@ abstract class AbstractCaller
     protected $pool;
 
     /**
-     * @var File
-     */
-    protected $fileService;
-
-    /**
      * Pattern that we use to identify the caller.
      * This is normally 'krexx'. With our direct integration
      * into the debug() method of the TYPO3 core, this may as
@@ -71,7 +66,6 @@ abstract class AbstractCaller
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
     }
 
     /**

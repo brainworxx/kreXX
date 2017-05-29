@@ -43,6 +43,32 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  */
 class File
 {
+    /**
+     * The cache for the reading of files.
+     *
+     * @var array
+     */
+    protected $fileCache = array();
+
+    /**
+     * Cache where we strore if a specific filename alredy exists.
+     * Used if we need to append stuff there.
+     *
+     * @var array
+     */
+    protected $ops = array();
+
+    /**
+     * Cache where we store if we are allowed to write in a specific dir.
+     * Used when we need to create a file there.
+     *
+     * @var array
+     */
+    protected $dir = array();
+
+    /**
+     * @var Pool
+     */
     protected $pool;
 
     /**
@@ -126,17 +152,16 @@ class File
      */
     public function readFile($filename, $from = 0, $to = 0)
     {
-        static $cacheArray = array();
         $result = '';
 
         // Read the file into our cache array. We may need to reed  this file a
         // few times.
-        if (empty($cacheArray[$filename])) {
+        if (empty($this->fileCache[$filename])) {
             if (is_readable($filename)) {
-                $cacheArray[$filename] = file($filename);
+                $this->fileCache[$filename] = file($filename);
             } else {
                 // Not readable!
-                $cacheArray[$filename] = array();
+                $this->fileCache[$filename] = array();
             }
         }
         if ($from < 0) {
@@ -147,9 +172,9 @@ class File
         }
 
         // Do we have enough lines in there?
-        if (count($cacheArray[$filename]) > $to) {
+        if (count($this->fileCache[$filename]) > $to) {
             for ($currentLineNo = $from; $currentLineNo <= $to; ++$currentLineNo) {
-                $result .= $cacheArray[$filename][$currentLineNo];
+                $result .= $this->fileCache[$filename][$currentLineNo];
             }
         }
 
@@ -194,35 +219,29 @@ class File
      */
     public function putFileContents($path, $string)
     {
-        // Do some caching, so we check a file or dir only once!
-        static $ops = array();
-        static $dir = array();
-
         // Check the directory.
-        if (!isset($dir[dirname($path)])) {
-            $dir[dirname($path)]['canwrite'] = is_writable(dirname($path));
+        if (!isset($this->dir[dirname($path)])) {
+            $this->dir[dirname($path)]['canwrite'] = is_writable(dirname($path));
         }
 
-        if (!isset($ops[$path])) {
+        if (!isset($this->ops[$path])) {
             // We need to do some checking:
-            $ops[$path]['append'] = is_file($path);
-            $ops[$path]['canwrite'] = is_writable($path);
+            $this->ops[$path]['append'] = is_file($path);
         }
 
-        // Do the writing!
-        if ($ops[$path]['append']) {
-            if ($ops[$path]['canwrite']) {
-                // Old file where we are allowed to write.
-                file_put_contents($path, $string, FILE_APPEND);
-            }
-        } else {
-            if ($dir[dirname($path)]['canwrite']) {
-                // New file we can create.
-                file_put_contents($path, $string);
-                // We will append it on the next write attempt!
-                $ops[$path]['append'] = true;
-                $ops[$path]['canwrite'] = true;
-            }
+        // Append to an old file.
+        if ($this->ops[$path]['append']) {
+            // Old file where we are allowed to write.
+            file_put_contents($path, $string, FILE_APPEND);
+            return;
+        }
+
+        // Create a new file.
+        if ($this->dir[dirname($path)]['canwrite']) {
+            // New file we can create.
+            file_put_contents($path, $string);
+            // We will append it on the next write attempt!
+            $this->ops[$path]['append'] = true;
         }
     }
 
@@ -243,13 +262,12 @@ class File
             if (unlink($filename)) {
                 restore_error_handler();
                 return;
-            } else {
-                // We have a permission problem here!
-                $this->pool->messages->addMessage(
-                    $this->pool->messages->getHelp('fileserviceDelete') . $this->filterFilePath($filename)
-                );
-                restore_error_handler();
             }
+            // We have a permission problem here!
+            $this->pool->messages->addMessage(
+                $this->pool->messages->getHelp('fileserviceDelete') . $this->filterFilePath($filename)
+            );
+            restore_error_handler();
         }
     }
 

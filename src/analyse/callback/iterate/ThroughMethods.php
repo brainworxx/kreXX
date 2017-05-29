@@ -140,9 +140,7 @@ class ThroughMethods extends AbstractCallback
     {
         /** @var \Brainworxx\Krexx\Service\Misc\File $fileService */
 
-        $filename = $this->pool
-            ->createClass('Brainworxx\\Krexx\\Service\\Misc\\File')
-            ->filterFilePath($declaringClass->getFileName());
+        $filename = $this->pool->fileService->filterFilePath($declaringClass->getFileName());
 
         if (empty($filename)) {
             return ':: unable to determine declaration ::\n\nMaybe this is a predeclared class?';

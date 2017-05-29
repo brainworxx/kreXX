@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Service\Misc\File;
 
 abstract class AbstractRender
 {
@@ -46,13 +45,6 @@ abstract class AbstractRender
      * @var Pool
      */
     protected $pool;
-
-    /**
-     * The file service, used to read and write files.
-     *
-     * @var File
-     */
-    protected $fileService;
 
     /**
      * The name of the current skin.
@@ -70,7 +62,6 @@ abstract class AbstractRender
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
         $this->skinPath = $this->pool->krexxDir . 'resources/skins/' . $this->pool->config->getSetting('skin') . '/';
     }
 
@@ -259,7 +250,7 @@ abstract class AbstractRender
         $fileCache[$what] = preg_replace(
             '/\s+/',
             ' ',
-            $this->fileService->getFileContents($this->skinPath . $what . '.html')
+            $this->pool->fileService->getFileContents($this->skinPath . $what . '.html')
         );
         return $fileCache[$what];
     }

@@ -136,6 +136,11 @@ class Pool extends Factory
     public $krexxDir;
 
     /**
+     * @var File
+     */
+    public $fileService;
+
+    /**
      * Initializes all needed classes.
      *
      * @param string $krexxDir
@@ -160,6 +165,8 @@ class Pool extends Factory
         $this->flushRewrite();
         // Set the directory.
         $this->krexxDir = $krexxDir;
+        // Initializes the file service.
+        $this->fileService = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
         // Initializes the messages.
         $this->messages = $this->createClass('Brainworxx\\Krexx\\View\\Messages');
         // Initializes the configuration
@@ -172,10 +179,11 @@ class Pool extends Factory
         $this->codegenHandler = $this->createClass('Brainworxx\\Krexx\\Analyse\\Code\\Codegen');
         // Initializes the chunks handler.
         $this->chunks = $this->createClass('Brainworxx\\Krexx\\View\\Output\\Chunks');
-        // Initializes the scope analysis
+        // Initializes the scope analysis.
         $this->scope = $this->createClass('Brainworxx\\Krexx\\Analyse\\Scope');
-        // Initializes the routing
+        // Initializes the routing.
         $this->routing = $this->createClass('Brainworxx\\Krexx\\Analyse\Routing\\Routing');
+
         // Initializes the render class.
         $this->initRenderer();
         // Check the environment and prepare the feedback, if necessary.
@@ -187,14 +195,11 @@ class Pool extends Factory
      */
     protected function checkEnvironment()
     {
-        /** @var File $fileService */
-        $fileService = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
-
         // Check chunk folder is writable.
         // If not, give feedback!
         $chunkFolder = $this->config->getChunkDir();
         if (!is_writeable($chunkFolder)) {
-            $chunkFolder = $fileService->filterFilePath($chunkFolder);
+            $chunkFolder = $this->fileService->filterFilePath($chunkFolder);
             $this->messages->addMessage(
                 'Chunksfolder ' . $chunkFolder . ' is not writable!' .
                 'This will increase the memory usage of kreXX significantly!',
@@ -209,7 +214,7 @@ class Pool extends Factory
         // If not, give feedback!
         $logFolder = $this->config->getLogDir();
         if (!is_writeable($logFolder)) {
-            $logFolder = $fileService->filterFilePath($logFolder);
+            $logFolder = $this->fileService->filterFilePath($logFolder);
             $this->messages->addMessage('Logfolder ' . $logFolder . ' is not writable !', 'critical');
             $this->messages->addKey('protected.folder.log', array($logFolder));
         }
@@ -247,7 +252,7 @@ class Pool extends Factory
     protected function initRenderer()
     {
         $skin = $this->config->getSetting('skin');
-        $classname = '\\Brainworxx\\Krexx\\View\\' . ucfirst($skin) . '\\Render';
+        $classname = 'Brainworxx\\Krexx\\View\\' . ucfirst($skin) . '\\Render';
         include_once $this->krexxDir . 'resources/skins/' . $skin . '/Render.php';
         $this->render =  $this->createClass($classname);
     }

@@ -53,13 +53,6 @@ class Config extends Fallback
     public $security;
 
     /**
-     * The file service used for reading and writing files.
-     *
-     * @var File
-     */
-    protected $fileService;
-
-    /**
      * The current position of our iterator array.
      *
      * @var int
@@ -84,7 +77,6 @@ class Config extends Fallback
     {
         parent::__construct($pool);
         $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
-        $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
 
         // Loading the settings.
         foreach ($this->configFallback as $section => $settings) {
@@ -359,7 +351,7 @@ class Config extends Fallback
         // Not loaded?
         if (empty($config)) {
             $config = (array)parse_ini_string(
-                $this->fileService->getFileContents($this->getPathToIniFile()),
+                $this->pool->fileService->getFileContents($this->getPathToIniFile()),
                 true
             );
             if (empty($config)) {

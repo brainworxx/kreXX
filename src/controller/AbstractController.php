@@ -61,13 +61,6 @@ abstract class AbstractController
     );
 
     /**
-     * The fileservice, used to read and write files.
-     *
-     * @var File
-     */
-    protected $fileService;
-
-    /**
      * Sends the output to the browser during shutdown phase.
      *
      * @var AbstractOutput
@@ -136,7 +129,6 @@ abstract class AbstractController
     {
         $this->pool = $pool;
         $this->callerFinder = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Caller\\CallerFinder');
-        $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
 
         // Register our output service.
         // Depending on the setting, we use another class here.
@@ -217,7 +209,7 @@ abstract class AbstractController
     {
         $krexxDir = $this->pool->krexxDir;
         // Get the css file.
-        $css = $this->fileService->getFileContents(
+        $css = $this->pool->fileService->getFileContents(
             $krexxDir .
             'resources/skins/' .
             $this->pool->config->getSetting('skin') .
@@ -232,7 +224,7 @@ abstract class AbstractController
         } else {
             $jsFile = $krexxDir . 'resources/jsLibs/kdt.js';
         }
-        $js = $this->fileService->getFileContents($jsFile);
+        $js = $this->pool->fileService->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
         $path = $krexxDir . 'resources/skins/' . $this->pool->config->getSetting('skin');
@@ -241,7 +233,7 @@ abstract class AbstractController
         } else {
             $jsFile = $path . '/krexx.js';
         }
-        $js .= $this->fileService->getFileContents($jsFile);
+        $js .= $this->pool->fileService->getFileContents($jsFile);
 
         return $this->pool->render->renderCssJs($css, $js);
     }

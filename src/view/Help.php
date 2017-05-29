@@ -65,9 +65,8 @@ class Help
     {
         $this->pool = $pool;
         $file = $pool->krexxDir . 'resources' . DIRECTORY_SEPARATOR . 'language' . DIRECTORY_SEPARATOR . 'Help.ini';
-        $fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
         $this->helpArray = (array)parse_ini_string(
-            $fileService->getFileContents($file)
+            $this->pool->fileService->getFileContents($file)
         );
     }
 

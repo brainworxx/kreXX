@@ -84,13 +84,6 @@ class Chunks
     protected $useChunks = true;
 
     /**
-     * The file service used to read and write files.
-     *
-     * @var \Brainworxx\Krexx\Service\Misc\File
-     */
-    protected $fileService;
-
-    /**
      * The logfolder.
      *
      * @var string
@@ -122,7 +115,6 @@ class Chunks
         $this->pool = $pool;
         $this->chunkDir = $pool->config->getChunkDir();
         $this->logDir = $pool->config->getLogDir();
-        $this->fileService = $pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
         $this->fileStamp = explode(' ', microtime());
         $this->fileStamp = $this->fileStamp[1] . str_replace('0.', '', $this->fileStamp[0]);
     }
@@ -144,7 +136,7 @@ class Chunks
             // Get the key.
             $key = $this->genKey();
             // Write the key to the chunks folder.
-            $this->fileService->putFileContents($this->chunkDir . $key . '.Krexx.tmp', $string);
+            $this->pool->fileService->putFileContents($this->chunkDir . $key . '.Krexx.tmp', $string);
             // Return the first part plus the key.
             return '@@@' . $key . '@@@';
         }
@@ -186,9 +178,9 @@ class Chunks
         $filename = $this->chunkDir . $key . '.Krexx.tmp';
         if (is_readable($filename)) {
             // Read the file.
-            $string = $this->fileService->getFileContents($filename);
+            $string = $this->pool->fileService->getFileContents($filename);
             // Delete it, we don't need it anymore.
-            $this->fileService->deleteFile($filename);
+            $this->pool->fileService->deleteFile($filename);
 
             return $string;
         }
@@ -256,7 +248,7 @@ class Chunks
 
         while ($chunkPos !== false) {
             // We have a chunk, we save the html part.
-            $this->fileService->putFileContents($filename, substr($string, 0, $chunkPos));
+            $this->pool->fileService->putFileContents($filename, substr($string, 0, $chunkPos));
 
             $chunkPart = substr($string, $chunkPos);
 
@@ -269,15 +261,15 @@ class Chunks
         }
 
         // No more chunks, we save what is left.
-        $this->fileService->putFileContents($filename, $string);
+        $this->pool->fileService->putFileContents($filename, $string);
         // Save our metadata, so a potential backend module can display it.
         // We may or may not have already some output for this file.
         if (!empty($this->metadata)) {
             // Remove the old metadata file. We still have all it's content
             // available in $this->metadata.
-            $this->fileService->deleteFile($filename . '.json');
+            $this->pool->fileService->deleteFile($filename . '.json');
             // Create a new metadata file with new info.
-            $this->fileService->putFileContents($filename . '.json', json_encode($this->metadata));
+            $this->pool->fileService->putFileContents($filename . '.json', json_encode($this->metadata));
         }
     }
 
@@ -301,7 +293,7 @@ class Chunks
             foreach ($chunkList as $file) {
                 // We delete everything that is older than 15 minutes.
                 if ((filemtime($file) + 900) < $now) {
-                    $this->fileService->deleteFile($file);
+                    $this->pool->fileService->deleteFile($file);
                 }
             }
         }
@@ -327,8 +319,8 @@ class Chunks
         // Cleanup logfiles.
         foreach ($logList as $file) {
             if ($count > $maxFileCount) {
-                $this->fileService->deleteFile($file);
-                $this->fileService->deleteFile($file . '.json');
+                $this->pool->fileService->deleteFile($file);
+                $this->pool->fileService->deleteFile($file . '.json');
             }
             ++$count;
         }
@@ -372,7 +364,7 @@ class Chunks
 
         // Delete them all!
         foreach ($chunkList as $file) {
-            $this->fileService->deleteFile($file);
+            $this->pool->fileService->deleteFile($file);
         }
     }
 }

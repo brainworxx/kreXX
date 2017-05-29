@@ -37,8 +37,6 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
-use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Service\Misc\File;
 
 /**
  * Getter method analysis methods.
@@ -54,12 +52,6 @@ use Brainworxx\Krexx\Service\Misc\File;
  */
 class ThroughGetter extends AbstractCallback
 {
-    /**
-     * The file service, used for reading sourcecode.
-     *
-     * @var File
-     */
-    protected $fileService;
 
     /**
      * Here we memorize how deep we are inside the current deep analysis.
@@ -67,18 +59,6 @@ class ThroughGetter extends AbstractCallback
      * @var int
      */
     protected $deep = 0;
-
-    /**
-     * Injection the pool and getting  the file service.
-     *
-     * @param Pool $pool
-     */
-    public function __construct(Pool $pool)
-    {
-        parent::__construct($pool);
-
-        $this->fileService = $this->pool->createClass('Brainworxx\\Krexx\\Service\\Misc\\File');
-    }
 
     /**
      * Try to get the possible result of all getter methods.
@@ -251,7 +231,7 @@ class ThroughGetter extends AbstractCallback
         // Still here?!?
         // Time to do some deep stuff. We parse the sourcecode via regex!
          // Read the sourcecode into a string.
-        $sourcecode = $this->fileService->readFile(
+        $sourcecode = $this->pool->fileService->readFile(
             $reflectionMethod->getFileName(),
             $reflectionMethod->getStartLine(),
             $reflectionMethod->getEndLine()
