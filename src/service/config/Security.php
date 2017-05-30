@@ -60,7 +60,7 @@ class Security extends Fallback
         if ($group === 'feEditing') {
             // Logging options can never be changed in the frontend.
             // The debug methods will also not be editable.
-            return in_array($name, $this->feConfigNoEdit);
+            return !in_array($name, $this->feConfigNoEdit);
         }
 
 
