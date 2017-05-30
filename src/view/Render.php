@@ -394,7 +394,7 @@ class Render extends AbstractRender
     {
         $from = $errline -6;
         $to = $errline +5;
-        $source = $this->fileService->readSourcecode($errfile, $errline -1, $from, $to -1);
+        $source = $this->pool->fileService->readSourcecode($errfile, $errline -1, $from, $to -1);
 
         return str_replace(
             array(
