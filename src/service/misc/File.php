@@ -213,7 +213,7 @@ class File
             }
         }
 
-        // This file was not readable! We need to tehh the user!
+        // This file was not readable! We need to tell the user!
         // Huh, we can not fully access this one.
         $this->pool->messages->addMessage(
             $this->pool->messages->getHelp('fileserviceAccess') . $this->filterFilePath($path)
