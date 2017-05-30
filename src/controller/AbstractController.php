@@ -180,11 +180,11 @@ abstract class AbstractController
         // as well as it's path.
         $pathToIni = $this->pool->config->getPathToIniFile();
         if (is_readable($pathToIni)) {
-            $path = 'Current configuration';
+            $path = $this->pool->messages->getHelp('currentConfig');
         } else {
             // Project settings are not accessible
             // tell the user, that we are using fallback settings.
-            $path = 'Krexx.ini not found, using factory settings';
+            $path = $this->pool->messages->getHelp('iniNotFound');
         }
 
         $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')

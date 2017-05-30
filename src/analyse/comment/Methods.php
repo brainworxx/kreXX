@@ -123,8 +123,7 @@ class Methods extends AbstractComment
         }
 
         // Still here? Tell the dev that we could not resolve the comment.
-        $comment = $this->replaceInheritComment($comment, '::could not resolve the inherited comment comment::');
-        return trim($comment);
+        return trim($this->replaceInheritComment($comment, $this->pool->messages->getHelp('commentResolvingFail')));
     }
 
     /**

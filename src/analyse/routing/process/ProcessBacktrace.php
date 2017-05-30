@@ -85,9 +85,7 @@ class ProcessBacktrace
 
         // Remove steps according to the configuration.
         if ($maxStep < $stepCount) {
-            $this->pool->messages->addMessage(
-                'Omitted backtrace steps ' . ($maxStep + 1) . ' until ' . ($stepCount)
-            );
+            $this->pool->messages->addMessage('omittedBacktrace', array(($maxStep + 1), $stepCount));
         }
 
         // We will not analyse more steps than we actually have.

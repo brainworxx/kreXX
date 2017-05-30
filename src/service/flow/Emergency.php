@@ -183,9 +183,7 @@ class Emergency
         // Check Runtime.
         if ($this->timer < time()) {
             // This is taking longer than expected.
-            $this->pool->messages->addMessage(
-                $this->pool->messages->getHelp('emergencyTimer')
-            );
+            $this->pool->messages->addMessage('emergencyTimer');
             \Krexx::editSettings();
             \Krexx::disable();
             self::$allIsOk = false;
@@ -199,9 +197,7 @@ class Emergency
             $left = $this->serverMemoryLimit - memory_get_usage();
             // Is more left than is configured?
             if ($left < $this->minMemoryLeft) {
-                $this->pool->messages->addMessage(
-                    $this->pool->messages->getHelp('emergencyMemory')
-                );
+                $this->pool->messages->addMessage('emergencyMemory');
                 // Show settings to give the dev to repair the situation.
                 \Krexx::editSettings();
                 \Krexx::disable();
@@ -278,7 +274,7 @@ class Emergency
         }
         // Give feedback if this is our last call.
         if ($this->krexxCount === ($this->maxCall - 1)) {
-            $this->pool->messages->addMessage($this->pool->messages->getHelp('maxCallReached'), 'critical');
+            $this->pool->messages->addMessage('maxCallReached');
         }
         // Count goes up.
         ++$this->krexxCount;

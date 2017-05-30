@@ -4,6 +4,7 @@
 - Change: Several performance tweaks for runtime optimization.
 - Change: Fallback setting runtime => level set to 5.
 - Change: Fallback setting runtime => maxCall set to 10.
+- Change: Refactored the halfassed messaging implementation.
 - Bugfix: Several tweaks to get a smaller HTML footprint.
 - Bugfix: Prevent the debug methods from creating new analysis
   calls, resulting in an infinite loop.

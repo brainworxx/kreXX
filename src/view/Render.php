@@ -447,12 +447,9 @@ class Render extends AbstractRender
     public function renderMessages(array $messages)
     {
         $result = '';
+        $messageTemplate = $this->getTemplateFileContent('message');
         foreach ($messages as $message) {
-            $result .= str_replace(
-                array('{class}', '{message}'),
-                array($message['class'], $message['message']),
-                $this->getTemplateFileContent('message')
-            );
+            $result .= str_replace('{message}', $message, $messageTemplate);
         }
         return $result;
     }

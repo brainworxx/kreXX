@@ -200,12 +200,7 @@ class Pool extends Factory
         $chunkFolder = $this->config->getChunkDir();
         if (!is_writeable($chunkFolder)) {
             $chunkFolder = $this->fileService->filterFilePath($chunkFolder);
-            $this->messages->addMessage(
-                'Chunksfolder ' . $chunkFolder . ' is not writable!' .
-                'This will increase the memory usage of kreXX significantly!',
-                'critical'
-            );
-            $this->messages->addKey('protected.folder.chunk', array($chunkFolder));
+            $this->messages->addMessage('chunksNotWritable', array($chunkFolder));
             // We can work without chunks, but this will require much more memory!
             $this->chunks->setUseChunks(false);
         }
@@ -215,8 +210,7 @@ class Pool extends Factory
         $logFolder = $this->config->getLogDir();
         if (!is_writeable($logFolder)) {
             $logFolder = $this->fileService->filterFilePath($logFolder);
-            $this->messages->addMessage('Logfolder ' . $logFolder . ' is not writable !', 'critical');
-            $this->messages->addKey('protected.folder.log', array($logFolder));
+            $this->messages->addMessage('logNotWritable', array($logFolder));
             // Tell the chunk output that we have no write access in the logging
             // folder.
             $this->chunks->setUseLogging(false);

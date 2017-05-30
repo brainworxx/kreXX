@@ -71,7 +71,6 @@ class Krexx
     public static function bootstrapKrexx()
     {
         $krexxDir = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-        include_once $krexxDir . 'src/view/Help.php';
         include_once $krexxDir . 'src/view/AbstractRender.php';
         include_once $krexxDir . 'src/view/Render.php';
         include_once $krexxDir . 'src/view/Messages.php';

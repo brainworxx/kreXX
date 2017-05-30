@@ -215,9 +215,7 @@ class File
 
         // This file was not readable! We need to tell the user!
         // Huh, we can not fully access this one.
-        $this->pool->messages->addMessage(
-            $this->pool->messages->getHelp('fileserviceAccess') . $this->filterFilePath($path)
-        );
+        $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
         return '';
     }
 
@@ -264,9 +262,7 @@ class File
                 return;
             }
             // We have a permission problem here!
-            $this->pool->messages->addMessage(
-                $this->pool->messages->getHelp('fileserviceDelete') . $this->filterFilePath($filename)
-            );
+            $this->pool->messages->addMessage('fileserviceDelete', array($this->filterFilePath($filename)));
             restore_error_handler();
         }
     }
