@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 /**
  * Abstract class for the comment analysis.
  *
- * @package Brainworxx\Krexx\Analyse
+ * @package Brainworxx\Krexx\Analyse\Comment
  */
 abstract class AbstractComment
 {

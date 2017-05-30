@@ -37,6 +37,11 @@ namespace Brainworxx\Krexx\View;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
+/**
+ * Defining what we need for a skin render class.
+ *
+ * @package Brainworxx\Krexx\View
+ */
 abstract class AbstractRender
 {
     /**

@@ -34,14 +34,13 @@
 
 namespace Brainworxx\Krexx\Analyse\Code;
 
-use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Wrapper around the \ReflectionParameter, with a standardized __toString
  * method, so that we can get the analysis string from it without any fuzz.
  *
- * @package Brainworxx\Krexx\Service\Code
+ * @package Brainworxx\Krexx\Analyse\Code
  */
 class ReflectionParameterWrapper
 {

@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Service\Factory;
 /**
  * Simple factory, nothing special. Offers a overwrite method.
  *
- * @package Brainworxx\Krexx\Service
+ * @package Brainworxx\Krexx\Service\Factory
  */
 class Factory
 {

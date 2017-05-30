@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Analyse\Caller\AbstractCaller;
-use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\View\Output\AbstractOutput;
 

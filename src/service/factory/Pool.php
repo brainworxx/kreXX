@@ -49,7 +49,7 @@ use Brainworxx\Krexx\Service\Misc\File;
 /**
  * Here we store all classes that we need.
  *
- * @package Brainworxx\Krexx\Service
+ * @package Brainworxx\Krexx\Service\Factory
  */
 class Pool extends Factory
 {

@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * The analysisHub decides what to do next with the model.
  *
- * @package Brainworxx\Krexx\Analysis
+ * @package Brainworxx\Krexx\Analyse\Routing
  */
 class Routing extends AbstractRouting
 {

@@ -613,6 +613,8 @@ class Model
     /**
      * Setter for the isMetaConstants.
      *
+     * @param bool $bool
+     *   The value we want to set.
      * @return $this
      *   Return $this for chaining.
      */
