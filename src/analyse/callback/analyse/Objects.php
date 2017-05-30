@@ -205,8 +205,11 @@ class Objects extends AbstractCallback
             $publicProps[$refProp->name] = true;
         }
         // For every not-declared property, we add a another reflection.
+        // Those are simply added during runtime
         foreach (array_diff_key(get_object_vars($data), $publicProps) as $key => $value) {
-            $refProps[] = new \ReflectionProperty($data, $key);
+            $undeclaredProp = new \ReflectionProperty($data, $key);
+            $undeclaredProp->isUndeclared = true;
+            $refProps[] = $undeclaredProp;
         }
 
         if (empty($refProps)) {

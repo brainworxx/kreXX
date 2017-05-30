@@ -112,10 +112,10 @@ class ThroughProperties extends AbstractCallback
                 $additional .= 'inherited ';
             }
 
-            if (is_a($refProperty, '\\Brainworxx\\Krexx\\Analysis\\Flection')) {
-                /* @var \Brainworxx\Krexx\Analyse\Flection $refProperty */
-                $additional .= $refProperty->getWhatAmI() . ' ';
+            if ($refProperty->isUndeclared) {
+                $additional .= 'dynamic property ';
             }
+
             if ($refProperty->isStatic()) {
                 $additional .= 'static ';
                 $connectorType = Connectors::STATIC_PROPERTY;
