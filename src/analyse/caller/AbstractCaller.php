@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Analyse\Caller;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Service\Misc\File;
 
 abstract class AbstractCaller
 {

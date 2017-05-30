@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Service\Config;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Service\Misc\File;
 
 /**
  * Access the debug settings here.
