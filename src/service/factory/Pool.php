@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Factory;
 
-use Brainworxx\Krexx\Analyse\Scope;
+use Brainworxx\Krexx\Analyse\Code\Scope;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
@@ -180,7 +180,7 @@ class Pool extends Factory
         // Initializes the chunks handler.
         $this->chunks = $this->createClass('Brainworxx\\Krexx\\View\\Output\\Chunks');
         // Initializes the scope analysis.
-        $this->scope = $this->createClass('Brainworxx\\Krexx\\Analyse\\Scope');
+        $this->scope = $this->createClass('Brainworxx\\Krexx\\Analyse\\Code\\Scope');
         // Initializes the routing.
         $this->routing = $this->createClass('Brainworxx\\Krexx\\Analyse\Routing\\Routing');
 
@@ -236,7 +236,7 @@ class Pool extends Factory
         $this->recursionHandler = $this->createClass('Brainworxx\\Krexx\\Service\\Flow\\Recursion');
         // Initialize the code generation.
         $this->codegenHandler = $this->createClass('Brainworxx\\Krexx\\Analyse\\Code\\Codegen');
-        $this->scope = $this->createClass('Brainworxx\\Krexx\\Analyse\\Scope');
+        $this->scope = $this->createClass('Brainworxx\\Krexx\\Analyse\\Code\\Scope');
         // We also reset our emergency handler timer.
         $this->emergencyHandler->resetTimer();
     }
