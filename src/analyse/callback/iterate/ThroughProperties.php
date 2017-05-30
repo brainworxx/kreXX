@@ -112,7 +112,11 @@ class ThroughProperties extends AbstractCallback
                 $additional .= 'inherited ';
             }
 
-            if ($refProperty->isUndeclared) {
+            // The property 'isUndeclared' is not a part of the reflectionProperty.
+            // @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
+            //       --> line 209
+            // With isset, we prevent a notice btw.
+            if (isset($refProperty->isUndeclared)) {
                 $additional .= 'dynamic property ';
             }
 
