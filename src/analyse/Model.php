@@ -383,10 +383,12 @@ class Model
 
     /**
      * We simply add more info to our info json.
+     * Leftover linebreaks will be removed.
+     * If the value is emptyx, we will remove a possible previous entry to this key.
      *
-     * @param $key
+     * @param string $key
      *   The array key.
-     * @param $value
+     * @param string $value
      *   The value we want to set.
      *
      * @return $this
@@ -395,7 +397,13 @@ class Model
     public function addToJson($key, $value)
     {
         // Remove leftover linebreaks.
-        $this->json[$key] = preg_replace("/\r|\n/", "", $value);
+        $value = trim(preg_replace("/\r|\n/", "", $value));
+        if ($value === '') {
+            unset($this->json[$key]);
+        } else {
+            $this->json[$key] = $value;
+        }
+
         return $this;
     }
 
