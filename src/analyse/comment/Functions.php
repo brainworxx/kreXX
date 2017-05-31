@@ -44,7 +44,7 @@ class Functions extends AbstractComment
     /**
      * Get the prettified comment from a function.
      *
-     * @param \ReflectionFunctionAbstract $reflection
+     * @param \Reflector $reflectionFunction
      *   The reflection of the function with the comment.
      * @param \ReflectionClass|null $reflectionClass
      *   Nothing, null. We do not have a hosting class.
@@ -52,18 +52,19 @@ class Functions extends AbstractComment
      * @return string
      *   The prettified comment.
      */
-    public function getComment(\ReflectionFunctionAbstract $reflection, \ReflectionClass $reflectionClass = null)
+    public function getComment(\Reflector $reflectionFunction, \ReflectionClass $reflectionClass = null)
     {
         // Do some static caching. The comment will not change during a run.
         static $cache = array();
-        $cachingKey = $reflection->getName();
+        /** @var \ReflectionFunction $reflectionFunction */
+        $cachingKey = $reflectionFunction->getName();
 
         if (isset($cache[$cachingKey])) {
             return $cache[$cachingKey];
         }
 
         // Cache not found. We need to generate this one.
-        $cache[$cachingKey] = $this->pool->encodeString($this->prettifyComment($reflection->getDocComment()));
+        $cache[$cachingKey] = $this->pool->encodeString($this->prettifyComment($reflectionFunction->getDocComment()));
         return $cache[$cachingKey];
     }
 }

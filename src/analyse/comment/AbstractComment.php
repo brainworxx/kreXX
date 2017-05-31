@@ -74,7 +74,7 @@ abstract class AbstractComment
     /**
      * We get the comment.
      *
-     * @param $reflection
+     * @param \Reflector $reflection
      *   A already existing reflection of the method or function.
      * @param \ReflectionClass $reflectionClass
      *   An already existing reflection of the original class.
@@ -83,7 +83,7 @@ abstract class AbstractComment
      *   The prettified comment.
      */
     abstract public function getComment(
-        \ReflectionFunctionAbstract $reflection,
+        \Reflector $reflection,
         \ReflectionClass $reflectionClass = null
     );
 

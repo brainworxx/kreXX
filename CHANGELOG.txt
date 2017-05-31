@@ -1,6 +1,8 @@
 2.2.1 dev
 - Added a configuration for the backtrace, to limit the analysed
   steps.
+- Added property comments to the analysis
+- Added property declaration place to the analysis.
 - Change: Several performance tweaks for runtime optimization.
 - Change: Fallback setting runtime => level set to 5.
 - Change: Fallback setting runtime => maxCall set to 10.

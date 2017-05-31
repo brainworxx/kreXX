@@ -96,7 +96,6 @@ class ThroughProperties extends AbstractCallback
             // Stitch together our additional info about the data:
             // public, protected, private, static.
             $additional = '';
-            $connectorType = Connectors::NORMAL_PROPERTY;
             if ($refProperty->isProtected()) {
                 $additional .= 'protected ';
             } elseif ($refProperty->isPublic()) {
@@ -114,12 +113,12 @@ class ThroughProperties extends AbstractCallback
 
             // The property 'isUndeclared' is not a part of the reflectionProperty.
             // @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
-            //       --> line 209
             // With isset, we prevent a notice btw.
             if (isset($refProperty->isUndeclared)) {
                 $additional .= 'dynamic property ';
             }
 
+            $connectorType = Connectors::NORMAL_PROPERTY;
             if ($refProperty->isStatic()) {
                 $additional .= 'static ';
                 $connectorType = Connectors::STATIC_PROPERTY;
@@ -132,6 +131,12 @@ class ThroughProperties extends AbstractCallback
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setData($value)
                     ->setName($propName)
+                    ->addToJson('Comment', $this->pool
+                        ->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Properties')
+                        ->getComment($refProperty))
+                    ->addToJson('Declared in', $this->pool->fileService->filterFilePath(
+                        $refProperty->getDeclaringClass()->getFileName()
+                    ))
                     ->setAdditional($additional)
                     ->setConnectorType($connectorType)
             );

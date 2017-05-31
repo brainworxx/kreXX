@@ -55,7 +55,7 @@ class Methods extends AbstractComment
      * Simple wrapper around the getMethodComment() to make sure
      * we only escape it once!
      *
-     * @param \ReflectionFunctionAbstract $reflectionMethod
+     * @param \Reflector $reflectionMethod
      *   An already existing reflection of the method.
      * @param \ReflectionClass $reflectionClass
      *   An already existing reflection of the original class.
@@ -63,10 +63,11 @@ class Methods extends AbstractComment
      * @return string
      *   The prettified and escaped comment.
      */
-    public function getComment(\ReflectionFunctionAbstract $reflectionMethod, \ReflectionClass $reflectionClass = null)
+    public function getComment(\Reflector $reflectionMethod, \ReflectionClass $reflectionClass = null)
     {
         // Do some static caching. The comment will not change during a run.
         static $cache = array();
+        /** @var \ReflectionMethod $reflectionMethod */
         $this->methodName = $reflectionMethod->getName();
         $cachingKey = $reflectionClass->getName() . '::' . $this->methodName;
 
