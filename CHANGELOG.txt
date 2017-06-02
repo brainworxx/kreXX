@@ -35,6 +35,8 @@
 - Bugfix: The method analysis is now displayes the default parameter
   values correctly (or at all).
 - Bugfix: No more getter analysis for internal php classes.
+- Bugfix: The registry now can really tell if a value was set,
+  or not.
 
 2.2.0
 - Added more search pattern and source code parsing to the
