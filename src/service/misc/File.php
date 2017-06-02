@@ -174,8 +174,8 @@ class File
      * @param string $filename
      *   The path to the file we want to read.
      *
-     * @return array
-     *   The file array.
+     * @return \SplFixedArray
+     *   The file in a \SplFixedArray.
      */
     protected function getFileContentsArray($filename)
     {
@@ -183,11 +183,13 @@ class File
             return $this->fileCache[$filename];
         }
 
+        // Using \SplFixedArray to save some memory, as it can get
+        // quire huge, depending on your system. 4mb is nothing here.
         if ($this->fileIsReadable($filename)) {
-            return $this->fileCache[$filename] = file($filename);
+            return $this->fileCache[$filename] = \SplFixedArray::fromArray(file($filename));
         } else {
             // Not readable!
-            return $this->fileCache[$filename] = array();
+            return $this->fileCache[$filename] = new \SplFixedArray(0);
         }
     }
 
