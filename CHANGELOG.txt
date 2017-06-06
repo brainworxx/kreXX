@@ -37,6 +37,7 @@
 - Bugfix: No more getter analysis for internal php classes.
 - Bugfix: The registry now can really tell if a value was set,
   or not.
+- Bugfix: The short text of an expandable child is now searchable.
 
 2.2.0
 - Added more search pattern and source code parsing to the
