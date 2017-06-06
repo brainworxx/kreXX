@@ -39,6 +39,8 @@
   or not.
 - Bugfix: The short text of an expandable child is now searchable.
 - Bugfix: Use the filepath filter for the location of the ini file.
+- Bugfix: Removed a warning in the filterFilePath, in case kreXX
+  was called via CLI.
 
 2.2.0
 - Added more search pattern and source code parsing to the
