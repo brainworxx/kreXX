@@ -154,17 +154,15 @@ class Messages
                 $result = "\n\nkreXX messages\n";
                 $result .= "==============\n";
                 foreach ($this->messages as $message) {
-                    $message = $message['message'];
                     $result .= "$message\n";
                 }
                 $result .= "\n\n";
-                return $result;
+                // Output the messages on the shell.
+                echo $result;
             }
-        } else {
-            return $this->pool->render->renderMessages($this->messages);
         }
-        // Still here?
-        return '';
+        // Return the rendered messages.
+        return $this->pool->render->renderMessages($this->messages);
     }
 
     /**
