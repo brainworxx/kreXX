@@ -261,5 +261,4 @@ class Pool extends Factory
         include_once $this->krexxDir . 'resources/skins/' . $skin . '/Render.php';
         $this->render =  $this->createClass($classname);
     }
-
 }

@@ -111,6 +111,9 @@ class ThroughProperties extends AbstractCallback
                 $additional .= 'inherited ';
             }
 
+            $comment = '';
+            $declarationPlace = '';
+
             $connectorType = Connectors::NORMAL_PROPERTY;
             if ($refProperty->isStatic()) {
                 $additional .= 'static ';
@@ -121,8 +124,6 @@ class ThroughProperties extends AbstractCallback
                 // The property 'isUndeclared' is not a part of the reflectionProperty.
                 // @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
                 $additional .= 'dynamic property ';
-                $comment = '';
-                $declarationPlace = '';
 
                 // Check for very special chars in there.
                 // FAIK this is only possible for dynamically declared properties
@@ -130,11 +131,8 @@ class ThroughProperties extends AbstractCallback
                 if (!preg_match("/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/", $propName)) {
                     // @see https://stackoverflow.com/questions/29019484/validate-a-php-variable
                     // @author AbraCadaver
-
-
                     $connectorType = Connectors::SPECIAL_CHARS_PROP;
                 }
-
             } else {
                 // Since we are dealing with a declared Property here, we can
                 // get the comment and the declaration place.

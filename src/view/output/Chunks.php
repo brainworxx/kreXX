@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\View\Output;
 
-use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
