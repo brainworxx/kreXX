@@ -76,21 +76,19 @@ class ConfigSection extends AbstractCallback
                 }
 
                 /** @var Model $model */
-                $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model');
+                $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')->setHelpid($name . 'Help');
+                $name = $this->pool->messages->getHelp($name . 'Readable');
                 if ($setting->getEditable()) {
                     $model->setData($name)
                         ->setName($value)
                         ->setNormal($setting->getSource())
-                        ->setType($setting->getType())
-                        ->setHelpid($name);
-
+                        ->setType($setting->getType());
                     $sectionOutput .= $this->pool->render->renderSingleEditableChild($model);
                 } else {
                     $model->setData($value)
                         ->setName($name)
                         ->setNormal($value)
-                        ->setType($setting->getSource())
-                        ->setHelpid($name);
+                        ->setType($setting->getSource());
                     $sectionOutput .= $this->pool->render->renderSingleChild($model);
                 }
             }
