@@ -101,23 +101,17 @@ class File
                 // Add it to the result.
                 $realLineNo = $currentLineNo + 1;
 
-                // Escape it.
-                $content[$currentLineNo] = $this->pool->encodingService->encodeString(
-                    $content[$currentLineNo],
-                    true
-                );
-
                 if ($currentLineNo === $highlight) {
                     $result .= $this->pool->render->renderBacktraceSourceLine(
                         'highlight',
                         $realLineNo,
-                        $content[$currentLineNo]
+                        $this->pool->encodingService->encodeString($content[$currentLineNo], true)
                     );
                 } else {
                     $result .= $this->pool->render->renderBacktraceSourceLine(
                         'source',
                         $realLineNo,
-                        $content[$currentLineNo]
+                        $this->pool->encodingService->encodeString($content[$currentLineNo], true)
                     );
                 }
             } else {
