@@ -405,8 +405,7 @@ class Render extends AbstractRender
                 '{file}',
                 '{source}',
                 '{KrexxCount}',
-                '{line}',
-                '{encoding}'
+                '{line}'
             ),
             array(
                 $type,
@@ -414,8 +413,7 @@ class Render extends AbstractRender
                 $errfile,
                 $source,
                 $this->pool->emergencyHandler->getKrexxCount(),
-                $errline,
-                $this->pool->chunks->getOfficialEncoding(),
+                $errline
             ),
             $this->getTemplateFileContent('fatalMain')
         );
