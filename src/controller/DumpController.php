@@ -111,6 +111,10 @@ class DumpController extends AbstractController
                 ->setName($caller['varname'])
         );
 
+        // Detect the encoding on the start-chunk-string of the analysis
+        // for a complete encoding picture.
+        $this->pool->chunks->detectEncoding($analysis);
+
         // Now that our analysis is done, we must check if there was an emergency
         // break.
         if ($this->pool->emergencyHandler->checkEmergencyBreak()) {

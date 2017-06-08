@@ -92,6 +92,7 @@ class Render extends AbstractRender
                 '{KrexxId}',
                 '{search}',
                 '{messages}',
+                '{encoding}'
             ),
             array(
                 $this->pool->config->version,
@@ -102,6 +103,7 @@ class Render extends AbstractRender
                 $this->pool->recursionHandler->getMarker(),
                 $this->renderSearch(),
                 $this->pool->messages->outputMessages(),
+                $this->pool->chunks->getOfficialEncoding(),
             ),
             $this->getTemplateFileContent('header')
         );
@@ -404,6 +406,7 @@ class Render extends AbstractRender
                 '{source}',
                 '{KrexxCount}',
                 '{line}',
+                '{encoding}'
             ),
             array(
                 $type,
@@ -412,6 +415,7 @@ class Render extends AbstractRender
                 $source,
                 $this->pool->emergencyHandler->getKrexxCount(),
                 $errline,
+                $this->pool->chunks->getOfficialEncoding(),
             ),
             $this->getTemplateFileContent('fatalMain')
         );

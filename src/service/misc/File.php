@@ -102,7 +102,7 @@ class File
                 $realLineNo = $currentLineNo + 1;
 
                 // Escape it.
-                $content[$currentLineNo] = $this->pool->encodeString(
+                $content[$currentLineNo] = $this->pool->encodingService->encodeString(
                     $content[$currentLineNo],
                     true
                 );

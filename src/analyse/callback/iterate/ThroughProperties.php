@@ -151,7 +151,7 @@ class ThroughProperties extends AbstractCallback
             $output .= $this->pool->routing->analysisHub(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setData($value)
-                    ->setName($this->pool->encodeString($propName))
+                    ->setName($this->pool->encodingService->encodeString($propName))
                     ->addToJson('Comment', $comment)
                     ->addToJson('Declared in', $declarationPlace)
                     ->setAdditional($additional)
