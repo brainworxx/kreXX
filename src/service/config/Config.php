@@ -80,13 +80,20 @@ class Config extends Fallback
         // Loading the settings.
         foreach ($this->configFallback as $section => $settings) {
             foreach ($settings as $name => $setting) {
-                $this->getConfigValue($section, $name);
+                $this->loadConfigValue($section, $name);
             }
         }
 
         // Now that our settings are in place, we need to check the
         // ip to decide if we need to deactivate kreXX.
         if (!$this->security->isAllowedIp($this->getSetting('iprange'))) {
+            // No kreXX for you!
+            $this->setDisabled(true);
+        }
+
+        // We may need to change the disabling again, in case we are in cli
+        // or ajax mode and have no fileoutput.
+        if ($this->isRequestAjaxOrCli()) {
             // No kreXX for you!
             $this->setDisabled(true);
         }
@@ -195,39 +202,21 @@ class Config extends Fallback
     }
 
     /**
-     * Returns values from kreXX's configuration.
+     * Load values of the kreXX's configuration.
      *
      * @param string $section
      *   The group inside the ini of the value that we want to read.
      * @param string $name
      *   The name of the config value.
-     *
-     * @return string
-     *   The value.
      */
-    protected function getConfigValue($section, $name)
+    protected function loadConfigValue($section, $name)
     {
-        // Check if we already have this value.
-        if (isset($this->settings[$name])) {
-            return $this->settings[$name]->getValue();
-        }
-
         $feConfig = $this->getFeConfig($name);
         /** @var Model $model */
-        $model = $this->pool->createClass('Brainworxx\\Krexx\\Service\\Config\Model')
+        $model = $this->pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Model')
             ->setSection($section)
             ->setEditable($feConfig[0])
             ->setType($feConfig[1]);
-
-        // Check for ajax.
-        if ($name === 'disabled') {
-            // Check for ajax and cli.
-            if ($this->isRequestAjaxOrCli()) {
-                $model->setValue(true)->setSource('Ajax request frontend');
-                $this->settings[$name] = $model;
-                return true;
-            }
-        }
 
         // Do we have a value in the cookies?
         $cookieSetting = $this->getConfigFromCookies($section, $name);
@@ -241,7 +230,7 @@ class Config extends Fallback
             } else {
                 $model->setValue($cookieSetting)->setSource('Local cookie settings');
                 $this->settings[$name] = $model;
-                return $cookieSetting;
+                return;
             }
         }
 
@@ -250,13 +239,13 @@ class Config extends Fallback
         if (isset($iniSettings)) {
             $model->setValue($iniSettings)->setSource('Krexx.ini settings');
             $this->settings[$name] = $model;
-            return $iniSettings;
+            return;
         }
 
         // Nothing yet? Give back factory settings.
         $model->setValue($this->configFallback[$section][$name])->setSource('Factory settings');
         $this->settings[$name] = $model;
-        return $this->configFallback[$section][$name];
+        return;
     }
 
     /**
@@ -422,25 +411,29 @@ class Config extends Fallback
      */
     protected function isRequestAjaxOrCli()
     {
-        if ($this->getConfigValue('output', 'destination') !== 'file') {
-            // When we are not going to create a logfile, we send it to the browser.
-            // Check for ajax.
-            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
-            ) {
-                // Appending stuff after a ajax request will most likely
-                // cause a js error. But there are moments when you actually
-                // want to do this.
-                if ($this->getConfigValue('runtime', 'detectAjax')) {
-                    // We were supposed to detect ajax, and we did it right now.
-                    return true;
-                }
-            }
-            // Check for CLI.
-            if (php_sapi_name() === 'cli') {
+        if ($this->getSetting('destination') !== 'file') {
+            // Fileoutout does not respect ajax or cli, because there is no
+            // interference with the output.
+            return false;
+        }
+
+        // Check for ajax.
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+        ) {
+            // Appending stuff after a ajax request will most likely
+            // cause a js error. But there are moments when you actually
+            // want to do this.
+            if ($this->getSetting('detectAjax')) {
+                // We were supposed to detect ajax, and we did it right now.
                 return true;
             }
         }
+        // Check for CLI.
+        if (php_sapi_name() === 'cli') {
+            return true;
+        }
+
         // Still here? This means it's neither.
         return false;
     }
