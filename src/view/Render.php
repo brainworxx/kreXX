@@ -322,21 +322,11 @@ class Render extends AbstractRender
         // For dropdown elements, we need to render the options.
         if ($model->getType() === 'Select') {
             // Here we store what the list of possible values.
-            switch ($model->getData()) {
-                case 'destination':
-                    // At php shutdown, logfile or direct after analysis.
-                    $valueList = array('browser', 'file');
-                    break;
-
-                case 'skin':
-                    // Get a list of all skin folders.
-                    $valueList = $this->getSkinList();
-                    break;
-
-                default:
-                    // true/false
-                    $valueList = array('true', 'false');
-                    break;
+            if ($model->getDomid() === 'skin') {
+                // Get a list of all skin folders.
+                $valueList = $this->getSkinList();
+            } else {
+                $valueList = array('true', 'false');
             }
 
             // Paint it.
