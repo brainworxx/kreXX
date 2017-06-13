@@ -183,7 +183,7 @@ class Security extends Fallback
                 }
                 break;
 
-            case 'Local open function':
+            case 'devHandle':
                 // The Developer handle, we check it for values that are not
                 // a-z and A-Z.
                 $devHandle = preg_match('/[^a-zA-Z]/', $value);

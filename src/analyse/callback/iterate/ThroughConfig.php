@@ -79,12 +79,13 @@ class ThroughConfig extends AbstractCallback
                     )
             );
         }
-        // Render the dev-handle field.
 
-        $data = 'Local open function';
+        // Render the dev-handle field.
+        $devHandleLabel = $this->pool->messages->getHelp('devHandle');
         $configOutput .= $this->pool->render->renderSingleEditableChild(
             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-                ->setData($data)
+                ->setData($devHandleLabel)
+                ->setDomId('devHandle')
                 ->setName($this->pool->config->getDevHandler())
                 ->setNormal('\krexx::')
                 ->setType('Input')

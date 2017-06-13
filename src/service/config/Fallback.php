@@ -172,7 +172,7 @@ class Fallback
             'type' => 'None',
             'editable' => 'false',
         ),
-        'Local open function' => array(
+        'devHandle' => array(
             'type' => 'Input',
             'editable' => 'true',
         ),

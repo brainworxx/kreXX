@@ -146,7 +146,7 @@ class Render extends AbstractRender
         );
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     public function renderSingleChild(Model $model)
@@ -307,8 +307,14 @@ class Render extends AbstractRender
     public function renderSingleEditableChild(Model $model)
     {
         $element = str_replace(
-            array('{name}', '{value}'),
-            array($model->getData(), $model->getName()),
+            array(
+                '{id}',
+                '{value}'
+            ),
+            array(
+                $model->getDomid(),
+                $model->getName()       // Wrong!
+            ),
             $this->getTemplateFileContent('single' . $model->getType())
         );
         $options = '';

@@ -65,6 +65,11 @@ class Config extends Fallback
      */
     public $settings = array();
 
+    /**
+     * List of all configured debug methods.
+     *
+     * @var array
+     */
     public $debugFuncList = array();
 
     /**
@@ -139,7 +144,7 @@ class Config extends Fallback
      */
     public function getDevHandler()
     {
-        return $this->getConfigFromCookies('deep', 'Local open function');
+        return $this->getConfigFromCookies('deep', 'devHandle');
     }
 
     /**
@@ -376,12 +381,12 @@ class Config extends Fallback
 
         // Not loaded?
         if (empty($config)) {
-            // We have local settings.
             if (isset($_COOKIE['KrexxDebugSettings'])) {
+                // We have local settings.
                 $setting = json_decode($_COOKIE['KrexxDebugSettings'], true);
-            }
-            if (isset($setting) && is_array($setting)) {
-                $config = $setting;
+                if (is_array($setting)) {
+                    $config = $setting;
+                }
             }
         }
 
