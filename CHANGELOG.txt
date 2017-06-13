@@ -48,6 +48,8 @@
   PHP forbidden chars.
 - Bugfix: The sorting of the configuration now stay the same as the
   fallback settings.
+- Bugfix: The traversable analysis may forget to lower the nesting
+  level again.
 
 2.2.0
 - Added more search pattern and source code parsing to the
