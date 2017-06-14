@@ -91,7 +91,7 @@ class Config extends Fallback
 
         // Now that our settings are in place, we need to check the
         // ip to decide if we need to deactivate kreXX.
-        if (!$this->security->isAllowedIp($this->getSetting('iprange'))) {
+        if (!$this->isAllowedIp($this->getSetting('iprange'))) {
             // No kreXX for you!
             $this->setDisabled(true);
         }
@@ -490,5 +490,44 @@ class Config extends Fallback
         }
         // Return the Overwrites
         return $GLOBALS['kreXXoverwrites']['directories']['config'] . DIRECTORY_SEPARATOR . 'Krexx.ini';
+    }
+
+        /**
+     * Checks if the current client ip is allowed.
+     *
+     * @param string $whitelist
+     *   The ip whitelist.
+     *
+     * @return bool
+     *   Whether the current client ip is allowed or not.
+     */
+    protected function isAllowedIp($whitelist)
+    {
+        if (empty($_SERVER['REMOTE_ADDR'])) {
+            $remote = '';
+        } else {
+            $remote = $_SERVER['REMOTE_ADDR'];
+        }
+
+        // Fallback to the Chin Leung implementation.
+        // @author Chin Leung
+        // @see https://stackoverflow.com/questions/35559119/php-ip-address-whitelist-with-wildcards
+        $whitelist = explode(',', $whitelist);
+        if (in_array($remote, $whitelist)) {
+            // If the ip is matched, return true.
+            return true;
+        }
+
+        // Check the wildcards.
+        foreach ($whitelist as $ip) {
+            $ip = trim($ip);
+            $wildcardPos = strpos($ip, '*');
+            # Check if the ip has a wildcard
+            if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . '*' === $ip) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
