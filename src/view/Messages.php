@@ -98,24 +98,8 @@ class Messages
     public function addMessage($key, array $args = array())
     {
         // Add it to the keys, so the CMS can display it.
-        $this->addKey($key, $args);
-        $this->messages[$key] = $this->getHelp($key, $args);
-    }
-
-    /**
-     * Adds message keys to the key array.
-     *
-     * The same as the addMessage, but we add language keys for a potential
-     * backend integration (includekrexx for example).
-     *
-     * @param string $key
-     *   The key for the translation function.
-     * @param array $args
-     *   The parameters for the string replacements inside the translation.
-     */
-    protected function addKey($key, array $args = array())
-    {
-        $this->keys[$key] = array('key' => $key, 'params' => $args);
+        $this->keys[] = array('key' => $key, 'params' => $args);
+        $this->messages[] = $this->getHelp($key, $args);
     }
 
     /**
