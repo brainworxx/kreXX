@@ -41,15 +41,8 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Service\Config
  */
-class Config extends Fallback
+class Config extends Security
 {
-
-    /**
-     * Our security class.
-     *
-     * @var Security
-     */
-    public $security;
 
     /**
      * The current position of our iterator array.
@@ -80,8 +73,6 @@ class Config extends Fallback
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
-        $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
-
         // Loading the settings.
         foreach ($this->configFallback as $section => $settings) {
             foreach ($settings as $name => $setting) {
@@ -358,7 +349,7 @@ class Config extends Fallback
         }
 
         // Do we have a value in the ini?
-        if (isset($config[$group][$name]) && $this->security->evaluateSetting($group, $name, $config[$group][$name])) {
+        if (isset($config[$group][$name]) && $this->evaluateSetting($group, $name, $config[$group][$name])) {
             return $config[$group][$name];
         }
         return null;
@@ -399,7 +390,7 @@ class Config extends Fallback
 
 
         // Do we have a value in the cookies?
-        if (isset($config[$name]) && $this->security->evaluateSetting($group, $name, $config[$name])) {
+        if (isset($config[$name]) && $this->evaluateSetting($group, $name, $config[$name])) {
             // We escape them, just in case.
             return htmlspecialchars($config[$name]);
         }
