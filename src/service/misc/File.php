@@ -203,11 +203,12 @@ class File
                 fclose($file);
                 return $result;
             }
+        } else {
+            // This file was not readable! We need to tell the user!
+            $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
         }
 
-        // This file was not readable! We need to tell the user!
-        // Huh, we can not fully access this one.
-        $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
+        // Empty file returns an empty string.
         return '';
     }
 
