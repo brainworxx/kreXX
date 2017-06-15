@@ -483,7 +483,7 @@ class Config extends Security
         return $GLOBALS['kreXXoverwrites']['directories']['config'] . DIRECTORY_SEPARATOR . 'Krexx.ini';
     }
 
-        /**
+    /**
      * Checks if the current client ip is allowed.
      *
      * @param string $whitelist
