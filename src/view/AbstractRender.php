@@ -333,5 +333,4 @@ abstract class AbstractRender implements RenderInterface
 
         return ' data-' . $name . '="' . str_replace('"', '&#34;', $data) . '" ';
     }
-
 }
