@@ -73,15 +73,15 @@ class File
      *   Path to the file you want to read.
      * @param int $highlight
      *   The line number you want to highlight
-     * @param int $from
+     * @param int $readFrom
      *   The start line.
-     * @param int $to
+     * @param int $readTo
      *   The end line.
      *
      * @return string
      *   The source code, HTML formatted.
      */
-    public function readSourcecode($filename, $highlight, $from, $to)
+    public function readSourcecode($filename, $highlight, $readFrom, $readTo)
     {
         $result = '';
 
@@ -89,14 +89,14 @@ class File
         // few times.
         $content = $this->getFileContentsArray($filename);
 
-        if ($from < 0) {
-             $from = 0;
+        if ($readFrom < 0) {
+             $readFrom = 0;
         }
-        if ($to < 0) {
-            $to = 0;
+        if ($readTo < 0) {
+            $readTo = 0;
         }
 
-        for ($currentLineNo = $from; $currentLineNo <= $to; ++$currentLineNo) {
+        for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
             if (isset($content[$currentLineNo])) {
                 // Add it to the result.
                 $realLineNo = $currentLineNo + 1;
@@ -127,28 +127,28 @@ class File
      * Simply read a file into a string.
      *
      * @param string $filename
-     * @param int $from
-     * @param int $to
+     * @param int $readFrom
+     * @param int $readTo
      *
      * @return string
      *   The content of the file, between the $from and $to.
      */
-    public function readFile($filename, $from = 0, $to = 0)
+    public function readFile($filename, $readFrom = 0, $readTo = 0)
     {
         $result = '';
 
         // Read the file into our cache array.
         $content = $this->getFileContentsArray($filename);
-        if ($from < 0) {
-             $from = 0;
+        if ($readFrom < 0) {
+             $readFrom = 0;
         }
-        if ($to < 0) {
-            $to = 0;
+        if ($readTo < 0) {
+            $readTo = 0;
         }
 
         // Do we have enough lines in there?
-        if (count($content) > $to) {
-            for ($currentLineNo = $from; $currentLineNo <= $to; ++$currentLineNo) {
+        if (count($content) > $readTo) {
+            for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
                 $result .= $content[$currentLineNo];
             }
         }

@@ -223,7 +223,7 @@ abstract class AbstractController
         } else {
             $jsFile = $krexxDir . 'resources/jsLibs/kdt.js';
         }
-        $js = $this->pool->fileService->getFileContents($jsFile);
+        $jsCode = $this->pool->fileService->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
         $path = $krexxDir . 'resources/skins/' . $this->pool->config->getSetting('skin');
@@ -232,9 +232,9 @@ abstract class AbstractController
         } else {
             $jsFile = $path . '/krexx.js';
         }
-        $js .= $this->pool->fileService->getFileContents($jsFile);
+        $jsCode .= $this->pool->fileService->getFileContents($jsFile);
 
-        return $this->pool->render->renderCssJs($css, $js);
+        return $this->pool->render->renderCssJs($css, $jsCode);
     }
 
     /**
@@ -344,8 +344,8 @@ abstract class AbstractController
         } else {
             $ssl = false;
         }
-        $sp = strtolower($_SERVER['SERVER_PROTOCOL']);
-        $protocol = substr($sp, 0, strpos($sp, '/'));
+        $protocol = strtolower($_SERVER['SERVER_PROTOCOL']);
+        $protocol = substr($protocol, 0, strpos($protocol, '/'));
         if ($ssl) {
             $protocol .= 's';
         }

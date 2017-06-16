@@ -301,7 +301,7 @@ class Security extends Fallback
     public function isAllowedDebugCall($data, $call)
     {
         // Check if the class itself is blacklisted.
-        foreach ($this->debugClassBlacklist as $classname) {
+        foreach ($this->classBlacklist as $classname) {
             if (is_a($data, $classname)) {
                 // No debug methods for you.
                 return false;
@@ -309,7 +309,7 @@ class Security extends Fallback
         }
 
         // Check for a class / method combination.
-        foreach ($this->debugMethodsBlacklist as $classname => $methodLlist) {
+        foreach ($this->methodBlacklist as $classname => $methodLlist) {
             if (is_a($data, $classname) && in_array($call, $methodLlist)) {
                 // We have a winner, this one is blacklisted!
                 return false;

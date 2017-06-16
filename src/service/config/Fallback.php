@@ -222,7 +222,7 @@ class Fallback
      *
      * @var array
      */
-    protected $debugMethodsBlacklist = array(
+    protected $methodBlacklist = array(
 
         // TYPO3 viewhelpers dislike this function.
         // In the TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper the private
@@ -248,7 +248,7 @@ class Fallback
      *
      * @var array
      */
-    protected $debugClassBlacklist = array(
+    protected $classBlacklist = array(
         // Fun with reflection classes. Not really.
         '\\ReflectionClass',
         '\\ReflectionFunction',

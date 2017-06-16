@@ -405,13 +405,13 @@ abstract class AbstractRender
      *
      * @param string $css
      *   The CSS, rendered into the template.
-     * @param string $js
+     * @param string $javascript
      *   The JS, rendered into the template.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    abstract public function renderCssJs(&$css, &$js);
+    abstract public function renderCssJs(&$css, &$javascript);
 
     /**
      * Renders a expandable child with a callback in the middle.
