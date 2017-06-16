@@ -52,14 +52,21 @@ abstract class AbstractCaller
 
     /**
      * Pattern that we use to identify the caller.
-     * This is normally 'krexx'. With our direct integration
-     * into the debug() method of the TYPO3 core, this may as
-     * well be 'debug' or something else entirely, depending
-     * on the system used and it's internal debug call.
+     *
+     * We use this one to identify the line from which kreXX was called.
      *
      * @var string
      */
-    protected $pattern = 'krexx';
+    protected $pattern;
+
+    /**
+     * Here we store a more sofisticated list of calls.
+     *
+     * We use his list to identify the variable name of the call.
+     *
+     * @var array
+     */
+    protected $callPattern;
 
     /**
      * Injects the pool.
