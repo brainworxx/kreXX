@@ -83,6 +83,8 @@ class Krexx
         include_once $krexxDir . 'src/service/config/Fallback.php';
         include_once $krexxDir . 'src/service/config/Security.php';
         include_once $krexxDir . 'src/service/config/Config.php';
+        include_once $krexxDir . 'src/service/config/from/Cookie.php';
+        include_once $krexxDir . 'src/service/config/from/Ini.php';
         include_once $krexxDir . 'src/service/misc/File.php';
         include_once $krexxDir . 'src/service/misc/Registry.php';
         include_once $krexxDir . 'src/service/misc/Encoding.php';

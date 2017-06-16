@@ -35,21 +35,16 @@
 namespace Brainworxx\Krexx\Service\Config;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
+use Brainworxx\Krexx\Service\Config\From\Cookie;
+use Brainworxx\Krexx\Service\Config\From\Ini;
 
 /**
  * Access the debug settings here.
  *
  * @package Brainworxx\Krexx\Service\Config
  */
-class Config extends Security
+class Config extends Fallback
 {
-
-    /**
-     * The current position of our iterator array.
-     *
-     * @var int
-     */
-    protected $position = 0;
 
     /**
      * Our current settings.
@@ -66,6 +61,27 @@ class Config extends Security
     public $debugFuncList = array();
 
     /**
+     * Our security handler.
+     *
+     * @var Security
+     */
+    public $security;
+
+    /**
+     * Our ini file configuration handler.
+     *
+     * @var Ini
+     */
+    public $iniConfig;
+
+    /**
+     * Our cookie configuration handler.
+     *
+     * @var Cookie
+     */
+    public $cookieConfig;
+
+    /**
      * Injection the pool and loading the configuration.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
@@ -73,23 +89,29 @@ class Config extends Security
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
+
+        $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
+        $this->iniConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Ini')
+            ->loadIniFile($this->getPathToIniFile());
+        $this->cookieConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Cookie');
+
         // Loading the settings.
         foreach ($this->configFallback as $section => $settings) {
-            foreach ($settings as $name => $setting) {
-                $this->loadConfigValue($section, $name);
+            foreach ($settings as $name => $factorySetting) {
+                $this->loadConfigValue($section, $name, $factorySetting);
             }
-        }
-
-        // Now that our settings are in place, we need to check the
-        // ip to decide if we need to deactivate kreXX.
-        if (!$this->isAllowedIp($this->getSetting('iprange'))) {
-            // No kreXX for you!
-            $this->setDisabled(true);
         }
 
         // We may need to change the disabling again, in case we are in cli
         // or ajax mode and have no fileoutput.
         if ($this->isRequestAjaxOrCli()) {
+            // No kreXX for you!
+            $this->setDisabled(true);
+        }
+
+        // Now that our settings are in place, we need to check the
+        // ip to decide if we need to deactivate kreXX.
+        if (!$this->isAllowedIp($this->getSetting('iprange'))) {
             // No kreXX for you!
             $this->setDisabled(true);
         }
@@ -135,7 +157,13 @@ class Config extends Security
      */
     public function getDevHandler()
     {
-        return $this->getConfigFromCookies('deep', 'devHandle');
+        static $handle = false;
+
+        if ($handle === false) {
+            $handle = $this->cookieConfig->getConfigFromCookies('deep', 'devHandle');
+        }
+
+        return $handle;
     }
 
     /**
@@ -153,85 +181,45 @@ class Config extends Security
     }
 
     /**
-     * Get the configuration of the frontend config form.
-     *
-     * @param string $parameterName
-     *   The parameter you want to render.
-     *
-     * @return array
-     *   The configuration (is it editable, a dropdown, a textfield, ...)
-     */
-    protected function getFeConfig($parameterName)
-    {
-        static $config = array();
-
-        if (!isset($config[$parameterName])) {
-            // Load it from the file.
-            $filevalue = $this->getFeConfigFromFile($parameterName);
-            if (!is_null($filevalue)) {
-                $config[$parameterName] = $filevalue;
-            }
-        }
-
-        // Do we have a value?
-        if (isset($config[$parameterName])) {
-            $type = $config[$parameterName]['type'];
-            $editable = $config[$parameterName]['editable'];
-        } else {
-            // Fallback to factory settings.
-            if (isset($this->feConfigFallback[$parameterName])) {
-                $type = $this->feConfigFallback[$parameterName]['type'];
-                $editable = $this->feConfigFallback[$parameterName]['editable'];
-            } else {
-                // Unknown parameter.
-                $type = 'None';
-                $editable = 'false';
-            }
-        }
-        if ($editable === 'true') {
-            $editable = true;
-        } else {
-            $editable = false;
-        }
-
-        return array($editable, $type);
-    }
-
-    /**
      * Load values of the kreXX's configuration.
      *
      * @param string $section
      *   The group inside the ini of the value that we want to read.
      * @param string $name
      *   The name of the config value.
+     * @param string $factorySetting
+     *   The factory setting
      */
-    protected function loadConfigValue($section, $name)
+    protected function loadConfigValue($section, $name, $factorySetting)
     {
-        $feConfig = $this->getFeConfig($name);
+        $feConfig = $this->iniConfig->getFeConfig($name);
         /** @var Model $model */
         $model = $this->pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Model')
             ->setSection($section)
             ->setEditable($feConfig[0])
             ->setType($feConfig[1]);
 
-        // Do we have a value in the cookies?
-        $cookieSetting = $this->getConfigFromCookies($section, $name);
-        if (!is_null($cookieSetting)) {
-            // We must not overwrite a disabled=true with local cookie settings!
-            // Otherwise it could get enabled locally, which might be a security
-            // issue.
-            if (($name === 'disabled' && $cookieSetting === 'false')) {
-                // Do nothing.
-                // We ignore this setting.
-            } else {
-                $model->setValue($cookieSetting)->setSource('Local cookie settings');
-                $this->settings[$name] = $model;
-                return;
+        // Do we accept cookie settings here?
+        if ($feConfig[0] === true) {
+            $cookieSetting = $this->cookieConfig->getConfigFromCookies($section, $name);
+            // Do we have a value in the cookies?
+            if (!is_null($cookieSetting)) {
+                // We must not overwrite a disabled=true with local cookie settings!
+                // Otherwise it could get enabled locally, which might be a security
+                // issue.
+                if (($name === 'disabled' && $cookieSetting === 'false')) {
+                    // Do nothing.
+                    // We ignore this setting.
+                } else {
+                    $model->setValue($cookieSetting)->setSource('Local cookie settings');
+                    $this->settings[$name] = $model;
+                    return;
+                }
             }
         }
 
         // Do we have a value in the ini?
-        $iniSettings = $this->getConfigFromFile($section, $name);
+        $iniSettings = $this->iniConfig->getConfigFromFile($section, $name);
         if (isset($iniSettings)) {
             $model->setValue($iniSettings)->setSource('Krexx.ini settings');
             $this->settings[$name] = $model;
@@ -239,165 +227,12 @@ class Config extends Security
         }
 
         // Nothing yet? Give back factory settings.
-        $model->setValue($this->configFallback[$section][$name])->setSource('Factory settings');
+        $model->setValue($factorySetting)->setSource('Factory settings');
         $this->settings[$name] = $model;
         return;
     }
 
-    /**
-     * Get the config of the frontend config form from the file.
-     *
-     * @param string $parameterName
-     *   The parameter you want to render.
-     *
-     * @return array
-     *   The configuration (is it editable, a dropdown, a textfield, ...)
-     */
-    public function getFeConfigFromFile($parameterName)
-    {
-        static $config = array();
 
-        // Loaded?
-        if (isset($config[$parameterName])) {
-            return $config[$parameterName];
-        }
-
-        // Get the human readable stuff from the ini file.
-        $value = $this->getConfigFromFile('feEditing', $parameterName);
-
-        // Is it set?
-        if (!is_null($value)) {
-            // We need to translate it to a "real" setting.
-            // Get the html control name.
-            switch ($parameterName) {
-                case 'maxfiles':
-                    $type = 'Input';
-                    break;
-
-                default:
-                    // Nothing special, we get our value from the config class.
-                    $type = $this->feConfigFallback[$parameterName]['type'];
-            }
-            // Stitch together the setting.
-            switch ($value) {
-                case 'none':
-                    $type = 'None';
-                    $editable = 'false';
-                    break;
-
-                case 'display':
-                    $editable = 'false';
-                    break;
-
-                case 'full':
-                    $editable = 'true';
-                    break;
-
-                default:
-                    // Unknown setting.
-                    // Fallback to no display, just in case.
-                    $type = 'None';
-                    $editable = 'false';
-                    break;
-            }
-            $result = array(
-                'type' => $type,
-                'editable' => $editable,
-            );
-            // Remember the setting.
-            $config[$parameterName] = $result;
-        }
-
-        // Do we have a value now?
-        if (isset($config[$parameterName])) {
-            return $config[$parameterName];
-        }
-
-        // Still here?
-        return null;
-    }
-
-    /**
-     * Returns settings from the ini file.
-     *
-     * @param string $group
-     *   The group name inside of the ini.
-     * @param string $name
-     *   The name of the setting.
-     *
-     * @return string
-     *   The value from the file.
-     */
-    public function getConfigFromFile($group, $name)
-    {
-        static $config = array();
-
-        // Not loaded?
-        if (empty($config)) {
-            $pathToIni = $this->getPathToIniFile();
-            if (is_file($pathToIni)) {
-                $config = (array)parse_ini_string(
-                    $this->pool->fileService->getFileContents($this->getPathToIniFile()),
-                    true
-                );
-            }
-            if (empty($config)) {
-                // Still empty means that there is no ini file. We add a dummy.
-                // This will prevent the failing reload of the ini file.
-                $config[] = 'dummy';
-            }
-        }
-
-        // Do we have a value in the ini?
-        if (isset($config[$group][$name]) && $this->evaluateSetting($group, $name, $config[$group][$name])) {
-            return $config[$group][$name];
-        }
-        return null;
-    }
-
-    /**
-     * Returns settings from the local cookies.
-     *
-     * @param string $group
-     *   The name of the group inside the cookie.
-     * @param string $name
-     *   The name of the value.
-     *
-     * @return string|null
-     *   The value.
-     */
-    protected function getConfigFromCookies($group, $name)
-    {
-        static $config = array();
-
-        // Not loaded?
-        if (empty($config)) {
-            if (isset($_COOKIE['KrexxDebugSettings'])) {
-                // We have local settings.
-                $setting = json_decode($_COOKIE['KrexxDebugSettings'], true);
-                if (is_array($setting)) {
-                    $config = $setting;
-                }
-            }
-        }
-
-        $paramConfig = $this->getFeConfig($name);
-        if ($paramConfig[0] === false) {
-            // We act as if we have not found the value. Configurations that are
-            // not editable on the frontend will be ignored!
-            return null;
-        }
-
-
-        // Do we have a value in the cookies?
-        if (isset($config[$name]) && $this->evaluateSetting($group, $name, $config[$name])) {
-            // We escape them, just in case.
-            return htmlspecialchars($config[$name]);
-        }
-
-        // Still here?
-        return null;
-    }
 
     /**
      * Check if the current request is an AJAX request.
@@ -425,6 +260,7 @@ class Config extends Security
                 return true;
             }
         }
+
         // Check for CLI.
         if (php_sapi_name() === 'cli') {
             return true;
@@ -468,22 +304,6 @@ class Config extends Security
     }
 
     /**
-     * Get the path to the configuration file.
-     *
-     * @return string
-     *   The absolute path to the Krexx.ini.
-     */
-    public function getPathToIniFile()
-    {
-        if (empty($GLOBALS['kreXXoverwrites']['directories']['config'])) {
-            // Return the standard settings.
-            return $this->pool->krexxDir . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
-        }
-        // Return the Overwrites
-        return $GLOBALS['kreXXoverwrites']['directories']['config'] . DIRECTORY_SEPARATOR . 'Krexx.ini';
-    }
-
-    /**
      * Checks if the current client ip is allowed.
      *
      * @param string $whitelist
@@ -494,6 +314,12 @@ class Config extends Security
      */
     protected function isAllowedIp($whitelist)
     {
+        // Check for CLI.
+        if (php_sapi_name() === 'cli') {
+            // We do not care about IP's in CLI mode.
+            return true;
+        }
+
         if (empty($_SERVER['REMOTE_ADDR'])) {
             $remote = '';
         } else {
@@ -520,5 +346,53 @@ class Config extends Security
         }
 
         return false;
+    }
+
+    /**
+     * Determines if a debug function is blacklisted in s specific class.
+     *
+     * @param object $data
+     *   The class we are analysing.
+     * @param string $call
+     *   The function name we want to call.
+     *
+     * @return bool
+     *   Whether the function is allowed to be called.
+     */
+    public function isAllowedDebugCall($data, $call)
+    {
+        // Check if the class itself is blacklisted.
+        foreach ($this->classBlacklist as $classname) {
+            if (is_a($data, $classname)) {
+                // No debug methods for you.
+                return false;
+            }
+        }
+
+        // Check for a class / method combination.
+        foreach ($this->methodBlacklist as $classname => $methodLlist) {
+            if (is_a($data, $classname) && in_array($call, $methodLlist)) {
+                // We have a winner, this one is blacklisted!
+                return false;
+            }
+        }
+        // Nothing found?
+        return true;
+    }
+
+    /**
+     * Get the path to the configuration file.
+     *
+     * @return string
+     *   The absolute path to the Krexx.ini.
+     */
+    public function getPathToIniFile()
+    {
+        if (empty($GLOBALS['kreXXoverwrites']['directories']['config'])) {
+            // Return the standard settings.
+            return $this->pool->krexxDir . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
+        }
+        // Return the Overwrites
+        return $GLOBALS['kreXXoverwrites']['directories']['config'] . DIRECTORY_SEPARATOR . 'Krexx.ini';
     }
 }
