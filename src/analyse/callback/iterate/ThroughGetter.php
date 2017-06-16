@@ -170,7 +170,7 @@ class ThroughGetter extends AbstractCallback
         // - _myproperty
         // - my_property
         // - _my_property
-        
+
         // Get a first impression.
         $propertyName = $this->preparePropertyName($reflectionMethod);
 
