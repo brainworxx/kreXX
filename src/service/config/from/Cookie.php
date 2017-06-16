@@ -66,10 +66,11 @@ class Cookie
     public function __construct(Pool $pool)
     {
         $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
+        $cookies = $pool->getCookie();
 
-        if (isset($_COOKIE['KrexxDebugSettings'])) {
+        if (isset($cookies['KrexxDebugSettings'])) {
             // We have local settings.
-            $settings = json_decode($_COOKIE['KrexxDebugSettings'], true);
+            $settings = json_decode($cookies['KrexxDebugSettings'], true);
             if (is_array($settings)) {
                 $this->settings = $settings;
             }

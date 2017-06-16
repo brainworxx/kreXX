@@ -57,6 +57,13 @@ class File
     protected $pool;
 
     /**
+     * The current docroot.
+     *
+     * @var string|false
+     */
+    protected $docroot;
+
+    /**
      * Injects the pool.
      *
      * @param Pool $pool
@@ -64,6 +71,11 @@ class File
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
+        $server = $pool->getServer();
+        $this->docRoot = rtrim($server['DOCUMENT_ROOT'], '/');
+        if (empty($this->docRoot)) {
+            $this->docRoot = false;
+        }
     }
 
     /**
@@ -277,10 +289,9 @@ class File
         // There may or may not be a trailing '/'.
         // We remove it, just in case, to make sure that we remove the doc root
         // completely from the $path variable.
-        $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
-        if (!empty($docRoot) && strpos($path, $docRoot) === 0) {
+        if ($this->docRoot !== false && strpos($path, $this->docRoot) === 0) {
             // Found it on position 0.
-            $path = '. . ./' . substr($path, strlen($docRoot) + 1);
+            $path = '. . ./' . substr($path, strlen($this->docRoot) + 1);
         }
 
         return $path;

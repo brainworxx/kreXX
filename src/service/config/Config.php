@@ -81,6 +81,9 @@ class Config extends Fallback
      */
     public $cookieConfig;
 
+
+    protected $directories = array();
+
     /**
      * Injection the pool and loading the configuration.
      *
@@ -90,6 +93,7 @@ class Config extends Fallback
     {
         parent::__construct($pool);
 
+        $this->initDirectories();
         $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
         $this->iniConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Ini')
             ->loadIniFile($this->getPathToIniFile());
@@ -117,6 +121,29 @@ class Config extends Fallback
         }
 
         $this->debugFuncList = explode(',', $this->getSetting('debugMethods'));
+    }
+
+    protected function initDirectories()
+    {
+        $globals = $this->pool->getGlobals();
+
+        if (empty($globals['kreXXoverwrites']['directories']['chunks'])) {
+            $this->directories['chunks'] = $this->pool->krexxDir . 'chunks' . DIRECTORY_SEPARATOR;
+        } else {
+            $this->directories['chunks'] = $globals['kreXXoverwrites']['directories']['chunks'];
+        }
+
+        if (empty($globals['kreXXoverwrites']['directories']['log'])) {
+            $this->directories['log'] = $this->pool->krexxDir . 'log' . DIRECTORY_SEPARATOR;
+        } else {
+            $this->directories['log'] = $globals['kreXXoverwrites']['directories']['log'];
+        }
+
+        if (empty($globals['kreXXoverwrites']['directories']['config'])) {
+            $this->directories['config'] = $this->pool->krexxDir . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
+        } else {
+            $this->directories['config'] = $globals['kreXXoverwrites']['directories']['config'];
+        }
     }
 
     /**
@@ -248,9 +275,11 @@ class Config extends Fallback
             return false;
         }
 
+        $server = $this->pool->getServer();
+
         // Check for ajax.
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+        if (isset($server['HTTP_X_REQUESTED_WITH']) &&
+            strtolower($server['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
         ) {
             // Appending stuff after a ajax request will most likely
             // cause a js error. But there are moments when you actually
@@ -278,12 +307,7 @@ class Config extends Fallback
      */
     public function getChunkDir()
     {
-        if (empty($GLOBALS['kreXXoverwrites']['directories']['chunks'])) {
-            // Return the standard settings.
-            return $this->pool->krexxDir . 'chunks' . DIRECTORY_SEPARATOR;
-        }
-        // Return the Overwrites
-        return $GLOBALS['kreXXoverwrites']['directories']['chunks'] . DIRECTORY_SEPARATOR;
+        return $this->directories['chunks'];
 
     }
 
@@ -295,12 +319,7 @@ class Config extends Fallback
      */
     public function getLogDir()
     {
-        if (empty($GLOBALS['kreXXoverwrites']['directories']['log'])) {
-            // Return the standard settings.
-            return $this->pool->krexxDir . 'log' . DIRECTORY_SEPARATOR;
-        }
-        // Return the Overwrites
-        return $GLOBALS['kreXXoverwrites']['directories']['log'] . DIRECTORY_SEPARATOR;
+        return $this->directories['log'];
     }
 
     /**
@@ -320,10 +339,12 @@ class Config extends Fallback
             return true;
         }
 
-        if (empty($_SERVER['REMOTE_ADDR'])) {
+        $server = $this->pool->getServer();
+
+        if (empty($server['REMOTE_ADDR'])) {
             $remote = '';
         } else {
-            $remote = $_SERVER['REMOTE_ADDR'];
+            $remote = $server['REMOTE_ADDR'];
         }
 
         // Fallback to the Chin Leung implementation.
@@ -388,11 +409,6 @@ class Config extends Fallback
      */
     public function getPathToIniFile()
     {
-        if (empty($GLOBALS['kreXXoverwrites']['directories']['config'])) {
-            // Return the standard settings.
-            return $this->pool->krexxDir . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
-        }
-        // Return the Overwrites
-        return $GLOBALS['kreXXoverwrites']['directories']['config'] . DIRECTORY_SEPARATOR . 'Krexx.ini';
+        return $this->directories['config'];
     }
 }
