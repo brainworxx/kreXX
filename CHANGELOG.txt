@@ -56,6 +56,8 @@
   hash from an array.
 - Bugfix: Fixed a autoloading triggering event, when processing
   a string.
+- Bugfix: Fixed an issue with thepath filter and the directory
+  separator string on windows systems.
 
 2.2.0
 - Added more search pattern and source code parsing to the
