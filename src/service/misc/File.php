@@ -255,7 +255,7 @@ class File
      */
     public function deleteFile($filename)
     {
-        // Check if it is an actual file and if it is writeable.
+        // Check if it is an actual file and if it is writable.
         if (is_file($filename)) {
             set_error_handler(function () {
                 /* do nothing */
