@@ -54,9 +54,10 @@ class ProcessFloat extends AbstractProcess
      */
     public function process(Model $model)
     {
-        $model->setNormal($model->getData())
-            ->setType('float');
+        ;
 
-        return $this->pool->render->renderSingleChild($model);
+        return $this->pool->render->renderSingleChild(
+            $model->setNormal($model->getData())->setType('float')
+        );
     }
 }
