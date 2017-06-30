@@ -81,7 +81,11 @@ class Config extends Fallback
      */
     public $cookieConfig;
 
-
+    /**
+     * Here we store the paths to our files and directories.
+     *
+     * @var array
+     */
     protected $directories = array();
 
     /**
@@ -258,9 +262,7 @@ class Config extends Fallback
         $this->settings[$name] = $model;
         return;
     }
-
-
-
+    
     /**
      * Check if the current request is an AJAX request.
      *
