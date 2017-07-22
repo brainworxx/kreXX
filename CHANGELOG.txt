@@ -60,6 +60,8 @@
   separator string on windows systems.
 - Bugfix: Fixed an issue, where the preview of the string was
   first escaped, and then truncated.
+- Bugfix: The string analysis is now respection line breaks in
+  short string.
 
 2.2.0
 - Added more search pattern and source code parsing to the
