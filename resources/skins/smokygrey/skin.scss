@@ -480,6 +480,14 @@ $fontLight: lighter 10px tahoma, verdana;
         padding: 5px;
         margin: 5px;
         float: right;
+        ::selection {
+          /* WebKit/Blink Browsers */
+          background: $yellowBwx !important;
+        }
+        ::-moz-selection {
+          /* Gecko Browsers */
+          background: $yellowBwx !important;
+        }
       }
 
     }

@@ -362,6 +362,12 @@
         padding: 5px;
         margin: 5px;
         float: right; }
+        .kwrapper .kchild .kel .kodsp ::selection, .kfatalwrapper-outer .kchild .kel .kodsp ::selection {
+          /* WebKit/Blink Browsers */
+          background: #FED300 !important; }
+        .kwrapper .kchild .kel .kodsp ::-moz-selection, .kfatalwrapper-outer .kchild .kel .kodsp ::-moz-selection {
+          /* Gecko Browsers */
+          background: #FED300 !important; }
     .kwrapper .kchild .kpreview, .kfatalwrapper-outer .kchild .kpreview {
       padding: 0;
       margin-bottom: 5px; }
