@@ -185,35 +185,35 @@
          *
          * @event change
          */
-        kdt.addEvent('.ksearchcase', 'change', krexx.clearSearch);
+        kdt.addEvent('.ksearchcase', 'change', krexx.performSearch.clearSearch);
 
         /**
          * Clear our search results, because we now have new options.
          *
          * @event change
          */
-        kdt.addEvent('.ksearchkeys', 'change', krexx.clearSearch);
+        kdt.addEvent('.ksearchkeys', 'change', krexx.performSearch.clearSearch);
 
         /**
          * Clear our search results, because we now have new options.
          *
          * @event change
          */
-        kdt.addEvent('.ksearchshort', 'change', krexx.clearSearch);
+        kdt.addEvent('.ksearchshort', 'change', krexx.performSearch.clearSearch);
 
         /**
          * Clear our search results, because we now have new options.
          *
          * @event change
          */
-        kdt.addEvent('.ksearchlong', 'change', krexx.clearSearch);
+        kdt.addEvent('.ksearchlong', 'change', krexx.performSearch.clearSearch);
 
         /**
          * Clear our search results, because we now have new options.
          *
          * @event change
          */
-        kdt.addEvent('.ksearchwhole', 'change', krexx.clearSearch);
+        kdt.addEvent('.ksearchwhole', 'change', krexx.performSearch.clearSearch);
 
         /**
          * Display our search options.
@@ -391,18 +391,6 @@
     };
 
     /**
-     * Here we save the search results
-     *
-     * This is multidimensional array:
-     * results[kreXX-instance][search text][search results]
-     *                                     [pointer]
-     * The [pointer] is the key of the [search result] where
-     * you would jump to when you click "next"
-     *
-     */
-    var results = [];
-
-    /**
      * Initiates the search.
      *
      * The results are saved in the var results.
@@ -451,40 +439,39 @@
             }
 
             // Are we already having some results?
-            if (typeof results[instance] !== "undefined") {
-                if (typeof results[instance][searchtext] === "undefined") {
+            if (typeof krexx.performSearch.results[instance] !== "undefined") {
+                if (typeof krexx.performSearch.results[instance][searchtext] === "undefined") {
                     refreshResultlist();
                 }
-            }
-            else {
+            } else {
                 refreshResultlist();
             }
 
             // Set the pointer to the next or previous element
             if (direction === 'forward') {
-                results[instance][searchtext]['pointer']++;
+                krexx.performSearch.results[instance][searchtext]['pointer']++;
             }
             else {
-                results[instance][searchtext]['pointer']--;
+                krexx.performSearch.results[instance][searchtext]['pointer']--;
             }
 
             // Do we have an element?
-            if (typeof results[instance][searchtext]['data'][results[instance][searchtext]['pointer']] === "undefined") {
+            if (typeof krexx.performSearch.results[instance][searchtext]['data'][krexx.performSearch.results[instance][searchtext]['pointer']] === "undefined") {
                 if (direction === 'forward') {
                     // There is no next element, we go back to the first one.
-                    results[instance][searchtext]['pointer'] = 0;
+                    krexx.performSearch.results[instance][searchtext]['pointer'] = 0;
                 }
                 else {
-                    results[instance][searchtext]['pointer'] = results[instance][searchtext]['data'].length - 1;
+                    krexx.performSearch.results[instance][searchtext]['pointer'] = krexx.performSearch.results[instance][searchtext]['data'].length - 1;
                 }
             }
 
             // Feedback about where we are
-            this.parentNode.querySelector('.ksearch-state').textContent = (results[instance][searchtext]['pointer'] + 1) + ' / ' + (results[instance][searchtext]['data'].length);
+            this.parentNode.querySelector('.ksearch-state').textContent = (krexx.performSearch.results[instance][searchtext]['pointer'] + 1) + ' / ' + (krexx.performSearch.results[instance][searchtext]['data'].length);
             // Now we simply jump to the element in the array.
-            if (typeof results[instance][searchtext]['data'][results[instance][searchtext]['pointer']] !== 'undefined') {
+            if (typeof krexx.performSearch.results[instance][searchtext]['data'][krexx.performSearch.results[instance][searchtext]['pointer']] !== 'undefined') {
                 // We got another one!
-                krexx.jumpTo(results[instance][searchtext]['data'][results[instance][searchtext]['pointer']]);
+                krexx.jumpTo(krexx.performSearch.results[instance][searchtext]['data'][krexx.performSearch.results[instance][searchtext]['pointer']]);
             }
         }
         else {
@@ -512,9 +499,10 @@
             }
 
             // Get a new list of elements
-            results[instance] = [];
-            results[instance][searchtext] = [];
-            results[instance][searchtext]['data'] = [];
+            krexx.performSearch.results[instance] = [];
+            krexx.performSearch.results[instance][searchtext] = [];
+            krexx.performSearch.results[instance][searchtext]['data'] = [];
+            krexx.performSearch.results[instance][searchtext]['pointer'] = [];
 
             // Poll out payload for elements to search
             var list = payload.querySelectorAll(selector.join(', '));
@@ -526,31 +514,40 @@
                     textContent = textContent.toLowerCase();
                 }
                 if (searchWhole) {
-                    console.log(textContent);
                     if (textContent === searchtext) {
                         kdt.toggleClass(list[i], 'ksearch-found-highlight');
-                        results[instance][searchtext]['data'].push(list[i]);
+                        krexx.performSearch.results[instance][searchtext]['data'].push(list[i]);
                     }
                 } else {
                     if (textContent.indexOf(searchtext) > -1) {
                         kdt.toggleClass(list[i], 'ksearch-found-highlight');
-                        results[instance][searchtext]['data'].push(list[i]);
+                        krexx.performSearch.results[instance][searchtext]['data'].push(list[i]);
                     }
                 }
-
             }
             // Reset our index.
-            results[instance][searchtext]['pointer'] = -1;
+            krexx.performSearch.results[instance][searchtext]['pointer'] = -1;
         }
-
-
     };
+
+    /**
+     * Here we save the search results
+     *
+     * This is multidimensional array:
+     * results[kreXX-instance][search text][search results]
+     *                                     [pointer]
+     * The [pointer] is the key of the [search result] where
+     * you would jump to when you click "next"
+     *
+     */
+    krexx.performSearch.results = [];
 
     /**
      * Reset the searchresults, because we now have new search options.
      */
-    krexx.clearSearch = function () {
-        results = [];
+    krexx.performSearch.clearSearch = function () {
+        // Wipe our instance data, nothing more
+        krexx.performSearch.results[kdt.getDataset(this, 'instance')] = [];
     };
 
     /**
@@ -581,7 +578,6 @@
             kdt.toggleClass(searchtab, 'kactive');
             // Clear the results.
             kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
-            results = [];
         }
     };
 

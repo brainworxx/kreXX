@@ -253,27 +253,35 @@
         /** @type {string|*} */
         var result;
 
-        if (typeof el !== 'undefined') {
-            result = el.getAttribute('data-' + what);
+        if (typeof el === 'undefined') {
+            // No el, no data!
+            return '';
+        }
 
-            if (result !== null) {
-                if (mustEscape === false) {
-                    return result;
-                } else {
-                    return result.replace(/&/g, "&amp;")
-                        .replace(/</g, "&lt;")
-                        .replace(/>/g, "&gt;")
-                        .replace(/"/g, "&quot;")
-                        .replace(/'/g, "&#039;")
-                        // <small> is allowed. Parameters are better readable
-                        // this way.
-                        .replace('&lt;small&gt;', '<small>')
-                        .replace('&lt;/small&gt;', '</small>');
-                }
+        if (typeof el.getAttribute !== 'function') {
+            // No attribute, no data!
+            return '';
+        }
+
+        result = el.getAttribute('data-' + what);
+
+        if (result !== null) {
+            if (mustEscape === false) {
+                return result;
+            } else {
+                return result.replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;")
+                    // <small> is allowed. Parameters are better readable
+                    // this way.
+                    .replace('&lt;small&gt;', '<small>')
+                    .replace('&lt;/small&gt;', '</small>');
             }
         }
 
-        // Stille here?!? No data fount, hence an empty string.
+        // Still here?!? No data fount, hence an empty string.
         return '';
     };
 
