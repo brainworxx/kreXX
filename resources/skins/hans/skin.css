@@ -850,7 +850,7 @@ div.kwrapper {
 }
 
 .kwrapper .ksearch .koptions:before {
-    content: '\26ED';
+    content: '\263C';
     font-weight: bolder;
 }
 
