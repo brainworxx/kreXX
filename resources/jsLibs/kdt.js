@@ -661,6 +661,39 @@
         return object3;
     };
 
+    /**
+     * Move the draXX element into the viewport. Should be called onDocumentReady.
+     *
+     * @param {string} selector
+     */
+    kdt.moveToViewport = function (selector) {
+        // Meh, we need to use the timeout to make this work on MS-Edge.
+        // Edge remembers the last scrolling position *after* the onDocumentReady
+        // event. 500 ms should be enough time to do this.
+        setTimeout(function(){
+            // Get the current viewport top value.
+            /** @type {number} */
+            var viewportTop = document.documentElement.scrollTop;
+            // Fallback for Chrome.
+            if (viewportTop === 0 ) {
+                viewportTop = document.body.scrollTop;
+            }
+
+            // Get the elements we need to move
+            /** @type {NodeList} */
+            var elements = document.querySelectorAll(selector);
+            /** @tpyoe {number} */
+            var oldOffset = 0;
+
+            for (var i = 0; i < elements.length; i++) {
+                // Get it's old offset.
+                oldOffset = parseInt(elements[i].style.top.slice(0, -2), 10);
+                // Set the new offset.
+                elements[i].style.top = (oldOffset + viewportTop) + 'px';
+            }
+        }, 500);
+    };
+
     window.kreXXdomTools = kdt;
 
 })();

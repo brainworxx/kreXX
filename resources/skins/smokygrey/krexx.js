@@ -230,6 +230,9 @@
             krexx.disableForms();
         }
 
+        // Move the output into the viewport. Debugging onepager is so annoying, otherwise.
+        kdt.moveToViewport('.kouterwrapper');
+
     };
 
     /**
