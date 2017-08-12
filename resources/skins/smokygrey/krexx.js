@@ -426,12 +426,19 @@
         var searchLong = this.parentNode.parentNode.querySelector('.ksearchlong').checked;
         var searchWhole = this.parentNode.parentNode.querySelector('.ksearchwhole').checked;
 
-        // Appy our configuration.
+        // Apply our configuration.
         if (caseSensitive === false) {
             searchtext = searchtext.toLowerCase();
         }
 
-        // we only search for more than 3 chars.
+        // Nothing to search for.
+        if (searchtext.length === 0) {
+            // Not enough chars as a searchtext!
+            this.parentNode.querySelector('.ksearch-state').textContent = '<- Please enter a search text.';
+            return
+        }
+
+        // We only search for more than 3 chars.
         if (searchtext.length > 2 || searchWhole) {
             var instance = kdt.getDataset(this, 'instance');
             var direction = kdt.getDataset(this, 'direction');
