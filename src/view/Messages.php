@@ -140,9 +140,8 @@ class Messages
                 foreach ($this->messages as $message) {
                     $result .= "$message\n";
                 }
-                $result .= "\n\n";
                 // Output the messages on the shell.
-                echo $result;
+                echo $result = "\n\n";
             }
         }
         // Return the rendered messages.
