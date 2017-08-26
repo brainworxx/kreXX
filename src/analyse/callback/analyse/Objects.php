@@ -520,7 +520,6 @@ class Objects extends AbstractCallback
         // Public properties.
         // We render them directly in the object "root", so we call
         // the render directly.
-        // $model->setAdditional($label);
         return $model->renderMe();
     }
 
