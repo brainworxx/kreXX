@@ -98,11 +98,8 @@ class Objects extends AbstractCallback
         }
 
         // Dumping all configured debug functions.
-        $output .= $this->pollAllConfiguredDebugMethods($data);
-
         // Adding a HR for a better readability.
-        $output .= $this->pool->render->renderSingeChildHr();
-        return $output;
+        return $output . $this->pollAllConfiguredDebugMethods($data) . $this->pool->render->renderSingeChildHr();
     }
 
     /**
