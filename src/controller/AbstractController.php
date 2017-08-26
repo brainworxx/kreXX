@@ -395,6 +395,6 @@ abstract class AbstractController
     {
         echo '<pre>';
         var_dump($data);
-        echo('</pre>');
+        echo '</pre>';
     }
 }
