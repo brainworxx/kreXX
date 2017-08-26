@@ -162,14 +162,12 @@ class Messages
      */
     public function getHelp($key, array $args = array())
     {
-        if (empty($key)) {
+        // Check is wecan get avalue, at all.
+        if (empty($this->helpArray[$key])) {
             return '';
         }
 
-        if (isset($this->helpArray[$key])) {
-            return vsprintf($this->helpArray[$key], $args);
-        }
-        // Text not found. At least return the key.
-        return vsprintf($key, $args);
+        // Return the value
+        return vsprintf($this->helpArray[$key], $args);
     }
 }
