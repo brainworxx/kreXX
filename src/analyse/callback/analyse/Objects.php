@@ -376,21 +376,6 @@ class Objects extends AbstractCallback
      */
     protected function getTraversableData(\Traversable $data, $name)
     {
-        // Special Array Access here, resulting in modecomplicated source
-        // generation. So we tell the callback to to that.
-        $multiline = true;
-
-        // Normal ArrayAccess, direct access to the array. Nothing special
-        if (is_a($data, 'ArrayAccess')) {
-            $multiline = false;
-        }
-
-        // SplObject pool use the object as keys, so we need some
-        // multiline stuff!
-        if (is_a($data, 'SplObjectStorage')) {
-            $multiline = true;
-        }
-
         // Add a try to prevent the hosting CMS from doing something stupid.
         try {
             // We need to deactivate the current error handling to
@@ -418,6 +403,21 @@ class Objects extends AbstractCallback
                 // nesting level again.
                 $this->pool->emergencyHandler->downOneNestingLevel();
                 return '';
+            }
+
+            // Special Array Access here, resulting in modecomplicated source
+            // generation. So we tell the callback to to that.
+            $multiline = true;
+
+            // Normal ArrayAccess, direct access to the array. Nothing special
+            if (is_a($data, 'ArrayAccess')) {
+                $multiline = false;
+            }
+
+            // SplObject pool use the object as keys, so we need some
+            // multiline stuff!
+            if (is_a($data, 'SplObjectStorage')) {
+                $multiline = true;
             }
 
             /** @var Model $model */
