@@ -190,11 +190,13 @@ class Objects extends AbstractCallback
 
         // Adding undeclared public properties to the dump.
         // Those are properties which are not visible with
-        // $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
+        // ReflectionProperty::IS_PUBLIC
         // but are in get_object_vars();
+        //
         // 1. Make a list of all properties
         // 2. Remove those that are listed in
-        // $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
+        // ReflectionProperty::IS_PUBLIC
+        //
         // What is left are those special properties that were dynamically
         // set during runtime, but were not declared in the class.
         foreach ($refProps as $refProp) {
@@ -374,11 +376,8 @@ class Objects extends AbstractCallback
      */
     protected function getTraversableData(\Traversable $data, $name)
     {
-        // Special Array Access here, resulting in multiline source generation.
-        // We need to generate something like:
-        // $kresult = iterator_to_array($data);
-        // $kresult = $kresult[5];
-        // So we tell the callback to to that.
+        // Special Array Access here, resulting in modecomplicated source
+        // generation. So we tell the callback to to that.
         $multiline = true;
 
         // Normal ArrayAccess, direct access to the array. Nothing special
