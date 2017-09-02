@@ -99,6 +99,7 @@ class Krexx
         include_once $krexxDir . 'src/analyse/routing/process/ProcessObject.php';
         include_once $krexxDir . 'src/analyse/routing/process/ProcessResource.php';
         include_once $krexxDir . 'src/analyse/routing/process/ProcessString.php';
+        include_once $krexxDir . 'src/analyse/AbstractModel.php';
         include_once $krexxDir . 'src/analyse/Model.php';
         include_once $krexxDir . 'src/analyse/code/Scope.php';
         include_once $krexxDir . 'src/analyse/callback/AbstractCallback.php';
