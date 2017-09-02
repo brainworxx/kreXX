@@ -276,7 +276,6 @@ class Config extends Fallback
     {
         $server = $this->pool->getServer();
 
-        // Check for ajax.
         if (isset($server['HTTP_X_REQUESTED_WITH']) &&
             strtolower($server['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' &&
             $this->getSetting('detectAjax')
@@ -287,7 +286,6 @@ class Config extends Fallback
             //
             // We were supposed to detect ajax, and we did it right now.
             return true;
-
         }
 
         // Check for CLI.
