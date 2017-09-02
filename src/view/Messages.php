@@ -132,6 +132,7 @@ class Messages
      */
     public function outputMessages()
     {
+
         // Simple Wrapper for OutputActions::$render->renderMessages
         if (php_sapi_name() === 'cli') {
             if (!empty($this->messages)) {
@@ -141,7 +142,7 @@ class Messages
                     $result .= "$message\n";
                 }
                 // Output the messages on the shell.
-                echo $result = "\n\n";
+                echo $result . "\n\n";
             }
         }
         // Return the rendered messages.
