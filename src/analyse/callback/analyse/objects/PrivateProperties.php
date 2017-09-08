@@ -44,14 +44,14 @@ class PrivateProperties extends AbstractObjectAnalysis
     /**
      * Dumping all private properties.
      *
-     * @param \ReflectionClass $ref
-     *   The reflection of the class we are currently analysing.
      * @return string
      *   The generated HTML markup
      */
-    public function analyse(\ReflectionClass $ref)
+    public function callMe()
     {
         $refProps = array();
+        /** @var \ReflectionClass $ref */
+        $ref = $this->parameters['ref'];
         $reflectionClass = $ref;
         $analysePrivate = $this->pool->config->getSetting('analysePrivate');
 

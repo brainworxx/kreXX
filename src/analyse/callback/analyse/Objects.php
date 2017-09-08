@@ -56,16 +56,16 @@ class Objects extends AbstractCallback
      */
     public function callMe()
     {
-        $data = $this->parameters['data'];
         $output = $this->pool->render->renderSingeChildHr();
 
-        $ref = new \ReflectionClass($data);
-
+        $data = $this->parameters['data'];
+        $ref = $this->parameters['ref'] = new \ReflectionClass($data);
+        
         // Dumping public properties.
         $output .= $this->pool
             ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\PublicProperties')
-            ->setParameters($this->parameters)
-            ->analyse($ref);
+            ->setParams($this->parameters)
+            ->callMe();
 
         // Dumping getter methods.
         // We will not dump the getters for internal values, though.
@@ -74,8 +74,8 @@ class Objects extends AbstractCallback
         ) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter')
-                ->setParameters($this->parameters)
-                ->analyse($ref);
+                ->setParams($this->parameters)
+                ->callMe();
         }
 
         // Dumping protected properties.
@@ -84,8 +84,8 @@ class Objects extends AbstractCallback
         ) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ProtectedProperties')
-                ->setParameters($this->parameters)
-                ->analyse($ref);
+                ->setParams($this->parameters)
+                ->callMe();
         }
 
         // Dumping private properties.
@@ -94,23 +94,23 @@ class Objects extends AbstractCallback
         ) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\PrivateProperties')
-                ->setParameters($this->parameters)
-                ->analyse($ref);
+                ->setParams($this->parameters)
+                ->callMe();
         }
 
         // Dumping class constants.
         if ($this->pool->config->getSetting('analyseConstants')) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Constants')
-                ->setParameters($this->parameters)
-                ->analyse($ref);
+                ->setParams($this->parameters)
+                ->callMe();
         }
 
         // Dumping all methods.
         $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Methods')
-                ->setParameters($this->parameters)
-                ->analyse($ref);
+                ->setParams($this->parameters)
+                ->callMe();
 
         // Dumping traversable data.
         if ($this->pool->config->getSetting('analyseTraversable') &&
@@ -118,16 +118,16 @@ class Objects extends AbstractCallback
         ) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable')
-                ->setParameters($this->parameters)
-                ->analyse($ref);
+                ->setParams($this->parameters)
+                ->callMe();
         }
 
         // Dumping all configured debug functions.
         // Adding a HR for a better readability.
         return $output . $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\DebugMethods')
-                ->setParameters($this->parameters)
-                ->analyse($ref) .
+                ->setParams($this->parameters)
+                ->callMe() .
             $this->pool->render->renderSingeChildHr();
     }
 }

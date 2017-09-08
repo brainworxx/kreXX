@@ -44,16 +44,15 @@ class Constants extends AbstractObjectAnalysis
     /**
      * Dumps the constants of a class,
      *
-     * @param \ReflectionClass $ref
-     *   The already generated reflection of said class
-     *
      * @return string
      *   The generated markup.
      */
-    public function analyse(\ReflectionClass $ref)
+    public function callMe()
     {
         // This is actually an array, we ara analysing. But We do not want to render
         // an array, so we need to process it like the return from an iterator.
+        /** @var \ReflectionClass $ref */
+        $ref = $this->parameters['ref'];
         $refConst = $ref->getConstants();
 
         if (empty($refConst)) {

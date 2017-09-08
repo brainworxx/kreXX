@@ -46,13 +46,10 @@ class Traversable extends AbstractObjectAnalysis
     /**
      * Dumps all available traversable data.
      *
-     * @param \ReflectionClass $ref
-     *   A reflection of the class we are analysing.
-     *
      * @return string
      *   The generated markup.
      */
-    public function analyse(\ReflectionClass $ref)
+    public function callMe()
     {
         $data = $this->parameters['data'];
         $name = $this->parameters['name'];

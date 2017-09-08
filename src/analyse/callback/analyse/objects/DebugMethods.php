@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
  */
 class DebugMethods extends AbstractObjectAnalysis
 {
-    
+
     /**
      * Calls all configured debug methods in die class.
      *
@@ -52,13 +52,10 @@ class DebugMethods extends AbstractObjectAnalysis
      * of cause, not stop a possible fatal in the function
      * itself.
      *
-     * @param \ReflectionClass $reflectionClass
-     *   A reflection of the class we ara analysing.
-     *
      * @return string
      *   The generated markup.
      */
-    public function analyse(\ReflectionClass $reflectionClass)
+    public function callMe()
     {
         $data = $this->parameters['data'];
 
@@ -76,7 +73,8 @@ class DebugMethods extends AbstractObjectAnalysis
                 $onlyOptionalParams = true;
                 // We need to check if the callable function requires any parameters.
                 // We will not call those, because we simply can not provide them.
-
+                /** @var \ReflectionClass $reflectionClass */
+                $reflectionClass = $this->parameters['ref'];
                 $ref = $reflectionClass->getMethod($funcName);
 
                 /** @var \ReflectionParameter $param */

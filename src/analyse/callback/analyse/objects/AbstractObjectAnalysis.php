@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Analyse\Model;
 
@@ -42,7 +43,7 @@ use Brainworxx\Krexx\Analyse\Model;
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
  */
-abstract class AbstractObjectAnalysis
+abstract class AbstractObjectAnalysis extends AbstractCallback
 {
     /**
      * Here we store all relevant data.
@@ -57,43 +58,7 @@ abstract class AbstractObjectAnalysis
      * @var array
      */
     protected $parameters = array();
-
-    /**
-     * Analyse it.
-     *
-     * @param \ReflectionClass $ref
-     *   A reflection of the class we ara analysing.
-     * @return string
-     *   The generated html markup.
-     */
-    abstract public function analyse(\ReflectionClass $ref);
-
-    /**
-     * Injects the pool.
-     *
-     * @param Pool $pool
-     *   The pool, where we store the classes we need.
-     */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-    }
-
-    /**
-     * Setter for the analysis parameters.
-     *
-     * @param array $parameters
-     *   The parematers from the object class.
-     *
-     * @return $this
-     *   Return $this, for chaining.
-     */
-    public function setParameters(array $parameters)
-    {
-        $this->parameters = $parameters;
-        return $this;
-    }
-
+    
     /**
      * Gets the properties from a reflection property of the object.
      *

@@ -44,18 +44,17 @@ class Methods extends AbstractObjectAnalysis
     /**
      * Decides which methods we want to analyse and then starts the dump.
      *
-     * @param \ReflectionClass $ref
-     *   The object we want to analyse.
-     *
      * @return string
      *   The generated markup.
      */
-    public function analyse(\ReflectionClass $ref)
+    public function callMe()
     {
+        /** @var \ReflectionClass $ref */
+        $ref = $this->parameters['ref'];
+
         // Dumping all methods but only if we have any.
         $protected = array();
         $private = array();
-
         $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
         if ($this->pool->config->getSetting('analyseProtectedMethods') ||

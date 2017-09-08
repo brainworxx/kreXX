@@ -82,9 +82,14 @@ abstract class AbstractCallback
      *
      * @param array $params
      *   The parameters for the callMe() method.
+     *
+     * @return $this
+     *   Retuirn $this, for chaining.
      */
     public function setParams(array &$params)
     {
         $this->parameters = $params;
+
+        return $this;
     }
 }

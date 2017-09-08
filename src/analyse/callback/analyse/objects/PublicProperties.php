@@ -44,16 +44,15 @@ class PublicProperties extends AbstractObjectAnalysis
     /**
      * Dump all public properties.
      *
-     * @param \ReflectionClass $ref
-     *   A reflection of the class we are analysing
-     *
      * @return string
      *   The generated HTML markup.
      */
-    public function analyse(\ReflectionClass $ref)
+    public function callMe()
     {
         $data = $this->parameters['data'];
-
+        /** @var \ReflectionClass $ref */
+        $ref = $this->parameters['ref'];
+        
         $refProps = $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
         $publicProps = array();
 

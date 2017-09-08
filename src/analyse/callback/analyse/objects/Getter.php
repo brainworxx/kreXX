@@ -44,15 +44,14 @@ class Getter extends AbstractObjectAnalysis
     /**
      * Dump the possible result of all getter methods
      *
-     * @param \ReflectionClass $ref
-     *
      * @return string
      *   The generated markup.
      */
-    public function analyse(\ReflectionClass $ref)
+    public function callMe()
     {
         $data = $this->parameters['data'];
-
+        /** @var \ReflectionClass $ref */
+        $ref = $this->parameters['ref'];
         // Get all public methods.
         $methodList = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
