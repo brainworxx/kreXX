@@ -58,7 +58,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
      * @var array
      */
     protected $parameters = array();
-    
+
     /**
      * Gets the properties from a reflection property of the object.
      *

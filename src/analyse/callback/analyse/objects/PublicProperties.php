@@ -52,7 +52,7 @@ class PublicProperties extends AbstractObjectAnalysis
         $data = $this->parameters['data'];
         /** @var \ReflectionClass $ref */
         $ref = $this->parameters['ref'];
-        
+
         $refProps = $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
         $publicProps = array();
 

@@ -60,7 +60,7 @@ class Objects extends AbstractCallback
 
         $data = $this->parameters['data'];
         $ref = $this->parameters['ref'] = new \ReflectionClass($data);
-        
+
         // Dumping public properties.
         $output .= $this->pool
             ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\PublicProperties')
