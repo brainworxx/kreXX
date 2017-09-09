@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Analyse;
 
-use Brainworxx\Krexx\Analyse\Code\Connectors;
-
 /**
  * Model for the view rendering
  *
@@ -108,13 +106,6 @@ class Model extends AbstractModel
      * @var bool
      */
     protected $isCallback = false;
-
-    /**
-     * The connector service, used for source generation.
-     *
-     * @var Connectors
-     */
-    protected $connectorService;
 
     /**
      * We need to know, if we are rendering the expandable child for the

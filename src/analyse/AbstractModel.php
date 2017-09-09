@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Analyse;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Code\Connectors;
 
 /**
  * Housing everything that does not directly hold data.
@@ -75,6 +76,14 @@ abstract class AbstractModel
      * @var array
      */
     protected $json = array();
+
+    /**
+     * The connector service, used for source generation.
+     *
+     * @var Connectors
+     */
+    protected $connectorService;
+
 
     /**
      * Inject the pool and create the connector service.
@@ -186,5 +195,4 @@ abstract class AbstractModel
     {
         return $this->json;
     }
-
 }
