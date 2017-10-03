@@ -323,6 +323,9 @@ class Config extends Fallback
     /**
      * Checks if the current client ip is allowed.
      *
+     * @author Chin Leung
+     * @see https://stackoverflow.com/questions/35559119/php-ip-address-whitelist-with-wildcards
+     *
      * @param string $whitelist
      *   The ip whitelist.
      *
@@ -331,12 +334,6 @@ class Config extends Fallback
      */
     protected function isAllowedIp($whitelist)
     {
-        // Check for CLI.
-        if (php_sapi_name() === 'cli') {
-            // We do not care about IP's in CLI mode.
-            return true;
-        }
-
         $server = $this->pool->getServer();
 
         if (empty($server['REMOTE_ADDR'])) {
@@ -345,12 +342,9 @@ class Config extends Fallback
             $remote = $server['REMOTE_ADDR'];
         }
 
-        // Fallback to the Chin Leung implementation.
-        // @author Chin Leung
-        // @see https://stackoverflow.com/questions/35559119/php-ip-address-whitelist-with-wildcards
         $whitelist = explode(',', $whitelist);
-        if (in_array($remote, $whitelist)) {
-            // If the ip is matched, return true.
+        if (in_array($remote, $whitelist) || php_sapi_name() === 'cli') {
+            // Either the IP is matched, or we are in CLI
             return true;
         }
 
@@ -358,7 +352,7 @@ class Config extends Fallback
         foreach ($whitelist as $ip) {
             $ip = trim($ip);
             $wildcardPos = strpos($ip, '*');
-            # Check if the ip has a wildcard
+            // Check if the ip has a wildcard.
             if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . '*' === $ip) {
                 return true;
             }
