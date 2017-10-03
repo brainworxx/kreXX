@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
+use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
@@ -274,7 +275,7 @@ class Config extends Fallback
      */
     protected function isRequestAjaxOrCli()
     {
-        $server = $this->pool->getGlobals('server');
+        $server = $this->pool->getGlobals('_SERVER');
 
         if (isset($server['HTTP_X_REQUESTED_WITH']) &&
             strtolower($server['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' &&
@@ -334,7 +335,7 @@ class Config extends Fallback
      */
     protected function isAllowedIp($whitelist)
     {
-        $server = $this->pool->getGlobals('server');
+        $server = $this->pool->getGlobals('_SERVER');
 
         if (empty($server['REMOTE_ADDR'])) {
             $remote = '';
