@@ -825,14 +825,22 @@
     };
 
     /**
-     * Caching of the body element for late usage.
+     * Must be called before usage, only once.
      *
-     * @type {Element}
+     * @event onDocumentReady
      */
-    kdt.body = document.querySelector('body');
+    kdt.initialize = function () {
 
-    // Adding a concrete maches implementation to the lib.
-    kdt.testMachtes();
+        /**
+         * Caching of the body element for late usage.
+         *
+         * @type {Element}
+         */
+        kdt.body = document.querySelector('body');
+
+        // Adding a concrete maches implementation to the lib.
+        kdt.testMachtes();
+    };
 
     // Copy the lib to the DOM, for later usage.
     window.kreXXdomTools = kdt;
