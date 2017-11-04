@@ -1,5 +1,6 @@
 2.3.2 dev
 - Change: Javascript optimisation for very large output.
+- Change: Introduced an autoloader.
 - Bugfix: Minimise CSS interference from the hosting cms with
   marked text.
 
