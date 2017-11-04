@@ -71,6 +71,7 @@ class BacktraceStep extends AbstractCallback
                     ->setType('string ' . strlen($stepData['file']))
             );
         }
+
         // Line.
         if (isset($stepData['line'])) {
             $output .= $this->pool->render->renderSingleChild(
@@ -86,12 +87,14 @@ class BacktraceStep extends AbstractCallback
 
         if (isset($stepData['line'])) {
             $lineNo = $stepData['line'] - 1;
-            $source = trim($this->pool->fileService->readSourcecode(
-                $stepData['file'],
-                $lineNo,
-                $lineNo -5,
-                $lineNo +5
-            ));
+            $source = trim(
+                $this->pool->fileService->readSourcecode(
+                    $stepData['file'],
+                    $lineNo,
+                    $lineNo -5,
+                    $lineNo +5
+                )
+            );
 
             if (empty($source)) {
                 $source = $this->pool->messages->getHelp('noSourceAvailable');
@@ -119,14 +122,18 @@ class BacktraceStep extends AbstractCallback
                     ->setType('string ' . strlen($stepData['function']))
             );
         }
+
         // Object.
         if (isset($stepData['object'])) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessObject')
-                ->process($this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-                    ->setData($stepData['object'])
-                    ->setName('Calling object'));
+                ->process(
+                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                        ->setData($stepData['object'])
+                        ->setName('Calling object')
+                );
         }
+
         // Type.
         if (isset($stepData['type'])) {
             $output .= $this->pool->render->renderSingleChild(
@@ -137,13 +144,16 @@ class BacktraceStep extends AbstractCallback
                     ->setType('string ' . strlen($stepData['type']))
             );
         }
+
         // Args.
         if (isset($stepData['args'])) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessArray')
-                    ->process($this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-                    ->setData($stepData['args'])
-                    ->setName('Arguments from the call'));
+                    ->process(
+                        $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                            ->setData($stepData['args'])
+                            ->setName('Arguments from the call')
+                    );
         }
 
         return $output;

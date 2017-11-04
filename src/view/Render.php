@@ -167,6 +167,7 @@ class Render extends AbstractRender
                 $this->getTemplateFileContent('singleChildExtra')
             );
         }
+
         if ($model->getIsCallback()) {
             // Add callable partial.
             $partCallable = str_replace(
@@ -175,6 +176,7 @@ class Render extends AbstractRender
                 $this->getTemplateFileContent('singleChildCallable')
             );
         }
+
         // Stitching the classes together, depending on the types.
         $typeClasses = '';
         foreach (explode(' ', $model->getType()) as $typeClass) {
@@ -337,6 +339,7 @@ class Render extends AbstractRender
                 } else {
                     $selected = '';
                 }
+
                 $options .= str_replace(
                     array('{text}', '{value}', '{selected}'),
                     array($value, $value, $selected),
@@ -448,6 +451,7 @@ class Render extends AbstractRender
         foreach ($messages as $message) {
             $result .= str_replace('{message}', $message, $messageTemplate);
         }
+
         return $result;
     }
 

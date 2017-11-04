@@ -81,10 +81,12 @@ class CallerFinder extends AbstractCaller
             if (isset($caller['function']) && strtolower($caller['function']) === $pattern) {
                 break;
             }
+
             if (isset($caller['class']) && strtolower($caller['class']) === $pattern) {
                 break;
             }
         }
+
         // We will not keep the whole backtrace im memory. We only return what we
         // actually need.
         return array(
@@ -126,6 +128,7 @@ class CallerFinder extends AbstractCaller
                 unset($possibleCommands[$key]);
             }
         }
+        
         // I have no idea how to determine the actual call of krexx if we
         // are dealing with several calls per line.
         if (count($possibleCommands) === 1) {

@@ -124,6 +124,7 @@ class Fatal extends AbstractError
                     ->errorAction($errorData);
             }
         }
+
         // Clean exit.
     }
 }

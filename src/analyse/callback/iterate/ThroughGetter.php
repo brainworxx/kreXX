@@ -126,6 +126,7 @@ class ThroughGetter extends AbstractCallback
             // We render this right away, without any routing.
             return $this->pool->render->renderSingleChild($model);
         }
+
         // We've got ourselves a possible result!
         $refProp->setAccessible(true);
         $value = $refProp->getValue($this->parameters['data']);
@@ -135,6 +136,7 @@ class ThroughGetter extends AbstractCallback
             // exist, until the getter computes it.
             $model->addToJson('hint', $this->pool->messages->getHelp('getterNull'));
         }
+
         return $this->pool->routing->analysisHub($model);
     }
 

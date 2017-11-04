@@ -48,10 +48,8 @@ class Properties extends AbstractComment
      * @param \ReflectionClass|null $reflectionClass
      * @return mixed
      */
-    public function getComment(
-        \Reflector $reflectionProperty,
-        \ReflectionClass $reflectionClass = null
-    ) {
+    public function getComment(\Reflector $reflectionProperty, \ReflectionClass $reflectionClass = null)
+    {
         // Do some static caching. The comment will not change during a run.
         static $cache = array();
         /** @var \ReflectionProperty $reflectionProperty */
@@ -61,9 +59,13 @@ class Properties extends AbstractComment
         }
 
         // Cache not found. We need to generate this one.
-        $cache[$cachingKey] = trim(nl2br($this->pool->encodingService->encodeString(
-            $this->prettifyComment($reflectionProperty->getDocComment())
-        )));
+        $cache[$cachingKey] = trim(
+            nl2br(
+                $this->pool->encodingService->encodeString(
+                    $this->prettifyComment($reflectionProperty->getDocComment())
+                )
+            )
+        );
 
         return $cache[$cachingKey];
     }

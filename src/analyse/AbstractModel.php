@@ -124,6 +124,7 @@ abstract class AbstractModel
             $this->callback->setParams($this->parameters);
             return $this->callback->callMe();
         }
+
         return '';
     }
 

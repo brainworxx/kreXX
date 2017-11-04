@@ -76,6 +76,7 @@ class PrivateProperties extends AbstractObjectAnalysis
         if (empty($refProps)) {
             return '';
         }
+        
         usort($refProps, array($this, 'reflectionSorting'));
 
         return $this->getReflectionPropertiesData(

@@ -76,9 +76,11 @@ class Encoding
     public function encodeString($data, $code = false)
     {
         // Try to encode it.
-        set_error_handler(function () {
-            /* do nothing. */
-        });
+        set_error_handler(
+            function () {
+                /* do nothing. */
+            }
+        );
 
         // We are also encoding @, because we need them for our chunks.
         // The { are needed in the marker of the skin.
@@ -143,6 +145,7 @@ class Encoding
         } else {
             $result = '&#' . $charCode . ';';
         }
+
         return $result;
     }
 

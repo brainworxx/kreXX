@@ -136,6 +136,7 @@ class Recursion
             if ($this->globalsWereRendered) {
                 return true;
             }
+
             $this->globalsWereRendered = true;
         }
 

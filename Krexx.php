@@ -354,6 +354,7 @@ class Krexx
         if (static::$pool->config->getSetting('disabled')) {
             return;
         }
+
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
             ->registerFatalAction();
     }
@@ -373,6 +374,7 @@ class Krexx
         if (static::$pool->config->getSetting('disabled')) {
             return;
         }
+
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
             ->unregisterFatalAction();
     }

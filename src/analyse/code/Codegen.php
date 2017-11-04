@@ -132,7 +132,7 @@ class Codegen
                 return 'iterator_to_array(;firstMarker;)' . $this->concatenation($model);
             }
 
-            // Test for private or protected.
+            // Test for private or protected access.
             if (strpos($type, 'protected') === false && strpos($type, 'private') === false) {
                 // Is not protected.
                 return $this->concatenation($model);
@@ -277,7 +277,7 @@ class Codegen
             }
         }
 
-        // Still here ?!?
+        // Still here?
         return (string) $default;
     }
 }

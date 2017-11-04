@@ -144,6 +144,7 @@ abstract class AbstractController
         if ($outputSetting === 'browser') {
             $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\Shutdown');
         }
+
         if ($outputSetting === 'file') {
             $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\File');
         }
@@ -232,6 +233,7 @@ abstract class AbstractController
         } else {
             $jsFile = $krexxDir . 'resources/jsLibs/kdt.js';
         }
+
         $jsCode = $this->pool->fileService->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
@@ -241,6 +243,7 @@ abstract class AbstractController
         } else {
             $jsFile = $path . '/krexx.js';
         }
+
         $jsCode .= $this->pool->fileService->getFileContents($jsFile);
 
         return $this->pool->render->renderCssJs($css, $jsCode);
@@ -318,6 +321,7 @@ abstract class AbstractController
                 $prevMomentName = $moment;
             }
         }
+
         return $result;
     }
 
@@ -369,22 +373,5 @@ abstract class AbstractController
         }
 
         return $this->pool->encodingService->encodeString($protocol . '://' . $host . $server['REQUEST_URI']);
-    }
-
-    /**
-     * Simply outputs a formatted var_dump.
-     *
-     * This is an internal debugging function, because it is
-     * rather difficult to debug a debugger, when your tool of
-     * choice is the debugger itself.
-     *
-     * @param mixed $data
-     *   The data for the var_dump.
-     */
-    public static function formattedVarDump($data)
-    {
-        echo '<pre>';
-        var_dump($data);
-        echo '</pre>';
     }
 }

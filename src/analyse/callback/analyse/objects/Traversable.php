@@ -79,9 +79,11 @@ class Traversable extends AbstractObjectAnalysis
         try {
             // We need to deactivate the current error handling to
             // prevent the host system to do anything stupid.
-                set_error_handler(function () {
+                set_error_handler(
+                    function () {
                     // Do nothing.
-                });
+                    }
+                );
                 $parameter = iterator_to_array($data);
         } catch (\Exception $e) {
             // Do nothing.
@@ -128,6 +130,7 @@ class Traversable extends AbstractObjectAnalysis
             $this->pool->emergencyHandler->downOneNestingLevel();
             return $result;
         }
+        
         // Still here?!? Return an empty string.
         return '';
     }

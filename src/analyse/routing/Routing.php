@@ -79,6 +79,7 @@ class Routing extends AbstractRouting
         if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
             return '';
         }
+
         $data = $model->getData();
 
         // String?
@@ -91,7 +92,7 @@ class Routing extends AbstractRouting
             return $this->processInteger->process($model);
         }
 
-        // Null ?
+        // Null?
         if (is_null($data)) {
             return $this->processNull->process($model);
         }
@@ -161,9 +162,10 @@ class Routing extends AbstractRouting
                 $type = '$GLOBALS';
                 $domId = '';
             }
-            return $this->pool->render->renderRecursion($model
-                ->setDomid($domId)
-                ->setNormal($type));
+
+            return $this->pool->render->renderRecursion(
+                $model->setDomid($domId)->setNormal($type)
+            );
         }
 
         // Looks like we are good.
@@ -189,13 +191,13 @@ class Routing extends AbstractRouting
             $this->pool->recursionHandler->addToHive($data);
 
             // We need to check if this is an object first.
-            // When calling is_a('myClass', 'anotherClass') the
-            // autoloader is triggered, trying to load 'myClass', although
-            // it is just a string.
+            // When calling is_a('myClass', 'anotherClass') the autoloader is
+            // triggered, trying to load 'myClass', although it is just a string.
             if (is_a($data, '\\Closure')) {
                 // Closures are handled differently than normal objects
                 return $this->processClosure->process($model);
             }
+
             // Normal object.
             return $this->processObject->process($model);
         }

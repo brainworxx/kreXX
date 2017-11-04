@@ -64,7 +64,7 @@ class ThroughMethods extends AbstractCallback
         $commentAnalysis = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods');
 
         // Deep analysis of the methods.
-        /* @var \ReflectionMethod $reflectionMethod */
+        /** @var \ReflectionMethod $reflectionMethod */
         foreach ($this->parameters['data'] as $reflectionMethod) {
             $methodData = array();
 
@@ -117,6 +117,7 @@ class ThroughMethods extends AbstractCallback
                     )
             );
         }
+
         return $result;
     }
 

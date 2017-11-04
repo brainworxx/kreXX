@@ -71,6 +71,7 @@ class ConfigSection extends AbstractCallback
                 if ($value === true) {
                     $value = 'true';
                 }
+
                 if ($value === false) {
                     $value = 'false';
                 }
@@ -94,6 +95,7 @@ class ConfigSection extends AbstractCallback
                 }
             }
         }
+        
         return $sectionOutput;
     }
 }

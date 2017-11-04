@@ -253,6 +253,7 @@ class Render extends \Brainworxx\Krexx\View\Render
             // Most likely the parameters of a method.
             return parent::renderConnector($connector);
         }
+
         return '';
     }
 

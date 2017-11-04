@@ -146,6 +146,7 @@ class Messages
 
             echo $result . "\n\n";
         }
+
         // Return the rendered messages.
         return $this->pool->render->renderMessages($this->messages);
     }

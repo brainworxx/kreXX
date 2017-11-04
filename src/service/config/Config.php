@@ -263,7 +263,6 @@ class Config extends Fallback
         // Nothing yet? Give back factory settings.
         $model->setValue($factorySetting)->setSource('Factory settings');
         $this->settings[$name] = $model;
-        return;
     }
 
     /**
@@ -388,6 +387,7 @@ class Config extends Fallback
                 return false;
             }
         }
+
         // Nothing found?
         return true;
     }

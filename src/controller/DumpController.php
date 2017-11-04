@@ -61,6 +61,7 @@ class DumpController extends AbstractController
             // Called too often, we might get into trouble here!
             return $this;
         }
+
         $this->pool->reset();
 
         // Find caller.
@@ -73,6 +74,7 @@ class DumpController extends AbstractController
             } else {
                 $headline = gettype($data);
             }
+
             // We are analysing stuff here.
             $caller['type'] = 'Analysis';
         } else {

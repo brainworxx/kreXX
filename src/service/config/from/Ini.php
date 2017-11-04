@@ -148,6 +148,7 @@ class Ini extends Fallback
             // Sorry, no value stored.
             return null;
         }
+
         // Get the rendering type.
         $type = $this->feConfigFallback[$parameterName]['type'];
 
@@ -200,6 +201,7 @@ class Ini extends Fallback
         ) {
             return $this->iniSettings[$group][$name];
         }
+
         return null;
     }
 }

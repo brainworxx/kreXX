@@ -351,6 +351,7 @@ class Chunks
                 $this->pool->fileService->deleteFile($file);
                 $this->pool->fileService->deleteFile($file . '.json');
             }
+
             ++$count;
         }
     }
@@ -426,8 +427,8 @@ class Chunks
         $encoding = mb_detect_encoding($string);
 
         // We need to decide, if we need to change the official encoding of
-        // the HTML output with a meta tag. we ignore everything in the
-        // $this->doNothingEncoding array.
+        // the HTML output with a meta tag. We ignore everything in the
+        // doNothingEncoding array.
         if (in_array($encoding, $this->doNothingEncoding, true) === false) {
             $this->officialEncoding = $encoding;
         }

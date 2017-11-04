@@ -62,7 +62,7 @@ class DebugMethods extends AbstractObjectAnalysis
         $output = '';
 
         foreach (explode(',', $this->pool->config->getSetting('debugMethods')) as $funcName) {
-            // Check if:
+            // We need to check if:
             // 1.) Method exists
             // 2.) Method can be called
             // 3.) It's not blacklisted.
@@ -92,9 +92,11 @@ class DebugMethods extends AbstractObjectAnalysis
                     try {
                         // We need to deactivate the current error handling to
                         // prevent the host system to do anything stupid.
-                        set_error_handler(function () {
-                            // Do nothing.
-                        });
+                        set_error_handler(
+                            function () {
+                                // Do nothing.
+                            }
+                        );
                         $result = $data->$funcName();
                     } catch (\Exception $e) {
                         // Do nothing.
@@ -121,6 +123,7 @@ class DebugMethods extends AbstractObjectAnalysis
                 }
             }
         }
+        
         return $output;
     }
 }

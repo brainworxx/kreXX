@@ -183,6 +183,7 @@ abstract class AbstractError
                 $errorSetting = 'unknown';
                 break;
         }
+
         return array($errorName, $errorSetting);
     }
 }

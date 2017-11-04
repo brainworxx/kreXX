@@ -222,11 +222,13 @@ class Connectors
                 if ($cap > 0 && strlen($params) > $cap) {
                     $params = substr($params, 0, $cap) . ' . . . ';
                 }
+
                 // We wrap them in a <small>, but only if we have any.
                 $params = '<small>' . $params . '</small>';
             } else {
                 $params = '';
             }
+            
             return  str_replace('@param@', $params, $this->connectorArray[$this->type][1]);
         }
 

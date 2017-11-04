@@ -70,6 +70,7 @@ class PublicProperties extends AbstractObjectAnalysis
         foreach ($refProps as $refProp) {
             $publicProps[$refProp->name] = true;
         }
+        
         // For every not-declared property, we add a another reflection.
         // Those are simply added during runtime
         foreach (array_keys(array_diff_key(get_object_vars($data), $publicProps)) as $key) {

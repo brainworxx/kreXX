@@ -74,6 +74,7 @@ class Methods extends AbstractComment
         if (isset($cache[$cachingKey])) {
             return $cache[$cachingKey];
         }
+
         // Cache not found. We need to generate this one.
         $cache[$cachingKey] = $this->pool->encodingService->encodeString(
             $this->getMethodComment($reflectionMethod, $reflectionClass)
@@ -124,10 +125,12 @@ class Methods extends AbstractComment
             $parentReflection->hasMethod($this->methodName)
         ) {
             // Going deeper into the rabid hole!
-            $comment = trim($this->getMethodComment(
-                $parentReflection->getMethod($this->methodName),
-                $parentReflection
-            ));
+            $comment = trim(
+                $this->getMethodComment(
+                    $parentReflection->getMethod($this->methodName),
+                    $parentReflection
+                )
+            );
         }
 
         // Still here? Tell the dev that we could not resolve the comment.
@@ -162,6 +165,7 @@ class Methods extends AbstractComment
                     // Looks like we've resolved them all.
                     return $originalComment;
                 }
+
                 // We need to look further!
                 if ($trait->hasMethod($this->methodName)) {
                     $traitComment = $this->prettifyComment(
@@ -171,6 +175,7 @@ class Methods extends AbstractComment
                     $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
                 }
             }
+
             // Return what we could resolve so far.
             return $originalComment;
         }
@@ -200,6 +205,7 @@ class Methods extends AbstractComment
                 // Looks like we've resolved them all.
                 return $originalComment;
             }
+
             // We need to look further.
             if ($interface->hasMethod($this->methodName)) {
                 $interfaceComment = $this->prettifyComment($interface->getMethod($this->methodName)->getDocComment());
@@ -207,6 +213,7 @@ class Methods extends AbstractComment
                 $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
             }
         }
+
         // Return what we could resolve so far.
         return $originalComment;
     }

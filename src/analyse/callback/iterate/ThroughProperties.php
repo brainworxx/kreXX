@@ -77,7 +77,7 @@ class ThroughProperties extends AbstractCallback
     {
         // I need to preprocess them, since I do not want to render a
         // reflection property.
-        /* @var \ReflectionClass $ref */
+        /** @var \ReflectionClass $ref */
         $ref = $this->parameters['ref'];
         $output = '';
         $this->defaultProperties = $ref->getDefaultProperties();
@@ -88,13 +88,14 @@ class ThroughProperties extends AbstractCallback
                 return '';
             }
 
-            /* @var \ReflectionProperty $refProperty */
+            /** @var \ReflectionProperty $refProperty */
             $propName = $refProperty->name;
             $value = $this->getValueFromProperty($refProperty, $propName);
 
             // Now that we have the key and the value, we can analyse it.
             // Stitch together our additional info about the data:
-            // public, protected, private, inherited
+            // public access, protected access, private access and info if it was
+            // inherited from somewhere.
             $additional = $this->getAdditionalData($refProperty, $ref);
 
             // Every other additional string requires a special connector,
@@ -181,7 +182,7 @@ class ThroughProperties extends AbstractCallback
     {
         // Now that we have the key and the value, we can analyse it.
         // Stitch together our additional info about the data:
-        // public, protected, private, static.
+        // public access, protected access, private access, static declaration.
         $additional = '';
         if ($refProperty->isProtected()) {
             $additional .= 'protected ';

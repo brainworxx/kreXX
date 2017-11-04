@@ -104,6 +104,7 @@ class File
         if ($readFrom < 0) {
              $readFrom = 0;
         }
+
         if ($readTo < 0) {
             $readTo = 0;
         }
@@ -154,6 +155,7 @@ class File
         if ($readFrom < 0) {
              $readFrom = 0;
         }
+
         if ($readTo < 0) {
             $readTo = 0;
         }
@@ -242,6 +244,7 @@ class File
             file_put_contents($path, $string, FILE_APPEND);
             return;
         }
+
         // New file. We tell the caching, that we have read access here.
         file_put_contents($path, $string, FILE_APPEND);
         static::$isReadableCache[$path] = true;
@@ -256,15 +259,18 @@ class File
     {
         // Check if it is an actual file and if it is writable.
         if (is_file($filename)) {
-            set_error_handler(function () {
+            set_error_handler(
+                function () {
                 /* do nothing */
-            });
+                }
+            );
             // Make sure it is unlinkable.
             chmod($filename, 0777);
             if (unlink($filename)) {
                 restore_error_handler();
                 return;
             }
+
             // We have a permission problem here!
             $this->pool->messages->addMessage('fileserviceDelete', array($this->filterFilePath($filename)));
             restore_error_handler();
