@@ -295,7 +295,7 @@
      *   The element that was clicked.
      */
     krexx.collapse = function (event, element) {
-
+        event.stop = true;
         var button = element;
         var wrapper = kdt.getParents(button, '.kwrapper')[0];
 
@@ -810,6 +810,7 @@
      * Listens for a <RETURN> in the search field.
      *
      * @param {Event} event
+     * @event keyUp
      */
     krexx.searchfieldReturn = function (event) {
         // Prevents the default event behavior (ie: click).

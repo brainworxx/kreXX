@@ -102,6 +102,13 @@
         kdt.addEvent('.kwrapper .kgencode', 'click', krexx.generateCode);
 
         /**
+         * Prevents the click-event-bubbling on the generated code.
+         *
+         * @event click
+         */
+        kdt.addEvent('.kodsp', 'click', kdt.preventBubble);
+
+        /**
          * Register krexx close button function.
          *
          * @event click
@@ -174,13 +181,6 @@
          * display the fatal error handler
          */
         kdt.addEvent('.kfatalwrapper-outer', 'scroll', krexx.checkSeachInViewport);
-
-        /**
-         * Prevents the click-event-bubbling on the generated code.
-         *
-         * @event click
-         */
-        kdt.addEvent('.kodsp', 'click', kdt.preventBubble);
 
         /**
          * Clear our search results, because we now have new options.
@@ -316,6 +316,7 @@
      *   The element that was clicked.
      */
     krexx.collapse = function (event, element) {
+        event.stop = true;
 
         /** @type {EventTarget} */
         var button = element;
@@ -914,6 +915,7 @@
      * Listens for a <RETURN> in the search field.
      *
      * @param {Event} event
+     * @event keyUp
      */
     krexx.searchfieldReturn = function (event) {
         // Prevents the default event behavior (ie: click).

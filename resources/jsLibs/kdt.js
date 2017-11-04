@@ -329,11 +329,12 @@
      * the according callback, and sinply call it.
      *
      * @param {Event} event
+     * @event click
      */
     kdt.clickHandler.handle = function(event) {
         // We stop the event in it's tracks.
         event.stopPropagation();
-        // event.preventDefault();
+        event.stop = false;
 
         var element = event.target;
         var selector;
@@ -349,6 +350,10 @@
                     // Got to call them all.
                     for (i = 0; i < callbackArray.length; i++) {
                         callbackArray[i](event, element);
+                        if (event.stop) {
+                            // Our "implementation" of stopPropagation().
+                            return;
+                        }
                     }
                 }
             }
@@ -717,18 +722,6 @@
     };
 
     /**
-     * Prevents the bubbeling of en event, nothing more.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    kdt.preventBubble = function (event, element) {
-        event.stopPropagation();
-    };
-
-    /**
      * Get all elements with the provided selector and
      * move them to the bottom of the dom, right before
      * the </body> end tag.
@@ -806,6 +799,10 @@
                 elements[i].style.top = (oldOffset + viewportTop) + 'px';
             }
         }, 500);
+    };
+
+    kdt.preventBubble = function (event, element) {
+        event.stop = true;
     };
 
     /**
