@@ -93,7 +93,7 @@ class Routing extends AbstractRouting
         }
 
         // Null?
-        if (is_null($data)) {
+        if ($data === null) {
             return $this->processNull->process($model);
         }
 

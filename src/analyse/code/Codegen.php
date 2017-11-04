@@ -229,7 +229,7 @@ class Codegen
         // Check for type value
         if ($reflectionParameter->isArray()) {
             $parameterType = 'array';
-        } elseif (!is_null($reflectionParameter->getClass())) {
+        } elseif ($reflectionParameter->getClass() !== null) {
             // We got ourselves an object!
             $parameterType = $reflectionParameter->getClass()->name;
         }
@@ -260,7 +260,7 @@ class Codegen
             return '\'' . $this->pool->encodingService->encodeString($default) . '\'';
         }
 
-        if (is_null($default)) {
+        if ($default === null) {
             return 'NULL';
         }
 

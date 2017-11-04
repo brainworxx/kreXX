@@ -131,7 +131,7 @@ class ThroughGetter extends AbstractCallback
         $refProp->setAccessible(true);
         $value = $refProp->getValue($this->parameters['data']);
         $model->setData($value);
-        if (is_null($value)) {
+        if ($value === null) {
             // A NULL value might mean that the values does not
             // exist, until the getter computes it.
             $model->addToJson('hint', $this->pool->messages->getHelp('getterNull'));

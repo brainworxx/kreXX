@@ -171,7 +171,7 @@ class ErrorController extends AbstractController
      */
     public function unregisterFatalAction()
     {
-        if (!is_null($this->krexxFatal)) {
+        if ($this->krexxFatal  !== null) {
             // Now we need to tell the shutdown function, that is must
             // not do anything on shutdown.
             $this->krexxFatal->setIsActive(false);

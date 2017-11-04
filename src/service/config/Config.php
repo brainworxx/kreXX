@@ -237,7 +237,7 @@ class Config extends Fallback
         if ($feConfig[0] === true) {
             $cookieSetting = $this->cookieConfig->getConfigFromCookies($section, $name);
             // Do we have a value in the cookies?
-            if (!is_null($cookieSetting)) {
+            if ($cookieSetting  !== null) {
                 // We must not overwrite a disabled=true with local cookie settings!
                 // Otherwise it could get enabled locally, which might be a security
                 // issue.

@@ -95,9 +95,7 @@ class Fatal extends AbstractError
         $error = error_get_last();
 
         // Do we have an error at all?
-        if (!is_null($error) &&
-            $this->getIsActive()
-        ) {
+        if ($error  !== null && $this->getIsActive()) {
             // Do we need to check this one, according to our settings?
             $translatedError = $this->translateErrorType($error['type']);
             if ($translatedError[1] === 'traceFatals') {
