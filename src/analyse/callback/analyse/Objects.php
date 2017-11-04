@@ -114,7 +114,7 @@ class Objects extends AbstractCallback
 
         // Dumping traversable data.
         if ($this->pool->config->getSetting('analyseTraversable') &&
-            is_a($data, 'Traversable')
+            $data instanceof \Traversable
         ) {
             $output .= $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable')

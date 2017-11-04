@@ -98,13 +98,13 @@ class Traversable extends AbstractObjectAnalysis
             $multiline = true;
 
             // Normal ArrayAccess, direct access to the array. Nothing special
-            if (is_a($data, 'ArrayAccess')) {
+            if ($data instanceof \ArrayAccess) {
                 $multiline = false;
             }
 
             // SplObject pool use the object as keys, so we need some
             // multiline stuff!
-            if (is_a($data, 'SplObjectStorage')) {
+            if ($data instanceof \SplObjectStorage) {
                 $multiline = true;
             }
 
@@ -130,7 +130,7 @@ class Traversable extends AbstractObjectAnalysis
             $this->pool->emergencyHandler->downOneNestingLevel();
             return $result;
         }
-        
+
         // Still here?!? Return an empty string.
         return '';
     }
