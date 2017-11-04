@@ -483,10 +483,12 @@ $fontLight: lighter 10px tahoma, verdana;
         ::selection {
           /* WebKit/Blink Browsers */
           background: $yellowBwx !important;
+          color: $blackLight !important;
         }
         ::-moz-selection {
           /* Gecko Browsers */
           background: $yellowBwx !important;
+          color: $blackLight !important;
         }
       }
 
