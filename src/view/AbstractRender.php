@@ -64,7 +64,7 @@ abstract class AbstractRender implements RenderInterface
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->skinPath = $this->pool->krexxDir . 'resources/skins/' . $this->pool->config->getSetting('skin') . '/';
+        $this->skinPath = KREXX_DIR . 'resources/skins/' . $this->pool->config->getSetting('skin') . '/';
     }
 
     /**
@@ -179,10 +179,10 @@ abstract class AbstractRender implements RenderInterface
 
         if (empty($list)) {
             // Get the list.
-            $list = array_filter(glob($this->pool->krexxDir . 'resources/skins/*'), 'is_dir');
+            $list = array_filter(glob(KREXX_DIR . 'resources/skins/*'), 'is_dir');
             // Now we need to filter it, we only want the names, not the full path.
             foreach ($list as &$path) {
-                $path = str_replace($this->pool->krexxDir . 'resources/skins/', '', $path);
+                $path = str_replace(KREXX_DIR . 'resources/skins/', '', $path);
             }
         }
 

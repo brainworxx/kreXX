@@ -216,10 +216,9 @@ abstract class AbstractController
      */
     protected function outputCssAndJs()
     {
-        $krexxDir = $this->pool->krexxDir;
         // Get the css file.
         $css = $this->pool->fileService->getFileContents(
-            $krexxDir .
+            KREXX_DIR .
             'resources/skins/' .
             $this->pool->config->getSetting('skin') .
             '/skin.css'
@@ -228,16 +227,16 @@ abstract class AbstractController
         $css = preg_replace('/\s+/', ' ', $css);
 
         // Adding our DOM tools to the js.
-        if (is_readable($krexxDir . 'resources/jsLibs/kdt.min.js')) {
-            $jsFile = $krexxDir . 'resources/jsLibs/kdt.min.js';
+        if (is_readable(KREXX_DIR . 'resources/jsLibs/kdt.min.js')) {
+            $jsFile = KREXX_DIR . 'resources/jsLibs/kdt.min.js';
         } else {
-            $jsFile = $krexxDir . 'resources/jsLibs/kdt.js';
+            $jsFile = KREXX_DIR . 'resources/jsLibs/kdt.js';
         }
 
         $jsCode = $this->pool->fileService->getFileContents($jsFile);
 
         // Krexx.js is comes directly form the template.
-        $path = $krexxDir . 'resources/skins/' . $this->pool->config->getSetting('skin');
+        $path = KREXX_DIR . 'resources/skins/' . $this->pool->config->getSetting('skin');
         if (is_readable($path . '/krexx.min.js')) {
             $jsFile = $path . '/krexx.min.js';
         } else {

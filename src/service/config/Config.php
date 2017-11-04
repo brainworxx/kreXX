@@ -134,19 +134,19 @@ class Config extends Fallback
         $overwrites = $this->pool->getGlobals('kreXXoverwrites');
 
         if (empty($overwrites['directories']['chunks'])) {
-            $this->directories['chunks'] = $this->pool->krexxDir . 'chunks' . DIRECTORY_SEPARATOR;
+            $this->directories['chunks'] = KREXX_DIR . 'chunks' . DIRECTORY_SEPARATOR;
         } else {
             $this->directories['chunks'] = $overwrites['directories']['chunks'] . DIRECTORY_SEPARATOR;
         }
 
         if (empty($overwrites['directories']['log'])) {
-            $this->directories['log'] = $this->pool->krexxDir . 'log' . DIRECTORY_SEPARATOR;
+            $this->directories['log'] = KREXX_DIR . 'log' . DIRECTORY_SEPARATOR;
         } else {
             $this->directories['log'] = $overwrites['directories']['log'] . DIRECTORY_SEPARATOR;
         }
 
         if (empty($overwrites['directories']['config'])) {
-            $this->directories['config'] = $this->pool->krexxDir . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
+            $this->directories['config'] = KREXX_DIR . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
         } else {
             $this->directories['config'] = $overwrites['directories']['config'] .
                 DIRECTORY_SEPARATOR . 'Krexx.ini';

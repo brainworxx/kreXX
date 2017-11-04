@@ -102,7 +102,7 @@ class Security extends Fallback
      */
     protected function evalSkin($value, $name)
     {
-        $result = is_readable($this->pool->krexxDir . 'resources/skins/' . $value . '/header.html');
+        $result = is_readable(KREXX_DIR . 'resources/skins/' . $value . '/header.html');
         if (!$result) {
             $this->pool->messages->addMessage('configError' . ucfirst($name));
         }

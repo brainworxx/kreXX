@@ -130,13 +130,6 @@ class Pool extends Factory
     public $routing;
 
     /**
-     * The directory where kreXX is installed.
-     *
-     * @var string
-     */
-    public $krexxDir;
-
-    /**
      * @var File
      */
     public $fileService;
@@ -148,29 +141,21 @@ class Pool extends Factory
 
     /**
      * Initializes all needed classes.
-     *
-     * @param string $krexxDir
-     *   The directory, where kreXX is stored.
      */
-    public function __construct($krexxDir)
+    public function __construct()
     {
         $this->registry = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\Registry');
-        $this->init($krexxDir);
+        $this->init();
     }
 
     /**
      * (Re)initializes everything in the pool, in case in-runtime
      * factory overwrites.
-     *
-     * @param string $krexxDir
-     *   The dir where kreXX is stored.
      */
-    public function init($krexxDir)
+    public function init()
     {
         // Get the rewrites from the $GLOBALS.
         $this->flushRewrite();
-        // Set the directory.
-        $this->krexxDir = $krexxDir;
         // Initialize the encoding service.
         $this->encodingService = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\Encoding');
         // Initializes the file service.
@@ -259,7 +244,7 @@ class Pool extends Factory
     {
         $skin = $this->config->getSetting('skin');
         $classname = 'Brainworxx\\Krexx\\View\\' . ucfirst($skin) . '\\Render';
-        include_once $this->krexxDir . 'resources/skins/' . $skin . '/Render.php';
+        include_once KREXX_DIR . 'resources/skins/' . $skin . '/Render.php';
         $this->render =  $this->createClass($classname);
     }
 }
