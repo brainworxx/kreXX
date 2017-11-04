@@ -244,6 +244,7 @@ class ThroughGetter extends AbstractCallback
         if (strpos($getterName, 'get') === 0) {
             $getterName = substr($getterName, 3);
         }
+        
         if (strpos($getterName, '_get') === 0) {
             $getterName = substr($getterName, 4);
         }
@@ -283,6 +284,7 @@ class ThroughGetter extends AbstractCallback
             if ($classReflection->hasProperty($propertyName)) {
                 return $classReflection->getProperty($propertyName);
             }
+
             // Check if this is a method and go deeper!
             $methodName = rtrim($propertyName, '()');
             if ($classReflection->hasMethod($methodName)) {
