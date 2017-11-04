@@ -245,7 +245,6 @@ class File
         // New file. We tell the caching, that we have read access here.
         file_put_contents($path, $string, FILE_APPEND);
         static::$isReadableCache[$path] = true;
-
     }
 
     /**

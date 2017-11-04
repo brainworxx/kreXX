@@ -171,7 +171,7 @@ class Routing extends AbstractRouting
     }
 
     /**
-     * Do some preprocessing, before the routing.
+     * Do some pre processing, before the routing.
      *
      * @param object|array $data
      *   The object / array we are analysing.

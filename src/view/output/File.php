@@ -97,6 +97,5 @@ class File extends AbstractOutput
             // Save everything to the file after we are done.
             $this->pool->chunks->saveDechunkedToFile($chunkString);
         }
-
     }
 }

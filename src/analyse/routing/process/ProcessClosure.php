@@ -91,7 +91,7 @@ class ProcessClosure extends AbstractProcess
                 ->codegenHandler
                 ->parameterToString($reflectionParameter);
         }
-        
+
         return $this->pool->render->renderExpandableChild(
             $model->setType('closure')
                 ->setNormal('. . .')
@@ -103,6 +103,5 @@ class ProcessClosure extends AbstractProcess
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethodAnalysis')
                 )
         );
-
     }
 }

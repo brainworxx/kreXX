@@ -178,7 +178,6 @@ class Ini extends Fallback
             'type' => $type,
             'editable' => $editable,
         );
-
     }
 
     /**

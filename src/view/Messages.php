@@ -163,7 +163,7 @@ class Messages
      */
     public function getHelp($key, array $args = array())
     {
-        // Check is wecan get avalue, at all.
+        // Check if we can get a value, at all.
         if (empty($this->helpArray[$key])) {
             return '';
         }

@@ -91,7 +91,7 @@ class Traversable extends AbstractObjectAnalysis
         restore_error_handler();
 
         if (isset($parameter)) {
-            // Special Array Access here, resulting in modecomplicated source
+            // Special Array Access here, resulting in more complicated source
             // generation. So we tell the callback to to that.
             $multiline = true;
 

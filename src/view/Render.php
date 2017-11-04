@@ -229,7 +229,6 @@ class Render extends AbstractRender
             ),
             $this->getTemplateFileContent('singleChild')
         );
-
     }
 
     /**

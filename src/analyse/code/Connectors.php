@@ -199,7 +199,6 @@ class Connectors
         }
 
         return $this->customConnector1;
-
     }
 
     /**

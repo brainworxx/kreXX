@@ -306,7 +306,6 @@ class Config extends Fallback
     public function getChunkDir()
     {
         return $this->directories['chunks'];
-
     }
 
     /**
@@ -383,8 +382,8 @@ class Config extends Fallback
         }
 
         // Check for a class / method combination.
-        foreach ($this->methodBlacklist as $classname => $methodLlist) {
-            if (is_a($data, $classname) && in_array($call, $methodLlist)) {
+        foreach ($this->methodBlacklist as $classname => $methodList) {
+            if (is_a($data, $classname) && in_array($call, $methodList)) {
                 // We have a winner, this one is blacklisted!
                 return false;
             }
