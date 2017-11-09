@@ -46,8 +46,6 @@ use Brainworxx\Krexx\Controller\AbstractController;
 class Krexx
 {
 
-
-
     /**
      * Our pool where we keep all relevant classes.
      *
@@ -119,11 +117,8 @@ class Krexx
 
 
         // We might need to register our fatal error handler.
-        if (static::$pool->config->getSetting('registerAutomatically') &&
-            !static::$pool->config->getSetting('disabled')) {
-            static::$pool
-                ->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
-                ->registerFatalAction();
+        if (static::$pool->config->getSetting('registerAutomatically')) {
+            static::registerFatal();
         }
     }
 
