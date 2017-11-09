@@ -68,8 +68,15 @@ class Krexx
         define('KREXX_DIR', __DIR__ . DIRECTORY_SEPARATOR);
 
         spl_autoload_register(function ($className) {
+            static $krexxNamespace = 'Brainworxx\\Krexx';
+
+            // If we are dealing with a none krexx class, do nothing.
+            if (strpos($className, $krexxNamespace) === false) {
+                return;
+            }
+
             require KREXX_DIR . 'src/' . str_replace(
-                array('Brainworxx\\Krexx', '\\'),
+                array($krexxNamespace, '\\'),
                 array('', '/'),
                 $className
             ) . '.php';
