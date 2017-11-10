@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Service\Config;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
+use Brainworxx\Krexx\Service\Overwrites;
 
 /**
  * Access the debug settings here.
@@ -131,21 +132,21 @@ class Config extends Fallback
 
     protected function initDirectories()
     {
-        $overwrites = $this->pool->getGlobals('kreXXoverwrites');
+        $overwrites = Overwrites::$directories;
 
-        if (empty($overwrites['directories']['chunks'])) {
+        if (empty($overwrites['chunks'])) {
             $this->directories['chunks'] = KREXX_DIR . 'chunks' . DIRECTORY_SEPARATOR;
         } else {
             $this->directories['chunks'] = $overwrites['directories']['chunks'] . DIRECTORY_SEPARATOR;
         }
 
-        if (empty($overwrites['directories']['log'])) {
+        if (empty($overwrites['log'])) {
             $this->directories['log'] = KREXX_DIR . 'log' . DIRECTORY_SEPARATOR;
         } else {
             $this->directories['log'] = $overwrites['directories']['log'] . DIRECTORY_SEPARATOR;
         }
 
-        if (empty($overwrites['directories']['config'])) {
+        if (empty($overwrites['config'])) {
             $this->directories['config'] = KREXX_DIR . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
         } else {
             $this->directories['config'] = $overwrites['directories']['config'] .

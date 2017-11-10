@@ -1,6 +1,7 @@
 2.3.2 dev
 - Change: Javascript optimisation for very large output.
 - Change: Introduced an autoloader.
+- Change: Moved the overwrites from the GLOBALS to a static class
 - Bugfix: Minimise CSS interference from the hosting cms with
   marked text.
 - Bugfix: Disabling via sourcecode works again.

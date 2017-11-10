@@ -144,8 +144,8 @@ class Pool extends Factory
      */
     public function __construct()
     {
-        $this->registry = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\Registry');
         $this->init();
+        $this->registry = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\Registry');
     }
 
     /**

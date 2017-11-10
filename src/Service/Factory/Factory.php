@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Factory;
 
+use Brainworxx\Krexx\Service\Overwrites;
+
 /**
  * Simple factory, nothing special. Offers a overwrite method.
  *
@@ -94,13 +96,7 @@ class Factory
      */
     public function flushRewrite()
     {
-        $overwrites = $this->getGlobals('kreXXoverwrites');
-
-        if (isset($overwrites) && isset($overwrites['classes'])) {
-            $this->rewrite = $overwrites['classes'];
-        } else {
-            $this->rewrite = array();
-        }
+        $this->rewrite = Overwrites::$classes;
     }
 
     /**

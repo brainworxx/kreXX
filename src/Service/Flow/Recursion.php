@@ -74,7 +74,7 @@ class Recursion
     protected $globalsWereRendered = false;
 
     /**
-     * THe $GLOBALS array.
+     * The $GLOBALS array.
      *
      * @var array
      */

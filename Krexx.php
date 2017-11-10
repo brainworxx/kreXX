@@ -34,6 +34,7 @@
 
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
+use Brainworxx\Krexx\Service\Overwrites;
 
 // Include some files and set some internal values.
 \Krexx::bootstrapKrexx();
@@ -65,20 +66,23 @@ class Krexx
 
         define('KREXX_DIR', __DIR__ . DIRECTORY_SEPARATOR);
 
-        spl_autoload_register(function ($className) {
-            static $krexxNamespace = 'Brainworxx\\Krexx';
+        spl_autoload_register(
+            function ($className) {
+                static $krexxNamespace = 'Brainworxx\\Krexx';
 
-            // If we are dealing with a none krexx class, do nothing.
-            if (strpos($className, $krexxNamespace) === false) {
-                return;
-            }
+                // If we are dealing with a none krexx class, do nothing.
+                if (strpos($className, $krexxNamespace) === false) {
+                    return;
+                }
 
-            require KREXX_DIR . 'src/' . str_replace(
-                array($krexxNamespace, '\\'),
-                array('', '/'),
-                $className
-            ) . '.php';
-        }, false);
+                require KREXX_DIR . 'src/' . str_replace(
+                    array($krexxNamespace, '\\'),
+                    array('', '/'),
+                    $className
+                ) . '.php';
+            },
+            false
+        );
 
         if (!function_exists('krexx')) {
             /**
@@ -105,16 +109,12 @@ class Krexx
 
         // Create a new pool where we store all our classes.
         // We also need to check if we have an overwrite for the pool.
-        if (!empty($GLOBALS['kreXXoverwrites']) &&
-            is_array($GLOBALS['kreXXoverwrites']['classes']) &&
-            isset($GLOBALS['kreXXoverwrites']['classes']['Brainworxx\\Krexx\\Service\\Factory\\Pool'])
-        ) {
-            $classname = $GLOBALS['kreXXoverwrites']['classes']['Brainworxx\\Krexx\\Service\\Factory\\Pool'];
-            static::$pool = new $classname();
-        } else {
+        if (empty(Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'])) {
             static::$pool = new Pool();
+        } else {
+            $classname = Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'];
+            static::$pool = new $classname();
         }
-
 
         // We might need to register our fatal error handler.
         if (static::$pool->config->getSetting('registerAutomatically')) {
