@@ -3,6 +3,7 @@
 - Change: Introduced an autoloader.
 - Bugfix: Minimise CSS interference from the hosting cms with
   marked text.
+- Bugfix: Disabling via sourcecode works again.
 
 2.3.1
 - Bugfix: Fixed shell detection.

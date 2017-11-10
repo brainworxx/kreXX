@@ -251,6 +251,7 @@ class Krexx
      */
     public static function disable()
     {
+        static::$pool->config->setDisabled(true);
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
             ->noFatalForKrexx();
         // We will not re-enable it afterwards, because kreXX
