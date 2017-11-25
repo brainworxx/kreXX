@@ -2,6 +2,8 @@
 - Change: Javascript optimisation for very large output.
 - Change: Introduced an autoloader.
 - Change: Moved the overwrites from the GLOBALS to a static class
+- Change: Prettified the display of sourcecode in the backtrace in
+  the smoky grey skin.
 - Bugfix: Minimise CSS interference from the hosting cms with
   marked text.
 - Bugfix: Disabling via sourcecode works again.

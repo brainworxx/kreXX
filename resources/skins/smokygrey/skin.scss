@@ -504,11 +504,12 @@ $fontLight: lighter 10px tahoma, verdana;
         color: $greyDark;
         font: $fontBold;
         white-space: pre;
-        background-color: $white;
+        background-color: $whiteDark;
       }
       .source {
         padding: 1px 20px;
-        background-color: $whiteDark;
+        
+        background-color: $white;
         margin: 2px 0;
       }
       .klineno {
