@@ -188,7 +188,7 @@ abstract class AbstractController
         // Now we need to stitch together the content of the ini file
         // as well as it's path.
         $pathToIni = $this->pool->config->getPathToIniFile();
-        if (is_readable($pathToIni)) {
+        if ($this->pool->fileService->fileIsReadable($pathToIni)) {
             $path = $this->pool->messages->getHelp('currentConfig');
         } else {
             // Project settings are not accessible
@@ -227,7 +227,7 @@ abstract class AbstractController
         $css = preg_replace('/\s+/', ' ', $css);
 
         // Adding our DOM tools to the js.
-        if (is_readable(KREXX_DIR . 'resources/jsLibs/kdt.min.js')) {
+        if ($this->pool->fileService->fileIsReadable(KREXX_DIR . 'resources/jsLibs/kdt.min.js')) {
             $jsFile = KREXX_DIR . 'resources/jsLibs/kdt.min.js';
         } else {
             $jsFile = KREXX_DIR . 'resources/jsLibs/kdt.js';
@@ -237,7 +237,7 @@ abstract class AbstractController
 
         // Krexx.js is comes directly form the template.
         $path = KREXX_DIR . 'resources/skins/' . $this->pool->config->getSetting('skin');
-        if (is_readable($path . '/krexx.min.js')) {
+        if ($this->pool->fileService->fileIsReadable($path . '/krexx.min.js')) {
             $jsFile = $path . '/krexx.min.js';
         } else {
             $jsFile = $path . '/krexx.js';

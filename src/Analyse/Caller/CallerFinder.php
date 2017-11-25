@@ -110,7 +110,7 @@ class CallerFinder extends AbstractCaller
     protected function getVarName($file, $line)
     {
         // Retrieve the call from the sourcecode file.
-        if (!is_readable($file)) {
+        if (!$this->pool->fileService->fileIsReadable($file)) {
             return '. . .';
         }
 

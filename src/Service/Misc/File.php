@@ -316,7 +316,7 @@ class File
      * @return bool
      *   If the file is readable, or not.
      */
-    protected function fileIsReadable($filePath)
+    public function fileIsReadable($filePath)
     {
         // Return the cache, if we have any.
         if (isset(static::$isReadableCache[$filePath])) {
