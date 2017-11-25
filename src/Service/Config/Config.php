@@ -132,24 +132,25 @@ class Config extends Fallback
 
     protected function initDirectories()
     {
-        $overwrites = Overwrites::$directories;
-
-        if (empty($overwrites['chunks'])) {
+        // Set the chunks folder.
+        if (empty(Overwrites::$directories['chunks'])) {
             $this->directories['chunks'] = KREXX_DIR . 'chunks' . DIRECTORY_SEPARATOR;
         } else {
-            $this->directories['chunks'] = $overwrites['directories']['chunks'] . DIRECTORY_SEPARATOR;
+            $this->directories['chunks'] = Overwrites::$directories['chunks'] . DIRECTORY_SEPARATOR;
         }
 
-        if (empty($overwrites['log'])) {
+        // Set the log folder.
+        if (empty(Overwrites::$directories['log'])) {
             $this->directories['log'] = KREXX_DIR . 'log' . DIRECTORY_SEPARATOR;
         } else {
-            $this->directories['log'] = $overwrites['directories']['log'] . DIRECTORY_SEPARATOR;
+            $this->directories['log'] = Overwrites::$directories['log'] . DIRECTORY_SEPARATOR;
         }
 
-        if (empty($overwrites['config'])) {
+        // Set the configuration file path.
+        if (empty(Overwrites::$directories['config'])) {
             $this->directories['config'] = KREXX_DIR . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
         } else {
-            $this->directories['config'] = $overwrites['directories']['config'] .
+            $this->directories['config'] = Overwrites::$directories['config'] .
                 DIRECTORY_SEPARATOR . 'Krexx.ini';
         }
     }
