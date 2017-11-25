@@ -230,14 +230,6 @@ class Pool extends Factory
     }
 
     /**
-     * Reload the configuration.
-     */
-    public function resetConfig()
-    {
-        $this->config = $this->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
-    }
-
-    /**
      * Loads the renderer from the skin.
      */
     protected function initRenderer()

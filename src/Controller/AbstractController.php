@@ -55,20 +55,6 @@ abstract class AbstractController
     public static $analysisInProgress = false;
 
     /**
-     * Config for the 'deep' backtrace analysis.
-     *
-     * @var array
-     */
-    protected $configFatal = array(
-        'analyseProtected' => 'true',
-        'analysePrivate' => 'true',
-        'analyseTraversable' => 'true',
-        'analyseConstants' => 'true',
-        'analyseProtectedMethods' => 'true',
-        'analysePrivateMethods' => 'true',
-    );
-
-    /**
      * Sends the output to the browser during shutdown phase.
      *
      * @var AbstractOutput

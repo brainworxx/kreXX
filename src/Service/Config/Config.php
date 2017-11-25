@@ -169,23 +169,6 @@ class Config extends Fallback
     }
 
     /**
-     * Here we overwrite the local settings.
-     *
-     * When we are handling errors and are analysing objects, we should
-     * output protected and private variables of a class, outputting as
-     * much info as possible.
-     *
-     * @param array $newSettings
-     *   Part of the array we want to overwrite.
-     */
-    public function overwriteLocalSettings(array $newSettings)
-    {
-        foreach ($newSettings as $name => $value) {
-            $this->settings[$name]->setValue($value);
-        }
-    }
-
-    /**
      * Returns the developer handle from the cookies.
      *
      * @return string

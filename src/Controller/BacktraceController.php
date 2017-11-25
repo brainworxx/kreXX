@@ -56,9 +56,6 @@ class BacktraceController extends AbstractController
         }
 
         $this->pool->reset();
-        // We overwrite the local settings, so we can get as much info from
-        // analysed objects as possible.
-        $this->pool->config->overwriteLocalSettings($this->configFatal);
 
         // Find caller.
         $caller = $this->callerFinder->findCaller();
@@ -96,9 +93,6 @@ class BacktraceController extends AbstractController
         $this->outputService->addChunkString($this->outputHeader('Backtrace'));
         $this->outputService->addChunkString($analysis);
         $this->outputService->addChunkString($footer);
-
-        // Reset our configuration for the other analysis calls.
-        $this->pool->resetConfig();
 
         return $this;
     }

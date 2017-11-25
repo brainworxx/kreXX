@@ -55,10 +55,6 @@ class ErrorController extends AbstractController
     {
         $this->pool->reset();
 
-        // We overwrite the local settings, so we can get as much info from
-        // analysed objects as possible.
-        $this->pool->config->overwriteLocalSettings($this->configFatal);
-
         // Get the main part.
         $main = $this->pool->render->renderFatalMain(
             $errorData['type'],
