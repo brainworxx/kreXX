@@ -109,26 +109,23 @@ class CallerFinder extends AbstractCaller
      */
     protected function getVarName($file, $line)
     {
-        // Fallback to '. . .'.
-        $varname = '. . .';
-
         // Retrieve the call from the sourcecode file.
         if (!is_readable($file)) {
-            return $varname;
+            return '. . .';
         }
 
-        $source = file($file);
+        $line--;
 
         // Now that we have the line where it was called, we must check if
         // we have several commands in there.
-        $possibleCommands = explode(';', $source[$line - 1]);
+        $possibleCommands = explode(';', $this->pool->fileService->readFile($file, $line, $line));
         // Now we must weed out the none krexx commands.
         foreach ($possibleCommands as $key => $command) {
             if (strpos(strtolower($command), strtolower($this->pattern)) === false) {
                 unset($possibleCommands[$key]);
             }
         }
-        
+
         // I have no idea how to determine the actual call of krexx if we
         // are dealing with several calls per line.
         if (count($possibleCommands) === 1) {
