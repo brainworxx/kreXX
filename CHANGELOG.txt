@@ -1,4 +1,6 @@
 2.3.2 dev
+- Added the method analysis to the recursion detection, to prevent
+  analysing the same methods over and over again.
 - Change: Javascript optimisation for very large output.
 - Change: Introduced an autoloader.
 - Change: Moved the overwrites from the GLOBALS to a static class

@@ -52,6 +52,23 @@ class Methods extends AbstractObjectAnalysis
         /** @var \ReflectionClass $ref */
         $ref = $this->parameters['ref'];
 
+        // We need to check, if we have a meta recursion here.
+        $domId = $this->generateDomIdFromClassname($ref->getName());
+        if ($this->pool->recursionHandler->isInMetaHive($domId)) {
+            // We have been here before.
+            // We skip this one, and leave it to the js recursion handler!
+            return $this->pool->render->renderRecursion(
+                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    ->setDomid($domId)
+                    ->setNormal('Methods')
+                    ->setName('Methods')
+                    ->setType('class internals')
+            );
+        }
+
+        // Add it to the meta hive.
+        $this->pool->recursionHandler->addToMetaHive($domId);
+
         // Dumping all methods but only if we have any.
         $protected = array();
         $private = array();
@@ -81,9 +98,27 @@ class Methods extends AbstractObjectAnalysis
                 ->setType('class internals')
                 ->addParameter('data', $methods)
                 ->addParameter('ref', $ref)
+                ->setDomId($domId)
                 ->injectCallback(
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods')
                 )
         );
+    }
+
+    /**
+     * Generates a id for the DOM.
+     *
+     * This is used to jump from a recursion to the object analysis data.
+     * The ID is simply the md5 hash of the classname with thenamspace.
+     *
+     * @param mixed $data
+     *   The object from which we want the ID.
+     *
+     * @return string
+     *   The generated id.
+     */
+    protected function generateDomIdFromClassname($data)
+    {
+        return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_m_' . md5($data);
     }
 }

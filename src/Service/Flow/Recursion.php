@@ -67,6 +67,13 @@ class Recursion
     protected $recursionMarker;
 
     /**
+     * Collection of dom ID's of object meta analytic stuff.
+     *
+     * @var array
+     */
+    protected $metaRecursionHive = array();
+
+    /**
      * Here we store, if we have rendered the $GLOBALS array so far.
      *
      * @var bool
@@ -157,5 +164,30 @@ class Recursion
     public function getMarker()
     {
         return $this->recursionMarker;
+    }
+
+    /**
+     * Find out, if we have already rendered meta stuff for a class.
+     *
+     * @param string $domId
+     *   The dom id to lookup.
+     *
+     * @return bool
+     *   Boolean which shows whether we are facing a recursion.
+     */
+    public function isInMetaHive($domId)
+    {
+        return isset($this->metaRecursionHive[$domId]);
+    }
+
+    /**
+     * Add another value to the meta hive.
+     *
+     * @param string $domId
+     *   The dom id we want to track.
+     */
+    public function addToMetaHive($domId)
+    {
+        $this->metaRecursionHive[$domId]= true;
     }
 }
