@@ -786,7 +786,7 @@
 
     /**
      * Checks if the search form is inside the viewport. If not, fixes it on top.
-     * Gets triggered on,y when scolling the fatel error handler.
+     * Gets triggered on,y when scolling the fatal error handler.
      *
      * @param {Event} event
      */
