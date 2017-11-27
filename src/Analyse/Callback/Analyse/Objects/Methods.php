@@ -53,7 +53,13 @@ class Methods extends AbstractObjectAnalysis
         $ref = $this->parameters['ref'];
 
         // We need to check, if we have a meta recursion here.
-        $domId = $this->generateDomIdFromClassname($ref->getName());
+
+        $doProtected = $this->pool->config->getSetting('analyseProtectedMethods') ||
+            $this->pool->scope->isInScope();
+        $doPrivate = $this->pool->config->getSetting('analysePrivateMethods') ||
+            $this->pool->scope->isInScope();
+        $domId = $this->generateDomIdFromClassname($ref->getName(), $doProtected, $doPrivate);
+
         if ($this->pool->recursionHandler->isInMetaHive($domId)) {
             // We have been here before.
             // We skip this one, and leave it to the js recursion handler!
@@ -66,6 +72,27 @@ class Methods extends AbstractObjectAnalysis
             );
         }
 
+        return $this->analyseMethods($ref, $domId, $doProtected, $doPrivate);
+
+    }
+
+    /**
+     * Do the real analysis.
+     */
+    /**
+     * @param \ReflectionClass $ref
+     *   The reflection of t he class we are analysing
+     * @param $domId
+     *   The alredy generated dom id.
+     * @param $doProtected
+     *   Are we analysing the protected methods here?
+     * @param $doPrivate
+     *   Are we analysing private methods here?
+     * @return string
+     *   The generated markup.
+     */
+    protected function analyseMethods(\ReflectionClass $ref, $domId, $doProtected, $doPrivate)
+    {
         // Add it to the meta hive.
         $this->pool->recursionHandler->addToMetaHive($domId);
 
@@ -74,13 +101,11 @@ class Methods extends AbstractObjectAnalysis
         $private = array();
         $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        if ($this->pool->config->getSetting('analyseProtectedMethods') ||
-            $this->pool->scope->isInScope()) {
+        if ($doProtected) {
             $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
         }
 
-        if ($this->pool->config->getSetting('analysePrivateMethods') ||
-            $this->pool->scope->isInScope()) {
+        if ($doPrivate) {
             $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
         }
 
@@ -92,6 +117,7 @@ class Methods extends AbstractObjectAnalysis
 
         // We need to sort these alphabetically.
         usort($methods, array($this, 'reflectionSorting'));
+
         return $this->pool->render->renderExpandableChild(
             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setName('Methods')
@@ -113,12 +139,25 @@ class Methods extends AbstractObjectAnalysis
      *
      * @param mixed $data
      *   The object from which we want the ID.
+     * @param bool $doProtected
+     *   Are we analysing the protected methods here?
+     * @param bool $doPrivate
+     *   Are we analysing private methods here?
      *
      * @return string
      *   The generated id.
      */
-    protected function generateDomIdFromClassname($data)
+    protected function generateDomIdFromClassname($data, $doProtected, $doPrivate)
     {
-        return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_m_' . md5($data);
+        $string = 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_m_';
+        if ($doProtected) {
+            $string .= 'pro_';
+        }
+
+        if ($doPrivate) {
+            $string .= 'pri_';
+        }
+
+        return $string . md5($data);
     }
 }
