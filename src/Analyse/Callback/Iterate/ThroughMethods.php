@@ -84,7 +84,10 @@ class ThroughMethods extends AbstractCallback
                 ++$key;
                 $paramList .= $methodData['Parameter #' . $key] = $this->pool
                     ->codegenHandler
-                    ->parameterToString($reflectionParameter) . ', ';
+                    ->parameterToString($reflectionParameter);
+                // We add a comme to the parameter list, to separate them for a
+                // better readability.
+                $paramList .= ', ';
             }
 
             // Remove the ',' after the last char.

@@ -9,6 +9,7 @@
 - Bugfix: Disabling via sourcecode works again.
 - Bugfix: Removed the special backtrace configuration, which
   resulted in a output overkill, crashing the backtrace.
+- Bugfix: Removed the comma in the method parameter analysis.
 
 2.3.1
 - Bugfix: Fixed shell detection.
