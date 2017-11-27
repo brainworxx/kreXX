@@ -12,6 +12,8 @@
 - Bugfix: Removed the special backtrace configuration, which
   resulted in a output overkill, crashing the backtrace.
 - Bugfix: Removed the comma in the method parameter analysis.
+- Bugfix: Fixed in issue, where the correct nesting level was not
+  set correctly, resulting in output overkill.
 
 2.3.1
 - Bugfix: Fixed shell detection.

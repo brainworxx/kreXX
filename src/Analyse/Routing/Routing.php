@@ -142,7 +142,6 @@ class Routing extends AbstractRouting
     {
         // Check the nesting level.
         if ($this->pool->emergencyHandler->checkNesting()) {
-            $this->pool->emergencyHandler->downOneNestingLevel();
             $text = $this->pool->messages->getHelp('maximumLevelReached2');
             $model->setData($text)
                 ->setNormal($this->pool->messages->getHelp('maximumLevelReached1'))
