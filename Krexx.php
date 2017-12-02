@@ -58,8 +58,10 @@ class Krexx
 
     /**
      * Create the pool, but only if it is not alredy there.
+     *
+     * @internal
      */
-    protected static function createPool()
+    public static function createPool()
     {
         if (static::$pool !== null) {
             // The ppol is there, do nothing.
