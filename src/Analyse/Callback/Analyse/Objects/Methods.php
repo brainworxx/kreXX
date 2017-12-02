@@ -136,7 +136,7 @@ class Methods extends AbstractObjectAnalysis
      * This is used to jump from a recursion to the object analysis data.
      * The ID is simply the md5 hash of the classname with thenamspace.
      *
-     * @param mixed $data
+     * @param string $data
      *   The object from which we want the ID.
      * @param bool $doProtected
      *   Are we analysing the protected methods here?
