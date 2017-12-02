@@ -155,27 +155,6 @@ class Security extends Fallback
     }
 
     /**
-     * Evaluation the registering of the fatal error handler.
-     * Works only in PHP5 and we are expecting a boolean.
-     *
-     * @param string $value
-     *   The value we want to evaluate
-     * @param string $name
-     *   The name of the value we are checking, needed for the feedback text.
-     * @param string $group
-     *   The name of the group that we are evaluating, needed for the feedback
-     *   text.
-     *
-     * @return boolean
-     *   Whether it does evaluate or not.
-     */
-    protected function evalFatal($value, $name, $group)
-    {
-        // The feedback happens in the methods below.
-        return $this->evalBool($value, $name, $group) && $this->evalPhp();
-    }
-
-    /**
      * Evaluation the maximum runtime, by looking at the server settings, as
      * well as checking for an integer value.
      *
@@ -239,22 +218,6 @@ class Security extends Fallback
         }
 
         return $result;
-    }
-
-    /**
-     * Checks if the php version is lower then 7.0.0.
-     *
-     * @return bool
-     *   Whether it does evaluate or not.
-     */
-    protected function evalPhp()
-    {
-        $result = version_compare(phpversion(), '7.0.0', '>=');
-        if ($result) {
-            $this->pool->messages->addMessage('configErrorRegisterAutomatically2');
-        }
-
-        return !$result;
     }
 
     /**

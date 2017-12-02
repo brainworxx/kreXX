@@ -57,13 +57,32 @@ class Krexx
     public static $pool;
 
     /**
+     * Create the pool, but only if it is not alredy there.
+     */
+    protected static function createPool()
+    {
+        if (static::$pool !== null) {
+            // The ppol is there, do nothing.
+            return;
+        }
+
+        // Create a new pool where we store all our classes.
+        // We also need to check if we have an overwrite for the pool.
+        if (empty(Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'])) {
+            static::$pool = new Pool();
+        } else {
+            $classname = Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'];
+            static::$pool = new $classname();
+        }
+    }
+
+    /**
      * Includes all needed files and sets some internal values.
      *
      * @internal
      */
     public static function bootstrapKrexx()
     {
-
         define('KREXX_DIR', __DIR__ . DIRECTORY_SEPARATOR);
 
         spl_autoload_register(
@@ -106,20 +125,6 @@ class Krexx
                 }
             }
         }
-
-        // Create a new pool where we store all our classes.
-        // We also need to check if we have an overwrite for the pool.
-        if (empty(Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'])) {
-            static::$pool = new Pool();
-        } else {
-            $classname = Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'];
-            static::$pool = new $classname();
-        }
-
-        // We might need to register our fatal error handler.
-        if (static::$pool->config->getSetting('registerAutomatically')) {
-            static::registerFatal();
-        }
     }
 
     /**
@@ -134,6 +139,8 @@ class Krexx
      */
     public static function __callStatic($name, array $arguments)
     {
+        static::createPool();
+
         // Do we gave a handle?
         if ($name === static::$pool->config->getDevHandler()) {
             // We do a standard-open.
@@ -156,6 +163,8 @@ class Krexx
      */
     public static function timerMoment($string)
     {
+        static::createPool();
+
         // Disabled?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
             return;
@@ -178,6 +187,8 @@ class Krexx
      */
     public static function timerEnd()
     {
+        static::createPool();
+
         // Disabled ?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
             return;
@@ -203,6 +214,8 @@ class Krexx
      */
     public static function open($data = null)
     {
+        static::createPool();
+
         // Disabled?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
             return;
@@ -229,6 +242,8 @@ class Krexx
      */
     public static function backtrace()
     {
+        static::createPool();
+
         // Disabled?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
             return;
@@ -251,6 +266,8 @@ class Krexx
      */
     public static function disable()
     {
+        static::createPool();
+
         static::$pool->config->setDisabled(true);
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
             ->noFatalForKrexx();
@@ -267,6 +284,8 @@ class Krexx
      */
     public static function editSettings()
     {
+        static::createPool();
+
         // Disabled?
         // We are ignoring local settings here.
         if (static::$pool->config->getSetting('disabled')) {
@@ -288,8 +307,19 @@ class Krexx
      */
     public static function registerFatal()
     {
+        static::createPool();
+
         // Disabled?
         if (static::$pool->config->getSetting('disabled')) {
+            return;
+        }
+
+        // Wrong PHP version?
+        if (version_compare(phpversion(), '7.0.0', '>=')) {
+            static::$pool->messages->addMessage('configErrorRegisterAutomatically2');
+            // In case that there is no other kreXX output, we show the configuration
+            // with the message.
+            static::editSettings();
             return;
         }
 
@@ -308,6 +338,8 @@ class Krexx
      */
     public static function unregisterFatal()
     {
+        static::createPool();
+        
         // Disabled?
         if (static::$pool->config->getSetting('disabled')) {
             return;
