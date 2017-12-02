@@ -81,12 +81,11 @@ class Ini extends Fallback
      */
     public function loadIniFile($path)
     {
-        if (is_file($path)) {
-            $this->iniSettings = (array)parse_ini_string(
-                $this->pool->fileService->getFileContents($path),
-                true
-            );
-        }
+
+        $this->iniSettings = (array)parse_ini_string(
+            $this->pool->fileService->getFileContents($path, false),
+            true
+        );
 
         return $this;
     }

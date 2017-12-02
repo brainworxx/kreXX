@@ -202,11 +202,13 @@ class File
      *
      * @param string $path
      *   The path to the file.
+     * @param bool $showError
+     *   Do we need to display na error message?
      *
      * @return string
      *   The content of the file, if readable.
      */
-    public function getFileContents($path)
+    public function getFileContents($path, $showError = true)
     {
         // Is it readable and does it have any content?
         if ($this->fileIsReadable($path)) {
@@ -218,8 +220,10 @@ class File
                 return $result;
             }
         } else {
-            // This file was not readable! We need to tell the user!
-            $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
+            if ($showError) {
+                // This file was not readable! We need to tell the user!
+                $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
+            }
         }
 
         // Empty file returns an empty string.
