@@ -311,13 +311,13 @@ class Chunks
 
         $beenHere = true;
         // Clean up leftover files.
-        $chunkList = glob($this->chunkDir . '*.Krexx.tmp');
-        if (!empty($chunkList)) {
+        $chunkList = $this->pool->fileService->glob($this->chunkDir . '*.Krexx.tmp');
+        if ($chunkList->count() > 0) {
             $now = time();
             foreach ($chunkList as $file) {
                 // We delete everything that is older than 15 minutes.
-                if ((filemtime($file) + 900) < $now) {
-                    $this->pool->fileService->deleteFile($file);
+                if (($file->getMTime() + 900) < $now) {
+                    $this->pool->fileService->deleteFile($file->getPathname());
                 }
             }
         }
@@ -337,16 +337,23 @@ class Chunks
         }
 
         // Cleanup old logfiles to prevent a overflow.
-        $logList = glob($logDir . '*.Krexx.html');
-        if (empty($logList)) {
+        $logList = $this->pool->fileService->glob($logDir . '*.Krexx.html');
+
+        if ($logList->count() === 0) {
             return;
         }
 
-        array_multisort(array_map('filemtime', $logList), SORT_DESC, $logList);
+        // Sort it by date.
+        $listWithTimestamp = array();
+        foreach ($logList as $file) {
+            $listWithTimestamp[$file->getMTime()] = $file->getFilename();
+        }
+        ksort($listWithTimestamp);
+
+        // Cleanup logfiles.
         $maxFileCount = (int)$this->pool->config->getSetting('maxfiles');
         $count = 1;
-        // Cleanup logfiles.
-        foreach ($logList as $file) {
+        foreach ($listWithTimestamp as $file) {
             if ($count > $maxFileCount) {
                 $this->pool->fileService->deleteFile($file);
                 $this->pool->fileService->deleteFile($file . '.json');
@@ -398,14 +405,14 @@ class Chunks
     public function __destruct()
     {
         // Get a list of all chunk files from the run.
-        $chunkList = glob($this->chunkDir . $this->fileStamp . '_*');
-        if (empty($chunkList)) {
+        $chunkList = $this->pool->fileService->glob($this->chunkDir . $this->fileStamp . '_*');
+        if ($chunkList->count() === 0) {
             return;
         }
 
         // Delete them all!
         foreach ($chunkList as $file) {
-            $this->pool->fileService->deleteFile($file);
+            $this->pool->fileService->deleteFile($file->getPathname());
         }
     }
 

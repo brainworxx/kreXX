@@ -330,4 +330,18 @@ class File
         // Set the cache and return it.
         return static::$isReadableCache[$filePath] = is_readable($filePath) && is_file($filePath);
     }
+
+    /**
+     * The same as glob(), only faster.
+     *
+     * @param string $dir
+     *   The directory we want to list.
+     *
+     * @return \GlobIterator
+     *   The list with the files.
+     */
+    public function glob($dir)
+    {
+        return new \GlobIterator($dir);
+    }
 }
