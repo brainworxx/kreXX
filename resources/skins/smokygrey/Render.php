@@ -202,7 +202,6 @@ class Render extends \Brainworxx\Krexx\View\Render
             ),
             parent::renderHeader($doctype, $headline, $cssJs)
         );
-
     }
 
     /**

@@ -73,7 +73,6 @@ class Methods extends AbstractObjectAnalysis
         }
 
         return $this->analyseMethods($ref, $domId, $doProtected, $doPrivate);
-
     }
 
     /**

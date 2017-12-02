@@ -79,7 +79,7 @@ abstract class AbstractComment
      * @param \ReflectionClass $reflectionClass
      *   An already existing reflection of the original class.
      *
-     * @return @return string
+     * @return string
      *   The prettified comment.
      */
     abstract public function getComment(
