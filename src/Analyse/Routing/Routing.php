@@ -143,9 +143,14 @@ class Routing extends AbstractRouting
         // Check the nesting level.
         if ($this->pool->emergencyHandler->checkNesting()) {
             $text = $this->pool->messages->getHelp('maximumLevelReached2');
+            if (is_array($data)) {
+                $type = 'array';
+            } else {
+                $type = 'object';
+            }
             $model->setData($text)
                 ->setNormal($this->pool->messages->getHelp('maximumLevelReached1'))
-                ->setType(gettype($data))
+                ->setType($type)
                 ->hasExtras();
             // Render it directly.
             return $this->pool->render->renderSingleChild($model);
