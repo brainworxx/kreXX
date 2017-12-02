@@ -179,9 +179,10 @@ abstract class AbstractRender implements RenderInterface
 
         if (empty($list)) {
             // Get the list.
+            $list = array_filter(glob(KREXX_DIR . 'resources/skins/*'), 'is_dir');
             // Now we need to filter it, we only want the names, not the full path.
-            foreach ($this->pool->fileService->glob(KREXX_DIR . 'resources/skins/*') as $file) {
-                $list[] = str_replace(KREXX_DIR . 'resources/skins/', '', $file->getFilename());
+            foreach ($list as &$path) {
+                $path = str_replace(KREXX_DIR . 'resources/skins/', '', $path);
             }
         }
 
