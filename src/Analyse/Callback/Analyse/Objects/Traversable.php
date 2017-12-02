@@ -86,13 +86,15 @@ class Traversable extends AbstractObjectAnalysis
                 );
                 $parameter = iterator_to_array($data);
         } catch (\Exception $e) {
-            // Do nothing.
+            //Restore the previous error handler, and return an empty string.
+            restore_error_handler();
+            return '';
         }
 
         // Reactivate whatever error handling we had previously.
         restore_error_handler();
 
-        if (isset($parameter)) {
+        if (is_array($parameter)) {
             // Special Array Access here, resulting in more complicated source
             // generation. So we tell the callback to to that.
             $multiline = true;

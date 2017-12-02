@@ -99,7 +99,9 @@ class DebugMethods extends AbstractObjectAnalysis
                         );
                         $result = $data->$funcName();
                     } catch (\Exception $e) {
-                        // Do nothing.
+                        // Restore the old error handler and move to the next method.
+                        restore_error_handler();
+                        continue;
                     }
 
                     // Reactivate whatever error handling we had previously.
@@ -123,7 +125,7 @@ class DebugMethods extends AbstractObjectAnalysis
                 }
             }
         }
-        
+
         return $output;
     }
 }
