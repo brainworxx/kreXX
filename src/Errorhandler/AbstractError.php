@@ -44,6 +44,11 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 abstract class AbstractError
 {
 
+    /**
+     * Translates an error into someting more human readable.
+     *
+     * @var array
+     */
     protected $errorTranslation = array(
         E_ERROR => array('Fatal', 'traceFatals'),
         E_WARNING => array('Warning', 'traceWarnings'),
@@ -61,8 +66,6 @@ abstract class AbstractError
         E_DEPRECATED => array('Deprecated warning', 'traceWarnings'),
         E_USER_DEPRECATED => array('User defined deprecated warning', 'traceWarnings'),
     );
-
-
 
     /**
      * Here we store all relevant data.
