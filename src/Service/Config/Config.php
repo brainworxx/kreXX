@@ -226,10 +226,7 @@ class Config extends Fallback
                 // We must not overwrite a disabled=true with local cookie settings!
                 // Otherwise it could get enabled locally, which might be a security
                 // issue.
-                if (($name === 'disabled' && $cookieSetting === 'false')) {
-                    // Do nothing.
-                    // We ignore this setting.
-                } else {
+                if (($name === 'disabled' && $cookieSetting === 'false') === false) {
                     $model->setValue($cookieSetting)->setSource('Local cookie settings');
                     $this->settings[$name] = $model;
                     return;
