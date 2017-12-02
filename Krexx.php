@@ -316,7 +316,7 @@ class Krexx
 
         // Wrong PHP version?
         if (version_compare(phpversion(), '7.0.0', '>=')) {
-            static::$pool->messages->addMessage('configErrorRegisterAutomatically2');
+            static::$pool->messages->addMessage('php7');
             // In case that there is no other kreXX output, we show the configuration
             // with the message.
             static::editSettings();
@@ -339,7 +339,7 @@ class Krexx
     public static function unregisterFatal()
     {
         static::createPool();
-        
+
         // Disabled?
         if (static::$pool->config->getSetting('disabled')) {
             return;
