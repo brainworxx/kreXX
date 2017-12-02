@@ -118,7 +118,7 @@ class Fatal extends AbstractError
                 // prevent an infinite loop.
                 AbstractController::$analysisInProgress = true;
                 $this->pool
-                    ->createClass('Brainworxx\\Krexx\\Controller\\errorController')
+                    ->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
                     ->errorAction($errorData);
             }
         }
