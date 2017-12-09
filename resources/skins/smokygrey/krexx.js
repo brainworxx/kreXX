@@ -688,7 +688,7 @@
 
         // We don't want to bubble the click any further.
         event.stop = true;
-        
+
         var codedisplay = element.nextElementSibling;
         var resultArray = [];
         var resultString = '';

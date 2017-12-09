@@ -85,25 +85,106 @@ class Krexx
      */
     public static function bootstrapKrexx()
     {
+        // There may or may not be an active autoloader, which may or may not
+        // be able to autolaod the krexx files. There amy or may not be an
+        // unwanted interaction with the rest of the system when registering
+        // another autoloader. This leaves us with loading every single file
+        // via include_once.
         define('KREXX_DIR', __DIR__ . DIRECTORY_SEPARATOR);
+        include_once KREXX_DIR . 'src/Analyse/Callback/AbstractCallback.php';
 
-        spl_autoload_register(
-            function ($className) {
-                static $krexxNamespace = 'Brainworxx\\Krexx';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/AbstractObjectAnalysis.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/Constants.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/DebugMethods.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/Getter.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/Methods.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/PrivateProperties.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/ProtectedProperties.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/PublicProperties.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/Traversable.php';
 
-                // If we are dealing with a none krexx class, do nothing.
-                if (strpos($className, $krexxNamespace) === false) {
-                    return;
-                }
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/BacktraceStep.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/ConfigSection.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Debug.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects.php';
 
-                require KREXX_DIR . 'src/' . str_replace(
-                    array($krexxNamespace, '\\'),
-                    array('', '/'),
-                    $className
-                ) . '.php';
-            },
-            false
-        );
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughArray.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughConfig.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughConstants.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughGetter.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughLargeArray.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughMethodAnalysis.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughMethods.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughProperties.php';
+
+        include_once KREXX_DIR . 'src/Analyse/Caller/AbstractCaller.php';
+        include_once KREXX_DIR . 'src/Analyse/Caller/CallerFinder.php';
+
+        include_once KREXX_DIR . 'src/Analyse/Code/Codegen.php';
+        include_once KREXX_DIR . 'src/Analyse/Code/Connectors.php';
+        include_once KREXX_DIR . 'src/Analyse/Code/Scope.php';
+
+        include_once KREXX_DIR . 'src/Analyse/Comment/AbstractComment.php';
+        include_once KREXX_DIR . 'src/Analyse/Comment/Functions.php';
+        include_once KREXX_DIR . 'src/Analyse/Comment/Methods.php';
+        include_once KREXX_DIR . 'src/Analyse/Comment/Properties.php';
+
+        include_once KREXX_DIR . 'src/Analyse/Routing/AbstractRouting.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Routing.php';
+
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/AbstractProcess.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessArray.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessBacktrace.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessBoolean.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessClosure.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessFloat.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessInteger.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessNull.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessObject.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessResource.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessString.php';
+
+        include_once KREXX_DIR . 'src/Analyse/AbstractModel.php';
+        include_once KREXX_DIR . 'src/Analyse/Model.php';
+
+        include_once KREXX_DIR . 'src/Controller/AbstractController.php';
+        include_once KREXX_DIR . 'src/Controller/BacktraceController.php';
+        include_once KREXX_DIR . 'src/Controller/DumpController.php';
+        include_once KREXX_DIR . 'src/Controller/EditSettingsController.php';
+        include_once KREXX_DIR . 'src/Controller/ErrorController.php';
+
+        include_once KREXX_DIR . 'src/Errorhandler/AbstractError.php';
+        include_once KREXX_DIR . 'src/Errorhandler/Fatal.php';
+
+        include_once KREXX_DIR . 'src/Service/Config/Fallback.php';
+        include_once KREXX_DIR . 'src/Service/Config/Config.php';
+        include_once KREXX_DIR . 'src/Service/Config/Model.php';
+        include_once KREXX_DIR . 'src/Service/Config/Security.php';
+
+        include_once KREXX_DIR . 'src/Service/Config/From/Cookie.php';
+        include_once KREXX_DIR . 'src/Service/Config/From/Ini.php';
+
+        include_once KREXX_DIR . 'src/Service/Factory/Factory.php';
+        include_once KREXX_DIR . 'src/Service/Factory/Pool.php';
+
+        include_once KREXX_DIR . 'src/Service/Flow/Emergency.php';
+        include_once KREXX_DIR . 'src/Service/Flow/Recursion.php';
+
+        include_once KREXX_DIR . 'src/Service/Misc/Encoding.php';
+        include_once KREXX_DIR . 'src/Service/Misc/File.php';
+        include_once KREXX_DIR . 'src/Service/Misc/Registry.php';
+
+        include_once KREXX_DIR . 'src/Service/Overwrites.php';
+
+        include_once KREXX_DIR . 'src/View/Output/AbstractOutput.php';
+        include_once KREXX_DIR . 'src/View/Output/Chunks.php';
+        include_once KREXX_DIR . 'src/View/Output/File.php';
+        include_once KREXX_DIR . 'src/View/Output/Shutdown.php';
+
+        include_once KREXX_DIR . 'src/View/RenderInterface.php';
+        include_once KREXX_DIR . 'src/View/AbstractRender.php';
+        include_once KREXX_DIR . 'src/View/Messages.php';
+        include_once KREXX_DIR . 'src/View/Render.php';
 
         if (!function_exists('krexx')) {
             /**
