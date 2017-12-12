@@ -305,5 +305,5 @@ class Fallback
      *
      * @var int
      */
-    public $arrayCountLimit = 100;
+    public $arrayCountLimit = 300;
 }
