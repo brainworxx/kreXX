@@ -81,7 +81,7 @@ class Messages
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $file = KREXX_DIR . 'resources' . DIRECTORY_SEPARATOR . 'language' . DIRECTORY_SEPARATOR . 'Help.ini';
+        $file = KREXX_DIR . 'resources/language/Help.ini';
         $this->helpArray = (array)parse_ini_string(
             $this->pool->fileService->getFileContents($file)
         );

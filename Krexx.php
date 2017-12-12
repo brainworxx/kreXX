@@ -90,7 +90,7 @@ class Krexx
         // unwanted interaction with the rest of the system when registering
         // another autoloader. This leaves us with loading every single file
         // via include_once.
-        define('KREXX_DIR', __DIR__ . DIRECTORY_SEPARATOR);
+        define('KREXX_DIR', __DIR__ . '/');
         include_once KREXX_DIR . 'src/Analyse/Callback/AbstractCallback.php';
 
         include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Objects/AbstractObjectAnalysis.php';
