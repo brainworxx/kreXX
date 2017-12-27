@@ -160,7 +160,7 @@ abstract class AbstractModel
         return $this;
     }
 
-        /**
+    /**
      * We simply add more info to our info json.
      * Leftover linebreaks will be removed.
      * If the value is empty, we will remove a possible previous entry to this key.
