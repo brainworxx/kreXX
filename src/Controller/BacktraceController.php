@@ -58,8 +58,7 @@ class BacktraceController extends AbstractController
         $this->pool->reset();
 
         // Find caller.
-        $caller = $this->callerFinder->findCaller();
-        $caller['type'] = 'Backtrace';
+        $caller = $this->callerFinder->findCaller('Backtrace', array());
 
         $this->pool->scope->setScope($caller['varname']);
 

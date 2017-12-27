@@ -68,7 +68,7 @@ class CallerFinder extends AbstractCaller
     /**
      * {@inheritdoc}
      */
-    public function findCaller()
+    public function findCaller($headline, $data)
     {
         $backtrace = debug_backtrace();
         $pattern = strtolower($this->pattern);
@@ -87,12 +87,15 @@ class CallerFinder extends AbstractCaller
             }
         }
 
+        $varname = $this->getVarName($caller['file'], $caller['line']);
+
         // We will not keep the whole backtrace im memory. We only return what we
         // actually need.
         return array(
             'file' => htmlspecialchars($this->pool->fileService->filterFilePath($caller['file'])),
             'line' => (int)$caller['line'],
-            'varname' => $this->getVarName($caller['file'], $caller['line']),
+            'varname' => $varname,
+            'type' => $this->getType($headline, $varname, $data),
         );
     }
 

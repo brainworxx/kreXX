@@ -60,10 +60,8 @@ class EditSettingsController extends AbstractController
         // themselves out.
         $this->pool->emergencyHandler->setDisable(true);
 
-
         // Find caller.
-        $caller = $this->callerFinder->findCaller();
-        $caller['type'] = 'Cookie Configuration';
+        $caller = $this->callerFinder->findCaller('Cookie Configuration', array());
         $this->pool->chunks->addMetadata($caller);
 
         // Render it.

@@ -65,34 +65,14 @@ class DumpController extends AbstractController
         $this->pool->reset();
 
         // Find caller.
-        $caller = $this->callerFinder->findCaller();
-
-        // Set the headline, if it's not set already.
-        if (empty($headline)) {
-            if (is_object($data)) {
-                $headline = get_class($data);
-            } else {
-                $headline = gettype($data);
-            }
-
-            // We are analysing stuff here.
-            $caller['type'] = 'Analysis';
-        } else {
-            // Caller type is most likely the timer.
-            $caller['type'] = $headline;
-        }
+        $caller = $this->callerFinder->findCaller($headline, $data);
 
         // We need to get the footer before the generating of the header,
         // because we need to display messages in the header from the configuration.
         $footer = $this->outputFooter($caller);
-        $this->pool->scope->setScope($caller['varname']);
 
-        // Enable code generation only if we were able to determine the varname.
-        if ($caller['varname'] !== '. . .') {
-            // We were able to determine the variable name and can generate some
-            // sourcecode.
-            $headline = $caller['varname'];
-        }
+        // We will only allow code generation, if we were able to determine the varname.
+        $this->pool->scope->setScope($caller['varname']);
 
         // Start the magic.
         $analysis = $this->pool->routing->analysisHub(
@@ -115,7 +95,7 @@ class DumpController extends AbstractController
         // additional info, in case we are logging to a file.
         $this->pool->chunks->addMetadata($caller);
 
-        $this->outputService->addChunkString($this->outputHeader($headline));
+        $this->outputService->addChunkString($this->outputHeader($caller['type']));
         $this->outputService->addChunkString($analysis);
         $this->outputService->addChunkString($footer);
 
