@@ -178,6 +178,16 @@ class ThroughProperties extends AbstractCallback
         return $value;
     }
 
+    /**
+     * Adding declaration keywords to our data in the additional field.
+     *
+     * @param \ReflectionProperty $refProperty
+     *   A reflection of the property we ara analysing.
+     * @param \ReflectionClass $ref
+     *   A reflection of the class we are analysing.
+     *
+     * @return string
+     */
     protected function getAdditionalData(\ReflectionProperty $refProperty, \ReflectionClass $ref)
     {
         // Now that we have the key and the value, we can analyse it.
