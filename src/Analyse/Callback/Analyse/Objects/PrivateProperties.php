@@ -58,7 +58,6 @@ class PrivateProperties extends AbstractObjectAnalysis
         /** @var \ReflectionClass $ref */
         $ref = $this->parameters['ref'];
         $reflectionClass = $ref;
-        $analysePrivate = $this->pool->config->getSetting('analysePrivate');
 
         // The main problem here is, that you only get the private properties of
         // the current class, but not the inherited private properties.
@@ -67,15 +66,7 @@ class PrivateProperties extends AbstractObjectAnalysis
         do {
             $refProps = array_merge($refProps, $reflectionClass->getProperties(\ReflectionProperty::IS_PRIVATE));
             // And now for the parent class.
-            // Inherited private properties are not accessible from inside
-            // the class. We will only dump them, if we are analysing private
-            // properties.
-            if ($analysePrivate) {
-                $reflectionClass = $reflectionClass->getParentClass();
-            } else {
-                // This should break the do while.
-                break;
-            }
+            $reflectionClass = $reflectionClass->getParentClass();
         } while (is_object($reflectionClass));
 
         if (empty($refProps)) {
