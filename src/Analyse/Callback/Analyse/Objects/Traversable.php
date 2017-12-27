@@ -122,7 +122,10 @@ class Traversable extends AbstractObjectAnalysis
                 ->setType('Foreach')
                 ->addParameter('data', $parameter)
                 ->addParameter('multiline', $multiline);
-            // This one is huge!
+
+            // Check, if we are handling a huge array. Huge arrays tend to result in a huge
+            // output, maybe even triggering a emergency break. t oavoid this, we give them
+            // a special callback.
             if (count($parameter) > $this->pool->config->arrayCountLimit) {
                 $model->injectCallback(
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray')
