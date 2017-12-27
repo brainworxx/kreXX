@@ -130,6 +130,12 @@ class Config extends Fallback
         $this->debugFuncList = explode(',', $this->getSetting('debugMethods'));
     }
 
+    /**
+     * Set the directory path, according to the overwrites for:
+     * - Chunk files
+     * - Log files
+     * - Configuration files
+     */
     protected function initDirectories()
     {
         // Set the chunks folder.
