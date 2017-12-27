@@ -162,7 +162,7 @@ abstract class AbstractController
      *
      * @param array $caller
      *   Where was kreXX initially invoked from.
-     * @param bool $isExpanded
+     * @param boolean $isExpanded
      *   Are we rendering an expanded footer?
      *   TRUE when we render the settings menu only.
      *

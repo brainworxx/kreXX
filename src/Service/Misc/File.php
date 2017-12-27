@@ -202,7 +202,7 @@ class File
      *
      * @param string $path
      *   The path to the file.
-     * @param bool $showError
+     * @param boolean $showError
      *   Do we need to display na error message?
      *
      * @return string

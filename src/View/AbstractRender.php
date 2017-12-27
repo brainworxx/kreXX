@@ -194,7 +194,7 @@ abstract class AbstractRender implements RenderInterface
      *
      * @param Model $model
      *   The model, which hosts all the data we need.
-     * @param bool $isExpanded
+     * @param boolean $isExpanded
      *   The only expanded nest is the settings menu, when we render only the
      *   settings menu.
      *

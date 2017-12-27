@@ -157,7 +157,7 @@ class Config extends Fallback
     /**
      * Setter for the enabling from sourcecode.
      *
-     * @param bool $value
+     * @param boolean $value
      *   Whether it it enabled, or not.
      */
     public function setDisabled($value)

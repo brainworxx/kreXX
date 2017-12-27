@@ -67,7 +67,7 @@ class Encoding
      *
      * @param string $data
      *   The data which needs to be sanitized.
-     * @param bool $code
+     * @param boolean $code
      *   Do we need to format the string as code?
      *
      * @return string

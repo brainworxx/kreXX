@@ -52,7 +52,7 @@ use Brainworxx\Krexx\Analyse\Model;
  *
  * @uses array data
  *   The array want to iterate.
- * @uses bool multiline
+ * @uses boolean multiline
  *   Do we need a multiline code generation?
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
