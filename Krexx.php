@@ -34,7 +34,6 @@
 
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
-use Brainworxx\Krexx\Service\Overwrites;
 
 // Include some files and set some internal values.
 \Krexx::bootstrapKrexx();
@@ -56,27 +55,7 @@ class Krexx
      */
     public static $pool;
 
-    /**
-     * Create the pool, but only if it is not alredy there.
-     *
-     * @internal
-     */
-    public static function createPool()
-    {
-        if (static::$pool !== null) {
-            // The ppol is there, do nothing.
-            return;
-        }
 
-        // Create a new pool where we store all our classes.
-        // We also need to check if we have an overwrite for the pool.
-        if (empty(Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'])) {
-            static::$pool = new Pool();
-        } else {
-            $classname = Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'];
-            static::$pool = new $classname();
-        }
-    }
 
     /**
      * Includes all needed files and sets some internal values.
@@ -222,7 +201,7 @@ class Krexx
      */
     public static function __callStatic($name, array $arguments)
     {
-        static::createPool();
+        Pool::createPool();
 
         // Do we gave a handle?
         if ($name === static::$pool->config->getDevHandler()) {
@@ -246,7 +225,7 @@ class Krexx
      */
     public static function timerMoment($string)
     {
-        static::createPool();
+        Pool::createPool();
 
         // Disabled?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
@@ -270,7 +249,7 @@ class Krexx
      */
     public static function timerEnd()
     {
-        static::createPool();
+        Pool::createPool();
 
         // Disabled ?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
@@ -297,7 +276,7 @@ class Krexx
      */
     public static function open($data = null)
     {
-        static::createPool();
+        Pool::createPool();
 
         // Disabled?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
@@ -325,7 +304,7 @@ class Krexx
      */
     public static function backtrace()
     {
-        static::createPool();
+        Pool::createPool();
 
         // Disabled?
         if (static::$pool->config->getSetting('disabled') || AbstractController::$analysisInProgress) {
@@ -349,7 +328,7 @@ class Krexx
      */
     public static function disable()
     {
-        static::createPool();
+        Pool::createPool();
 
         static::$pool->config->setDisabled(true);
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
@@ -367,7 +346,7 @@ class Krexx
      */
     public static function editSettings()
     {
-        static::createPool();
+        Pool::createPool();
 
         // Disabled?
         // We are ignoring local settings here.
@@ -390,7 +369,7 @@ class Krexx
      */
     public static function registerFatal()
     {
-        static::createPool();
+        Pool::createPool();
 
         // Disabled?
         if (static::$pool->config->getSetting('disabled')) {
@@ -421,7 +400,7 @@ class Krexx
      */
     public static function unregisterFatal()
     {
-        static::createPool();
+        Pool::createPool();
 
         // Disabled?
         if (static::$pool->config->getSetting('disabled')) {

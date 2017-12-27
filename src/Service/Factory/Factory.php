@@ -127,4 +127,26 @@ class Factory
     {
         return $_SERVER;
     }
+
+    /**
+     * Create the pool, but only if it is not alredy there.
+     *
+     * @internal
+     */
+    public static function createPool()
+    {
+        if (\Krexx::$pool !== null) {
+            // The ppol is there, do nothing.
+            return;
+        }
+
+        // Create a new pool where we store all our classes.
+        // We also need to check if we have an overwrite for the pool.
+        if (empty(Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'])) {
+            \Krexx::$pool = new Pool();
+            return;
+        }
+        $classname = Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'];
+        \Krexx::$pool = new $classname();
+    }
 }
