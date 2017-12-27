@@ -38,6 +38,9 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
  * Class Constants analysis.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
+ *
+ * @uses \ReflectionClass ref
+ *   A reflection of the class we are currently analysing.
  */
 class Constants extends AbstractObjectAnalysis
 {

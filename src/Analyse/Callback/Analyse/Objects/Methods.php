@@ -38,6 +38,9 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
  * Method analysis for objects.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
+ *
+ * @uses \ReflectionClass ref
+ *   A reflection of the class we are currently analysing.
  */
 class Methods extends AbstractObjectAnalysis
 {

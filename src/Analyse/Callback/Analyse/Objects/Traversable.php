@@ -40,6 +40,12 @@ use Brainworxx\Krexx\Analyse\Model;
  * Object traversable analysis.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
+ *
+ * @uses mixed data
+ *   The class we are currently analsysing.
+ * @uses string name
+ *   The variavble name or key in the parrent object / array where the current
+ *   class is stored.
  */
 class Traversable extends AbstractObjectAnalysis
 {

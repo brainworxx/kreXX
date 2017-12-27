@@ -41,6 +41,11 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
  * Poll all configured debug methods of a class.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
+ *
+ * @uses mixed data
+ *   The class we are currently analsysing.
+ * @uses \ReflectionClass ref
+ *   A reflection of the class we are currently analysing.
  */
 class DebugMethods extends AbstractObjectAnalysis
 {
