@@ -182,9 +182,10 @@ class Krexx
             {
                 if (empty($handle)) {
                     \Krexx::open($data);
-                } else {
-                    \Krexx::$handle($data);
+                    return;
                 }
+
+                \Krexx::$handle($data);
             }
         }
     }
@@ -208,9 +209,10 @@ class Krexx
             // We do a standard-open.
             if (isset($arguments[0])) {
                 static::open($arguments[0]);
-            } else {
-                static::open();
+                return;
             }
+
+            static::open();
         }
     }
 
