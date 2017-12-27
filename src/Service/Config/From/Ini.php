@@ -108,25 +108,20 @@ class Ini extends Fallback
         if (empty($filevalue)) {
             // Fallback to factory settings.
             if (isset($this->feConfigFallback[$parameterName])) {
-                $type = $this->feConfigFallback[$parameterName]['type'];
-                $editable = $this->feConfigFallback[$parameterName]['editable'];
-            } else {
-                // Unknown parameter.
-                $type = 'None';
-                $editable = 'false';
+                return array(
+                    ($this->feConfigFallback[$parameterName]['editable'] === 'true'),
+                    $this->feConfigFallback[$parameterName]['type']
+                );
             }
-        } else {
-            $type = $filevalue['type'];
-            $editable = $filevalue['editable'];
+            // Unknown parameter and nothing in the fallback!
+            // This should never happan, btw.
+            return array(false, 'None');
         }
 
-        if ($editable === 'true') {
-            $editable = true;
-        } else {
-            $editable = false;
-        }
-
-        return array($editable, $type);
+        return array(
+            ($filevalue['editable'] === 'true'),
+            $filevalue['type']
+        );
     }
 
     /**
