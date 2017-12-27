@@ -84,9 +84,9 @@ class BacktraceStep extends AbstractCallback
                     ->setNormal($stepData['file'])
                     ->setType('string ' . strlen($stepData['file']))
             );
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -158,9 +158,9 @@ class BacktraceStep extends AbstractCallback
                     ->setNormal($stepData['function'])
                     ->setType('string ' . strlen($stepData['function']))
             );
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -181,9 +181,9 @@ class BacktraceStep extends AbstractCallback
                         ->setData($stepData['object'])
                         ->setName('Calling object')
                 );
-        } else {
-            return '';
         }
+            
+        return '';
     }
 
     /**
@@ -204,9 +204,9 @@ class BacktraceStep extends AbstractCallback
                     ->setNormal($stepData['type'])
                     ->setType('string ' . strlen($stepData['type']))
             );
-        } else {
-            return '';
         }
+            
+        return '';
     }
 
     /**
@@ -227,8 +227,8 @@ class BacktraceStep extends AbstractCallback
                             ->setData($stepData['args'])
                             ->setName('Arguments from the call')
                     );
-        } else {
-            return '';
         }
+
+        return '';
     }
 }
