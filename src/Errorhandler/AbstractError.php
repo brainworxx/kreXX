@@ -125,7 +125,7 @@ abstract class AbstractError
      */
     protected function translateErrorType($errorint)
     {
-        if (isset($this->errorTranslation[$errorint])) {
+        if (isset($this->errorTranslation[$errorint]) === true) {
             return $this->errorTranslation[$errorint];
         }
 

@@ -84,7 +84,7 @@ class ThroughProperties extends AbstractCallback
 
         foreach ($this->parameters['data'] as $refProperty) {
             // Check memory and runtime.
-            if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
+            if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
                 return '';
             }
 
@@ -101,7 +101,7 @@ class ThroughProperties extends AbstractCallback
             // Every other additional string requires a special connector,
             // so we do this here.
             $connectorType = Connectors::NORMAL_PROPERTY;
-            if ($refProperty->isStatic()) {
+            if ($refProperty->isStatic() === true) {
                 $additional .= 'static ';
                 $connectorType = Connectors::STATIC_PROPERTY;
                 // There is always a $ in front of a static property.
@@ -109,7 +109,7 @@ class ThroughProperties extends AbstractCallback
             }
 
 
-            if (isset($refProperty->isUndeclared)) {
+            if (isset($refProperty->isUndeclared) === true) {
                 // The property 'isUndeclared' is not a part of the reflectionProperty.
                 // @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
                 $additional .= 'dynamic property ';
@@ -194,11 +194,11 @@ class ThroughProperties extends AbstractCallback
         // Stitch together our additional info about the data:
         // public access, protected access, private access, static declaration.
         $additional = '';
-        if ($refProperty->isProtected()) {
+        if ($refProperty->isProtected() === true) {
             $additional .= 'protected ';
-        } elseif ($refProperty->isPublic()) {
+        } elseif ($refProperty->isPublic() === true) {
             $additional .= 'public ';
-        } elseif ($refProperty->isPrivate()) {
+        } elseif ($refProperty->isPrivate() === true) {
             $additional .= 'private ';
         }
 

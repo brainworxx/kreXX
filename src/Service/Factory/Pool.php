@@ -191,7 +191,7 @@ class Pool extends Factory
         // Check chunk folder is writable.
         // If not, give feedback!
         $chunkFolder = $this->config->getChunkDir();
-        if (!is_writeable($chunkFolder)) {
+        if (is_writeable($chunkFolder) === false) {
             $chunkFolder = $this->fileService->filterFilePath($chunkFolder);
             $this->messages->addMessage('chunksNotWritable', array($chunkFolder));
             // We can work without chunks, but this will require much more memory!
@@ -201,7 +201,7 @@ class Pool extends Factory
         // Check if the log folder is writable.
         // If not, give feedback!
         $logFolder = $this->config->getLogDir();
-        if (!is_writeable($logFolder)) {
+        if (is_writeable($logFolder) === false) {
             $logFolder = $this->fileService->filterFilePath($logFolder);
             $this->messages->addMessage('logNotWritable', array($logFolder));
             // Tell the chunk output that we have no write access in the logging

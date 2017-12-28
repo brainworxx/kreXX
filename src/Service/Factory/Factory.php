@@ -67,7 +67,7 @@ class Factory
     public function createClass($classname)
     {
         // Check for possible overwrite.
-        if (isset($this->rewrite[$classname])) {
+        if (isset($this->rewrite[$classname]) === true) {
             $classname = $this->rewrite[$classname];
         }
 
@@ -110,7 +110,7 @@ class Factory
      */
     public function &getGlobals($what)
     {
-        if (empty($what)) {
+        if (empty($what) === true) {
             return $GLOBALS;
         }
 
@@ -142,7 +142,7 @@ class Factory
 
         // Create a new pool where we store all our classes.
         // We also need to check if we have an overwrite for the pool.
-        if (empty(Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool'])) {
+        if (empty(Overwrites::$classes['Brainworxx\\Krexx\\Service\\Factory\\Pool']) === true) {
             \Krexx::$pool = new Pool();
             return;
         }

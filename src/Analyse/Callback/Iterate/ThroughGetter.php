@@ -89,7 +89,7 @@ class ThroughGetter extends AbstractCallback
                 ->addToJson('method comment', $comments);
 
             // We need to decide if we are handling static getters.
-            if ($reflectionMethod->isStatic()) {
+            if ($reflectionMethod->isStatic() === true) {
                 $model->setConnectorType(Connectors::STATIC_METHOD);
             } else {
                 $model->setConnectorType(Connectors::METHOD);
@@ -117,7 +117,7 @@ class ThroughGetter extends AbstractCallback
     {
         $refProp = $this->getReflectionProperty($this->parameters['ref'], $reflectionMethod);
 
-        if (empty($refProp)) {
+        if (empty($refProp) === true) {
             // Found nothing  :-(
             // We literally have no info. We need to tell the user.
             $noInfoMessage = 'unknown';
@@ -178,49 +178,49 @@ class ThroughGetter extends AbstractCallback
 
         // myProperty
         // Most should be handled here.
-        if ($classReflection->hasProperty($propertyName)) {
+        if ($classReflection->hasProperty($propertyName) === true) {
             return $classReflection->getProperty($propertyName);
         }
 
         // _myProperty
         $testName = '_' . $propertyName;
-        if ($classReflection->hasProperty($testName)) {
+        if ($classReflection->hasProperty($testName) === true) {
             return $classReflection->getProperty($testName);
         }
 
         // MyProperty
         $testName = ucfirst($propertyName);
-        if ($classReflection->hasProperty($testName)) {
+        if ($classReflection->hasProperty($testName) === true) {
             return $classReflection->getProperty($testName);
         }
 
         // _MyProperty
         $testName = '_' . ucfirst($propertyName);
-        if ($classReflection->hasProperty($testName)) {
+        if ($classReflection->hasProperty($testName) === true) {
             return $classReflection->getProperty($testName);
         }
 
         // myproperty
         $testName = strtolower($propertyName);
-        if ($classReflection->hasProperty($testName)) {
+        if ($classReflection->hasProperty($testName) === true) {
             return $classReflection->getProperty($testName);
         }
 
         // _myproperty
         $testName = '_' . strtolower($propertyName);
-        if ($classReflection->hasProperty($testName)) {
+        if ($classReflection->hasProperty($testName) === true) {
             return $classReflection->getProperty($testName);
         }
 
         // my_property
         $testName = $this->convertToSnakeCase($propertyName);
-        if ($classReflection->hasProperty($testName)) {
+        if ($classReflection->hasProperty($testName) === true) {
             return $classReflection->getProperty($testName);
         }
 
         // _my_property
         $testName = '_' . $this->convertToSnakeCase($propertyName);
-        if ($classReflection->hasProperty($testName)) {
+        if ($classReflection->hasProperty($testName) === true) {
             return $classReflection->getProperty($testName);
         }
 
@@ -281,13 +281,13 @@ class ThroughGetter extends AbstractCallback
         // Later on, we may also try to parse deeper for stuff.
         foreach ($this->findIt(array('return $this->', ';'), $sourcecode) as $propertyName) {
             // Check if this is a property and return the first we find.
-            if ($classReflection->hasProperty($propertyName)) {
+            if ($classReflection->hasProperty($propertyName) === true) {
                 return $classReflection->getProperty($propertyName);
             }
 
             // Check if this is a method and go deeper!
             $methodName = rtrim($propertyName, '()');
-            if ($classReflection->hasMethod($methodName)) {
+            if ($classReflection->hasMethod($methodName) === true) {
                 // We need to be careful not to goo too deep, we might end up
                 // in a loop.
                 ++$this->deep;

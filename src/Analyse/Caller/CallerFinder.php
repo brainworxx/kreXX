@@ -113,7 +113,7 @@ class CallerFinder extends AbstractCaller
     protected function getVarName($file, $line)
     {
         // Retrieve the call from the sourcecode file.
-        if (!$this->pool->fileService->fileIsReadable($file)) {
+        if ($this->pool->fileService->fileIsReadable($file) === false) {
             return '. . .';
         }
 
@@ -138,7 +138,7 @@ class CallerFinder extends AbstractCaller
                 // This little baby tries to resolve everything inside the
                 // brackets of the kreXX call.
                 preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', reset($possibleCommands), $name);
-                if (isset($name[1])) {
+                if (isset($name[1]) === true) {
                     $varname = $this->pool->encodingService->encodeString(trim($name[1], " \t\n\r\0\x0B'\""));
                     break;
                 }
@@ -146,7 +146,7 @@ class CallerFinder extends AbstractCaller
         }
 
         // Check if we have a value.
-        if (empty($varname)) {
+        if (empty($varname) === true) {
             $varname = '. . .';
         }
 

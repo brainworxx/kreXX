@@ -59,7 +59,8 @@ class Traversable extends AbstractObjectAnalysis
     {
         // Check nesting level, memory and runtime.
         $this->pool->emergencyHandler->upOneNestingLevel();
-        if ($this->pool->emergencyHandler->checkNesting() || $this->pool->emergencyHandler->checkEmergencyBreak()) {
+        if ($this->pool->emergencyHandler->checkNesting() === true ||
+        $this->pool->emergencyHandler->checkEmergencyBreak() === true) {
             // We will not be doing this one, but we need to get down with our
             // nesting level again.
             $this->pool->emergencyHandler->downOneNestingLevel();
@@ -100,7 +101,7 @@ class Traversable extends AbstractObjectAnalysis
         // Reactivate whatever error handling we had previously.
         restore_error_handler();
 
-        if (is_array($parameter)) {
+        if (is_array($parameter) === true) {
             // Special Array Access here, resulting in more complicated source
             // generation. So we tell the callback to to that.
             $multiline = true;

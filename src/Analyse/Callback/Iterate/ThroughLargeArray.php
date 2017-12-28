@@ -86,7 +86,7 @@ class ThroughLargeArray extends AbstractCallback
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model');
 
             // Are we dealing with multiline code generation?
-            if ($multiline) {
+            if ($multiline === true) {
                 // Here we tell the Codegen service that we need some
                 // special handling.
                 $model->setMultiLineCodeGen(Codegen::ITERATOR_TO_ARRAY);
@@ -112,7 +112,7 @@ class ThroughLargeArray extends AbstractCallback
      */
     protected function handleKey($key, Model $model)
     {
-        if (is_string($key)) {
+        if (is_string($key) === true) {
             $model->setName($this->pool->encodingService->encodeString($key))
                 ->setConnectorType(Connectors::ASSOCIATIVE_ARRAY);
 
@@ -134,7 +134,7 @@ class ThroughLargeArray extends AbstractCallback
      */
     protected function handleValue($value, Model $model)
     {
-        if (is_object($value)) {
+        if (is_object($value) === true) {
             // We will not go too deep here, and say only what it is.
             $model->setType('simplified class analysis')
                 ->setNormal(get_class($value));
@@ -142,7 +142,7 @@ class ThroughLargeArray extends AbstractCallback
             return $this->pool->render->renderSingleChild($model);
         }
 
-        if (is_array($value)) {
+        if (is_array($value) === true) {
             // Adding another array to the output may be as bad as a
             // complete object analysis.
             $model->setType('simplified array analysis')

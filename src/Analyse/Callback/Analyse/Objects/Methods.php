@@ -63,7 +63,7 @@ class Methods extends AbstractObjectAnalysis
             $this->pool->scope->isInScope();
         $domId = $this->generateDomIdFromClassname($ref->getName(), $doProtected, $doPrivate);
 
-        if ($this->pool->recursionHandler->isInMetaHive($domId)) {
+        if ($this->pool->recursionHandler->isInMetaHive($domId) === true) {
             // We have been here before.
             // We skip this one, and leave it to the js recursion handler!
             return $this->pool->render->renderRecursion(
@@ -103,17 +103,17 @@ class Methods extends AbstractObjectAnalysis
         $private = array();
         $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        if ($doProtected) {
+        if ($doProtected === true) {
             $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
         }
 
-        if ($doPrivate) {
+        if ($doPrivate === true) {
             $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
         }
 
         // Is there anything to analyse?
         $methods = array_merge($public, $protected, $private);
-        if (empty($methods)) {
+        if (empty($methods) === true) {
             return '';
         }
 
@@ -152,11 +152,11 @@ class Methods extends AbstractObjectAnalysis
     protected function generateDomIdFromClassname($data, $doProtected, $doPrivate)
     {
         $string = 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_m_';
-        if ($doProtected) {
+        if ($doProtected === true) {
             $string .= 'pro_';
         }
 
-        if ($doPrivate) {
+        if ($doPrivate === true) {
             $string .= 'pri_';
         }
 

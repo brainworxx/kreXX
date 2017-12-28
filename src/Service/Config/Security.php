@@ -82,7 +82,7 @@ class Security extends Fallback
     protected function evalDevHandle($value, $name)
     {
         $result = preg_match('/[^a-zA-Z]/', $value) === 0;
-        if (!$result) {
+        if ($result === false) {
             $this->pool->messages->addMessage('configError' . ucfirst($name));
         }
 
@@ -105,7 +105,7 @@ class Security extends Fallback
         $result = $this->pool->fileService->fileIsReadable(
             KREXX_DIR . 'resources/skins/' . $value . '/header.html'
         );
-        if (!$result) {
+        if ($result === false) {
             $this->pool->messages->addMessage('configError' . ucfirst($name));
         }
 
@@ -126,7 +126,7 @@ class Security extends Fallback
     protected function evalDestination($value, $name)
     {
         $result = ($value === 'browser' || $value === 'file');
-        if (!$result) {
+        if ($result === false) {
             $this->pool->messages->addMessage('configError' . ucfirst($name));
         }
 
@@ -147,7 +147,7 @@ class Security extends Fallback
     protected function evalIpRange($value, $name)
     {
         $result = empty($value);
-        if ($result) {
+        if ($result === true) {
             $this->pool->messages->addMessage('configError' . ucfirst($name));
         }
 
@@ -172,7 +172,7 @@ class Security extends Fallback
     protected function evalMaxRuntime($value, $name, $group)
     {
         // Check for integer first.
-        if (!$this->evalInt($value, $name, $group)) {
+        if ($this->evalInt($value, $name, $group) === false) {
             return false;
         }
 
@@ -213,7 +213,7 @@ class Security extends Fallback
     protected function evalBool($value, $name, $group)
     {
         $result = ($value === 'true' || $value === 'false');
-        if (!$result) {
+        if ($result === false) {
             $this->pool->messages->addMessage('configErrorBool', array($group, $name));
         }
 
@@ -239,7 +239,7 @@ class Security extends Fallback
     protected function evalInt($value, $name, $group)
     {
         $result = ((int) $value) > 0;
-        if (!$result) {
+        if ($result === false) {
             $this->pool->messages->addMessage('configErrorInt', array($group, $name));
         }
 

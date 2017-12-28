@@ -98,7 +98,7 @@ abstract class AbstractComment
      */
     protected function prettifyComment($comment)
     {
-        if (empty($comment)) {
+        if (empty($comment) === true) {
             return '';
         }
 

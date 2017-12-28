@@ -57,7 +57,7 @@ class DumpController extends AbstractController
      */
     public function dumpAction($data, $headline = '')
     {
-        if ($this->pool->emergencyHandler->checkMaxCall()) {
+        if ($this->pool->emergencyHandler->checkMaxCall() === true) {
             // Called too often, we might get into trouble here!
             return $this;
         }
@@ -87,7 +87,7 @@ class DumpController extends AbstractController
 
         // Now that our analysis is done, we must check if there was an emergency
         // break.
-        if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
+        if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
             return $this;
         }
 
@@ -115,7 +115,7 @@ class DumpController extends AbstractController
     public function timerAction($string)
     {
         // Did we use this one before?
-        if (isset(static::$counterCache[$string])) {
+        if (isset(static::$counterCache[$string]) === true) {
             // Add another to the counter.
             ++static::$counterCache[$string];
             static::$timekeeping['[' . static::$counterCache[$string] . ']' . $string] = microtime(true);

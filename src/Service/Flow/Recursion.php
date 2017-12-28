@@ -133,14 +133,14 @@ class Recursion
     public function isInHive($bee)
     {
         // Check objects.
-        if (is_object($bee)) {
+        if (is_object($bee) === true) {
             return $this->recursionHive->contains($bee);
         }
 
         // Check arrays (only the $GLOBAL array may apply).
-        if (isset($bee[$this->recursionMarker])) {
+        if (isset($bee[$this->recursionMarker]) === true) {
             // We render the $GLOBALS only once.
-            if ($this->globalsWereRendered) {
+            if ($this->globalsWereRendered === true) {
                 return true;
             }
 

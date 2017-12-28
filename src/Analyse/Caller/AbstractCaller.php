@@ -136,8 +136,8 @@ abstract class AbstractCaller
      */
     protected function getType($headline, $varname, $data)
     {
-        if (empty($headline)) {
-            if (is_object($data)) {
+        if (empty($headline) === true) {
+            if (is_object($data) === true) {
                 $type = get_class($data);
             } else {
                 $type = gettype($data);

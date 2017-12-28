@@ -73,7 +73,7 @@ class File
         $this->pool = $pool;
         $server = $pool->getServer();
         $this->docRoot = trim(realpath($server['DOCUMENT_ROOT']), DIRECTORY_SEPARATOR);
-        if (empty($this->docRoot)) {
+        if (empty($this->docRoot) === true) {
             $this->docRoot = false;
         }
     }
@@ -189,13 +189,13 @@ class File
     {
         static $filecache = array();
 
-        if (isset($filecache[$filename])) {
+        if (isset($filecache[$filename]) === true) {
             return $filecache[$filename];
         }
 
         // Using \SplFixedArray to save some memory, as it can get
         // quire huge, depending on your system. 4mb is nothing here.
-        if ($this->fileIsReadable($filename)) {
+        if ($this->fileIsReadable($filename) === true) {
             return $filecache[$filename] = \SplFixedArray::fromArray(file($filename));
         }
         // Not readable!
@@ -215,9 +215,11 @@ class File
      */
     public function getFileContents($path, $showError = true)
     {
-        if ($this->fileIsReadable($path) === false && $showError) {
-            // This file was not readable! We need to tell the user!
-            $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
+        if ($this->fileIsReadable($path) === false) {
+            if ($showError === true) {
+                // This file was not readable! We need to tell the user!
+                $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
+            }
             // Return empty string.
             return '';
         }
@@ -248,7 +250,7 @@ class File
      */
     public function putFileContents($path, $string)
     {
-        if ($this->fileIsReadable($path)) {
+        if ($this->fileIsReadable($path) === true) {
             // Existing file. Most likely a html log file.
             file_put_contents($path, $string, FILE_APPEND);
             return;
@@ -267,7 +269,7 @@ class File
     public function deleteFile($filename)
     {
         // Check if it is an actual file and if it is writable.
-        if (is_file($filename)) {
+        if (is_file($filename) === true) {
             set_error_handler(
                 function () {
                 /* do nothing */
@@ -275,7 +277,7 @@ class File
             );
             // Make sure it is unlinkable.
             chmod($filename, 0777);
-            if (unlink($filename)) {
+            if (unlink($filename) === true) {
                 restore_error_handler();
                 return;
             }
@@ -328,7 +330,7 @@ class File
     public function fileIsReadable($filePath)
     {
         // Return the cache, if we have any.
-        if (isset(static::$isReadableCache[$filePath])) {
+        if (isset(static::$isReadableCache[$filePath]) === true) {
             return static::$isReadableCache[$filePath];
         }
 

@@ -113,7 +113,7 @@ class Config extends Fallback
 
         // We may need to change the disabling again, in case we are in cli
         // or ajax mode and have no fileoutput.
-        if ($this->isRequestAjaxOrCli() &&
+        if ($this->isRequestAjaxOrCli() === true &&
             $this->getSetting('destination') !== 'file'
         ) {
             // No kreXX for you!
@@ -122,7 +122,7 @@ class Config extends Fallback
 
         // Now that our settings are in place, we need to check the
         // ip to decide if we need to deactivate kreXX.
-        if (!$this->isAllowedIp($this->getSetting('iprange'))) {
+        if ($this->isAllowedIp($this->getSetting('iprange')) === false) {
             // No kreXX for you!
             $this->setDisabled(true);
         }
@@ -139,21 +139,21 @@ class Config extends Fallback
     protected function initDirectories()
     {
         // Set the chunks folder.
-        if (empty(Overwrites::$directories['chunks'])) {
+        if (empty(Overwrites::$directories['chunks']) === true) {
             $this->directories['chunks'] = KREXX_DIR . 'chunks/' ;
         } else {
             $this->directories['chunks'] = Overwrites::$directories['chunks'] . '/';
         }
 
         // Set the log folder.
-        if (empty(Overwrites::$directories['log'])) {
+        if (empty(Overwrites::$directories['log']) === true) {
             $this->directories['log'] = KREXX_DIR . 'log' . '/';
         } else {
             $this->directories['log'] = Overwrites::$directories['log'] . '/';
         }
 
         // Set the configuration file path.
-        if (empty(Overwrites::$directories['config'])) {
+        if (empty(Overwrites::$directories['config']) === true) {
             $this->directories['config'] = KREXX_DIR . 'config/Krexx.ini';
         } else {
             $this->directories['config'] = Overwrites::$directories['config'] . '/Krexx.ini';
@@ -241,7 +241,7 @@ class Config extends Fallback
 
         // Do we have a value in the ini?
         $iniSettings = $this->iniConfig->getConfigFromFile($section, $name);
-        if (isset($iniSettings)) {
+        if (isset($iniSettings) === true) {
             $model->setValue($iniSettings)->setSource('Krexx.ini settings');
             $this->settings[$name] = $model;
             return;
@@ -262,9 +262,9 @@ class Config extends Fallback
     {
         $server = $this->pool->getServer();
 
-        if (isset($server['HTTP_X_REQUESTED_WITH']) &&
+        if (isset($server['HTTP_X_REQUESTED_WITH']) === true &&
             strtolower($server['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' &&
-            $this->getSetting('detectAjax')
+            $this->getSetting('detectAjax') === true
         ) {
             // Appending stuff after a ajax request will most likely
             // cause a js error. But there are moments when you actually
@@ -321,14 +321,14 @@ class Config extends Fallback
     {
         $server = $this->pool->getServer();
 
-        if (empty($server['REMOTE_ADDR'])) {
+        if (empty($server['REMOTE_ADDR']) === true) {
             $remote = '';
         } else {
             $remote = $server['REMOTE_ADDR'];
         }
 
         $whitelist = explode(',', $whitelist);
-        if (php_sapi_name() === 'cli' || in_array($remote, $whitelist)) {
+        if (php_sapi_name() === 'cli' || in_array($remote, $whitelist) === true) {
             // Either the IP is matched, or we are in CLI
             return true;
         }
@@ -361,7 +361,7 @@ class Config extends Fallback
     {
         // Check if the class itself is blacklisted.
         foreach ($this->classBlacklist as $classname) {
-            if (is_a($data, $classname)) {
+            if (is_a($data, $classname) === true) {
                 // No debug methods for you.
                 return false;
             }
@@ -369,7 +369,7 @@ class Config extends Fallback
 
         // Check for a class / method combination.
         foreach ($this->methodBlacklist as $classname => $methodList) {
-            if (is_a($data, $classname) && in_array($call, $methodList)) {
+            if (is_a($data, $classname) === true && in_array($call, $methodList) === true) {
                 // We have a winner, this one is blacklisted!
                 return false;
             }

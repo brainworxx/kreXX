@@ -49,7 +49,7 @@ class EditSettingsController extends AbstractController
      */
     public function editSettingsAction()
     {
-        if ($this->pool->emergencyHandler->checkMaxCall()) {
+        if ($this->pool->emergencyHandler->checkMaxCall() === true) {
             // Called too often, we might get into trouble here!
             return $this;
         }

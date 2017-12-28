@@ -57,7 +57,7 @@ class ProtectedProperties extends AbstractObjectAnalysis
         /** @var \ReflectionClass $ref */
         $ref = $this->parameters['ref'];
         $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
-        if (empty($refProps)) {
+        if (empty($refProps) === true) {
             return '';
         }
         

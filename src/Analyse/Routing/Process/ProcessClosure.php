@@ -78,7 +78,7 @@ class ProcessClosure extends AbstractProcess
 
         // Adding the namespace, but only if we have one.
         $namespace = $ref->getNamespaceName();
-        if (!empty($namespace)) {
+        if (empty($namespace) === false) {
             $result['namespace'] = $namespace;
         }
 

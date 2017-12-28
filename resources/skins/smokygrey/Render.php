@@ -86,7 +86,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         // something to generate.
         $gencode = $this->pool->codegenHandler->generateSource($model);
 
-        if ($gencode === ';stop;' || empty($gencode)) {
+        if ($gencode === ';stop;' || empty($gencode) === true) {
             // Remove the button marker, because here is nothing to add.
             $sourcebutton = '';
         } else {
@@ -212,7 +212,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch
         // to the config as the current payload.
-        if ($configOnly) {
+        if ($configOnly === true) {
             $template = str_replace(
                 '{kconfiguration-classes}',
                 '',

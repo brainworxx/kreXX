@@ -68,7 +68,7 @@ class ErrorController extends AbstractController
             ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessBacktrace')
             ->process($errorData['backtrace']);
 
-        if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
+        if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
             return $this;
         }
 
@@ -81,7 +81,7 @@ class ErrorController extends AbstractController
         $this->pool->chunks->detectEncoding($backtrace);
 
         // Get the header.
-        if (static::$headerSend) {
+        if (static::$headerSend === true) {
             $header = $this->pool->render->renderFatalHeader('', '<!DOCTYPE html>');
         } else {
             $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs(), '<!DOCTYPE html>');
@@ -137,7 +137,7 @@ class ErrorController extends AbstractController
 
         $this->pool->reset();
         // Do we need another shutdown handler?
-        if (!is_object($this->krexxFatal)) {
+        if (is_object($this->krexxFatal) === false) {
             $this->krexxFatal = $this->pool->createClass('Brainworxx\\Krexx\\Errorhandler\\Fatal');
             declare(ticks = 1);
             register_shutdown_function(

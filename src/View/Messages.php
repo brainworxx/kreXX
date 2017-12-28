@@ -165,7 +165,7 @@ class Messages
     public function getHelp($key, array $args = array())
     {
         // Check if we can get a value, at all.
-        if (empty($this->helpArray[$key])) {
+        if (empty($this->helpArray[$key]) === true) {
             return '';
         }
 

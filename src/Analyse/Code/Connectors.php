@@ -194,7 +194,7 @@ class Connectors
      */
     public function getConnector1()
     {
-        if (empty($this->customConnector1)) {
+        if (empty($this->customConnector1) === true) {
             return $this->connectorArray[$this->type][0];
         }
 
@@ -214,7 +214,7 @@ class Connectors
     {
         // Methods always have their parameters.
         if ($this->type === static::METHOD || $this->type === static::STATIC_METHOD) {
-            if (empty($this->params)) {
+            if (empty($this->params) === true) {
                 // Remove the params marker when we have nothing to show.
                 return  str_replace('@param@', '', $this->connectorArray[$this->type][1]);
             }

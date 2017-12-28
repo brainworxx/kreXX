@@ -169,7 +169,7 @@ class Emergency
      */
     public function checkEmergencyBreak()
     {
-        if ($this->disabled) {
+        if ($this->disabled === true) {
             // Tell them, everything is OK!
             return false;
         }
@@ -279,7 +279,7 @@ class Emergency
      */
     public function resetTimer()
     {
-        if (empty($this->timer)) {
+        if (empty($this->timer) === true) {
             $this->timer = time() + $this->maxRuntime;
         }
     }

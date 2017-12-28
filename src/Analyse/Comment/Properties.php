@@ -54,7 +54,7 @@ class Properties extends AbstractComment
         static $cache = array();
         /** @var \ReflectionProperty $reflectionProperty */
         $cachingKey = $reflectionProperty->getDeclaringClass()->getName() . '::' . $reflectionProperty->getName();
-        if (isset($cache[$cachingKey])) {
+        if (isset($cache[$cachingKey]) === true) {
             return $cache[$cachingKey];
         }
 

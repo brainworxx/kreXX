@@ -60,7 +60,7 @@ class Getter extends AbstractObjectAnalysis
         // Get all public methods.
         $methodList = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        if ($this->pool->scope->isInScope()) {
+        if ($this->pool->scope->isInScope() === true) {
             // Looks like we also need the protected and private methods.
             $methodList = array_merge(
                 $methodList,
@@ -68,7 +68,7 @@ class Getter extends AbstractObjectAnalysis
             );
         }
 
-        if (empty($methodList)) {
+        if (empty($methodList) === true) {
             // There are no getter methods in here.
             return '';
         }
@@ -83,7 +83,7 @@ class Getter extends AbstractObjectAnalysis
             }
         }
 
-        if (empty($methodList)) {
+        if (empty($methodList) === true) {
             // There are no getter methods in here.
             return '';
         }

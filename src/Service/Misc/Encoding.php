@@ -81,7 +81,7 @@ class Encoding
         }
         
         // Initialize the encoding configuration.
-        if ($code) {
+        if ($code === true) {
             // We encoding @, because we need them for our chunks.
             // The { are needed in the marker of the skin.
             // We also replace tabs with two nbsp's.
@@ -107,7 +107,7 @@ class Encoding
 
         // Check if encoding was successful.
         // 99.99% of the time, the encoding works.
-        if (empty($result)) {
+        if (empty($result) === true) {
             // Here we have another SPOF. When the string is large enough
             // we will run out of memory!
             // @see https://sourceforge.net/p/krexx/bugs/21/

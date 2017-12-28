@@ -105,9 +105,9 @@ class Ini extends Fallback
         $filevalue = $this->getFeConfigFromFile($parameterName);
 
         // Do we have a value?
-        if (empty($filevalue)) {
+        if (empty($filevalue) === true) {
             // Fallback to factory settings.
-            if (isset($this->feConfigFallback[$parameterName])) {
+            if (isset($this->feConfigFallback[$parameterName]) === true) {
                 return array(
                     ($this->feConfigFallback[$parameterName]['editable'] === 'true'),
                     $this->feConfigFallback[$parameterName]['type']
@@ -138,7 +138,7 @@ class Ini extends Fallback
         // Get the human readable stuff from the ini file.
         $value = $this->getConfigFromFile('feEditing', $parameterName);
 
-        if (empty($value)) {
+        if (empty($value) === true) {
             // Sorry, no value stored.
             return null;
         }
@@ -190,8 +190,8 @@ class Ini extends Fallback
     {
         // Do we have a value in the ini?
         // Does it validate?
-        if (isset($this->iniSettings[$group][$name]) &&
-            $this->security->evaluateSetting($group, $name, $this->iniSettings[$group][$name])
+        if (isset($this->iniSettings[$group][$name]) === true &&
+            $this->security->evaluateSetting($group, $name, $this->iniSettings[$group][$name]) === true
         ) {
             return $this->iniSettings[$group][$name];
         }

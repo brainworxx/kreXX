@@ -86,7 +86,7 @@ class ProcessString extends AbstractProcess
         // Check if this is a possible callback.
         // We are not going to analyse this further, because modern systems
         // do not use these anymore.
-        if (function_exists($data)) {
+        if (function_exists($data) === true) {
             $model->setIsCallback(true);
         }
 

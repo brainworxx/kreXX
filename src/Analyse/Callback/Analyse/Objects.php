@@ -66,28 +66,28 @@ class Objects extends AbstractCallback
 
         // Dumping getter methods.
         // We will not dump the getters for internal classes, though.
-        if ($this->pool->config->getSetting('analyseGetter') &&
-            $ref->isUserDefined()
+        if ($this->pool->config->getSetting('analyseGetter') === true &&
+            $ref->isUserDefined() === true
         ) {
             $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter');
         }
 
         // Dumping protected properties.
-        if ($this->pool->config->getSetting('analyseProtected') ||
-            $this->pool->scope->isInScope()
+        if ($this->pool->config->getSetting('analyseProtected') === true ||
+            $this->pool->scope->isInScope() === true
         ) {
             $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ProtectedProperties');
         }
 
         // Dumping private properties.
-        if ($this->pool->config->getSetting('analysePrivate') ||
-            $this->pool->scope->isInScope()
+        if ($this->pool->config->getSetting('analysePrivate') === true ||
+            $this->pool->scope->isInScope() === true
         ) {
             $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\PrivateProperties');
         }
 
         // Dumping class constants.
-        if ($this->pool->config->getSetting('analyseConstants')) {
+        if ($this->pool->config->getSetting('analyseConstants') === true) {
             $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Constants');
         }
 
@@ -95,7 +95,7 @@ class Objects extends AbstractCallback
         $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Methods');
 
         // Dumping traversable data.
-        if ($this->pool->config->getSetting('analyseTraversable') &&
+        if ($this->pool->config->getSetting('analyseTraversable') === true &&
             $data instanceof \Traversable
         ) {
             $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable');

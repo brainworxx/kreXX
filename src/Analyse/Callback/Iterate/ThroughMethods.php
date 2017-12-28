@@ -70,7 +70,7 @@ class ThroughMethods extends AbstractCallback
 
             // Get the comment from the class, it's parents, interfaces or traits.
             $methodComment = $commentAnalysis->getComment($reflectionMethod, $reflectionClass);
-            if (!empty($methodComment)) {
+            if (empty($methodComment) === false) {
                 $methodData['comments'] = $methodComment;
             }
 
@@ -101,7 +101,7 @@ class ThroughMethods extends AbstractCallback
             );
 
             // Get the connector.
-            if ($reflectionMethod->isStatic()) {
+            if ($reflectionMethod->isStatic() === true) {
                 $connectorType = Connectors::STATIC_METHOD;
             } else {
                 $connectorType = Connectors::METHOD;
@@ -141,7 +141,7 @@ class ThroughMethods extends AbstractCallback
 
         $filename = $this->pool->fileService->filterFilePath($declaringClass->getFileName());
 
-        if (empty($filename)) {
+        if (empty($filename) === true) {
             return ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
         }
 
@@ -170,11 +170,11 @@ class ThroughMethods extends AbstractCallback
     ) {
         $result = '';
 
-        if ($reflectionMethod->isPrivate()) {
+        if ($reflectionMethod->isPrivate() === true) {
             $result .= ' private';
-        } elseif ($reflectionMethod->isProtected()) {
+        } elseif ($reflectionMethod->isProtected() === true) {
             $result .= ' protected';
-        } elseif ($reflectionMethod->isPublic()) {
+        } elseif ($reflectionMethod->isPublic() === true) {
             $result .= ' public';
         }
 
@@ -182,15 +182,15 @@ class ThroughMethods extends AbstractCallback
             $result .= ' inherited';
         }
 
-        if ($reflectionMethod->isStatic()) {
+        if ($reflectionMethod->isStatic() === true) {
             $result .= ' static';
         }
 
-        if ($reflectionMethod->isFinal()) {
+        if ($reflectionMethod->isFinal() === true) {
             $result .= ' final';
         }
 
-        if ($reflectionMethod->isAbstract()) {
+        if ($reflectionMethod->isAbstract() === true) {
             $result .= ' abstract';
         }
 

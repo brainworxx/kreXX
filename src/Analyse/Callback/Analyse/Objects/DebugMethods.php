@@ -69,7 +69,7 @@ class DebugMethods extends AbstractObjectAnalysis
         $output = '';
 
         foreach (explode(',', $this->pool->config->getSetting('debugMethods')) as $funcName) {
-            if ($this->checkIfAccessible($data, $funcName, $reflectionClass)) {
+            if ($this->checkIfAccessible($data, $funcName, $reflectionClass) === true) {
                 // Add a try to prevent the hosting CMS from doing something stupid.
                 try {
                     // We need to deactivate the current error handling to
@@ -89,7 +89,7 @@ class DebugMethods extends AbstractObjectAnalysis
                 // Reactivate whatever error handling we had previously.
                 restore_error_handler();
 
-                if (isset($result)) {
+                if (isset($result) === true) {
                     $output .= $this->pool->render->renderExpandableChild(
                         $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                             ->setName($funcName)
@@ -129,16 +129,16 @@ class DebugMethods extends AbstractObjectAnalysis
         // 1.) Method exists. It may be protected though.
         // 2.) Method can be called. There may be a magical method, though.
         // 3.) It's not blacklisted.
-        if (method_exists($data, $funcName) &&
-            is_callable(array($data, $funcName)) &&
-            $this->pool->config->isAllowedDebugCall($data, $funcName)) {
+        if (method_exists($data, $funcName) === true &&
+            is_callable(array($data, $funcName)) == true &&
+            $this->pool->config->isAllowedDebugCall($data, $funcName) === true) {
             // We need to check if the callable function requires any parameters.
             // We will not call those, because we simply can not provide them.
             $ref = $reflectionClass->getMethod($funcName);
 
             /** @var \ReflectionParameter $param */
             foreach ($ref->getParameters() as $param) {
-                if (!$param->isOptional()) {
+                if ($param->isOptional() === false) {
                     // We've got a required parameter!
                     // We will not call this one.
                     return false;

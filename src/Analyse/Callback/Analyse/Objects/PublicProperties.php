@@ -84,7 +84,7 @@ class PublicProperties extends AbstractObjectAnalysis
             $refProps[] = $undeclaredProp;
         }
 
-        if (empty($refProps)) {
+        if (empty($refProps) === true) {
             return '';
         }
 

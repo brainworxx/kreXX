@@ -69,7 +69,7 @@ class PrivateProperties extends AbstractObjectAnalysis
             $reflectionClass = $reflectionClass->getParentClass();
         } while (is_object($reflectionClass));
 
-        if (empty($refProps)) {
+        if (empty($refProps) === true) {
             return '';
         }
         

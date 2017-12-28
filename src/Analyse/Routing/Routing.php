@@ -76,19 +76,19 @@ class Routing extends AbstractRouting
     public function analysisHub(Model $model)
     {
         // Check memory and runtime.
-        if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
+        if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
             return '';
         }
 
         $data = $model->getData();
 
         // String?
-        if (is_string($data)) {
+        if (is_string($data) === true) {
             return $this->processString->process($model);
         }
 
         // Integer?
-        if (is_int($data)) {
+        if (is_int($data) === true) {
             return $this->processInteger->process($model);
         }
 
@@ -98,7 +98,7 @@ class Routing extends AbstractRouting
         }
 
         // Handle the complex types.
-        if (is_array($data) || is_object($data)) {
+        if (is_array($data) === true || is_object($data) === true) {
             // Up one nesting Level.
             $this->pool->emergencyHandler->upOneNestingLevel();
             // Handle the non simple types like array and object.
@@ -109,17 +109,17 @@ class Routing extends AbstractRouting
         }
 
         // Boolean?
-        if (is_bool($data)) {
+        if (is_bool($data) === true) {
             return $this->processBoolean->process($model);
         }
 
         // Float?
-        if (is_float($data)) {
+        if (is_float($data) === true) {
             return $this->processFloat->process($model);
         }
 
         // Resource?
-        if (is_resource($data)) {
+        if (is_resource($data) === true) {
             return $this->processResource->process($model);
         }
 
@@ -141,9 +141,9 @@ class Routing extends AbstractRouting
     protected function handleNoneSimpleTypes($data, Model $model)
     {
         // Check the nesting level.
-        if ($this->pool->emergencyHandler->checkNesting()) {
+        if ($this->pool->emergencyHandler->checkNesting() === true) {
             $text = $this->pool->messages->getHelp('maximumLevelReached2');
-            if (is_array($data)) {
+            if (is_array($data) === true) {
                 $type = 'array';
             } else {
                 $type = 'object';
@@ -156,9 +156,9 @@ class Routing extends AbstractRouting
             return $this->pool->render->renderSingleChild($model);
         }
 
-        if ($this->pool->recursionHandler->isInHive($data)) {
+        if ($this->pool->recursionHandler->isInHive($data) === true) {
             // Render recursion.
-            if (is_object($data)) {
+            if (is_object($data) === true) {
                 $type = '\\' . get_class($data);
                 $domId = $this->generateDomIdFromObject($data);
             } else {
@@ -189,7 +189,7 @@ class Routing extends AbstractRouting
      */
     protected function preprocessNoneSimpleTypes($data, Model $model)
     {
-        if (is_object($data)) {
+        if (is_object($data) === true) {
             // Object?
             // Remember that we've been here before.
             $this->pool->recursionHandler->addToHive($data);
