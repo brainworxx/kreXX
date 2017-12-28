@@ -105,31 +105,37 @@ class File
              $readFrom = 0;
         }
 
+        if (isset($content[$readFrom]) === false) {
+            // We can not even start reading this file!
+            // Return empty string.
+            return '';
+        }
+
         if ($readTo < 0) {
             $readTo = 0;
         }
 
-        for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
-            if (isset($content[$currentLineNo])) {
-                // Add it to the result.
-                $realLineNo = $currentLineNo + 1;
+        if (isset($content[$readTo]) === false) {
+            // We can not read this far, set it to the last line.
+            $readTo = count($content) - 1;
+        }
 
-                if ($currentLineNo === $highlight) {
-                    $result .= $this->pool->render->renderBacktraceSourceLine(
-                        'highlight',
-                        $realLineNo,
-                        $this->pool->encodingService->encodeString($content[$currentLineNo], true)
-                    );
-                } else {
-                    $result .= $this->pool->render->renderBacktraceSourceLine(
-                        'source',
-                        $realLineNo,
-                        $this->pool->encodingService->encodeString($content[$currentLineNo], true)
-                    );
-                }
+        for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
+            // Add it to the result.
+            $realLineNo = $currentLineNo + 1;
+
+            if ($currentLineNo === $highlight) {
+                $result .= $this->pool->render->renderBacktraceSourceLine(
+                    'highlight',
+                    $realLineNo,
+                    $this->pool->encodingService->encodeString($content[$currentLineNo], true)
+                );
             } else {
-                // End of the file.
-                break;
+                $result .= $this->pool->render->renderBacktraceSourceLine(
+                    'source',
+                    $realLineNo,
+                    $this->pool->encodingService->encodeString($content[$currentLineNo], true)
+                );
             }
         }
 
@@ -191,10 +197,9 @@ class File
         // quire huge, depending on your system. 4mb is nothing here.
         if ($this->fileIsReadable($filename)) {
             return $filecache[$filename] = \SplFixedArray::fromArray(file($filename));
-        } else {
-            // Not readable!
-            return $filecache[$filename] = new \SplFixedArray(0);
         }
+        // Not readable!
+        return $filecache[$filename] = new \SplFixedArray(0);
     }
 
     /**
@@ -210,22 +215,22 @@ class File
      */
     public function getFileContents($path, $showError = true)
     {
-        // Is it readable and does it have any content?
-        if ($this->fileIsReadable($path)) {
-            $size = filesize($path);
-            if ($size > 0) {
-                $file = fopen($path, 'r');
-                $result = fread($file, $size);
-                fclose($file);
-                return $result;
-            }
-        } else {
-            if ($showError) {
-                // This file was not readable! We need to tell the user!
-                $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
-            }
+        if ($this->fileIsReadable($path) === false && $showError) {
+            // This file was not readable! We need to tell the user!
+            $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($path)));
+            // Return empty string.
+            return '';
         }
 
+        // Is it readable and does it have any content?
+        $size = filesize($path);
+        if ($size > 0) {
+            $file = fopen($path, 'r');
+            $result = fread($file, $size);
+            fclose($file);
+            return $result;
+        }
+        
         // Empty file returns an empty string.
         return '';
     }
