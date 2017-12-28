@@ -75,6 +75,11 @@ class Encoding
      */
     public function encodeString($data, $code = false)
     {
+        // We will not encode an empty string.
+        if ($data === '') {
+            return '';
+        }
+        
         // Initialize the encoding configuration.
         if ($code) {
             // We encoding @, because we need them for our chunks.
@@ -94,7 +99,7 @@ class Encoding
         // There are several places here, that may throw a warning.
         set_error_handler(
             function () {
-               $result = '';
+                // Do nothing.
             }
         );
 
