@@ -75,49 +75,47 @@ class Encoding
      */
     public function encodeString($data, $code = false)
     {
-        // Try to encode it.
+        // Initialize the encoding configuration.
+        if ($code) {
+            // We encoding @, because we need them for our chunks.
+            // The { are needed in the marker of the skin.
+            // We also replace tabs with two nbsp's.
+            $sortingCallback = array($this, 'arrayMapCallbackCode');
+            $search = array('@', '{', chr(9));
+            $replace = array('&#64;', '&#123;', '&nbsp;&nbsp;');
+        } else {
+            // We encoding @, because we need them for our chunks.
+            // The { are needed in the marker of the skin.
+            $sortingCallback = array($this, 'arrayMapCallbackNormal');
+            $search = array('@', '{');
+            $replace = array('&#64;', '&#123;');
+        }
+
+        // There are several places here, that may throw a warning.
         set_error_handler(
             function () {
-                /* do nothing. */
+               $result = '';
             }
         );
 
-        // We are also encoding @, because we need them for our chunks.
-        // The { are needed in the marker of the skin.
-        $result = str_replace(array('@', '{'), array('&#64;', '&#123;'), htmlentities($data));
+        $result = str_replace($search, $replace, htmlentities($data));
 
         // Check if encoding was successful.
         // 99.99% of the time, the encoding works.
         if (empty($result)) {
-            // Something went wrong with the encoding, we need to
-            // completely encode this one to be able to display it at all!
-            $data = mb_convert_encoding($data, 'UTF-32', mb_detect_encoding($data));
-
-            if ($code) {
-                // We are displaying sourcecode, so we need
-                // to do some formatting.
-                $sortingCallback = $sortingCallback = array($this, 'arrayMapCallbackCode');
-            } else {
-                // No formatting.
-                $sortingCallback = array($this, 'arrayMapCallbackNormal');
-            }
-
             // Here we have another SPOF. When the string is large enough
             // we will run out of memory!
             // @see https://sourceforge.net/p/krexx/bugs/21/
             // We will *NOT* return the unescaped string. So we must check if it
             // is small enough for the unpack().
             // 100 kb should be save enough.
-            if (strlen($data) < 102400) {
-                $result = implode("", array_map($sortingCallback, unpack("N*", $data)));
-            } else {
+            if (strlen($data) > 102400) {
                 $result = $this->pool->messages->getHelp('stringTooLarge');
-            }
-        } else {
-            if ($code) {
-                // Replace all tabs with 2 spaces to make sourcecode better
-                // readable.
-                $result = str_replace(chr(9), '&nbsp;&nbsp;', $result);
+            } else {
+                // Something went wrong with the encoding, we need to
+                // completely encode this one to be able to display it at all!
+                $data = mb_convert_encoding($data, 'UTF-32', mb_detect_encoding($data));
+                $result = implode("", array_map($sortingCallback, unpack("N*", $data)));
             }
         }
 
@@ -141,12 +139,9 @@ class Encoding
     {
         if ($charCode === 9) {
             // Replace TAB with two spaces, it's better readable that way.
-            $result = '&nbsp;&nbsp;';
-        } else {
-            $result = '&#' . $charCode . ';';
+            return '&nbsp;&nbsp;';
         }
-
-        return $result;
+        return '&#' . $charCode . ';';
     }
 
     /**
