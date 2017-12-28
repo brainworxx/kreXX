@@ -331,7 +331,7 @@ class Render extends AbstractRender
             }
 
             // Paint it.
-            $optionTemplateName = 'single' . $model->getType() . 'Options';
+            $optionTemplateName = 'singleSelectOptions';
             foreach ($valueList as $value) {
                 if ($value === $model->getName()) {
                     // This one is selected.
