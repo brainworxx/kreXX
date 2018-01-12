@@ -122,6 +122,7 @@ class Krexx
         include_once 'src/Analyse/Routing/Process/ProcessObject.php';
         include_once 'src/Analyse/Routing/Process/ProcessResource.php';
         include_once 'src/Analyse/Routing/Process/ProcessString.php';
+        include_once 'src/Analyse/Routing/Process/ProcessOther.php';
 
         include_once 'src/Analyse/AbstractModel.php';
         include_once 'src/Analyse/Model.php';

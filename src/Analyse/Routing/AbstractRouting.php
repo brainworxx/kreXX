@@ -96,6 +96,11 @@ abstract class AbstractRouting
     protected $processString;
 
     /**
+     * @var \Brainworxx\Krexx\Analyse\Routing\Process\ProcessOther
+     */
+    protected $processOther;
+
+    /**
      * Injects the pool.
      *
      * @param Pool $pool
