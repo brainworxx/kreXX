@@ -285,10 +285,20 @@
 
             // Remove the infobox from the copy, if available and add the one from the
             // recursion.
-            var infobox = newEl.querySelector('.khelp');
-            var oldInfobox = element.querySelector('.khelp');
-            infobox.parentNode.insertBefore(oldInfobox, infobox);
-            infobox.parentNode.removeChild(infobox);
+            var newInfobox = newEl.querySelector('.khelp');
+            var newButton = newEl.querySelector('.kinfobutton');
+            var realInfobox = element.querySelector('.khelp');
+            var realButton = element.querySelector('.kinfobutton');
+
+            // We don't need the infobox on newEl, so we will remove it.
+            newInfobox.parentNode.removeChild(newInfobox);
+            newButton.parentNode.removeChild(newButton);
+
+            // We copy the Infobox from the recursion to the newEl, if it exists.
+            if (realInfobox !== null) {
+                newEl.appendChild(realButton);
+                newEl.appendChild(realInfobox);
+            }
 
             // Remove the recursion EL.
             element.parentNode.removeChild(element);
