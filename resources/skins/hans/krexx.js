@@ -283,6 +283,13 @@
             // generation.
             kdt.setDataset(newEl.parentNode, 'domid', domid);
 
+            // Remove the infobox from the copy, if available and add the one from the
+            // recursion.
+            var infobox = newEl.querySelector('.khelp');
+            var oldInfobox = element.querySelector('.khelp');
+            infobox.parentNode.insertBefore(oldInfobox, infobox);
+            infobox.parentNode.removeChild(infobox);
+
             // Remove the recursion EL.
             element.parentNode.removeChild(element);
         }
