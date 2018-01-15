@@ -434,17 +434,18 @@ div.kwrapper {
 .keditable select {
     font: 10px tahoma, verdana;
 }
-
+/*
 .kwrapper .khelp {
     position: absolute;
     border: solid 1px black;
     background-color: #f2f2f2;
     padding: 2px 5px;
-    margin-top: 10px;
-    margin-left: 250px;
+    top: 10px;
+    left: 250px;
     color: #303030;
+    z-index: 1;
 }
-
+*/
 .kwrapper .kclose.kfatal {
     cursor: pointer;
     display: inline-table;
@@ -776,7 +777,8 @@ div.kwrapper {
     font: bold 12px tahoma, verdana;
 }
 
-.kwrapper .kodsp {
+.kwrapper .kodsp,
+.kwrapper .khelp {
     color: #303030;
     background-color: #dbdbdb;
     padding: 5px;
