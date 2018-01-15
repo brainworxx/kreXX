@@ -85,6 +85,7 @@ div.kwrapper {
 .kwrapper hr,
 .kwrapper option {
     display: block;
+    z-index: 0;
 }
 
 .kwrapper span,
@@ -427,6 +428,10 @@ div.kwrapper {
 
 .kwrapper .source {
     padding: 0 20px;
+}
+
+.kwrapper .search-wrapper {
+    z-index: 10;
 }
 
 .kwrapper .search-wrapper .ksearch input,
