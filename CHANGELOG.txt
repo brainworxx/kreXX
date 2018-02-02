@@ -1,3 +1,7 @@
+2.4.1 dev
+- The position of the search field of the hans skin is now
+  calculated correct when the viewport is not on top.
+
 2.4.0
 - Added the method analysis to the recursion detection, to prevent
   analysing the same methods over and over again.
