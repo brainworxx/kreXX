@@ -614,6 +614,9 @@
         if (container.length === 0) {
             // Normal scrolling
             container = document.querySelectorAll('html');
+            if (container[0].scrollHeight === container[0].clientHeight) {
+                container = document.querySelectorAll('body');
+            }
             destination = el.getBoundingClientRect().top + container[0].scrollTop - 50;
         }
         else {
