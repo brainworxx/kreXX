@@ -293,16 +293,18 @@ class ThroughGetter extends AbstractCallback
      */
     protected function preparePropertyName(\ReflectionMethod $reflectionMethod)
     {
-         // Get the name and remove the 'get' or the '_get'.
+         // Get the name and remove the 'get' . . .
         $getterName = $reflectionMethod->getName();
         if (strpos($getterName, $this->currentPrefix) === 0) {
-            $getterName = substr($getterName, 3);
+            return lcfirst(substr($getterName, strlen($this->currentPrefix)));
         }
 
+        // . . .  or the '_get'.
         if (strpos($getterName, '_' . $this->currentPrefix) === 0) {
-            $getterName = substr($getterName, 4);
+            return lcfirst(substr($getterName, strlen($this->currentPrefix) + 1));
         }
 
+        // Still here?!? At least make the first letter lowercase.
         return lcfirst($getterName);
     }
 
