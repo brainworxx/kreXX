@@ -324,7 +324,7 @@ class Render extends AbstractRender
         // For dropdown elements, we need to render the options.
         if ($model->getType() === 'Select') {
             // Here we store what the list of possible values.
-            if ($model->getDomid() === Fallback::SETTINGSKIN) {
+            if ($model->getDomid() === Fallback::SETTING_SKIN) {
                 // Get a list of all skin folders.
                 $valueList = $this->getSkinList();
             } else {

@@ -212,7 +212,7 @@ class Security extends Fallback
      */
     protected function evalBool($value, $name, $group)
     {
-        $result = ($value === Fallback::VALUETRUE || $value === Fallback::VALUEFALSE);
+        $result = ($value === Fallback::VALUE_TRUE || $value === Fallback::VALUE_FALSE);
         if ($result === false) {
             $this->pool->messages->addMessage('configErrorBool', array($group, $name));
         }

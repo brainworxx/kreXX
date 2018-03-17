@@ -69,7 +69,7 @@ class DebugMethods extends AbstractObjectAnalysis
         $reflectionClass = $this->parameters['ref'];
         $output = '';
 
-        foreach (explode(',', $this->pool->config->getSetting(Fallback::SETTINGDEBUGMETHODS)) as $funcName) {
+        foreach (explode(',', $this->pool->config->getSetting(Fallback::SETTING_DEBUG_METHODS)) as $funcName) {
             if ($this->checkIfAccessible($data, $funcName, $reflectionClass) === true) {
                 // Add a try to prevent the hosting CMS from doing something stupid.
                 try {

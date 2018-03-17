@@ -105,7 +105,7 @@ class ErrorController extends AbstractController
             )
         );
 
-        if ($this->pool->config->getSetting(Fallback::SETTINGDESTINATION) === 'file') {
+        if ($this->pool->config->getSetting(Fallback::SETTING_DESTINATION) === 'file') {
             // Save it to a file.
             $this->pool->chunks->saveDechunkedToFile($header . $messages . $main . $backtrace . $footer);
         } else {

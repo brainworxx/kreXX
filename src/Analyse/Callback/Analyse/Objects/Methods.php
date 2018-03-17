@@ -59,9 +59,9 @@ class Methods extends AbstractObjectAnalysis
 
         // We need to check, if we have a meta recursion here.
 
-        $doProtected = $this->pool->config->getSetting(Fallback::SETTINGANALYSEPROTECTEDMETHODS) ||
+        $doProtected = $this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PROTECTED_METHODS) ||
             $this->pool->scope->isInScope();
-        $doPrivate = $this->pool->config->getSetting(Fallback::SETTINGANALYSEPRIVATEMETHODS) ||
+        $doPrivate = $this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PRIVATE_METHODS) ||
             $this->pool->scope->isInScope();
         $domId = $this->generateDomIdFromClassname($ref->getName(), $doProtected, $doPrivate);
 

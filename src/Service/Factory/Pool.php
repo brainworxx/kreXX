@@ -235,7 +235,7 @@ class Pool extends Factory
      */
     protected function initRenderer()
     {
-        $skin = $this->config->getSetting(Fallback::SETTINGSKIN);
+        $skin = $this->config->getSetting(Fallback::SETTING_SKIN);
         $classname = 'Brainworxx\\Krexx\\View\\' . ucfirst($skin) . '\\Render';
         include_once KREXX_DIR . 'resources/skins/' . $skin . '/Render.php';
         $this->render =  $this->createClass($classname);
