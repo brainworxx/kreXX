@@ -76,7 +76,8 @@ abstract class AbstractRender implements RenderInterface
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->skinPath = KREXX_DIR . 'resources/skins/' . $this->pool->config->getSetting(Fallback::SETTING_SKIN) . '/';
+        $this->skinPath = KREXX_DIR . 'resources/skins/' .
+            $this->pool->config->getSetting(Fallback::SETTING_SKIN) . '/';
     }
 
     /**
