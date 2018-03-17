@@ -232,7 +232,7 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTINGDISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
             return;
         }
 
@@ -256,7 +256,7 @@ class Krexx
         Pool::createPool();
 
         // Disabled ?
-        if (static::$pool->config->getSetting(Fallback::SETTINGDISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
             return;
         }
 
@@ -283,7 +283,7 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTINGDISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
             return;
         }
 
@@ -311,7 +311,7 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTINGDISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
             return;
         }
 
@@ -354,7 +354,7 @@ class Krexx
 
         // Disabled?
         // We are ignoring local settings here.
-        if (static::$pool->config->getSetting(Fallback::SETTINGDISABLED)) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED)) {
             return;
         }
 
@@ -376,7 +376,7 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTINGDISABLED)) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED)) {
             return;
         }
 
@@ -407,7 +407,7 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTINGDISABLED)) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED)) {
             return;
         }
 
