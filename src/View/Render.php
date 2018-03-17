@@ -257,7 +257,7 @@ class Render extends AbstractRender
                 static::MARKER_CONNECTOR_2,
                 static::MARKER_CODE_WRAPPER_1,
                 static::MARKER_CODE_WRAPPER_2,
-                ),
+            ),
             array(
                 $this->generateDataAttribute('source', $gensource),
                 $sourcebutton,
