@@ -105,7 +105,7 @@ class Config extends Fallback
         $this->cookieConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Cookie');
 
         // Loading the settings.
-        foreach ($this->configFallback as $section => $settings) {
+        foreach ($this->configFallback as $settings) {
             foreach ($settings as $name) {
                 $this->loadConfigValue($name);
             }
