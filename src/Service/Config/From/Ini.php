@@ -109,18 +109,18 @@ class Ini extends Fallback
             // Fallback to factory settings.
             if (isset($this->feConfigFallback[$parameterName]) === true) {
                 return array(
-                    ($this->feConfigFallback[$parameterName][$this::RENDER]['editable'] === Fallback::VALUE_TRUE),
-                    $this->feConfigFallback[$parameterName][$this::RENDER]['type']
+                    ($this->feConfigFallback[$parameterName][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE),
+                    $this->feConfigFallback[$parameterName][static::RENDER][static::RENDER_TYPE]
                 );
             }
             // Unknown parameter and nothing in the fallback!
             // This should never happan, btw.
-            return array(false, 'None');
+            return array(false, static::RENDER_TYPE_NONE);
         }
 
         return array(
-            ($filevalue['editable'] === Fallback::VALUE_TRUE),
-            $filevalue['type']
+            ($filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE),
+            $filevalue[static::RENDER_TYPE]
         );
     }
 
@@ -144,34 +144,34 @@ class Ini extends Fallback
         }
 
         // Get the rendering type.
-        $type = $this->feConfigFallback[$parameterName][$this::RENDER]['type'];
+        $type = $this->feConfigFallback[$parameterName][static::RENDER][static::RENDER_TYPE];
 
         // Stitch together the setting.
         switch ($value) {
-            case 'none':
-                $type = 'None';
-                $editable = Fallback::VALUE_FALSE;
+            case static::RENDER_TYPE_NONE:
+                $type = static::RENDER_TYPE_NONE;
+                $editable = static::VALUE_FALSE;
                 break;
 
             case 'display':
-                $editable = Fallback::VALUE_FALSE;
+                $editable = static::VALUE_FALSE;
                 break;
 
             case 'full':
-                $editable = Fallback::VALUE_TRUE;
+                $editable = static::VALUE_TRUE;
                 break;
 
             default:
                 // Unknown setting.
                 // Fallback to no display, just in case.
-                $type = 'None';
-                $editable = Fallback::VALUE_FALSE;
+                $type = static::RENDER_TYPE_NONE;
+                $editable = static::VALUE_FALSE;
                 break;
         }
 
         return array(
-            'type' => $type,
-            'editable' => $editable,
+            static::RENDER_TYPE => $type,
+            static::RENDER_EDITABLE => $editable,
         );
     }
 

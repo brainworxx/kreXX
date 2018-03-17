@@ -68,6 +68,8 @@ class Fallback
 
     const VALUE_TRUE = 'true';
     const VALUE_FALSE = 'false';
+    const VALUE_BROWSER = 'browser';
+    const VALUE_FILE = 'file';
 
     const SETTING_DISABLED = 'disabled';
     const SETTING_IP_RANGE = 'iprange';
@@ -90,6 +92,15 @@ class Fallback
     const SETTING_DEBUG_METHODS = 'debugMethods';
     const SETTING_MAX_STEP_NUMBER = 'maxStepNumber';
     const SETTING_ARRAY_COUNT_LIMIT = 'arrayCountLimit';
+    const SETTING_DEV_HANDLE = 'devHandle';
+
+    const RENDER_TYPE = 'Type';
+    const RENDER_EDITABLE = 'Editable';
+    // The render type is also paert of the template filemane fot the
+    // cookie editor.
+    const RENDER_TYPE_SELECT = 'Select';
+    const RENDER_TYPE_INPUT = 'Input';
+    const RENDER_TYPE_NONE = 'None';
 
     /**
      * Defining the layout of the frontend editing form.
@@ -111,8 +122,8 @@ class Fallback
      * @var array
      */
     protected $editableSelect = array(
-        'type' => 'Select',
-        'editable' => Fallback::VALUE_TRUE,
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_SELECT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_TRUE,
     );
 
     /**
@@ -121,8 +132,8 @@ class Fallback
      * @var array
      */
     protected $editableInput = array(
-        'type' => 'Input',
-        'editable' => Fallback::VALUE_TRUE,
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_INPUT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_TRUE,
     );
 
     /**
@@ -131,8 +142,8 @@ class Fallback
      * @var array
      */
     protected $displayOnlyInput = array(
-        'type' => 'Input',
-        'editable' => Fallback::VALUE_FALSE,
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_INPUT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
     );
 
     /**
@@ -141,8 +152,8 @@ class Fallback
      * @var array
      */
     protected $displayOnlySelect = array(
-        'type' => 'Select',
-        'editable' => Fallback::VALUE_FALSE,
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_SELECT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
     );
 
     /**
@@ -151,8 +162,8 @@ class Fallback
      * @var array
      */
     protected $displayNothing = array(
-        'type' => 'None',
-        'editable' => Fallback::VALUE_FALSE,
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_NONE,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
     );
 
     /**
@@ -280,7 +291,7 @@ class Fallback
             ),
             Fallback::SETTING_DESTINATION => array(
                 // Output desination. Either 'file' or 'browser'.
-                Fallback::VALUE => 'browser',
+                Fallback::VALUE => Fallback::VALUE_BROWSER,
                 Fallback::RENDER => $this->displayOnlySelect,
                 Fallback::EVALUATE => Fallback::EVAL_DESTINATION,
                 Fallback::SECTION => Fallback::SECTION_OUTPUT,
@@ -315,7 +326,7 @@ class Fallback
                 Fallback::EVALUATE => Fallback::EVAL_IP_RANGE,
                 Fallback::SECTION => Fallback::SECTION_OUTPUT,
             ),
-            'devHandle' => array(
+            Fallback::SETTING_DEV_HANDLE => array(
                 Fallback::VALUE => '',
                 Fallback::RENDER => $this->editableInput,
                 Fallback::EVALUATE => Fallback::EVAL_DEV_HANDLE,
