@@ -93,24 +93,24 @@ class Ini extends Fallback
     /**
      * Get the configuration of the frontend config form.
      *
-     * @param string $parameterName
-     *   The parameter you want to render.
+     * @param string $name
+     *   The parameter name you want to render.
      *
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    public function getFeConfig($parameterName)
+    public function getFeConfig($name)
     {
         // Load it from the file.
-        $filevalue = $this->getFeConfigFromFile($parameterName);
+        $filevalue = $this->getFeConfigFromFile($name);
 
         // Do we have a value?
         if (empty($filevalue) === true) {
             // Fallback to factory settings.
-            if (isset($this->feConfigFallback[$parameterName]) === true) {
+            if (isset($this->feConfigFallback[$name]) === true) {
                 return array(
-                    ($this->feConfigFallback[$parameterName][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE),
-                    $this->feConfigFallback[$parameterName][static::RENDER][static::RENDER_TYPE]
+                    ($this->feConfigFallback[$name][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE),
+                    $this->feConfigFallback[$name][static::RENDER][static::RENDER_TYPE]
                 );
             }
             // Unknown parameter and nothing in the fallback!
