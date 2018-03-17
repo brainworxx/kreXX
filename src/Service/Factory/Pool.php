@@ -155,7 +155,7 @@ class Pool extends Factory
      */
     public function init()
     {
-        // Get the rewrites from the $GLOBALS.
+        // Get the rewrites from the rewrite class.
         $this->flushRewrite();
         // Initialize the encoding service.
         $this->encodingService = $this->createClass('Brainworxx\\Krexx\\Service\\Misc\\Encoding');

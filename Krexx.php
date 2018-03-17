@@ -56,8 +56,6 @@ class Krexx
      */
     public static $pool;
 
-
-
     /**
      * Includes all needed files and sets some internal values.
      *
@@ -206,7 +204,7 @@ class Krexx
     {
         Pool::createPool();
 
-        // Do we gave a handle?
+        // Do we have a handle?
         if ($name === static::$pool->config->getDevHandler()) {
             // We do a standard-open.
             if (isset($arguments[0])) {
@@ -337,8 +335,6 @@ class Krexx
         static::$pool->config->setDisabled(true);
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
             ->noFatalForKrexx();
-        // We will not re-enable it afterwards, because kreXX
-        // is disabled and the handler would not show up anyway.
     }
 
     /**
