@@ -74,7 +74,7 @@ abstract class AbstractController
      *
      * @var \Brainworxx\Krexx\Errorhandler\Fatal
      */
-    protected $krexxFatal;
+    protected static $krexxFatal;
 
     /**
      * Stores whether out fatal error handler should be active.
@@ -247,8 +247,8 @@ abstract class AbstractController
     public function noFatalForKrexx()
     {
         if ($this->fatalShouldActive === true) {
-            $this->krexxFatal->setIsActive(false);
-            unregister_tick_function(array($this->krexxFatal, 'tickCallback'));
+            $this::$krexxFatal->setIsActive(false);
+            unregister_tick_function(array($this::$krexxFatal, 'tickCallback'));
         }
 
         return $this;
@@ -267,8 +267,8 @@ abstract class AbstractController
     public function reFatalAfterKrexx()
     {
         if ($this->fatalShouldActive === true) {
-            $this->krexxFatal->setIsActive(true);
-            register_tick_function(array($this->krexxFatal, 'tickCallback'));
+            $this::$krexxFatal->setIsActive(true);
+            register_tick_function(array($this::$krexxFatal, 'tickCallback'));
         }
 
         return $this;

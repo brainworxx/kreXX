@@ -124,9 +124,9 @@ class ErrorController extends AbstractController
      */
     public function registerFatalAction()
     {
-        // As of PHP Version 7.0.2, the register_tick_function() causesPHP to crash,
-        // with a connection reset! We need to check the version to avoid this, and
-        // then tell the dev what happened.
+        // As of PHP Version 7.0.2, the register_tick_function() causes PHP to
+        // crash, with a connection reset! We need to check the version to avoid
+        // this, and then tell the dev what happened.
         // Not to mention that fatals got removed anyway.
         if (version_compare(phpversion(), '7.0.0', '>=')) {
             // Too high! 420 Method Failure :-(
@@ -139,20 +139,20 @@ class ErrorController extends AbstractController
 
         $this->pool->reset();
         // Do we need another shutdown handler?
-        if (is_object($this->krexxFatal) === false) {
-            $this->krexxFatal = $this->pool->createClass('Brainworxx\\Krexx\\Errorhandler\\Fatal');
+        if (is_object($this::$krexxFatal) === false) {
+            $this::$krexxFatal = $this->pool->createClass('Brainworxx\\Krexx\\Errorhandler\\Fatal');
             declare(ticks = 1);
             register_shutdown_function(
                 array(
-                    $this->krexxFatal,
+                    $this::$krexxFatal,
                     'shutdownCallback',
                 )
             );
         }
 
-        $this->krexxFatal->setIsActive(true);
+        $this::$krexxFatal->setIsActive(true);
         $this->fatalShouldActive = true;
-        register_tick_function(array($this->krexxFatal, 'tickCallback'));
+        register_tick_function(array($this::$krexxFatal, 'tickCallback'));
 
         return $this;
     }
@@ -169,11 +169,11 @@ class ErrorController extends AbstractController
      */
     public function unregisterFatalAction()
     {
-        if ($this->krexxFatal  !== null) {
+        if ($this::$krexxFatal !== null) {
             // Now we need to tell the shutdown function, that is must
             // not do anything on shutdown.
-            $this->krexxFatal->setIsActive(false);
-            unregister_tick_function(array($this->krexxFatal, 'tickCallback'));
+            $this::$krexxFatal->setIsActive(false);
+            unregister_tick_function(array($this::$krexxFatal, 'tickCallback'));
         }
 
         $this->fatalShouldActive = false;

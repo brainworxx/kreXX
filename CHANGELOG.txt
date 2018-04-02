@@ -7,6 +7,7 @@
 - Bugfix: Added help text for the arrayCountLimit.
 - Bugfix: "Resolving" of unresolvable inherited comment parts work
   now as expected.
+- Bugfix: Prevent the registering of multiple fatal error handlers.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent
