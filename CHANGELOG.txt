@@ -9,6 +9,8 @@
   now as expected.
 - Bugfix: Prevent the registering of multiple fatal error handlers.
 - Bugfix: Minimise interference with strange CSS styles.
+- Bugfix: Do not render an unresolvable method analysis recursion
+  when there are no methods to analyse in that specific class.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent

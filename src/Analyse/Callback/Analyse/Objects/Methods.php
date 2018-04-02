@@ -97,9 +97,6 @@ class Methods extends AbstractObjectAnalysis
      */
     protected function analyseMethods(\ReflectionClass $ref, $domId, $doProtected, $doPrivate)
     {
-        // Add it to the meta hive.
-        $this->pool->recursionHandler->addToMetaHive($domId);
-
         // Dumping all methods but only if we have any.
         $protected = array();
         $private = array();
@@ -118,6 +115,9 @@ class Methods extends AbstractObjectAnalysis
         if (empty($methods) === true) {
             return '';
         }
+
+        // Now that we have something to analyse, register the DOM ID.
+        $this->pool->recursionHandler->addToMetaHive($domId);
 
         // We need to sort these alphabetically.
         usort($methods, array($this, 'reflectionSorting'));
