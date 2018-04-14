@@ -208,7 +208,7 @@ class BacktraceStep extends AbstractCallback
     }
 
     /**
-     * Analyse the 'type' key from the backtrace step.
+     * Analyse the 'args' key from the backtrace step.
      *
      * @return string
      *   The generated dom.
