@@ -128,7 +128,7 @@ class BacktraceStep extends AbstractCallback
         }
 
         // Add the prettified code to the analysis.
-        $output .= $this->pool->render->renderSingleChild(
+        return $this->pool->render->renderSingleChild(
             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setData($source)
                 ->setName('Sourcecode')
@@ -136,8 +136,6 @@ class BacktraceStep extends AbstractCallback
                 ->setHasExtra(true)
                 ->setType('PHP')
         );
-
-        return $output;
     }
 
     /**
