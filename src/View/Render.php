@@ -50,8 +50,8 @@ class Render extends AbstractRender
 
     const MARKER_NAME = '{name}';
     const MARKER_NORMAL = '{normal}';
-    const MARKER_CONNECTOR_1 = '{connector1}';
-    const MARKER_CONNECTOR_2 = '{connector2}';
+    const MARKER_CONNECTOR_LEFT = '{connectorLeft}';
+    const MARKER_CONNECTOR_RIGHT = '{connectorRight}';
     const MARKER_GEN_SOURCE = '{gensource}';
     const MARKER_VERSION = '{version}';
     const MARKER_DOCTYPE = '{doctype}';
@@ -72,8 +72,8 @@ class Render extends AbstractRender
     const MARKER_EXTRA = '{extra}';
     const MARKER_TYPE = '{type}';
     const MARKER_TYPE_CLASSES = '{type-classes}';
-    const MARKER_CODE_WRAPPER_1 = '{codewrapper1}';
-    const MARKER_CODE_WRAPPER_2 = '{codewrapper2}';
+    const MARKER_CODE_WRAPPER_LEFT = '{codewrapperLeft}';
+    const MARKER_CODE_WRAPPER_RIGHT = '{codewrapperRight}';
     const MARKER_K_TYPE = '{ktype}';
     const MARKER_IS_EXPANDED = '{isExpanded}';
     const MARKER_NEST = '{nest}';
@@ -101,18 +101,18 @@ class Render extends AbstractRender
                 static::MARKER_NAME,
                 static::MARKER_DOM_ID,
                 static::MARKER_NORMAL,
-                static::MARKER_CONNECTOR_1,
+                static::MARKER_CONNECTOR_LEFT,
                 static::MARKER_HELP,
-                static::MARKER_CONNECTOR_2,
+                static::MARKER_CONNECTOR_RIGHT,
                 static::MARKER_GEN_SOURCE,
             ),
             array(
                 $model->getName(),
                 $model->getDomid(),
                 $model->getNormal(),
-                $this->renderConnector($model->getConnector1()),
+                $this->renderConnector($model->getConnectorLeft()),
                 $this->renderHelp($model),
-                $this->renderConnector($model->getConnector2()),
+                $this->renderConnector($model->getConnectorRight()),
                 $this->generateDataAttribute(
                     'source',
                     $this->pool->codegenHandler->generateSource($model)
@@ -253,10 +253,10 @@ class Render extends AbstractRender
                 static::MARKER_TYPE_CLASSES,
                 static::MARKER_NORMAL,
                 static::MARKER_HELP,
-                static::MARKER_CONNECTOR_1,
-                static::MARKER_CONNECTOR_2,
-                static::MARKER_CODE_WRAPPER_1,
-                static::MARKER_CODE_WRAPPER_2,
+                static::MARKER_CONNECTOR_LEFT,
+                static::MARKER_CONNECTOR_RIGHT,
+                static::MARKER_CODE_WRAPPER_LEFT,
+                static::MARKER_CODE_WRAPPER_RIGHT,
             ),
             array(
                 $this->generateDataAttribute('source', $gensource),
@@ -269,10 +269,10 @@ class Render extends AbstractRender
                 $typeClasses,
                 $model->getNormal(),
                 $this->renderHelp($model),
-                $this->renderConnector($model->getConnector1()),
-                $this->renderConnector($model->getConnector2()),
-                $this->generateDataAttribute('codewrapper1', $this->pool->codegenHandler->generateWrapper1()),
-                $this->generateDataAttribute('codewrapper2', $this->pool->codegenHandler->generateWrapper2()),
+                $this->renderConnector($model->getConnectorLeft()),
+                $this->renderConnector($model->getConnectorRight()),
+                $this->generateDataAttribute('codewrapperLeft', $this->pool->codegenHandler->generateWrapperLeft()),
+                $this->generateDataAttribute('codewrapperRight', $this->pool->codegenHandler->generateWrapperRight()),
             ),
             $this->getTemplateFileContent('singleChild')
         );
@@ -319,14 +319,14 @@ class Render extends AbstractRender
                 static::MARKER_K_TYPE,
                 static::MARKER_NORMAL,
                 static::MARKER_HELP,
-                static::MARKER_CONNECTOR_1,
-                static::MARKER_CONNECTOR_2,
+                static::MARKER_CONNECTOR_LEFT,
+                static::MARKER_CONNECTOR_RIGHT,
                 static::MARKER_GEN_SOURCE,
                 static::MARKER_SOURCE_BUTTON,
                 static::MARKER_IS_EXPANDED,
                 static::MARKER_NEST,
-                static::MARKER_CODE_WRAPPER_1,
-                static::MARKER_CODE_WRAPPER_2,
+                static::MARKER_CODE_WRAPPER_LEFT,
+                static::MARKER_CODE_WRAPPER_RIGHT,
             ),
             array(
                 $model->getName(),
@@ -334,14 +334,14 @@ class Render extends AbstractRender
                 $cssType,
                 $model->getNormal(),
                 $this->renderHelp($model),
-                $this->renderConnector($model->getConnector1()),
-                $this->renderConnector($model->getConnector2(128)),
+                $this->renderConnector($model->getConnectorLeft()),
+                $this->renderConnector($model->getConnectorRight(128)),
                 $this->generateDataAttribute('source', $gencode),
                 $sourceButton,
                 $expandedClass,
                 $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
-                $this->generateDataAttribute('codewrapper1', $this->pool->codegenHandler->generateWrapper1()),
-                $this->generateDataAttribute('codewrapper2', $this->pool->codegenHandler->generateWrapper2()),
+                $this->generateDataAttribute('codewrapperLeft', $this->pool->codegenHandler->generateWrapperLeft()),
+                $this->generateDataAttribute('codewrapperRight', $this->pool->codegenHandler->generateWrapperRight()),
             ),
             $this->getTemplateFileContent('expandableChildNormal')
         );
