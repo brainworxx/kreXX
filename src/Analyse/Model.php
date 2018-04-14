@@ -361,10 +361,16 @@ class Model extends AbstractModel
      * Setter for the $isCallback.
      *
      * @param boolean $isCallback
+     *   The value we want to set.
+     *
+     * @return $this
+     *   $this for chaining.
      */
     public function setIsCallback($isCallback)
     {
         $this->isCallback = $isCallback;
+
+        return $this;
     }
 
      /**
