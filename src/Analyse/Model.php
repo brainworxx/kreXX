@@ -297,25 +297,28 @@ class Model extends AbstractModel
     }
 
     /**
-     * Getter for the hasExtras property.
+     * Getter for the hasExtra property.
      *
      * @return bool
      *   Info for the render class, if we need to render the extras part.
      */
-    public function getHasExtras()
+    public function getHasExtra()
     {
         return $this->hasExtra;
     }
 
     /**
-     * "Setter" for the hasExtras property.
+     * "Setter" for the hasExtra property.
+     *
+     * @param boolean $value
+     *   The value we want to set.
      *
      * @return $this
      *   $this, for chaining.
      */
-    public function hasExtras()
+    public function setHasExtra($value)
     {
-        $this->hasExtra = true;
+        $this->hasExtra = $value;
         return $this;
     }
 

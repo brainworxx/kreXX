@@ -202,7 +202,7 @@ class Render extends AbstractRender
         $partCallable = '';
         $partExtra = '';
 
-        if ($model->getHasExtras() === true) {
+        if ($model->getHasExtra() === true) {
             // We have a lot of text, so we render this one expandable (yellow box).
             $partExpand = 'kexpand';
             // Add the yellow box for large output text.

@@ -133,7 +133,7 @@ class BacktraceStep extends AbstractCallback
                 ->setData($source)
                 ->setName('Sourcecode')
                 ->setNormal('. . .')
-                ->hasExtras()
+                ->setHasExtra(true)
                 ->setType('PHP')
         );
 
@@ -182,7 +182,7 @@ class BacktraceStep extends AbstractCallback
                         ->setName('Calling object')
                 );
         }
-            
+
         return '';
     }
 
@@ -205,7 +205,7 @@ class BacktraceStep extends AbstractCallback
                     ->setType('string ' . strlen($stepData['type']))
             );
         }
-            
+
         return '';
     }
 
