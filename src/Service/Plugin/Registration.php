@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
+use Brainworxx\Krexx\Service\Factory\Factory;
+
 /**
  * Register, activate and deactivate plugins.
  *
@@ -86,8 +88,13 @@ class Registration
      */
     public static function deactivatePlugin($name)
     {
-        static::$plugins[$name][static::IS_ACTIVE] = false;
+        // Purge the rewrites.
+        Factory::$rewrite = array();
+        // Purge the event registration.
+        \Krexx::$pool->eventService->purge();
 
+        // Go through the remaining plugins.
+        static::$plugins[$name][static::IS_ACTIVE] = false;
         foreach (static::$plugins as $plugin) {
             if ($plugin[static::IS_ACTIVE]) {
                 static::$plugins[$name][static::CONFIG_CLASS]::exec();

@@ -122,4 +122,12 @@ class Event
         }
         unset($this->register[$className]);
     }
+
+    /**
+     * Purge all registered events.
+     */
+    public function purge()
+    {
+        $this->register = array();
+    }
 }
