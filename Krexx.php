@@ -143,6 +143,8 @@ class Krexx
         include_once 'src/Service/Config/From/Cookie.php';
         include_once 'src/Service/Config/From/Ini.php';
 
+        include_once 'src/Service/Factory/AbstractEventHandler.php';
+        include_once 'src/Service/Factory/Event.php';
         include_once 'src/Service/Factory/Factory.php';
         include_once 'src/Service/Factory/Pool.php';
 
