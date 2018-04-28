@@ -131,14 +131,25 @@ class Pool extends Factory
     public $routing;
 
     /**
+     * Our file handling is done in the file service.
+     *
      * @var File
      */
     public $fileService;
 
     /**
+     * Sting encoding happens here.
+     *
      * @var Encoding
      */
     public $encodingService;
+
+    /**
+     * The event handler handels events.
+     *
+     * @var Event
+     */
+    public $eventService;
 
     /**
      * Initializes all needed classes.
@@ -177,6 +188,8 @@ class Pool extends Factory
         $this->scope = $this->createClass('Brainworxx\\Krexx\\Analyse\\Code\\Scope');
         // Initializes the routing.
         $this->routing = $this->createClass('Brainworxx\\Krexx\\Analyse\Routing\\Routing');
+        // Initialize the event handler.
+        $this->eventService = $this->createClass('Brainworxx\\Krexx\\Service\\Factory\\Event');
 
         // Initializes the render class.
         $this->initRenderer();

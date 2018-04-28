@@ -1,5 +1,6 @@
 2.4.1 dev
 - Added 'is' and 'has' to the getter analysis.
+- Added a event dispatcher.
 - Change: Some internal renaming.
 - Bugfix: The position of the search field of the hans skin is now
   calculated correct when the viewport is not on top.

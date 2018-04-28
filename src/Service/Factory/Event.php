@@ -32,46 +32,36 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analyse\Callback;
+namespace Brainworxx\Krexx\Service\Factory;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
- * Abstract class for the callback classes inside the model.
+ * Calling all registered event handlers on the event.
  *
- * @package Brainworxx\Krexx\Analyse\Callback
+ * @package Brainworxx\Krexx\Service\Factory
  */
-abstract class AbstractCallback
+class Event
 {
+    /**
+     * Here we save the registered event handler.
+     *
+     * @var array
+     */
+    protected $register = array();
 
     /**
-     * Here we store all relevant data.
+     * The pool.
      *
-     * @var Pool
+     * @var pool
      */
     protected $pool;
 
     /**
-     * The parameters for the callback.
-     *
-     * @var array
-     */
-    protected $parameters = array();
-
-    /**
-     * The actual callback function for the renderer.
-     *
-     * @return string
-     *   The generated markup.
-     */
-    abstract public function callMe();
-
-    /**
-     * Injects the pool.
+     * Injects the pool. Retrieve the global event handlers from the overwrites.
      *
      * @param Pool $pool
-     *   The pool, where we store the classes we need.
+     *   The pool, what else?
      */
     public function __construct(Pool $pool)
     {
@@ -79,51 +69,57 @@ abstract class AbstractCallback
     }
 
     /**
-     * Add callback parameters at class construction.
-     *
-     * @param array $params
-     *   The parameters for the callMe() method.
-     *
-     * @return $this
-     *   Return $this, for chaining.
-     */
-    public function setParams(array &$params)
-    {
-        $this->parameters = $params;
-
-        return $this;
-    }
-
-    /**
-     * Dispatches the start event of the callMe callback.
-     */
-    public function dispatchStartEvent()
-    {
-        $this->pool->eventService->dispatch(
-            get_class($this) . '::callMe::start',
-            $this->parameters
-        );
-    }
-
-    /**
-     * Dispatches an event where the modes is available.
+     * Dispatches an event.
      *
      * @param string $name
      *   The name of the event.
-     * @param Model $model
-     *   The model so far.
-     *
-     * @return Model
-     *   Return the model for chaining.
+     * @param array $params
+     *   The parameters for the callback.
+     * @param \Brainworxx\Krexx\Analyse\Model|null $model
+     *   The model so far, if available.
      */
-    public function dispatchEventWithModel($name, Model $model)
+    public function dispatch($name, array &$params, Model $model = null)
     {
-        $this->pool->eventService->dispatch(
-            get_class($this) . '::' . $name,
-            $this->parameters,
-            $model
-        );
+        if (isset($this->register[$name]) === false) {
+            // No registered handler. Early return.
+            return;
+        }
 
-        return $model;
+        // Got to handel them all.
+        foreach ($this->register[$name] as $classname) {
+            $this->pool->createClass($classname)->handle($params, $model);
+        }
+    }
+
+    /**
+     * Register an event handler.
+     *
+     * @param string $name
+     *   The event name
+     * @param string $className
+     *   The class name.
+     */
+    public function register($name, $className)
+    {
+        if (isset($this->register[$name]) === false) {
+            $this->register[$name] = array();
+        }
+        $this->register[$name][$className] = $className;
+    }
+
+    /**
+     * Unregister an event handler.
+     *
+     * @param string $name
+     *   The event name
+     * @param string $className
+     *   The class name.
+     */
+    public function unregister($name, $className)
+    {
+        if (isset($this->register[$name]) === false) {
+            $this->register[$name] = array();
+        }
+        unset($this->register[$className]);
     }
 }
