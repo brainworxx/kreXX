@@ -167,11 +167,14 @@ class File
         }
 
         // Do we have enough lines in there?
-        if (count($content) > $readTo) {
-            for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
-                $result .= $content[$currentLineNo];
-            }
+        if (count($content) <= $readTo) {
+            $readTo = count($content) - 1;
         }
+
+        for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
+            $result .= $content[$currentLineNo];
+        }
+
 
         return $result;
     }
@@ -232,7 +235,7 @@ class File
             fclose($file);
             return $result;
         }
-        
+
         // Empty file returns an empty string.
         return '';
     }
