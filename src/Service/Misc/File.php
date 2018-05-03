@@ -166,9 +166,15 @@ class File
             $readTo = 0;
         }
 
+        $countContent = count($content);
+
+        if ($countContent === 0) {
+            return $result;
+        }
+
         // Do we have enough lines in there?
-        if (count($content) <= $readTo) {
-            $readTo = count($content) - 1;
+        if ($countContent <= $readTo) {
+            $readTo = $countContent - 1;
         }
 
         for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
