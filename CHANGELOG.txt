@@ -24,6 +24,7 @@
   into the forbidden path (try to say this fast and 4 times in a
   row).
 - Bugfix: Removing of message keys should work again.
+- Bugfix: Duplicate messages will not be displayed anymore.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent
