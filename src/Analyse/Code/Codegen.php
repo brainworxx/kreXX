@@ -211,6 +211,16 @@ class Codegen
         $this->allowCodegen = $bool;
     }
 
+    /**
+     * Getter for the allowance of the code generation.
+     *
+     * @return bool
+     */
+    public function getAllowCodegen()
+    {
+        return $this->allowCodegen;
+    }
+
         /**
      * Setter for the reflection parameter, it also calculates the
      * toString() return value.
