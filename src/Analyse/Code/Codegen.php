@@ -150,7 +150,10 @@ class Codegen
             return '. . .';
         }
 
-        return '';
+        // No code generation in this path.
+        // We must prevent code generation when copying stuff here by recursion
+        // resolving by adding these dots.
+        return '. . .';
     }
 
     /**
