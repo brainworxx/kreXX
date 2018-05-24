@@ -25,6 +25,9 @@
   row).
 - Bugfix: Removing of message keys should work again.
 - Bugfix: Duplicate messages will not be displayed anymore.
+- Bugfix: Fixed a possible fatal, when trying to analyse dynamically
+  declared properties, which have a name collusion with private
+  properties somewhere deeper in the class inheritance.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent

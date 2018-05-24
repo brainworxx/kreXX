@@ -91,7 +91,7 @@ class ThroughProperties extends AbstractCallback
             }
 
             /** @var \ReflectionProperty $refProperty */
-            $propName = $refProperty->name;
+            $propName = $refProperty->getName();
             $value = $this->getValueFromProperty($refProperty, $propName);
 
             // Now that we have the key and the value, we can analyse it.
