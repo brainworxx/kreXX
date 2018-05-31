@@ -169,6 +169,15 @@ class ThroughProperties extends AbstractCallback
      */
     protected function getValueFromProperty(\ReflectionProperty $refProperty, $propName)
     {
+		if (array_key_exists($propName, get_object_vars($this->parameters['orgObject'])) === false) {
+            // The property got unsset during runtime.
+            // When trying to access this one, we get a notice, or even
+            // trigger the __get. We do not want this.
+            // @todo Tell the dev that this property does not exist anymore.
+            // @todo Optimize this.
+            return null;
+        }
+		
         $refProperty->setAccessible(true);
 
         // Getting our values from the reflection.
