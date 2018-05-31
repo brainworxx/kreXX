@@ -29,6 +29,7 @@
   declared properties, which have a name collusion with private
   properties somewhere deeper in the class inheritance.
 - Bugfix: Detect unset properties in classes.
+- Bugfix: Added closing style tags to both skins
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent
