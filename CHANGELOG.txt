@@ -30,6 +30,7 @@
   properties somewhere deeper in the class inheritance.
 - Bugfix: Detect unset properties in classes.
 - Bugfix: Added closing style tags to both skins
+- Bugfix: Catch throwable in PHP 7.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent

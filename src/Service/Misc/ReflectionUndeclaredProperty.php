@@ -166,7 +166,7 @@ class ReflectionUndeclaredProperty extends \ReflectionProperty
     }
 
     /**
-     * Try to retrieve the value, nested winin some error handling.
+     * Try to retrieve the value, nested within some error handling.
      *
      * @param null $object
      *   We ignore this one. It's only here to make the class compartible with
@@ -183,6 +183,8 @@ class ReflectionUndeclaredProperty extends \ReflectionProperty
         );
         try {
             $value = $this->object->$this->objectName;
+        } catch (\Throwable $e) {
+            $value = null;
         } catch (\Exception $e) {
             $value = null;
         }
