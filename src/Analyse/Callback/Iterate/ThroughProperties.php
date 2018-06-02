@@ -68,6 +68,13 @@ class ThroughProperties extends AbstractCallback
     protected $defaultProperties = array();
 
     /**
+     * The object, cast into an array.
+     *
+     * @var array
+     */
+    protected $objectArray = array();
+
+    /**
      * Renders the properties of a class.
      *
      * @return string
@@ -82,7 +89,15 @@ class ThroughProperties extends AbstractCallback
         /** @var \ReflectionClass $ref */
         $ref = $this->parameters['ref'];
 
-        $this->defaultProperties = $ref->getDefaultProperties();
+        // Some devs unset declared properties, which removes not only the
+        // property from the object instance. The object will also act as if
+        // this property was never declared in the first place.
+        // Tha will lead to notices, and worse, will triger __get() or __isset()
+        // inside the object!
+        // The only way known to me to prevent this, is by casting the object
+        // into an array. If the value exist in there, it also exists inside the
+        // object.
+        $this->objectArray = (array) $this->parameters['orgObject'];
 
         foreach ($this->parameters['data'] as $refProperty) {
             // Check memory and runtime.
@@ -90,11 +105,6 @@ class ThroughProperties extends AbstractCallback
                 return '';
             }
 
-            /** @var \ReflectionProperty $refProperty */
-            $propName = $refProperty->getName();
-            $value = $this->getValueFromProperty($refProperty, $propName);
-
-            // Now that we have the key and the value, we can analyse it.
             // Stitch together our additional info about the data:
             // public access, protected access, private access and info if it was
             // inherited from somewhere.
@@ -103,11 +113,30 @@ class ThroughProperties extends AbstractCallback
             // Every other additional string requires a special connector,
             // so we do this here.
             $connectorType = Connectors::NORMAL_PROPERTY;
+
+            /** @var \ReflectionProperty $refProperty */
+            $propName = $refProperty->getName();
+            if (array_key_exists($propName, $this->objectArray)) {
+                // Public value.
+                $value = $this->objectArray[$propName];
+            } elseif (array_key_exists("\0*\0" . $propName, $this->objectArray)) {
+                // Get the private / protected value.
+                $value = $this->objectArray["\0*\0" . $propName];
+            } else {
+                // This one got himself unset!
+                $value = null;
+                $additional .= 'unset ';
+            }
+
+            // Special treatmens for static values.
             if ($refProperty->isStatic() === true) {
                 $additional .= 'static ';
                 $connectorType = Connectors::STATIC_PROPERTY;
                 // There is always a $ in front of a static property.
                 $propName = '$' . $propName;
+                // Retrieve the static value.
+                $refProperty->setAccessible(true);
+                $value = $refProperty->getValue($this->parameters['orgObject']);
             }
 
 
@@ -156,39 +185,6 @@ class ThroughProperties extends AbstractCallback
         return $output;
     }
 
-    /**
-     * Get the value from the property.
-     *
-     * @param \ReflectionProperty $refProperty
-     *   A reflection of the property we are analysing.
-     * @param string $propName
-     *   The name of the property we are analysing.
-     *
-     * @return mixed
-     *   The value we want.
-     */
-    protected function getValueFromProperty(\ReflectionProperty $refProperty, $propName)
-    {
-		if (array_key_exists($propName, get_object_vars($this->parameters['orgObject'])) === false) {
-            // The property got unsset during runtime.
-            // When trying to access this one, we get a notice, or even
-            // trigger the __get. We do not want this.
-            // @todo Tell the dev that this property does not exist anymore.
-            // @todo Optimize this.
-            return null;
-        }
-		
-        $refProperty->setAccessible(true);
-
-        // Getting our values from the reflection.
-        $value = $refProperty->getValue($this->parameters['orgObject']);
-        if (($value === null) && $refProperty->isDefault() && isset($this->defaultProperties[$propName])) {
-            // We might want to look at the default value.
-            return $this->defaultProperties[$propName];
-        }
-
-        return $value;
-    }
 
     /**
      * Adding declaration keywords to our data in the additional field.
