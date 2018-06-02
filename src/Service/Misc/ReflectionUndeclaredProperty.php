@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\Misc;
 
-
-
 /**
  * The original \ReflectionProperty may throw an error when used with
  * dynamically declared properties
