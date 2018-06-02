@@ -122,14 +122,7 @@ class ThroughProperties extends AbstractCallback
             } elseif (array_key_exists("\0*\0" . $propName, $this->objectArray)) {
                 // Get the private / protected value.
                 $value = $this->objectArray["\0*\0" . $propName];
-            } else {
-                // This one got himself unset!
-                $value = null;
-                $additional .= 'unset ';
-            }
-
-            // Special treatmens for static values.
-            if ($refProperty->isStatic() === true) {
+            } elseif ($refProperty->isStatic() === true) {
                 $additional .= 'static ';
                 $connectorType = Connectors::STATIC_PROPERTY;
                 // There is always a $ in front of a static property.
@@ -137,8 +130,39 @@ class ThroughProperties extends AbstractCallback
                 // Retrieve the static value.
                 $refProperty->setAccessible(true);
                 $value = $refProperty->getValue($this->parameters['orgObject']);
+            } elseif ($refProperty->isPrivate()) {
+                // Private properties that are not present inside the array
+                // come from somewhere deep inside the class structure.
+                // There is still the cahnce, that it gor unset.
+                $refProperty->setAccessible(true);
+                try {
+                    // We need to deactivate the current error handling to
+                    // prevent the host system to do anything stupid.
+                    set_error_handler(
+                        function () {
+                            // Do nothing.
+                        }
+                    );
+                    $value = $refProperty->getValue($this->parameters['orgObject']);
+                    restore_error_handler();
+                } catch (\Throwable $e) {
+                    //Restore the previous error handler, and return an empty string.
+                    restore_error_handler();
+                    // This one got himself unset!
+                    $value = null;
+                    $additional .= 'unset ';
+                } catch (\Exception $e) {
+                    // Restore the old error handler and move to the next method.
+                    restore_error_handler();
+                    // This one got himself unset!
+                    $value = null;
+                    $additional .= 'unset ';
+                }
+            } else {
+                // This one got himself unset!
+                $value = null;
+                $additional .= 'unset ';
             }
-
 
             if (isset($refProperty->isUndeclared) === true) {
                 // The property 'isUndeclared' is not a part of the reflectionProperty.
