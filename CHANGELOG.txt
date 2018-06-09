@@ -6,6 +6,8 @@
 - Added deeper search for the source code getter analysis for
   better results.
 - Added a forced logger, which van be reached by \Krexx:log();
+- Added a jumpTo element after uncollapsing the breadcrumbs for
+  better usability.
 - Change: Some internal renaming.
 - Change: Removed the constants analysis configuration.
 - Bugfix: The position of the search field of the hans skin is now
