@@ -164,7 +164,7 @@ class Krexx
         include_once 'src/View/Output/AbstractOutput.php';
         include_once 'src/View/Output/Chunks.php';
         include_once 'src/View/Output/File.php';
-        include_once 'src/View/Output/Shutdown.php';
+        include_once 'src/View/Output/Browser.php';
 
         include_once 'src/View/RenderInterface.php';
         include_once 'src/View/AbstractRender.php';

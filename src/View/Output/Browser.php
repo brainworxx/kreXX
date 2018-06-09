@@ -39,7 +39,7 @@ namespace Brainworxx\Krexx\View\Output;
  *
  * @package Brainworxx\Krexx\View\Output
  */
-class Shutdown extends AbstractOutput
+class Browser extends AbstractOutput
 {
     /**
      * [0] -> The chunkedup string, that we intend to send to

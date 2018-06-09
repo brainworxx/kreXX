@@ -117,7 +117,7 @@ abstract class AbstractController
         // cms may do their stuff in the shutdown functions as well.
         $outputSetting = $pool->config->getSetting(Fallback::SETTING_DESTINATION);
         if ($outputSetting === Fallback::VALUE_BROWSER) {
-            $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\Shutdown');
+            $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\Browser');
         } elseif ($outputSetting === Fallback::VALUE_FILE) {
             $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\File');
         }
