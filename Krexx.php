@@ -451,8 +451,8 @@ class Krexx
         static::open($data);
 
         // Reset everything afterwards.
-        unset(\Krexx::$pool->config);
-        \Krexx::$pool->config = \Krexx::$pool
-            ->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
+        \Krexx::$pool->config
+            ->loadConfigValue('destination')
+            ->loadConfigValue('detectAjax');
     }
 }
