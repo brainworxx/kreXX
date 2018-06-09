@@ -32,6 +32,8 @@
 - Bugfix: Detect unset properties in classes.
 - Bugfix: Added closing style tags to both skins
 - Bugfix: Catch throwable in PHP 7.
+- Bugfix: REmoved the anoying speces from the hans template, so
+  people can copy stuff better from the output.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent
