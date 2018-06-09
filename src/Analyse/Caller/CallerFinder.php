@@ -60,7 +60,9 @@ class CallerFinder extends AbstractCaller
             'krexx::open',
             'krexx::' . $this->pool->config->getDevHandler(),
             'Krexx::open',
-            'Krexx::' . $this->pool->config->getDevHandler()
+            'Krexx::' . $this->pool->config->getDevHandler(),
+            'Krexx::log',
+            'krexx::log',
         );
         $this->pattern = 'krexx';
     }
