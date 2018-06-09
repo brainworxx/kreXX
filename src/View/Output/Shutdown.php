@@ -85,4 +85,12 @@ class Shutdown extends AbstractOutput
             $this->pool->chunks->sendDechunkedToBrowser($chunkString);
         }
     }
+
+    /**
+     * Register this one in the php shutdown phase.
+     */
+    public function finalize()
+    {
+        register_shutdown_function(array($this, 'shutdownCallback'));
+    }
 }

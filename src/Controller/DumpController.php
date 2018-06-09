@@ -98,6 +98,7 @@ class DumpController extends AbstractController
         $this->outputService->addChunkString($this->outputHeader($caller['type']));
         $this->outputService->addChunkString($analysis);
         $this->outputService->addChunkString($footer);
+        $this->outputService->finalize();
 
         return $this;
     }

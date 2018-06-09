@@ -127,6 +127,8 @@ abstract class AbstractController
 
         // Register our output service.
         // Depending on the setting, we use another class here.
+        // We get a new output service for every krexx call, because the hosting
+        // cms may do their stuff in the shutdown functions as well.
         $outputSetting = $pool->config->getSetting(Fallback::SETTING_DESTINATION);
         if ($outputSetting === Fallback::VALUE_BROWSER) {
             $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\Shutdown');
