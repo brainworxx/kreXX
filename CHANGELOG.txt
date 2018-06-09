@@ -7,6 +7,7 @@
   better results.
 - Added a forced logger, which van be reached by \Krexx:log();
 - Change: Some internal renaming.
+- Change: Removed the constants analysis configuration.
 - Bugfix: The position of the search field of the hans skin is now
   calculated correct when the viewport is not on top.
 - Bugfix: The scroll container detection of the hans skin works
@@ -32,7 +33,7 @@
 - Bugfix: Detect unset properties in classes.
 - Bugfix: Added closing style tags to both skins
 - Bugfix: Catch throwable in PHP 7.
-- Bugfix: REmoved the anoying speces from the hans template, so
+- Bugfix: Removed the anoying speces from the hans template, so
   people can copy stuff better from the output.
 
 2.4.0
