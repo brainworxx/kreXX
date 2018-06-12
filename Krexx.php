@@ -436,24 +436,27 @@ class Krexx
     {
         Pool::createPool();
 
+        // Output destination: file
+        static::$pool->config
+            ->settings[Fallback::SETTING_DESTINATION]
+            ->setSource('forced logging')
+            ->setValue('file');
+
+        // Do not care about ajax requests.
+        static::$pool->config
+            ->settings[Fallback::SETTING_DETECT_AJAX]
+            ->setSource('forced logging')
+            ->setValue(false);
+
+         static::$pool->config
+            ->loadConfigValue(Fallback::SETTING_DISABLED);
+
         // Disabled?
         if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
             return;
         }
 
         AbstractController::$analysisInProgress = true;
-
-        // Output destination: file
-        \Krexx::$pool->config
-            ->settings['destination']
-            ->setSource('forced logging')
-            ->setValue('file');
-
-        // Do not care about ajax requests.
-        \Krexx::$pool->config
-            ->settings['detectAjax']
-            ->setSource('forced logging')
-            ->setValue('false');
 
         // Start the anaylsis.
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
@@ -462,9 +465,9 @@ class Krexx
             ->reFatalAfterKrexx();
 
         // Reset everything afterwards.
-        \Krexx::$pool->config
-            ->loadConfigValue('destination')
-            ->loadConfigValue('detectAjax');
+        static::$pool->config
+            ->loadConfigValue(Fallback::SETTING_DESTINATION)
+            ->loadConfigValue(Fallback::SETTING_DETECT_AJAX);
 
         AbstractController::$analysisInProgress = false;
     }

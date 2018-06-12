@@ -202,7 +202,7 @@ class Config extends Fallback
                 if (($name === static::SETTING_DISABLED && $cookieSetting === static::VALUE_FALSE) === false) {
                     $model->setValue($cookieSetting)->setSource('Local cookie settings');
                     $this->settings[$name] = $model;
-                    return;
+                    return $this;
                 }
             }
         }
@@ -212,7 +212,7 @@ class Config extends Fallback
         if (isset($iniSettings) === true) {
             $model->setValue($iniSettings)->setSource('Krexx.ini settings');
             $this->settings[$name] = $model;
-            return;
+            return $this;
         }
 
         // Nothing yet? Give back factory settings.
