@@ -58,6 +58,13 @@ class Krexx
     public static $pool;
 
     /**
+     * Has kreXX been disabled via php call \Krexx::disable()?
+     *
+     * @var bool
+     */
+    static protected $disabledByPhp = false;
+
+    /**
      * Includes all needed files and sets some internal values.
      *
      * @internal
@@ -243,7 +250,10 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            AbstractController::$analysisInProgress ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -267,7 +277,10 @@ class Krexx
         Pool::createPool();
 
         // Disabled ?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            AbstractController::$analysisInProgress ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -294,7 +307,10 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            AbstractController::$analysisInProgress ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -322,7 +338,10 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            AbstractController::$analysisInProgress ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -348,6 +367,8 @@ class Krexx
         static::$pool->config->setDisabled(true);
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
             ->noFatalForKrexx();
+
+        static::$disabledByPhp = true;
     }
 
     /**
@@ -363,7 +384,9 @@ class Krexx
 
         // Disabled?
         // We are ignoring local settings here.
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED)) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -385,7 +408,9 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED)) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -416,7 +441,9 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED)) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -452,7 +479,10 @@ class Krexx
             ->loadConfigValue(Fallback::SETTING_DISABLED);
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) || AbstractController::$analysisInProgress) {
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            AbstractController::$analysisInProgress ||
+            static::$disabledByPhp
+        ) {
             return;
         }
 
@@ -465,9 +495,8 @@ class Krexx
             ->reFatalAfterKrexx();
 
         // Reset everything afterwards.
-        static::$pool->config
-            ->loadConfigValue(Fallback::SETTING_DESTINATION)
-            ->loadConfigValue(Fallback::SETTING_DETECT_AJAX);
+        static::$pool->config = static::$pool
+            ->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
 
         AbstractController::$analysisInProgress = false;
     }

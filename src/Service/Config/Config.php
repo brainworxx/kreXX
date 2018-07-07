@@ -114,15 +114,15 @@ class Config extends Fallback
         if ($this->isRequestAjaxOrCli() === true &&
             $this->getSetting(static::SETTING_DESTINATION) !== 'file'
         ) {
-            // No kreXX for you!
+            // No kreXX for you. At least until you start foorced logging.
             $this->setDisabled(true);
         }
 
         // Now that our settings are in place, we need to check the
         // ip to decide if we need to deactivate kreXX.
         if ($this->isAllowedIp($this->getSetting(static::SETTING_IP_RANGE)) === false) {
-            // No kreXX for you!
-            $this->setDisabled(true);
+            // No kreXX for you! At all.
+            \Krexx::disable();
         }
 
         $this->debugFuncList = explode(',', $this->getSetting(static::SETTING_DEBUG_METHODS));
