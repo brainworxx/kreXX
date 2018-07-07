@@ -49,7 +49,7 @@ class ReflectionClass extends \ReflectionClass
     protected $objectArray = array();
 
     /**
-     * The object we are cujrrently analysing.
+     * The object we are currently analysing.
      *
      * @var mixed
      */
@@ -103,7 +103,7 @@ class ReflectionClass extends \ReflectionClass
             return $refProperty->getValue($this->data);
         }
 
-        // If we are facing multiple declarations, the declaring class nsme
+        // If we are facing multiple declarations, the declaring class name
         // is set in front of the key.
         $propName = "\0" . $refProperty->getDeclaringClass()->getName() . "\0" . $propName;
         if (array_key_exists($propName, $this->objectArray)) {

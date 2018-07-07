@@ -80,7 +80,7 @@ class Event
      *   The model so far, if available.
      *
      * @return string
-     *   The generated markup from the event hanslers
+     *   The generated markup from the event handlers
      *   This will only get dispatched, if you use the start event.
      */
     public function dispatch($name, AbstractCallback $callback, Model $model = null)

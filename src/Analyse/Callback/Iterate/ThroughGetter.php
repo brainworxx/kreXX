@@ -363,8 +363,8 @@ class ThroughGetter extends AbstractCallback
             // Check if this is a property and return the first we find.
             $parentClass = $classReflection;
             while ($parentClass !== false) {
-                // Chack if it was declared somewhere deeper in the
-                // class stucture.
+                // Check if it was declared somewhere deeper in the
+                // class structure.
                 if ($parentClass->hasProperty($propertyName) === true) {
                     return $parentClass->getProperty($propertyName);
                 }

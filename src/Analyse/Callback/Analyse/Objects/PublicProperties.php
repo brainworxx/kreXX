@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
  *
  * @uses mixed data
- *   The class we are currently analsysing.
+ *   The class we are currently analysing.
  * @uses \ReflectionClass ref
  *   A reflection of the class we are currently analysing.
  */

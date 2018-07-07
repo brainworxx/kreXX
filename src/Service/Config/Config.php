@@ -114,7 +114,7 @@ class Config extends Fallback
         if ($this->isRequestAjaxOrCli() === true &&
             $this->getSetting(static::SETTING_DESTINATION) !== 'file'
         ) {
-            // No kreXX for you. At least until you start foorced logging.
+            // No kreXX for you. At least until you start forced logging.
             $this->setDisabled(true);
         }
 
@@ -179,7 +179,7 @@ class Config extends Fallback
      *   The name of the config value.
      *
      * @return $this
-     *   REturn this, for chaining.
+     *   Return this, for chaining.
      */
     public function loadConfigValue($name)
     {
