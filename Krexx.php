@@ -62,7 +62,7 @@ class Krexx
      *
      * @var bool
      */
-    static protected $disabledByPhp = false;
+    protected static $disabledByPhp = false;
 
     /**
      * Includes all needed files and sets some internal values.
@@ -462,7 +462,45 @@ class Krexx
     public static function log($data = null)
     {
         Pool::createPool();
+        static::startForcedLog();
+        static::open($data);
+        static::endForcedLog();
+    }
 
+    /**
+     * Force log a debug backtrace.
+     *
+     * When there are classes found inside the backtrace,
+     * they will be analysed.
+     *
+     * @api
+     */
+    public static function logBacktrace()
+    {
+        Pool::createPool();
+        static::startForcedLog();
+        static::backtrace();
+        static::endForcedLog();
+    }
+
+    /**
+     * Takes a "moment" and loggs the timer results.
+     *
+     * @api
+     */
+    public static function logTimerEnd()
+    {
+        Pool::createPool();
+        static::startForcedLog();
+        static::timerEnd();
+        static::endForcedLog();
+    }
+
+    /**
+     * Configure everything to start the forced logging.
+     */
+    protected static function startForcedLog()
+    {
         // Output destination: file
         static::$pool->config
             ->settings[Fallback::SETTING_DESTINATION]
@@ -477,27 +515,15 @@ class Krexx
 
          static::$pool->config
             ->loadConfigValue(Fallback::SETTING_DISABLED);
+    }
 
-        // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
-            AbstractController::$analysisInProgress ||
-            static::$disabledByPhp
-        ) {
-            return;
-        }
-
-        AbstractController::$analysisInProgress = true;
-
-        // Start the anaylsis.
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
-            ->noFatalForKrexx()
-            ->dumpAction($data)
-            ->reFatalAfterKrexx();
-
+    /**
+     * Reset everything after the forced logging.
+     */
+    protected static function endForcedLog()
+    {
         // Reset everything afterwards.
         static::$pool->config = static::$pool
             ->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
-
-        AbstractController::$analysisInProgress = false;
     }
 }
