@@ -74,7 +74,7 @@ class Event
      *
      * @param string $name
      *   The name of the event.
-     * @param array $callback
+     * @param AbstractCallback $callback
      *   The parameters for the callback.
      * @param \Brainworxx\Krexx\Analyse\Model|null $model
      *   The model so far, if available.
@@ -85,11 +85,13 @@ class Event
      */
     public function dispatch($name, AbstractCallback $callback, Model $model = null)
     {
-        $output = '';
+
         if (isset(self::$register[$name]) === false) {
             // No registered handler. Early return.
-            return $output;
+            return '';
         }
+
+        $output = '';
 
         // Got to handel them all.
         foreach (self::$register[$name] as $classname) {

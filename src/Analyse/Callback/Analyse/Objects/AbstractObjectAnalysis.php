@@ -65,7 +65,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
      *
      * @param array $refProps
      *   The list of the reflection properties.
-     * @param \ReflectionClass $ref
+     * @param ReflectionClass $ref
      *   The reflection of the object we are currently analysing.
      * @param string $label
      *   The additional part of the template file.
