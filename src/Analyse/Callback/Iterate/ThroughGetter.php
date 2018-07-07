@@ -178,8 +178,7 @@ class ThroughGetter extends AbstractCallback
         if (empty($refProp) === false) {
             // We've got ourselves a possible result!
             $nothingFound = false;
-            $refProp->setAccessible(true);
-            $value = $refProp->getValue($this->parameters['data']);
+            $value = $this->parameters['ref']->retrieveValue($refProp);
             $model->setData($value);
             if ($value === null) {
                 // A NULL value might mean that the values does not

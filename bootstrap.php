@@ -132,7 +132,9 @@ include 'src/Service/Flow/Recursion.php';
 include 'src/Service/Misc/Encoding.php';
 include 'src/Service/Misc/File.php';
 include 'src/Service/Misc/Registry.php';
-include 'src/Service/Misc/ReflectionUndeclaredProperty.php';
+
+include 'src/Service/Reflection/UndeclaredProperty.php';
+include 'src/Service/Reflection/ReflectionClass.php';
 
 include 'src/Service/Plugin/Registration.php';
 include 'src/Service/Plugin/PluginConfigInterface.php';

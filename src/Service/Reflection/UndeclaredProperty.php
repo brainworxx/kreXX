@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service\Misc;
+namespace Brainworxx\Krexx\Service\Reflection;
 
 /**
  * The original \ReflectionProperty may throw an error when used with
@@ -52,7 +52,7 @@ namespace Brainworxx\Krexx\Service\Misc;
  *
  * @package Brainworxx\Krexx\Service\Misc
  */
-class ReflectionUndeclaredProperty extends \ReflectionProperty
+class UndeclaredProperty extends \ReflectionProperty
 {
     /**
      * This one is always undeclared.

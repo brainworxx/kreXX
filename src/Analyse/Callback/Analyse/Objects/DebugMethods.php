@@ -64,9 +64,10 @@ class DebugMethods extends AbstractObjectAnalysis
      */
     public function callMe()
     {
-        $data = $this->parameters['data'];
-        /** @var \ReflectionClass $reflectionClass */
+
+        /** @var \Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters['ref'];
+        $data = $reflectionClass->getData();
         $output = $this->dispatchStartEvent();
 
         foreach (explode(',', $this->pool->config->getSetting(Fallback::SETTING_DEBUG_METHODS)) as $funcName) {

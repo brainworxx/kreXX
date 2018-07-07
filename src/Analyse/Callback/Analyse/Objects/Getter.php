@@ -56,9 +56,9 @@ class Getter extends AbstractObjectAnalysis
     {
         $output = $this->dispatchStartEvent();
 
-        $data = $this->parameters['data'];
-        /** @var \ReflectionClass $ref */
+        /** @var \Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters['ref'];
+
         // Get all public methods.
         $methodList = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
@@ -128,7 +128,6 @@ class Getter extends AbstractObjectAnalysis
                         ->addParameter('normalGetter', $normalGetter)
                         ->addParameter('isGetter', $isGetter)
                         ->addParameter('hasGetter', $hasGetter)
-                        ->addParameter('data', $data)
                         ->injectCallback(
                             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter')
                         )
