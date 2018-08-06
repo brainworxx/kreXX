@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Service\Config;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
-use Brainworxx\Krexx\Service\Plugin\Registration;
+use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 
 /**
  * Access the debug settings here.
@@ -100,12 +100,12 @@ class Config extends Fallback
 
         // Point the configuration to the right directories
         $this->directories = array(
-            'chunks' => Registration::getChunkFolder(),
-            'log' => Registration::getLogFolder(),
-            'config' => Registration::getConfigFile(),
+            'chunks' => SettingsGetter::getChunkFolder(),
+            'log' => SettingsGetter::getLogFolder(),
+            'config' => SettingsGetter::getConfigFile(),
         );
 
-        $this->methodBlacklist = Registration::getMethodDebugBlacklist();
+        $this->methodBlacklist = SettingsGetter::getMethodDebugBlacklist();
 
         $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
         $this->iniConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Ini')

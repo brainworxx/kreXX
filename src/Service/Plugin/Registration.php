@@ -34,18 +34,17 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
-use Brainworxx\Krexx\Service\Factory\Factory;
-
 /**
- * Register, activate and deactivate plugins.
+ * Allow plugins to alter the configuration
+ *
+ * @api
  *
  * @package Brainworxx\Krexx\Service
  */
 class Registration
 {
 
-    const IS_ACTIVE = 'isActive';
-    const CONFIG_CLASS = 'configClass';
+
 
     /**
      * The registered plugin configuration files as class names.
@@ -83,95 +82,6 @@ class Registration
     protected static $blacklistDebugMethods = array();
 
     /**
-     * Register a plugin.
-     *
-     * @param string $configClass
-     *   The class name of the configuration class for this plugin.
-     *   Must extend the \Brainworxx\Krexx\Service\AbstractPluginConfig
-     */
-    public static function register($configClass)
-    {
-        static::$plugins[$configClass] = array(
-            static::CONFIG_CLASS => $configClass,
-            static::IS_ACTIVE => false
-        );
-    }
-
-    /**
-     * We activate the plugin with the name, and execute its configuration method.
-     *
-     * @param string $name
-     *   The name of the plugin.
-     */
-    public static function activatePlugin($name)
-    {
-        if (isset(static::$plugins[$name])) {
-            static::$plugins[$name][static::IS_ACTIVE] = true;
-            /** @var \Brainworxx\Krexx\Service\Plugin\PluginConfigInterface $staticPlugin */
-            $staticPlugin = static::$plugins[$name][static::CONFIG_CLASS];
-            $staticPlugin::exec();
-        }
-        // No registration, no config, no plugin.
-        // Do nothing.
-    }
-
-    /**
-     * We deactivate the plugin and reset the configuration
-     *
-     * @internal
-     *
-     * @param string $name
-     *   The name of the plugin.
-     */
-    public static function deactivatePlugin($name)
-    {
-        if (static::$plugins[$name][static::IS_ACTIVE] !== true) {
-            // We will not purge everything for a already deactivated plugin.
-            return;
-        }
-
-        // Purge the rewrites.
-        Factory::$rewrite = array();
-        // Purge the event registration.
-        \Krexx::$pool->eventService->purge();
-        // Renew the configration class, to undo all tampering with it.
-        \Krexx::$pool->config = \Krexx::$pool->createClass('\\Brainworxx\\Krexx\\Service\\Config\\Config');
-        // Purge possible redirtects for the working folders
-        static::$logFolder = '';
-        static::$chunkFolder = '';
-        static::$configFile = '';
-
-        static::$blacklistDebugMethods = array();
-
-        // Go through the remaining plugins.
-        static::$plugins[$name][static::IS_ACTIVE] = false;
-        foreach (static::$plugins as $pluginName => $plugin) {
-            if ($plugin[static::IS_ACTIVE]) {
-                /** @var \Brainworxx\Krexx\Service\Plugin\PluginConfigInterface $staticPlugin */
-                $staticPlugin = static::$plugins[$pluginName][static::CONFIG_CLASS];
-                $staticPlugin::exec();
-            }
-        }
-    }
-
-    /**
-     * Getter for the configured configuration file
-     *
-     * @internal
-     *
-     * @return string
-     *   Absolute path to the configuration file.
-     */
-    public static function getConfigFile()
-    {
-        if (empty(static::$configFile)) {
-            static::$configFile = KREXX_DIR . 'config/Krexx.ini';
-        }
-
-        return static::$configFile;
-    }
-
-    /**
      * Setter for the path to the configuration file.
      *
      * @param $path
@@ -183,23 +93,6 @@ class Registration
     }
 
     /**
-     * Setter for the path to the chunks folder.
-     *
-     * @internal
-     *
-     * @return string
-     *   The absolute path to the chunks folder.
-     */
-    public static function getChunkFolder()
-    {
-        if (empty(static::$chunkFolder)) {
-            static::$chunkFolder = KREXX_DIR . 'chunks/';
-        }
-
-        return static::$chunkFolder;
-    }
-
-    /**
      * Setter for the path to the chaunks folder.
      *
      * @param $path
@@ -208,23 +101,6 @@ class Registration
     public static function setChunksFolder($path)
     {
         static::$chunkFolder = $path;
-    }
-
-    /**
-     * Getter for the logfolder.
-     *
-     * @internal
-     *
-     * @return string
-     *   The absolute path to the log folder.
-     */
-    public static function getLogFolder()
-    {
-        if (empty(static::$logFolder)) {
-            static::$logFolder = KREXX_DIR . 'log/';
-        }
-
-        return static::$logFolder;
     }
 
     /**
@@ -256,8 +132,5 @@ class Registration
         }
     }
 
-    public static function getMethodDebugBlacklist()
-    {
-        return static::$blacklistDebugMethods;
-    }
+
 }
