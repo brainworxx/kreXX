@@ -76,6 +76,13 @@ class Registration
     protected static $configFile;
 
     /**
+     * Blacklist of forbidden debug methods.
+     *
+     * @var array
+     */
+    protected static $blacklistDebugMethods = array();
+
+    /**
      * Register a plugin.
      *
      * @param string $configClass
@@ -111,6 +118,8 @@ class Registration
     /**
      * We deactivate the plugin and reset the configuration
      *
+     * @internal
+     *
      * @param string $name
      *   The name of the plugin.
      */
@@ -132,6 +141,8 @@ class Registration
         static::$chunkFolder = '';
         static::$configFile = '';
 
+        static::$blacklistDebugMethods = array();
+
         // Go through the remaining plugins.
         static::$plugins[$name][static::IS_ACTIVE] = false;
         foreach (static::$plugins as $pluginName => $plugin) {
@@ -145,6 +156,8 @@ class Registration
 
     /**
      * Getter for the configured configuration file
+     *
+     * @internal
      *
      * @return string
      *   Absolute path to the configuration file.
@@ -172,6 +185,8 @@ class Registration
     /**
      * Setter for the path to the chunks folder.
      *
+     * @internal
+     *
      * @return string
      *   The absolute path to the chunks folder.
      */
@@ -198,6 +213,8 @@ class Registration
     /**
      * Getter for the logfolder.
      *
+     * @internal
+     *
      * @return string
      *   The absolute path to the log folder.
      */
@@ -219,5 +236,28 @@ class Registration
     public static function setLogFolder($path)
     {
         static::$logFolder = $path;
+    }
+
+    /**
+     * Add a class / method to the debug method blacklist
+     *
+     * @api
+     *
+     * @param string $class
+     * @param string $methodName
+     */
+    public static function addMethodToDebugBlacklist($class, $methodName)
+    {
+        if (isset(static::$blacklistDebugMethods[$class]) === false) {
+            static::$blacklistDebugMethods[$class] = array();
+        }
+        if (in_array($methodName, static::$blacklistDebugMethods[$class]) === false) {
+            static::$blacklistDebugMethods[$class][] = $methodName;
+        }
+    }
+
+    public static function getMethodDebugBlacklist()
+    {
+        return static::$blacklistDebugMethods;
     }
 }

@@ -105,6 +105,8 @@ class Config extends Fallback
             'config' => Registration::getConfigFile(),
         );
 
+        $this->methodBlacklist = Registration::getMethodDebugBlacklist();
+
         $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
         $this->iniConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Ini')
             ->loadIniFile($this->getPathToIniFile());
