@@ -49,7 +49,7 @@ class Event
      *
      * @var array
      */
-    protected static $register = array();
+    public static $register = array();
 
     /**
      * The pool.
@@ -98,45 +98,5 @@ class Event
         }
 
         return $output;
-    }
-
-    /**
-     * Register an event handler.
-     *
-     * @param string $name
-     *   The event name
-     * @param string $className
-     *   The class name.
-     */
-    public static function register($name, $className)
-    {
-        if (isset(self::$register[$name]) === false) {
-            self::$register[$name] = array();
-        }
-        self::$register[$name][$className] = $className;
-    }
-
-    /**
-     * Unregister an event handler.
-     *
-     * @param string $name
-     *   The event name
-     * @param string $className
-     *   The class name.
-     */
-    public static function unregister($name, $className)
-    {
-        if (isset(self::$register[$name]) === false) {
-            self::$register[$name] = array();
-        }
-        unset(self::$register[$className]);
-    }
-
-    /**
-     * Purge all registered events.
-     */
-    public static function purge()
-    {
-        self::$register = array();
     }
 }

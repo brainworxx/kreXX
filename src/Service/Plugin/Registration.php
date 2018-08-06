@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
+use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Factory\Factory;
 
 /**
@@ -159,5 +160,37 @@ class Registration
         // We interface directly with the factory to enable the plugin to
         // get it's results directly.
         Factory::$rewrite[$originalClass] = $rewriteClass;
+    }
+
+    /**
+     * Register an event handler.
+     *
+     * @param string $name
+     *   The event name
+     * @param string $className
+     *   The class name.
+     */
+    public static function registerEvent($name, $className)
+    {
+        if (isset(Event::$register[$name]) === false) {
+            Event::$register[$name] = array();
+        }
+        Event::$register[$name][$className] = $className;
+    }
+
+    /**
+     * Unregister an event handler.
+     *
+     * @param string $name
+     *   The event name
+     * @param string $className
+     *   The class name.
+     */
+    public static function unregisterEvent($name, $className)
+    {
+        if (isset(Event::$register[$name]) === false) {
+            Event::$register[$name] = array();
+        }
+        unset(Event::$register[$className]);
     }
 }

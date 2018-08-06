@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
+use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Factory\Factory;
 
 /**
@@ -100,7 +101,7 @@ class SettingsGetter extends Registration
         // Purge the rewrites.
         Factory::$rewrite = array();
         // Purge the event registration.
-        \Krexx::$pool->eventService->purge();
+        Event::$register = array();
         // Renew the configration class, to undo all tampering with it.
         \Krexx::$pool->config = \Krexx::$pool->createClass('\\Brainworxx\\Krexx\\Service\\Config\\Config');
         // Purge possible redirtects for the working folders
