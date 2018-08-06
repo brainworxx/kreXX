@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
+use Brainworxx\Krexx\Service\Factory\Factory;
+
 /**
  * Allow plugins to alter the configuration
  *
@@ -43,8 +45,6 @@ namespace Brainworxx\Krexx\Service\Plugin;
  */
 class Registration
 {
-
-
 
     /**
      * The registered plugin configuration files as class names.
@@ -80,6 +80,20 @@ class Registration
      * @var array
      */
     protected static $blacklistDebugMethods = array();
+
+    /**
+     * Additional help texts from the plugin.
+     *
+     * @var array
+     */
+    protected static $additionalHepTexts = array();
+
+    /**
+     * The rewrites for the factory.
+     *
+     * @var array
+     */
+    protected static $rewrites = array();
 
     /**
      * Setter for the path to the configuration file.
@@ -132,5 +146,18 @@ class Registration
         }
     }
 
-
+    /**
+     * Adding a single overwrite class for the factory.
+     *
+     * Wrapper arround Factory::$rewrite[].
+     *
+     * @param string $originalClass
+     * @param string $rewriteClass
+     */
+    public static function addRewrite($originalClass, $rewriteClass)
+    {
+        // We interface directly with the factory to enable the plugin to
+        // get it's results directly.
+        Factory::$rewrite[$originalClass] = $rewriteClass;
+    }
 }

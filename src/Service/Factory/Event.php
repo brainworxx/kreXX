@@ -85,7 +85,6 @@ class Event
      */
     public function dispatch($name, AbstractCallback $callback, Model $model = null)
     {
-
         if (isset(self::$register[$name]) === false) {
             // No registered handler. Early return.
             return '';

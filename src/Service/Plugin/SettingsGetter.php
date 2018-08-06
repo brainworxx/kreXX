@@ -182,4 +182,18 @@ class SettingsGetter extends Registration
     {
         return static::$blacklistDebugMethods;
     }
+
+    /**
+     * Getter for the rewrites.
+     *
+     * key = original class name.
+     * value = new class name.
+     *
+     * @return array
+     *   The rewrites.
+     */
+    public static function getRewrites()
+    {
+        return static::$rewrites;
+    }
 }
