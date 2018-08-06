@@ -49,6 +49,8 @@
   detection, and works better with the forced logging.
 - Bugfix: Prevent other js libraries from messing with the search
   form.
+- Bugfix: Prevent a fatal when trying to read the file time from a
+  not existing file.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent

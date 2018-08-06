@@ -346,4 +346,26 @@ class File
         // Set the cache and return it.
         return static::$isReadableCache[$filePath] = is_readable($filePath) && is_file($filePath);
     }
+
+    /**
+     * Just like filemtime(), but with some error handling.
+     *
+     * @param string $filePath
+     *
+     * @return int
+     *   Timestamp of the file.
+     */
+    public function filetime($filePath)
+    {
+        $filePath = realpath($filePath);
+
+        if ($this->fileIsReadable($filePath)) {
+            return filemtime($filePath);
+        }
+
+        // Fallback to the current timestamp.
+        // We are not interested in old file.
+        // The current timestamp indicates, that this not-existing file is new.
+        return time();
+    }
 }
