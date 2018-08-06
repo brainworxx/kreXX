@@ -43,6 +43,10 @@ use Brainworxx\Krexx\Service\Factory\Factory;
  */
 class Registration
 {
+
+    const IS_ACTIVE = 'isActive';
+    const CONFIG_CLASS = 'configClass';
+
     /**
      * The registered plugin configuration files as class names.
      *
@@ -50,8 +54,26 @@ class Registration
      */
     protected static $plugins = array();
 
-    const IS_ACTIVE = 'isActive';
-    const CONFIG_CLASS = 'configClass';
+    /**
+     * The configured chunk folder from the plugin.
+     *
+     * @var string
+     */
+    protected static $chunkFolder;
+
+    /**
+     * The configures log folder from the plugin.
+     *
+     * @var string
+     */
+    protected static $logFolder;
+
+    /**
+     * The configured configuration file from the plugin.
+     *
+     * @var string
+     */
+    protected static $configFile;
 
     /**
      * Register a plugin.
@@ -94,19 +116,108 @@ class Registration
      */
     public static function deactivatePlugin($name)
     {
+        if (static::$plugins[$name][static::IS_ACTIVE] !== true) {
+            // We will not purge everything for a already deactivated plugin.
+            return;
+        }
+
         // Purge the rewrites.
         Factory::$rewrite = array();
         // Purge the event registration.
         \Krexx::$pool->eventService->purge();
+        // Renew the configration class, to undo all tampering with it.
+        \Krexx::$pool->config = \Krexx::$pool->createClass('\\Brainworxx\\Krexx\\Service\\Config\\Config');
+        // Purge possible redirtects for the working folders
+        static::$logFolder = '';
+        static::$chunkFolder = '';
+        static::$configFile = '';
 
         // Go through the remaining plugins.
         static::$plugins[$name][static::IS_ACTIVE] = false;
-        foreach (static::$plugins as $plugin) {
+        foreach (static::$plugins as $pluginName => $plugin) {
             if ($plugin[static::IS_ACTIVE]) {
                 /** @var \Brainworxx\Krexx\Service\Plugin\PluginConfigInterface $staticPlugin */
-                $staticPlugin = static::$plugins[$name][static::CONFIG_CLASS];
+                $staticPlugin = static::$plugins[$pluginName][static::CONFIG_CLASS];
                 $staticPlugin::exec();
             }
         }
+    }
+
+    /**
+     * Getter for the configured configuration file
+     *
+     * @return string
+     *   Absolute path to the configuration file.
+     */
+    public static function getConfigFile()
+    {
+        if (empty(static::$configFile)) {
+            static::$configFile = KREXX_DIR . 'config/Krexx.ini';
+        }
+
+        return static::$configFile;
+    }
+
+    /**
+     * Setter for the path to the configuration file.
+     *
+     * @param $path
+     *   The absolute path to the configuration file.
+     */
+    public static function setConfigFile($path)
+    {
+        static::$configFile = $path;
+    }
+
+    /**
+     * Setter for the path to the chunks folder.
+     *
+     * @return string
+     *   The absolute path to the chunks folder.
+     */
+    public static function getChunkFolder()
+    {
+        if (empty(static::$chunkFolder)) {
+            static::$chunkFolder = KREXX_DIR . 'chunks/';
+        }
+
+        return static::$chunkFolder;
+    }
+
+    /**
+     * Setter for the path to the chaunks folder.
+     *
+     * @param $path
+     *   The absolute path to the chunks folder.
+     */
+    public static function setChunksFolder($path)
+    {
+        static::$chunkFolder = $path;
+    }
+
+    /**
+     * Getter for the logfolder.
+     *
+     * @return string
+     *   The absolute path to the log folder.
+     */
+    public static function getLogFolder()
+    {
+        if (empty(static::$logFolder)) {
+            static::$logFolder = KREXX_DIR . 'log/';
+        }
+
+        return static::$logFolder;
+    }
+
+    /**
+     * Setter for the log folder.
+     *
+     * @param $path
+     *   The absolute path to the log folder.
+     */
+    public static function setLogFolder($path)
+    {
+        static::$logFolder = $path;
     }
 }

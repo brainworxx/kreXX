@@ -149,13 +149,6 @@ include 'src/View/AbstractRender.php';
 include 'src/View/Messages.php';
 include 'src/View/Render.php';
 
-// Point the configuration to the right directories
-\Brainworxx\Krexx\Service\Config\Config::$directories = array(
-    'chunks' => KREXX_DIR . 'chunks/',
-    'log' => KREXX_DIR . 'log/',
-    'config' => KREXX_DIR . 'config/Krexx.ini',
-);
-
 if (!function_exists('krexx')) {
     /**
      * Alias function for object analysis.

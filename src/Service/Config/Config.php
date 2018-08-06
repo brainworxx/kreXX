@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Service\Config;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
+use Brainworxx\Krexx\Service\Plugin\Registration;
 
 /**
  * Access the debug settings here.
@@ -86,7 +87,7 @@ class Config extends Fallback
      *
      * @var array
      */
-    public static $directories = array();
+    protected $directories = array();
 
     /**
      * Inject the pool and load the configuration.
@@ -96,6 +97,13 @@ class Config extends Fallback
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
+
+        // Point the configuration to the right directories
+        $this->directories = array(
+            'chunks' => Registration::getChunkFolder(),
+            'log' => Registration::getLogFolder(),
+            'config' => Registration::getConfigFile(),
+        );
 
         $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
         $this->iniConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Ini')
@@ -261,7 +269,7 @@ class Config extends Fallback
      */
     public function getChunkDir()
     {
-        return static::$directories['chunks'];
+        return $this->directories['chunks'];
     }
 
     /**
@@ -272,7 +280,7 @@ class Config extends Fallback
      */
     public function getLogDir()
     {
-        return static::$directories['log'];
+        return $this->directories['log'];
     }
 
     /**
@@ -283,7 +291,7 @@ class Config extends Fallback
      */
     public function getPathToIniFile()
     {
-        return static::$directories['config'];
+        return $this->directories['config'];
     }
 
     /**
