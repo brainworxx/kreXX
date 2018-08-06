@@ -45,6 +45,8 @@
 - Bugfix: Prevent a possible fatal when analysing methods or
   closures, and the typehinted class for this parameter does not
   exist.
+- Bugfix: timer::moment() now disrespects the ajax or shell
+  detection, and works better with the forced logging.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent
