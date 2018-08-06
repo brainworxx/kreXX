@@ -42,6 +42,9 @@
   people can copy stuff better from the output.
 - Bugfix: Added 'Krexx' with a capital 'K' to the caller finder
   pattern.
+- Bugfix: Prevent a possible fatal when analysing methods or
+  closures, and the typehinted class for this parameter does not
+  exist.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent
