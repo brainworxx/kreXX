@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Service\Factory;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 
 /**
  * Calling all registered event handlers on the event.
@@ -49,7 +50,7 @@ class Event
      *
      * @var array
      */
-    public static $register = array();
+    public $register = array();
 
     /**
      * The pool.
@@ -67,6 +68,7 @@ class Event
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
+        $this->register = SettingsGetter::getEventList();
     }
 
     /**
@@ -85,7 +87,7 @@ class Event
      */
     public function dispatch($name, AbstractCallback $callback, Model $model = null)
     {
-        if (isset(self::$register[$name]) === false) {
+        if (isset($this->register[$name]) === false) {
             // No registered handler. Early return.
             return '';
         }
@@ -93,7 +95,7 @@ class Event
         $output = '';
 
         // Got to handel them all.
-        foreach (self::$register[$name] as $classname) {
+        foreach ($this->register[$name] as $classname) {
             $output .= $this->pool->createClass($classname)->handle($callback, $model);
         }
 
