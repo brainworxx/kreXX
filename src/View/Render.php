@@ -90,6 +90,7 @@ class Render extends AbstractRender
     const MARKER_CLASS_NAME = '{className}';
     const MARKER_LINE_NO = '{lineNo}';
     const MARKER_SOURCE_CODE = '{sourceCode}';
+    const MARKER_PLUGINS = '{plugins}';
 
     /**
      * {@inheritdoc}
