@@ -180,7 +180,7 @@ class Messages
      * @param string $file
      *   Absolute path to the file we want to read.
      */
-    protected function readHelpFile($file)
+    public function readHelpFile($file)
     {
         $this->helpArray = array_merge(
             $this->helpArray,
