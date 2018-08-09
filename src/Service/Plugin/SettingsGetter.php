@@ -34,9 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
-use Brainworxx\Krexx\Service\Factory\Event;
-use Brainworxx\Krexx\Service\Factory\Factory;
-
 /**
  * Interfacing with the data supplied by the plugins.
  *
@@ -78,6 +75,13 @@ class SettingsGetter extends Registration
             /** @var \Brainworxx\Krexx\Service\Plugin\PluginConfigInterface $staticPlugin */
             $staticPlugin = static::$plugins[$name][static::CONFIG_CLASS];
             $staticPlugin::exec();
+
+            if (isset(\Krexx::$pool)) {
+                // Update stuff in the pool.
+                \Krexx::$pool->rewrite = static::$rewriteList;
+                \Krexx::$pool->eventService->register = static::$eventList;
+                \Krexx::$pool->messages->readHelpTexts();
+            }
         }
         // No registration, no config, no plugin.
         // Do nothing.
@@ -105,17 +109,13 @@ class SettingsGetter extends Registration
         static::$blacklistDebugMethods = array();
         static::$blacklistDebugClass = array();
         static::$additionalHelpFiles = array();
-
-        // Purge the rewrites.
-        Factory::$rewrite = array();
-        // Purge the event registration.
-        Event::$register = array();
+        static::$eventList = array();
+        static::$rewriteList = array();
 
         // Go through the remaining plugins.
         static::$plugins[$name][static::IS_ACTIVE] = false;
         foreach (static::$plugins as $pluginName => $plugin) {
             if ($plugin[static::IS_ACTIVE]) {
-                /** @var \Brainworxx\Krexx\Service\Plugin\PluginConfigInterface $staticPlugin */
                 static::$plugins[$pluginName][static::CONFIG_CLASS]::exec();
             }
         }
@@ -123,8 +123,10 @@ class SettingsGetter extends Registration
         // Renew the configration class, so the new one will load all settings
         // from the registration class.
         if (isset(\Krexx::$pool)) {
+            \Krexx::$pool->rewrite = static::$rewriteList;
+            \Krexx::$pool->eventService->register = static::$eventList;
             \Krexx::$pool->config = \Krexx::$pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
-            \Krexx::$pool->messages = \Krexx::$pool->createClass('Brainworxx\\Krexx\\View\\Messages');
+            \Krexx::$pool->messages->readHelpTexts();
         }
     }
 
@@ -216,9 +218,22 @@ class SettingsGetter extends Registration
      * @return array
      *   The rewrites.
      */
-    public static function getRewrites()
+    public static function getRewriteList()
     {
-        return static::$rewrites;
+        return static::$rewriteList;
+    }
+
+    /**
+     * Getter for the event list.
+     *
+     * @internal
+     *
+     * @return array
+     *   The event list.
+     */
+    public static function getEventList()
+    {
+        return static::$eventList;
     }
 
     /**

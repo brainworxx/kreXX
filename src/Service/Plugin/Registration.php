@@ -34,10 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
-use Brainworxx\Krexx\Service\Factory\Event;
-use Brainworxx\Krexx\Service\Factory\Factory;
-use Brainworxx\Krexx\View\Messages;
-
 /**
  * Allow plugins to alter the configuration
  *
@@ -91,18 +87,25 @@ class Registration
     protected static $blacklistDebugClass = array();
 
     /**
-     * The rewrites for the factory.
-     *
-     * @var array
-     */
-    protected static $rewrites = array();
-
-    /**
      * Additinal help files with text for the debugger.
      *
      * @var array
      */
     protected static $additionalHelpFiles = array();
+
+    /**
+     * List of all class rewritesfor the factory.
+     *
+     * @var array
+     */
+    protected static $rewriteList = array();
+
+    /**
+     * List of all registered events for the event handler.
+     *
+     * @var array
+     */
+    protected static $eventList = array();
 
     /**
      * Setter for the path to the configuration file.
@@ -190,9 +193,7 @@ class Registration
      */
     public static function addRewrite($originalClass, $rewriteClass)
     {
-        // We interface directly with the factory to enable the plugin to
-        // get it's results directly.
-        Factory::$rewrite[$originalClass] = $rewriteClass;
+        static::$rewriteList[$originalClass] = $rewriteClass;
     }
 
     /**
@@ -207,28 +208,10 @@ class Registration
      */
     public static function registerEvent($name, $className)
     {
-        if (isset(Event::$register[$name]) === false) {
-            Event::$register[$name] = array();
+        if (isset(static::$eventList[$name]) === false) {
+            static::$eventList[$name] = array();
         }
-        Event::$register[$name][$className] = $className;
-    }
-
-    /**
-     * Unregister an event handler.
-     *
-     * @api
-     *
-     * @param string $name
-     *   The event name
-     * @param string $className
-     *   The class name.
-     */
-    public static function unregisterEvent($name, $className)
-    {
-        if (isset(Event::$register[$name]) === false) {
-            Event::$register[$name] = array();
-        }
-        unset(Event::$register[$className]);
+        static::$eventList[$name][$className] = $className;
     }
 
     /**
