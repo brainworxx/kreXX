@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Service\Plugin;
 
 use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Factory\Factory;
+use Brainworxx\Krexx\View\Messages;
 
 /**
  * Allow plugins to alter the configuration
@@ -83,11 +84,11 @@ class Registration
     protected static $blacklistDebugMethods = array();
 
     /**
-     * Additional help texts from the plugin.
+     * Blacklist of classes, that will never get debug-method-called.
      *
      * @var array
      */
-    protected static $additionalHepTexts = array();
+    protected static $blacklistDebugClass = array();
 
     /**
      * The rewrites for the factory.
@@ -97,7 +98,16 @@ class Registration
     protected static $rewrites = array();
 
     /**
+     * Additinal help files with text for the debugger.
+     *
+     * @var array
+     */
+    protected static $additionalHelpFiles = array();
+
+    /**
      * Setter for the path to the configuration file.
+     *
+     * @api
      *
      * @param $path
      *   The absolute path to the configuration file.
@@ -110,6 +120,8 @@ class Registration
     /**
      * Setter for the path to the chaunks folder.
      *
+     * @api
+     *
      * @param $path
      *   The absolute path to the chunks folder.
      */
@@ -120,6 +132,8 @@ class Registration
 
     /**
      * Setter for the log folder.
+     *
+     * @api
      *
      * @param $path
      *   The absolute path to the log folder.
@@ -135,7 +149,9 @@ class Registration
      * @api
      *
      * @param string $class
+     *   The class, where  the method is hosted,
      * @param string $methodName
+     *   The name of the method.
      */
     public static function addMethodToDebugBlacklist($class, $methodName)
     {
@@ -148,9 +164,26 @@ class Registration
     }
 
     /**
+     * Add a class / method to the debug method blacklist
+     *
+     * @api
+     *
+     * @param string $class
+     *   The class name that gets blacklisted.
+     */
+    public static function addClassToDebugBlacklist($class)
+    {
+        if (in_array($class, static::$blacklistDebugMethods) === false) {
+            static::$blacklistDebugMethods[] = $class;
+        }
+    }
+
+    /**
      * Adding a single overwrite class for the factory.
      *
      * Wrapper arround Factory::$rewrite[].
+     *
+     * @api
      *
      * @param string $originalClass
      * @param string $rewriteClass
@@ -164,6 +197,8 @@ class Registration
 
     /**
      * Register an event handler.
+     *
+     * @api
      *
      * @param string $name
      *   The event name
@@ -181,6 +216,8 @@ class Registration
     /**
      * Unregister an event handler.
      *
+     * @api
+     *
      * @param string $name
      *   The event name
      * @param string $className
@@ -192,5 +229,19 @@ class Registration
             Event::$register[$name] = array();
         }
         unset(Event::$register[$className]);
+    }
+
+    /**
+     * Register an additional help file.
+     *
+     * You can also overwrite existing texts here.
+     *
+     * @api
+     *
+     * @param string $path
+     */
+    public static function registerAdditionalHelpFile($path)
+    {
+        static::$additionalHelpFiles[] = $path;
     }
 }

@@ -98,27 +98,33 @@ class SettingsGetter extends Registration
             return;
         }
 
+        // Purge all settings in the underlying registration class.
+        static::$logFolder = '';
+        static::$chunkFolder = '';
+        static::$configFile = '';
+        static::$blacklistDebugMethods = array();
+        static::$blacklistDebugClass = array();
+        static::$additionalHelpFiles = array();
+
         // Purge the rewrites.
         Factory::$rewrite = array();
         // Purge the event registration.
         Event::$register = array();
-        // Renew the configration class, to undo all tampering with it.
-        \Krexx::$pool->config = \Krexx::$pool->createClass('\\Brainworxx\\Krexx\\Service\\Config\\Config');
-        // Purge possible redirtects for the working folders
-        static::$logFolder = '';
-        static::$chunkFolder = '';
-        static::$configFile = '';
-
-        static::$blacklistDebugMethods = array();
 
         // Go through the remaining plugins.
         static::$plugins[$name][static::IS_ACTIVE] = false;
         foreach (static::$plugins as $pluginName => $plugin) {
             if ($plugin[static::IS_ACTIVE]) {
                 /** @var \Brainworxx\Krexx\Service\Plugin\PluginConfigInterface $staticPlugin */
-                $staticPlugin = static::$plugins[$pluginName][static::CONFIG_CLASS];
-                $staticPlugin::exec();
+                static::$plugins[$pluginName][static::CONFIG_CLASS]::exec();
             }
+        }
+
+        // Renew the configration class, so the new one will load all settings
+        // from the registration class.
+        if (isset(\Krexx::$pool)) {
+            \Krexx::$pool->config = \Krexx::$pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
+            \Krexx::$pool->messages = \Krexx::$pool->createClass('Brainworxx\\Krexx\\View\\Messages');
         }
     }
 
@@ -174,14 +180,29 @@ class SettingsGetter extends Registration
     }
 
     /**
-     * Getter for the blacklisted debugmethods.
+     * Getter for the blacklisted debug methods.
+     *
+     * @internal
      *
      * @return array
      *   The debug methods.
      */
-    public static function getMethodDebugBlacklist()
+    public static function getBlacklistDebugMethods()
     {
         return static::$blacklistDebugMethods;
+    }
+
+    /**
+     * Getter for the blacklisted debug method classes.
+     *
+     * @internal
+     *
+     * @return array
+     *   THe liost with classes.
+     */
+    public static function getBlacklistDebugClass()
+    {
+        return static::$blacklistDebugClass;
     }
 
     /**
@@ -190,11 +211,26 @@ class SettingsGetter extends Registration
      * key = original class name.
      * value = new class name.
      *
+     * @internal
+     *
      * @return array
      *   The rewrites.
      */
     public static function getRewrites()
     {
         return static::$rewrites;
+    }
+
+    /**
+     * Getter for additional help files, absolute path.
+     *
+     * @internal
+     *
+     * @return array
+     *   List of these files
+     */
+    public static function getAdditionelHelpFiles()
+    {
+        return static::$additionalHelpFiles;
     }
 }

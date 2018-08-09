@@ -1,7 +1,6 @@
 3.0.0 dev
 - Added 'is' and 'has' to the getter analysis.
-- Added half-asses plugin support, to replace the half-asses
-  overwrites
+- Added plugin support, to replace the half-asses overwrites.
 - Added a event dispatcher.
 - Added deeper search for the source code getter analysis for
   better results.

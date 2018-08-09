@@ -105,7 +105,14 @@ class Config extends Fallback
             'config' => SettingsGetter::getConfigFile(),
         );
 
-        $this->methodBlacklist = SettingsGetter::getMethodDebugBlacklist();
+        $this->methodBlacklist = array_merge_recursive(
+            $this->methodBlacklist,
+            SettingsGetter::getBlacklistDebugMethods()
+        );
+        $this->classBlacklist = array_merge(
+            $this->classBlacklist,
+            SettingsGetter::getBlacklistDebugClass()
+        );
 
         $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security');
         $this->iniConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Ini')
