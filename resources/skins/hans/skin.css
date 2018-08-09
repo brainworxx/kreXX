@@ -798,6 +798,7 @@ div.kwrapper {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
+    margin-left: 15px;
 }
 
 .kwrapper .kchild .kel .kodsp ::selection,
@@ -849,7 +850,7 @@ div.kwrapper {
     height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    margin-right: 20px;
+    margin-right: 5px;
     margin-top: 0;
     margin-bottom: 5px;
     background-color: transparent;
