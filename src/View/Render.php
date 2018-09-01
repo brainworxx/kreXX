@@ -171,10 +171,12 @@ class Render extends AbstractRender
             array(
                 static::MARKER_CONFIG_INFO,
                 static::MARKER_CALLER,
+                static::MARKER_PLUGINS,
             ),
             array(
                 $configOutput,
                 $caller,
+                $this->renderPluginList()
             ),
             $this->getTemplateFileContent('footer')
         );

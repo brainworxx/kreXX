@@ -892,3 +892,10 @@ div.kwrapper {
 .kwrapper .khelp .khelprow .khelptitle {
     min-width: 50px;
 }
+
+.kwrapper .kconfiguration .kel-bg.kisactive {
+    background-color: #a6e22a;;
+}
+.kwrapper .kconfiguration .kel .kisactive {
+    color: #a6e22a;;
+}
