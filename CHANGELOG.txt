@@ -8,6 +8,7 @@
 - Added a jumpTo element after uncollapsing the breadcrumbs for
   better usability.
 - Added support for "\0" chars.
+- Added the count info to the traversable analysis.
 - The file logger writes the logfile right after the analysis is
   complete.
 - Change: Some internal renaming.
