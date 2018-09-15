@@ -502,8 +502,10 @@
      *
      * @param {Element} el
      *   The element you want to focus on.
+     * @param {boolean} noHighlight
+     *   Do we need to highlight the elenemt we arejuming to?
      */
-    krexx.jumpTo = function (el) {
+    krexx.jumpTo = function (el, noHighlight) {
 
         var nests = kdt.getParents(el, '.knest');
         var container;
@@ -515,10 +517,12 @@
             kdt.addClass([nests[i].previousElementSibling], 'kopened');
         }
 
-        // Remove old highlighting.
-        kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
-        // Highlight new one.
-        kdt.addClass([el], 'highlight-jumpto');
+        if (noHighlight !== true) {
+            // Remove old highlighting.
+            kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
+            // Highlight new one.
+            kdt.addClass([el], 'highlight-jumpto');
+        }
 
         // Getting our scroll container
         container = kdt.getParents(el, '.kpayload');
