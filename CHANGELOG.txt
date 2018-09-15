@@ -55,6 +55,7 @@
   form.
 - Bugfix: Prevent a fatal when trying to read the file time from a
   not existing file.
+- Bugfix: Prevent unnecessary width "jumping" in the Smokey Grey skin.
 
 2.4.0
 - Added the method analysis to the recursion detection, to prevent

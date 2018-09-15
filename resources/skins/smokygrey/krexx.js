@@ -791,14 +791,14 @@
                             return String.fromCharCode(parseInt(grp, 16));
                         });
                         json[prop] = decodeURI(json[prop]);
-                        html += '<tr><td>' + prop + '</td><td>' + json[prop] + '</td></tr>';
+                        html += '<tr><td class="kinfo">' + prop + '</td><td class="kdesc">' + json[prop] + '</td></tr>';
                         counter++;
                     }
                 }
             }
             if (counter === 0) {
                 // We have no data. Tell the user that there is nothing to see.
-                html = '<tr><td>No data available for this item.</td><td>Sorry.</td></tr>';
+                html = '<tr><td class="kinfo">No data available for this item.</td><td class="kdesc">Sorry.</td></tr>';
             }
 
             // Add it to the DOM.
