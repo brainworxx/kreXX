@@ -45,9 +45,6 @@ use Brainworxx\Krexx\Service\Config\Fallback;
  *
  * @uses array data
  *   The configuration section we are rendering
- * @uses array source
- *   The info of the source if the configuration
- *   fallback, file, cookie.
  */
 class ConfigSection extends AbstractCallback
 {

@@ -90,7 +90,7 @@ class ThroughProperties extends AbstractCallback
 
         // I need to preprocess them, since I do not want to render a
         // reflection property.
-        /** @var \Service\Reflection\ReflectionClass $ref */
+        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters['ref'];
 
         foreach ($this->parameters['data'] as $refProperty) {
