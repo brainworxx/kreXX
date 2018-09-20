@@ -53,6 +53,11 @@ class ConfigSection extends AbstractCallback
 {
 
     /**
+     * {@inheritdoc}
+     */
+    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\ConfigSection';
+
+    /**
      * Renders each section of the footer.
      *
      * @return string

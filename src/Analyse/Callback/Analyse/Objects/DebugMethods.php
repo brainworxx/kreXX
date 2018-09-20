@@ -50,6 +50,10 @@ use Brainworxx\Krexx\Service\Config\Fallback;
  */
 class DebugMethods extends AbstractObjectAnalysis
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\DebugMethods';
 
     /**
      * Calls all configured debug methods in die class.
