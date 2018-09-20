@@ -45,7 +45,7 @@ use Brainworxx\Krexx\Service\Misc\File;
  *
  * @uses array data
  *   Array of \reflectionProperties.
- * @uses \Service\Reflection\ReflectionClass ref
+ * @uses ReflectionClass ref
  *   A reflection of the class we are currently analysing.
  * @uses object orgObject
  *   The original object we are analysing
