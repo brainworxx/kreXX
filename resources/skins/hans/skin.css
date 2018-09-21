@@ -306,8 +306,9 @@ div.kwrapper {
 .kwrapper .kmessage {
     background-color: #fffda5;
     list-style: outside none none;
-    padding: 4px 5px 3px;
+    padding: 4px 5px 5px;
     margin: 0;
+    font-size: 14px;
 }
 
 .kwrapper .kmessage:before {
@@ -316,6 +317,7 @@ div.kwrapper {
     background-color: #ffcd00;
     border: 1px solid black;
     font-size: small;
+    margin-right: 5px;
 }
 
 .kwrapper .kpreview {
