@@ -281,6 +281,10 @@ div.kwrapper {
     font-style: normal;
     margin: 0 2px;
     padding-right: 35px;
+    padding-left: 10px;
+}
+.kwrapper em.ktype.callback {
+    padding-right: 10px;
 }
 
 .kwrapper .kbg-wrapper.knormal {
