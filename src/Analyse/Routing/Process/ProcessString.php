@@ -90,9 +90,12 @@ class ProcessString extends AbstractProcess
         if (function_exists($data) === true) {
             $model->setIsCallback(true);
         }
-
-        // Getting mimetype from the string.
-        $mimetype = $this->bufferInfo->buffer($data);
+        
+        $mimetype = '';
+        if ($length > 20) {
+            // Getting mime type from the string.
+            $mimetype = $this->bufferInfo->buffer($data);
+        }
 
         // Check, if we are handling large string, and if we need to use a
         // preview (which we call "extra").
