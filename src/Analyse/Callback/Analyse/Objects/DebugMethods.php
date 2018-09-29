@@ -45,7 +45,9 @@ use Brainworxx\Krexx\Service\Config\Fallback;
  *
  * @uses mixed data
  *   The class we are currently analysing.
- * @uses \ReflectionClass ref
+ * @uses string name
+ *   The name of the object we are analysing.
+ * @uses \Brainworxx\Krexx\Service\Reflection\ReflectionClass ref
  *   A reflection of the class we are currently analysing.
  */
 class DebugMethods extends AbstractObjectAnalysis
