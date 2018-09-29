@@ -104,7 +104,7 @@ class DebugMethods extends AbstractObjectAnalysis
                 if (isset($result) === true) {
                     $output .= $this->pool->render->renderExpandableChild(
                         $this->dispatchEventWithModel(
-                            'analysisEnd',
+                            $funcName,
                             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                                 ->setName($funcName)
                                 ->setType('debug method')
