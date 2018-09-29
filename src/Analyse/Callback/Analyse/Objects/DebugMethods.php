@@ -101,6 +101,7 @@ class DebugMethods extends AbstractObjectAnalysis
                 // Reactivate whatever error handling we had previously.
                 restore_error_handler();
 
+                // We ignore NULL values, as well as the exceptions from above.
                 if (isset($result) === true) {
                     $output .= $this->pool->render->renderExpandableChild(
                         $this->dispatchEventWithModel(
