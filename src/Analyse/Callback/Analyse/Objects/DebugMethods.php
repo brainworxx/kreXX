@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Service\Config\Fallback;
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 
 /**
  * Poll all configured debug methods of a class.
@@ -131,13 +132,13 @@ class DebugMethods extends AbstractObjectAnalysis
      *   The class that we are currently analysing.
      * @param string $funcName
      *   The name of the function that we want to call.
-     * @param \ReflectionClass $reflectionClass
+     * @param ReflectionClass $reflectionClass
      *   The reflection of the class that we are currently analysing.
      *
      * @return boolean
      *   Whether or not we are allowed toi access this method.
      */
-    protected function checkIfAccessible($data, $funcName, \ReflectionClass $reflectionClass)
+    protected function checkIfAccessible($data, $funcName, ReflectionClass $reflectionClass)
     {
         // We need to check if:
         // 1.) Method exists. It may be protected though.
