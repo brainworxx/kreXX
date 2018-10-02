@@ -68,11 +68,13 @@ class Encoding
              *
              * @param $string
              *   Will not get used.
+             * @param $strict
+             *   Will not get used.
              *
              * @return string
              *   Always 'polyfill'.
              */
-            function mb_detect_encoding($string, $strict)
+            function mb_detect_encoding($string = '', $strict = '')
             {
                 return 'polyfill';
             }
