@@ -92,7 +92,7 @@ class BacktraceStep extends AbstractCallback
         if (isset($stepData[static::STEP_DATA_FILE]) === true) {
             return $this->pool->render->renderSingleChild(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setData($stepData[static::STEP_DATA_FILE])
                         ->setName('File')
@@ -146,7 +146,7 @@ class BacktraceStep extends AbstractCallback
         // Add the prettified code to the analysis.
         return $output . $this->pool->render->renderSingleChild(
             $this->dispatchEventWithModel(
-                __FUNCTION__ . '::end',
+                __FUNCTION__ . static::EVENT_MARKER_END,
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setData($source)
                     ->setName('Sourcecode')
@@ -170,7 +170,7 @@ class BacktraceStep extends AbstractCallback
         if (isset($stepData[static::STEP_DATA_FUNCTION]) === true) {
             return $this->pool->render->renderSingleChild(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setData($stepData[static::STEP_DATA_FUNCTION])
                         ->setName('Last called function')
@@ -197,7 +197,7 @@ class BacktraceStep extends AbstractCallback
             return $this->pool
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessObject')
                 ->process($this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setData($stepData[static::STEP_DATA_OBJECT])
                         ->setName('Calling object')
@@ -220,7 +220,7 @@ class BacktraceStep extends AbstractCallback
         if (isset($stepData[static::STEP_DATA_TYPE]) === true) {
             return $this->pool->render->renderSingleChild(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setData($stepData[static::STEP_DATA_TYPE])
                         ->setName('Call type')
@@ -248,7 +248,7 @@ class BacktraceStep extends AbstractCallback
                 ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessArray')
                     ->process(
                         $this->dispatchEventWithModel(
-                            __FUNCTION__ . '::end',
+                            __FUNCTION__ . static::EVENT_MARKER_END,
                             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                                 ->setData($stepData[static::STEP_DATA_ARGS])
                                 ->setName('Arguments from the call')

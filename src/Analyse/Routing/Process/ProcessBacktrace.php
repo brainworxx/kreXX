@@ -122,8 +122,6 @@ class ProcessBacktrace
         }
 
         // Reset the array keys, because the 0 is now missing.
-        $backtrace = array_values($backtrace);
-
-        return $backtrace;
+        return array_values($backtrace);
     }
 }

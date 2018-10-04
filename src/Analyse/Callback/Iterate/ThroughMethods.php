@@ -118,7 +118,7 @@ class ThroughMethods extends AbstractCallback
             // Render it!
             $result .= $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setName($reflectionMethod->name)
                         ->setType($methodData['declaration keywords'] . ' method')

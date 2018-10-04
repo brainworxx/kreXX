@@ -153,7 +153,7 @@ class ThroughProperties extends AbstractCallback
             // Stitch together our model
             $output .= $this->pool->routing->analysisHub(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setData($value)
                         ->setName($this->pool->encodingService->encodeString($propName))

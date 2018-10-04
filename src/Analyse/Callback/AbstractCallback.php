@@ -45,6 +45,11 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 abstract class AbstractCallback
 {
     /**
+     * Marks the last part of an even, when that part is finished.
+     */
+    const EVENT_MARKER_END = '::end';
+
+    /**
      * We use this as the string prefix for the event name.
      *
      * @var string

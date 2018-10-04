@@ -78,7 +78,7 @@ class ThroughMethodAnalysis extends AbstractCallback
 
             $output .= $this->pool->render->renderSingleChild(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $model
                 )
             );

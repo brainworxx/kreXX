@@ -64,6 +64,11 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 class ThroughGetter extends AbstractCallback
 {
     /**
+     * The parameter name of the prefix we ara analysing.
+     */
+    const CURRENT_PREFIX = 'currentPrefix';
+
+    /**
      * {@inheritdoc}
      */
     protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter';
@@ -103,13 +108,13 @@ class ThroughGetter extends AbstractCallback
     {
         $output = $this->dispatchStartEvent();
 
-        $this->parameters['currentPrefix'] = 'get';
+        $this->parameters[static::CURRENT_PREFIX] = 'get';
         $output .= $this->goThroughMethodList($this->parameters['normalGetter']);
 
-        $this->parameters['currentPrefix'] = 'is';
+        $this->parameters[static::CURRENT_PREFIX] = 'is';
         $output .= $this->goThroughMethodList($this->parameters['isGetter']);
 
-        $this->parameters['currentPrefix'] = 'has';
+        $this->parameters[static::CURRENT_PREFIX] = 'has';
         return $output . $this->goThroughMethodList($this->parameters['hasGetter']);
     }
 
@@ -153,7 +158,7 @@ class ThroughGetter extends AbstractCallback
             $output .= $this->retrievePropertyValue(
                 $reflectionMethod,
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . '::end',
+                    __FUNCTION__ . static::EVENT_MARKER_END,
                     $model
                 )
             );
@@ -214,7 +219,7 @@ class ThroughGetter extends AbstractCallback
 
         return $this->pool->routing->analysisHub(
             $this->dispatchEventWithModel(
-                __FUNCTION__ . '::end',
+                __FUNCTION__ . static::EVENT_MARKER_END,
                 $model
             )
         );
@@ -319,7 +324,7 @@ class ThroughGetter extends AbstractCallback
      */
     protected function preparePropertyName(\ReflectionMethod $reflectionMethod)
     {
-        $currentPrefix = $this->parameters['currentPrefix'];
+        $currentPrefix = $this->parameters[static::CURRENT_PREFIX];
 
          // Get the name and remove the 'get' . . .
         $getterName = $reflectionMethod->getName();

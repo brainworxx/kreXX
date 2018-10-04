@@ -42,6 +42,10 @@ namespace Brainworxx\Krexx\Service\Config;
 class Security extends Fallback
 {
 
+    const KEY_CONFIG_ERROR = 'configError';
+    const KEY_CONFIG_ERROR_BOOL = 'configErrorBool';
+    const KEY_CONFIG_ERROR_INT = 'configErrorInt';
+
     /**
      * Evaluate a single setting from the cookies or the ini file.
      *
@@ -83,7 +87,7 @@ class Security extends Fallback
     {
         $result = preg_match('/[^a-zA-Z]/', $value) === 0;
         if ($result === false) {
-            $this->pool->messages->addMessage('configError' . ucfirst($name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR . ucfirst($name));
         }
 
         return $result;
@@ -106,7 +110,7 @@ class Security extends Fallback
             KREXX_DIR . 'resources/skins/' . $value . '/header.html'
         );
         if ($result === false) {
-            $this->pool->messages->addMessage('configError' . ucfirst($name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR . ucfirst($name));
         }
 
         return $result;
@@ -127,7 +131,7 @@ class Security extends Fallback
     {
         $result = ($value === static::VALUE_BROWSER || $value === 'file');
         if ($result === false) {
-            $this->pool->messages->addMessage('configError' . ucfirst($name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR . ucfirst($name));
         }
 
         return $result;
@@ -148,7 +152,7 @@ class Security extends Fallback
     {
         $result = empty($value);
         if ($result === true) {
-            $this->pool->messages->addMessage('configError' . ucfirst($name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR . ucfirst($name));
         }
 
         return !$result;
@@ -187,7 +191,7 @@ class Security extends Fallback
 
         if ($maxTime < (int)$value) {
             $this->pool->messages->addMessage(
-                'configError' . ucfirst($name) . 'Big',
+                static::KEY_CONFIG_ERROR . ucfirst($name) . 'Big',
                 array($maxTime)
             );
             return false;
@@ -214,7 +218,7 @@ class Security extends Fallback
     {
         $result = ($value === static::VALUE_TRUE || $value === static::VALUE_FALSE);
         if ($result === false) {
-            $this->pool->messages->addMessage('configErrorBool', array($group, $name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_BOOL, array($group, $name));
         }
 
         return $result;
@@ -240,7 +244,7 @@ class Security extends Fallback
     {
         $result = ((int) $value) > 0;
         if ($result === false) {
-            $this->pool->messages->addMessage('configErrorInt', array($group, $name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_INT, array($group, $name));
         }
 
         return $result;
