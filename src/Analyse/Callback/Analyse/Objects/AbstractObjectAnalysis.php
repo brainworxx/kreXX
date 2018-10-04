@@ -51,7 +51,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
      * {@inheritdoc}
      */
     protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\AbstractObjectAnalysis';
-    
+
     /**
      * Here we store all relevant data.
      *
@@ -94,8 +94,11 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
         if (strpos(strtoupper($label), 'PUBLIC') === false) {
             // Protected or private properties.
             return $this->pool->render->renderExpandableChild(
-                $model->setName($label)
-                    ->setType('class internals')
+                $this->dispatchEventWithModel(
+                    'analysisEnd',
+                    $model->setName($label)
+                        ->setType('class internals')
+                )
             );
         }
 

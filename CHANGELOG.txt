@@ -1,4 +1,5 @@
 3.0.1 dev
+- Bugfix: Added the missing end event to the property analysis.
 
 3.0.0
 - Added 'is' and 'has' to the getter analysis.
