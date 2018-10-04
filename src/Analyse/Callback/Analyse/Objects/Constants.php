@@ -74,7 +74,7 @@ class Constants extends AbstractObjectAnalysis
         $classname = '\\' . $ref->getName();
         return $output . $this->pool->render->renderExpandableChild(
             $this->dispatchEventWithModel(
-                'analysisEnd',
+                static::EVENT_MARKER_ANALYSES_END,
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName('Constants')
                     ->setType('class internals')

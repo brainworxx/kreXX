@@ -126,7 +126,7 @@ class Getter extends AbstractObjectAnalysis
         return $output .
             $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
-                    'analysisEnd',
+                    static::EVENT_MARKER_ANALYSES_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setName('Getter')
                         ->setType('class internals')

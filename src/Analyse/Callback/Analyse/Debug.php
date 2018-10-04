@@ -63,7 +63,7 @@ class Debug extends AbstractCallback
         return $this->dispatchStartEvent() .
             $this->pool->routing->analysisHub(
                 $this->dispatchEventWithModel(
-                    'analysisEnd',
+                    static::EVENT_MARKER_ANALYSES_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setData($this->parameters['data'])
                         ->setName('result')

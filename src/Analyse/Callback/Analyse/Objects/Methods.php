@@ -138,7 +138,7 @@ class Methods extends AbstractObjectAnalysis
 
         return $this->pool->render->renderExpandableChild(
             $this->dispatchEventWithModel(
-                'analysisEnd',
+                static::EVENT_MARKER_ANALYSES_END,
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName('Methods')
                     ->setType('class internals')

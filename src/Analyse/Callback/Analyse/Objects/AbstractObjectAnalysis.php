@@ -95,7 +95,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
             // Protected or private properties.
             return $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
-                    'analysisEnd',
+                    static::EVENT_MARKER_ANALYSES_END,
                     $model->setName($label)
                         ->setType('class internals')
                 )
@@ -105,7 +105,10 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
         // Public properties.
         // We render them directly in the object "root", so we call
         // the render directly.
-        return $this->dispatchEventWithModel('analysisEnd', $model)->renderMe();
+        return $this->dispatchEventWithModel(
+            static::EVENT_MARKER_ANALYSES_END,
+            $model
+        )->renderMe();
     }
 
     /**

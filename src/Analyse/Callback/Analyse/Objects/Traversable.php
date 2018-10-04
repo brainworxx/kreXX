@@ -154,7 +154,7 @@ class Traversable extends AbstractObjectAnalysis
             }
 
             $result = $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel('analysisEnd', $model)
+                $this->dispatchEventWithModel(static::EVENT_MARKER_ANALYSES_END, $model)
             );
             $this->pool->emergencyHandler->downOneNestingLevel();
             return $result;

@@ -48,6 +48,7 @@ abstract class AbstractCallback
      * Marks the last part of an even, when that part is finished.
      */
     const EVENT_MARKER_END = '::end';
+    const EVENT_MARKER_ANALYSES_END = 'analysisEnd';
 
     /**
      * We use this as the string prefix for the event name.
