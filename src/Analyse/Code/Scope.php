@@ -79,6 +79,8 @@ class Scope
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
+
+        $pool->scope = $this;
     }
 
     /**

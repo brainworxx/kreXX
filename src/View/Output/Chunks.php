@@ -139,6 +139,8 @@ class Chunks
         $this->logDir = $pool->config->getLogDir();
         $this->fileStamp = explode(' ', microtime());
         $this->fileStamp = $this->fileStamp[1] . str_replace('0.', '', $this->fileStamp[0]);
+
+        $pool->chunks = $this;
     }
 
     /**

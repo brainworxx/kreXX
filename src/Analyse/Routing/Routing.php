@@ -60,6 +60,8 @@ class Routing extends AbstractRouting
         $this->processResource = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessResource');
         $this->processString = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessString');
         $this->processOther = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessOther');
+
+        $pool->routing = $this;
     }
 
     /**

@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
+
 /**
  * Security measures for the configuration
  *
@@ -45,6 +47,22 @@ class Security extends Fallback
     const KEY_CONFIG_ERROR = 'configError';
     const KEY_CONFIG_ERROR_BOOL = 'configErrorBool';
     const KEY_CONFIG_ERROR_INT = 'configErrorInt';
+    const KEY_CONFIG_ERROR_DEBUG_BLACKLIST = 'configErrorDebugBlacklist';
+    const KEY_CONFIG_ERROR_DEBUG_INVALID = 'configErrorDebugInvalid';
+
+    /**
+     * Setter for the debug methos blacklist by the config class.
+     *
+     * @param array $methodBlacklist
+     *   The blacklist.
+     * @return $this
+     *   This, for chaining.
+     */
+    public function setMethodBlacklist(array $methodBlacklist)
+    {
+        $this->methodBlacklist = $methodBlacklist;
+        return $this;
+    }
 
     /**
      * Evaluate a single setting from the cookies or the ini file.
@@ -258,6 +276,45 @@ class Security extends Fallback
      */
     protected function doNotEval()
     {
+        return true;
+    }
+
+    /**
+     * Sanaty check, if the supplied debug methods are not obviously flawed.
+     *
+     * @param string $value
+     *   Comma separated list of debug methods.
+     * @param string $name
+     *   The name of the value we are checking, needed for the feedback text.
+     * @param string $group
+     *   The name of the group that we are evaluating, needed for the feedback
+     *   text.
+     *
+     * @return bool
+     *   Whether it does evaluate or not.
+     */
+    protected function evalDebugMethods($value, $name, $group)
+    {
+        $list = explode(',', $value);
+
+        foreach ($list as $entry) {
+            // Test for whitespace and the blacklist.
+            if (in_array($entry, $this->methodBlacklist)) {
+                $this->pool->messages->addMessage(
+                    static::KEY_CONFIG_ERROR_DEBUG_BLACKLIST,
+                    array($group, $name, $entry)
+                );
+                return false;
+            }
+            if (strpos($entry, ' ') !== false) {
+                $this->pool->messages->addMessage(
+                    static::KEY_CONFIG_ERROR_DEBUG_INVALID,
+                    array($group, $name, $entry)
+                );
+                return false;
+            }
+        }
+
         return true;
     }
 }
