@@ -41,6 +41,8 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
  *
  * @uses array data
  *   The class we are currently analysing.
+ * @uses string name
+ *   The name of the object we are analysing
  * @uses \Brainworxx\Krexx\Service\Reflection\ReflectionClass ref
  *   A reflection of the class we are currently analysing.
  */
