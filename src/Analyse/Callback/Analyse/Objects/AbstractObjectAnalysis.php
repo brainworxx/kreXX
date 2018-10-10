@@ -79,7 +79,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    protected function getReflectionPropertiesData(array $refProps, ReflectionClass $ref, $label)
+    protected function getReflectionPropertiesData(array $refProps, ReflectionClass $ref, $label, $useWrap = false)
     {
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
@@ -91,7 +91,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties')
             );
 
-        if (strpos(strtoupper($label), 'PUBLIC') === false) {
+        if ($useWrap === true) {
             // Protected or private properties.
             return $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
