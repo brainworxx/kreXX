@@ -90,15 +90,7 @@ class PublicProperties extends AbstractObjectAnalysis
         // For every not-declared property, we add a another reflection.
         // Those are simply added during runtime
         foreach (array_keys(array_diff_key(get_object_vars($data), $publicProps)) as $key) {
-            try {
-                $undeclaredProp = new \ReflectionProperty($data, $key);
-                $undeclaredProp->isUndeclared = true;
-                $refProps[] = $undeclaredProp;
-            } catch (\ReflectionException $e) {
-                // See class comments for more info, what is happening here.
-                $undeclaredProp = new UndeclaredProperty($data, $key);
-                $refProps[] = $undeclaredProp;
-            }
+            $refProps[] = new UndeclaredProperty($ref, $key);
         }
 
         if (empty($refProps) === true) {
