@@ -36,13 +36,18 @@ namespace Tests\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
+use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
+use Brainworxx\Krexx\Tests\Fixtures\PublicFixture;
+use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 
 class PublicPropertyTest extends AbstractTest
 {
     /**
-     * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ProtectedProperties
+     * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties
      */
     protected $publicProperties;
 
@@ -56,7 +61,7 @@ class PublicPropertyTest extends AbstractTest
         parent::setUp();
 
         // Create in instance of the class to test
-        $this->protectedProperties = new PublicProperties(\Krexx::$pool);
+        $this->publicProperties = new PublicProperties(\Krexx::$pool);
 
         // Inject the callback counter
         \Krexx::$pool->rewrite = [
@@ -74,8 +79,26 @@ class PublicPropertyTest extends AbstractTest
      */
     public function testCallMeNoPublic()
     {
+        // Test start event
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\PublicProperties::callMe::start', $this->publicProperties]
+        );
 
-        $this->markTestIncomplete('Write me: ' . __FUNCTION__);
+        // Fixture without any private properties.
+        $data = new MethodsFixture();
+        $fixture = [
+            'data' => $data,
+            'name' => 'some name',
+            'ref' => new ReflectionClass($data)
+        ];
+
+        // Run the test.
+        $this->publicProperties
+            ->setParams($fixture)
+            ->callMe();
+
+        // Check if the callback counter wascalled, at all.
+        $this->assertEquals(0, CallbackCounter::$counter);
     }
 
     /**
@@ -86,15 +109,42 @@ class PublicPropertyTest extends AbstractTest
      */
     public function testCallMeWithPublic()
     {
-        $this->markTestIncomplete('Write me: ' . __FUNCTION__);
-    }
+        // Set up the events
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\PublicProperties::callMe::start', $this->publicProperties],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\PublicProperties::analysisEnd', $this->publicProperties]
+        );
 
-    /**
-     * Test the public property analysis, with public properties that are
-     * unsettet before the analysis.
-     */
-    public function testCallMeWithUnsettedProperties()
-    {
-        $this->markTestIncomplete('Write me: ' . __FUNCTION__);
+        // Create a fixture with several private properties with inheritance.
+        $data = new PublicFixture();
+        unset($data->value1);
+        $data->undeclared = 'undeclared Property';
+        $fixture = [
+            'data' => $data,
+            'name' => 'some name',
+            'ref' => new ReflectionClass($data)
+        ];
+
+         // Run the test.
+        $this->publicProperties
+            ->setParams($fixture)
+            ->callMe();
+
+        // Check if called
+        $this->assertEquals(1, CallbackCounter::$counter);
+
+        // Check if parameters are set.
+        $params = CallbackCounter::$staticParameters[0];
+        $this->assertEquals($fixture['ref'], $params['ref']);
+
+        // Create the expectations.
+        $expectations = [
+            new \ReflectionProperty(PublicFixture::class, 'someValue'),
+            new UndeclaredProperty($fixture['ref'], 'undeclared'),
+            new \ReflectionProperty(PublicFixture::class, 'value1'),
+            new \ReflectionProperty(SimpleFixture::class, 'value2'),
+        ];
+
+        $this->assertEquals($expectations, $params['data']);
     }
 }

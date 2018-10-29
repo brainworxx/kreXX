@@ -32,43 +32,21 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-Namespace Brainworxx\Krexx\Service\Config;
+namespace Brainworxx\Krexx\Tests\Fixtures;
 
-include __DIR__ . '/../Krexx.php';
-include __DIR__ . '/Helpers/AbstractTest.php';
-include __DIR__ . '/Helpers/ProcessNothing.php';
-include __DIR__ . '/Helpers/CallbackNothing.php';
-include __DIR__ . '/Helpers/CallbackCounter.php';
+class PublicFixture extends SimpleFixture
+{
+    /**
+     * Value that gets overwritten by inheritance
+     *
+     * @var string
+     */
+    public $value1 = 'overwritten Value';
 
-include __DIR__ . '/Fixtures/SimpleFixture.php';
-include __DIR__ . '/Fixtures/TraversableFixture.php';
-include __DIR__ . '/Fixtures/DebugMethodFixture.php';
-include __DIR__ . '/Fixtures/MethodsFixture.php';
-include __DIR__ . '/Fixtures/GetterFixture.php';
-include __DIR__ . '/Fixtures/PrivateFixture.php';
-include __DIR__ . '/Fixtures/ProtectedFixture.php';
-include __DIR__ . '/Fixtures/PublicFixture.php';
-
-/**
- * Mocking the sapi name, to do something else in a different namespace.
- *
- * @param null|string $what
- *   The return valuse. kreXX only checks for cli, btw.
- *
- * @return string
- *   The mocked value, to coax kreXX into fileoutput.
- */
-function php_sapi_name($what = null) {
-    static $result = 'whatever';
-
-    if (!empty($what)) {
-        $result = $what;
-    }
-
-    return $result;
+    /**
+     * Juns another value.
+     *
+     * @var string
+     */
+    public $someValue = 'whatever';
 }
-
-// Register a shutdown method to die, so we get no output on the shell.
-register_shutdown_function(function(){
-    die();
-});
