@@ -262,7 +262,7 @@ class Render extends AbstractRender
                 static::MARKER_CODE_WRAPPER_RIGHT,
             ),
             array(
-                $this->generateDataAttribute('source', $gensource),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gensource),
                 $sourcebutton,
                 $partExpand,
                 $partCallable,
@@ -274,8 +274,14 @@ class Render extends AbstractRender
                 $this->renderHelp($model),
                 $this->renderConnector($model->getConnectorLeft()),
                 $this->renderConnector($model->getConnectorRight()),
-                $this->generateDataAttribute('codewrapperLeft', $this->pool->codegenHandler->generateWrapperLeft()),
-                $this->generateDataAttribute('codewrapperRight', $this->pool->codegenHandler->generateWrapperRight()),
+                $this->generateDataAttribute(
+                    static::DATA_ATTRIBUTE_WRAPPER_L,
+                    $this->pool->codegenHandler->generateWrapperLeft()
+                ),
+                $this->generateDataAttribute(
+                    static::DATA_ATTRIBUTE_WRAPPER_R,
+                    $this->pool->codegenHandler->generateWrapperRight()
+                ),
             ),
             $this->getTemplateFileContent('singleChild')
         );
@@ -342,12 +348,18 @@ class Render extends AbstractRender
                 $this->renderHelp($model),
                 $this->renderConnector($model->getConnectorLeft()),
                 $this->renderConnector($model->getConnectorRight(128)),
-                $this->generateDataAttribute('source', $gencode),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gencode),
                 $sourceButton,
                 $expandedClass,
                 $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
-                $this->generateDataAttribute('codewrapperLeft', $this->pool->codegenHandler->generateWrapperLeft()),
-                $this->generateDataAttribute('codewrapperRight', $this->pool->codegenHandler->generateWrapperRight()),
+                $this->generateDataAttribute(
+                    static::DATA_ATTRIBUTE_WRAPPER_L,
+                    $this->pool->codegenHandler->generateWrapperLeft()
+                ),
+                $this->generateDataAttribute(
+                    static::DATA_ATTRIBUTE_WRAPPER_R,
+                    $this->pool->codegenHandler->generateWrapperRight()
+                ),
             ),
             $this->getTemplateFileContent('expandableChildNormal')
         );

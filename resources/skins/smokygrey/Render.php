@@ -49,7 +49,8 @@ class Render extends \Brainworxx\Krexx\View\Render
     const MARKER_K_DEBUG_CLASSES = '{kdebug-classes}';
     const MARKER_K_CONFIG_CLASSES = '{kconfiguration-classes}';
     const MARKER_K_LINK_CLASSES = '{klinks-classes}';
-    const ADDITIONAL_JSON = 'addjson';
+
+    const DATA_ATTRIBUTE_JSON = 'addjson';
 
     /**
      * {@inheritDoc}
@@ -64,7 +65,7 @@ class Render extends \Brainworxx\Krexx\View\Render
             ),
             array(
                 $model->getConnectorLanguage(),
-                $this->generateDataAttribute(static::ADDITIONAL_JSON, $this->encodeJson($model->getJson()))
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson()))
             ),
             parent::renderSingleChild($model)
         );
@@ -127,13 +128,13 @@ class Render extends \Brainworxx\Krexx\View\Render
                 $cssType,
                 $model->getNormal(),
                 $this->renderConnector($model->getConnectorRight(128)),
-                $this->generateDataAttribute('source', $gencode),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gencode),
                 '',
-                $this->generateDataAttribute(static::ADDITIONAL_JSON, $this->encodeJson($model->getJson())),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
                 $this->pool->chunks->chunkMe($this->renderNest($model, false)),
                 $sourcebutton,
-                $this->generateDataAttribute('codewrapperLeft', $this->pool->codegenHandler->generateWrapperLeft()),
-                $this->generateDataAttribute('codewrapperRight', $this->pool->codegenHandler->generateWrapperRight()),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_L, $this->pool->codegenHandler->generateWrapperLeft()),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $this->pool->codegenHandler->generateWrapperRight()),
             ),
             $this->getTemplateFileContent('expandableChildNormal')
         );
@@ -148,7 +149,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         // We add our json to the output.
         return str_replace(
             static::MARKER_ADDITIONAL_JSON,
-            $this->generateDataAttribute(static::ADDITIONAL_JSON, $this->encodeJson($model->getJson())),
+            $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
             $template
         );
     }
@@ -161,7 +162,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         // Prepare the json. Not much do display for form elements.
         return str_replace(
             static::MARKER_ADDITIONAL_JSON,
-            $this->generateDataAttribute(static::ADDITIONAL_JSON, $this->encodeJson($model->getJson())),
+            $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
             parent::renderSingleEditableChild($model)
         );
     }
@@ -174,7 +175,7 @@ class Render extends \Brainworxx\Krexx\View\Render
         // Prepare the json. Not much do display for form elements.
         return str_replace(
             array(static::MARKER_ADDITIONAL_JSON, static::MARKER_CLASS),
-            array($this->generateDataAttribute(static::ADDITIONAL_JSON, $this->encodeJson($model->getJson())), $model->getName()),
+            array($this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())), $model->getName()),
             parent::renderButton($model)
         );
     }

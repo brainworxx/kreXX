@@ -60,6 +60,10 @@ abstract class AbstractRender implements RenderInterface
     const MARKER_PLUGIN_ACTIVE_TEXT = '{activetext}';
     const MARKER_PLUGIN_ACTIVE_CLASS = '{activeclass}';
 
+    const DATA_ATTRIBUTE_SOURCE = 'source';
+    const DATA_ATTRIBUTE_WRAPPER_R = 'codewrapperRight';
+    const DATA_ATTRIBUTE_WRAPPER_L = 'codewrapperLeft';
+
     /**
      * Here we store all relevant data.
      *
