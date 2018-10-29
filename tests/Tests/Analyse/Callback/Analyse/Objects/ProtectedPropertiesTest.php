@@ -81,7 +81,6 @@ class ProtectedPropertiesTest extends AbstractTest
     public function testCallMeNoProtected()
     {
         // Test start event
-        // Set up the events
         $this->mockEventService(
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ProtectedProperties::callMe::start', $this->protectedProperties]
         );
