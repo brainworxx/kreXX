@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Tests;
 
 use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Controller\TimerController;
+use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Config\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
@@ -524,17 +525,45 @@ class KrexxTest extends AbstractTest
 
     /**
      * Testing a call with a wrong developer handle.
+     *
+     * @covers \Krexx::__callStatic
      */
-    public function test__callStaticWrongHandle()
+    public function testCallStatic()
     {
-        $this->markTestIncomplete('Write me: ' . __FUNCTION__);
-    }
+        $configMock = $this->createPartialMock(Config::class, ['getDevHandler']);
+        $configMock->expects($this->any())
+            ->method('getDevHandler')
+            ->will($this->returnValue('someValue'));
 
-    /**
-     * Testing a call with a right developer handle.
-     */
-    public function test__callStaticRightHandle()
-    {
-        $this->markTestIncomplete('Write me: ' . __FUNCTION__);
+        // The setup does not get executed, hence we get these settings from
+        // the already existing ones in the original class.
+        $configMock->settings =  \Krexx::$pool->config->settings;
+        $this->setValueByReflection(
+            'directories',
+            [
+                'log' => \Krexx::$pool->config->getLogDir(),
+                'chunks' => \Krexx::$pool->config->getChunkDir(),
+                'config' => \Krexx::$pool->config->getPathToIniFile()
+            ],
+            $configMock
+        );
+        // Inject the mock.
+        \Krexx::$pool->config = $configMock;
+
+        \Krexx::whatever();
+        // The counter should be at 0.
+        $this->assertAttributeEquals(
+            0,
+            'krexxCount',
+            \Krexx::$pool->emergencyHandler
+        );
+
+        \Krexx::someValue();
+        // The counter should be at 1.
+        $this->assertAttributeEquals(
+            1,
+            'krexxCount',
+            \Krexx::$pool->emergencyHandler
+        );
     }
 }
