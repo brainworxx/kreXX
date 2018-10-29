@@ -103,7 +103,7 @@ class Render extends \Brainworxx\Krexx\View\Render
             $sourcebutton = str_replace(
                 static::MARKER_LANGUAGE,
                 $model->getConnectorLanguage(),
-                $this->getTemplateFileContent('sourcebutton')
+                $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON)
             );
         }
 
@@ -133,10 +133,16 @@ class Render extends \Brainworxx\Krexx\View\Render
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
                 $this->pool->chunks->chunkMe($this->renderNest($model, false)),
                 $sourcebutton,
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_L, $this->pool->codegenHandler->generateWrapperLeft()),
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $this->pool->codegenHandler->generateWrapperRight()),
+                $this->generateDataAttribute(
+                    static::DATA_ATTRIBUTE_WRAPPER_L,
+                    $this->pool->codegenHandler->generateWrapperLeft()
+                ),
+                $this->generateDataAttribute(
+                    static::DATA_ATTRIBUTE_WRAPPER_R,
+                    $this->pool->codegenHandler->generateWrapperRight()
+                ),
             ),
-            $this->getTemplateFileContent('expandableChildNormal')
+            $this->getTemplateFileContent(static::FILE_EX_CHILD_NORMAL)
         );
     }
 
@@ -175,7 +181,12 @@ class Render extends \Brainworxx\Krexx\View\Render
         // Prepare the json. Not much do display for form elements.
         return str_replace(
             array(static::MARKER_ADDITIONAL_JSON, static::MARKER_CLASS),
-            array($this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())), $model->getName()),
+            array($this->generateDataAttribute(
+                static::DATA_ATTRIBUTE_JSON,
+                $this->encodeJson($model->getJson())
+            ),
+                $model->getName()
+            ),
             parent::renderButton($model)
         );
     }

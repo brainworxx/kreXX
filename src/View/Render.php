@@ -60,6 +60,7 @@ class Render extends AbstractRender
     const MARKER_CSS_JS = '{cssJs}';
     const MARKER_SEARCH = '{search}';
     const MARKER_MESSAGES = '{messages}';
+    const MARKER_MESSAGE = '{message}';
     const MARKER_ENCODING = '{encoding}';
     const MARKER_CONFIG_INFO = '{configInfo}';
     const MARKER_CALLER = '{caller}';
@@ -115,11 +116,11 @@ class Render extends AbstractRender
                 $this->renderHelp($model),
                 $this->renderConnector($model->getConnectorRight()),
                 $this->generateDataAttribute(
-                    'source',
+                    static::DATA_ATTRIBUTE_SOURCE,
                     $this->pool->codegenHandler->generateSource($model)
                 ),
             ),
-            $this->getTemplateFileContent('recursion')
+            $this->getTemplateFileContent(static::FILE_RECURSION)
         );
     }
 
@@ -151,7 +152,7 @@ class Render extends AbstractRender
                 $this->pool->messages->outputMessages(),
                 $this->pool->chunks->getOfficialEncoding(),
             ),
-            $this->getTemplateFileContent('header')
+            $this->getTemplateFileContent(static::FILE_HEADER)
         );
     }
 
@@ -178,7 +179,7 @@ class Render extends AbstractRender
                 $caller,
                 $this->renderPluginList()
             ),
-            $this->getTemplateFileContent('footer')
+            $this->getTemplateFileContent(static::FILE_FOOTER)
         );
     }
 
@@ -190,7 +191,7 @@ class Render extends AbstractRender
         return str_replace(
             array(static::MARKER_CSS, static::MARKER_JS),
             array($css, $javascript),
-            $this->getTemplateFileContent('cssJs')
+            $this->getTemplateFileContent(static::FILE_CSSJS)
         );
     }
 
@@ -212,7 +213,7 @@ class Render extends AbstractRender
             $partExtra = str_replace(
                 static::MARKER_DATA,
                 $model->getData(),
-                $this->getTemplateFileContent('singleChildExtra')
+                $this->getTemplateFileContent(static::FILE_SI_CHILD_EX)
             );
         }
 
@@ -221,7 +222,7 @@ class Render extends AbstractRender
             $partCallable = str_replace(
                 static::MARKER_NORMAL,
                 $model->getNormal(),
-                $this->getTemplateFileContent('singleChildCallable')
+                $this->getTemplateFileContent(static::FILE_SI_CHILD_CALL)
             );
         }
 
@@ -240,7 +241,7 @@ class Render extends AbstractRender
             $sourcebutton = '';
         } else {
             // We add the buttton and the code.
-            $sourcebutton = $this->getTemplateFileContent('sourcebutton');
+            $sourcebutton = $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON);
         }
 
         // Stitching it together.
@@ -283,7 +284,7 @@ class Render extends AbstractRender
                     $this->pool->codegenHandler->generateWrapperRight()
                 ),
             ),
-            $this->getTemplateFileContent('singleChild')
+            $this->getTemplateFileContent(static::FILE_SI_CHILD)
         );
     }
 
@@ -314,7 +315,7 @@ class Render extends AbstractRender
             $sourceButton = '';
         } else {
             // Add the button.
-            $sourceButton = $this->getTemplateFileContent('sourcebutton');
+            $sourceButton = $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON);
         }
 
         // Is it expanded?
@@ -361,7 +362,7 @@ class Render extends AbstractRender
                     $this->pool->codegenHandler->generateWrapperRight()
                 ),
             ),
-            $this->getTemplateFileContent('expandableChildNormal')
+            $this->getTemplateFileContent(static::FILE_EX_CHILD_NORMAL)
         );
     }
 
@@ -394,7 +395,6 @@ class Render extends AbstractRender
             }
 
             // Paint it.
-            $optionTemplateName = 'singleSelectOptions';
             foreach ($valueList as $value) {
                 if ($value === $model->getName()) {
                     // This one is selected.
@@ -406,7 +406,7 @@ class Render extends AbstractRender
                 $options .= str_replace(
                     array(static::MARKER_TEXT, static::MARKER_VALUE, static::MARKER_SELECTED),
                     array($value, $value, $selected),
-                    $this->getTemplateFileContent($optionTemplateName)
+                    $this->getTemplateFileContent(static::FILE_SI_SELECT_OPTIONS)
                 );
             }
         }
@@ -426,7 +426,7 @@ class Render extends AbstractRender
                 Fallback::RENDER_EDITABLE,
                 $this->renderHelp($model),
             ),
-            $this->getTemplateFileContent('singleEditableChild')
+            $this->getTemplateFileContent(static::FILE_SI_EDIT_CHILD)
         );
     }
 
@@ -446,7 +446,7 @@ class Render extends AbstractRender
                 $model->getNormal(),
                 $model->getName()
             ),
-            $this->getTemplateFileContent('singleButton')
+            $this->getTemplateFileContent(static::FILE_SI_BUTTON)
         );
     }
 
@@ -476,7 +476,7 @@ class Render extends AbstractRender
                 $this->pool->emergencyHandler->getKrexxCount(),
                 $errline
             ),
-            $this->getTemplateFileContent('fatalMain')
+            $this->getTemplateFileContent(static::FILE_FATAL_MAIN)
         );
     }
 
@@ -500,7 +500,7 @@ class Render extends AbstractRender
                 $this->renderSearch(),
                 $this->pool->recursionHandler->getMarker()
             ),
-            $this->getTemplateFileContent('fatalHeader')
+            $this->getTemplateFileContent(static::FILE_FATAL_HEADER)
         );
     }
 
@@ -510,9 +510,9 @@ class Render extends AbstractRender
     public function renderMessages(array $messages)
     {
         $result = '';
-        $messageTemplate = $this->getTemplateFileContent('message');
+        $messageTemplate = $this->getTemplateFileContent(static::FILE_MESSAGE);
         foreach ($messages as $message) {
-            $result .= str_replace('{message}', $message, $messageTemplate);
+            $result .= str_replace(static::MARKER_MESSAGE, $message, $messageTemplate);
         }
 
         return $result;
@@ -534,7 +534,7 @@ class Render extends AbstractRender
                 $lineNo,
                 $sourceCode,
             ),
-            $this->getTemplateFileContent('backtraceSourceLine')
+            $this->getTemplateFileContent(static::FILE_BACKTRACE_SOURCELINE)
         );
     }
 
@@ -543,6 +543,6 @@ class Render extends AbstractRender
      */
     public function renderSingeChildHr()
     {
-        return $this->getTemplateFileContent('singleChildHr');
+        return $this->getTemplateFileContent(static::FILE_SI_HR);
     }
 }
