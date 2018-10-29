@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
@@ -56,7 +57,7 @@ class ProcessObject extends AbstractProcess
     {
         // Output data from the class.
         return $this->pool->render->renderExpandableChild(
-            $model->setType('class')
+            $model->setType(AbstractCallback::TYPE_CLASS)
                 ->addParameter('data', $model->getData())
                 ->addParameter('name', $model->getName())
                 ->setNormal('\\' . get_class($model->getData()))

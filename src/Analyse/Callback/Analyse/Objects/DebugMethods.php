@@ -108,7 +108,7 @@ class DebugMethods extends AbstractObjectAnalysis
                             $funcName,
                             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                                 ->setName($funcName)
-                                ->setType('debug method')
+                                ->setType(static::TYPE_DEBUG_METHOD)
                                 ->setNormal('. . .')
                                 ->setHelpid($funcName)
                                 ->setConnectorType(Connectors::METHOD)

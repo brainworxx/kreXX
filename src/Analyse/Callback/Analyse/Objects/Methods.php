@@ -86,7 +86,7 @@ class Methods extends AbstractObjectAnalysis
                             ->setDomid($domId)
                             ->setNormal('Methods')
                             ->setName('Methods')
-                            ->setType('class internals')
+                            ->setType(static::TYPE_INTERNALS)
                     )
                 );
         }
@@ -141,7 +141,7 @@ class Methods extends AbstractObjectAnalysis
                 static::EVENT_MARKER_ANALYSES_END,
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName('Methods')
-                    ->setType('class internals')
+                    ->setType(static::TYPE_INTERNALS)
                     ->addParameter('data', $methods)
                     ->addParameter('ref', $ref)
                     ->setDomId($domId)

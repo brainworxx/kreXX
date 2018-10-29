@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing;
 
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
@@ -155,9 +156,9 @@ class Routing extends AbstractRouting
         if ($this->pool->emergencyHandler->checkNesting() === true) {
             $text = $this->pool->messages->getHelp('maximumLevelReached2');
             if (is_array($data) === true) {
-                $type = 'array';
+                $type = AbstractCallback::TYPE_ARRAY;
             } else {
-                $type = 'object';
+                $type = AbstractCallback::TYPE_OBJECT;
             }
             $model->setData($text)
                 ->setNormal($this->pool->messages->getHelp('maximumLevelReached1'))
@@ -170,16 +171,16 @@ class Routing extends AbstractRouting
         if ($this->pool->recursionHandler->isInHive($data) === true) {
             // Render recursion.
             if (is_object($data) === true) {
-                $type = '\\' . get_class($data);
+                $normal = '\\' . get_class($data);
                 $domId = $this->generateDomIdFromObject($data);
             } else {
                 // Must be the globals array.
-                $type = '$GLOBALS';
+                $normal = '$GLOBALS';
                 $domId = '';
             }
 
             return $this->pool->render->renderRecursion(
-                $model->setDomid($domId)->setNormal($type)
+                $model->setDomid($domId)->setNormal($normal)
             );
         }
 

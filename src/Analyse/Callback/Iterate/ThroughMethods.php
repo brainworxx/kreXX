@@ -121,7 +121,7 @@ class ThroughMethods extends AbstractCallback
                     __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setName($reflectionMethod->name)
-                        ->setType($methodData['declaration keywords'] . ' method')
+                        ->setType($methodData['declaration keywords'] . static::TYPE_METHOD)
                         ->setConnectorType($connectorType)
                         // Remove the ',' after the last char.
                         ->setConnectorParameters(trim($paramList, ', '))

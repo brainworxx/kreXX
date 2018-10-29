@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 
@@ -99,7 +100,7 @@ class ProcessClosure extends AbstractProcess
         }
 
         return $this->pool->render->renderExpandableChild(
-            $model->setType('closure')
+            $model->setType(AbstractCallback::TYPE_CLOSURE)
                 ->setNormal('. . .')
                 // Remove the ',' after the last char.
                 ->setConnectorParameters(trim($paramList, ', '))

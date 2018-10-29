@@ -50,6 +50,28 @@ abstract class AbstractCallback
     const EVENT_MARKER_END = '::end';
     const EVENT_MARKER_ANALYSES_END = 'analysisEnd';
 
+    const TYPE_STRING = 'string ';
+    const TYPE_INTEGER = 'integer';
+    const TYPE_PHP = 'PHP';
+    const TYPE_INTERNALS = 'class internals';
+    const TYPE_DEBUG_METHOD = 'debug method';
+    const TYPE_FOREACH = '´foreach';
+    const TYPE_CONFIG = 'config';
+    const TYPE_UNKNOWN = 'unknown';
+    const TYPE_SIMPLE_CLASS = 'simplified class analysis';
+    const TYPE_SIMPLE_ARRAY = 'simplified array analysis';
+    const TYPE_REFLECTION = 'reflection';
+    const TYPE_METHOD = ' method';
+    const TYPE_ARRAY = 'array';
+    const TYPE_OBJECT = 'object';
+    const TYPE_STACK_FRAME = 'stack frame';
+    const TYPE_BOOL = 'boolean';
+    const TYPE_CLOSURE = 'closure';
+    const TYPE_FOLAT = 'float';
+    const TYPE_NULL = 'null';
+    const TYPE_CLASS = 'class';
+    const TYPE_RESOURCE = 'resource';
+
     /**
      * We use this as the string prefix for the event name.
      *

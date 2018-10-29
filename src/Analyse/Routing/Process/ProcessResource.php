@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
@@ -61,7 +62,7 @@ class ProcessResource extends AbstractProcess
         if ($type === 'stream') {
             // Output data from the class.
             return $this->pool->render->renderExpandableChild(
-                $model->setType('resource')
+                $model->setType(AbstractCallback::TYPE_RESOURCE)
                     ->addParameter('data', $resource)
                     ->setNormal($typestring)
                     ->injectCallback(
@@ -78,7 +79,7 @@ class ProcessResource extends AbstractProcess
         return $this->pool->render->renderSingleChild(
             $model->setData($typestring)
                 ->setNormal($typestring)
-                ->setType('resource')
+                ->setType(AbstractCallback::TYPE_RESOURCE)
         );
     }
 }

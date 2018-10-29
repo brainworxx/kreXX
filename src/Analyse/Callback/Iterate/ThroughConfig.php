@@ -77,7 +77,7 @@ class ThroughConfig extends AbstractCallback
             $configOutput .= $this->pool->render->renderExpandableChild(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName($this->pool->messages->getHelp($sectionName . 'Readable'))
-                    ->setType('Config')
+                    ->setType(static::TYPE_CONFIG)
                     ->setNormal('. . .')
                     ->addParameter('data', $sectionData)
                     ->injectCallback(

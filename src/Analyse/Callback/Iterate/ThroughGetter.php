@@ -210,9 +210,8 @@ class ThroughGetter extends AbstractCallback
         if ($this->parameters['additional']['nothingFound'] === true) {
             // Found nothing  :-(
             // We literally have no info. We need to tell the user.
-            $noInfoMessage = 'unknown';
-            $model->setType($noInfoMessage)
-                ->setNormal($noInfoMessage);
+            $model->setType(static::TYPE_UNKNOWN)
+                ->setNormal(static::TYPE_UNKNOWN);
             // We render this right away, without any routing.
             return $this->pool->render->renderSingleChild($model);
         }

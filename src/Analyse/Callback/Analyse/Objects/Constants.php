@@ -77,7 +77,7 @@ class Constants extends AbstractObjectAnalysis
                 static::EVENT_MARKER_ANALYSES_END,
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName('Constants')
-                    ->setType('class internals')
+                    ->setType(static::TYPE_INTERNALS)
                     ->setIsMetaConstants(true)
                     ->addParameter('data', $refConst)
                     ->addParameter('classname', $classname)

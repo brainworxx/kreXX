@@ -129,7 +129,7 @@ class Getter extends AbstractObjectAnalysis
                     static::EVENT_MARKER_ANALYSES_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                         ->setName('Getter')
-                        ->setType('class internals')
+                        ->setType(static::TYPE_INTERNALS)
                         ->setHelpid('getterHelpInfo')
                         ->addParameter('ref', $ref)
                         ->addParameter('normalGetter', $normalGetter)

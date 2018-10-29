@@ -134,7 +134,7 @@ class Traversable extends AbstractObjectAnalysis
             /** @var Model $model */
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setName($name)
-                ->setType('Foreach')
+                ->setType(static::TYPE_FOREACH)
                 ->addParameter('data', $parameter)
                 ->addParameter('multiline', $multiline)
                 ->addToJson('Length', count($parameter));
