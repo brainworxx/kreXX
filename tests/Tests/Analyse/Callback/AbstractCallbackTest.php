@@ -42,7 +42,7 @@ class AbstractCallbackTest extends AbstractTest
     /**
      * Test if the __construct injects the pool.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::__construct()
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::__construct
      */
     public function test__construct()
     {
@@ -54,7 +54,7 @@ class AbstractCallbackTest extends AbstractTest
     /**
      * Testing the settings ofthe parameters for the callback.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::setParams()
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::setParams
      */
     public function testSetParams()
     {
@@ -71,7 +71,7 @@ class AbstractCallbackTest extends AbstractTest
     /**
      * Testing if we can retrieve previously set parameters from the callback
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::getParameters()
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::getParameters
      */
     public function testGetParameters()
     {

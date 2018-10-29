@@ -6,7 +6,8 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory>..</directory>
+            <directory>../src</directory>
+            <file>../Krexx.php</file>
         </whitelist>
     </filter>
 </phpunit>

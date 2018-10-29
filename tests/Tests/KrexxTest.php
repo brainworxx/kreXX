@@ -87,7 +87,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can take a moment while kreXX is disabled.
      *
-     * @covers \Krexx::timerMoment()
+     * @covers \Krexx::timerMoment
      */
     public function testTimerMomentDisabled()
     {
@@ -112,7 +112,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can take a moment while kreXX is analying something else.
      *
-     * @covers \Krexx::timerMoment()
+     * @covers \Krexx::timerMoment
      */
     public function testTimerMomentInProgress()
     {
@@ -137,7 +137,7 @@ class KrexxTest extends AbstractTest
     /**
      * Testing, if it can be disabled, as expected.
      *
-     * @covers \Krexx::timerMoment()
+     * @covers \Krexx::timerMoment
      */
     public function testTimerMomentEnabled()
     {
@@ -158,7 +158,7 @@ class KrexxTest extends AbstractTest
     /**
      * Testing if we get an output while kreXX is disabled.
      *
-     * @covers \Krexx::timerEnd()
+     * @covers \Krexx::timerEnd
      */
     public function testTimerEndDisabled()
     {
@@ -178,7 +178,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output, while another analysis is in progress.
      *
-     * @covers \Krexx::timerEnd()
+     * @covers \Krexx::timerEnd
      */
     public function testTimerEndInProgress()
     {
@@ -198,7 +198,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output at all.
      *
-     * @covers \Krexx::timerEnd()
+     * @covers \Krexx::timerEnd
      */
     public function testTimerEndNormal()
     {
@@ -214,7 +214,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output when disabled.
      *
-     * @covers \Krexx::open()
+     * @covers \Krexx::open
      */
     public function testOpenDisabled()
     {
@@ -233,7 +233,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output, while another analysis is in progress.
      *
-     * @covers \Krexx::open()
+     * @covers \Krexx::open
      */
     public function testOpenInProgress()
     {
@@ -252,7 +252,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output at all.
      *
-     * @covers \Krexx::open()
+     * @covers \Krexx::open
      */
     public function testOpen()
     {
@@ -268,7 +268,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output when disabled.
      *
-     * @covers \Krexx::backtrace()
+     * @covers \Krexx::backtrace
      */
     public function testBacktraceDisabled()
     {
@@ -287,7 +287,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output, while another analysis is in progress.
      *
-     * @covers \Krexx::backtrace()
+     * @covers \Krexx::backtrace
      */
     public function testBacktraceInProgress()
     {
@@ -306,7 +306,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output at all.
      *
-     * @covers \Krexx::backtrace()
+     * @covers \Krexx::backtrace
      */
     public function testBacktrace()
     {
@@ -325,7 +325,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if it sets the value if kreXX beeing disabled.
      *
-     * @covers \Krexx::disable()
+     * @covers \Krexx::disable
      */
     public function testDisable()
     {
@@ -337,7 +337,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can get an output when disabled.
      *
-     * @covers \Krexx::editSettings()
+     * @covers \Krexx::editSettings
      */
     public function testEditSettingsDisabled()
     {
@@ -356,7 +356,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can register our fatal error handler.
      *
-     * @covers \Krexx::registerFatal()
+     * @covers \Krexx::registerFatal
      * @incomplete
      *   We only test the php version.
      */
@@ -373,7 +373,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can unregister our fatal error handler.
      *
-     * @covers \Krexx::unregisterFatal()
+     * @covers \Krexx::unregisterFatal
      */
     public function testUnregisterFatal()
     {
@@ -425,6 +425,12 @@ class KrexxTest extends AbstractTest
         \Krexx::$pool->config->settings[Fallback::SETTING_DETECT_AJAX] = $settingsMockAjax;
     }
 
+    /**
+     * Test, if the forced logger worked as expected afterwards.
+     *
+     * @param $settingsMockDest
+     * @param $settingsMockAjax
+     */
     protected function endForcedLogger($settingsMockDest, $settingsMockAjax)
     {
         // Test if the mock are gone.
@@ -442,7 +448,9 @@ class KrexxTest extends AbstractTest
     /**
      * Test the forced logger.
      *
-     * @covers \Krexx::log()
+     * @covers \Krexx::log
+     * @covers \Krexx::startForcedLog
+     * @covers \Krexx::endForcedLog
      */
     public function testLog()
     {
@@ -466,7 +474,9 @@ class KrexxTest extends AbstractTest
     /**
      * Testing the backtrace logger.
      *
-     * @covers \Krexx::logBacktrace()
+     * @covers \Krexx::logBacktrace
+     * @covers \Krexx::startForcedLog
+     * @covers \Krexx::endForcedLog
      */
     public function testLogBacktrace()
     {
@@ -491,7 +501,9 @@ class KrexxTest extends AbstractTest
     /**
      * Testing the timer logging.
      *
-     * @covers \Krexx::logTimerEnd()
+     * @covers \Krexx::logTimerEnd
+     * @covers \Krexx::startForcedLog
+     * @covers \Krexx::endForcedLog
      */
     public function testLogTimerEnd()
     {

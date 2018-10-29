@@ -45,7 +45,7 @@ class AbstractModelTest extends AbstractTest
     /**
      * Test if we get the pool as well as thej connector service.
      *
-     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::__construct()
+     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::__construct
      */
     public function test__construct()
     {
@@ -58,7 +58,7 @@ class AbstractModelTest extends AbstractTest
     /**
      * Test if the callback gets set.
      *
-     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::injectCallback()
+     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::injectCallback
      */
     public function testInjectCallback()
     {
@@ -84,7 +84,7 @@ class AbstractModelTest extends AbstractTest
      * The rendering will call the callback. We will mock the callback and test
      * if we get the actzual aoutput from it.
      *
-     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::renderMe()
+     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::renderMe
      */
     public function testRenderMe()
     {
@@ -112,7 +112,7 @@ class AbstractModelTest extends AbstractTest
     /**
      * Test if we can add several parameters.
      *
-     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::addParameter()
+     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::addParameter
      */
     public function testAddParameter()
     {
@@ -136,7 +136,7 @@ class AbstractModelTest extends AbstractTest
      * Test the setting of the help id. The help id sets additional text to the
      * specific alaysis, to explain the output.
      *
-     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::setHelpid()
+     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::setHelpid
      */
     public function testSetHelpId()
     {
@@ -160,7 +160,7 @@ class AbstractModelTest extends AbstractTest
     /**
      * Test if we can add stuff to the json. Linebreaks should be removed.
      *
-     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::addToJson()
+     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::addToJson
      */
     public function testAddToJson()
     {
@@ -183,7 +183,7 @@ class AbstractModelTest extends AbstractTest
     /**
      * Test the getter for the json value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::getJson()
+     * @covers \Brainworxx\Krexx\Analyse\AbstractModel::getJson
      */
     public function testGetJson()
     {

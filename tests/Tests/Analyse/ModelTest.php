@@ -75,7 +75,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the data value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setData()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setData
      */
     public function testSetData()
     {
@@ -87,7 +87,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter of the data value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getData()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getData
      */
     public function testGetData()
     {
@@ -99,7 +99,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the name value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setName()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setName
      */
     public function testSetName()
     {
@@ -111,7 +111,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the name value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getName()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getName
      */
     public function testGetName()
     {
@@ -123,7 +123,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the normal value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setNormal()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setNormal
      */
     public function testSetNormal()
     {
@@ -135,7 +135,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the normal value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getNormal()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getNormal
      */
     public function testGetNormal()
     {
@@ -147,7 +147,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the additional value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setAdditional()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setAdditional
      */
     public function testSetAdditional()
     {
@@ -159,7 +159,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the additional value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getAdditional()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getAdditional
      */
     public function testGetAdditional()
     {
@@ -171,7 +171,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the type value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setType()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setType
      */
     public function testSetType()
     {
@@ -183,7 +183,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the type value.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getType()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getType
      */
     public function testGetType()
     {
@@ -195,7 +195,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the left connector.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorLeft()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorLeft
      */
     public function testGetConnectorLeft()
     {
@@ -213,7 +213,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the right connector.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorRight()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorRight
      */
     public function testGetConnectorRight()
     {
@@ -233,7 +233,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter of the dom id.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setDomid()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setDomid
      */
     public function testSetDomid()
     {
@@ -246,7 +246,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter of the dom id.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getDomid()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getDomid
      */
     public function testGetDomid()
     {
@@ -259,7 +259,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the extras boolean.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getHasExtra()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getHasExtra
      */
     public function testGetHasExtra()
     {
@@ -272,7 +272,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the extras boolean.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setHasExtra()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setHasExtra
      */
     public function testSetHasExtra()
     {
@@ -285,7 +285,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the multiline code generation.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getMultiLineCodeGen()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getMultiLineCodeGen
      */
     public function testGetMultiLineCodeGen()
     {
@@ -298,7 +298,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the multiline code generation.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setMultiLineCodeGen()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setMultiLineCodeGen
      */
     public function testSetMultiLineCodeGen()
     {
@@ -311,7 +311,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter of the isCallback.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getIsCallback()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getIsCallback
      */
     public function testGetIsCallback()
     {
@@ -324,7 +324,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing tje setter of the isCallback.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setIsCallback()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setIsCallback
      */
     public function testSetIsCallback()
     {
@@ -337,7 +337,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the connector paramaters.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setConnectorParameters()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setConnectorParameters
      */
     public function testSetConnectorParameters()
     {
@@ -356,7 +356,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter for the connector parameters.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorParameters()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorParameters
      */
     public function testGetConnectorParameters()
     {
@@ -374,7 +374,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter of the connector type
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setConnectorType()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setConnectorType
      */
     public function testSetConnectorType()
     {
@@ -392,7 +392,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter of the custom connector left.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setCustomConnectorLeft()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setCustomConnectorLeft
      */
     public function testSetCustomConnectorLeft()
     {
@@ -410,7 +410,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter of the language connector.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorLanguage()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getConnectorLanguage
      */
     public function testGetConnectorLanguage()
     {
@@ -428,7 +428,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter of the parameter fo the callback.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getParameters()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getParameters
      */
     public function testGetParameters()
     {
@@ -444,7 +444,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the getter of the isMetaConstants
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::getIsMetaConstants()
+     * @covers \Brainworxx\Krexx\Analyse\Model::getIsMetaConstants
      */
     public function testGetIsMetaConstants()
     {
@@ -457,7 +457,7 @@ class ModelTest extends AbstractTest
     /**
      * Testing the setter for the isMetaConstants.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Model::setIsMetaConstants()
+     * @covers \Brainworxx\Krexx\Analyse\Model::setIsMetaConstants
      */
     public function testSetIsMetaConstants()
     {
