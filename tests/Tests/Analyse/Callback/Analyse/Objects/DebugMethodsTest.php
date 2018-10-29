@@ -95,6 +95,7 @@ class DebugMethodsTest extends AbstractTest
      * the one with the parameters. None of these must get thorough.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\DebugMethods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\DebugMethods::checkIfAccessible
      */
     public function testCallMeNothing()
     {
@@ -121,6 +122,7 @@ class DebugMethodsTest extends AbstractTest
      * Testing the "good" and "ugly" debug methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\DebugMethods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\DebugMethods::checkIfAccessible
      */
     public function testCallMeNormal()
     {

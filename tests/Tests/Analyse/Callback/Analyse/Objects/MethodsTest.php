@@ -96,6 +96,8 @@ class MethodsTest extends AbstractTest
      * Testing the methods analysis recursion.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      */
     public function testCallMeRecursion()
     {
@@ -131,6 +133,8 @@ class MethodsTest extends AbstractTest
      * Testing the analysis for public methods only.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      */
     public function testCallMePublic()
     {
@@ -176,12 +180,14 @@ class MethodsTest extends AbstractTest
      * Testing the analysis for public and protected methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      */
     public function testCallMeProtected()
     {
         // Set up the events
         $this->mockEventService(
-           ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Methods::callMe::start', $this->methods],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Methods::callMe::start', $this->methods],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Methods::analysisEnd', $this->methods]
         );
 
@@ -222,6 +228,8 @@ class MethodsTest extends AbstractTest
      * Testing the analysis for public and private methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      */
     public function testCallMePrivate()
     {
@@ -268,6 +276,8 @@ class MethodsTest extends AbstractTest
      * Testing the analysis for public and private methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      */
     public function testCallMePrivateProtected()
     {
