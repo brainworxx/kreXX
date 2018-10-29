@@ -72,7 +72,7 @@ class DebugMethods extends AbstractObjectAnalysis
     public function callMe()
     {
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
-        $reflectionClass = $this->parameters['ref'];
+        $reflectionClass = $this->parameters[static::PARAM_REF];
         $data = $reflectionClass->getData();
         $output = $this->dispatchStartEvent();
 
@@ -112,7 +112,7 @@ class DebugMethods extends AbstractObjectAnalysis
                                 ->setNormal('. . .')
                                 ->setHelpid($funcName)
                                 ->setConnectorType(Connectors::METHOD)
-                                ->addParameter('data', $result)
+                                ->addParameter(static::PARAM_DATA, $result)
                                 ->injectCallback(
                                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Debug')
                                 )

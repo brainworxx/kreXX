@@ -109,13 +109,13 @@ class ThroughGetter extends AbstractCallback
         $output = $this->dispatchStartEvent();
 
         $this->parameters[static::CURRENT_PREFIX] = 'get';
-        $output .= $this->goThroughMethodList($this->parameters['normalGetter']);
+        $output .= $this->goThroughMethodList($this->parameters[static::PARAM_NORMAL_GETTER]);
 
         $this->parameters[static::CURRENT_PREFIX] = 'is';
-        $output .= $this->goThroughMethodList($this->parameters['isGetter']);
+        $output .= $this->goThroughMethodList($this->parameters[static::PARAM_IS_GETTER]);
 
         $this->parameters[static::CURRENT_PREFIX] = 'has';
-        return $output . $this->goThroughMethodList($this->parameters['hasGetter']);
+        return $output . $this->goThroughMethodList($this->parameters[static::PARAM_HAS_GETTER]);
     }
 
     /**
@@ -140,7 +140,10 @@ class ThroughGetter extends AbstractCallback
             // 1.) We have an actual value
             // 2.) We got NULL as a value
             // 3.) We were unable to get any info at all.
-            $comments = nl2br($this->commentAnalysis->getComment($reflectionMethod, $this->parameters['ref']));
+            $comments = nl2br($this->commentAnalysis->getComment(
+                $reflectionMethod,
+                $this->parameters[static::PARAM_REF]
+            ));
 
             /** @var Model $model */
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
@@ -180,14 +183,14 @@ class ThroughGetter extends AbstractCallback
      */
     protected function retrievePropertyValue(\ReflectionMethod $reflectionMethod, Model $model)
     {
-        $refProp = $this->getReflectionProperty($this->parameters['ref'], $reflectionMethod);
+        $refProp = $this->getReflectionProperty($this->parameters[static::PARAM_REF], $reflectionMethod);
         $nothingFound = true;
         $value = null;
 
         if (empty($refProp) === false) {
             // We've got ourselves a possible result!
             $nothingFound = false;
-            $value = $this->parameters['ref']->retrieveValue($refProp);
+            $value = $this->parameters[static::PARAM_REF]->retrieveValue($refProp);
             $model->setData($value);
             if ($value === null) {
                 // A NULL value might mean that the values does not

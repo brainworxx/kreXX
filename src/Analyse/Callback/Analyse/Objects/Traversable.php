@@ -87,8 +87,8 @@ class Traversable extends AbstractObjectAnalysis
      */
     protected function getTaversableData()
     {
-        $data = $this->parameters['data'];
-        $name = $this->parameters['name'];
+        $data = $this->parameters[static::PARAM_DATA];
+        $name = $this->parameters[static::PARAM_NAME];
 
         // Add a try to prevent the hosting CMS from doing something stupid.
         try {
@@ -135,8 +135,8 @@ class Traversable extends AbstractObjectAnalysis
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setName($name)
                 ->setType(static::TYPE_FOREACH)
-                ->addParameter('data', $parameter)
-                ->addParameter('multiline', $multiline)
+                ->addParameter(static::PARAM_DATA, $parameter)
+                ->addParameter(static::PARAM_MULTILINE, $multiline)
                 ->addToJson('Length', count($parameter));
 
             // Check, if we are handling a huge array. Huge arrays tend to result in a huge

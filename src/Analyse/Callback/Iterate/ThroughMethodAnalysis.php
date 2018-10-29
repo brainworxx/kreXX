@@ -62,7 +62,7 @@ class ThroughMethodAnalysis extends AbstractCallback
     {
         $output = $this->dispatchStartEvent();
 
-        foreach ($this->parameters['data'] as $key => $string) {
+        foreach ($this->parameters[static::PARAM_DATA] as $key => $string) {
             /** @var Model $model */
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                 ->setData($string)

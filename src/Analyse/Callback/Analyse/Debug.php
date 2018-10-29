@@ -65,7 +65,7 @@ class Debug extends AbstractCallback
                 $this->dispatchEventWithModel(
                     static::EVENT_MARKER_ANALYSES_END,
                     $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-                        ->setData($this->parameters['data'])
+                        ->setData($this->parameters[static::PARAM_DATA])
                         ->setName('result')
                 )
             );

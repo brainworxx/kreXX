@@ -156,9 +156,9 @@ class Routing extends AbstractRouting
         if ($this->pool->emergencyHandler->checkNesting() === true) {
             $text = $this->pool->messages->getHelp('maximumLevelReached2');
             if (is_array($data) === true) {
-                $type = AbstractCallback::TYPE_ARRAY;
+                $type = static::TYPE_ARRAY;
             } else {
-                $type = AbstractCallback::TYPE_OBJECT;
+                $type = static::TYPE_OBJECT;
             }
             $model->setData($text)
                 ->setNormal($this->pool->messages->getHelp('maximumLevelReached1'))

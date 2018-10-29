@@ -65,7 +65,7 @@ class PrivateProperties extends AbstractObjectAnalysis
 
         $refProps = array();
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
-        $ref = $this->parameters['ref'];
+        $ref = $this->parameters[static::PARAM_REF];
         // We need to keep the original reference intact.
         $reflectionClass = $ref;
 

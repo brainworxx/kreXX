@@ -76,10 +76,10 @@ class ThroughLargeArray extends AbstractCallback
 
         $recursionMarker = $this->pool->recursionHandler->getMarker();
         $output .= $this->pool->render->renderSingeChildHr();
-        $multiline = $this->parameters['multiline'];
+        $multiline = $this->parameters[static::PARAM_MULTILINE];
 
         // Iterate through.
-        foreach ($this->parameters['data'] as $key => &$value) {
+        foreach ($this->parameters[static::PARAM_DATA] as $key => &$value) {
             // We will not output our recursion marker.
             // Meh, the only reason for the recursion marker
             // in arrays is because of the $GLOBAL array, which

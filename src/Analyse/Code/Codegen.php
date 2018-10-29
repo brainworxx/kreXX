@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Code;
 
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
@@ -125,7 +126,7 @@ class Codegen
 
             // Debug methods are always public.
             $type = $model->getType();
-            if ($type === 'debug method') {
+            if ($type === ConstInterface::TYPE_DEBUG_METHOD) {
                 return $this->concatenation($model);
             }
 

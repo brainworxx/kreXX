@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
-use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
@@ -44,7 +44,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessBacktrace
+class ProcessBacktrace implements ConstInterface
 {
     /**
      * Here we store all relevant data.
@@ -92,8 +92,8 @@ class ProcessBacktrace
             $output .= $this->pool->render->renderExpandableChild(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName($step)
-                    ->setType(AbstractCallback::TYPE_STACK_FRAME)
-                    ->addParameter('data', $backtrace[$step - 1])
+                    ->setType(static::TYPE_STACK_FRAME)
+                    ->addParameter(static::PARAM_DATA, $backtrace[$step - 1])
                     ->injectCallback(
                         $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\BacktraceStep')
                     )

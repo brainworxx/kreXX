@@ -62,8 +62,8 @@ class ProcessResource extends AbstractProcess
         if ($type === 'stream') {
             // Output data from the class.
             return $this->pool->render->renderExpandableChild(
-                $model->setType(AbstractCallback::TYPE_RESOURCE)
-                    ->addParameter('data', $resource)
+                $model->setType(static::TYPE_RESOURCE)
+                    ->addParameter(static::PARAM_DATA, $resource)
                     ->setNormal($typestring)
                     ->injectCallback(
                         $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughResourceStream')
@@ -79,7 +79,7 @@ class ProcessResource extends AbstractProcess
         return $this->pool->render->renderSingleChild(
             $model->setData($typestring)
                 ->setNormal($typestring)
-                ->setType(AbstractCallback::TYPE_RESOURCE)
+                ->setType(static::TYPE_RESOURCE)
         );
     }
 }

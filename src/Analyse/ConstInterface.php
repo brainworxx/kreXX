@@ -32,31 +32,43 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Analyse\Routing\Process;
-
-use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
-use Brainworxx\Krexx\Analyse\Model;
+namespace Brainworxx\Krexx\Analyse;
 
 /**
- * Processing of floats.
+ * Interface with all the constants used in Routing ans Callback
  *
- * @package Brainworxx\Krexx\Analyse\Routing\Process
+ * @package Brainworxx\Krexx\Analyse
  */
-class ProcessFloat extends AbstractProcess
+interface ConstInterface
 {
-    /**
-     * Render a dump for a float value.
-     *
-     * @param Model $model
-     *   The data we are analysing.
-     *
-     * @return string
-     *   The rendered markup.
-     */
-    public function process(Model $model)
-    {
-        return $this->pool->render->renderSingleChild(
-            $model->setNormal($model->getData())->setType(static::TYPE_FOLAT)
-        );
-    }
+    const TYPE_STRING = 'string ';
+    const TYPE_INTEGER = 'integer';
+    const TYPE_PHP = 'PHP';
+    const TYPE_INTERNALS = 'class internals';
+    const TYPE_DEBUG_METHOD = 'debug method';
+    const TYPE_FOREACH = '´foreach';
+    const TYPE_CONFIG = 'config';
+    const TYPE_UNKNOWN = 'unknown';
+    const TYPE_SIMPLE_CLASS = 'simplified class analysis';
+    const TYPE_SIMPLE_ARRAY = 'simplified array analysis';
+    const TYPE_REFLECTION = 'reflection';
+    const TYPE_METHOD = ' method';
+    const TYPE_ARRAY = 'array';
+    const TYPE_OBJECT = 'object';
+    const TYPE_STACK_FRAME = 'stack frame';
+    const TYPE_BOOL = 'boolean';
+    const TYPE_CLOSURE = 'closure';
+    const TYPE_FOLAT = 'float';
+    const TYPE_NULL = 'null';
+    const TYPE_CLASS = 'class';
+    const TYPE_RESOURCE = 'resource';
+
+    const PARAM_DATA = 'data';
+    const PARAM_REF = 'ref';
+    const PARAM_NAME = 'name';
+    const PARAM_MULTILINE = 'multiline';
+    const PARAM_CLASSNAME = 'classname';
+    const PARAM_NORMAL_GETTER = 'normalGetter';
+    const PARAM_IS_GETTER = 'isGetter';
+    const PARAM_HAS_GETTER = 'hasGetter';
 }

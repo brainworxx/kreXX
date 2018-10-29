@@ -58,7 +58,7 @@ class ProcessNull extends AbstractProcess
     {
         $data = 'NULL';
         return $this->pool->render->renderSingleChild(
-            $model->setData($data)->setNormal($data)->setType(AbstractCallback::TYPE_NULL)
+            $model->setData($data)->setNormal($data)->setType(static::TYPE_NULL)
         );
     }
 }

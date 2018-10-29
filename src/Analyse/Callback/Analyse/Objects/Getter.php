@@ -64,7 +64,7 @@ class Getter extends AbstractObjectAnalysis
         $output = $this->dispatchStartEvent();
 
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
-        $ref = $this->parameters['ref'];
+        $ref = $this->parameters[static::PARAM_REF];
 
         // Get all public methods.
         $methodList = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
@@ -131,10 +131,10 @@ class Getter extends AbstractObjectAnalysis
                         ->setName('Getter')
                         ->setType(static::TYPE_INTERNALS)
                         ->setHelpid('getterHelpInfo')
-                        ->addParameter('ref', $ref)
-                        ->addParameter('normalGetter', $normalGetter)
-                        ->addParameter('isGetter', $isGetter)
-                        ->addParameter('hasGetter', $hasGetter)
+                        ->addParameter(static::PARAM_REF, $ref)
+                        ->addParameter(static::PARAM_NORMAL_GETTER, $normalGetter)
+                        ->addParameter(static::PARAM_IS_GETTER, $isGetter)
+                        ->addParameter(static::PARAM_HAS_GETTER, $hasGetter)
                         ->injectCallback(
                             $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter')
                         )

@@ -57,9 +57,9 @@ class ProcessObject extends AbstractProcess
     {
         // Output data from the class.
         return $this->pool->render->renderExpandableChild(
-            $model->setType(AbstractCallback::TYPE_CLASS)
-                ->addParameter('data', $model->getData())
-                ->addParameter('name', $model->getName())
+            $model->setType(static::TYPE_CLASS)
+                ->addParameter(static::PARAM_DATA, $model->getData())
+                ->addParameter(static::PARAM_NAME, $model->getName())
                 ->setNormal('\\' . get_class($model->getData()))
                 ->setDomid($this->generateDomIdFromObject($model->getData()))
                 ->injectCallback(

@@ -69,7 +69,7 @@ class ThroughArray extends AbstractCallback
 
         $recursionMarker = $this->pool->recursionHandler->getMarker();
         // Iterate through.
-        foreach ($this->parameters['data'] as $key => &$value) {
+        foreach ($this->parameters[static::PARAM_DATA] as $key => &$value) {
             // We will not output our recursion marker.
             // Meh, the only reason for the recursion marker
             // in arrays is because of the $GLOBAL array, which
@@ -82,7 +82,7 @@ class ThroughArray extends AbstractCallback
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model');
 
             // Are we dealing with multiline code generation?
-            if ($this->parameters['multiline'] === true) {
+            if ($this->parameters[static::PARAM_MULTILINE] === true) {
                 // Here we tell the Codegen service that we need some
                 // special handling.
                 $model->setMultiLineCodeGen(Codegen::ITERATOR_TO_ARRAY);

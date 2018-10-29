@@ -121,7 +121,7 @@ class ProcessString extends AbstractProcess
         }
 
         return $this->pool->render->renderSingleChild(
-            $model->setType(AbstractCallback::TYPE_STRING . $strlen)
+            $model->setType(static::TYPE_STRING . $strlen)
                 ->addToJson('encoding', $encoding)
                 ->addToJson('mimetype', $mimetype)
                 ->addToJson('length', $length)

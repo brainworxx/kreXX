@@ -66,7 +66,7 @@ class Methods extends AbstractObjectAnalysis
         $output = $this->dispatchStartEvent();
 
         /** @var \ReflectionClass $ref */
-        $ref = $this->parameters['ref'];
+        $ref = $this->parameters[static::PARAM_REF];
 
         $doProtected = $this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PROTECTED_METHODS) ||
             $this->pool->scope->isInScope();
@@ -142,8 +142,8 @@ class Methods extends AbstractObjectAnalysis
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setName('Methods')
                     ->setType(static::TYPE_INTERNALS)
-                    ->addParameter('data', $methods)
-                    ->addParameter('ref', $ref)
+                    ->addParameter(static::PARAM_DATA, $methods)
+                    ->addParameter(static::PARAM_REF, $ref)
                     ->setDomId($domId)
                     ->injectCallback(
                         $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods')

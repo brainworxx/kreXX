@@ -88,7 +88,7 @@ class BacktraceStep extends AbstractCallback
      */
     protected function fileToOutput()
     {
-        $stepData = $this->parameters['data'];
+        $stepData = $this->parameters[static::PARAM_DATA];
         if (isset($stepData[static::STEP_DATA_FILE]) === true) {
             return $this->pool->render->renderSingleChild(
                 $this->dispatchEventWithModel(
@@ -113,7 +113,7 @@ class BacktraceStep extends AbstractCallback
      */
     protected function lineToOutput()
     {
-        $stepData = $this->parameters['data'];
+        $stepData = $this->parameters[static::PARAM_DATA];
         $output = '';
         $source = '';
         if (isset($stepData[static::STEP_DATA_LINE]) === true) {
@@ -165,7 +165,7 @@ class BacktraceStep extends AbstractCallback
      */
     protected function functionToOutput()
     {
-        $stepData = $this->parameters['data'];
+        $stepData = $this->parameters[static::PARAM_DATA];
 
         if (isset($stepData[static::STEP_DATA_FUNCTION]) === true) {
             return $this->pool->render->renderSingleChild(
@@ -191,7 +191,7 @@ class BacktraceStep extends AbstractCallback
      */
     protected function objectToOutput()
     {
-        $stepData = $this->parameters['data'];
+        $stepData = $this->parameters[static::PARAM_DATA];
 
         if (isset($stepData[static::STEP_DATA_OBJECT]) === true) {
             return $this->pool
@@ -215,7 +215,7 @@ class BacktraceStep extends AbstractCallback
      */
     protected function typeToOutput()
     {
-        $stepData = $this->parameters['data'];
+        $stepData = $this->parameters[static::PARAM_DATA];
 
         if (isset($stepData[static::STEP_DATA_TYPE]) === true) {
             return $this->pool->render->renderSingleChild(
@@ -241,7 +241,7 @@ class BacktraceStep extends AbstractCallback
      */
     protected function argsToOutput()
     {
-        $stepData = $this->parameters['data'];
+        $stepData = $this->parameters[static::PARAM_DATA];
 
         if (isset($stepData[static::STEP_DATA_ARGS]) === true) {
             return $this->pool

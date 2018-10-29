@@ -85,8 +85,8 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
         // any "abstraction level", because they can be accessed directly.
         /** @var Model $model */
         $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-            ->addParameter('data', $refProps)
-            ->addParameter('ref', $ref)
+            ->addParameter(static::PARAM_DATA, $refProps)
+            ->addParameter(static::PARAM_REF, $ref)
             ->injectCallback(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties')
             );

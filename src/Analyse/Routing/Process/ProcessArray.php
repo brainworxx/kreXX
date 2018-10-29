@@ -74,10 +74,10 @@ class ProcessArray extends AbstractProcess
 
         // Dumping all Properties.
         return $this->pool->render->renderExpandableChild(
-            $model->setType(AbstractCallback::TYPE_ARRAY)
+            $model->setType(static::TYPE_ARRAY)
                 ->setNormal($count . ' elements')
-                ->addParameter('data', $model->getData())
-                ->addParameter('multiline', $multiline)
+                ->addParameter(static::PARAM_DATA, $model->getData())
+                ->addParameter(static::PARAM_MULTILINE, $multiline)
         );
     }
 }

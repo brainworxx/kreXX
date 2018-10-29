@@ -59,7 +59,7 @@ class ProcessBoolean extends AbstractProcess
         return $this->pool->render->renderSingleChild(
             $model->setData($data)
                 ->setNormal($data)
-                ->setType(AbstractCallback::TYPE_BOOL)
+                ->setType(static::TYPE_BOOL)
         );
     }
 }
