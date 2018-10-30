@@ -37,6 +37,8 @@ namespace Brainworxx\Krexx\Tests\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Traversable;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 
@@ -45,7 +47,7 @@ class TraversableTest  extends AbstractTest
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties
      */
-    protected $publicProperties;
+    protected $traversable;
 
     /**
      * Create the class to test and inject the callback counter.
@@ -57,7 +59,7 @@ class TraversableTest  extends AbstractTest
         parent::setUp();
 
         // Create in instance of the class to test
-        $this->publicProperties = new Traversable(\Krexx::$pool);
+        $this->traversable = new Traversable(\Krexx::$pool);
 
         // Inject the callback counter
         \Krexx::$pool->rewrite = [
@@ -75,7 +77,31 @@ class TraversableTest  extends AbstractTest
      */
     public function testCallMeNoMoreNesting()
     {
-        $this->markTestIncomplete('Write me: '.  __METHOD__);
+        // Tell the emergency handler mock thet we have a nesting elvel problem.
+        \Krexx::$pool->emergencyHandler->expects($this->any())
+            ->method('checkNesting')
+            ->will($this->returnValue(true));
+
+        // Listen for the start event.
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::callMe::start', $this->traversable]
+        );
+
+        // Create any fixture, we will not process it anyway (at least we should not.
+        $data = new MethodsFixture();
+        $fixture = [
+            'data' => $data,
+            'name' => 'some name',
+            'ref' => new ReflectionClass($data)
+        ];
+
+        // Run the test.
+        $this->traversable
+            ->setParams($fixture)
+            ->callMe();
+
+        // Check if the callback counter was called, at all.
+        $this->assertEquals(0, CallbackCounter::$counter);
     }
 
     /**
