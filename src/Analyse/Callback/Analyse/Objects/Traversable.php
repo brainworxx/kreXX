@@ -68,7 +68,8 @@ class Traversable extends AbstractObjectAnalysis
         // Check nesting level, memory and runtime.
         $this->pool->emergencyHandler->upOneNestingLevel();
         if ($this->pool->emergencyHandler->checkNesting() === true ||
-        $this->pool->emergencyHandler->checkEmergencyBreak() === true) {
+            $this->pool->emergencyHandler->checkEmergencyBreak() === true
+        ) {
             // We will not be doing this one, but we need to get down with our
             // nesting level again.
             $this->pool->emergencyHandler->downOneNestingLevel();
