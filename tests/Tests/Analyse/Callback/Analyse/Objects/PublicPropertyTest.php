@@ -97,7 +97,7 @@ class PublicPropertyTest extends AbstractTest
             ->setParams($fixture)
             ->callMe();
 
-        // Check if the callback counter wascalled, at all.
+        // Check if the callback counter was called, at all.
         $this->assertEquals(0, CallbackCounter::$counter);
     }
 
