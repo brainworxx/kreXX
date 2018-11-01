@@ -95,12 +95,12 @@ class Traversable extends AbstractObjectAnalysis
         try {
             // We need to deactivate the current error handling to
             // prevent the host system to do anything stupid.
-                set_error_handler(
-                    function () {
+            set_error_handler(
+                function () {
                     // Do nothing.
-                    }
-                );
-                $parameter = iterator_to_array($data);
+                }
+            );
+            $parameter = iterator_to_array($data);
         } catch (\Throwable $e) {
             //Restore the previous error handler, and return an empty string.
             restore_error_handler();
