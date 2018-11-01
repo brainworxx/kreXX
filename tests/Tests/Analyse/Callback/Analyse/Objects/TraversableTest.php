@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Traversable;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
+use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
@@ -71,13 +72,13 @@ class TraversableTest  extends AbstractTest
     }
 
     /**
-     * Test, if we do not ignore the nesting level in the emergency handler.
+     * Test, if we do not ignore the emergency handler.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Traversable::callMe
      */
-    public function testCallMeNoMoreNesting()
+    public function testCallMewithEmergency()
     {
-        // Tell the emergency handler mock thet we have a nesting elvel problem.
+        // Tell the emergency handler mock that we have a nesting level problem.
         \Krexx::$pool->emergencyHandler->expects($this->any())
             ->method('checkNesting')
             ->will($this->returnValue(true));
@@ -87,13 +88,35 @@ class TraversableTest  extends AbstractTest
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::callMe::start', $this->traversable]
         );
 
-        // Create any fixture, we will not process it anyway (at least we should not.
+        // Create any fixture, we will not process it anyway, at least we should not.
         $data = new MethodsFixture();
         $fixture = [
             'data' => $data,
             'name' => 'some name',
             'ref' => new ReflectionClass($data)
         ];
+
+        // Run the test.
+        $this->traversable
+            ->setParams($fixture)
+            ->callMe();
+
+        // Check if the callback counter was called, at all.
+        $this->assertEquals(0, CallbackCounter::$counter);
+
+        // Prepare a second test.
+        // Simulate an emergency break.
+        $emergencyMock = $this->createMock(Emergency::class);
+        $emergencyMock->expects($this->any())
+            ->method('checkEmergencyBreak')
+            ->will($this->returnValue(true));
+
+        \Krexx::$pool->emergencyHandler = $emergencyMock;
+
+        // Listen for the start event. Again.
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::callMe::start', $this->traversable]
+        );
 
         // Run the test.
         $this->traversable
@@ -112,7 +135,33 @@ class TraversableTest  extends AbstractTest
      */
     public function testCallMeWithErrors()
     {
-        $this->markTestIncomplete('Write me: '.  __METHOD__);
+        // Tell the emergency handler, that the nesting level is ok.
+        \Krexx::$pool->emergencyHandler->expects($this->any())
+            ->method('checkNesting')
+            ->will($this->returnValue(false));
+
+        // Listen for the start event.
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::callMe::start', $this->traversable]
+        );
+
+        // Create any fixture that is not traversable should cause an error.
+        $data = new MethodsFixture();
+        $fixture = [
+            'data' => $data,
+            'name' => 'some name',
+            'ref' => new ReflectionClass($data)
+        ];
+
+        // Run the test.
+        // The testing framework will also notice any thrown errors, warnings
+        // or notices.
+        $this->traversable
+            ->setParams($fixture)
+            ->callMe();
+
+        // Check if the callback counter was called, at all.
+        $this->assertEquals(0, CallbackCounter::$counter);
     }
 
     /**
