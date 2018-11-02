@@ -68,6 +68,8 @@ class ThroughArray extends AbstractCallback
             $this->dispatchStartEvent();
 
         $recursionMarker = $this->pool->recursionHandler->getMarker();
+        $isMultiline = $this->parameters[static::PARAM_MULTILINE];
+
         // Iterate through.
         foreach ($this->parameters[static::PARAM_DATA] as $key => &$value) {
             // We will not output our recursion marker.
@@ -82,7 +84,7 @@ class ThroughArray extends AbstractCallback
             $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model');
 
             // Are we dealing with multiline code generation?
-            if ($this->parameters[static::PARAM_MULTILINE] === true) {
+            if ($isMultiline === true) {
                 // Here we tell the Codegen service that we need some
                 // special handling.
                 $model->setMultiLineCodeGen(Codegen::ITERATOR_TO_ARRAY);
