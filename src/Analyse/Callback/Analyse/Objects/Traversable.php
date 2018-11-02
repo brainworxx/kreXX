@@ -104,10 +104,12 @@ class Traversable extends AbstractObjectAnalysis
         } catch (\Throwable $e) {
             //Restore the previous error handler, and return an empty string.
             restore_error_handler();
+            $this->pool->emergencyHandler->downOneNestingLevel();
             return '';
         } catch (\Exception $e) {
             //Restore the previous error handler, and return an empty string.
             restore_error_handler();
+            $this->pool->emergencyHandler->downOneNestingLevel();
             return '';
         }
 

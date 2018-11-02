@@ -6,6 +6,8 @@
   configuration loading.
 - Bugfix: Preserve the line breaks from the string-extra.
 - Bugfix: Repair the UndeclaredProperty class and use it.
+- Bugfix: Lower the nesting level again after a failed traversable
+  analysis.
 
 3.0.0
 - Added 'is' and 'has' to the getter analysis.
