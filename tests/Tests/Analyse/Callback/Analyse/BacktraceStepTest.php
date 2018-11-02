@@ -64,6 +64,12 @@ class BacktraceStepTest extends AbstractTest
      * Testing, if all events got fired.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::fileToOutput
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::argsToOutput
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::functionToOutput
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::lineToOutput
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::objectToOutput
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::typeToOutput
      */
     public function testCallMe()
     {
