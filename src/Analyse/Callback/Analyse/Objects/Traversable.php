@@ -164,6 +164,7 @@ class Traversable extends AbstractObjectAnalysis
         }
 
         // Still here?!? Return an empty string.
+        $this->pool->emergencyHandler->downOneNestingLevel();
         return '';
     }
 }
