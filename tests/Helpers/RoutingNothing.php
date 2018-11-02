@@ -32,44 +32,44 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-Namespace Brainworxx\Krexx\Service\Config;
+namespace Brainworxx\Krexx\Tests\Helpers;
 
-include __DIR__ . '/../Krexx.php';
-include __DIR__ . '/Helpers/AbstractTest.php';
-include __DIR__ . '/Helpers/ProcessNothing.php';
-include __DIR__ . '/Helpers/CallbackNothing.php';
-include __DIR__ . '/Helpers/CallbackCounter.php';
-include __DIR__ . '/Helpers/RoutingNothing.php';
-
-include __DIR__ . '/Fixtures/SimpleFixture.php';
-include __DIR__ . '/Fixtures/TraversableFixture.php';
-include __DIR__ . '/Fixtures/DebugMethodFixture.php';
-include __DIR__ . '/Fixtures/MethodsFixture.php';
-include __DIR__ . '/Fixtures/GetterFixture.php';
-include __DIR__ . '/Fixtures/PrivateFixture.php';
-include __DIR__ . '/Fixtures/ProtectedFixture.php';
-include __DIR__ . '/Fixtures/PublicFixture.php';
+use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Routing\Routing;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
- * Mocking the sapi name, to do something else in a different namespace.
+ * Prevent a further routing of a model and make this model accessible.
  *
- * @param null|string $what
- *   The return valuse. kreXX only checks for cli, btw.
- *
- * @return string
- *   The mocked value, to coax kreXX into fileoutput.
+ * @package Brainworxx\Krexx\Tests\Helpers
  */
-function php_sapi_name($what = null) {
-    static $result = 'whatever';
+class RoutingNothing extends Routing
+{
+    /**
+     * @var Model
+     */
+    public $model = [];
 
-    if (!empty($what)) {
-        $result = $what;
+    /**
+     * Keep it simple, and do nothing.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(Pool $pool)
+    {
     }
 
-    return $result;
-}
+    /**
+     * Again, we keep it siomple and make the model accessible.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *
+     * @return string
+     */
+    public function analysisHub(Model $model)
+    {
+        $this->model[] = $model;
 
-// Register a shutdown method to die, so we get no output on the shell.
-register_shutdown_function(function(){
-    die();
-});
+        return '';
+    }
+}
