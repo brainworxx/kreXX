@@ -62,13 +62,13 @@ class TraversableTest  extends AbstractTest
         // Create in instance of the class to test
         $this->traversable = new Traversable(\Krexx::$pool);
 
-        // Inject the callback counter
-        \Krexx::$pool->rewrite = [
-            ThroughArray::class => CallbackCounter::class,
-            ThroughLargeArray::class => CallbackCounter::class,
-        ];
-
         $this->mockEmergencyHandler();
+
+        // Add the nesting level tests.
+        \Krexx::$pool->emergencyHandler->expects($this->once())
+            ->method('upOneNestingLevel');
+        \Krexx::$pool->emergencyHandler->expects($this->once())
+            ->method('downOneNestingLevel');
     }
 
     /**
@@ -79,7 +79,7 @@ class TraversableTest  extends AbstractTest
     public function testCallMewithEmergency()
     {
         // Tell the emergency handler mock that we have a nesting level problem.
-        \Krexx::$pool->emergencyHandler->expects($this->any())
+        \Krexx::$pool->emergencyHandler->expects($this->once())
             ->method('checkNesting')
             ->will($this->returnValue(true));
 
@@ -136,7 +136,7 @@ class TraversableTest  extends AbstractTest
     public function testCallMeWithErrors()
     {
         // Tell the emergency handler, that the nesting level is ok.
-        \Krexx::$pool->emergencyHandler->expects($this->any())
+        \Krexx::$pool->emergencyHandler->expects($this->once())
             ->method('checkNesting')
             ->will($this->returnValue(false));
 
@@ -172,7 +172,50 @@ class TraversableTest  extends AbstractTest
      */
     public function testMeWithSmallArray()
     {
-        $this->markTestIncomplete('Write me: '.  __METHOD__);
+        // Tell the emergency handler, that the nesting level is ok.
+        \Krexx::$pool->emergencyHandler->expects($this->any())
+            ->method('checkNesting')
+            ->will($this->returnValue(false));
+
+        // Listen for the start and end event.
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::callMe::start', $this->traversable],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::analysisEnd', $this->traversable]
+        );
+
+        // Create a small iterateable fixture.
+        $array = [
+            'some' => 'array',
+            'that' => 'is',
+            2 => 'not',
+            'long'
+        ];
+        $data = new \ArrayObject($array);
+        $fixture = [
+            'data' => $data,
+            'name' => 'some name',
+            'ref' => new ReflectionClass($data)
+        ];
+
+        // Inject the callback counter
+        \Krexx::$pool->rewrite = [
+            ThroughArray::class => CallbackCounter::class,
+            ThroughLargeArray::class => 'some\\not\\existing\\class\to\trigger\\an\\error',
+        ];
+
+        // Run the test.
+        // The testing framework will also notice any thrown errors, warnings
+        // or notices.
+        $this->traversable
+            ->setParams($fixture)
+            ->callMe();
+
+        // Check if the callback counter was called, at all.
+        $this->assertEquals(1, CallbackCounter::$counter);
+
+        // Check the parameters.
+        $this->assertEquals($array, CallbackCounter::$staticParameters[0]['data']);
+        $this->assertEquals(false, CallbackCounter::$staticParameters[0]['multiline']);
     }
 
     /**
@@ -183,6 +226,44 @@ class TraversableTest  extends AbstractTest
      */
     public function testMeWithLargeArray()
     {
-        $this->markTestIncomplete('Write me: '.  __METHOD__);
+        // Tell the emergency handler, that the nesting level is ok.
+        \Krexx::$pool->emergencyHandler->expects($this->any())
+            ->method('checkNesting')
+            ->will($this->returnValue(false));
+
+        // Listen for the start and end event.
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::callMe::start', $this->traversable],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Traversable::analysisEnd', $this->traversable]
+        );
+
+        // Create a small iterateable fixture.
+        $array = array_fill(0, 1000, 'whatever');
+        $data = new \ArrayObject($array);
+        $fixture = [
+            'data' => $data,
+            'name' => 'some name',
+            'ref' => new ReflectionClass($data)
+        ];
+
+        // Inject the callback counter
+        \Krexx::$pool->rewrite = [
+            ThroughArray::class => 'some\\not\\existing\\class\to\trigger\\an\\error',
+            ThroughLargeArray::class => CallbackCounter::class,
+        ];
+
+        // Run the test.
+        // The testing framework will also notice any thrown errors, warnings
+        // or notices.
+        $this->traversable
+            ->setParams($fixture)
+            ->callMe();
+
+        // Check if the callback counter was called, at all.
+        $this->assertEquals(1, CallbackCounter::$counter);
+
+        // Check the parameters.
+        $this->assertEquals($array, CallbackCounter::$staticParameters[0]['data']);
+        $this->assertEquals(false, CallbackCounter::$staticParameters[0]['multiline']);
     }
 }
