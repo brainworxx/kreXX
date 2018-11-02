@@ -109,6 +109,7 @@ class ObjectsTest extends AbstractTest
      * according to the configuration.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeEvent()
     {
@@ -125,6 +126,7 @@ class ObjectsTest extends AbstractTest
      * Test, if the public properties are getting analysed.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMePublic()
     {
@@ -144,6 +146,7 @@ class ObjectsTest extends AbstractTest
      * Test, if the getter get analysed.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeGetter()
     {
@@ -173,6 +176,7 @@ class ObjectsTest extends AbstractTest
      * Test, if the protected properties are analysed.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeProtected()
     {
@@ -201,6 +205,7 @@ class ObjectsTest extends AbstractTest
      * Test, if the private properties are analysed.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMePrivate()
     {
@@ -231,6 +236,7 @@ class ObjectsTest extends AbstractTest
      * Pun not intended.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeConstants()
     {
@@ -248,6 +254,7 @@ class ObjectsTest extends AbstractTest
      * Test, if the method analysis is used.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeMethods()
     {
@@ -265,6 +272,7 @@ class ObjectsTest extends AbstractTest
      * Test, if the traversable part is called.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeTraversable()
     {
@@ -313,6 +321,7 @@ class ObjectsTest extends AbstractTest
      * Test, if the debug methos analysis is triggered.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeDebugMethods()
     {
