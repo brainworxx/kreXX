@@ -76,6 +76,7 @@ class PublicPropertyTest extends AbstractTest
      * fixture
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::getReflectionPropertiesData
      */
     public function testCallMeNoPublic()
     {

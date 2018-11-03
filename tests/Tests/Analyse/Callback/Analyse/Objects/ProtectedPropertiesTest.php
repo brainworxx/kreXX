@@ -107,6 +107,7 @@ class ProtectedPropertiesTest extends AbstractTest
      * "inherited"  ones.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ProtectedProperties::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::getReflectionPropertiesData
      */
     public function testCallMeWithProtected()
     {
