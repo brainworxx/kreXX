@@ -237,19 +237,13 @@ class Codegen
      */
     public function parameterToString(\ReflectionParameter $reflectionParameter)
     {
-        // Fun fact:
-        // I tried to add a static cache here, but it was counter productive.
-        // Things were not faster, memory usage went up!
-        $result = '';
-
-        // Check for type value
-        if ($reflectionParameter->isArray() === true) {
-            $parameterType = 'array';
-        } else {
-            $parameterType = $this->retrieveClassName($reflectionParameter);
+        // We parse the parameter stuff from the stringified reflection
+        // parameter.
+        $explode = explode(' ', $reflectionParameter->__toString());
+        $result = $explode[4];
+        if (strlen($explode[5]) > 1) {
+            $result .= ' ' . $explode[5];
         }
-
-        $result .= $parameterType . ' $' . $reflectionParameter->getName();
 
         // Check for default value.
         if ($reflectionParameter->isDefaultValueAvailable() === true) {
@@ -257,29 +251,6 @@ class Codegen
         }
 
         return $result;
-    }
-
-    /**
-     * Retireve the class name from a reflectiuon poarameter.
-     *
-     * When the class is not autoloaded, or there is a problem with the case
-     * sensitivity, we get a fatal. Hence, we do this in an alternative way.
-     *
-     * @param \ReflectionParameter $reflectionParameter
-     *   The reflection parameter.
-     *
-     * @return string
-     *   The class name, if available.
-     */
-    protected function retrieveClassName(\ReflectionParameter $reflectionParameter)
-    {
-        $explode = explode(' ', $reflectionParameter->__toString());
-        if (strpos($explode[4], '$') !== 0) {
-            return '\\' . $explode[4];
-        }
-
-        // Nothing found.
-        return '';
     }
 
     /**

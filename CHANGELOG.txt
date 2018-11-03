@@ -9,6 +9,7 @@
 - Bugfix: Lower the nesting level again after a failed traversable
   analysis.
 - Bugfix: Analysis of private getter do not respect the context.
+- Bugfix: Interesting display of parameters in the method analysis.
 
 3.0.0
 - Added 'is' and 'has' to the getter analysis.
