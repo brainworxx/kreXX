@@ -69,7 +69,8 @@ class Getter extends AbstractObjectAnalysis
         // Get all public methods.
         $methodList = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        if ($this->pool->scope->isInScope() === true) {
+        $isInScope = $this->pool->scope->isInScope();
+        if ($isInScope === true) {
             // Looks like we also need the protected and private methods.
             $methodList = array_merge(
                 $methodList,
@@ -91,6 +92,19 @@ class Getter extends AbstractObjectAnalysis
         // has, is or get.
         /** @var \ReflectionMethod $method */
         foreach ($methodList as $method) {
+            // Check, if the method is really available, inside the analysis
+            // context. A inherited private method can not be called inside the
+            // $this context.
+            if ($isInScope === true &&
+                $method->isPrivate() === true &&
+                $method->getDeclaringClass()->getName() !== $ref->getName()
+            ) {
+                // We skip this one, it's out of scope.
+                // Meh, as of 03-11-2018, I have never seen a private getter in
+                // my whole life.
+                continue;
+            }
+
             if (strpos($method->getName(), 'get') === 0) {
                 /** @var \ReflectionMethod $method */
                 $parameters = $method->getParameters();

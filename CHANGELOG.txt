@@ -8,6 +8,7 @@
 - Bugfix: Repair the UndeclaredProperty class and use it.
 - Bugfix: Lower the nesting level again after a failed traversable
   analysis.
+- Bugfix: Analysis of private getter do not respect the context.
 
 3.0.0
 - Added 'is' and 'has' to the getter analysis.
