@@ -48,6 +48,11 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 class Routing extends AbstractRouting
 {
 
+    /**
+     * Inject the pool and create all the routing classes.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
