@@ -53,11 +53,11 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  * @uses array hasGetter
  *   The list of all reflection methods we are analysing, hosting the
  *   get methods starting with 'has'
- * @uses \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref
+ * @uses \Brainworxx\Krexx\Service\Reflection\ReflectionClass ref
  *   A reflection class of the object we are analysing.
- * @uses object $data
+ * @uses object data
  *   The object we are currently analysing
- * @uses string $currentPrefix
+ * @uses string currentPrefix
  *   The current prefix we are analysing (get, is, has).
  *   Does not get set from the outside.
  */
