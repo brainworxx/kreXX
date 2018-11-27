@@ -46,7 +46,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 class RoutingNothing extends Routing
 {
     /**
-     * @var Model
+     * @var array
      */
     public $model = [];
 
