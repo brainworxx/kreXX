@@ -335,7 +335,7 @@ class Model extends AbstractModel
     /**
      * Setter for the multiline code generation.
      *
-     * @param string $multiLineCodeGen
+     * @param integer $multiLineCodeGen
      *   The constant from the Codegen class.
      *
      * @return $this
