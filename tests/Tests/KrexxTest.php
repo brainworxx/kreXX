@@ -38,8 +38,10 @@ use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Controller\TimerController;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\Fallback;
+use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Config\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 
 class KrexxTest extends AbstractTest
 {
@@ -565,5 +567,48 @@ class KrexxTest extends AbstractTest
             'krexxCount',
             \Krexx::$pool->emergencyHandler
         );
+    }
+
+    /**
+     * Testing, if kreXX is disabled, if the call comes from the wrong IP.
+     *
+     * @covers \Krexx::open
+     */
+    public function testDisabledByIp()
+    {
+        // The ip settings are read as soon as the configuration is created.
+        // Setting them afterwards is not possible.
+        \Krexx::$pool->rewrite[Ini::class] = ConfigSupplier::class;
+        ConfigSupplier::$overwriteValues[Fallback::SETTING_IP_RANGE] = '987.654.321.123';
+        // Inject the IP.
+        $_SERVER['REMOTE_ADDR'] = '123.456.789.123';
+
+        // Reset the config.
+        Config::$disabledByPhp = false;
+        new Config(\Krexx::$pool);
+        // Run the test
+        $this->assertTrue(Config::$disabledByPhp);
+
+        // Inject another ip.
+        $_SERVER['REMOTE_ADDR'] = '987.654.321.123';
+        // Reset the config.
+        Config::$disabledByPhp = false;
+        new Config(\Krexx::$pool);
+        $this->assertFalse(Config::$disabledByPhp);
+
+        // Testing the wildcards.
+        ConfigSupplier::$overwriteValues[Fallback::SETTING_IP_RANGE] = '987.654.321.*';
+         // Reset the config.
+        Config::$disabledByPhp = false;
+        new Config(\Krexx::$pool);
+        $this->assertFalse(Config::$disabledByPhp);
+
+        // Inject another ip.
+        $_SERVER['REMOTE_ADDR'] = '123.654.321.123';
+        // Reset the config.
+        Config::$disabledByPhp = false;
+        new Config(\Krexx::$pool);
+        // Run the test
+        $this->assertTrue(Config::$disabledByPhp);
     }
 }

@@ -41,6 +41,7 @@ include __DIR__ . '/Helpers/CallbackNothing.php';
 include __DIR__ . '/Helpers/CallbackCounter.php';
 include __DIR__ . '/Helpers/RoutingNothing.php';
 include __DIR__ . '/Helpers/RenderNothing.php';
+include __DIR__ . '/Helpers/ConfigSupplier.php';
 
 include __DIR__ . '/Fixtures/SimpleFixture.php';
 include __DIR__ . '/Fixtures/TraversableFixture.php';
