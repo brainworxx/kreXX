@@ -46,9 +46,6 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
  *   Array of reflection methods.
  * @uses \reflectionClass ref
  *   Reflection of the class we are analysing.
- * @uses \reflectionMethod reflectionMethod
- *   The current reflection of the method we are analysing.
- *   Gets set from the inside.
  */
 class ThroughMethods extends AbstractCallback
 {
@@ -68,7 +65,6 @@ class ThroughMethods extends AbstractCallback
         $result = $this->dispatchStartEvent();
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
-
         $commentAnalysis = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods');
 
         // Deep analysis of the methods.
@@ -111,9 +107,6 @@ class ThroughMethods extends AbstractCallback
             } else {
                 $connectorType = Connectors::METHOD;
             }
-
-            // Update the reflection method.
-            $this->parameters[static::PARAM_REF_METHOD] = $reflectionMethod;
 
             // Render it!
             $result .= $this->pool->render->renderExpandableChild(
