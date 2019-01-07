@@ -32,43 +32,38 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\Helpers;
+namespace Brainworxx\Krexx\Tests\Fixtures;
 
-use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\View\Render;
 
-/**
- * Short circut the render class.
- *
- * @package Brainworxx\Krexx\Tests\Helpers
- */
-class RenderNothing extends Render
+class ComplexMethodFixture extends MethodsFixture
 {
-    /**
-     * Storing the model classes, for tersting purpose.
-     *
-     * @var array
-     */
-    public $model = [];
 
     /**
-     * @param \Brainworxx\Krexx\Analyse\Model $model
-     * @return string
+     * Final function
      */
-    public function renderSingleChild(Model $model)
+    final public function finalMethod()
     {
-        $this->model[__FUNCTION__][] = $model;
-        return '';
     }
 
     /**
-     * @param \Brainworxx\Krexx\Analyse\Model $model
-     * @param bool $is
-     * @return string
+     * Private function
      */
-    public function renderExpandableChild(Model $model, $is = false)
+    private function privateMethod()
     {
-        $this->model[__FUNCTION__][] = $model;
-        return '';
+    }
+
+    /**
+     * Static function
+     */
+    public static function staticMethod()
+    {
+    }
+
+    /**
+     * @param $parameter
+     */
+    public function parameterizedMethod($parameter)
+    {
+
     }
 }

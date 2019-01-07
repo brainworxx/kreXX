@@ -52,6 +52,7 @@ include __DIR__ . '/Fixtures/PrivateFixture.php';
 include __DIR__ . '/Fixtures/ProtectedFixture.php';
 include __DIR__ . '/Fixtures/PublicFixture.php';
 include __DIR__ . '/Fixtures/DeepGetterFixture.php';
+include __DIR__ . '/Fixtures/ComplexMethodFixture.php';
 
 /**
  * Mocking the sapi name, to do something else in a different namespace.
