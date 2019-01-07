@@ -197,10 +197,6 @@ class ThroughMethods extends AbstractCallback
             $result .= ' final';
         }
 
-        if ($reflectionMethod->isAbstract() === true) {
-            $result .= ' abstract';
-        }
-
         return trim($result);
     }
 }
