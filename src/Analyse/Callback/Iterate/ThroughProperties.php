@@ -47,8 +47,6 @@ use Brainworxx\Krexx\Service\Misc\File;
  *   Array of \reflectionProperties.
  * @uses ReflectionClass ref
  *   A reflection of the class we are currently analysing.
- * @uses object orgObject
- *   The original object we are analysing
  */
 class ThroughProperties extends AbstractCallback
 {
