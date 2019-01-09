@@ -44,8 +44,8 @@ use Brainworxx\Krexx\Service\Misc\File;
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  *
  * @uses array data
- *   Array of \reflectionProperties.
- * @uses ReflectionClass ref
+ *   Array of \ReflectionProperties.
+ * @uses \Brainworxx\Krexx\Service\Reflection\ReflectionReflectionClass ref
  *   A reflection of the class we are currently analysing.
  */
 class ThroughProperties extends AbstractCallback
