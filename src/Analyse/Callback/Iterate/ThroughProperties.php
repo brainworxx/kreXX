@@ -142,12 +142,7 @@ class ThroughProperties extends AbstractCallback
                 $comment = $this->pool
                     ->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Properties')
                     ->getComment($refProperty);
-
-                $declaringClass = $refProperty->getDeclaringClass();
-                $declarationPlace = $this->pool->fileService->filterFilePath(
-                    $declaringClass->getFileName() .
-                    '<br />in class: ' . $declaringClass->getName()
-                );
+                $declarationPlace = $this->retrieveDeclarationPlace($refProperty);
             }
 
             // Stitch together our model
@@ -205,5 +200,23 @@ class ThroughProperties extends AbstractCallback
         }
 
         return $additional;
+    }
+
+    /**
+     * Retrieve the declaration place of a property.
+     *
+     * @param \ReflectionProperty $refProperty
+     * @return string
+     */
+    protected function retrieveDeclarationPlace(\ReflectionProperty $refProperty)
+    {
+        static $declarationCache = array();
+        if (isset($declarationCache[$refProperty->class]) === false) {
+            $declarationCache[$refProperty->class] = $this->pool->fileService
+                    ->filterFilePath($refProperty->getDeclaringClass()->getFileName()) .
+                    '<br />in class: ' . $refProperty->class;
+        }
+
+        return $declarationCache[$refProperty->class];
     }
 }
