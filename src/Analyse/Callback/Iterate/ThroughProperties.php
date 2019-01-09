@@ -135,7 +135,7 @@ class ThroughProperties extends AbstractCallback
 
                 // There is no comment ora declaration place for a dynamic property.
                 $comment = '';
-                $declarationPlace = '';
+                $declarationPlace = 'undeclared';
             } else {
                 // Since we are dealing with a declared Property here, we can
                 // get the comment and the declaration place.
@@ -143,8 +143,10 @@ class ThroughProperties extends AbstractCallback
                     ->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Properties')
                     ->getComment($refProperty);
 
+                $declaringClass = $refProperty->getDeclaringClass();
                 $declarationPlace = $this->pool->fileService->filterFilePath(
-                    $refProperty->getDeclaringClass()->getFileName()
+                    $declaringClass->getFileName() .
+                    '<br />in class: ' . $declaringClass->getName()
                 );
             }
 
