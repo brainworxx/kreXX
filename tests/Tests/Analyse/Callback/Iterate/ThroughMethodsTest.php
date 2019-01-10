@@ -36,12 +36,10 @@ namespace Tests\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethodAnalysis;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods;
-use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
-use Brainworxx\Krexx\Tests\Helpers\ProcessNothing;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 
 class ThroughMethodsTest extends AbstractTest

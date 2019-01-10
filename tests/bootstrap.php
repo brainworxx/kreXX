@@ -53,6 +53,8 @@ include __DIR__ . '/Fixtures/ProtectedFixture.php';
 include __DIR__ . '/Fixtures/PublicFixture.php';
 include __DIR__ . '/Fixtures/DeepGetterFixture.php';
 include __DIR__ . '/Fixtures/ComplexMethodFixture.php';
+include __DIR__ . '/Fixtures/ComplexPropertiesInheritanceFixture.php';
+include __DIR__ . '/Fixtures/ComplexPropertiesFixture.php';
 
 /**
  * Mocking the sapi name, to do something else in a different namespace.
