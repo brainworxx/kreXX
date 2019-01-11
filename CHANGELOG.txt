@@ -2,6 +2,7 @@
 - Added classname to the declaration analysis of properties.
 - Bugfix: Replace the $hellip; in the file service, it may cause
   double escaping issues in the backend of some systems.
+- Bugfix: The method analysis doesn't take traits into account.
 
 3.0.1
 - Change: All singelton classes now add themself to the pool as

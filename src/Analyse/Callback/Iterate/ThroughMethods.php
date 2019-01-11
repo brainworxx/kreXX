@@ -144,17 +144,33 @@ class ThroughMethods extends AbstractCallback
      */
     protected function getDeclarationPlace(\ReflectionMethod $reflectionMethod, \ReflectionClass $declaringClass)
     {
-        /** @var \Brainworxx\Krexx\Service\Misc\File $fileService */
-
-        $filename = $this->pool->fileService->filterFilePath($declaringClass->getFileName());
-
+        $filename = $this->pool->fileService->filterFilePath($reflectionMethod->getFileName());
         if (empty($filename) === true) {
             return ":: unable to determine declaration ::\n\nMaybe this is a predeclared class?";
         }
 
-        return $filename . "\n" .
-            'in class: ' . $declaringClass->getName() . "\n" .
-            'in line: ' . $reflectionMethod->getStartLine();
+        // If the filename of the $declaringClass and the $reflectionMethod differ,
+        // we are facing a trait here.
+        if ($reflectionMethod->getFileName() !== $declaringClass->getFileName() &&
+            method_exists($declaringClass, 'getTraits')
+        ) {
+            // There is no real clean way to get the name of the trait that we
+            // are looking at.
+            $traitName = ':: unable to get the trait name ::';
+            foreach ($declaringClass->getTraits() as $trait) {
+                if ($trait->hasMethod($reflectionMethod->getName())) {
+                    // We have a winner!
+                    $traitName = $trait->name;
+                }
+            }
+            return $filename . "\n" .
+                'in trait: ' . $traitName . "\n" .
+                'in line: ' . $reflectionMethod->getStartLine();
+        } else {
+            return $filename . "\n" .
+                'in class: ' . $reflectionMethod->class . "\n" .
+                'in line: ' . $reflectionMethod->getStartLine();
+        }
     }
 
     /**

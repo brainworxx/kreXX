@@ -102,6 +102,7 @@ class ThroughMethodsTest extends AbstractTest
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods::callMe::end', $this->throughMethods],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods::callMe::end', $this->throughMethods],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods::callMe::end', $this->throughMethods],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods::callMe::end', $this->throughMethods],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods::callMe::end', $this->throughMethods]
         );
 
@@ -115,7 +116,8 @@ class ThroughMethodsTest extends AbstractTest
                 new \ReflectionMethod(MethodsFixture::class, 'privateMethod'),
                 new \ReflectionMethod(ComplexMethodFixture::class, 'troublesomeMethod'),
                 new \ReflectionMethod(ComplexMethodFixture::class, 'finalMethod'),
-                new \ReflectionMethod(ComplexMethodFixture::class, 'parameterizedMethod')
+                new \ReflectionMethod(ComplexMethodFixture::class, 'parameterizedMethod'),
+                new \ReflectionMethod(ComplexMethodFixture::class, 'traitFunction')
             ]
         ];
 
@@ -140,6 +142,8 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('()', $models[0]->getConnectorRight());
         $this->assertEquals('', $models[0]->getConnectorParameters());
         $this->assertEquals('Some comment.', $models[0]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('MethodsFixture.php', $models[0]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\MethodsFixture', $models[0]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
 
         // protectedMethod
         $this->assertEquals($fixture[$this->throughMethods::PARAM_DATA][1]->name, $models[1]->getName());
@@ -148,6 +152,8 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('()', $models[1]->getConnectorRight());
         $this->assertEquals('', $models[1]->getConnectorParameters());
         $this->assertEquals('More comments', $models[1]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('MethodsFixture.php', $models[1]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\MethodsFixture', $models[1]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
 
         // privateMethod
         // Not to be confused with the inheriteted private method.
@@ -157,6 +163,8 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('()', $models[2]->getConnectorRight());
         $this->assertEquals('', $models[2]->getConnectorParameters());
         $this->assertEquals('Private function', $models[2]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('ComplexMethodFixture.php', $models[2]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture', $models[2]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
 
         // privateMethod
         // The inherited one.
@@ -166,6 +174,8 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('()', $models[3]->getConnectorRight());
         $this->assertEquals('', $models[3]->getConnectorParameters());
         $this->assertEquals('Private method. Duh.', $models[3]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('MethodsFixture.php', $models[3]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\MethodsFixture', $models[3]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
 
         // troublesomeMethod
         $this->assertEquals($fixture[$this->throughMethods::PARAM_DATA][4]->name, $models[4]->getName());
@@ -174,6 +184,8 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('(<small>someNotExistingClass $parameter</small>)', $models[4]->getConnectorRight());
         $this->assertEquals('someNotExistingClass $parameter', $models[4]->getConnectorParameters());
         $this->assertContains('Asking politely for trouble here', $models[4]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('MethodsFixture.php', $models[4]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\MethodsFixture', $models[4]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
 
         // finalMethod
         $this->assertEquals($fixture[$this->throughMethods::PARAM_DATA][5]->name, $models[5]->getName());
@@ -182,6 +194,8 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('()', $models[5]->getConnectorRight());
         $this->assertEquals('', $models[5]->getConnectorParameters());
         $this->assertEquals('Final function', $models[5]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('ComplexMethodFixture.php', $models[5]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture', $models[5]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
 
         // parameterizedMethod
         $this->assertEquals($fixture[$this->throughMethods::PARAM_DATA][6]->name, $models[6]->getName());
@@ -190,5 +204,17 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('(<small>$parameter</small>)', $models[6]->getConnectorRight());
         $this->assertEquals('$parameter', $models[6]->getConnectorParameters());
         $this->assertEquals('&#64;param $parameter', $models[6]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('ComplexMethodFixture.php', $models[6]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture', $models[6]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+
+        // traitFunction
+        $this->assertEquals($fixture[$this->throughMethods::PARAM_DATA][7]->name, $models[7]->getName());
+        $this->assertEquals('protected method', $models[7]->getType());
+        $this->assertEquals('->', $models[7]->getConnectorLeft());
+        $this->assertEquals('()', $models[7]->getConnectorRight());
+        $this->assertEquals('', $models[7]->getConnectorParameters());
+        $this->assertEquals('Do something.', $models[7]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
+        $this->assertContains('TraitFixture.php', $models[7]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\TraitFixture', $models[7]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
     }
 }

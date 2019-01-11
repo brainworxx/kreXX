@@ -34,37 +34,19 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
-
-class ComplexMethodFixture extends MethodsFixture
+trait TraitFixture
 {
-    use TraitFixture;
+    /**
+     * A Property of a trait.
+     *
+     * @var string
+     */
+    protected $traitProperty = 'trait property';
 
     /**
-     * Final function
+     * Do something.
      */
-    final public function finalMethod()
+    protected function traitFunction()
     {
-    }
-
-    /**
-     * Private function
-     */
-    private function privateMethod()
-    {
-    }
-
-    /**
-     * Static function
-     */
-    public static function staticMethod()
-    {
-    }
-
-    /**
-     * @param $parameter
-     */
-    public function parameterizedMethod($parameter)
-    {
-
     }
 }
