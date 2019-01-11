@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Tests\Fixtures;
 
 class ComplexMethodFixture extends MethodsFixture
 {
-    use TraitFixture;
+    use MultitraitFixture;
 
     /**
      * Final function

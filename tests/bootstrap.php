@@ -44,6 +44,7 @@ include __DIR__ . '/Helpers/RenderNothing.php';
 include __DIR__ . '/Helpers/ConfigSupplier.php';
 
 include __DIR__ . '/Fixtures/TraitFixture.php';
+include __DIR__ . '/Fixtures/MultitraitFixture.php';
 include __DIR__ . '/Fixtures/SimpleFixture.php';
 include __DIR__ . '/Fixtures/TraversableFixture.php';
 include __DIR__ . '/Fixtures/DebugMethodFixture.php';

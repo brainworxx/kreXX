@@ -157,12 +157,11 @@ class ThroughMethods extends AbstractCallback
             // There is no real clean way to get the name of the trait that we
             // are looking at.
             $traitName = ':: unable to get the trait name ::';
-            foreach ($declaringClass->getTraits() as $trait) {
-                if ($trait->hasMethod($reflectionMethod->getName())) {
-                    // We have a winner!
-                    $traitName = $trait->name;
-                }
+            $trait = $this->retrieveDeclarinReflection($reflectionMethod, $declaringClass);
+            if ($trait !== false) {
+                $traitName = $trait->getName();
             }
+
             return $filename . "\n" .
                 'in trait: ' . $traitName . "\n" .
                 'in line: ' . $reflectionMethod->getStartLine();
@@ -171,6 +170,37 @@ class ThroughMethods extends AbstractCallback
                 'in class: ' . $reflectionMethod->class . "\n" .
                 'in line: ' . $reflectionMethod->getStartLine();
         }
+    }
+
+    /**
+     * Retrieve the declaration class reflection from traits.
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     *   The reflection of the method we are analysing.
+     * @param \ReflectionClass $declaringClass
+     *   The original declaring class, the one with the traits.
+     *
+     * @return bool|\ReflectionClass
+     *   false = unable to retrieve someting.
+     *   Otherwise return a reflection class.
+     */
+    protected function retrieveDeclarinReflection(\ReflectionMethod $reflectionMethod, \ReflectionClass $declaringClass)
+    {
+        // Get a first impression.
+        if ($reflectionMethod->getFileName() === $declaringClass->getFileName()) {
+            return $declaringClass;
+        }
+
+        // Go through the first layer of traits.
+        // No need to recheck the availability for traits. This is done above.
+        foreach ($declaringClass->getTraits() as $trait) {
+            $result = $this->retrieveDeclarinReflection($reflectionMethod, $trait);
+            if ($result !== false) {
+                return $result;
+            }
+        }
+
+        return false;
     }
 
     /**

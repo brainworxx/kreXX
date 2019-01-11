@@ -34,62 +34,7 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
-class ComplexPropertiesFixture extends ComplexPropertiesInheritanceFixture
+trait MultitraitFixture
 {
-    use MultitraitFixture;
-
-    /**
-     * Public string property.
-     *
-     * @var string
-     */
-    public $publicStringProperty = 'public property value';
-
-    /**
-     * Public integer property.
-     *
-     * @var int
-     */
-    public $publicIntProperty = 123;
-
-    /**
-     * Unset property is unsettling.
-     *
-     * @var string
-     */
-    public $unsetProperty = 'unset me';
-
-    /**
-     * Protected property
-     *
-     * @var string
-     */
-    protected $protectedProperty = 'pro tected';
-
-    /**
-     * Re-Declaration of a 'inherited' private property
-     *
-     * @var string
-     */
-    private $myProperty;
-
-    /**
-     * A rather long string.
-     *
-     * @var string
-     */
-    public $longString = 'gdgdfgonidoidsfogidfo idfsoigdofgoiudsfgoü dsfo goühisdfg ohisdfghioü sdoiühfg hoisdghoi sdfghiosdg sdfg dsg sdgsdf gdsg dsg';
-
-    public static $publicStatic = 1;
-
-    /**
-     * Unset a property and dynamically declare a new one.
-     */
-    public function __construct()
-    {
-        unset($this->unsetProperty);
-        $this->undeclaredProperty = 'dynamically declaration';
-        $this->myProperty = 'asdf';
-        $this->inheritedProtected = new \stdClass();
-    }
+    use TraitFixture;
 }
