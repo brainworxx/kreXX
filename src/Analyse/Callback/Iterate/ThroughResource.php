@@ -41,15 +41,15 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  *
- * @uses resource data
- *   The resource we want to analyse.
+ * @uses array data
+ *   The meta data from the stream.
  */
-class ThroughResourceStream extends AbstractCallback
+class ThroughResource extends AbstractCallback
 {
     /**
      * {@inheritdoc}
      */
-    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughResourceStream';
+    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughResource';
 
     /**
      * Renders the info of a resource.
@@ -60,14 +60,13 @@ class ThroughResourceStream extends AbstractCallback
     public function callMe()
     {
         // Allow the start event to change the provided meta data.
-        $this->parameters['meta'] = stream_get_meta_data($this->parameters[static::PARAM_DATA]);
         $output = $this->dispatchStartEvent();
 
         // Temporarily disable code gen.
         $isAllowedCodeGen = $this->pool->codegenHandler->getAllowCodegen();
         $this->pool->codegenHandler->setAllowCodegen(false);
 
-        foreach ($this->parameters['meta'] as $name => $data) {
+        foreach ($this->parameters[static::PARAM_DATA] as $name => $data) {
             $output .= $this->pool->routing->analysisHub(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setData($data)

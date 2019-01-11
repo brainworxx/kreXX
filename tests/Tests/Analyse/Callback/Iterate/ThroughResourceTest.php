@@ -34,24 +34,24 @@
 
 namespace Brainworxx\Krexx\Tests\Analyse\Callback\Iterate;
 
-use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResourceStream;
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResource;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 
-class ThroughResourceStreamTest extends AbstractTest
+class ThroughResourceTest extends AbstractTest
 {
 
     /**
      * Testing the analysis of a resource stream.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResourceStream::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResource::callMe
      */
     public function testCallMe()
     {
-        $throughResourceStream = new ThroughResourceStream(\Krexx::$pool);
+        $throughResourceStream = new ThroughResource(\Krexx::$pool);
         // Test start event.
         $this->mockEventService(
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughResourceStream::callMe::start', $throughResourceStream]
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughResource::callMe::start', $throughResourceStream]
         );
 
         // Inject the nothing route
@@ -59,20 +59,38 @@ class ThroughResourceStreamTest extends AbstractTest
         \Krexx::$pool->routing = $routeNothing;
         $this->mockEmergencyHandler();
 
-        // Create a fixture
-        $myStream = fopen('https://www.google.com/', 'r');
+        // Create a fixture.
+        // The callback simply is iterating through an already existing
+        // analysis, comming from stream_get_meta_data or curl_getinfo.
+        // The only difference to an array analysis is the forbidden code
+        // generation and the prettification of the array keys.
         $fixture = [
-            ThroughResourceStream::PARAM_DATA => $myStream
+            ThroughResource::PARAM_DATA => [
+                'some_key' => 'some_value',
+                'another key' => 'another value',
+                'array' => [
+                    'deep' => 'stuff'
+                ]
+            ]
         ];
 
         // Run the test.
-
-        $throughResourceStream->setParams($fixture)
+        $throughResourceStream
+            ->setParams($fixture)
             ->callMe();
-        fclose($myStream);
 
-        // The result comes directly from the stream_get_meta_data()
-        // Not much to test here, exept to check runtime stuff.
-        $this->assertTrue(count($routeNothing->model) > 9);
+        $models = $routeNothing->model;
+
+        $this->assertEquals('some_value', $models[0]->getData());
+        $this->assertEquals('some_value', $models[0]->getNormal());
+        $this->assertEquals('some key', $models[0]->getName());
+
+        $this->assertEquals('another value', $models[1]->getData());
+        $this->assertEquals('another value', $models[1]->getNormal());
+        $this->assertEquals('another key', $models[1]->getName());
+
+        $this->assertEquals($fixture[ThroughResource::PARAM_DATA]['array'], $models[2]->getData());
+        $this->assertEquals($fixture[ThroughResource::PARAM_DATA]['array'], $models[2]->getNormal());
+        $this->assertEquals('array', $models[2]->getName());
     }
 }
