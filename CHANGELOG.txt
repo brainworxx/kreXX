@@ -1,6 +1,7 @@
 3.0.2 dev
 - Added classname to the declaration analysis of properties.
 - Added analysis of cUrl resources.
+- Added a check for the content type to the ajax detection.
 - Bugfix: Replace the $hellip; in the file service, it may cause
   double escaping issues in the backend of some systems.
 - Bugfix: The method analysis doesn't take traits into account.
