@@ -59,24 +59,21 @@ class ThroughResourceStream extends AbstractCallback
      */
     public function callMe()
     {
+        // Allow the start event to change the provided meta data.
+        $this->parameters['meta'] = stream_get_meta_data($this->parameters[static::PARAM_DATA]);
         $output = $this->dispatchStartEvent();
-        /** @var resource $resource */
-        $resource = $this->parameters[static::PARAM_DATA];
-        $meta = stream_get_meta_data($resource);
-
-
 
         // Temporarily disable code gen.
         $isAllowedCodeGen = $this->pool->codegenHandler->getAllowCodegen();
         $this->pool->codegenHandler->setAllowCodegen(false);
 
-        foreach ($meta as $name => $data) {
-            $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
-                ->setData($data)
-                ->setName(str_replace('_', ' ', $name))
-                ->setNormal($data);
-
-            $output .= $this->pool->routing->analysisHub($model);
+        foreach ($this->parameters['meta'] as $name => $data) {
+            $output .= $this->pool->routing->analysisHub(
+                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    ->setData($data)
+                    ->setName(str_replace('_', ' ', $name))
+                    ->setNormal($data)
+            );
         }
 
         // Reset code generation.
