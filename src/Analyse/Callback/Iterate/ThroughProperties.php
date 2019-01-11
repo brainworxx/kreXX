@@ -211,12 +211,36 @@ class ThroughProperties extends AbstractCallback
     protected function retrieveDeclarationPlace(\ReflectionProperty $refProperty)
     {
         static $declarationCache = array();
-        if (isset($declarationCache[$refProperty->class]) === false) {
-            $declarationCache[$refProperty->class] = $this->pool->fileService
-                    ->filterFilePath($refProperty->getDeclaringClass()->getFileName()) .
-                    '<br />in class: ' . $refProperty->class;
+
+        // Early return from the cache.
+        $declaringClass = $refProperty->getDeclaringClass();
+        $key = $refProperty->name . '::' . $declaringClass->name;
+        if (isset($declarationCache[$key])) {
+            return $declarationCache[$key];
         }
 
-        return $declarationCache[$refProperty->class];
+        // A class can not redeclare a property from a trait that it is using.
+        // Hence, if one of the traits has the same property that we are
+        // analysing, it is probably declared there.
+        // Traits on the other hand can redeclare their properties.
+        // I'm not sure how to get the actual declaration place, when dealing
+        // with several layers of traits. We will not parse the source code
+        // for an answer.
+        $type = '<br />in class: ';
+        foreach ($refProperty->getDeclaringClass()->getTraits() as $trait) {
+            if ($trait->hasProperty($refProperty->name)) {
+                if (count($trait->getTraitNames()) > 0) {
+                    // Multiple layers of traits!
+                    return $declarationCache[$key] = '';
+                }
+                // From a trait.
+                $declaringClass = $trait;
+                $type = '<br />in trait: ';
+                break;
+            }
+        }
+
+        return $declarationCache[$key] = $this->pool->fileService
+                ->filterFilePath($declaringClass->getFileName()) . $type . $declaringClass->name;
     }
 }

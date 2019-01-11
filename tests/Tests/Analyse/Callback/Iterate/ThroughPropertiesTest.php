@@ -102,6 +102,7 @@ class ThroughPropertiesTest extends AbstractTest
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties::callMe::end', $this->throughProperties],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties::callMe::end', $this->throughProperties],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties::callMe::end', $this->throughProperties],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties::callMe::end', $this->throughProperties],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties::callMe::end', $this->throughProperties]
         );
 
@@ -120,6 +121,7 @@ class ThroughPropertiesTest extends AbstractTest
                 new \ReflectionProperty(ComplexPropertiesInheritanceFixture::class, 'myProperty'),
                 new \ReflectionProperty(ComplexPropertiesInheritanceFixture::class, 'inheritedPublic'),
                 new \ReflectionProperty(ComplexPropertiesInheritanceFixture::class, 'inheritedNull'),
+                new \ReflectionProperty(ComplexPropertiesFixture::class, 'traitProperty')
             ]
         ];
 
@@ -268,7 +270,17 @@ class ThroughPropertiesTest extends AbstractTest
             ],
             $models[9]->getJson()
         );
+        $this->assertEquals('->', $models[9]->getConnectorLeft());
+        $this->assertEquals('', $models[9]->getConnectorRight());
 
-        $this->assertFalse(isset($models[10]));
+        // traitProperty
+        $this->assertEquals('trait property', $models[10]->getData());
+        $this->assertEquals('traitProperty', $models[10]->getName());
+        $this->assertEquals(
+            ['Comment' => 'A Property of a trait.<br /><br />&#64;var string'],
+            $models[10]->getJson()
+        );
+        $this->assertEquals('->', $models[10]->getConnectorLeft());
+        $this->assertEquals('', $models[10]->getConnectorRight());
     }
 }
