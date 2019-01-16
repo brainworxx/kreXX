@@ -32,8 +32,6 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Service\Config;
-
 include __DIR__ . '/../Krexx.php';
 include __DIR__ . '/Helpers/AbstractTest.php';
 include __DIR__ . '/Helpers/ProcessNothing.php';
@@ -42,6 +40,9 @@ include __DIR__ . '/Helpers/CallbackCounter.php';
 include __DIR__ . '/Helpers/RoutingNothing.php';
 include __DIR__ . '/Helpers/RenderNothing.php';
 include __DIR__ . '/Helpers/ConfigSupplier.php';
+
+include __DIR__ . '/Helpers/MockSapiInConfig.php';
+include __DIR__ . '/Helpers/MockBacktraceInCallerFinder.php';
 
 include __DIR__ . '/Fixtures/TraitFixture.php';
 include __DIR__ . '/Fixtures/MultitraitFixture.php';
@@ -57,26 +58,6 @@ include __DIR__ . '/Fixtures/DeepGetterFixture.php';
 include __DIR__ . '/Fixtures/ComplexMethodFixture.php';
 include __DIR__ . '/Fixtures/ComplexPropertiesInheritanceFixture.php';
 include __DIR__ . '/Fixtures/ComplexPropertiesFixture.php';
-
-/**
- * Mocking the sapi name, to do something else in a different namespace.
- *
- * @param null|string $what
- *   The return value. kreXX only checks for cli, btw.
- *
- * @return string
- *   The mocked value, to coax kreXX into fileoutput.
- */
-function php_sapi_name($what = null)
-{
-    static $result = 'whatever';
-
-    if (!empty($what)) {
-        $result = $what;
-    }
-
-    return $result;
-}
 
 // Register a shutdown method to die, so we get no output on the shell.
 register_shutdown_function (function(){
