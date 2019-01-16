@@ -112,7 +112,7 @@ class CallerFinder extends AbstractCaller
      *
      * @param string $file
      *   Path to the sourcecode file.
-     * @param string $line
+     * @param int $line
      *   The line from where kreXX was called.
      *
      * @return string
@@ -120,9 +120,12 @@ class CallerFinder extends AbstractCaller
      */
     protected function getVarName($file, $line)
     {
+        // Set a fallback value.
+        $varname = '. . .';
+
         // Retrieve the call from the sourcecode file.
         if ($this->pool->fileService->fileIsReadable($file) === false) {
-            return '. . .';
+            return $varname;
         }
 
         $line--;
@@ -151,11 +154,6 @@ class CallerFinder extends AbstractCaller
                     break;
                 }
             }
-        }
-
-        // Check if we have a value.
-        if (empty($varname) === true) {
-            $varname = '. . .';
         }
 
         return $varname;
