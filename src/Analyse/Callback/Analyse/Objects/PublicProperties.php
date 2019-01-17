@@ -101,7 +101,7 @@ class PublicProperties extends AbstractObjectAnalysis
         // Adding a HR to reflect that the following stuff are not public
         // properties anymore.
         return $output .
-            $this->getReflectionPropertiesData($refProps, $ref, 'Public properties') .
+            $this->getReflectionPropertiesData($refProps, $ref) .
             $this->pool->render->renderSingeChildHr();
     }
 }
