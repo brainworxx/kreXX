@@ -65,6 +65,7 @@ class ComplexMethodFixture extends MethodsFixture
      */
     public function parameterizedMethod($parameter)
     {
-
+        // Stuff for the CallerFinder.
+        krexx($parameter);
     }
 }

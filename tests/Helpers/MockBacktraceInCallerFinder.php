@@ -32,7 +32,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\Analyse\Caller;
+namespace Brainworxx\Krexx\Analyse\Caller;
 
 /**
  * Mocking the debug backtrace in the CallerFinder.
@@ -51,7 +51,7 @@ function debug_backtrace($options, $limit, $mockData = null)
             'line' => 999
         ]
     ];
-
+    // Update the return data.
     if (is_array($mockData)) {
         $returnValue = $mockData;
     }

@@ -2,7 +2,7 @@
     <testsuites>
         <testsuite name="krexxsuit">
             <directory>Tests</directory>
-            <!--<file>Tests\KrexxTest.php</file>-->
+            <!--<file>Tests\Analyse\Caller\CallerFinderTest.php</file>-->
         </testsuite>
     </testsuites>
     <filter>

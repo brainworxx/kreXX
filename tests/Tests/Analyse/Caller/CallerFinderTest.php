@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Tests\Analyse\Caller;
 
 use Brainworxx\Krexx\Analyse\Caller\CallerFinder;
+use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 
 class CallerFinderTest extends AbstractTest
@@ -43,6 +44,11 @@ class CallerFinderTest extends AbstractTest
      * @var \Brainworxx\Krexx\Analyse\Caller\CallerFinder
      */
     protected $callerFinder;
+
+    /**
+     * @var string
+     */
+    protected $subjectVar = 'string';
 
     /**
      * Creating the Caller finder.
@@ -54,23 +60,28 @@ class CallerFinderTest extends AbstractTest
 
         // Create our test subject.
         $this->callerFinder = new CallerFinder(\Krexx::$pool);
-        // Reset the mock date in the mocked backtrace.
-        \Brainworxx\Krexx\Tests\Analyse\Caller\debug_backtrace(
-            'xxx',
-            'xxx',
-            [
-                0 => [],
-                1 => [],
-                2 => [],
-                3 => [],
-                4 => [
-                    'function' => 'krexx',
-                    'class' => 'MockClass',
-                    'file' => 'mockfile.php',
-                    'line' => 999
-                ]
+    }
+
+    /**
+     * Return the fixture.
+     *
+     * @return array
+     */
+    protected function createFixture()
+    {
+        $classRef = new \ReflectionClass(ComplexMethodFixture::class);
+        return [
+            0 => [],
+            1 => [],
+            2 => [],
+            3 => [],
+            4 => [
+                'function' => 'krexx',
+                'class' => ComplexMethodFixture::class,
+                'file' => $classRef->getFileName(),
+                'line' => 69
             ]
-        );
+        ];
     }
 
     /**
@@ -107,7 +118,20 @@ class CallerFinderTest extends AbstractTest
      */
     public function testFindCallerNormal()
     {
-        $this->markTestIncomplete('Write me!');
+        \Brainworxx\Krexx\Analyse\Caller\debug_backtrace(
+            'xxx',
+            'xxx',
+            $this->createFixture()
+        );
+
+        // Run the test
+        $result = $this->callerFinder->findCaller('', $this->subjectVar);
+
+        // Check the result
+        $this->assertEquals('...\Fixtures\ComplexMethodFixture.php', $result['file']);
+        $this->assertEquals(69, $result['line']);
+        $this->assertEquals('$parameter', $result['varname']);
+        $this->assertEquals('Analysis of $parameter, string', $result['type']);
     }
 
     /**
@@ -119,7 +143,20 @@ class CallerFinderTest extends AbstractTest
      */
     public function testFindCallerHeadline()
     {
-        $this->markTestIncomplete('Write me!');
+        \Brainworxx\Krexx\Analyse\Caller\debug_backtrace(
+            'xxx',
+            'xxx',
+            $this->createFixture()
+        );
+
+        // Run the test
+        $result = $this->callerFinder->findCaller('A headline', $this->subjectVar);
+
+        // Check the result
+        $this->assertEquals('...\Fixtures\ComplexMethodFixture.php', $result['file']);
+        $this->assertEquals(69, $result['line']);
+        $this->assertEquals('$parameter', $result['varname']);
+        $this->assertEquals('A headline', $result['type']);
     }
 
     /**
@@ -131,18 +168,23 @@ class CallerFinderTest extends AbstractTest
      */
     public function testFindCallerUnreadableSource()
     {
-        $this->markTestIncomplete('Write me!');
-    }
+        // Create a fixture.
+        $fixture = $this->createFixture();
+        $fixture[4]['file'] .= 'file not there';
 
-    /**
-     * Test with only invalid findings inm the backtrace.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::findCaller
-     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getVarName
-     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getType
-     */
-    public function testFindCallerInvalidBacktraceData()
-    {
-        $this->markTestIncomplete('Write me!');
+        \Brainworxx\Krexx\Analyse\Caller\debug_backtrace(
+            'xxx',
+            'xxx',
+            $fixture
+        );
+
+        // Run the test
+        $result = $this->callerFinder->findCaller('A headline', $this->subjectVar);
+
+        // Check the result
+        $this->assertEquals('...\Fixtures\ComplexMethodFixture.phpfile not there', $result['file']);
+        $this->assertEquals(69, $result['line']);
+        $this->assertEquals('. . .', $result['varname']);
+        $this->assertEquals('A headline', $result['type']);
     }
 }
