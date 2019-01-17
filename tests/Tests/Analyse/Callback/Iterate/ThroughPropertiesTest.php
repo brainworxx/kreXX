@@ -86,7 +86,7 @@ class ThroughPropertiesTest extends AbstractTest
      * Normal testrun for the property analysis.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::callMe
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::getAdditionalData
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::getAdditionalData
      */
     public function testCallMeNormal()
     {
