@@ -119,6 +119,7 @@ class ThroughMethods extends AbstractCallback
                         // Remove the ',' after the last char.
                         ->setConnectorParameters(trim($paramList, ', '))
                         ->addParameter(static::PARAM_DATA, $methodData)
+                        ->setIsPublic($reflectionMethod->isPublic())
                         ->injectCallback(
                             $this->pool->createClass(
                                 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethodAnalysis'

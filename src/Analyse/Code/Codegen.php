@@ -136,8 +136,7 @@ class Codegen
             }
 
             // Test for private or protected access.
-            if (strpos($type, 'protected') === false && strpos($type, 'private') === false) {
-                // Is not protected.
+            if ($model->getIsPublic()) {
                 return $this->concatenation($model);
             }
 
@@ -150,7 +149,6 @@ class Codegen
             // We are still here? Must be a protected method or property.
             // The '. . .' will tell the code generation to stop in it's tracks
             // and do nothing.
-            return '. . .';
         }
 
         // No code generation in this path.

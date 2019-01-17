@@ -466,4 +466,30 @@ class ModelTest extends AbstractTest
         $this->assertEquals($this->model, $this->model->setIsMetaConstants($data));
         $this->assertAttributeEquals($data, 'isMetaConstants', $this->model);
     }
+
+    /**
+     * Testing the setting of the isPublic.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Model::setIsPublic
+     */
+    public function testSetIsPublic()
+    {
+        $data = true;
+
+        $this->assertEquals($this->model, $this->model->setIsPublic($data));
+        $this->assertAttributeEquals($data, 'isPublic', $this->model);
+    }
+
+    /**
+     * Testing the getting of the isPublic.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Model::getIsPublic
+     */
+    public function testGetIsPublic()
+    {
+        $data = true;
+
+        $this->setValueByReflection('isPublic', $data, $this->model);
+        $this->assertEquals($data, $this->model->getIsPublic());
+    }
 }

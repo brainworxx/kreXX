@@ -156,6 +156,7 @@ class ThroughProperties extends AbstractCallback
                         ->addToJson('Declared in', $declarationPlace)
                         ->setAdditional($additional)
                         ->setConnectorType($connectorType)
+                        ->setIsPublic($refProperty->isPublic())
                 )
             );
         }

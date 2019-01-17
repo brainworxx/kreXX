@@ -116,6 +116,13 @@ class Model extends AbstractModel
     protected $isMetaConstants = false;
 
     /**
+     * Is this a public property or method?
+     *
+     * @var bool
+     */
+    protected $isPublic = true;
+
+    /**
      * Setter for the data.
      *
      * @param mixed $data
@@ -473,5 +480,29 @@ class Model extends AbstractModel
     {
         $this->isMetaConstants = $bool;
         return $this;
+    }
+
+    /**
+     * Setter for the isProtectedPrivate.
+     *
+     * @param $bool
+     *   The value we want to set.
+     * @return $this
+     *   Return $this for chaining.
+     */
+    public function setIsPublic($bool)
+    {
+        $this->isPublic = $bool;
+        return $this;
+    }
+
+    /**
+     * Getter for the isPublic.
+     *
+     * @return bool
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
     }
 }
