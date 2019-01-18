@@ -223,67 +223,37 @@ class Codegen implements ConstInterface
     }
 
     /**
-     * Setter for the reflection parameter, it also calculates the
-     * toString() return value.
+     * Abusing the __toString() magic to get informations about a parameter.
+     *
+     * If a parameter must have a specific class, that is not present in the
+     * system, we will get a reflection error. That is why we abuse the
+     * __string() method.
+     * The method getType() is available for PHP 7 only.
      *
      * @param \ReflectionParameter $reflectionParameter
      *   The reflection parameter we want to wrap.
      *
      * @return string
-     *   The parameter dada in a human readable form.
+     *   The parameter data in a human readable form.
      */
     public function parameterToString(\ReflectionParameter $reflectionParameter)
     {
-        // We parse the parameter stuff from the stringified reflection
-        // parameter.
-        $explode = explode(' ', $reflectionParameter->__toString());
-        $result = $explode[4];
-        if (strlen($explode[5]) > 1) {
-            $result .= ' ' . $explode[5];
-        }
-
-        // Check for default value.
-        if ($reflectionParameter->isDefaultValueAvailable() === true) {
-            $result .= ' = ' . $this->prepareDefaultValue($reflectionParameter->getDefaultValue());
-        }
-
-        return $result;
-    }
-
-    /**
-     * Convert the default value into a human readable form.
-     *
-     * @param mixed $default
-     *   The default value we need to bring into a human readable form.
-     *
-     * @return string
-     *   The human readable form.
-     */
-    protected function prepareDefaultValue($default)
-    {
-        if (is_string($default) === true) {
-            // We need to escape this one.
-            return '\'' . $this->pool->encodingService->encodeString($default) . '\'';
-        }
-
-        if ($default === null) {
-            return 'NULL';
-        }
-
-        if (is_array($default) === true) {
-            return 'array()';
-        }
-
-        if (is_bool($default) === true) {
-            // Transform it to readable values.
-            if ($default === true) {
-                return 'TRUE';
+        // Slice off the first part.
+        $paremExplode = array_slice(explode(' ', trim($reflectionParameter->__toString(), ' ]')), 4);
+        // A long standard value gets cut off. We do not want that.
+        if ($reflectionParameter->isDefaultValueAvailable()) {
+            // Remove the standard value
+            $paremExplode = array_slice($paremExplode, 0, 2);
+            $default = $reflectionParameter->getDefaultValue();
+            if (is_string($default)) {
+                $default = ' \'' . $default . '\'';
             } else {
-                return 'FALSE';
+                $default = ' ' . $default;
             }
+            $paremExplode[] = $default;
         }
 
-        // Still here?
-        return (string) $default;
+        // Escape it, just in case.
+        return $this->pool->encodingService->encodeString(implode(' ', $paremExplode));
     }
 }
