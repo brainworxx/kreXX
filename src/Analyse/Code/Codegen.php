@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Analyse\Code
  */
-class Codegen
+class Codegen implements ConstInterface
 {
     /**
      * Constant identifier for the array multiline code generation.
@@ -125,8 +125,7 @@ class Codegen
             }
 
             // Debug methods are always public.
-            $type = $model->getType();
-            if ($type === ConstInterface::TYPE_DEBUG_METHOD) {
+            if ($model->getType() === static::TYPE_DEBUG_METHOD) {
                 return $this->concatenation($model);
             }
 
@@ -136,7 +135,7 @@ class Codegen
             }
 
             // Test for private or protected access.
-            if ($model->getIsPublic()) {
+            if ($model->getIsPublic() === true) {
                 return $this->concatenation($model);
             }
 
