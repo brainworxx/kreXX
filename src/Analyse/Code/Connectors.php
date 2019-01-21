@@ -42,6 +42,12 @@ namespace Brainworxx\Krexx\Analyse\Code;
 class Connectors
 {
 
+    /**
+     * connectorLeft = ''
+     * connectorRight = ''
+     * or
+     * connectorRight = $params
+     */
     const NOTHING = 0;
 
     /**
