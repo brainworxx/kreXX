@@ -245,11 +245,15 @@ class Codegen implements ConstInterface
             // Remove the standard value
             $paremExplode = array_slice($paremExplode, 0, 2);
             $default = $reflectionParameter->getDefaultValue();
+
             if (is_string($default)) {
                 $default = ' \'' . $default . '\'';
+            } elseif (is_array($default)) {
+                $default = 'array()';
             } else {
                 $default = ' ' . $default;
             }
+
             $paremExplode[] = $default;
         }
 
