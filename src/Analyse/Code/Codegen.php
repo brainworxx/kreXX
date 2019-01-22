@@ -246,12 +246,16 @@ class Codegen implements ConstInterface
             $paremExplode = array_slice($paremExplode, 0, 2);
             $default = $reflectionParameter->getDefaultValue();
 
+            // If we are dealing with a reflection parameter from a closure,
+            // there is a missing '=' in the return string.
+            if (end($paremExplode) !== '=') {
+                $paremExplode[] = '=';
+            }
+
             if (is_string($default)) {
-                $default = ' \'' . $default . '\'';
+                $default = '\'' . $default . '\'';
             } elseif (is_array($default)) {
                 $default = 'array()';
-            } else {
-                $default = ' ' . $default;
             }
 
             $paremExplode[] = $default;
