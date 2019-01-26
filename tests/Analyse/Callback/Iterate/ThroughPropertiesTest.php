@@ -138,8 +138,8 @@ class ThroughPropertiesTest extends AbstractTest
         // Retrieve the result models and assert them.
         $models = $routeNothing->model;
 
-        $complexDeclarationString = '...\Fixtures\ComplexPropertiesFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesFixture';
-        $complexDeclarationStringInheritance = '...\Fixtures\ComplexPropertiesInheritanceFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesInheritanceFixture';
+        $complexDeclarationString = '.../tests/Fixtures/ComplexPropertiesFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesFixture';
+        $complexDeclarationStringInheritance = '.../tests/Fixtures/ComplexPropertiesInheritanceFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesInheritanceFixture';
 
         // publicStringProperty
         $this->assertEquals('public property value', $models[0]->getData());

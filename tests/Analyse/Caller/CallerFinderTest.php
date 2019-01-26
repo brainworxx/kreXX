@@ -128,7 +128,7 @@ class CallerFinderTest extends AbstractTest
         $result = $this->callerFinder->findCaller('', $this->subjectVar);
 
         // Check the result
-        $this->assertEquals('...\Fixtures\ComplexMethodFixture.php', $result['file']);
+        $this->assertEquals('.../tests/Fixtures/ComplexMethodFixture.php', $result['file']);
         $this->assertEquals(69, $result['line']);
         $this->assertEquals('$parameter', $result['varname']);
         $this->assertEquals('Analysis of $parameter, string', $result['type']);
@@ -153,7 +153,7 @@ class CallerFinderTest extends AbstractTest
         $result = $this->callerFinder->findCaller('A headline', $this->subjectVar);
 
         // Check the result
-        $this->assertEquals('...\Fixtures\ComplexMethodFixture.php', $result['file']);
+        $this->assertEquals('.../tests/Fixtures/ComplexMethodFixture.php', $result['file']);
         $this->assertEquals(69, $result['line']);
         $this->assertEquals('$parameter', $result['varname']);
         $this->assertEquals('A headline', $result['type']);
@@ -170,7 +170,7 @@ class CallerFinderTest extends AbstractTest
     {
         // Create a fixture.
         $fixture = $this->createFixture();
-        $fixture[4]['file'] .= 'file not there';
+        $fixture[4]['file'] .= ' file not there';
 
         \Brainworxx\Krexx\Analyse\Caller\debug_backtrace(
             'xxx',
@@ -182,7 +182,7 @@ class CallerFinderTest extends AbstractTest
         $result = $this->callerFinder->findCaller('A headline', $this->subjectVar);
 
         // Check the result
-        $this->assertEquals('...\Fixtures\ComplexMethodFixture.phpfile not there', $result['file']);
+        $this->assertEquals('.../tests/Fixtures/ComplexMethodFixture.php file not there', $result['file']);
         $this->assertEquals(69, $result['line']);
         $this->assertEquals('. . .', $result['varname']);
         $this->assertEquals('A headline', $result['type']);
