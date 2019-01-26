@@ -32,32 +32,6 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-include __DIR__ . '/../Krexx.php';
-include __DIR__ . '/Helpers/AbstractTest.php';
-include __DIR__ . '/Helpers/ProcessNothing.php';
-include __DIR__ . '/Helpers/CallbackNothing.php';
-include __DIR__ . '/Helpers/CallbackCounter.php';
-include __DIR__ . '/Helpers/RoutingNothing.php';
-include __DIR__ . '/Helpers/RenderNothing.php';
-include __DIR__ . '/Helpers/ConfigSupplier.php';
-
-include __DIR__ . '/Helpers/MockSapiInConfig.php';
-include __DIR__ . '/Helpers/MockBacktraceInCallerFinder.php';
-
-include __DIR__ . '/Fixtures/TraitFixture.php';
-include __DIR__ . '/Fixtures/MultitraitFixture.php';
-include __DIR__ . '/Fixtures/SimpleFixture.php';
-include __DIR__ . '/Fixtures/TraversableFixture.php';
-include __DIR__ . '/Fixtures/DebugMethodFixture.php';
-include __DIR__ . '/Fixtures/MethodsFixture.php';
-include __DIR__ . '/Fixtures/GetterFixture.php';
-include __DIR__ . '/Fixtures/PrivateFixture.php';
-include __DIR__ . '/Fixtures/ProtectedFixture.php';
-include __DIR__ . '/Fixtures/PublicFixture.php';
-include __DIR__ . '/Fixtures/DeepGetterFixture.php';
-include __DIR__ . '/Fixtures/ComplexMethodFixture.php';
-include __DIR__ . '/Fixtures/ComplexPropertiesInheritanceFixture.php';
-include __DIR__ . '/Fixtures/ComplexPropertiesFixture.php';
 
 // Register a shutdown method to die, so we get no output on the shell.
 register_shutdown_function (function(){
