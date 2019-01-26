@@ -144,6 +144,7 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals('Some comment.', $models[0]->getParameters()[$this->throughMethods::PARAM_DATA]['comments']);
         $this->assertContains('MethodsFixture.php', $models[0]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
         $this->assertContains('Brainworxx\Krexx\Tests\Fixtures\MethodsFixture', $models[0]->getParameters()[$this->throughMethods::PARAM_DATA]['declared in']);
+        $this->assertTrue($this->throughMethods->getParameters()[$this->throughMethods::PARAM_REF_METHOD] instanceof \ReflectionMethod);
 
         // protectedMethod
         $this->assertEquals($fixture[$this->throughMethods::PARAM_DATA][1]->name, $models[1]->getName());

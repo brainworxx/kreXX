@@ -108,6 +108,10 @@ class ThroughMethods extends AbstractCallback
                 $connectorType = Connectors::METHOD;
             }
 
+            // Update the reflection method, so an event subscriber can do
+            // something with it.
+            $this->parameters[static::PARAM_REF_METHOD] = $reflectionMethod;
+
             // Render it!
             $result .= $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
