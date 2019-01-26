@@ -112,7 +112,7 @@ class ProcessString extends AbstractProcess
         if ($length > 50 || strstr($data, PHP_EOL) !== false) {
             $cut = $this->pool->encodingService->encodeString(
                 $this->pool->encodingService->mbSubStr($data, 0, 50)
-            ) . '. . .';
+            ) . static::UNKNOWN_VALUE;
             $data = $this->pool->encodingService->encodeString($data);
             $model->setHasExtra(true)->setNormal($cut)->setData($data);
         } else {

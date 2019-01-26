@@ -153,7 +153,7 @@ class Codegen implements ConstInterface
         // No code generation in this path.
         // We must prevent code generation when copying stuff here by recursion
         // resolving by adding these dots.
-        return '. . .';
+        return static::UNKNOWN_VALUE;
     }
 
     /**

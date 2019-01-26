@@ -150,7 +150,7 @@ class BacktraceStep extends AbstractCallback
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                     ->setData($source)
                     ->setName('Sourcecode')
-                    ->setNormal('. . .')
+                    ->setNormal(static::UNKNOWN_VALUE)
                     ->setHasExtra(true)
                     ->setType(static::TYPE_PHP)
             )

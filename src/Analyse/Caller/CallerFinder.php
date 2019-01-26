@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Caller;
 
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -42,7 +43,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Analyse\Caller
  */
-class CallerFinder extends AbstractCaller
+class CallerFinder extends AbstractCaller implements ConstInterface
 {
 
     /**
@@ -121,7 +122,7 @@ class CallerFinder extends AbstractCaller
     protected function getVarName($file, $line)
     {
         // Set a fallback value.
-        $varname = '. . .';
+        $varname = static::UNKNOWN_VALUE;
 
         // Retrieve the call from the sourcecode file.
         if ($this->pool->fileService->fileIsReadable($file) === false) {

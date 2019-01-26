@@ -70,7 +70,7 @@ class ThroughMethodAnalysis extends AbstractCallback
                 ->setType(static::TYPE_REFLECTION);
 
             if ($key === 'comments' || $key === 'declared in' || $key === 'source') {
-                $model->setNormal('. . .');
+                $model->setNormal(static::UNKNOWN_VALUE);
                 $model->setHasExtra(true);
             } else {
                 $model->setNormal($string);

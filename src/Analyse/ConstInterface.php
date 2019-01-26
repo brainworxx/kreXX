@@ -73,4 +73,6 @@ interface ConstInterface
     const PARAM_HAS_GETTER = 'hasGetter';
     const PARAM_REF_METHOD = 'reflectionMethod';
     const PARAM_ADDITIONAL = 'additional';
+
+    const UNKNOWN_VALUE = '. . .';
 }

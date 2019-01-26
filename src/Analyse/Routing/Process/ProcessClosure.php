@@ -100,7 +100,7 @@ class ProcessClosure extends AbstractProcess
 
         return $this->pool->render->renderExpandableChild(
             $model->setType(static::TYPE_CLOSURE)
-                ->setNormal('. . .')
+                ->setNormal(static::UNKNOWN_VALUE)
                 // Remove the ',' after the last char.
                 ->setConnectorParameters(trim($paramList, ', '))
                 ->setDomid($this->generateDomIdFromObject($model->getData()))
