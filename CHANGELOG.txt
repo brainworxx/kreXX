@@ -9,6 +9,8 @@
 - Bugfix: The property analysis doesn't take traits into account.
 - Bugfix: Remove the copy-pasta spaces from the skins.
 - Bugfix: Cut off parameter analysis
+- Bugfix: Property analysis does not handle predefined classes
+  correctly.
 
 3.0.1
 - Change: All singelton classes now add themself to the pool as

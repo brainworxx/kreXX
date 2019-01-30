@@ -75,4 +75,5 @@ interface ConstInterface
     const PARAM_ADDITIONAL = 'additional';
 
     const UNKNOWN_VALUE = '. . .';
+    const UNKNOWN_DECLARATION = ":: unable to determine declaration :: \n\nMaybe this is a predeclared class?";
 }
