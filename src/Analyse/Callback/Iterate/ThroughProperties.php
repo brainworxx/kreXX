@@ -248,7 +248,7 @@ class ThroughProperties extends AbstractCallback
         if (empty($filename) === true) {
             return $declarationCache[$key] = static::UNKNOWN_DECLARATION;
         }
-
+        
         return $declarationCache[$key] = $this->pool->fileService
                 ->filterFilePath($declaringClass->getFileName()) . $type . $declaringClass->name;
     }
