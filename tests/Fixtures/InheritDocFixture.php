@@ -32,30 +32,16 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\Analyse\Comment;
+namespace Brainworxx\Krexx\Tests\Fixtures;
 
-use Brainworxx\Krexx\Analyse\Comment\Functions;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 
-class FunctionsTest extends AbstractTest
+class InheritDocFixture extends ComplexMethodFixture
 {
-
     /**
-     * Test the getting of a comment from a closure.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Functions::getComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::prettifyComment
+     * {@inheritdoc}
      */
-    public function testGetComment()
+    public function parameterizedMethod($parameter)
     {
-        /**
-         * Do something.
-         */
-        $fixture = function () {
-        };
-        $functionComment = new Functions(\Krexx::$pool);
-        $reflection = new \ReflectionFunction($fixture);
-
-        $this->assertEquals('Do something.', $functionComment->getComment($reflection));
+        return parent::parameterizedMethod($parameter);
     }
 }
