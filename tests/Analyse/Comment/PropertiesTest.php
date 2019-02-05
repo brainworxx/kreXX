@@ -32,23 +32,28 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\Fixtures;
+namespace Brainworxx\Krexx\Tests\Analyse\Comment;
 
-class InheritDocFixture extends ComplexMethodFixture
+use Brainworxx\Krexx\Analyse\Comment\Properties;
+use Brainworxx\Krexx\Tests\Fixtures\PrivateFixture;
+use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+
+class PropertiesTest extends AbstractTest
 {
     /**
-     * {@inheritdoc}
+     * Testing the comment retrieval for properties.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Comment\Properties::getComment
+     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::prettifyComment
      */
-    public function parameterizedMethod($parameter)
+    public function testGetComment()
     {
-        return parent::parameterizedMethod($parameter);
-    }
+        $propertiesComment = new Properties(\Krexx::$pool);
+        $reflectionProperty = new \ReflectionProperty(PrivateFixture::class, 'value5');
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function unresolvable()
-    {
-
+        $this->assertContains(
+            'A private that overwrites a property from the SimpleFixture',
+            $propertiesComment->getComment($reflectionProperty)
+        );
     }
 }
