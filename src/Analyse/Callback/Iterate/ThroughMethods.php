@@ -189,8 +189,10 @@ class ThroughMethods extends AbstractCallback
      *   false = unable to retrieve someting.
      *   Otherwise return a reflection class.
      */
-    protected function retrieveDeclaringReflection(\ReflectionMethod $reflectionMethod, \ReflectionClass $declaringClass)
-    {
+    protected function retrieveDeclaringReflection(
+        \ReflectionMethod $reflectionMethod,
+        \ReflectionClass $declaringClass
+    ) {
         // Get a first impression.
         if ($reflectionMethod->getFileName() === $declaringClass->getFileName()) {
             return $declaringClass;
