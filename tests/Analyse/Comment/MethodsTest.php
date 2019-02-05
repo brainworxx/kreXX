@@ -60,6 +60,8 @@ class MethodsTest extends AbstractTest
     /**
      * @param string $className
      * @param string $methodName
+     *
+     * @return string
      */
     protected function returnTestResult($className, $methodName)
     {
@@ -78,78 +80,36 @@ class MethodsTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getTraitComment
      * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::replaceInheritComment
      */
-    public function testGetCommentNormal()
+    public function testGetComment()
     {
+        // Comment in plain sight above method.
         $this->assertEquals(
             'Static function',
             $this->returnTestResult(ComplexMethodFixture::class, 'staticMethod')
         );
-    }
 
-    /**
-     * Test the comment retrieval of class methods.
-     *
-     * Comment inherited from underlying class
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::prettifyComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getInterfaceComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getTraitComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::replaceInheritComment
-     */
-    public function testGetCommentInherited()
-    {
+        // Comment inherited from underlying class
         $this->assertEquals(
             '&#64;param $parameter',
             $this->returnTestResult(InheritDocFixture::class, 'parameterizedMethod')
         );
-    }
 
-    /**
-     * Test the comment retrieval of class methods.
-     *
-     * Comment from an interface.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::prettifyComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getInterfaceComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getTraitComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::replaceInheritComment
-     */
-    public function testGetCommentInterface()
-    {
-        $this->markTestIncomplete('Write me!');
-    }
+        // Comment from an interface.
+        $this->assertEquals(
+            'Interface method comment.',
+            $this->returnTestResult(InheritDocFixture::class, 'interfaceMethod')
+        );
 
-    /**
-     * Test the comment retrieval of class methods.
-     *
-     * Comment from a trait.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::prettifyComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getInterfaceComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getTraitComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::replaceInheritComment
-     */
-    public function testGetCommentTrait()
-    {
-        $this->markTestIncomplete('Write me!');
-    }
+        // Comment from a trait using a trait.
+        $this->assertEquals(
+            'Do something.',
+            $this->returnTestResult(ComplexMethodFixture::class, 'traitFunction')
+        );
 
-    /**
-     * Test the comment retrieval of class methods.
-     *
-     * Unresolvable comment.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::prettifyComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getInterfaceComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Methods::getTraitComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::replaceInheritComment
-     */
-    public function testGetCommentUnresolvable()
-    {
-        $this->markTestIncomplete('Write me!');
+        // Unresolvable comment.
+        $this->assertEquals(
+            '::could not resolve the inherited comment::',
+            $this->returnTestResult(InheritDocFixture::class, 'unresolvable')
+        );
     }
 }

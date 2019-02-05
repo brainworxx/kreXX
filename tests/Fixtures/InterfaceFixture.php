@@ -34,21 +34,10 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
-class InheritDocFixture extends ComplexMethodFixture
+interface InterfaceFixture
 {
     /**
-     * {@inheritdoc}
+     * Interface method comment.
      */
-    public function parameterizedMethod($parameter)
-    {
-        return parent::parameterizedMethod($parameter);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function unresolvable()
-    {
-        
-    }
+    public function interfaceMethod();
 }
