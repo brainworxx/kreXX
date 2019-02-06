@@ -12,6 +12,7 @@
 - Bugfix: Property analysis does not handle predefined classes
   correctly.
 - Bugfix: "Autoloading" may fail with a weird directory path
+- Bugfix: The fatal error handler backtrace is broken
 
 3.0.1
 - Change: All singelton classes now add themself to the pool as
