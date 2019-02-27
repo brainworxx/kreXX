@@ -585,30 +585,30 @@ class KrexxTest extends AbstractTest
 
         // Reset the config.
         Config::$disabledByPhp = false;
-        new Config(\Krexx::$pool);
+        $config = new Config(\Krexx::$pool);
         // Run the test
-        $this->assertTrue(Config::$disabledByPhp);
+        $this->assertTrue($config::$disabledByPhp);
 
         // Inject another ip.
         $_SERVER['REMOTE_ADDR'] = '987.654.321.123';
         // Reset the config.
         Config::$disabledByPhp = false;
-        new Config(\Krexx::$pool);
-        $this->assertFalse(Config::$disabledByPhp);
+        $config = new Config(\Krexx::$pool);
+        $this->assertFalse($config::$disabledByPhp);
 
         // Testing the wildcards.
         ConfigSupplier::$overwriteValues[Fallback::SETTING_IP_RANGE] = '987.654.321.*';
          // Reset the config.
         Config::$disabledByPhp = false;
-        new Config(\Krexx::$pool);
-        $this->assertFalse(Config::$disabledByPhp);
+        $config = new Config(\Krexx::$pool);
+        $this->assertFalse($config::$disabledByPhp);
 
         // Inject another ip.
         $_SERVER['REMOTE_ADDR'] = '123.654.321.123';
         // Reset the config.
         Config::$disabledByPhp = false;
-        new Config(\Krexx::$pool);
+        $config = new Config(\Krexx::$pool);
         // Run the test
-        $this->assertTrue(Config::$disabledByPhp);
+        $this->assertTrue($config::$disabledByPhp);
     }
 }
