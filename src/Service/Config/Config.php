@@ -47,6 +47,7 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 class Config extends Fallback
 {
 
+    const REMOTE_ADDRESS = 'REMOTE_ADDR';
     /**
      * Our current settings.
      *
@@ -331,10 +332,10 @@ class Config extends Fallback
     {
         $server = $this->pool->getServer();
 
-        if (empty($server['REMOTE_ADDR']) === true) {
+        if (empty($server[static::REMOTE_ADDRESS]) === true) {
             $remote = '';
         } else {
-            $remote = $server['REMOTE_ADDR'];
+            $remote = $server[static::REMOTE_ADDRESS];
         }
 
         $whitelist = explode(',', $whitelist);
