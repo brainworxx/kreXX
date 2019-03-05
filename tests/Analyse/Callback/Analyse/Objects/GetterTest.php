@@ -45,6 +45,11 @@ use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 
 class GetterTest extends AbstractTest
 {
+    const TEST_STRING = 'some name';
+    const EVENT_PREFIX = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::';
+    const EVENT_SUFFIX_END = 'analysisEnd';
+    const EVENT_SUFFIX_START = 'callMe::start';
+
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Getter
      */
@@ -72,14 +77,14 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::callMe::start', $this->getter]
+            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
         $getterFixture = new SimpleFixture();
         $fixture = [
             'data' => $getterFixture,
-            'name' => 'some name',
+            'name' => static::TEST_STRING,
             'ref' => new ReflectionClass($getterFixture)
         ];
 
@@ -104,14 +109,14 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::callMe::start', $this->getter]
+            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
         $getterFixture = new DebugMethodFixture();
         $fixture = [
             'data' => $getterFixture,
-            'name' => 'some name',
+            'name' => static::TEST_STRING,
             'ref' => new ReflectionClass($getterFixture)
         ];
 
@@ -131,15 +136,15 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::callMe::start', $this->getter],
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::analysisEnd', $this->getter]
+            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter],
+            [static::EVENT_PREFIX . static::EVENT_SUFFIX_END, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
         $getterFixture = new GetterFixture();
         $fixture = [
             'data' => $getterFixture,
-            'name' => 'some name',
+            'name' => static::TEST_STRING,
             'ref' => new ReflectionClass($getterFixture)
         ];
 
@@ -174,15 +179,15 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::callMe::start', $this->getter],
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::analysisEnd', $this->getter]
+            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter],
+            [static::EVENT_PREFIX . static::EVENT_SUFFIX_END, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
         $getterFixture = new GetterFixture();
         $fixture = [
             'data' => $getterFixture,
-            'name' => 'some name',
+            'name' => static::TEST_STRING,
             'ref' => new ReflectionClass($getterFixture)
         ];
 
