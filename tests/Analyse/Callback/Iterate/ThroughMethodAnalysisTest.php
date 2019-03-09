@@ -35,6 +35,7 @@
 namespace Tests\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethodAnalysis;
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 
@@ -97,9 +98,9 @@ class ThroughMethodAnalysisTest extends AbstractTest
         $fixture = [
             $this->throughMethodAnalysis::PARAM_DATA => [
                 'some key' => 'some normal key',
-                'comments' => 'some comment',
-                'declared in' => 'some line',
-                'source' => 'source'
+                'Comments' => 'some comment',
+                'Declared in' => 'some line',
+                'source' => 'source code'
             ]
         ];
 
@@ -113,26 +114,26 @@ class ThroughMethodAnalysisTest extends AbstractTest
         // Test the result.
         $this->assertEquals($fixture[$this->throughMethodAnalysis::PARAM_DATA]['some key'], $models[0]->getData());
         $this->assertEquals('some key', $models[0]->getName());
-        $this->assertEquals($this->throughMethodAnalysis::TYPE_REFLECTION,$models[0]->getType());
-        $this->assertEquals($fixture[$this->throughMethodAnalysis::PARAM_DATA]['some key'], $models[0]->getNormal());
+        $this->assertEquals($this->throughMethodAnalysis::TYPE_REFLECTION, $models[0]->getType());
+        $this->assertEquals($fixture[ConstInterface::PARAM_DATA]['some key'], $models[0]->getNormal());
         $this->assertFalse($models[0]->getHasExtra());
 
-        $this->assertEquals($fixture[$this->throughMethodAnalysis::PARAM_DATA]['comments'], $models[1]->getData());
-        $this->assertEquals('comments', $models[1]->getName());
-        $this->assertEquals($this->throughMethodAnalysis::TYPE_REFLECTION,$models[1]->getType());
-        $this->assertEquals('. . .', $models[1]->getNormal());
-        $this->assertTrue($models[1]->getHasExtra());
+        $this->assertEquals($fixture[$this->throughMethodAnalysis::PARAM_DATA]['Comments'], $models[1]->getData());
+        $this->assertEquals('Comments', $models[1]->getName());
+        $this->assertEquals(ConstInterface::TYPE_REFLECTION, $models[1]->getType());
+        $this->assertEquals('some comment', $models[1]->getNormal());
+        $this->assertFalse($models[1]->getHasExtra());
 
-        $this->assertEquals($fixture[$this->throughMethodAnalysis::PARAM_DATA]['declared in'], $models[2]->getData());
-        $this->assertEquals('declared in', $models[2]->getName());
-        $this->assertEquals($this->throughMethodAnalysis::TYPE_REFLECTION, $models[2]->getType());
+        $this->assertEquals($fixture[$this->throughMethodAnalysis::PARAM_DATA]['Declared in'], $models[2]->getData());
+        $this->assertEquals('Declared in', $models[2]->getName());
+        $this->assertEquals(ConstInterface::TYPE_REFLECTION, $models[2]->getType());
         $this->assertEquals('. . .', $models[2]->getNormal());
         $this->assertTrue($models[2]->getHasExtra());
 
         $this->assertEquals($fixture[$this->throughMethodAnalysis::PARAM_DATA]['source'], $models[3]->getData());
         $this->assertEquals('source', $models[3]->getName());
-        $this->assertEquals($this->throughMethodAnalysis::TYPE_REFLECTION, $models[3]->getType());
-        $this->assertEquals('. . .', $models[3]->getNormal());
-        $this->assertTrue($models[3]->getHasExtra());
+        $this->assertEquals(ConstInterface::TYPE_REFLECTION, $models[3]->getType());
+        $this->assertEquals('source code', $models[3]->getNormal());
+        $this->assertFalse($models[3]->getHasExtra());
     }
 }
