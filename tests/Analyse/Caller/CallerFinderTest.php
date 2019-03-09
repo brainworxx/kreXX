@@ -41,6 +41,9 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 
 class CallerFinderTest extends AbstractTest
 {
+    const FUNCTION_TO_TRACE = 'krexx';
+    const HEADLINE_STRING = 'A headline';
+
     /**
      * @var \Brainworxx\Krexx\Analyse\Caller\CallerFinder
      */
@@ -52,6 +55,11 @@ class CallerFinderTest extends AbstractTest
     protected $subjectVar = 'string';
 
     /**
+     * @var string
+     */
+    protected $pathToFixture;
+
+    /**
      * Creating the Caller finder.
      * {@inheritdoc}
      */
@@ -61,6 +69,8 @@ class CallerFinderTest extends AbstractTest
 
         // Create our test subject.
         $this->callerFinder = new CallerFinder(\Krexx::$pool);
+        $this->pathToFixture = '...' . DIRECTORY_SEPARATOR . 'tests' .
+            DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'ComplexMethodFixture.php';
     }
 
     /**
@@ -77,7 +87,7 @@ class CallerFinderTest extends AbstractTest
             2 => [],
             3 => [],
             4 => [
-                ConstInterface::TRACE_FUNCTION => 'krexx',
+                ConstInterface::TRACE_FUNCTION => static::FUNCTION_TO_TRACE,
                 ConstInterface::TRACE_CLASS => ComplexMethodFixture::class,
                 ConstInterface::TRACE_FILE => $classRef->getFileName(),
                 ConstInterface::TRACE_LINE => 69
@@ -129,7 +139,7 @@ class CallerFinderTest extends AbstractTest
         $result = $this->callerFinder->findCaller('', $this->subjectVar);
 
         // Check the result
-        $this->assertEquals('...' . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'ComplexMethodFixture.php', $result[ConstInterface::TRACE_FILE]);
+        $this->assertEquals($this->pathToFixture, $result[ConstInterface::TRACE_FILE]);
         $this->assertEquals(69, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('$parameter', $result[ConstInterface::TRACE_VARNAME]);
         $this->assertEquals('Analysis of $parameter, string', $result[ConstInterface::TRACE_TYPE]);
@@ -151,13 +161,13 @@ class CallerFinderTest extends AbstractTest
         );
 
         // Run the test
-        $result = $this->callerFinder->findCaller('A headline', $this->subjectVar);
+        $result = $this->callerFinder->findCaller(static::HEADLINE_STRING, $this->subjectVar);
 
         // Check the result
-        $this->assertEquals('...' . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'ComplexMethodFixture.php', $result[ConstInterface::TRACE_FILE]);
+        $this->assertEquals($this->pathToFixture, $result[ConstInterface::TRACE_FILE]);
         $this->assertEquals(69, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('$parameter', $result[ConstInterface::TRACE_VARNAME]);
-        $this->assertEquals('A headline', $result[ConstInterface::TRACE_TYPE]);
+        $this->assertEquals(static::HEADLINE_STRING, $result[ConstInterface::TRACE_TYPE]);
     }
 
     /**
@@ -180,12 +190,12 @@ class CallerFinderTest extends AbstractTest
         );
 
         // Run the test
-        $result = $this->callerFinder->findCaller('A headline', $this->subjectVar);
+        $result = $this->callerFinder->findCaller(static::HEADLINE_STRING, $this->subjectVar);
 
         // Check the result
-        $this->assertEquals('...' . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'ComplexMethodFixture.php file not there', $result[ConstInterface::TRACE_FILE]);
+        $this->assertEquals($this->pathToFixture . ' file not there', $result[ConstInterface::TRACE_FILE]);
         $this->assertEquals(69, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('. . .', $result[ConstInterface::TRACE_VARNAME]);
-        $this->assertEquals('A headline', $result[ConstInterface::TRACE_TYPE]);
+        $this->assertEquals(static::HEADLINE_STRING, $result[ConstInterface::TRACE_TYPE]);
     }
 }
