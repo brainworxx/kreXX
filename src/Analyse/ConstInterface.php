@@ -88,4 +88,8 @@ interface ConstInterface
     const TRACE_ERROR_STRING = 'errstr';
     const TRACE_ERROR_FILE = 'errfile';
     const TRACE_ERROR_LINE = 'errline';
+
+    const META_DECLARED_IN = 'Declared in';
+    const META_COMMENT = 'Comment';
+    const META_SOURCE = 'Source';
 }
