@@ -46,9 +46,17 @@ use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 class GetterTest extends AbstractTest
 {
     const TEST_STRING = 'some name';
-    const EVENT_PREFIX = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::';
-    const EVENT_SUFFIX_END = 'analysisEnd';
-    const EVENT_SUFFIX_START = 'callMe::start';
+
+    /**
+     * @var string
+     */
+    protected $startEvent = 'Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Getter::callMe::start';
+
+    /**
+     * @var string
+     */
+    protected $endEvent = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter::analysisEnd';
+
 
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Getter
@@ -77,7 +85,7 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter]
+            [$this->startEvent, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
@@ -109,7 +117,7 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter]
+            [$this->startEvent, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
@@ -136,8 +144,8 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter],
-            [static::EVENT_PREFIX . static::EVENT_SUFFIX_END, $this->getter]
+            [$this->startEvent, $this->getter],
+            [$this->endEvent, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
@@ -179,8 +187,8 @@ class GetterTest extends AbstractTest
     {
         // Setup the events.
         $this->mockEventService(
-            [static::EVENT_PREFIX . static::EVENT_SUFFIX_START, $this->getter],
-            [static::EVENT_PREFIX . static::EVENT_SUFFIX_END, $this->getter]
+            [$this->startEvent, $this->getter],
+            [$this->endEvent, $this->getter]
         );
 
         // Set up fixture, without any methods at all.
