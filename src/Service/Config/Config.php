@@ -225,15 +225,15 @@ class Config extends Fallback
         if ($feConfig[0] === true) {
             $cookieSetting = $this->cookieConfig->getConfigFromCookies($section, $name);
             // Do we have a value in the cookies?
-            if ($cookieSetting  !== null) {
+            if ($cookieSetting  !== null &&
+                ($name === static::SETTING_DISABLED && $cookieSetting === static::VALUE_FALSE) === false
+            ) {
                 // We must not overwrite a disabled=true with local cookie settings!
                 // Otherwise it could get enabled locally, which might be a security
                 // issue.
-                if (($name === static::SETTING_DISABLED && $cookieSetting === static::VALUE_FALSE) === false) {
-                    $model->setValue($cookieSetting)->setSource('Local cookie settings');
-                    $this->settings[$name] = $model;
-                    return $this;
-                }
+                $model->setValue($cookieSetting)->setSource('Local cookie settings');
+                $this->settings[$name] = $model;
+                return $this;
             }
         }
 
