@@ -1,4 +1,6 @@
 3.0.3 dev
+- Fixes some "bugs" SonarCube found in the unit test fixtures,
+  to prevent bad ratings.
 
 3.0.2
 - Added classname to the declaration analysis of properties.
