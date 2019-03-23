@@ -114,6 +114,29 @@ abstract class AbstractTest extends TestCase
     }
 
     /**
+     * Getting a protected value in the class we are testing.
+     *
+     * @throws \ReflectionException
+     *
+     * @param string $name
+     *   The name of the value.
+     * @param object $object
+     *   The instance where we want to set the value. Or the class name, when
+     *   setting static values.
+     *
+     * @return mixed
+     *   The value.
+     */
+    protected function getValueByReflection($name, $object)
+    {
+        $reflectionClass = new \ReflectionClass($object);
+        $reflectionProperty = $reflectionClass->getProperty($name);
+        $reflectionProperty->setAccessible(true);
+
+        return $reflectionProperty->getValue($object);
+    }
+
+    /**
      * Shortcut to adjust the configuration values.
      *
      * @param string $key
