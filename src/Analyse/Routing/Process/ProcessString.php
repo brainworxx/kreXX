@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -42,7 +43,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessString extends AbstractProcess
+class ProcessString extends AbstractRouting implements ProcessInterface
 {
     /**
      * The buffer info class. We use it to get the mimetype from a string.

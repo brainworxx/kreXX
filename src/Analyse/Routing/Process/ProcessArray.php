@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 use Brainworxx\Krexx\Service\Config\Fallback;
 
 /**
@@ -42,7 +43,7 @@ use Brainworxx\Krexx\Service\Config\Fallback;
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessArray extends AbstractProcess
+class ProcessArray extends AbstractRouting implements ProcessInterface
 {
 
     /**

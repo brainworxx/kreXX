@@ -35,13 +35,14 @@
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 
 /**
  * Processing of resources.
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessResource extends AbstractProcess
+class ProcessResource extends AbstractRouting implements ProcessInterface
 {
 
     /**
@@ -74,9 +75,7 @@ class ProcessResource extends AbstractProcess
             default:
                 $meta = array();
         }
-
-
-
+        
         // Check, if we have something useful.
         if (empty($meta)) {
             // If we are facing a closed resource, 'Unknown' is a little bit sparse.

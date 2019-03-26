@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Analyse\Model;
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-abstract class AbstractProcess extends AbstractRouting
+interface ProcessInterface
 {
 
     /**
@@ -52,5 +52,5 @@ abstract class AbstractProcess extends AbstractRouting
      *
      * @return string
      */
-    abstract public function process(Model $model);
+    public function process(Model $model);
 }

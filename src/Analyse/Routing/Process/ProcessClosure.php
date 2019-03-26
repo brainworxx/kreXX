@@ -36,13 +36,14 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
+use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 
 /**
  * Processing of closures.
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessClosure extends AbstractProcess
+class ProcessClosure extends AbstractRouting implements ProcessInterface
 {
     /**
      * Analyses a closure.
