@@ -87,13 +87,11 @@ class ProcessBacktrace implements ConstInterface
         // Remove steps according to the configuration.
         if ($maxStep < $stepCount) {
             $this->pool->messages->addMessage('omittedBacktrace', array(($maxStep + 1), $stepCount));
-        }
-
-        // We will not analyse more steps than we actually have.
-        if ($maxStep > $stepCount) {
+        } else {
+            // We will not analyse more steps than we actually have.
             $maxStep = $stepCount;
         }
-
+        
         for ($step = 1; $step <= $maxStep; ++$step) {
             $output .= $this->pool->render->renderExpandableChild(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
