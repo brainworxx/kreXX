@@ -1,4 +1,4 @@
-3.0.3 dev
+3.1.0 dev
 - Fixes some "bugs" SonarCube found in the unit test fixtures,
   to prevent bad ratings.
 
