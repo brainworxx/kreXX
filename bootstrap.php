@@ -93,7 +93,10 @@ include KREXX_DIR . 'src/Analyse/Comment/Properties.php';
 include KREXX_DIR . 'src/Analyse/Routing/AbstractRouting.php';
 include KREXX_DIR . 'src/Analyse/Routing/Routing.php';
 
+include KREXX_DIR . 'src/Analyse/Routing/Process/ProcessInterface.php';
+// deprecated
 include KREXX_DIR . 'src/Analyse/Routing/Process/AbstractProcess.php';
+// deprecated
 include KREXX_DIR . 'src/Analyse/Routing/Process/ProcessArray.php';
 include KREXX_DIR . 'src/Analyse/Routing/Process/ProcessBacktrace.php';
 include KREXX_DIR . 'src/Analyse/Routing/Process/ProcessBoolean.php';
