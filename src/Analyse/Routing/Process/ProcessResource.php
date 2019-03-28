@@ -75,7 +75,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
             default:
                 $meta = array();
         }
-        
+
         // Check, if we have something useful.
         if (empty($meta)) {
             // If we are facing a closed resource, 'Unknown' is a little bit sparse.

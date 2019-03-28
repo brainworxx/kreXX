@@ -91,7 +91,7 @@ class ProcessBacktrace implements ConstInterface
             // We will not analyse more steps than we actually have.
             $maxStep = $stepCount;
         }
-        
+
         for ($step = 1; $step <= $maxStep; ++$step) {
             $output .= $this->pool->render->renderExpandableChild(
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
