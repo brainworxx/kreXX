@@ -92,4 +92,6 @@ interface ConstInterface
     const META_DECLARED_IN = 'Declared in';
     const META_COMMENT = 'Comment';
     const META_SOURCE = 'Source';
+    const META_NAMESPACE = 'Namespace';
+    const META_PARAM_NO = 'Parameter #';
 }

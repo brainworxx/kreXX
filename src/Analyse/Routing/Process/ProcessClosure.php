@@ -83,7 +83,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
         // Adding the namespace, but only if we have one.
         $namespace = $ref->getNamespaceName();
         if (empty($namespace) === false) {
-            $result['namespace'] = $namespace;
+            $result[static::META_NAMESPACE] = $namespace;
         }
 
         // Adding the parameters.
@@ -91,7 +91,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
 
         foreach ($ref->getParameters() as $key => $reflectionParameter) {
             ++$key;
-            $paramList .=  $result['Parameter #' . $key] = $this->pool
+            $paramList .=  $result[static::META_PARAM_NO . $key] = $this->pool
                 ->codegenHandler
                 ->parameterToString($reflectionParameter);
             // We add a comma to the parameter list, to separate them for a
