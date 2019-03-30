@@ -106,6 +106,9 @@ class ProcessBacktraceTest extends AbstractTest
 
     /**
      * Testing the backtrace processing, without a backtrace.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace::process
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace::getBacktrace
      */
     public function testProcessEmpty()
     {
