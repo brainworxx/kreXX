@@ -62,7 +62,6 @@ namespace Brainworxx\Krexx\Analyse\Caller {
     }
 }
 
-
 namespace Brainworxx\Krexx\Service\Config {
 
     /**
@@ -87,8 +86,9 @@ namespace Brainworxx\Krexx\Service\Config {
 }
 
 namespace {
-   // Register a shutdown method to die, so we get no output on the shell.
-    register_shutdown_function (function(){
+
+    // Register a shutdown method to die, so we get no output on the shell.
+    register_shutdown_function(function () {
         die();
     });
 }

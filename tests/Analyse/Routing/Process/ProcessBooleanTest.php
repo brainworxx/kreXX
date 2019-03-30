@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBoolean;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
+use Krexx;
 
 class ProcessBooleanTest extends AbstractTest
 {
@@ -48,18 +49,18 @@ class ProcessBooleanTest extends AbstractTest
      */
     public function testProcess()
     {
-        $renderNothing = new RenderNothing(\Krexx::$pool);
-        \Krexx::$pool->render = $renderNothing;
+        $renderNothing = new RenderNothing(Krexx::$pool);
+        Krexx::$pool->render = $renderNothing;
         $fixture = true;
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $model->setData($fixture);
-        $processor = new ProcessBoolean(\Krexx::$pool);
+        $processor = new ProcessBoolean(Krexx::$pool);
         $processor->process($model);
 
         $fixture = false;
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $model->setData($fixture);
-        $processor = new ProcessBoolean(\Krexx::$pool);
+        $processor = new ProcessBoolean(Krexx::$pool);
         $processor->process($model);
 
         $models = $renderNothing->model['renderSingleChild'];

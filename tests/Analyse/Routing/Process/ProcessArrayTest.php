@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessArray;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
+use Krexx;
 
 class ProcessArrayTest extends AbstractTest
 {
@@ -49,10 +50,10 @@ class ProcessArrayTest extends AbstractTest
         $this->mockEmergencyHandler();
 
         $fixture = ['just', 'some', 'values'];
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $model->setData($fixture);
 
-        $processArray = new ProcessArray(\Krexx::$pool);
+        $processArray = new ProcessArray(Krexx::$pool);
         $processArray->process($model);
 
         $this->assertEquals(1, CallbackCounter::$counter);
@@ -69,7 +70,7 @@ class ProcessArrayTest extends AbstractTest
      */
     public function testProcessNormal()
     {
-        \Krexx::$pool->rewrite[ThroughArray::class] = CallbackCounter::class;
+        Krexx::$pool->rewrite[ThroughArray::class] = CallbackCounter::class;
         $this->assertResults();
     }
 
@@ -80,8 +81,8 @@ class ProcessArrayTest extends AbstractTest
      */
     public function testProcessLargeArray()
     {
-        \Krexx::$pool->rewrite[ThroughLargeArray::class] = CallbackCounter::class;
-        \Krexx::$pool->config->settings[Fallback::SETTING_ARRAY_COUNT_LIMIT]->setValue('2');
+        Krexx::$pool->rewrite[ThroughLargeArray::class] = CallbackCounter::class;
+        Krexx::$pool->config->settings[Fallback::SETTING_ARRAY_COUNT_LIMIT]->setValue('2');
         $this->assertResults();
     }
 }

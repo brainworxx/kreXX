@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
+use Krexx;
+
 /**
  * Allow plugins to alter the configuration
  *
@@ -262,11 +264,11 @@ class Registration
             $staticPlugin = static::$plugins[$configClass][static::CONFIG_CLASS];
             $staticPlugin::exec();
 
-            if (isset(\Krexx::$pool)) {
+            if (isset(Krexx::$pool)) {
                 // Update stuff in the pool.
-                \Krexx::$pool->rewrite = static::$rewriteList;
-                \Krexx::$pool->eventService->register = static::$eventList;
-                \Krexx::$pool->messages->readHelpTexts();
+                Krexx::$pool->rewrite = static::$rewriteList;
+                Krexx::$pool->eventService->register = static::$eventList;
+                Krexx::$pool->messages->readHelpTexts();
             }
         }
         // No registration, no config, no plugin.
@@ -306,11 +308,11 @@ class Registration
 
         // Renew the configuration class, so the new one will load all settings
         // from the registration class.
-        if (isset(\Krexx::$pool)) {
-            \Krexx::$pool->rewrite = static::$rewriteList;
-            \Krexx::$pool->eventService->register = static::$eventList;
-            \Krexx::$pool->config = \Krexx::$pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
-            \Krexx::$pool->messages->readHelpTexts();
+        if (isset(Krexx::$pool)) {
+            Krexx::$pool->rewrite = static::$rewriteList;
+            Krexx::$pool->eventService->register = static::$eventList;
+            Krexx::$pool->config = Krexx::$pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
+            Krexx::$pool->messages->readHelpTexts();
         }
     }
 }

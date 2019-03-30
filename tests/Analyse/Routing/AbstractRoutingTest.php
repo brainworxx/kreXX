@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Routing;
 
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ProcessNothing;
+use Krexx;
 
 class AbstractRoutingTest extends AbstractTest
 {
@@ -46,7 +47,7 @@ class AbstractRoutingTest extends AbstractTest
      */
     public function test__construct()
     {
-        $processor = new ProcessNothing(\Krexx::$pool);
-        $this->assertAttributeEquals(\Krexx::$pool, 'pool', $processor);
+        $processor = new ProcessNothing(Krexx::$pool);
+        $this->assertAttributeEquals(Krexx::$pool, 'pool', $processor);
     }
 }

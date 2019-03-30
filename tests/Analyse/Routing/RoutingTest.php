@@ -40,6 +40,7 @@ use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
+use Krexx;
 
 class RoutingTest extends AbstractTest
 {
@@ -54,7 +55,7 @@ class RoutingTest extends AbstractTest
     {
         parent::setUp();
 
-        $this->routing = new Routing(\Krexx::$pool);
+        $this->routing = new Routing(Krexx::$pool);
         $this->routing->testValue = 123;
         $this->mockEmergencyHandler();
     }
@@ -111,7 +112,7 @@ class RoutingTest extends AbstractTest
         $emergencyMock->expects($this->once())
             ->method('checkNesting')
             ->will($this->returnValue($checkNesting));
-        \Krexx::$pool->emergencyHandler = $emergencyMock;
+        Krexx::$pool->emergencyHandler = $emergencyMock;
     }
 
     /**
@@ -127,7 +128,7 @@ class RoutingTest extends AbstractTest
             ->method($method)
             ->with($model)
             ->will($this->returnValue($method . ' called'));
-        \Krexx::$pool->render = $renderMock;
+        Krexx::$pool->render = $renderMock;
     }
 
     /**
@@ -138,7 +139,7 @@ class RoutingTest extends AbstractTest
      */
     public function test__construct()
     {
-        $this->assertEquals(123, \Krexx::$pool->routing->testValue);
+        $this->assertEquals(123, Krexx::$pool->routing->testValue);
 
         $reflectionClass = new \ReflectionClass($this->routing);
         $properties = $reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED);
@@ -162,7 +163,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubEmergencyBreak()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = true;
         $model->setData($parameter);
 
@@ -171,7 +172,7 @@ class RoutingTest extends AbstractTest
         $emergencyMock->expects($this->once())
             ->method('checkEmergencyBreak')
             ->will($this->returnValue(true));
-        \Krexx::$pool->emergencyHandler = $emergencyMock;
+        Krexx::$pool->emergencyHandler = $emergencyMock;
 
         $this->assertEquals('', $this->mockRouting('no route for you', $model));
     }
@@ -184,7 +185,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubString()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = 'some string';
         $model->setData($parameter);
 
@@ -199,7 +200,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubInteger()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = 42;
         $model->setData($parameter);
 
@@ -214,7 +215,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubNull()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = null;
         $model->setData($parameter);
 
@@ -229,7 +230,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubBoolean()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = true;
         $model->setData($parameter);
 
@@ -244,7 +245,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubFloat()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = 1.234;
         $model->setData($parameter);
 
@@ -259,7 +260,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubResource()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = curl_init();
         $model->setData($parameter);
 
@@ -276,7 +277,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubArrayNormal()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = [
             'some', 'values'
         ];
@@ -290,7 +291,7 @@ class RoutingTest extends AbstractTest
             ->will($this->returnValue(false));
         $recursionMock->expects($this->never())
             ->method('addToHive');
-        \Krexx::$pool->recursionHandler = $recursionMock;
+        Krexx::$pool->recursionHandler = $recursionMock;
 
         $this->assertEquals(static::ROUTING_MOCK_RETURN_VALUE, $this->mockRouting('processArray', $model));
     }
@@ -304,7 +305,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubArrayNesting()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         $parameter = [
             'some', 'values'
         ];
@@ -317,7 +318,7 @@ class RoutingTest extends AbstractTest
             ->method('isInHive');
         $recursionMock->expects($this->never())
             ->method('addToHive');
-        \Krexx::$pool->recursionHandler = $recursionMock;
+        Krexx::$pool->recursionHandler = $recursionMock;
 
         $this->assertRender($model, 'renderSingleChild');
         $this->assertEquals('renderSingleChild called', $this->mockRouting('no routing', $model));
@@ -332,7 +333,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubGlobalsInHive()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         // We are not really using the globals.
         $parameter = [
             'some', 'values'
@@ -347,7 +348,7 @@ class RoutingTest extends AbstractTest
             ->will($this->returnValue(true));
         $recursionMock->expects($this->never())
             ->method('addToHive');
-        \Krexx::$pool->recursionHandler = $recursionMock;
+        Krexx::$pool->recursionHandler = $recursionMock;
 
         $this->assertRender($model, 'renderRecursion');
         $this->assertEquals('renderRecursion called', $this->mockRouting('no routing', $model));
@@ -364,7 +365,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubObjectNormal()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         // We are not really using the globals.
         $parameter = new \stdClass();
         $model->setData($parameter);
@@ -378,7 +379,7 @@ class RoutingTest extends AbstractTest
         $recursionMock->expects($this->once())
             ->method('addToHive')
             ->with($parameter);
-        \Krexx::$pool->recursionHandler = $recursionMock;
+        Krexx::$pool->recursionHandler = $recursionMock;
 
         $this->assertEquals(static::ROUTING_MOCK_RETURN_VALUE, $this->mockRouting('processObject', $model));
     }
@@ -393,7 +394,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubObjectInHive()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         // We are not really using the globals.
         $parameter = new \stdClass();
         $model->setData($parameter);
@@ -406,7 +407,7 @@ class RoutingTest extends AbstractTest
             ->will($this->returnValue(true));
         $recursionMock->expects($this->never())
             ->method('addToHive');
-        \Krexx::$pool->recursionHandler = $recursionMock;
+        Krexx::$pool->recursionHandler = $recursionMock;
 
         $this->assertRender($model, 'renderRecursion');
         $this->assertEquals('renderRecursion called', $this->mockRouting('no routing', $model));
@@ -422,7 +423,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubObjectNesting()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         // We are not really using the globals.
         $parameter = new \stdClass();
         $model->setData($parameter);
@@ -442,7 +443,7 @@ class RoutingTest extends AbstractTest
     public function testAnalysisHubObjectClosure()
     {
         // Create the model.
-        $model = new Model(\Krexx::$pool);
+        $model = new Model(Krexx::$pool);
         // We are not really using the globals.
         $parameter = function () {
             // Do nothing.
@@ -456,7 +457,7 @@ class RoutingTest extends AbstractTest
         $recursionMock->expects($this->once())
             ->method('addToHive')
             ->with($parameter);
-        \Krexx::$pool->recursionHandler = $recursionMock;
+        Krexx::$pool->recursionHandler = $recursionMock;
 
         $this->assertEmergencyHandler(false, false);
         $this->assertEquals(static::ROUTING_MOCK_RETURN_VALUE, $this->mockRouting('processClosure', $model));
