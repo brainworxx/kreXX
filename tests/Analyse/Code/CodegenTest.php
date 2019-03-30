@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Code\Scope;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class CodegenTest extends AbstractTest
 {

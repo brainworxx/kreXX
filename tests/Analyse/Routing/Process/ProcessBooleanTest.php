@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBoolean;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ProcessBooleanTest extends AbstractTest
 {

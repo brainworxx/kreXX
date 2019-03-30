@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Caller;
 
 use Brainworxx\Krexx\Analyse\Caller\CallerFinder;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class AbstractCallerTest extends AbstractTest
 {

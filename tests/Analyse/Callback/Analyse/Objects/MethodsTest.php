@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class MethodsTest extends AbstractTest
 {

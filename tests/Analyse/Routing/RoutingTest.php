@@ -40,7 +40,7 @@ use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class RoutingTest extends AbstractTest
 {

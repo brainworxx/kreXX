@@ -34,7 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 /**
  * Allow plugins to alter the configuration

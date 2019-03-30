@@ -35,7 +35,7 @@
 namespace Brainworxx\Krexx\Service\Factory;
 
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 /**
  * Simple factory, nothing special. Offers a overwrite method.

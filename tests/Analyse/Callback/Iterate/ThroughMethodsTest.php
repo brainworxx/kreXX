@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughMethodsTest extends AbstractTest
 {

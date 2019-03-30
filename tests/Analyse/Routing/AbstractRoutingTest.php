@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Routing;
 
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ProcessNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class AbstractRoutingTest extends AbstractTest
 {

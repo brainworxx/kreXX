@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Analyse\Caller\CallerFinder;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class CallerFinderTest extends AbstractTest
 {

@@ -40,7 +40,7 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessObject;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ProcessNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class BacktraceStepTest extends AbstractTest
 {

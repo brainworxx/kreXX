@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Comment;
 
 use Brainworxx\Krexx\Analyse\Comment\Functions;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class FunctionsTest extends AbstractTest
 {

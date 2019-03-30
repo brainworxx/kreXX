@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\View\AbstractRender;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ConstantsTest extends AbstractTest
 {

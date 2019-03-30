@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Tests\Fixtures\GetterFixture;
 use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class GetterTest extends AbstractTest
 {

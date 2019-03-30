@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConfig;
 use Brainworxx\Krexx\Service\Config\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughConfigTest extends AbstractTest
 {

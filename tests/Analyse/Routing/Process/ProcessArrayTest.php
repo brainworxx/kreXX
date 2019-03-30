@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessArray;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ProcessArrayTest extends AbstractTest
 {

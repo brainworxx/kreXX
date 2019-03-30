@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesInheritanceFixture;
 use Brainworxx\Krexx\Tests\Fixtures\PublicFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughPropertiesTest extends AbstractTest
 {

@@ -36,7 +36,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Callback;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Debug;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class AbstractCallbackTest extends AbstractTest
 {

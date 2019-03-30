@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Comment;
 use Brainworxx\Krexx\Analyse\Comment\Properties;
 use Brainworxx\Krexx\Tests\Fixtures\PrivateFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class PropertiesTest extends AbstractTest
 {

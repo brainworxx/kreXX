@@ -50,7 +50,7 @@ use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Tests\Fixtures\TraversableFixture;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ObjectsTest extends AbstractTest
 {

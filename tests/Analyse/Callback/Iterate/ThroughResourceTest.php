@@ -37,7 +37,7 @@ namespace Brainworxx\Krexx\Tests\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResource;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughResourceTest extends AbstractTest
 {

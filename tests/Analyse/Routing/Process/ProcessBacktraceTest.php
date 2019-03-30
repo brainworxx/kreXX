@@ -34,14 +34,12 @@
 
 namespace Brainworxx\Krexx\Tests\Analyse\Routing\Process;
 
-use Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
-use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ProcessBacktraceTest extends AbstractTest
 {

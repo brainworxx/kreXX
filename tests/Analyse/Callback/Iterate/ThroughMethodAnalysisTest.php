@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughMethodAnalysisTest extends AbstractTest
 {

@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughArrayTest extends AbstractTest
 {

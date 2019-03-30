@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughLargeArrayTest extends AbstractTest
 {

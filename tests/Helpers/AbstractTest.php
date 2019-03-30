@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Tests\KrexxTest;
 use PHPUnit\Framework\TestCase;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 abstract class AbstractTest extends TestCase
 {

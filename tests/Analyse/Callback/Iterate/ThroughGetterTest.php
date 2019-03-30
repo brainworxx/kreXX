@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Tests\Fixtures\DeepGetterFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 use Brainworxx\Krexx\View\Render;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughGetterTest extends AbstractTest
 {

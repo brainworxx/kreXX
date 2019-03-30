@@ -37,7 +37,7 @@ namespace Tests\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ThroughConstantsTest extends AbstractTest
 {

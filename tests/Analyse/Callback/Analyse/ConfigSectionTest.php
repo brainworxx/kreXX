@@ -40,7 +40,7 @@ use Brainworxx\Krexx\Service\Config\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\View\AbstractRender;
 use Brainworxx\Krexx\View\Messages;
-use Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class ConfigSectionTest extends AbstractTest
 {
