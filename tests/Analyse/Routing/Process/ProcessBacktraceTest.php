@@ -134,7 +134,7 @@ class ProcessBacktraceTest extends AbstractTest
             $model = $renderNothing->model['renderExpandableChild'][$i];
 
             if ($i === 2) {
-                $someFile = KREXX_DIR;
+                $someFile = KREXX_DIR . 'src' . DIRECTORY_SEPARATOR . 'whatever';
             }
 
             $this->assertEquals(

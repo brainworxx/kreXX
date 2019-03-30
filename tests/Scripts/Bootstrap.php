@@ -106,7 +106,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
         $someFile = 'some file';
         return [
             [
-                ConstInterface::TRACE_FILE => KREXX_DIR,
+                ConstInterface::TRACE_FILE => KREXX_DIR . 'src' . DIRECTORY_SEPARATOR . 'blargh',
                 $data => 'Step 1',
             ],
             [
@@ -118,7 +118,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
                 $data => 'Step 3',
             ],
             [
-                ConstInterface::TRACE_FILE => KREXX_DIR,
+                ConstInterface::TRACE_FILE => KREXX_DIR . 'src' . DIRECTORY_SEPARATOR . 'whatever',
                 $data => 'Step 4',
             ],
         ];
