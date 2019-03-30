@@ -182,7 +182,6 @@ try {
     $krexxLoader();
 }
 restore_error_handler();
-
 unset($krexxLoader);
 
 // Class alias shorthand for object analysis.
