@@ -32,7 +32,6 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-
 // "Autoloader" for kreXX.
 // There may or may not be an active autoloader, which may or may not be able to
 // autoload the krexx files. There may or may not be an unwanted interaction
@@ -167,7 +166,7 @@ $krexxLoader = function () {
 };
 
 // Try to detect a real autoloader that may autoload kreXX.
-// When the original autolaoder does something stupig, kreXX will
+// When the original autolaoder does something stupid, kreXX will
 // handle the rest.
 set_error_handler($krexxLoader);
 try {
@@ -203,11 +202,25 @@ if (!function_exists('krexx')) {
     function krexx($data = null, $handle = '')
     {
         if (empty($handle)) {
-            \Krexx::open($data);
+            \Brainworxx\Krexx\Krexx::open($data);
             return;
         }
 
-        \Krexx::$handle($data);
+        $allArgs = func_get_args();
+        if (count($allArgs) > 2) {
+            // We got more arguments than we asked for.
+            // Better dum them all.
+            \Brainworxx\Krexx\Krexx::open($allArgs);
+            return;
+        }
+
+        if (is_string($handle)) {
+            \Brainworxx\Krexx\Krexx::$handle($data);
+            return;
+        }
+
+        // Still here ?!?
+        \Brainworxx\Krexx\Krexx::open([$data, $handle]);
     }
 }
 
