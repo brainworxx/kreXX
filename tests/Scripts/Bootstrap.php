@@ -92,3 +92,35 @@ namespace {
         die();
     });
 }
+
+namespace Brainworxx\Krexx\Analyse\Routing\Process {
+
+    use Brainworxx\Krexx\Analyse\ConstInterface;
+
+    /**
+     * Mocking the debug backtrace for the backtrace processor.
+     */
+    function debug_backtrace()
+    {
+        $data = 'data';
+        $someFile = 'some file';
+        return [
+            [
+                ConstInterface::TRACE_FILE => KREXX_DIR,
+                $data => 'Step 1',
+            ],
+            [
+                ConstInterface::TRACE_FILE => $someFile,
+                $data => 'Step 2',
+            ],
+            [
+                ConstInterface::TRACE_FILE => $someFile,
+                $data => 'Step 3',
+            ],
+            [
+                ConstInterface::TRACE_FILE => KREXX_DIR,
+                $data => 'Step 4',
+            ],
+        ];
+    }
+}
