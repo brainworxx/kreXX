@@ -123,6 +123,10 @@ class ProcessBacktrace implements ConstInterface
         foreach ($backtrace as $key => $step) {
             if (isset($step[static::TRACE_FILE]) && strpos($step[static::TRACE_FILE], KREXX_DIR) !== false) {
                 unset($backtrace[$key]);
+            } else {
+                // No need to ga wurther, because we should have passed the
+                // kreXX part.
+                break;
             }
         }
 
