@@ -44,6 +44,17 @@ use Brainworxx\Krexx\Krexx;
 class ProcessBacktraceTest extends AbstractTest
 {
     /**
+     * Test the setting of the pool.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace::__construct
+     */
+    public function test__construct()
+    {
+        $processBacktrace = new ProcessBacktrace(Krexx::$pool);
+        $this->assertAttributeEquals(Krexx::$pool, 'pool', $processBacktrace);
+    }
+
+    /**
      * Create a mock backtrace, and see if it is processed.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace::process
