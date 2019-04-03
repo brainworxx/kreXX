@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Config\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
-use \Krexx;
+use Brainworxx\Krexx\Krexx;
 
 class KrexxTest extends AbstractTest
 {
@@ -95,7 +95,7 @@ class KrexxTest extends AbstractTest
     /**
      * Test if we can take a moment while kreXX is disabled.
      *
-     * @covers \Krexx::timerMoment
+     * @covers Krexx::timerMoment
      */
     public function testTimerMomentDisabled()
     {
