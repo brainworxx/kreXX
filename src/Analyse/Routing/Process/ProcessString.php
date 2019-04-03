@@ -122,9 +122,9 @@ class ProcessString extends AbstractRouting implements ProcessInterface
 
         return $this->pool->render->renderSingleChild(
             $model->setType(static::TYPE_STRING . $strlen)
-                ->addToJson('encoding', $encoding)
-                ->addToJson('mimetype', $mimetype)
-                ->addToJson('length', $length)
+                ->addToJson(static::META_ENCODING, $encoding)
+                ->addToJson(static::META_MIME_TYPE, $mimetype)
+                ->addToJson(static::META_LENGTH, $length)
         );
     }
 }
