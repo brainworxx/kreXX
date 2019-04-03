@@ -51,8 +51,6 @@ abstract class AbstractTest extends TestCase
     protected function setUp()
     {
         Pool::createPool();
-        // Reset the messages, the hard way.
-        Krexx::$pool->messages = new Messages(Krexx::$pool);
     }
 
     /**

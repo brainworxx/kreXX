@@ -135,8 +135,24 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
      * @param bool $useAutoloader
      * @return bool
      */
-    function class_exists(string $classname, bool $useAutoloader): bool
+    function class_exists(string $classname, bool $useAutoloader = true, bool $startMock = null): bool
     {
-        return false;
+        static $activeMocking = false;
+
+        if ($startMock === true) {
+            $activeMocking = true;
+            return true;
+        }
+
+        if ($startMock === false) {
+            $activeMocking = false;
+            return true;
+        }
+
+        if ($activeMocking) {
+            return false;
+        }
+
+        return \class_exists($classname, $useAutoloader);
     }
 }
