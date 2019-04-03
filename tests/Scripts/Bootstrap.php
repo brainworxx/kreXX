@@ -124,3 +124,19 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
         ];
     }
 }
+
+namespace Brainworxx\Krexx\Analyse\Routing\Process {
+
+    /**
+     * Mocking the class_exist method for the string processing, to have some
+     * control over the file info class
+     *
+     * @param string $classname
+     * @param bool $useAutoloader
+     * @return bool
+     */
+    function class_exists(string $classname, bool $useAutoloader): bool
+    {
+        return false;
+    }
+}

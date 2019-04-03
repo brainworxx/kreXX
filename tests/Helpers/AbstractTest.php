@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\KrexxTest;
+use Brainworxx\Krexx\View\Messages;
 use PHPUnit\Framework\TestCase;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
@@ -50,6 +51,8 @@ abstract class AbstractTest extends TestCase
     protected function setUp()
     {
         Pool::createPool();
+        // Reset the messages, the hard way.
+        Krexx::$pool->messages = new Messages(Krexx::$pool);
     }
 
     /**
