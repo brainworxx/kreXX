@@ -65,6 +65,9 @@ class Krexx
      *   The name of the static function which was called.
      * @param array $arguments
      *   The arguments of said function.
+     *
+     * @return mixed|null
+     *   Return the original anslysis value.
      */
     public static function __callStatic($name, array $arguments)
     {
@@ -74,12 +77,13 @@ class Krexx
         if ($name === static::$pool->config->getDevHandler()) {
             // We do a standard-open.
             if (isset($arguments[0])) {
-                static::open($arguments[0]);
-                return;
+                return static::open($arguments[0]);
             }
 
             static::open();
         }
+
+        return null;
     }
 
     /**
@@ -150,6 +154,9 @@ class Krexx
      *
      * @param mixed $data
      *   The variable we want to analyse.
+     *
+     * @return mixed
+     *   Return the original anslysis value.
      */
     public static function open($data = null)
     {
@@ -160,7 +167,7 @@ class Krexx
             AbstractController::$analysisInProgress ||
             Config::$disabledByPhp
         ) {
-            return;
+            return $data;
         }
 
         AbstractController::$analysisInProgress = true;
@@ -171,6 +178,8 @@ class Krexx
             ->reFatalAfterKrexx();
 
         AbstractController::$analysisInProgress = false;
+
+        return $data;
     }
 
     /**
@@ -307,12 +316,17 @@ class Krexx
      *
      * @param mixed $data
      *   The variable we want to analyse.
+     *
+     * @return mixed
+     *   Return the original anslysis value.
      */
     public static function log($data = null)
     {
         static::startForcedLog();
         static::open($data);
         static::endForcedLog();
+
+        return $data;
     }
 
     /**

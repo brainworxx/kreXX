@@ -173,7 +173,7 @@ call_user_func(function () {
     // When it does something stupid, krexxLoader will handle the rest.
     set_error_handler($krexxLoader);
     try {
-        if (class_exists('Brainworxx\\Krexx\\Krexx') === false) {
+        if (class_exists('Brainworxx\\Krexx\\Analyse\\ConstInterface') === false) {
             $krexxLoader();
         }
     } catch (\Throwable $e) {
@@ -199,12 +199,15 @@ call_user_func(function () {
      *   The variable we want to analyse.
      * @param string $handle
      *   The developer handle.
+     *
+     * @return mixed
+     *   Return the original anslysis value.
      */
     function krexx($data = null, $handle = '')
     {
         if (empty($handle)) {
             \Brainworxx\Krexx\Krexx::open($data);
-            return;
+            return $data;
         }
 
         $allArgs = func_get_args();
@@ -212,15 +215,16 @@ call_user_func(function () {
             // We got more arguments than we asked for.
             // Better dum them all.
             \Brainworxx\Krexx\Krexx::open($allArgs);
-            return;
+            return $data;
         }
 
         if (is_string($handle)) {
             \Brainworxx\Krexx\Krexx::$handle($data);
-            return;
+            return $data;
         }
 
         // Still here ?!?
         \Brainworxx\Krexx\Krexx::open([$data, $handle]);
+        return $data;
     }
 });
