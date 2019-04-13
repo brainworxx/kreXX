@@ -34,10 +34,13 @@
 
 namespace Brainworxx\Krexx\Tests\Analyse\Routing\Process;
 
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessString;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Misc\Encoding;
 use Brainworxx\Krexx\Service\Misc\FileinfoDummy;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use finfo;
 
 class ProcessStringTest extends AbstractTest
 {
@@ -57,26 +60,235 @@ class ProcessStringTest extends AbstractTest
         // Un-Mock the class_exist function.
         \Brainworxx\Krexx\Analyse\Routing\Process\class_exists('', true, false);
         $processor = new ProcessString(Krexx::$pool);
-        $this->assertAttributeInstanceOf(\finfo::class, 'bufferInfo', $processor);
+        $this->assertAttributeInstanceOf(finfo::class, 'bufferInfo', $processor);
     }
 
     /**
-     * Testing the string processing.
+     * Testing with a normal short string.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
      */
-    public function testProcess()
+    public function testProcessNormal()
     {
-        $this->markTestIncomplete('Write me!');
+        $fixture = 'short string';
+        $encoding = 'some encoding';
+        $length = 12;
+        $model = $this->prepareMocksAndRunTest(
+            $fixture,
+            $encoding,
+            $length
+        );
 
-        // Mock bufferService and inject it
-        // Mock encodingService and inject it.
+        $this->assertEquals($model::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
+        $this->assertEquals('encoded ' . $fixture, $model->getNormal());
+        $this->assertEquals(false, $model->getHasExtra());
+        $this->assertEquals(false, $model->getIsCallback());
+        $this->assertArrayNotHasKey($model::META_ENCODING, $model->getJson());
+        $this->assertArrayNotHasKey($model::META_MIME_TYPE, $model->getJson());
+    }
 
-        // Test with normal string.
-        // Test with unicode string.
-        // Test with large string
-        // Test with a linebreak in the string
-        // Test with callback
-        // Test with mimetyped string
+    /**
+     * Testing with broken encoding.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
+     */
+    public function testProcessBrokenEncodung()
+    {
+        $fixture = 'short string';
+        $encoding = false;
+        $length = strlen($fixture);
+        $model = $this->prepareMocksAndRunTest(
+            $fixture,
+            $encoding,
+            $length
+        );
+
+        $this->assertEquals($model::TYPE_STRING . 'broken encoding ' .  $length, $model->getType());
+        $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
+        $this->assertEquals('encoded ' . $fixture, $model->getNormal());
+        $this->assertEquals('broken', $model->getJson()[$model::META_ENCODING]);
+        $this->assertEquals(false, $model->getHasExtra());
+        $this->assertEquals(false, $model->getIsCallback());
+        $this->assertArrayNotHasKey($model::META_MIME_TYPE, $model->getJson());
+    }
+
+    /**
+     * Testing with a large string.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
+     */
+    public function testProcessLargerString()
+    {
+        $fixture = 'a string larger than 20 chars';
+        $encoding = 'some encoding';
+        $length = strlen($fixture);
+        $fileInfo = 'some mimetype';
+        $model = $this->prepareMocksAndRunTest(
+            $fixture,
+            $encoding,
+            $length,
+            $fileInfo
+        );
+
+        $this->assertEquals($model::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
+        $this->assertEquals('encoded ' . $fixture, $model->getNormal());
+        $this->assertEquals($fileInfo, $model->getJson()[$model::META_MIME_TYPE]);
+        $this->assertEquals(false, $model->getHasExtra());
+        $this->assertEquals(false, $model->getIsCallback());
+        $this->assertArrayNotHasKey($model::META_ENCODING, $model->getJson());
+    }
+
+    /**
+     * Testing with a string larger than 50 characters.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
+     */
+    public function testProcessHugeString()
+    {
+        $fixture = 'This is a very large string, bigger than 50 chars. Lorem ipsum and so on, just to fill it up.';
+        $encoding = 'some encoding';
+        $length = strlen($fixture);
+        $fileInfo = 'some mimetype';
+        $model = $this->prepareMocksAndRunTest(
+            $fixture,
+            $encoding,
+            $length,
+            $fileInfo
+        );
+
+        $this->assertEquals($model::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
+        $this->assertEquals('encoded ' . substr($fixture, 0, 50) .  $model::UNKNOWN_VALUE, $model->getNormal());
+        $this->assertEquals('encoded ' . $fixture, $model->getData());
+        $this->assertEquals($fileInfo, $model->getJson()[$model::META_MIME_TYPE]);
+        $this->assertEquals(true, $model->getHasExtra());
+        $this->assertEquals(false, $model->getIsCallback());
+        $this->assertArrayNotHasKey($model::META_ENCODING, $model->getJson());
+    }
+
+    /**
+     * Testing with a short callback string.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
+     */
+    public function testProcessWithCallback()
+    {
+        $fixture = 'substr';
+        $encoding = 'some encoding';
+        $length = 12;
+        $model = $this->prepareMocksAndRunTest(
+            $fixture,
+            $encoding,
+            $length
+        );
+
+        $this->assertEquals($model::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
+        $this->assertEquals('encoded ' . $fixture, $model->getNormal());
+        $this->assertEquals(false, $model->getHasExtra());
+        $this->assertEquals(true, $model->getIsCallback());
+        $this->assertArrayNotHasKey($model::META_ENCODING, $model->getJson());
+        $this->assertArrayNotHasKey($model::META_MIME_TYPE, $model->getJson());
+    }
+
+    /**
+     * Testing with linebreaks in the fixture.
+     *
+     * @throws \ReflectionException
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
+     */
+    public function testProcessWithLinebreaks()
+    {
+        $fixture = 'some' . PHP_EOL . 'string';
+        $encoding = 'some encoding';
+        $length = 12;
+        $model = $this->prepareMocksAndRunTest(
+            $fixture,
+            $encoding,
+            $length
+        );
+
+        $this->assertEquals($model::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
+        $this->assertEquals('encoded ' . $fixture . $model::UNKNOWN_VALUE, $model->getNormal());
+        $this->assertEquals(true, $model->getHasExtra());
+        $this->assertEquals(false, $model->getIsCallback());
+        $this->assertArrayNotHasKey($model::META_ENCODING, $model->getJson());
+        $this->assertArrayNotHasKey($model::META_MIME_TYPE, $model->getJson());
+    }
+
+    /**
+     * Prepare the mocks and run the test. Nice, huh?
+     * The things you do to prevent a bad rating . . .
+     *
+     * @param string $fixture
+     * @param $encoding
+     * @param int $length
+     *
+     * @throws \ReflectionException
+     *
+     * @return \Brainworxx\Krexx\Analyse\Model
+     */
+    protected function prepareMocksAndRunTest(string $fixture, $encoding, int $length, $bufferOutput = null): Model
+    {
+        $encodingMock = $this->createMock(Encoding::class);
+        $encodingMock->expects($this->once())
+            ->method('mbDetectEncoding')
+            ->with($fixture)
+            ->will($this->returnValue($encoding));
+        $encodingMock->expects($this->once())
+            ->method('mbStrLen')
+            ->with($fixture)
+            ->will($this->returnValue($length));
+        if ($length > 50 || strpos($fixture, PHP_EOL) !== false) {
+            $cut = substr($fixture, 0, 50);
+            $encodingMock->expects($this->exactly(2))
+                ->method('encodeString')
+                ->withConsecutive(
+                    [$cut],
+                    [$fixture]
+                )
+                ->will($this->returnValueMap([
+                    [$cut, false, 'encoded ' . $cut],
+                    [$fixture, false, 'encoded ' . $fixture]
+                ]));
+
+            $encodingMock->expects($this->once())
+                ->method('mbSubStr')
+                ->with($fixture, 0, 50)
+                ->will($this->returnValue($cut));
+        } else {
+            $encodingMock->expects($this->never())
+                ->method('mbSubStr');
+
+            $encodingMock->expects($this->once())
+                ->method('encodeString')
+                ->with($fixture)
+                ->will($this->returnValue('encoded ' . $fixture));
+        }
+        Krexx::$pool->encodingService = $encodingMock;
+
+        $fileinfoMock = $this->createMock(\finfo::class);
+        if (empty($bufferOutput)) {
+             $fileinfoMock->expects($this->never())
+                ->method('buffer');
+        } else {
+             $fileinfoMock->expects($this->once())
+                ->method('buffer')
+                ->with($fixture)
+                ->will($this->returnValue($bufferOutput));
+        }
+
+        $model = new Model(Krexx::$pool);
+        $model->setData($fixture);
+
+        $processString = new ProcessString(Krexx::$pool);
+        $this->setValueByReflection('bufferInfo', $fileinfoMock, $processString);
+        $processString->process($model);
+
+        return $model;
     }
 }
