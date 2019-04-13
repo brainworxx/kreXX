@@ -127,6 +127,8 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process {
 
+    use function foo\func;
+
     /**
      * Mocking the class_exist method for the string processing, to have some
      * control over the file info class
@@ -154,5 +156,79 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
         }
 
         return \class_exists($classname, $useAutoloader);
+    }
+
+    /**
+     * Mocking the get_resource_type function.
+     *
+     * @param $resource
+     * @param null $mockResult
+     * @return string
+     */
+    function get_resource_type($resource, $mockResult = null)
+    {
+        static $result = '';
+
+        if (!is_null($mockResult)) {
+            $result = $mockResult;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Mocking the stream_get_meta_data function.
+     *
+     * @param $resource
+     * @param null $mockResult
+     * @return array
+     */
+    function stream_get_meta_data($resource, $mockResult = null)
+    {
+        static $result = [];
+
+        if (!is_null($mockResult)) {
+            $result = $mockResult;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Mocking the curl_getinfo function.
+     *
+     * @param $resource
+     * @param null $mockResult
+     * @return null
+     */
+    function curl_getinfo($resource, $mockResult = null)
+    {
+        static $result = null;
+
+        if (!is_null($mockResult)) {
+            $result = $mockResult;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Mocking a php version.
+     *
+     * @param $version1
+     * @param $version2
+     * @param $operator
+     * @param null $mockResult
+     * @return boolean
+     */
+    function version_compare($version1, $version2, $operator, $mockResult = null)
+    {
+        static $result = false;
+
+        if (!is_null($mockResult)) {
+            $result = $mockResult;
+        }
+
+        return $result;
     }
 }
