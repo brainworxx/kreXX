@@ -379,4 +379,34 @@ class Config extends Fallback
         // Nothing found?
         return true;
     }
+
+    /**
+     * Get the name of the skin render class
+     *
+     * @return string
+     */
+    public function getSkinClass()
+    {
+        return $this->skinConfiguration[$this->getSetting(Fallback::SETTING_SKIN)]['class'];
+    }
+
+     /**
+     * Get the path to the skin html files.
+     *
+     * @return string
+     */
+    public function getSkinDirectory()
+    {
+        return $this->skinConfiguration[$this->getSetting(Fallback::SETTING_SKIN)]['dir'];
+    }
+
+    /**
+     * Simply return a list of all skins (as their configuration keys.
+     *
+     * @return array
+     */
+    public function getSkinList()
+    {
+        return array_keys($this->skinConfiguration);
+    }
 }

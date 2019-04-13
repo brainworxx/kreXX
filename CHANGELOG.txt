@@ -6,6 +6,7 @@
 - Change: Deprecated the AbstractProcess class.
 - Change: Deprecated the Krexx main class. The "new" one resides
   now inside the src folder.
+- Change: Moved the skin render classes to the source folder.
 - Bugfix: Check if the developer handle is actually a string.
 
 3.0.2

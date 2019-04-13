@@ -32,17 +32,16 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins;
 
-use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
+use Brainworxx\Krexx\View\Render;
 
 /**
- * Individual render class for the smokey-grey skin.
+ * Individual render class for the Hans skin.
  *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
+ * @package Brainworxx\Krexx\View\Hans
  */
-class Render extends RenderSmokyGrey
+class RenderHans extends Render
 {
+    // Do nothing.
 }
