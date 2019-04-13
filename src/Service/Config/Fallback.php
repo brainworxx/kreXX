@@ -34,7 +34,9 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
+use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 
 /**
  * Configuration fallback settings.
@@ -43,7 +45,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Service\Config
  */
-class Fallback
+class Fallback  implements ConstInterface
 {
     const RENDER = 'render';
     const EVALUATE = 'eval';
@@ -382,15 +384,18 @@ class Fallback
         );
 
         // Setting up out two bundled skins.
-        $this->skinConfiguration = array(
-            static::SKIN_SMOKY_GREY => array(
-                'class' => 'Brainworxx\\Krexx\\View\\Skins\\RenderSmokyGrey',
-                'dir' => KREXX_DIR . 'resources/skins/smokygrey/'
+        $this->skinConfiguration = array_merge(
+            array(
+                static::SKIN_SMOKY_GREY => array(
+                    static::SKIN_CLASS => 'Brainworxx\\Krexx\\View\\Skins\\RenderSmokyGrey',
+                    static::SKIN_DIRECTORY => KREXX_DIR . 'resources/skins/smokygrey/'
+                ),
+                static::SKIN_HANS => array(
+                    static::SKIN_CLASS => 'Brainworxx\\Krexx\\View\\Skins\\RenderHans',
+                    static::SKIN_DIRECTORY => KREXX_DIR . 'resources/skins/hans/'
+                )
             ),
-            static::SKIN_HANS => array(
-                'class' => 'Brainworxx\\Krexx\\View\\Skins\\RenderHans',
-                'dir' => KREXX_DIR . 'resources/skins/hans/'
-            )
+            SettingsGetter::getAdditionalSkinList()
         );
 
     }

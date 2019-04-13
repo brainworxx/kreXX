@@ -123,9 +123,9 @@ class Security extends Fallback
     protected function evalSkin($value, $name)
     {
         $result = isset($this->skinConfiguration[$value]) &&
-            class_exists($this->skinConfiguration[$value]['class']) &&
+            class_exists($this->skinConfiguration[$value][static::SKIN_CLASS]) &&
             $this->pool->fileService->fileIsReadable(
-                $this->skinConfiguration[$value]['dir'] . 'header.html'
+                $this->skinConfiguration[$value][static::SKIN_DIRECTORY] . 'header.html'
             );
 
         if ($result === false) {

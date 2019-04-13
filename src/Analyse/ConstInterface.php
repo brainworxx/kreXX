@@ -104,4 +104,8 @@ interface ConstInterface
     const META_HINT = 'Hint';
     const META_ENCODING = 'Encoding';
     const META_MIME_TYPE = 'Mimetype';
+
+    // Stuff for the skin registration.
+    const SKIN_CLASS = 'class';
+    const SKIN_DIRECTORY = 'dir';
 }

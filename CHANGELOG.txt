@@ -1,12 +1,14 @@
 3.1.0 dev
-- Fixes some "bugs" SonarCube found in the unit test fixtures,
-  to prevent bad ratings.
+
 - Use some real autoloading, with a fallback to maunally including
   all files.
+- Plugins can now register additional skins.
 - Change: Deprecated the AbstractProcess class.
 - Change: Deprecated the Krexx main class. The "new" one resides
   now inside the src folder.
 - Change: Moved the skin render classes to the source folder.
+- Bugfix: Fixes some "bugs" SonarCube found in the unit test fixtures,
+  to prevent bad ratings.
 - Bugfix: Check if the developer handle is actually a string.
 
 3.0.2

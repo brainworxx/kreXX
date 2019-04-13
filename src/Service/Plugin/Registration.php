@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Service\Plugin;
 
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Krexx;
 
 /**
@@ -43,7 +44,7 @@ use Brainworxx\Krexx\Krexx;
  *
  * @package Brainworxx\Krexx\Service
  */
-class Registration
+class Registration implements ConstInterface
 {
     const IS_ACTIVE = 'isActive';
     const CONFIG_CLASS = 'configClass';
@@ -112,6 +113,13 @@ class Registration
      * @var array
      */
     protected static $eventList = array();
+
+    /**
+     * List of all additionally registered skins with their configuration.
+     *
+     * @var array
+     */
+    protected static $additionalSkinList = array();
 
     /**
      * Setter for the path to the configuration file.
@@ -233,6 +241,26 @@ class Registration
     {
         static::$additionalHelpFiles[] = $path;
     }
+
+    /**
+     * Register an additional skin. You can also overwrite already existing
+     * skins, if you use their name.
+     *
+     * @param string $name
+     *   The name of the skin. 'hans' and 'smokygrey' are the bundeled ones.
+     * @param string $className
+     *   The full qualified class name of the renderer
+     * @param string $directory
+     *   The absolute path to the skin html files.
+     */
+    public static function registerAdditionalskin($name, $className, $directory)
+    {
+        static::$additionalSkinList[$name] = array(
+            static::SKIN_CLASS => $className,
+            static::SKIN_DIRECTORY => $directory
+        );
+    }
+
     /**
      * Register a plugin.
      *
@@ -297,6 +325,7 @@ class Registration
         static::$additionalHelpFiles = array();
         static::$eventList = array();
         static::$rewriteList = array();
+        static::$additionalSkinList = array();
 
         // Go through the remaining plugins.
         static::$plugins[$configClass][static::IS_ACTIVE] = false;

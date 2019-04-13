@@ -387,7 +387,7 @@ class Config extends Fallback
      */
     public function getSkinClass()
     {
-        return $this->skinConfiguration[$this->getSetting(Fallback::SETTING_SKIN)]['class'];
+        return $this->skinConfiguration[$this->getSetting(Fallback::SETTING_SKIN)][static::SKIN_CLASS];
     }
 
      /**
@@ -397,7 +397,7 @@ class Config extends Fallback
      */
     public function getSkinDirectory()
     {
-        return $this->skinConfiguration[$this->getSetting(Fallback::SETTING_SKIN)]['dir'];
+        return $this->skinConfiguration[$this->getSetting(Fallback::SETTING_SKIN)][static::SKIN_DIRECTORY];
     }
 
     /**
