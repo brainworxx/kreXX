@@ -2,7 +2,8 @@
 - Use some real autoloading, with a fallback to maunally including
   all files.
 - Plugins can now register additional skins.
-- kreXX debug calls will return the original analsysis value.
+- kreXX debug calls will return the original analysis value.
+- Leading and trailing spaces are now better visible in the output.
 - Change: Deprecated the AbstractProcess class.
 - Change: Deprecated the Krexx main class. The "new" one resides
   now inside the src folder.
