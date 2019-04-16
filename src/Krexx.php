@@ -188,10 +188,13 @@ class Krexx
      * When there are classes found inside the backtrace,
      * they will be analysed.
      *
+     * @param array|null $backtrace
+     *   An already existing backtrace.
+     *
      * @api
      *
      */
-    public static function backtrace()
+    public static function backtrace(array $backtrace = null)
     {
         Pool::createPool();
 
@@ -207,7 +210,7 @@ class Krexx
 
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\BacktraceController')
             ->noFatalForKrexx()
-            ->backtraceAction()
+            ->backtraceAction($backtrace)
             ->reFatalAfterKrexx();
 
         AbstractController::$analysisInProgress = false;
