@@ -62,10 +62,14 @@ class Browser extends AbstractOutput
      *
      * @param string $chunkString
      *   The chunked output string.
+     *
+     * @return $this
+     *   Return $this, for chaining.
      */
     public function addChunkString($chunkString)
     {
         $this->chunkStrings[] = $chunkString;
+        return $this;
     }
 
     /**

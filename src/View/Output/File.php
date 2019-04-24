@@ -63,10 +63,14 @@ class File extends AbstractOutput
      *
      * @param string $chunkString
      *   The chunked output string.
+     *
+     * @return $this
+     *   For chaining.
      */
     public function addChunkString($chunkString)
     {
         $this->chunkStrings[] = $chunkString;
+        return $this;
     }
 
     /**

@@ -84,10 +84,10 @@ class BacktraceController extends AbstractController
         // additional info, in case we are logging to a file.
         $this->pool->chunks->addMetadata($caller);
 
-        $this->outputService->addChunkString($this->outputHeader('Backtrace'));
-        $this->outputService->addChunkString($analysis);
-        $this->outputService->addChunkString($footer);
-        $this->outputService->finalize();
+        $this->outputService->addChunkString($this->outputHeader('Backtrace'))
+            ->addChunkString($analysis)
+            ->addChunkString($footer)
+            ->finalize();
 
         return $this;
     }
