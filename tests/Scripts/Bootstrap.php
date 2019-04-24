@@ -232,3 +232,26 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
         return $result;
     }
 }
+
+namespace Brainworxx\Krexx\Controller {
+
+    /**
+     * Mock the unregister_tick_function for tsteing in the controllers.
+     *
+     * @param array $callback
+     */
+    function unregister_tick_function(array $callback)
+    {
+        // Do nothing, for now.
+    }
+
+    /**
+     * Mock the register_tick_function for tsteing in the controllers.
+     *
+     * @param array $callback
+     */
+    function register_tick_function(array $callback)
+    {
+        // Do nothing, for now.
+    }
+}
