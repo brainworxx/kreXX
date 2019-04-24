@@ -230,7 +230,7 @@ class RenderSmokyGrey extends Render
     /**
      * {@inheritDoc}
      */
-    public function renderFooter($caller, $configOutput, $configOnly = false)
+    public function renderFooter($caller, Model $model, $configOnly = false)
     {
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch
@@ -239,13 +239,13 @@ class RenderSmokyGrey extends Render
             $template = str_replace(
                 static::MARKER_K_CONFIG_CLASSES,
                 '',
-                parent::renderFooter($caller, $configOutput)
+                parent::renderFooter($caller, $this->renderExpandableChild($model, $configOnly))
             );
         } else {
             $template = str_replace(
                 static::MARKER_K_CONFIG_CLASSES,
                 'khidden',
-                parent::renderFooter($caller, $configOutput)
+                parent::renderFooter($caller, $this->renderExpandableChild($model, $configOnly))
             );
         }
 

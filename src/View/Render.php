@@ -159,7 +159,7 @@ class Render extends AbstractRender
     /**
      * {@inheritdoc}
      */
-    public function renderFooter($caller, $configOutput, $configOnly = false)
+    public function renderFooter($caller, Model $model, $configOnly = false)
     {
         if (isset($caller[static::TRACE_FILE]) === true) {
             $caller = $this->renderCaller($caller[static::TRACE_FILE], $caller[static::TRACE_LINE]);
@@ -175,7 +175,7 @@ class Render extends AbstractRender
                 static::MARKER_PLUGINS,
             ),
             array(
-                $configOutput,
+                $this->renderExpandableChild($model, $configOnly),
                 $caller,
                 $this->renderPluginList()
             ),

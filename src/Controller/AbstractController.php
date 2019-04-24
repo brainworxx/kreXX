@@ -171,8 +171,11 @@ abstract class AbstractController implements ConstInterface
                 $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughConfig')
             );
 
-        $configOutput = $this->pool->render->renderExpandableChild($model, $isExpanded);
-        return $this->pool->render->renderFooter($caller, $configOutput, $isExpanded);
+        return $this->pool->render->renderFooter(
+            $caller,
+            $model,
+            $isExpanded
+        );
     }
 
     /**

@@ -100,7 +100,7 @@ interface RenderInterface
      *
      * @param array $caller
      *   The caller of kreXX.
-     * @param string $configOutput
+     * @param Model $model
      *   The pregenerated configuration markup.
      * @param boolean $configOnly
      *   Info if we are only displaying the configuration
@@ -108,7 +108,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderFooter($caller, $configOutput, $configOnly = false);
+    public function renderFooter($caller, Model $model, $configOnly = false);
 
     /**
      * Simply outputs the css and js stuff.
