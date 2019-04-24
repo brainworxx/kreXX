@@ -67,10 +67,6 @@ class DumpController extends AbstractController
         // Find caller.
         $caller = $this->callerFinder->findCaller($headline, $data);
 
-        // We need to get the footer before the generating of the header,
-        // because we need to display messages in the header from the configuration.
-        $footer = $this->outputFooter($caller);
-
         // We will only allow code generation, if we were able to determine the varname.
         $this->pool->scope->setScope($caller[static::TRACE_VARNAME]);
 
@@ -94,6 +90,10 @@ class DumpController extends AbstractController
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
         $this->pool->chunks->addMetadata($caller);
+
+        // We need to get the footer before the generating of the header,
+        // because we need to display messages in the header from the configuration.
+        $footer = $this->outputFooter($caller);
 
         $this->outputService->addChunkString($this->outputHeader($caller[static::TRACE_TYPE]))
             ->addChunkString($analysis)

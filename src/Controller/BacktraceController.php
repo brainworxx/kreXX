@@ -62,10 +62,8 @@ class BacktraceController extends AbstractController
 
         // Find caller.
         $caller = $this->callerFinder->findCaller('Backtrace', array());
-
         $this->pool->scope->setScope($caller[static::TRACE_VARNAME]);
 
-        $footer = $this->outputFooter($caller);
         $analysis = $this->pool
             ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessBacktrace')
             ->process($backtrace);
@@ -83,6 +81,10 @@ class BacktraceController extends AbstractController
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
         $this->pool->chunks->addMetadata($caller);
+
+        // We need to get the footer before the generating of the header,
+        // because we need to display messages in the header from the configuration.
+        $footer = $this->outputFooter($caller);
 
         $this->outputService->addChunkString($this->outputHeader('Backtrace'))
             ->addChunkString($analysis)
