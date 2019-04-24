@@ -239,13 +239,13 @@ class RenderSmokyGrey extends Render
             $template = str_replace(
                 static::MARKER_K_CONFIG_CLASSES,
                 '',
-                parent::renderFooter($caller, $this->renderExpandableChild($model, $configOnly))
+                parent::renderFooter($caller, $model, $configOnly)
             );
         } else {
             $template = str_replace(
                 static::MARKER_K_CONFIG_CLASSES,
                 'khidden',
-                parent::renderFooter($caller, $this->renderExpandableChild($model, $configOnly))
+                parent::renderFooter($caller, $model, $configOnly)
             );
         }
 
