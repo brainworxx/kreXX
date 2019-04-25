@@ -52,6 +52,20 @@ class RenderNothing extends Render
     public $model = [];
 
     /**
+     * Storing the css.
+     *
+     * @var string
+     */
+    public $css;
+
+    /**
+     * Storing the js.
+     *
+     * @var string
+     */
+    public $js;
+
+    /**
      * @param \Brainworxx\Krexx\Analyse\Model $model
      * @return string
      */
@@ -69,6 +83,24 @@ class RenderNothing extends Render
     public function renderExpandableChild(Model $model, $is = false)
     {
         $this->model[__FUNCTION__][] = $model;
+        return '';
+    }
+
+    /**
+     * @param $caller
+     * @param Model $model
+     * @return string
+     */
+    public function renderFooter($caller, Model $model, $configOnly = false)
+    {
+        $this->model[__FUNCTION__][] = $model;
+        return '';
+    }
+
+    public function renderCssJs(&$css, &$javascript)
+    {
+        $this->css = $css;
+        $this->js = $javascript;
         return '';
     }
 }
