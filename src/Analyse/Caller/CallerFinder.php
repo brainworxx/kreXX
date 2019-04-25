@@ -44,6 +44,9 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  */
 class CallerFinder extends AbstractCaller
 {
+    const CLASS_PATTERN = 'brainworxx\\krexx\\krexx';
+    const FUNCTION_PATTERN = 'krexx';
+
 
     /**
      * Injects the pool, sets the callPattern to search for.
@@ -79,18 +82,20 @@ class CallerFinder extends AbstractCaller
             $backtrace = debug_backtrace(false);
         }
 
-        $pattern = strtolower($this->pattern);
-
         // Going from the first call of the first line up
         // through the first debug call.
         // Using a foreach is definitely faster, but then we
         // would have trouble using our pattern.
         while ($caller = array_pop($backtrace)) {
-            if (isset($caller[static::TRACE_FUNCTION]) && strtolower($caller[static::TRACE_FUNCTION]) === $pattern) {
+            if (isset($caller[static::TRACE_FUNCTION]) &&
+                strtolower($caller[static::TRACE_FUNCTION]) === static::FUNCTION_PATTERN
+            ) {
                 break;
             }
 
-            if (isset($caller[static::TRACE_CLASS]) && strtolower($caller[static::TRACE_CLASS]) === $pattern) {
+            if (isset($caller[static::TRACE_CLASS]) &&
+                strtolower($caller[static::TRACE_CLASS]) === static::CLASS_PATTERN
+            ) {
                 break;
             }
         }
