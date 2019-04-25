@@ -135,7 +135,7 @@ abstract class AbstractController implements ConstInterface
      */
     protected function outputHeader($headline)
     {
-        return $this->pool->render->renderHeader('<!DOCTYPE html>', $headline, $this->outputCssAndJs());
+        return $this->pool->render->renderHeader($headline, $this->outputCssAndJs());
     }
 
     /**

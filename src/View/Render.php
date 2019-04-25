@@ -54,7 +54,6 @@ class Render extends AbstractRender
     const MARKER_CONNECTOR_RIGHT = '{connectorRight}';
     const MARKER_GEN_SOURCE = '{gensource}';
     const MARKER_VERSION = '{version}';
-    const MARKER_DOCTYPE = '{doctype}';
     const MARKER_KREXX_COUNT = '{KrexxCount}';
     const MARKER_HEADLINE = '{headline}';
     const MARKER_CSS_JS = '{cssJs}';
@@ -127,12 +126,11 @@ class Render extends AbstractRender
     /**
      * {@inheritdoc}
      */
-    public function renderHeader($doctype, $headline, $cssJs)
+    public function renderHeader($headline, $cssJs)
     {
         return str_replace(
             array(
                 static::MARKER_VERSION,
-                static::MARKER_DOCTYPE,
                 static::MARKER_KREXX_COUNT,
                 static::MARKER_HEADLINE,
                 static::MARKER_CSS_JS,
@@ -143,7 +141,6 @@ class Render extends AbstractRender
             ),
             array(
                 $this->pool->config->version,
-                $doctype,
                 $this->pool->emergencyHandler->getKrexxCount(),
                 $headline,
                 $cssJs,
@@ -483,20 +480,18 @@ class Render extends AbstractRender
     /**
      * {@inheritdoc}
      */
-    public function renderFatalHeader($cssJs, $doctype)
+    public function renderFatalHeader($cssJs)
     {
         return str_replace(
             array(
                 static::MARKER_CSS_JS,
                 static::MARKER_VERSION,
-                static::MARKER_DOCTYPE,
                 static::MARKER_SEARCH,
                 static::MARKER_KREXX_ID,
             ),
             array(
                 $cssJs,
                 $this->pool->config->version,
-                $doctype,
                 $this->renderSearch(),
                 $this->pool->recursionHandler->getMarker()
             ),

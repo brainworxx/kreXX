@@ -83,8 +83,6 @@ interface RenderInterface
     /**
      * Renders the kreXX header.
      *
-     * @param string $doctype
-     *   The doctype from the configuration.
      * @param string $headline
      *   The headline, what is actually analysed.
      * @param string $cssJs
@@ -93,7 +91,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderHeader($doctype, $headline, $cssJs);
+    public function renderHeader($headline, $cssJs);
 
     /**
      * Renders the kreXX footer.
@@ -181,13 +179,11 @@ interface RenderInterface
      *
      * @param string $cssJs
      *   The css and js from the template.
-     * @param string $doctype
-     *   The configured doctype.
      *
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalHeader($cssJs, $doctype);
+    public function renderFatalHeader($cssJs);
 
     /**
      * Renders all internal messages.

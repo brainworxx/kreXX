@@ -195,7 +195,7 @@ class RenderSmokyGrey extends Render
     /**
      * {@inheritDoc}
      */
-    public function renderHeader($doctype, $headline, $cssJs)
+    public function renderHeader($headline, $cssJs)
     {
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch
@@ -223,7 +223,7 @@ class RenderSmokyGrey extends Render
                 $linkClass,
                 $this->renderPluginList(),
             ),
-            parent::renderHeader($doctype, $headline, $cssJs)
+            parent::renderHeader($headline, $cssJs)
         );
     }
 
