@@ -56,6 +56,8 @@ abstract class AbstractCaller implements ConstInterface
      *
      * We use this one to identify the line from which kreXX was called.
      *
+     * @deprecated
+     *
      * @var string
      */
     protected $pattern;
@@ -83,6 +85,8 @@ abstract class AbstractCaller implements ConstInterface
     /**
      * Setter for the identifier pattern.
      *
+     * @deprecated
+     *
      * @param string $pattern
      *   The pattern, duh!
      *
@@ -97,6 +101,8 @@ abstract class AbstractCaller implements ConstInterface
 
     /**
      * Getter for the current recognition pattern.
+     *
+     * @deprecated
      *
      * @return string
      */
