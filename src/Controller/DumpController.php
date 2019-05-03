@@ -95,7 +95,8 @@ class DumpController extends AbstractController
         // because we need to display messages in the header from the configuration.
         $footer = $this->outputFooter($caller);
 
-        $this->outputService->addChunkString($this->outputHeader($caller[static::TRACE_TYPE]))
+        $this->outputService
+            ->addChunkString($this->pool->render->renderHeader($caller[static::TRACE_TYPE], $this->outputCssAndJs()))
             ->addChunkString($analysis)
             ->addChunkString($footer)
             ->finalize();

@@ -127,6 +127,8 @@ abstract class AbstractController implements ConstInterface
     /**
      * Simply outputs the Header of kreXX.
      *
+     * @deprecated
+     *
      * @param string $headline
      *   The headline, displayed in the header.
      *

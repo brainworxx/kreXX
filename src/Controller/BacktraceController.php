@@ -86,7 +86,8 @@ class BacktraceController extends AbstractController
         // because we need to display messages in the header from the configuration.
         $footer = $this->outputFooter($caller);
 
-        $this->outputService->addChunkString($this->outputHeader(static::TRACE_BACKTRACE))
+        $this->outputService
+            ->addChunkString($this->pool->render->renderHeader(static::TRACE_BACKTRACE, $this->outputCssAndJs()))
             ->addChunkString($analysis)
             ->addChunkString($footer)
             ->finalize();
