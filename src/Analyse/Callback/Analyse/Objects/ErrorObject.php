@@ -64,7 +64,7 @@ class ErrorObject extends AbstractObjectAnalysis
                 $this->pool->codegenHandler->setAllowCodegen(false);
                 $output .= $this->pool->render->renderExpandableChild(
                     $this->dispatchEventWithModel(
-                        static::EVENT_MARKER_ANALYSES_END,
+                        static::TRACE_BACKTRACE,
                         $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
                             ->setName('Backtrace')
                             ->setType(static::TYPE_INTERNALS)
@@ -76,6 +76,29 @@ class ErrorObject extends AbstractObjectAnalysis
                 );
                 $this->pool->codegenHandler->setAllowCodegen(true);
             }
+            $lineNo = ((int)$data->getLine()) - 1;
+            $source = trim(
+                $this->pool->fileService->readSourcecode(
+                    $data->getFile(),
+                    $lineNo,
+                    $lineNo -5,
+                    $lineNo +5
+                )
+            );
+            if (empty($source) === true) {
+                $source = $this->pool->messages->getHelp('noSourceAvailable');
+            }
+            $output .= $this->pool->render->renderSingleChild(
+                $this->dispatchEventWithModel(
+                    'source',
+                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                        ->setData($source)
+                        ->setName('Sourcecode')
+                        ->setNormal(static::UNKNOWN_VALUE)
+                        ->setHasExtra(true)
+                        ->setType(static::TYPE_PHP)
+                )
+            );
         }
         return $output;
     }

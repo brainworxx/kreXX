@@ -4,10 +4,11 @@
 - Plugins can now register additional skins.
 - kreXX debug calls will return the original analysis value.
 - Leading and trailing spaces are now better visible in the output.
-- The bracktrace action accepts now an already existing one. Great
+- The backtrace action accepts now an already existing one. Great
   for debugging error objects.
 - Minor usability changes to both skins.
 - Added an automatic backtrace analysis for error objects.
+- Added the sourcecode dump to the error object analysis.
 - Change: Deprecated the AbstractProcess class.
 - Change: Deprecated the Krexx main class. The "new" one resides
   now inside the src folder.

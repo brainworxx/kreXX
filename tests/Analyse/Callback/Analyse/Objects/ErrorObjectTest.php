@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ErrorObject;
 use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 
@@ -90,14 +91,19 @@ class ErrorObjectTest extends AbstractTest
 
         $this->mockEventService(
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ErrorObject::callMe::start', $this->errorObject],
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ErrorObject::analysisEnd',  $this->errorObject]
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ErrorObject::backtrace',  $this->errorObject],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ErrorObject::source',  $this->errorObject]
         );
 
         $backtrace = ['some backtrace'];
+        $line = 123;
+        $file = 'some file';
+        $code = 'some code';
+
         $errorObject = new \Exception();
-
         $this->setValueByReflection('trace', $backtrace, $errorObject);
-
+        $this->setValueByReflection('line', $line, $errorObject);
+        $this->setValueByReflection('file', $file, $errorObject);
 
         $codegenMock = $this->createMock(Codegen::class);
         $codegenMock->expects($this->exactly(2))
@@ -107,6 +113,13 @@ class ErrorObjectTest extends AbstractTest
                 [true]
             );
         Krexx::$pool->codegenHandler = $codegenMock;
+
+        $fileServiceMock = $this->createMock(File::class);
+        $fileServiceMock->expects($this->once())
+            ->method('readSourcecode')
+            ->with($file, ($line - 1), ($line - 6), ($line + 4))
+            ->will($this->returnValue($code));
+        Krexx::$pool->fileService = $fileServiceMock;
 
         $fixture = [
             $this->errorObject::PARAM_DATA => $errorObject
