@@ -36,12 +36,15 @@ namespace Brainworxx\Krexx\Tests\Controller;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConfig;
 use Brainworxx\Krexx\Analyse\Caller\CallerFinder;
+use Brainworxx\Krexx\Analyse\Code\Scope;
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
 use Brainworxx\Krexx\Controller\BacktraceController;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
+use Brainworxx\Krexx\View\Output\Browser;
 
 class BacktraceControllerTest extends AbstractController
 {
@@ -86,6 +89,23 @@ class BacktraceControllerTest extends AbstractController
             ->method('process')
             ->with(null)
             ->will($this->returnValue('generated HTML code'));
+
+        $scopeMock = $this->createMock(Scope::class);
+        $scopeMock->expects($this->once())
+            ->method('setScope')
+            ->with($this->callerFinderResult[ConstInterface::TRACE_VARNAME]);
+        $poolMock->scope = $scopeMock;
+
+        $poolMock->emergencyHandler->expects($this->once())
+            ->method('checkEmergencyBreak')
+            ->will($this->returnValue(false));
+
+        $outputServiceMock = $this->createMock(Browser::class);
+        $outputServiceMock->expects($this->exactly(3))
+            ->method('addChunkString')
+            ->withAnyParameters()
+            ->willReturnSelf();
+        $this->setValueByReflection('outputService', $outputServiceMock, $backtraceController);
 
         $poolMock->expects($this->exactly(3))
             ->method('createClass')

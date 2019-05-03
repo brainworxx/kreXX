@@ -65,6 +65,8 @@ class RenderNothing extends Render
      */
     public $js;
 
+    protected $footer = '';
+
     /**
      * @param \Brainworxx\Krexx\Analyse\Model $model
      * @return string
@@ -94,13 +96,26 @@ class RenderNothing extends Render
     public function renderFooter($caller, Model $model, $configOnly = false)
     {
         $this->model[__FUNCTION__][] = $model;
-        return '';
+        return $this->footer;
     }
 
+    /**
+     * @param $css
+     * @param $javascript
+     * @return mixed|string
+     */
     public function renderCssJs(&$css, &$javascript)
     {
         $this->css = $css;
         $this->js = $javascript;
         return '';
+    }
+
+    /**
+     * @param string $footer
+     */
+    public function setFooter(string $footer)
+    {
+        $this->footer = $footer;
     }
 }

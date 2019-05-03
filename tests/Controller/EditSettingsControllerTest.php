@@ -35,85 +35,61 @@
 namespace Brainworxx\Krexx\Tests\Controller;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConfig;
-use Brainworxx\Krexx\Analyse\Caller\CallerFinder;
-use Brainworxx\Krexx\Analyse\Code\Scope;
-use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Analyse\Routing\Routing;
-use Brainworxx\Krexx\Controller\DumpController;
+use Brainworxx\Krexx\Controller\EditSettingsController;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\View\Output\Browser;
 
-class DumpControllerTest extends AbstractController
+class EditSettingsControllerTest extends AbstractController
 {
     /**
-     * Testing of the dump action, with too many calls before.
+     * Call the action when the max call is already reached.
      *
-     * @covers \Brainworxx\Krexx\Controller\DumpController::dumpAction
+     * @covers \Brainworxx\Krexx\Controller\EditSettingsController::editSettingsAction
      */
-    public function testBacktraceActionWithMaxCall()
+    public function testEditSettingsActionWithMaxCall()
     {
-        $dumpController = new DumpController(Krexx::$pool);
-
-        // Add some mox to the mix.
         $emergencyMock = $this->createMock(Emergency::class);
         $emergencyMock->expects($this->once())
             ->method('checkMaxCall')
             ->will($this->returnValue(true));
+        $emergencyMock->expects($this->never())
+            ->method('setDisable');
         Krexx::$pool->emergencyHandler = $emergencyMock;
-        $callerFinderMock = $this->createMock(CallerFinder::class);
-        $callerFinderMock->expects($this->never())
-            ->method('findCaller');
-        $this->setValueByReflection('callerFinder', $callerFinderMock, $dumpController);
 
-        $fixture = 'some sting';
-        $this->assertEquals($dumpController, $dumpController->dumpAction($fixture));
+        $controller = new EditSettingsController(Krexx::$pool);
+        $this->assertEquals($controller, $controller->editSettingsAction());
     }
 
     /**
-     * Testing a simple dump action.
+     * Normal call of the action, nothing special.
      *
-     * @covers \Brainworxx\Krexx\Controller\DumpController::dumpAction
-     * @covers \Brainworxx\Krexx\Controller\BacktraceController::outputFooter
-     * @covers \Brainworxx\Krexx\Controller\BacktraceController::outputCssAndJs
-     * @covers \Brainworxx\Krexx\Controller\BacktraceController::outputHeader
+     * @covers \Brainworxx\Krexx\Controller\EditSettingsController::editSettingsAction
      */
-    public function testDumpAction()
+    public function testEditSettingsActionNormal()
     {
-        $dumpController = new DumpController(Krexx::$pool);
-        $poolMock = $this->mockMainOutput($dumpController);
-
+        $controller = new EditSettingsController(Krexx::$pool);
+        $poolMock = $this->mockMainOutput($controller);
         $this->mockFooterHeaderOutput($poolMock);
-        $fixture = 'whatever';
-        $routingMock = $this->createMock(Routing::class);
-        $routingMock->expects($this->once())
-            ->method('analysisHub')
-            ->will($this->returnValue('generated HTML code'));
-        $poolMock->routing = $routingMock;
 
-        $scopeMock = $this->createMock(Scope::class);
-        $scopeMock->expects($this->once())
-            ->method('setScope')
-            ->with($this->callerFinderResult[ConstInterface::TRACE_VARNAME]);
-        $poolMock->scope = $scopeMock;
+        $poolMock->emergencyHandler->expects($this->exactly(2))
+            ->method('setDisable')
+            ->withConsecutive([true], [false]);
 
-        $poolMock->emergencyHandler->expects($this->once())
-            ->method('checkEmergencyBreak')
-            ->will($this->returnValue(false));
+        $poolMock->render->setFooter('generated HTML code');
 
         $outputServiceMock = $this->createMock(Browser::class);
-        $outputServiceMock->expects($this->exactly(3))
+        $outputServiceMock->expects($this->exactly(2))
             ->method('addChunkString')
             ->withAnyParameters()
             ->willReturnSelf();
-        $this->setValueByReflection('outputService', $outputServiceMock, $dumpController);
+        $this->setValueByReflection('outputService', $outputServiceMock, $controller);
 
-        $poolMock->expects($this->exactly(3))
+        $poolMock->expects($this->exactly(2))
             ->method('createClass')
             ->withConsecutive(
-                [Model::class],
                 [Model::class],
                 [ThroughConfig::class]
             )->will($this->returnValueMap(
@@ -123,6 +99,6 @@ class DumpControllerTest extends AbstractController
                 ]
             ));
 
-        $dumpController->dumpAction($fixture);
+        $this->assertEquals($controller, $controller->editSettingsAction());
     }
 }

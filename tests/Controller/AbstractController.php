@@ -93,12 +93,6 @@ class AbstractController extends AbstractTest
             ->will($this->returnValue($this->callerFinderResult));
         $this->setValueByReflection('callerFinder', $callerFinderMock, $controller);
 
-        $scopeMock = $this->createMock(Scope::class);
-        $scopeMock->expects($this->once())
-            ->method('setScope')
-            ->with($this->callerFinderResult[ConstInterface::TRACE_VARNAME]);
-        $poolMock->scope = $scopeMock;
-
         $chunksMock = $this->createMock(Chunks::class);
         $chunksMock->expects($this->once())
             ->method('detectEncoding')
@@ -112,20 +106,10 @@ class AbstractController extends AbstractTest
         $emergencyMock->expects($this->once())
             ->method('checkMaxCall')
             ->will($this->returnValue(false));
-        $emergencyMock->expects($this->once())
-            ->method('checkEmergencyBreak')
-            ->will($this->returnValue(false));
         $poolMock->emergencyHandler = $emergencyMock;
 
         $renderNothing = new RenderNothing(Krexx::$pool);
         $poolMock->render = $renderNothing;
-
-        $outputServiceMock = $this->createMock(Browser::class);
-        $outputServiceMock->expects($this->exactly(3))
-            ->method('addChunkString')
-            ->withAnyParameters()
-            ->willReturnSelf();
-        $this->setValueByReflection('outputService', $outputServiceMock, $controller);
 
         return $poolMock;
     }
