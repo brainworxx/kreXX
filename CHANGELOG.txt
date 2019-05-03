@@ -6,6 +6,7 @@
 - Leading and trailing spaces are now better visible in the output.
 - The bracktrace action accepts now an already existing one. Great
   for debugging error objects.
+- Minor usability changes to both skins.
 - Change: Deprecated the AbstractProcess class.
 - Change: Deprecated the Krexx main class. The "new" one resides
   now inside the src folder.
