@@ -61,7 +61,7 @@ class BacktraceController extends AbstractController
         $this->pool->reset();
 
         // Find caller.
-        $caller = $this->callerFinder->findCaller('Backtrace', array());
+        $caller = $this->callerFinder->findCaller(static::TRACE_BACKTRACE, array());
         $this->pool->scope->setScope($caller[static::TRACE_VARNAME]);
 
         $analysis = $this->pool
@@ -86,7 +86,7 @@ class BacktraceController extends AbstractController
         // because we need to display messages in the header from the configuration.
         $footer = $this->outputFooter($caller);
 
-        $this->outputService->addChunkString($this->outputHeader('Backtrace'))
+        $this->outputService->addChunkString($this->outputHeader(static::TRACE_BACKTRACE))
             ->addChunkString($analysis)
             ->addChunkString($footer)
             ->finalize();

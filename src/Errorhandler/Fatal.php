@@ -111,7 +111,7 @@ class Fatal extends AbstractError
                     static::TRACE_ERROR_LINE => $error[static::TRACE_LINE],
                     'handler' => __FUNCTION__,
                     static::TRACE_FILE => $error[static::TRACE_FILE],
-                    'backtrace' => $this->tickedBacktrace,
+                    static::TRACE_BACKTRACE => $this->tickedBacktrace,
                 );
 
                 // Tell static main class, that we start a new analysis, to
