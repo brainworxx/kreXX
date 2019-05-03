@@ -359,7 +359,8 @@
         float: right;
         font-size: 10px;
         margin-left: 15px;
-        display: inline-block; }
+        display: inline-block;
+        cursor: pointer; }
         .kwrapper .kchild .kel .kgencode:hover, .kfatalwrapper-outer .kchild .kel .kgencode:hover {
           color: #555555; }
       .kwrapper .kchild .kel .kodsp, .kfatalwrapper-outer .kchild .kel .kodsp {
@@ -420,7 +421,8 @@
       margin-left: 5px;
       display: inline-block;
       float: right;
-      color: #919191; }
+      color: #919191;
+      cursor: pointer; }
       .kwrapper .kchild .kolps::before, .kfatalwrapper-outer .kchild .kolps::before {
         content: '\21D4';
         font-weight: bolder;

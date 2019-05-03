@@ -476,6 +476,7 @@ $fontLight: lighter 10px tahoma, verdana;
         font-size: 10px;
         margin-left: 15px;
         display: inline-block;
+        cursor: pointer;
         &:hover {
           color: $blackLight;
         }
@@ -555,6 +556,7 @@ $fontLight: lighter 10px tahoma, verdana;
       display: inline-block;
       float: right;
       color: $greyDark;
+      cursor: pointer;
       &::before {
         content: '\21D4';
         font-weight: bolder;
