@@ -66,6 +66,8 @@ class EditSettingsController extends AbstractController
 
         // Render it.
         $footer = $this->outputFooter($caller, true);
+        $this->pool->chunks->detectEncoding($footer);
+
         $this->outputService->addChunkString($this->outputHeader('Edit local settings'))
             ->addChunkString($footer);
         $this->pool->emergencyHandler->setDisable(false);
