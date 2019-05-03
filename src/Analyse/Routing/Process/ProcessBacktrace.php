@@ -34,9 +34,8 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
-use Brainworxx\Krexx\Analyse\ConstInterface;
+use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Service\Config\Fallback;
-use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Processing of a backtrace. No abstract for you, because we are dealing with
@@ -44,24 +43,17 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessBacktrace implements ConstInterface
+class ProcessBacktrace extends AbstractCallback
 {
     /**
-     * Here we store all relevant data.
+     * Wrapper arround the process method, so we can use this one as a callback.
      *
-     * @var Pool
+     * @return string
+     *   The generated DOM.
      */
-    protected $pool;
-
-    /**
-     * Injects the pool.
-     *
-     * @param Pool $pool
-     *   The pool, where we store the classes we need.
-     */
-    public function __construct(Pool $pool)
+    public function callMe()
     {
-         $this->pool = $pool;
+        return $this->process($this->parameters[static::PARAM_DATA]);
     }
 
     /**

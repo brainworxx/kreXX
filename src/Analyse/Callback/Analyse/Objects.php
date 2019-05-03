@@ -80,6 +80,9 @@ class Objects extends AbstractCallback
             $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Getter');
         }
 
+        // When analysing an error object, get the backtrace and then analyse it.
+        $output .= $this->dumpStuff('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ErrorObject');
+
         // Dumping protected properties.
         if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PROTECTED) === true ||
             $this->pool->scope->isInScope() === true
