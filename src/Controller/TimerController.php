@@ -166,7 +166,9 @@ class TimerController extends AbstractController
         if (empty($server) === true ||
             empty($server['SERVER_PROTOCOL']) === true ||
             empty($server['SERVER_PORT']) === true ||
-            empty($server['SERVER_NAME'])=== true) {
+            empty($server['SERVER_NAME']) === true ||
+            empty($server['REQUEST_URI']) === true
+        ) {
             return 'n/a';
         }
 

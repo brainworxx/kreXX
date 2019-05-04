@@ -16,6 +16,8 @@
 - Bugfix: Fixes some "bugs" SonarCube found in the unit test fixtures,
   to prevent bad ratings.
 - Bugfix: Check if the developer handle is actually a string.
+- Bugfix: Added a missing check in the url determination in the
+  timer controller
 
 3.0.2
 - Added classname to the declaration analysis of properties.
