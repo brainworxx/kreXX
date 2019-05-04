@@ -192,7 +192,6 @@ class Krexx
      *   An already existing backtrace.
      *
      * @api
-     *
      */
     public static function backtrace(array $backtrace = null)
     {
@@ -338,12 +337,15 @@ class Krexx
      * When there are classes found inside the backtrace,
      * they will be analysed.
      *
+     * @param array $backtrace
+     *   an already existing backtrace
+     *
      * @api
      */
-    public static function logBacktrace()
+    public static function logBacktrace(array $backtrace = null)
     {
         static::startForcedLog();
-        static::backtrace();
+        static::backtrace($backtrace);
         static::endForcedLog();
     }
 
