@@ -242,4 +242,24 @@ namespace Brainworxx\Krexx\Controller {
     {
         // Do nothing.
     }
+
+    /**
+     * Mocking the microtime in the time controller.
+     *
+     * @return int
+     */
+    function microtime($get_as_float = null, $mockResult = null)
+    {
+        static $startMock = false;
+
+        if ($mockResult !== null) {
+            $startMock = $mockResult;
+        }
+
+        if ($startMock === true) {
+            return 3000;
+        }
+
+        return \microtime($get_as_float);
+    }
 }
