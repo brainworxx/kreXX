@@ -76,20 +76,11 @@ class ErrorController extends AbstractController
 
         // Detect the encoding on the start-chunk-string of the analysis
         // for a complete encoding picture.
-        $this->pool->chunks->detectEncoding($main);
+        $this->pool->chunks->detectEncoding($main . $backtrace);
 
-        // Detect the encoding on the start-chunk-string of the analysis
-        // for a complete encoding picture.
-        $this->pool->chunks->detectEncoding($backtrace);
-
-        // Get the header.
-        $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs());
-
-
-        // Get the footer.
+        // Get the header, footer and messages
         $footer = $this->outputFooter(array());
-
-        // Get the messages.
+        $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs());
         $messages = $this->pool->messages->outputMessages();
 
         // Add the caller as metadata to the chunks class. It will be saved as
@@ -102,13 +93,12 @@ class ErrorController extends AbstractController
             )
         );
 
-        if ($this->pool->config->getSetting(Fallback::SETTING_DESTINATION) === Fallback::VALUE_FILE) {
-            // Save it to a file.
-            $this->pool->chunks->saveDechunkedToFile($header . $messages . $main . $backtrace . $footer);
-        } else {
-            // Send it to the browser.
-            $this->pool->chunks->sendDechunkedToBrowser($header . $messages . $main . $backtrace . $footer);
-        }
+        $this->outputService->addChunkString($header)
+            ->addChunkString($messages)
+            ->addChunkString($main)
+            ->addChunkString($backtrace)
+            ->addChunkString($footer)
+            ->finalize();
 
         return $this;
     }
