@@ -102,6 +102,13 @@ abstract class AbstractController implements ConstInterface
     protected $callerFinder;
 
     /**
+     * The configured output destination.
+     *
+     * @var string
+     */
+    protected $destination;
+
+    /**
      * Injects the pool.
      *
      * @param Pool $pool
@@ -116,10 +123,10 @@ abstract class AbstractController implements ConstInterface
         // Depending on the setting, we use another class here.
         // We get a new output service for every krexx call, because the hosting
         // cms may do their stuff in the shutdown functions as well.
-        $outputSetting = $pool->config->getSetting(Fallback::SETTING_DESTINATION);
-        if ($outputSetting === Fallback::VALUE_BROWSER) {
+        $this->destination = $pool->config->getSetting(Fallback::SETTING_DESTINATION);
+        if ($this->destination === Fallback::VALUE_BROWSER) {
             $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\Browser');
-        } elseif ($outputSetting === Fallback::VALUE_FILE) {
+        } elseif ($this->destination === Fallback::VALUE_FILE) {
             $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\File');
         }
     }
@@ -189,9 +196,8 @@ abstract class AbstractController implements ConstInterface
     protected function outputCssAndJs()
     {
         // We only do this once per output type.
-        $destination = $this->pool->config->getSetting(Fallback::SETTING_DESTINATION);
-        $result = isset(static::$jsCssSend[$destination]);
-        static::$jsCssSend[$destination] = true;
+        $result = isset(static::$jsCssSend[$this->destination]);
+        static::$jsCssSend[$this->destination] = true;
         if ($result === true) {
             // Been here, done that.
             return '';

@@ -127,10 +127,6 @@ class AbstractController extends AbstractTest
             ->method('getPathToIniFile')
             ->will($this->returnValue($pathToIni));
         $configMock->expects($this->once())
-            ->method('getSetting')
-            ->with(Fallback::SETTING_DESTINATION)
-            ->will($this->returnValue('some destination'));
-        $configMock->expects($this->once())
             ->method('getSkinDirectory')
             ->will($this->returnValue($pathToSkin));
         $poolMock->config = $configMock;
