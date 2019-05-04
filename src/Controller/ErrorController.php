@@ -124,20 +124,19 @@ class ErrorController extends AbstractController
             return $this;
         }
 
-        $this->pool->reset();
         // Do we need another shutdown handler?
-        if (is_object($this::$krexxFatal) === false) {
-            $this::$krexxFatal = $this->pool->createClass('Brainworxx\\Krexx\\Errorhandler\\Fatal');
+        if (static::$krexxFatal === null) {
+            static::$krexxFatal = $this->pool->createClass('Brainworxx\\Krexx\\Errorhandler\\Fatal');
             declare(ticks = 1);
             register_shutdown_function(
                 array(
-                    $this::$krexxFatal,
+                    static::$krexxFatal,
                     'shutdownCallback',
                 )
             );
         }
 
-        $this::$krexxFatal->setIsActive(true);
+        static::$krexxFatal->setIsActive(true);
         $this->fatalShouldActive = true;
         register_tick_function(array($this::$krexxFatal, 'tickCallback'));
 
@@ -156,15 +155,17 @@ class ErrorController extends AbstractController
      */
     public function unregisterFatalAction()
     {
-        if ($this::$krexxFatal !== null) {
-            // Now we need to tell the shutdown function, that is must
-            // not do anything on shutdown.
-            $this::$krexxFatal->setIsActive(false);
-            unregister_tick_function(array($this::$krexxFatal, 'tickCallback'));
-        }
-
         $this->fatalShouldActive = false;
 
+        if ($this::$krexxFatal === null) {
+            // There is no fatal error handler to begin with.
+            return $this;
+        }
+
+        // Now we need to tell the shutdown function, that is must
+        // not do anything on shutdown.
+        $this::$krexxFatal->setIsActive(false);
+        unregister_tick_function(array($this::$krexxFatal, 'tickCallback'));
         return $this;
     }
 }
