@@ -265,6 +265,47 @@ class Encoding
     }
 
     /**
+     * Encode a string for the code generation.
+     *
+     * Take care of quotes, null-strings and BOM stuff.
+     * There are a lot of more invisible chars out there, but there is (afaik)
+     * no fast way to detect and replace them all.
+     * If anybody is actually reading this, and knows of a fast solution,
+     * please open a ticket in our bug tracker.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function encodeStringForCodeGeneration($name)
+    {
+        $result = str_replace(
+            array(
+                '"',
+                '\'',
+                "\0",
+                // BOM stuff
+                "\xEF",
+                "\xBB",
+                "\xBF"
+            ),
+            array(
+                '&#034;',
+                '&#039;',
+                '\' . "\0" . \'',
+                // BOM stuff
+                '\' . "\xEF" . \'',
+                '\' . "\xBB" . \'',
+                '\' . "\xBF" . \'',
+            ),
+            $name
+        );
+
+        // Clean it up a bit
+        return str_replace('" . \'\' . "', '', $result);
+    }
+
+    /**
      * Callback for the complete escaping of strings.
      * Complete means every single char gets escaped.
      * This one dies some extra stuff for code display.

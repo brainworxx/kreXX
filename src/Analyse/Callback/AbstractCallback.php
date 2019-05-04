@@ -176,8 +176,10 @@ abstract class AbstractCallback implements ConstInterface
         if (isset($cache[$propName])) {
             return $cache[$propName];
         }
-        $cache[$propName] = (bool) preg_match("/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/", $propName);
 
-        return $cache[$propName];
+        // The first regex detects all allowed characters.
+        // For some reason, they also allow BOM characters.
+        return $cache[$propName] = (bool) preg_match("/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/", $propName) &&
+            !(bool) preg_match("/[\xEF\xBB\xBF]$/", $propName);
     }
 }

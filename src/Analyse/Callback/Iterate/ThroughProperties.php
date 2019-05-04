@@ -130,6 +130,7 @@ class ThroughProperties extends AbstractCallback
                 // AFAIK this is only possible for dynamically declared properties
                 // which can never be static.
                 if ($this->isPropertyNameNormal($propName) === false) {
+                    $propName = $this->pool->encodingService->encodeStringForCodeGeneration($propName);
                     $connectorType = Connectors::SPECIAL_CHARS_PROP;
                 }
 

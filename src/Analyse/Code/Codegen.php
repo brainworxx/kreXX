@@ -191,15 +191,9 @@ class Codegen implements ConstInterface
     protected function concatenation(Model $model)
     {
         // We simply add the connectors for public access.
-        // Escape the quotes. This is not done by the model.
-        // We also need to escape null-strings.
-        $name = str_replace(
-            array('"', '\'', "\0"),
-            array('&#034;', '&#039;', '\' . "\0" . \''),
-            $model->getName()
-        );
-
-        return $model->getConnectorLeft() . $name . $model->getConnectorRight();
+        return $model->getConnectorLeft() .
+            $this->pool->encodingService->encodeStringForCodeGeneration($model->getName()) .
+            $model->getConnectorRight();
     }
 
     /**
