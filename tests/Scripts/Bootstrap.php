@@ -232,3 +232,14 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process {
         return $result;
     }
 }
+
+namespace Brainworxx\Krexx\Controller {
+
+    /**
+     * Short circuting the krexx command in the fatal error handler.
+     */
+    function krexx()
+    {
+        // Do nothing.
+    }
+}

@@ -157,7 +157,7 @@ class ErrorControllerTest extends AbstractController
         $controller = new ErrorController(Krexx::$pool);
         $controller->registerFatalAction();
 
-        // We will *not* test teh rest of the error handler.
+        // We will *not* test the rest of the error handler.
         // PHP 5 is eol, and so is the tick-implementation of
         // this error handler.
     }
