@@ -65,6 +65,14 @@ class RenderNothing extends Render
      */
     public $js;
 
+    /**
+     * @var string
+     */
+    protected $fatalMain = '';
+
+    /**
+     * @var string
+     */
     protected $footer = '';
 
     /**
@@ -117,5 +125,25 @@ class RenderNothing extends Render
     public function setFooter(string $footer)
     {
         $this->footer = $footer;
+    }
+
+    /**
+     * @param $type
+     * @param $errstr
+     * @param $errfile
+     * @param $errline
+     * @return string
+     */
+    public function renderFatalMain($type, $errstr, $errfile, $errline): string
+    {
+        return $this->fatalMain;
+    }
+
+    /**
+     * @param string $fatalMain
+     */
+    public function setFatalMain(string $fatalMain)
+    {
+        $this->fatalMain = $fatalMain;
     }
 }
