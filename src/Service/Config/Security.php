@@ -49,6 +49,16 @@ class Security extends Fallback
     const KEY_CONFIG_ERROR_DEBUG_INVALID = 'configErrorDebugInvalid';
 
     /**
+     * Known Problems with debug functions, which will most likely cause a fatal.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Config::isAllowedDebugCall()
+     * @see \Brainworxx\Krexx\Service\Plugin\Registration::addMethodToDebugBlacklist()
+     *
+     * @var array
+     */
+    protected $methodBlacklist = array();
+
+    /**
      * Setter for the debug method blacklist by the config class.
      *
      * @param array $methodBlacklist

@@ -417,16 +417,6 @@ class Fallback  implements ConstInterface
     );
 
     /**
-     * Known Problems with debug functions, which will most likely cause a fatal.
-     *
-     * @see \Brainworxx\Krexx\Service\Config\Config::isAllowedDebugCall()
-     * @see \Brainworxx\Krexx\Service\Plugin\Registration::addMethodToDebugBlacklist()
-     *
-     * @var array
-     */
-    protected $methodBlacklist = array();
-
-    /**
      * These classes will never be polled by debug methods, because that would
      * most likely cause a fatal.
      *
