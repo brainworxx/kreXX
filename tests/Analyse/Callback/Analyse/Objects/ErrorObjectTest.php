@@ -59,28 +59,6 @@ class ErrorObjectTest extends AbstractTest
     }
 
     /**
-     * Test with a normal object.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ErrorObject::callMe
-     */
-    public function testCallMeNothing()
-    {
-        // Setup the start events
-        $this->mockEventService(
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ErrorObject::callMe::start', $this->errorObject]
-        );
-        $fixture = [
-            $this->errorObject::PARAM_DATA => new \stdClass()
-        ];
-
-        $this->errorObject
-            ->setParams($fixture)
-            ->callMe();
-        // Should not be called.
-        $this->assertEmpty(CallbackCounter::$staticParameters);
-    }
-
-    /**
      * Test with a 'real' error object.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ErrorObject::callMe
