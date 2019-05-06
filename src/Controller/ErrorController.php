@@ -39,6 +39,8 @@ use Brainworxx\Krexx\Service\Config\Fallback;
 /**
  * "Controller" for the fatal error handler "action"
  *
+ * @deprecated
+ *
  * @package Brainworxx\Krexx\Controller
  */
 class ErrorController extends AbstractController

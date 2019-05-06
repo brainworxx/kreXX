@@ -39,6 +39,8 @@ use Brainworxx\Krexx\Controller\AbstractController;
 /**
  * PHP 5.x fatal error handler.
  *
+ * @deprecated
+ *
  * @package Brainworxx\Krexx\Errorhandler
  */
 class Fatal extends AbstractError
@@ -122,7 +124,5 @@ class Fatal extends AbstractError
                     ->errorAction($errorData);
             }
         }
-
-        // Clean exit.
     }
 }

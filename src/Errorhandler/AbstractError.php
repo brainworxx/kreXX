@@ -41,6 +41,8 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 /**
  * This class hosts all functions which all error handlers will share
  *
+ * @deprecated
+ *
  * @package Brainworxx\Krexx\Errorhandler
  */
 abstract class AbstractError implements ConstInterface

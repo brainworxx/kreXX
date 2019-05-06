@@ -73,6 +73,8 @@ abstract class AbstractController implements ConstInterface
     /**
      * Here we store the fatal error handler.
      *
+     * @deprecated
+     *
      * @var \Brainworxx\Krexx\Errorhandler\Fatal
      */
     protected static $krexxFatal;
@@ -82,6 +84,8 @@ abstract class AbstractController implements ConstInterface
      *
      * During a kreXX analysis, we deactivate it to improve performance.
      * Here we save, whether we should reactivate it.
+     *
+     * @deprecated
      *
      * @var bool
      */

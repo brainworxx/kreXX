@@ -261,6 +261,8 @@ class Krexx
      *
      * Our fatal errorhandler is located there.
      *
+     * @deprecated
+     *
      * @api
      */
     public static function registerFatal()
@@ -294,6 +296,8 @@ class Krexx
      * so we need to tell our errorhandler to do nothing, in case
      * there is a fatal.
      *
+     * @deprecated
+     *
      * @api
      */
     public static function unregisterFatal()
@@ -309,6 +313,46 @@ class Krexx
 
         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
             ->unregisterFatalAction();
+    }
+
+    /**
+     * Registering our exception handler.
+     *
+     * @api
+     */
+    public static function registerExceptionHandler()
+    {
+        Pool::createPool();
+
+        // Disabled?
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            Config::$disabledByPhp
+        ) {
+            return;
+        }
+
+        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ExceptionController')
+            ->registerAction();
+    }
+
+    /**
+     * Ungistering our exception handler.
+     *
+     * @api
+     */
+    public static function unregisterExceptionHandler()
+    {
+        Pool::createPool();
+
+        // Disabled?
+        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+            Config::$disabledByPhp
+        ) {
+            return;
+        }
+
+        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ExceptionController')
+            ->unregisterAction();
     }
 
     /**

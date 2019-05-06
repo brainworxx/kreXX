@@ -122,6 +122,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Controller/TimerController.php';
         include_once KREXX_DIR . 'src/Controller/EditSettingsController.php';
         include_once KREXX_DIR . 'src/Controller/ErrorController.php';
+        include_once KREXX_DIR . 'src/Controller/ExceptionController.php';
 
         include_once KREXX_DIR . 'src/Errorhandler/AbstractError.php';
         include_once KREXX_DIR . 'src/Errorhandler/Fatal.php';
