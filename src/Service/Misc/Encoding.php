@@ -279,6 +279,12 @@ class Encoding
      */
     public function encodeStringForCodeGeneration($name)
     {
+        static $cache = array();
+
+        if (isset($cache[$name])) {
+            return $cache[$name];
+        }
+
         $result = str_replace(
             array(
                 '"',
@@ -302,7 +308,7 @@ class Encoding
         );
 
         // Clean it up a bit
-        return str_replace('" . \'\' . "', '', $result);
+        return $cache[$name] = str_replace('" . \'\' . "', '', $result);
     }
 
     /**
