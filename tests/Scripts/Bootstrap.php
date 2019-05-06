@@ -262,4 +262,37 @@ namespace Brainworxx\Krexx\Controller {
 
         return \microtime($get_as_float);
     }
+
+    /**
+     * Mocking the setting of an exception handler.
+     *
+     * @param array $callback
+     *
+     * @return array
+     */
+    function set_exception_handler(array $callback): array
+    {
+        static $lastCallback = [];
+
+        if (!empty($callback)) {
+            $lastCallback = $callback;
+        }
+
+        return $lastCallback;
+    }
+
+    /**
+     * Mocking the restoring of an exception handler.
+     *
+     * @return int
+     *   Count of it's call.
+     */
+    function restore_exception_handler(): int
+    {
+        static $counter = 0;
+
+        ++$counter;
+
+        return $counter;
+    }
 }

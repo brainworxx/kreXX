@@ -42,6 +42,8 @@ namespace Brainworxx\Krexx\Controller;
 class ExceptionController extends AbstractController
 {
     /**
+     * Storing our singleton exception handler.
+     *
      * @var ExceptionController
      */
     static protected $exceptionController;
