@@ -107,7 +107,7 @@ class Fatal extends AbstractError
                 // We prepare the error as far as we can here.
                 // The adding of the sourcecode happens in the controller.
                 $errorData = array(
-                    static::TRACE_TYPE => $errorType[0],
+                    static::TRACE_TYPE => $errorType[0] . ' Error',
                     static::TRACE_ERROR_STRING => $error['message'],
                     static::TRACE_ERROR_FILE => $error[static::TRACE_FILE],
                     static::TRACE_ERROR_LINE => $error[static::TRACE_LINE],

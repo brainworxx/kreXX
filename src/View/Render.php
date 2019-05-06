@@ -450,7 +450,7 @@ class Render extends AbstractRender
     /**
      * {@inheritdoc}
      */
-    public function renderFatalMain($type, $errstr, $errfile, $errline)
+    public function renderFatalMain($errstr, $errfile, $errline)
     {
         $readFrom = $errline -6;
         $readTo = $errline +5;
@@ -480,7 +480,7 @@ class Render extends AbstractRender
     /**
      * {@inheritdoc}
      */
-    public function renderFatalHeader($cssJs)
+    public function renderFatalHeader($cssJs, $errorType)
     {
         return str_replace(
             array(
@@ -488,12 +488,14 @@ class Render extends AbstractRender
                 static::MARKER_VERSION,
                 static::MARKER_SEARCH,
                 static::MARKER_KREXX_ID,
+                static::MARKER_TYPE
             ),
             array(
                 $cssJs,
                 $this->pool->config->version,
                 $this->renderSearch(),
-                $this->pool->recursionHandler->getMarker()
+                $this->pool->recursionHandler->getMarker(),
+                $errorType
             ),
             $this->getTemplateFileContent(static::FILE_FATAL_HEADER)
         );

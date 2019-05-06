@@ -160,8 +160,6 @@ interface RenderInterface
     /**
      * Renders the second part of the fatal error handler.
      *
-     * @param string $type
-     *   The type of the error (should always be fatal).
      * @param string $errstr
      *   The string from the error.
      * @param string $errfile
@@ -172,18 +170,20 @@ interface RenderInterface
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalMain($type, $errstr, $errfile, $errline);
+    public function renderFatalMain($errstr, $errfile, $errline);
 
     /**
      * Renders the header part of the fatal error handler.
      *
      * @param string $cssJs
      *   The css and js from the template.
+     * @param string $errorType
+     *   The error type, for the big, fat headline.
      *
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalHeader($cssJs);
+    public function renderFatalHeader($cssJs, $errorType);
 
     /**
      * Renders all internal messages.

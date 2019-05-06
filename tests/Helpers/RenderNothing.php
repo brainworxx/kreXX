@@ -134,7 +134,7 @@ class RenderNothing extends Render
      * @param $errline
      * @return string
      */
-    public function renderFatalMain($type, $errstr, $errfile, $errline): string
+    public function renderFatalMain($errstr, $errfile, $errline): string
     {
         return $this->fatalMain;
     }

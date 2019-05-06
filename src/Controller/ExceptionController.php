@@ -59,7 +59,6 @@ class ExceptionController extends AbstractController
 
         // Get the main part.
         $main = $this->pool->render->renderFatalMain(
-            $type,
             $exception->getMessage(),
             $exception->getFile(),
             $exception->getLine()
@@ -81,7 +80,7 @@ class ExceptionController extends AbstractController
 
         // Get the header, footer and messages
         $footer = $this->outputFooter(array());
-        $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs());
+        $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs(), $type);
         $messages = $this->pool->messages->outputMessages();
 
          // Add the caller as metadata to the chunks class. It will be saved as

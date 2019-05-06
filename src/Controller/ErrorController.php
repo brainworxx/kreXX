@@ -61,7 +61,6 @@ class ErrorController extends AbstractController
 
         // Get the main part.
         $main = $this->pool->render->renderFatalMain(
-            $errorData[static::TRACE_TYPE],
             $errorData[static::TRACE_ERROR_STRING],
             $errorData[static::TRACE_ERROR_FILE],
             $errorData[static::TRACE_ERROR_LINE]
@@ -82,7 +81,7 @@ class ErrorController extends AbstractController
 
         // Get the header, footer and messages
         $footer = $this->outputFooter(array());
-        $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs());
+        $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs(), $errorData[static::TRACE_TYPE]);
         $messages = $this->pool->messages->outputMessages();
 
         // Add the caller as metadata to the chunks class. It will be saved as
@@ -91,7 +90,7 @@ class ErrorController extends AbstractController
             array(
                 static::TRACE_FILE => $errorData[static::TRACE_ERROR_FILE],
                 static::TRACE_LINE => $errorData[static::TRACE_ERROR_LINE] + 1,
-                static::TRACE_VARNAME => ' Fatal Error',
+                static::TRACE_VARNAME => ' ' . $errorData[static::TRACE_TYPE],
             )
         );
 

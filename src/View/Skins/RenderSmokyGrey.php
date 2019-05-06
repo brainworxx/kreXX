@@ -255,13 +255,13 @@ class RenderSmokyGrey extends Render
     /**
      * {@inheritDoc}
      */
-    public function renderFatalMain($type, $errstr, $errfile, $errline)
+    public function renderFatalMain($errstr, $errfile, $errline)
     {
         // Add the search.
         return str_replace(
             array(static::MARKER_SEARCH, static::MARKER_KREXX_ID),
             array($this->renderSearch(), $this->pool->recursionHandler->getMarker()),
-            parent::renderFatalMain($type, $errstr, $errfile, $errline)
+            parent::renderFatalMain($errstr, $errfile, $errline)
         );
     }
 

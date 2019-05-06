@@ -58,7 +58,7 @@ class ErrorControllerTest extends AbstractController
         unset($this->callerFinderResult[ConstInterface::TRACE_TYPE]);
 
         $fixture = [
-            ErrorController::TRACE_TYPE => 'Backtrace',
+            ErrorController::TRACE_TYPE => 'Fatal Error',
             ErrorController::TRACE_ERROR_STRING => 'some string',
             ErrorController::TRACE_ERROR_FILE => 'just another path',
             ErrorController::TRACE_ERROR_LINE => 40,
