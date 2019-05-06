@@ -458,7 +458,6 @@ class Render extends AbstractRender
 
         return str_replace(
             array(
-                static::MARKER_TYPE,
                 static::MARKER_ERROR_STRING,
                 static::MARKER_FILE,
                 static::MARKER_SOURCE,
@@ -466,7 +465,6 @@ class Render extends AbstractRender
                 static::MARKER_LINE,
             ),
             array(
-                $type,
                 $errstr,
                 $errfile,
                 $source,
