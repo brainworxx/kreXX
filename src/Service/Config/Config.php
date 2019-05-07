@@ -122,9 +122,7 @@ class Config extends Fallback
             SettingsGetter::getBlacklistDebugClass()
         );
 
-        $this->security = $pool->createClass(Security::class)
-            ->setMethodBlacklist(SettingsGetter::getBlacklistDebugMethods());
-
+        $this->security = $pool->createClass(Security::class);
         $pool->config = $this;
 
         $this->iniConfig = $pool->createClass(Ini::class)

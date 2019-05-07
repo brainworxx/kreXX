@@ -34,6 +34,9 @@
 
 namespace Brainworxx\Krexx\Service\Config;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
+use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
+
 /**
  * Security measures for the configuration
  *
@@ -59,17 +62,15 @@ class Security extends Fallback
     protected $methodBlacklist = [];
 
     /**
-     * Setter for the debug method blacklist by the config class.
+     * Setting the pool and retrieving the debug method blacklist.
      *
-     * @param array $methodBlacklist
-     *   The blacklist.
-     * @return $this
-     *   This, for chaining.
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function setMethodBlacklist(array $methodBlacklist)
+    public function __construct(Pool $pool)
     {
-        $this->methodBlacklist = $methodBlacklist;
-        return $this;
+        parent::__construct($pool);
+
+        $this->methodBlacklist = SettingsGetter::getBlacklistDebugMethods();
     }
 
     /**
