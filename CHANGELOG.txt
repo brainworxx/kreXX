@@ -15,6 +15,7 @@
 - Change: Deprecated the Krexx main class. The "new" one resides
   now inside the src folder.
 - Change: Moved the skin render classes to the source folder.
+- Change: Dropped PHP 5.3 and PHP 5.4 support.
 - Bugfix: Fixes some "bugs" SonarCube found in the unit test fixtures,
   to prevent bad ratings.
 - Bugfix: Check if the developer handle is actually a string.
