@@ -118,7 +118,40 @@ abstract class Fallback implements ConstInterface
      *
      * @var array
      */
-    public $configFallback;
+    public $configFallback = [
+            Fallback::SECTION_OUTPUT => [
+                Fallback::SETTING_DISABLED,
+                Fallback::SETTING_IP_RANGE,
+                Fallback::SETTING_DETECT_AJAX,
+            ],
+            Fallback::SECTION_BEHAVIOR =>[
+                Fallback::SETTING_SKIN,
+                Fallback::SETTING_DESTINATION,
+                Fallback::SETTING_MAX_FILES,
+                Fallback::SETTING_USE_SCOPE_ANALYSIS,
+            ],
+            Fallback::SECTION_PRUNE => [
+                Fallback::SETTING_MAX_STEP_NUMBER,
+                Fallback::SETTING_ARRAY_COUNT_LIMIT,
+                Fallback::SETTING_NESTING_LEVEL,
+            ],
+            Fallback::SECTION_PROPERTIES => [
+                Fallback::SETTING_ANALYSE_PROTECTED,
+                Fallback::SETTING_ANALYSE_PRIVATE,
+                Fallback::SETTING_ANALYSE_TRAVERSABLE,
+            ],
+            Fallback::SECTION_METHODS => [
+                Fallback::SETTING_ANALYSE_PROTECTED_METHODS,
+                Fallback::SETTING_ANALYSE_PRIVATE_METHODS,
+                Fallback::SETTING_ANALYSE_GETTER,
+                Fallback::SETTING_DEBUG_METHODS,
+            ],
+            Fallback::SECTION_EMERGENCY => [
+                Fallback::SETTING_MAX_CALL,
+                Fallback::SETTING_MAX_RUNTIME,
+                Fallback::SETTING_MEMORY_LEFT,
+            ],
+        ];
 
     /**
      * Values, rendering settings and the actual fallback value.
@@ -194,41 +227,6 @@ abstract class Fallback implements ConstInterface
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-
-        $this->configFallback = [
-            Fallback::SECTION_OUTPUT => [
-                Fallback::SETTING_DISABLED,
-                Fallback::SETTING_IP_RANGE,
-                Fallback::SETTING_DETECT_AJAX,
-            ],
-            Fallback::SECTION_BEHAVIOR =>[
-                Fallback::SETTING_SKIN,
-                Fallback::SETTING_DESTINATION,
-                Fallback::SETTING_MAX_FILES,
-                Fallback::SETTING_USE_SCOPE_ANALYSIS,
-            ],
-            Fallback::SECTION_PRUNE => [
-                Fallback::SETTING_MAX_STEP_NUMBER,
-                Fallback::SETTING_ARRAY_COUNT_LIMIT,
-                Fallback::SETTING_NESTING_LEVEL,
-            ],
-            Fallback::SECTION_PROPERTIES => [
-                Fallback::SETTING_ANALYSE_PROTECTED,
-                Fallback::SETTING_ANALYSE_PRIVATE,
-                Fallback::SETTING_ANALYSE_TRAVERSABLE,
-            ],
-            Fallback::SECTION_METHODS => [
-                Fallback::SETTING_ANALYSE_PROTECTED_METHODS,
-                Fallback::SETTING_ANALYSE_PRIVATE_METHODS,
-                Fallback::SETTING_ANALYSE_GETTER,
-                Fallback::SETTING_DEBUG_METHODS,
-            ],
-            Fallback::SECTION_EMERGENCY => [
-                Fallback::SETTING_MAX_CALL,
-                Fallback::SETTING_MAX_RUNTIME,
-                Fallback::SETTING_MEMORY_LEFT,
-            ],
-        ];
 
         $this->feConfigFallback = [
             Fallback::SETTING_ANALYSE_PROTECTED_METHODS => [
