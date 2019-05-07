@@ -160,10 +160,10 @@ class Render extends AbstractRender
     public function renderFooter(array $caller, Model $model, $configOnly = false)
     {
         if (isset($caller[static::TRACE_FILE]) === true) {
-            $caller = $this->renderCaller($caller[static::TRACE_FILE], $caller[static::TRACE_LINE]);
+            $callerString = $this->renderCaller($caller[static::TRACE_FILE], $caller[static::TRACE_LINE]);
         } else {
              // When we have no caller, we will not render it.
-            $caller = '';
+            $callerString = '';
         }
 
         return str_replace(
@@ -175,9 +175,9 @@ class Render extends AbstractRender
             ],
             [
                 $this->renderExpandableChild($model, $configOnly),
-                $caller,
+                $callerString,
                 $this->renderPluginList(),
-                date('d-m-Y H:i:s', time())
+                $caller[static::TRACE_DATE]
             ],
             $this->getTemplateFileContent(static::FILE_FOOTER)
         );
