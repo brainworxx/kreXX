@@ -152,33 +152,28 @@ class Methods extends AbstractComment
      */
     protected function getTraitComment($originalComment, \ReflectionClass $reflection)
     {
-        // We need to check if we can get traits here.
-        if (method_exists($reflection, 'getTraits') === true) {
-            // Get the traits from this class.
-            // Now we should have an array with reflections of all
-            // traits in the class we are currently looking at.
-            foreach ($reflection->getTraits() as $trait) {
-                if ($this->checkComment($originalComment) === true) {
-                    // Looks like we've resolved them all.
-                    return $originalComment;
-                }
-
-                // We need to look further!
-                if ($trait->hasMethod($this->methodName) === true) {
-                    $traitComment = $this->prettifyComment(
-                        $trait->getMethod($this->methodName)->getDocComment()
-                    );
-                    // Replace it.
-                    $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
-                }
+        // Get the traits from this class.
+        // Now we should have an array with reflections of all
+        // traits in the class we are currently looking at.
+        foreach ($reflection->getTraits() as $trait) {
+            if ($this->checkComment($originalComment) === true) {
+                // Looks like we've resolved them all.
+                return $originalComment;
             }
 
-            // Return what we could resolve so far.
-            return $originalComment;
+            // We need to look further!
+            if ($trait->hasMethod($this->methodName) === true) {
+                $traitComment = $this->prettifyComment(
+                    $trait->getMethod($this->methodName)->getDocComment()
+                );
+                // Replace it.
+                $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
+            }
         }
 
-        // Wrong PHP version. Traits are not available.
+        // Return what we could resolve so far.
         return $originalComment;
+
     }
 
     /**
