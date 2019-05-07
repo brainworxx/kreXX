@@ -76,11 +76,7 @@ class CallerFinder extends AbstractCaller
      */
     public function findCaller($headline, $data)
     {
-        if (version_compare(phpversion(), '5.4.0', '>=')) {
-            $backtrace = debug_backtrace(false, 5);
-        } else {
-            $backtrace = debug_backtrace(false);
-        }
+        $backtrace = debug_backtrace(false, 5);
 
         // Going from the first call of the first line up
         // through the first debug call.
