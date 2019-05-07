@@ -48,6 +48,10 @@ class Config extends Fallback
 {
 
     const REMOTE_ADDRESS = 'REMOTE_ADDR';
+    const CHUNKS_FOLDER = 'chunks';
+    const LOG_FOLDER = 'log';
+    const CONFIG_FOLDER = 'config';
+
     /**
      * Our current settings.
      *
@@ -108,9 +112,9 @@ class Config extends Fallback
 
         // Point the configuration to the right directories
         $this->directories = [
-            'chunks' => SettingsGetter::getChunkFolder(),
-            'log' => SettingsGetter::getLogFolder(),
-            'config' => SettingsGetter::getConfigFile(),
+            static::CHUNKS_FOLDER => SettingsGetter::getChunkFolder(),
+            static::LOG_FOLDER => SettingsGetter::getLogFolder(),
+            static::CONFIG_FOLDER => SettingsGetter::getConfigFile(),
         ];
 
         $this->classBlacklist = array_merge(
@@ -137,7 +141,7 @@ class Config extends Fallback
         // We may need to change the disabling again, in case we are in cli
         // or ajax mode and have no fileoutput.
         if ($this->isRequestAjaxOrCli() === true &&
-            $this->getSetting(static::SETTING_DESTINATION) !== 'file'
+            $this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE
         ) {
             // No kreXX for you. At least until you start forced logging.
             $this->setDisabled(true);
@@ -287,7 +291,7 @@ class Config extends Fallback
      */
     public function getChunkDir()
     {
-        return $this->directories['chunks'];
+        return $this->directories[static::CHUNKS_FOLDER];
     }
 
     /**
@@ -298,7 +302,7 @@ class Config extends Fallback
      */
     public function getLogDir()
     {
-        return $this->directories['log'];
+        return $this->directories[static::LOG_FOLDER];
     }
 
     /**
@@ -309,7 +313,7 @@ class Config extends Fallback
      */
     public function getPathToIniFile()
     {
-        return $this->directories['config'];
+        return $this->directories[static::CONFIG_FOLDER];
     }
 
     /**
