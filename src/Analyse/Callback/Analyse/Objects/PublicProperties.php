@@ -56,8 +56,6 @@ class PublicProperties extends AbstractObjectAnalysis
     /**
      * Dump all public properties.
      *
-     * @throws \ReflectionException
-     *
      * @return string
      *   The generated HTML markup.
      */
