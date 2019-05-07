@@ -230,7 +230,7 @@ class RenderSmokyGrey extends Render
     /**
      * {@inheritDoc}
      */
-    public function renderFooter($caller, Model $model, $configOnly = false)
+    public function renderFooter(array $caller, Model $model, $configOnly = false)
     {
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch

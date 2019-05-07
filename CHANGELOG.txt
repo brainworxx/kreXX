@@ -11,6 +11,7 @@
 - Added the sourcecode dump to the error object analysis.
 - Added proper handling for BOM chars in array keys and properties.
 - Added an exception handler, to replace the PHP5 Fatal Error Handler.
+- Added the date time to the output.
 - Change: Deprecated the AbstractProcess class.
 - Change: Deprecated the Krexx main class. The "new" one resides
   now inside the src folder.

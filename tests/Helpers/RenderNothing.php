@@ -101,7 +101,7 @@ class RenderNothing extends Render
      * @param Model $model
      * @return string
      */
-    public function renderFooter($caller, Model $model, $configOnly = false)
+    public function renderFooter(array $caller, Model $model, $configOnly = false)
     {
         $this->model[__FUNCTION__][] = $model;
         return $this->footer;

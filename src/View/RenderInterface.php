@@ -106,7 +106,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderFooter($caller, Model $model, $configOnly = false);
+    public function renderFooter(array $caller, Model $model, $configOnly = false);
 
     /**
      * Simply outputs the css and js stuff.
