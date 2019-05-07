@@ -93,7 +93,7 @@ abstract class AbstractModel implements ConstInterface
     public function __construct(Pool $pool)
     {
         $this->connectorService = $pool->createClass(
-            'Brainworxx\\Krexx\\Analyse\\Code\\Connectors'
+            Connectors::class
         );
         $this->pool = $pool;
     }

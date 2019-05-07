@@ -120,10 +120,10 @@ class Factory
 
         // Create a new pool where we store all our classes.
         // We also need to check if we have an overwrite for the pool.
-        if (empty($rewrite['Brainworxx\\Krexx\\Service\\Factory\\Pool']) === true) {
+        if (empty($rewrite[Pool::class]) === true) {
             Krexx::$pool = new Pool();
         } else {
-            $classname = $rewrite['Brainworxx\\Krexx\\Service\\Factory\\Pool'];
+            $classname = $rewrite[Pool::class];
             Krexx::$pool = new $classname();
         }
         Krexx::$pool->rewrite = $rewrite;

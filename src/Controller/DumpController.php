@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analyse\Model;
+
 /**
  * "Controller" for the dump (aka analysis) "action".
  *
@@ -72,7 +74,7 @@ class DumpController extends AbstractController
 
         // Start the magic.
         $analysis = $this->pool->routing->analysisHub(
-            $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+            $this->pool->createClass(Model::class)
                 ->setData($data)
                 ->setName($caller[static::TRACE_VARNAME])
         );

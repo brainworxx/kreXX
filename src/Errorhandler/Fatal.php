@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Errorhandler;
 
 use Brainworxx\Krexx\Controller\AbstractController;
+use Brainworxx\Krexx\Controller\ErrorController;
 
 /**
  * PHP 5.x fatal error handler.
@@ -120,7 +121,7 @@ class Fatal extends AbstractError
                 // prevent an infinite loop.
                 AbstractController::$analysisInProgress = true;
                 $this->pool
-                    ->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
+                    ->createClass(ErrorController::class)
                     ->errorAction($errorData);
             }
         }

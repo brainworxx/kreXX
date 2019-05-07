@@ -34,11 +34,16 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConfig;
 use Brainworxx\Krexx\Analyse\Caller\AbstractCaller;
+use Brainworxx\Krexx\Analyse\Caller\CallerFinder;
 use Brainworxx\Krexx\Analyse\ConstInterface;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\View\Output\AbstractOutput;
+use Brainworxx\Krexx\View\Output\Browser;
+use Brainworxx\Krexx\View\Output\File;
 
 /**
  * Methods for the "controller" that are not directly "actions".
@@ -121,7 +126,7 @@ abstract class AbstractController implements ConstInterface
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->callerFinder = $pool->createClass('Brainworxx\\Krexx\\Analyse\\Caller\\CallerFinder');
+        $this->callerFinder = $pool->createClass(CallerFinder::class);
 
         // Register our output service.
         // Depending on the setting, we use another class here.
@@ -129,9 +134,9 @@ abstract class AbstractController implements ConstInterface
         // cms may do their stuff in the shutdown functions as well.
         $this->destination = $pool->config->getSetting(Fallback::SETTING_DESTINATION);
         if ($this->destination === Fallback::VALUE_BROWSER) {
-            $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\Browser');
+            $this->outputService = $pool->createClass(Browser::class);
         } elseif ($this->destination === Fallback::VALUE_FILE) {
-            $this->outputService = $pool->createClass('Brainworxx\\Krexx\\View\\Output\\File');
+            $this->outputService = $pool->createClass(File::class);
         }
     }
 
@@ -176,12 +181,12 @@ abstract class AbstractController implements ConstInterface
             $path = $this->pool->messages->getHelp('iniNotFound');
         }
 
-        $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+        $model = $this->pool->createClass(Model::class)
             ->setName($path)
             ->setType($this->pool->fileService->filterFilePath($pathToIni))
             ->setHelpid('currentSettings')
             ->injectCallback(
-                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughConfig')
+                $this->pool->createClass(ThroughConfig::class)
             );
 
         return $this->pool->render->renderFooter(

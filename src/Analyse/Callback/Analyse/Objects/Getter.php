@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 
 /**
@@ -120,7 +122,7 @@ class Getter extends AbstractObjectAnalysis
             $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
                     static::EVENT_MARKER_ANALYSES_END,
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    $this->pool->createClass(Model::class)
                         ->setName('Getter')
                         ->setType(static::TYPE_INTERNALS)
                         ->setHelpid('getterHelpInfo')
@@ -129,7 +131,7 @@ class Getter extends AbstractObjectAnalysis
                         ->addParameter(static::PARAM_IS_GETTER, $this->isGetter)
                         ->addParameter(static::PARAM_HAS_GETTER, $this->hasGetter)
                         ->injectCallback(
-                            $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter')
+                            $this->pool->createClass(ThroughGetter::class)
                         )
                 )
             );

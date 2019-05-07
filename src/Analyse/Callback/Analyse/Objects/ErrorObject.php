@@ -34,6 +34,9 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
+
 /**
  * When we are handling an error object, get the backtrace and analyse as such.
  *
@@ -64,12 +67,12 @@ class ErrorObject extends AbstractObjectAnalysis
             $output .= $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
                     static::TRACE_BACKTRACE,
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    $this->pool->createClass(Model::class)
                         ->setName('Backtrace')
                         ->setType(static::TYPE_INTERNALS)
                         ->addParameter(static::PARAM_DATA, $trace)
                         ->injectCallback(
-                            $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessBacktrace')
+                            $this->pool->createClass(ProcessBacktrace::class)
                         )
                 )
             );
@@ -91,7 +94,7 @@ class ErrorObject extends AbstractObjectAnalysis
         $output .= $this->pool->render->renderSingleChild(
             $this->dispatchEventWithModel(
                 'source',
-                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                $this->pool->createClass(Model::class)
                     ->setData($source)
                     ->setName('Sourcecode')
                     ->setNormal(static::UNKNOWN_VALUE)

@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
+
 /**
  * Handling exceptions.
  *
@@ -69,7 +71,7 @@ class ExceptionController extends AbstractController
         // Get the backtrace.
         $trace = $exception->getTrace();
         $backtrace = $this->pool
-            ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessBacktrace')
+            ->createClass(ProcessBacktrace::class)
             ->process($trace);
 
         if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {

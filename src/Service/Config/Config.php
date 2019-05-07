@@ -118,14 +118,14 @@ class Config extends Fallback
             SettingsGetter::getBlacklistDebugClass()
         );
 
-        $this->security = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Security')
+        $this->security = $pool->createClass(Security::class)
             ->setMethodBlacklist(SettingsGetter::getBlacklistDebugMethods());
 
         $pool->config = $this;
 
-        $this->iniConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Ini')
+        $this->iniConfig = $pool->createClass(Ini::class)
             ->loadIniFile($this->getPathToIniFile());
-        $this->cookieConfig = $pool->createClass('Brainworxx\\Krexx\\Service\\Config\\From\\Cookie');
+        $this->cookieConfig = $pool->createClass(Cookie::class);
 
         // Loading the settings.
         foreach ($this->configFallback as $settings) {
@@ -212,7 +212,7 @@ class Config extends Fallback
         $feConfig = $this->iniConfig->getFeConfig($name);
         $section = $this->feConfigFallback[$name][static::SECTION];
         /** @var Model $model */
-        $model = $this->pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Model')
+        $model = $this->pool->createClass(Model::class)
             ->setSection($section)
             ->setEditable($feConfig[0])
             ->setType($feConfig[1]);

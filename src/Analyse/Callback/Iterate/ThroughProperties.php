@@ -36,6 +36,8 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
+use Brainworxx\Krexx\Analyse\Comment\Properties;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Misc\File;
 
 /**
@@ -141,7 +143,7 @@ class ThroughProperties extends AbstractCallback
                 // Since we are dealing with a declared Property here, we can
                 // get the comment and the declaration place.
                 $comment = $this->pool
-                    ->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Properties')
+                    ->createClass(Properties::class)
                     ->getComment($refProperty);
                 $declarationPlace = $this->retrieveDeclarationPlace($refProperty);
             }
@@ -150,7 +152,7 @@ class ThroughProperties extends AbstractCallback
             $output .= $this->pool->routing->analysisHub(
                 $this->dispatchEventWithModel(
                     __FUNCTION__ . static::EVENT_MARKER_END,
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    $this->pool->createClass(Model::class)
                         ->setData($value)
                         ->setName($this->pool->encodingService->encodeString($propName))
                         ->addToJson(static::META_COMMENT, $comment)

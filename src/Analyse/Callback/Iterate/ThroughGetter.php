@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -109,7 +110,7 @@ class ThroughGetter extends AbstractCallback
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
-        $this->commentAnalysis = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods');
+        $this->commentAnalysis = $this->pool->createClass(Methods::class);
     }
 
     /**
@@ -160,7 +161,7 @@ class ThroughGetter extends AbstractCallback
             ));
 
             /** @var Model $model */
-            $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+            $model = $this->pool->createClass(Model::class)
                 ->setName($reflectionMethod->getName())
                 ->addToJson(static::META_METHOD_COMMENT, $comments);
 

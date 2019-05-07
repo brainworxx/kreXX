@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
@@ -85,11 +86,11 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.
         /** @var Model $model */
-        $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+        $model = $this->pool->createClass(Model::class)
             ->addParameter(static::PARAM_DATA, $refProps)
             ->addParameter(static::PARAM_REF, $ref)
             ->injectCallback(
-                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties')
+                $this->pool->createClass(ThroughProperties::class)
             );
 
         if (isset($label)) {

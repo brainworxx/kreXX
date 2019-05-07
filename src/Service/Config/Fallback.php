@@ -37,6 +37,8 @@ namespace Brainworxx\Krexx\Service\Config;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
+use Brainworxx\Krexx\View\Skins\RenderHans;
+use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
 
 /**
  * Configuration fallback settings.
@@ -387,11 +389,11 @@ abstract class Fallback implements ConstInterface
         $this->skinConfiguration = array_merge(
             [
                 static::SKIN_SMOKY_GREY => [
-                    static::SKIN_CLASS => 'Brainworxx\\Krexx\\View\\Skins\\RenderSmokyGrey',
+                    static::SKIN_CLASS => RenderSmokyGrey::class,
                     static::SKIN_DIRECTORY => KREXX_DIR . 'resources/skins/smokygrey/'
                 ],
                 static::SKIN_HANS => [
-                    static::SKIN_CLASS => 'Brainworxx\\Krexx\\View\\Skins\\RenderHans',
+                    static::SKIN_CLASS => RenderHans::class,
                     static::SKIN_DIRECTORY => KREXX_DIR . 'resources/skins/hans/'
                 ]
             ],
@@ -426,9 +428,9 @@ abstract class Fallback implements ConstInterface
      */
     protected $classBlacklist = [
         // Fun with reflection classes. Not really.
-        '\\ReflectionType',
-        '\\ReflectionGenerator',
-        '\\Reflector',
+        \ReflectionType::class,
+        \ReflectionGenerator::class,
+        \Reflector::class,
     ];
 
     /**

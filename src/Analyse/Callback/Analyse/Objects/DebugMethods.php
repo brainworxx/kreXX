@@ -34,7 +34,9 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Debug;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 
@@ -105,7 +107,7 @@ class DebugMethods extends AbstractObjectAnalysis
                     $output .= $this->pool->render->renderExpandableChild(
                         $this->dispatchEventWithModel(
                             $funcName,
-                            $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                            $this->pool->createClass(Model::class)
                                 ->setName($funcName)
                                 ->setType(static::TYPE_DEBUG_METHOD)
                                 ->setNormal(static::UNKNOWN_VALUE)
@@ -113,7 +115,7 @@ class DebugMethods extends AbstractObjectAnalysis
                                 ->setConnectorType(Connectors::METHOD)
                                 ->addParameter(static::PARAM_DATA, $result)
                                 ->injectCallback(
-                                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Debug')
+                                    $this->pool->createClass(Debug::class)
                                 )
                         )
                     );

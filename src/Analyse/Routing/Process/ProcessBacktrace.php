@@ -35,6 +35,8 @@
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
 
 /**
@@ -86,12 +88,12 @@ class ProcessBacktrace extends AbstractCallback
 
         for ($step = 1; $step <= $maxStep; ++$step) {
             $output .= $this->pool->render->renderExpandableChild(
-                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                $this->pool->createClass(Model::class)
                     ->setName($step)
                     ->setType(static::TYPE_STACK_FRAME)
                     ->addParameter(static::PARAM_DATA, $backtrace[$step - 1])
                     ->injectCallback(
-                        $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\BacktraceStep')
+                        $this->pool->createClass(BacktraceStep::class)
                     )
             );
         }

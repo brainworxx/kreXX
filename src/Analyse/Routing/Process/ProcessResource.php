@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResource;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 
@@ -95,7 +96,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
                 ->addParameter(static::PARAM_DATA, $meta)
                 ->setNormal($typeString)
                 ->injectCallback(
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughResource')
+                    $this->pool->createClass(ThroughResource::class)
                 )
         );
     }

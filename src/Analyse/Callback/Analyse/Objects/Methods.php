@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
 
 /**
@@ -82,7 +84,7 @@ class Methods extends AbstractObjectAnalysis
                 $this->pool->render->renderRecursion(
                     $this->dispatchEventWithModel(
                         'recursion',
-                        $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                        $this->pool->createClass(Model::class)
                             ->setDomid($domId)
                             ->setNormal('Methods')
                             ->setName('Methods')
@@ -139,14 +141,14 @@ class Methods extends AbstractObjectAnalysis
         return $this->pool->render->renderExpandableChild(
             $this->dispatchEventWithModel(
                 static::EVENT_MARKER_ANALYSES_END,
-                $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                $this->pool->createClass(Model::class)
                     ->setName('Methods')
                     ->setType(static::TYPE_INTERNALS)
                     ->addParameter(static::PARAM_DATA, $methods)
                     ->addParameter(static::PARAM_REF, $ref)
                     ->setDomId($domId)
                     ->injectCallback(
-                        $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethods')
+                        $this->pool->createClass(ThroughMethods::class)
                     )
             )
         );

@@ -175,7 +175,7 @@ call_user_func(function () {
     // When it does something stupid, krexxLoader will handle the rest.
     set_error_handler($krexxLoader);
     try {
-        if (interface_exists('Brainworxx\\Krexx\\Analyse\\ConstInterface') === false) {
+        if (interface_exists(\Brainworxx\Krexx\Analyse\ConstInterface::class) === false) {
             $krexxLoader();
         }
     } catch (\Throwable $e) {

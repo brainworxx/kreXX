@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
 
@@ -135,7 +137,7 @@ class Traversable extends AbstractObjectAnalysis
             $count = count($parameter);
 
             /** @var Model $model */
-            $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+            $model = $this->pool->createClass(Model::class)
                 ->setName($name)
                 ->setType(static::TYPE_FOREACH)
                 ->addParameter(static::PARAM_DATA, $parameter)
@@ -147,12 +149,12 @@ class Traversable extends AbstractObjectAnalysis
             // a special callback.
             if ($count > (int) $this->pool->config->getSetting(Fallback::SETTING_ARRAY_COUNT_LIMIT)) {
                 $model->injectCallback(
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray')
+                    $this->pool->createClass(ThroughLargeArray::class)
                 )->setNormal('Simplified Traversable Info')
                     ->setHelpid('simpleArray');
             } else {
                 $model->injectCallback(
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughArray')
+                    $this->pool->createClass(ThroughArray::class)
                 )->setNormal('Traversable Info');
             }
 

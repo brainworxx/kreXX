@@ -104,7 +104,7 @@ class TimerController extends AbstractController
         $this->timerAction('end');
         // And we are done. Feedback to the user.
         $miniBench = $this->miniBenchTo(static::$timekeeping);
-        $this->pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+        $this->pool->createClass(DumpController::class)
             ->dumpAction($miniBench, 'kreXX timer');
         // Reset the timer vars.
         static::$timekeeping = [];

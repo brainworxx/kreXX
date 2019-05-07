@@ -36,6 +36,7 @@ namespace Brainworxx\Krexx\Service\Plugin;
 
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Config\Config;
 
 /**
  * Allow plugins to alter the configuration
@@ -340,7 +341,7 @@ class Registration implements ConstInterface
         if (isset(Krexx::$pool)) {
             Krexx::$pool->rewrite = static::$rewriteList;
             Krexx::$pool->eventService->register = static::$eventList;
-            Krexx::$pool->config = Krexx::$pool->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
+            Krexx::$pool->config = Krexx::$pool->createClass(Config::class);
             Krexx::$pool->messages->readHelpTexts();
         }
     }

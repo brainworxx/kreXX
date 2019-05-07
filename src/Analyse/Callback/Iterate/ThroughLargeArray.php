@@ -89,7 +89,7 @@ class ThroughLargeArray extends AbstractCallback
             }
 
             /** @var Model $model */
-            $model = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model');
+            $model = $this->pool->createClass(Model::class);
 
             // Are we dealing with multiline code generation?
             if ($multiline === true) {

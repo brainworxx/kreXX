@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
+
 /**
  * "Controller" for the backtrace "action".
  *
@@ -65,7 +67,7 @@ class BacktraceController extends AbstractController
         $this->pool->scope->setScope($caller[static::TRACE_VARNAME]);
 
         $analysis = $this->pool
-            ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessBacktrace')
+            ->createClass(ProcessBacktrace::class)
             ->process($backtrace);
 
         // Detect the encoding on the start-chunk-string of the analysis

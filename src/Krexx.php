@@ -34,6 +34,12 @@
 
 namespace Brainworxx\Krexx;
 
+use Brainworxx\Krexx\Controller\BacktraceController;
+use Brainworxx\Krexx\Controller\DumpController;
+use Brainworxx\Krexx\Controller\EditSettingsController;
+use Brainworxx\Krexx\Controller\ErrorController;
+use Brainworxx\Krexx\Controller\ExceptionController;
+use Brainworxx\Krexx\Controller\TimerController;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Service\Config\Fallback;
@@ -112,7 +118,7 @@ class Krexx
 
         AbstractController::$analysisInProgress = true;
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\TimerController')
+        static::$pool->createClass(TimerController::class)
             ->noFatalForKrexx()
             ->timerAction($string)
             ->reFatalAfterKrexx();
@@ -139,7 +145,7 @@ class Krexx
 
         AbstractController::$analysisInProgress = true;
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\TimerController')
+        static::$pool->createClass(TimerController::class)
             ->noFatalForKrexx()
             ->timerEndAction()
             ->reFatalAfterKrexx();
@@ -172,7 +178,7 @@ class Krexx
 
         AbstractController::$analysisInProgress = true;
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+        static::$pool->createClass(DumpController::class)
             ->noFatalForKrexx()
             ->dumpAction($data)
             ->reFatalAfterKrexx();
@@ -207,7 +213,7 @@ class Krexx
 
         AbstractController::$analysisInProgress = true;
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\BacktraceController')
+        static::$pool->createClass(BacktraceController::class)
             ->noFatalForKrexx()
             ->backtraceAction($backtrace)
             ->reFatalAfterKrexx();
@@ -225,7 +231,7 @@ class Krexx
         Pool::createPool();
 
         static::$pool->config->setDisabled(true);
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
+        static::$pool->createClass(DumpController::class)
             ->noFatalForKrexx();
 
         Config::$disabledByPhp = true;
@@ -250,7 +256,7 @@ class Krexx
             return;
         }
 
-         static::$pool->createClass('Brainworxx\\Krexx\\Controller\\EditSettingsController')
+         static::$pool->createClass(EditSettingsController::class)
             ->noFatalForKrexx()
             ->editSettingsAction()
             ->reFatalAfterKrexx();
@@ -285,7 +291,7 @@ class Krexx
             return;
         }
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
+        static::$pool->createClass(ErrorController::class)
             ->registerFatalAction();
     }
 
@@ -311,7 +317,7 @@ class Krexx
             return;
         }
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ErrorController')
+        static::$pool->createClass(ErrorController::class)
             ->unregisterFatalAction();
     }
 
@@ -331,7 +337,7 @@ class Krexx
             return;
         }
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ExceptionController')
+        static::$pool->createClass(ExceptionController::class)
             ->registerAction();
     }
 
@@ -351,7 +357,7 @@ class Krexx
             return;
         }
 
-        static::$pool->createClass('Brainworxx\\Krexx\\Controller\\ExceptionController')
+        static::$pool->createClass(ExceptionController::class)
             ->unregisterAction();
     }
 
@@ -436,6 +442,6 @@ class Krexx
     {
         // Reset everything afterwards.
         static::$pool->config = static::$pool
-            ->createClass('Brainworxx\\Krexx\\Service\\Config\\Config');
+            ->createClass(Config::class);
     }
 }

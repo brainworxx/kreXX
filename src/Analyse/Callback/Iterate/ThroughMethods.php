@@ -36,6 +36,8 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
+use Brainworxx\Krexx\Analyse\Comment\Methods;
+use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Methods analysis methods. :rolleyes:
@@ -65,7 +67,7 @@ class ThroughMethods extends AbstractCallback
         $result = $this->dispatchStartEvent();
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
-        $commentAnalysis = $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Comment\\Methods');
+        $commentAnalysis = $this->pool->createClass(Methods::class);
 
         // Deep analysis of the methods.
         /** @var \ReflectionMethod $reflectionMethod */
@@ -116,7 +118,7 @@ class ThroughMethods extends AbstractCallback
             $result .= $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
                     __FUNCTION__ . static::EVENT_MARKER_END,
-                    $this->pool->createClass('Brainworxx\\Krexx\\Analyse\\Model')
+                    $this->pool->createClass(Model::class)
                         ->setName($reflectionMethod->name)
                         ->setType($methodData['declaration keywords'] . static::TYPE_METHOD)
                         ->setConnectorType($connectorType)
@@ -126,7 +128,7 @@ class ThroughMethods extends AbstractCallback
                         ->setIsPublic($reflectionMethod->isPublic())
                         ->injectCallback(
                             $this->pool->createClass(
-                                'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethodAnalysis'
+                                ThroughMethodAnalysis::class
                             )
                         )
                 )

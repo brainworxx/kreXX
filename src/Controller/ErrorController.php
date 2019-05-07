@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Controller;
 
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
+use Brainworxx\Krexx\Errorhandler\Fatal;
 use Brainworxx\Krexx\Service\Config\Fallback;
 
 /**
@@ -68,7 +70,7 @@ class ErrorController extends AbstractController
 
         // Get the backtrace.
         $backtrace = $this->pool
-            ->createClass('Brainworxx\\Krexx\\Analyse\\Routing\\Process\\ProcessBacktrace')
+            ->createClass(ProcessBacktrace::class)
             ->process($errorData[static::TRACE_BACKTRACE]);
 
         if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
@@ -127,7 +129,7 @@ class ErrorController extends AbstractController
 
         // Do we need another shutdown handler?
         if (static::$krexxFatal === null) {
-            static::$krexxFatal = $this->pool->createClass('Brainworxx\\Krexx\\Errorhandler\\Fatal');
+            static::$krexxFatal = $this->pool->createClass(Fatal::class);
             declare(ticks = 1);
             register_shutdown_function(
                 [
