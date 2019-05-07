@@ -66,7 +66,7 @@ class Methods extends AbstractComment
     public function getComment(\Reflector $reflectionMethod, \ReflectionClass $reflectionClass = null)
     {
         // Do some static caching. The comment will not change during a run.
-        static $cache = array();
+        static $cache = [];
         /** @var \ReflectionMethod $reflectionMethod */
         $this->methodName = $reflectionMethod->getName();
         $cachingKey =  $reflectionMethod->getDeclaringClass()->name . '::' . $this->methodName;

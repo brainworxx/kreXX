@@ -57,7 +57,7 @@ class Fatal extends AbstractError
      *
      * @see $this->tickCallback().
      */
-    protected $tickedBacktrace = array();
+    protected $tickedBacktrace = [];
 
     /**
      * Registered tick callback.
@@ -106,7 +106,7 @@ class Fatal extends AbstractError
 
                 // We prepare the error as far as we can here.
                 // The adding of the sourcecode happens in the controller.
-                $errorData = array(
+                $errorData = [
                     static::TRACE_TYPE => $errorType[0] . ' Error',
                     static::TRACE_ERROR_STRING => $error['message'],
                     static::TRACE_ERROR_FILE => $error[static::TRACE_FILE],
@@ -114,7 +114,7 @@ class Fatal extends AbstractError
                     'handler' => __FUNCTION__,
                     static::TRACE_FILE => $error[static::TRACE_FILE],
                     static::TRACE_BACKTRACE => $this->tickedBacktrace,
-                );
+                ];
 
                 // Tell static main class, that we start a new analysis, to
                 // prevent an infinite loop.

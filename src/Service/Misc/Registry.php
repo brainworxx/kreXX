@@ -46,7 +46,7 @@ class Registry
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * Storing stuff in the registry.

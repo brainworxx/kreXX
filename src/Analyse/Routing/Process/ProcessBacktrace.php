@@ -66,7 +66,7 @@ class ProcessBacktrace extends AbstractCallback
      * @return string
      *   The rendered backtrace.
      */
-    public function process(&$backtrace = array())
+    public function process(&$backtrace = [])
     {
         if (empty($backtrace) === true) {
             $backtrace = $this->getBacktrace();
@@ -78,7 +78,7 @@ class ProcessBacktrace extends AbstractCallback
 
         // Remove steps according to the configuration.
         if ($maxStep < $stepCount) {
-            $this->pool->messages->addMessage('omittedBacktrace', array(($maxStep + 1), $stepCount));
+            $this->pool->messages->addMessage('omittedBacktrace', [($maxStep + 1), $stepCount]);
         } else {
             // We will not analyse more steps than we actually have.
             $maxStep = $stepCount;

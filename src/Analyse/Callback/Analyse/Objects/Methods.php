@@ -112,8 +112,8 @@ class Methods extends AbstractObjectAnalysis
     protected function analyseMethods(\ReflectionClass $ref, $domId, $doProtected, $doPrivate)
     {
         // Dumping all methods but only if we have any.
-        $protected = array();
-        $private = array();
+        $protected = [];
+        $private = [];
         $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
 
         if ($doProtected === true) {
@@ -134,7 +134,7 @@ class Methods extends AbstractObjectAnalysis
         $this->pool->recursionHandler->addToMetaHive($domId);
 
         // We need to sort these alphabetically.
-        usort($methods, array($this, 'reflectionSorting'));
+        usort($methods, [$this, 'reflectionSorting']);
 
         return $this->pool->render->renderExpandableChild(
             $this->dispatchEventWithModel(

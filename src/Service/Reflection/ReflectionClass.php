@@ -46,7 +46,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @var array
      */
-    protected $objectArray = array();
+    protected $objectArray = [];
 
     /**
      * The object we are currently analysing.

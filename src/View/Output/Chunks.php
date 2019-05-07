@@ -75,7 +75,7 @@ class Chunks
      *
      * @var array
      */
-    protected $metadata = array();
+    protected $metadata = [];
 
     /**
      * Is the chunks folder write protected?
@@ -127,7 +127,7 @@ class Chunks
      *
      * @var array
      */
-    protected $doNothingEncoding = array('ASCII', 'UTF-8', false);
+    protected $doNothingEncoding = ['ASCII', 'UTF-8', false];
 
     /**
      * Injects the pool.
@@ -399,7 +399,7 @@ class Chunks
         }
 
         array_multisort(
-            array_map(array($this->pool->fileService, 'filetime'), $logList),
+            array_map([$this->pool->fileService, 'filetime'], $logList),
             SORT_DESC,
             $logList
         );

@@ -70,7 +70,7 @@ class PublicProperties extends AbstractObjectAnalysis
         $data = $ref->getData();
 
         $refProps = $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
-        $publicProps = array();
+        $publicProps = [];
 
         // Adding undeclared public properties to the dump.
         // Those are properties which are not visible with
@@ -97,7 +97,7 @@ class PublicProperties extends AbstractObjectAnalysis
             return $output;
         }
 
-        usort($refProps, array($this, 'reflectionSorting'));
+        usort($refProps, [$this, 'reflectionSorting']);
         // Adding a HR to reflect that the following stuff are not public
         // properties anymore.
         return $output .

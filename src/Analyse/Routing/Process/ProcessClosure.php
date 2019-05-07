@@ -60,7 +60,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
     {
         $ref = new \ReflectionFunction($model->getData());
 
-        $result = array();
+        $result = [];
 
         // Adding comments from the file.
         $result[static::META_COMMENT] =  $this->pool

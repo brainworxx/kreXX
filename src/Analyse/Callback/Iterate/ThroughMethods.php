@@ -70,7 +70,7 @@ class ThroughMethods extends AbstractCallback
         // Deep analysis of the methods.
         /** @var \ReflectionMethod $reflectionMethod */
         foreach ($this->parameters[static::PARAM_DATA] as $reflectionMethod) {
-            $methodData = array();
+            $methodData = [];
 
             // Get the comment from the class, it's parents, interfaces or traits.
             $methodComment = $commentAnalysis->getComment($reflectionMethod, $reflectionClass);

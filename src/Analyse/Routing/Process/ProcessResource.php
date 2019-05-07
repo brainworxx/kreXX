@@ -72,7 +72,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
                 break;
 
             default:
-                $meta = array();
+                $meta = [];
         }
 
         // Check, if we have something useful.

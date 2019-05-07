@@ -68,7 +68,7 @@ abstract class AbstractController implements ConstInterface
      *
      * @var array
      */
-    protected static $jsCssSend = array();
+    protected static $jsCssSend = [];
 
     /**
      * Here we store the fatal error handler.
@@ -247,7 +247,7 @@ abstract class AbstractController implements ConstInterface
     {
         if ($this->fatalShouldActive === true) {
             $this::$krexxFatal->setIsActive(false);
-            unregister_tick_function(array($this::$krexxFatal, 'tickCallback'));
+            unregister_tick_function([$this::$krexxFatal, 'tickCallback']);
         }
 
         return $this;
@@ -267,7 +267,7 @@ abstract class AbstractController implements ConstInterface
     {
         if ($this->fatalShouldActive === true) {
             $this::$krexxFatal->setIsActive(true);
-            register_tick_function(array($this::$krexxFatal, 'tickCallback'));
+            register_tick_function([$this::$krexxFatal, 'tickCallback']);
         }
 
         return $this;

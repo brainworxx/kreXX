@@ -54,12 +54,12 @@ abstract class AbstractComment
      *
      * @var array
      */
-    protected $inheritdocPattern = array(
+    protected $inheritdocPattern = [
         '{@inheritdoc}',
         '{inheritdoc}',
         '@inheritdoc',
         'inheritdoc'
-    );
+    ];
 
     /**
      * Inject the pool
@@ -105,7 +105,7 @@ abstract class AbstractComment
         // We split our comment into single lines and remove the unwanted
         // comment chars with the array_map callback.
         // We skip lines with /** and */
-        $result = array();
+        $result = [];
         foreach (array_slice(explode("\n", $comment), 1, -1) as $commentLine) {
             // Remove comment-chars and trim the whitespace.
             $result[] = trim($commentLine, "* \t\n\r\0\x0B");

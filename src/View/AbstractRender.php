@@ -127,14 +127,14 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
     protected function renderCaller($file, $line)
     {
         return str_replace(
-            array(
+            [
                 static::MARKER_CALLER_FILE,
                 static::MARKER_CALLER_LINE,
-            ),
-            array(
+            ],
+            [
                 $file,
                 $line,
-            ),
+            ],
             $this->getTemplateFileContent(static::FILE_CALLER)
         );
     }
@@ -166,8 +166,8 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
         // Add the stuff from the json after the help text, if any.
         foreach ($data as $title => $text) {
             $helpContent .= str_replace(
-                array(static::MARKER_HELP_TITLE, static::MARKER_HELP_TEXT),
-                array($title, $text),
+                [static::MARKER_HELP_TITLE, static::MARKER_HELP_TEXT],
+                [$title, $text],
                 $helpRow
             );
         }
@@ -228,16 +228,16 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
                 $activeText = 'inactive';
             }
             $result .= str_replace(
-                array(
+                [
                     static::MARKER_PLUGIN_ACTIVE_CLASS,
                     static::MARKER_PLUGIN_ACTIVE_TEXT,
                     static::MARKER_PLUGIN_TEXT,
-                ),
-                array(
+                ],
+                [
                     $activeClass,
                     $activeText,
                     $plugin[SettingsGetter::PLUGIN_NAME] . ' ' . $plugin[SettingsGetter::PLUGIN_VERSION]
-                ),
+                ],
                 $template
             );
         }
@@ -282,16 +282,16 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
         }
 
         return str_replace(
-            array(
+            [
                 static::MARKER_STYLE,
                 static::MARKER_MAIN_FUNCTION,
                 static::MARKER_DOM_ID,
-            ),
-            array(
+            ],
+            [
                 $style,
                 $model->renderMe(),
                 $domid,
-            ),
+            ],
             $this->getTemplateFileContent(static::FILE_NEST)
         );
     }
@@ -307,7 +307,7 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
      */
     protected function getTemplateFileContent($what)
     {
-        static $fileCache = array();
+        static $fileCache = [];
 
         if (isset($fileCache[$what]) === true) {
             return $fileCache[$what];
@@ -353,20 +353,20 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
         // We remove them as well as linebreaks.
         // Unicode greater-than and smaller-then values.
         return str_replace(
-            array(
+            [
                 '"',
                 "'",
                 '&quot;',
                 '&lt;',
                 '&gt;',
-            ),
-            array(
+            ],
+            [
                 "\\u0027",
                 "\\u0022",
                 "\\u0027",
                 "\\u276E",
                 "\\u02C3",
-            ),
+            ],
             $data
         );
     }

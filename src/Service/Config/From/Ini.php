@@ -57,7 +57,7 @@ class Ini extends Fallback
      *
      * @var array
      */
-    protected $iniSettings = array();
+    protected $iniSettings = [];
 
     /**
      * Inject the pool, create the security handler, load the ini file.
@@ -108,20 +108,20 @@ class Ini extends Fallback
         if (empty($filevalue) === true) {
             // Fallback to factory settings.
             if (isset($this->feConfigFallback[$name]) === true) {
-                return array(
+                return [
                     ($this->feConfigFallback[$name][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE),
                     $this->feConfigFallback[$name][static::RENDER][static::RENDER_TYPE]
-                );
+                ];
             }
             // Unknown parameter and nothing in the fallback!
             // This should never happen, btw.
-            return array(false, static::RENDER_TYPE_NONE);
+            return [false, static::RENDER_TYPE_NONE];
         }
 
-        return array(
+        return [
             ($filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE),
             $filevalue[static::RENDER_TYPE]
-        );
+        ];
     }
 
     /**
@@ -169,10 +169,10 @@ class Ini extends Fallback
                 break;
         }
 
-        return array(
+        return [
             static::RENDER_TYPE => $type,
             static::RENDER_EDITABLE => $editable,
-        );
+        ];
     }
 
     /**

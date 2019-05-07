@@ -51,7 +51,7 @@ class Properties extends AbstractComment
     public function getComment(\Reflector $reflectionProperty, \ReflectionClass $reflectionClass = null)
     {
         // Do some static caching. The comment will not change during a run.
-        static $cache = array();
+        static $cache = [];
         /** @var \ReflectionProperty $reflectionProperty */
         $cachingKey = $reflectionProperty->getDeclaringClass()->getName() . '::' . $reflectionProperty->getName();
         if (isset($cache[$cachingKey]) === true) {

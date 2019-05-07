@@ -56,7 +56,7 @@ class File extends AbstractOutput
      *   - footer
      *   This means, that every output is split in 4 parts
      */
-    protected $chunkStrings = array();
+    protected $chunkStrings = [];
 
     /**
      * Adds output to our shutdown handler.

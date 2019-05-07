@@ -53,14 +53,14 @@ class Config extends Fallback
      *
      * @var Model[]
      */
-    public $settings = array();
+    public $settings = [];
 
     /**
      * List of all configured debug methods.
      *
      * @var array
      */
-    public $debugFuncList = array();
+    public $debugFuncList = [];
 
     /**
      * Our security handler.
@@ -88,7 +88,7 @@ class Config extends Fallback
      *
      * @var array
      */
-    protected $directories = array();
+    protected $directories = [];
 
     /**
      * Has kreXX been disabled via php call \Krexx::disable()?
@@ -107,11 +107,11 @@ class Config extends Fallback
         parent::__construct($pool);
 
         // Point the configuration to the right directories
-        $this->directories = array(
+        $this->directories = [
             'chunks' => SettingsGetter::getChunkFolder(),
             'log' => SettingsGetter::getLogFolder(),
             'config' => SettingsGetter::getConfigFile(),
-        );
+        ];
 
         $this->classBlacklist = array_merge(
             $this->classBlacklist,

@@ -56,7 +56,7 @@ class Cookie
      *
      * @var array
      */
-    public $settings = array();
+    public $settings = [];
 
     /**
      * Inject the pool, and get a first impression of the cookies.

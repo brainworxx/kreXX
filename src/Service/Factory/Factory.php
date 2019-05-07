@@ -55,7 +55,7 @@ class Factory
      *
      * @var array
      */
-    public $rewrite = array();
+    public $rewrite = [];
 
     /**
      * Create objects and returns them. Singletons are handled by the pool.

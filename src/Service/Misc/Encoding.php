@@ -160,15 +160,15 @@ class Encoding
             // We encoding @, because we need them for our chunks.
             // The { are needed in the marker of the skin.
             // We also replace tabs with two nbsp's.
-            $sortingCallback = array($this, 'arrayMapCallbackCode');
-            $search = array('@', '{', chr(9));
-            $replace = array('&#64;', '&#123;', '&nbsp;&nbsp;');
+            $sortingCallback = [$this, 'arrayMapCallbackCode'];
+            $search = ['@', '{', chr(9)];
+            $replace = ['&#64;', '&#123;', '&nbsp;&nbsp;'];
         } else {
             // We encoding @, because we need them for our chunks.
             // The { are needed in the marker of the skin.
-            $sortingCallback = array($this, 'arrayMapCallbackNormal');
-            $search = array('@', '{', '  ');
-            $replace = array('&#64;', '&#123;', '&nbsp;&nbsp;');
+            $sortingCallback = [$this, 'arrayMapCallbackNormal'];
+            $search = ['@', '{', '  '];
+            $replace = ['&#64;', '&#123;', '&nbsp;&nbsp;'];
         }
 
         // There are several places here, that may throw a warning.
@@ -279,14 +279,14 @@ class Encoding
      */
     public function encodeStringForCodeGeneration($name)
     {
-        static $cache = array();
+        static $cache = [];
 
         if (isset($cache[$name])) {
             return $cache[$name];
         }
 
         $result = str_replace(
-            array(
+            [
                 '"',
                 '\'',
                 "\0",
@@ -294,8 +294,8 @@ class Encoding
                 "\xEF",
                 "\xBB",
                 "\xBF"
-            ),
-            array(
+            ],
+            [
                 '&#034;',
                 '&#039;',
                 '\' . "\0" . \'',
@@ -303,7 +303,7 @@ class Encoding
                 '\' . "\xEF" . \'',
                 '\' . "\xBB" . \'',
                 '\' . "\xBF" . \'',
-            ),
+            ],
             $name
         );
 

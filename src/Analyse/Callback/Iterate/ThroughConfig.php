@@ -64,7 +64,7 @@ class ThroughConfig extends AbstractCallback
 
         // We need to "explode" our config array into the
         // sections again, for better readability.
-        $sections = array();
+        $sections = [];
         foreach ($this->pool->config->settings as $name => $setting) {
             $sections[$setting->getSection()][$name] = $setting;
         }

@@ -49,7 +49,7 @@ class File
      *
      * @var array
      */
-    protected static $isReadableCache = array();
+    protected static $isReadableCache = [];
 
     /**
      * @var Pool
@@ -199,7 +199,7 @@ class File
     {
         $filePath = realpath($filePath);
 
-        static $filecache = array();
+        static $filecache = [];
 
         if (isset($filecache[$filePath]) === true) {
             return $filecache[$filePath];
@@ -232,7 +232,7 @@ class File
         if ($this->fileIsReadable($filePath) === false) {
             if ($showError === true) {
                 // This file was not readable! We need to tell the user!
-                $this->pool->messages->addMessage('fileserviceAccess', array($this->filterFilePath($filePath)));
+                $this->pool->messages->addMessage('fileserviceAccess', [$this->filterFilePath($filePath)]);
             }
             // Return empty string.
             return '';
@@ -299,7 +299,7 @@ class File
             }
 
             // We have a permission problem here!
-            $this->pool->messages->addMessage('fileserviceDelete', array($this->filterFilePath($filePath)));
+            $this->pool->messages->addMessage('fileserviceDelete', [$this->filterFilePath($filePath)]);
             restore_error_handler();
         }
     }

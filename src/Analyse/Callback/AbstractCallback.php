@@ -70,7 +70,7 @@ abstract class AbstractCallback implements ConstInterface
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * The actual callback function for the renderer.
@@ -171,7 +171,7 @@ abstract class AbstractCallback implements ConstInterface
      */
     protected function isPropertyNameNormal($propName)
     {
-        static $cache = array();
+        static $cache = [];
 
         if (isset($cache[$propName])) {
             return $cache[$propName];

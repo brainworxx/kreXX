@@ -69,6 +69,20 @@ class ThroughGetter extends AbstractCallback
     const CURRENT_PREFIX = 'currentPrefix';
 
     /**
+     * Stuff we need to escape in a regex.
+     *
+     * @var array
+     */
+    protected $regexEscapeFind = ['.', '/', '(', ')', '<', '>', '$'];
+
+    /**
+     * Stuff the escaped regex stuff.
+     *
+     * @var array
+     */
+    protected $regexEscapeReplace = ['\.', '\/', '\(', '\)', '\<', '\>', '\$'];
+
+    /**
      * {@inheritdoc}
      */
     protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter';
@@ -204,12 +218,12 @@ class ThroughGetter extends AbstractCallback
         // Give the plugins the opportunity to do something with the value, or
         // try to resolve it,  if nothing was found.
         // We also add the stuff, that we were able to do so far.
-        $this->parameters[static::PARAM_ADDITIONAL] = array(
+        $this->parameters[static::PARAM_ADDITIONAL] = [
             'nothingFound' => $nothingFound,
             'value' => $value,
             'refProperty' => $refProp,
             'refMethod' => $reflectionMethod
-        );
+        ];
         $this->dispatchEventWithModel(__FUNCTION__ . '::resolving', $model);
 
         if ($this->parameters[static::PARAM_ADDITIONAL]['nothingFound'] === true) {
@@ -372,7 +386,7 @@ class ThroughGetter extends AbstractCallback
         // Execute our search pattern.
         // Right now, we are trying to get to properties that way.
         // Later on, we may also try to parse deeper for stuff.
-        foreach ($this->findIt(array('return $this->', ';'), $sourcecode) as $propertyName) {
+        foreach ($this->findIt(['return $this->', ';'], $sourcecode) as $propertyName) {
             // Check if this is a property and return the first we find.
             $parentClass = $classReflection;
             while ($parentClass !== false) {
@@ -414,7 +428,7 @@ class ThroughGetter extends AbstractCallback
      */
     protected function convertToSnakeCase($string)
     {
-        return strtolower(preg_replace(array('/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'), '$1_$2', $string));
+        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
     }
 
     /**
@@ -462,8 +476,8 @@ class ThroughGetter extends AbstractCallback
     protected function regexEscaping($string)
     {
         return str_replace(
-            array('.', '/', '(', ')', '<', '>', '$'),
-            array('\.', '\/', '\(', '\)', '\<', '\>', '\$'),
+            $this->regexEscapeFind,
+            $this->regexEscapeReplace,
             $string
         );
     }

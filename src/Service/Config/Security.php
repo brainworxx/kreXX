@@ -56,7 +56,7 @@ class Security extends Fallback
      *
      * @var array
      */
-    protected $methodBlacklist = array();
+    protected $methodBlacklist = [];
 
     /**
      * Setter for the debug method blacklist by the config class.
@@ -221,7 +221,7 @@ class Security extends Fallback
         if ($maxTime < (int)$value) {
             $this->pool->messages->addMessage(
                 static::KEY_CONFIG_ERROR . ucfirst($name) . 'Big',
-                array($maxTime)
+                [$maxTime]
             );
             return false;
         }
@@ -247,7 +247,7 @@ class Security extends Fallback
     {
         $result = ($value === static::VALUE_TRUE || $value === static::VALUE_FALSE);
         if ($result === false) {
-            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_BOOL, array($group, $name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_BOOL, [$group, $name]);
         }
 
         return $result;
@@ -273,7 +273,7 @@ class Security extends Fallback
     {
         $result = ((int) $value) > 0;
         if ($result === false) {
-            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_INT, array($group, $name));
+            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_INT, [$group, $name]);
         }
 
         return $result;
@@ -313,14 +313,14 @@ class Security extends Fallback
             if (in_array($entry, $this->methodBlacklist)) {
                 $this->pool->messages->addMessage(
                     static::KEY_CONFIG_ERROR_DEBUG_BLACKLIST,
-                    array($group, $name, $entry)
+                    [$group, $name, $entry]
                 );
                 return false;
             }
             if (strpos($entry, ' ') !== false) {
                 $this->pool->messages->addMessage(
                     static::KEY_CONFIG_ERROR_DEBUG_INVALID,
-                    array($group, $name, $entry)
+                    [$group, $name, $entry]
                 );
                 return false;
             }

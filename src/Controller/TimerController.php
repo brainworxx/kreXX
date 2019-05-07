@@ -48,14 +48,14 @@ class TimerController extends AbstractController
      *
      * @var array
      */
-    protected static $timekeeping = array();
+    protected static $timekeeping = [];
 
     /**
      * More timekeeping stuff.
      *
      * @var array
      */
-    protected static $counterCache = array();
+    protected static $counterCache = [];
 
     /**
      * We simply set the pool. We will not register any shutdown stuff.
@@ -107,8 +107,8 @@ class TimerController extends AbstractController
         $this->pool->createClass('Brainworxx\\Krexx\\Controller\\DumpController')
             ->dumpAction($miniBench, 'kreXX timer');
         // Reset the timer vars.
-        static::$timekeeping = array();
-        static::$counterCache = array();
+        static::$timekeeping = [];
+        static::$counterCache = [];
 
         return $this;
     }

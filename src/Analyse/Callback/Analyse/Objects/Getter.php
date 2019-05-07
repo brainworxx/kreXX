@@ -60,21 +60,21 @@ class Getter extends AbstractObjectAnalysis
      *
      * @var array
      */
-    protected $normalGetter = array();
+    protected $normalGetter = [];
 
     /**
      * List of hte boolean getter method, that start with 'is'.
      *
      * @var array
      */
-    protected $isGetter = array();
+    protected $isGetter = [];
 
     /**
      * List of hte boolean getter method, that start with 'has'.
      *
      * @var array
      */
-    protected $hasGetter = array();
+    protected $hasGetter = [];
 
     /**
      * Dump the possible result of all getter methods

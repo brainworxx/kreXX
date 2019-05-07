@@ -63,7 +63,7 @@ class PrivateProperties extends AbstractObjectAnalysis
     {
         $output = $this->dispatchStartEvent();
 
-        $refProps = array();
+        $refProps = [];
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         // We need to keep the original reference intact.
@@ -83,7 +83,7 @@ class PrivateProperties extends AbstractObjectAnalysis
             return $output;
         }
 
-        usort($refProps, array($this, 'reflectionSorting'));
+        usort($refProps, [$this, 'reflectionSorting']);
 
         return $output .
             $this->getReflectionPropertiesData(

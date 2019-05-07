@@ -80,18 +80,18 @@ class ErrorController extends AbstractController
         $this->pool->chunks->detectEncoding($main . $backtrace);
 
         // Get the header, footer and messages
-        $footer = $this->outputFooter(array());
+        $footer = $this->outputFooter([]);
         $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs(), $errorData[static::TRACE_TYPE]);
         $messages = $this->pool->messages->outputMessages();
 
         // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
         $this->pool->chunks->addMetadata(
-            array(
+            [
                 static::TRACE_FILE => $errorData[static::TRACE_ERROR_FILE],
                 static::TRACE_LINE => $errorData[static::TRACE_ERROR_LINE] + 1,
                 static::TRACE_VARNAME => ' ' . $errorData[static::TRACE_TYPE],
-            )
+            ]
         );
 
         $this->outputService->addChunkString($header)
@@ -130,16 +130,16 @@ class ErrorController extends AbstractController
             static::$krexxFatal = $this->pool->createClass('Brainworxx\\Krexx\\Errorhandler\\Fatal');
             declare(ticks = 1);
             register_shutdown_function(
-                array(
+                [
                     static::$krexxFatal,
                     'shutdownCallback',
-                )
+                ]
             );
         }
 
         static::$krexxFatal->setIsActive(true);
         $this->fatalShouldActive = true;
-        register_tick_function(array($this::$krexxFatal, 'tickCallback'));
+        register_tick_function([$this::$krexxFatal, 'tickCallback']);
 
         return $this;
     }
@@ -166,7 +166,7 @@ class ErrorController extends AbstractController
         // Now we need to tell the shutdown function, that is must
         // not do anything on shutdown.
         $this::$krexxFatal->setIsActive(false);
-        unregister_tick_function(array($this::$krexxFatal, 'tickCallback'));
+        unregister_tick_function([$this::$krexxFatal, 'tickCallback']);
         return $this;
     }
 }

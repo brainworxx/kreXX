@@ -67,14 +67,14 @@ class ThroughProperties extends AbstractCallback
      *
      * @var array
      */
-    protected $defaultProperties = array();
+    protected $defaultProperties = [];
 
     /**
      * The object, cast into an array.
      *
      * @var array
      */
-    protected $objectArray = array();
+    protected $objectArray = [];
 
     /**
      * Renders the properties of a class.
@@ -212,7 +212,7 @@ class ThroughProperties extends AbstractCallback
      */
     protected function retrieveDeclarationPlace(\ReflectionProperty $refProperty)
     {
-        static $declarationCache = array();
+        static $declarationCache = [];
 
         // Early return from the cache.
         $declaringClass = $refProperty->getDeclaringClass();

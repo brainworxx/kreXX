@@ -58,7 +58,7 @@ class CallerFinder extends AbstractCaller
          parent::__construct($pool);
 
         // Setting the search pattern.
-        $this->callPattern = array(
+        $this->callPattern = [
             'krexx',
             'krexx::open',
             'krexx::' . $this->pool->config->getDevHandler(),
@@ -67,7 +67,7 @@ class CallerFinder extends AbstractCaller
             'Krexx::' . $this->pool->config->getDevHandler(),
             'Krexx::log',
             'krexx::log',
-        );
+        ];
         $this->pattern = 'krexx';
     }
 
@@ -104,12 +104,12 @@ class CallerFinder extends AbstractCaller
 
         // We will not keep the whole backtrace im memory. We only return what we
         // actually need.
-        return array(
+        return [
             static::TRACE_FILE => $this->pool->fileService->filterFilePath($caller[static::TRACE_FILE]),
             static::TRACE_LINE => (int)$caller[static::TRACE_LINE],
             static::TRACE_VARNAME => $varname,
             static::TRACE_TYPE => $this->getType($headline, $varname, $data),
-        );
+        ];
     }
 
     /**

@@ -81,18 +81,18 @@ class ExceptionController extends AbstractController
         $this->pool->chunks->detectEncoding($main . $backtrace);
 
         // Get the header, footer and messages
-        $footer = $this->outputFooter(array());
+        $footer = $this->outputFooter([]);
         $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs(), $type);
         $messages = $this->pool->messages->outputMessages();
 
          // Add the caller as metadata to the chunks class. It will be saved as
         // additional info, in case we are logging to a file.
         $this->pool->chunks->addMetadata(
-            array(
+            [
                 static::TRACE_FILE => $exception->getFile(),
                 static::TRACE_LINE => $exception->getLine() + 1,
                 static::TRACE_VARNAME => ' ' . $type,
-            )
+            ]
         );
 
         $this->outputService->addChunkString($header)
@@ -116,7 +116,7 @@ class ExceptionController extends AbstractController
             static::$exceptionController = $this;
         }
 
-        set_exception_handler(array(static::$exceptionController, 'exceptionAction'));
+        set_exception_handler([static::$exceptionController, 'exceptionAction']);
 
         return $this;
     }

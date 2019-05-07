@@ -50,7 +50,7 @@ class Event
      *
      * @var array
      */
-    public $register = array();
+    public $register = [];
 
     /**
      * The pool.

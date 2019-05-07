@@ -66,7 +66,7 @@ abstract class AbstractModel implements ConstInterface
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * Additional data, we are sending to the FE vas a json, hence the name.
@@ -75,7 +75,7 @@ abstract class AbstractModel implements ConstInterface
      *
      * @var array
      */
-    protected $json = array();
+    protected $json = [];
 
     /**
      * The connector service, used for source generation.

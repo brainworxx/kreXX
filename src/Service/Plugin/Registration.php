@@ -56,7 +56,7 @@ class Registration implements ConstInterface
      *
      * @var array
      */
-    protected static $plugins = array();
+    protected static $plugins = [];
 
     /**
      * The configured chunk folder from the plugin.
@@ -84,42 +84,42 @@ class Registration implements ConstInterface
      *
      * @var array
      */
-    protected static $blacklistDebugMethods = array();
+    protected static $blacklistDebugMethods = [];
 
     /**
      * Blacklist of classes, that will never get debug-method-called.
      *
      * @var array
      */
-    protected static $blacklistDebugClass = array();
+    protected static $blacklistDebugClass = [];
 
     /**
      * Additional help files with text for the debugger.
      *
      * @var array
      */
-    protected static $additionalHelpFiles = array();
+    protected static $additionalHelpFiles = [];
 
     /**
      * List of all class rewrites for the factory.
      *
      * @var array
      */
-    protected static $rewriteList = array();
+    protected static $rewriteList = [];
 
     /**
      * List of all registered events for the event handler.
      *
      * @var array
      */
-    protected static $eventList = array();
+    protected static $eventList = [];
 
     /**
      * List of all additionally registered skins with their configuration.
      *
      * @var array
      */
-    protected static $additionalSkinList = array();
+    protected static $additionalSkinList = [];
 
     /**
      * Setter for the path to the configuration file.
@@ -173,7 +173,7 @@ class Registration implements ConstInterface
     public static function addMethodToDebugBlacklist($class, $methodName)
     {
         if (isset(static::$blacklistDebugMethods[$class]) === false) {
-            static::$blacklistDebugMethods[$class] = array();
+            static::$blacklistDebugMethods[$class] = [];
         }
         if (in_array($methodName, static::$blacklistDebugMethods[$class]) === false) {
             static::$blacklistDebugMethods[$class][] = $methodName;
@@ -223,7 +223,7 @@ class Registration implements ConstInterface
     public static function registerEvent($name, $className)
     {
         if (isset(static::$eventList[$name]) === false) {
-            static::$eventList[$name] = array();
+            static::$eventList[$name] = [];
         }
         static::$eventList[$name][$className] = $className;
     }
@@ -255,10 +255,10 @@ class Registration implements ConstInterface
      */
     public static function registerAdditionalskin($name, $className, $directory)
     {
-        static::$additionalSkinList[$name] = array(
+        static::$additionalSkinList[$name] = [
             static::SKIN_CLASS => $className,
             static::SKIN_DIRECTORY => $directory
-        );
+        ];
     }
 
     /**
@@ -270,12 +270,12 @@ class Registration implements ConstInterface
      */
     public static function register($configClass)
     {
-        static::$plugins[$configClass] = array(
+        static::$plugins[$configClass] = [
             static::CONFIG_CLASS => $configClass,
             static::IS_ACTIVE => false,
-            static::PLUGIN_NAME => call_user_func(array($configClass, 'getName')),
-            static::PLUGIN_VERSION => call_user_func(array($configClass, 'getVersion'))
-        );
+            static::PLUGIN_NAME => call_user_func([$configClass, 'getName']),
+            static::PLUGIN_VERSION => call_user_func([$configClass, 'getVersion'])
+        ];
     }
 
     /**
@@ -320,18 +320,18 @@ class Registration implements ConstInterface
         static::$logFolder = '';
         static::$chunkFolder = '';
         static::$configFile = '';
-        static::$blacklistDebugMethods = array();
-        static::$blacklistDebugClass = array();
-        static::$additionalHelpFiles = array();
-        static::$eventList = array();
-        static::$rewriteList = array();
-        static::$additionalSkinList = array();
+        static::$blacklistDebugMethods = [];
+        static::$blacklistDebugClass = [];
+        static::$additionalHelpFiles = [];
+        static::$eventList = [];
+        static::$rewriteList = [];
+        static::$additionalSkinList = [];
 
         // Go through the remaining plugins.
         static::$plugins[$configClass][static::IS_ACTIVE] = false;
         foreach (static::$plugins as $pluginName => $plugin) {
             if ($plugin[static::IS_ACTIVE]) {
-                call_user_func(array(static::$plugins[$pluginName][static::CONFIG_CLASS], 'exec'));
+                call_user_func([static::$plugins[$pluginName][static::CONFIG_CLASS], 'exec']);
             }
         }
 

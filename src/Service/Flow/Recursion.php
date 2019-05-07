@@ -71,7 +71,7 @@ class Recursion
      *
      * @var array
      */
-    protected $metaRecursionHive = array();
+    protected $metaRecursionHive = [];
 
     /**
      * Here we store, if we have rendered the $GLOBALS array so far.

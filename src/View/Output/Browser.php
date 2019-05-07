@@ -55,7 +55,7 @@ class Browser extends AbstractOutput
      *   - footer
      *   This means, that every output is split in 4 parts
      */
-    protected $chunkStrings = array();
+    protected $chunkStrings = [];
 
     /**
      * Adds output to our shutdown handler.
@@ -95,6 +95,6 @@ class Browser extends AbstractOutput
      */
     public function finalize()
     {
-        register_shutdown_function(array($this, 'shutdownCallback'));
+        register_shutdown_function([$this, 'shutdownCallback']);
     }
 }
