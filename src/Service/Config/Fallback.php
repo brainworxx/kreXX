@@ -210,6 +210,11 @@ abstract class Fallback implements ConstInterface
         Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
     ];
 
+    /**
+     * The skin configuration.
+     *
+     * @var array
+     */
     protected $skinConfiguration = [];
 
     /**
