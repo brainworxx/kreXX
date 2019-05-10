@@ -22,6 +22,8 @@
 - Bugfix: Check if the developer handle is actually a string.
 - Bugfix: Added a missing check in the url determination in the
   timer controller
+- Bugfix: The registering of blacklisted methods and classes for
+  the debug methods work now, as they should.
 
 3.0.2
 - Added classname to the declaration analysis of properties.

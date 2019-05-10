@@ -162,27 +162,28 @@ class Registration implements ConstInterface
     }
 
     /**
-     * Add a class / method to the debug method blacklist
+     * Add a method to the debug method blacklist.
      *
      * @api
      *
-     * @param string $class
-     *   The class, where  the method is hosted,
      * @param string $methodName
      *   The name of the method.
+     * @param string $deprecatedMethodName
+     *   The deprecated implementation of the method name
+     *   @deprecated
      */
-    public static function addMethodToDebugBlacklist($class, $methodName)
+    public static function addMethodToDebugBlacklist($methodName, $deprecatedMethodName = null)
     {
-        if (isset(static::$blacklistDebugMethods[$class]) === false) {
-            static::$blacklistDebugMethods[$class] = [];
+        if (!empty($deprecatedMethodName)) {
+            $methodName = $deprecatedMethodName;
         }
-        if (in_array($methodName, static::$blacklistDebugMethods[$class]) === false) {
-            static::$blacklistDebugMethods[$class][] = $methodName;
+        if (in_array($methodName, static::$blacklistDebugMethods) === false) {
+            static::$blacklistDebugMethods[] = $methodName;
         }
     }
 
     /**
-     * Add a class / method to the debug method blacklist
+     * Add a class to the debug method blacklist
      *
      * @api
      *
@@ -191,8 +192,8 @@ class Registration implements ConstInterface
      */
     public static function addClassToDebugBlacklist($class)
     {
-        if (in_array($class, static::$blacklistDebugMethods) === false) {
-            static::$blacklistDebugMethods[] = $class;
+        if (in_array($class, static::$blacklistDebugClass) === false) {
+            static::$blacklistDebugClass[] = $class;
         }
     }
 
