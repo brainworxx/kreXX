@@ -42,6 +42,7 @@ use Brainworxx\Krexx\Service\Config\Fallback;
  * "Controller" for the fatal error handler "action"
  *
  * @deprecated
+ *   Since 3.1.0. Will be removed when dropping PHP support.
  *
  * @package Brainworxx\Krexx\Controller
  */

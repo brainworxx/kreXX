@@ -79,6 +79,7 @@ abstract class AbstractController implements ConstInterface
      * Here we store the fatal error handler.
      *
      * @deprecated
+     *   Since 3.1.0. Will be removed when dropping PHP support.
      *
      * @var \Brainworxx\Krexx\Errorhandler\Fatal
      */
@@ -91,6 +92,7 @@ abstract class AbstractController implements ConstInterface
      * Here we save, whether we should reactivate it.
      *
      * @deprecated
+     *   Since 3.1.0. Will be removed when dropping PHP support.
      *
      * @var bool
      */
@@ -144,6 +146,7 @@ abstract class AbstractController implements ConstInterface
      * Simply outputs the Header of kreXX.
      *
      * @deprecated
+     *   Since 3.1.0. Will be removed.
      *
      * @param string $headline
      *   The headline, displayed in the header.

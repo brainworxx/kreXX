@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Controller\ErrorController;
  * PHP 5.x fatal error handler.
  *
  * @deprecated
+ *   Since 3.1.0. Will be removed when dropping PHP support.
  *
  * @package Brainworxx\Krexx\Errorhandler
  */

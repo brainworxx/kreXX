@@ -170,7 +170,9 @@ class Registration implements ConstInterface
      *   The name of the method.
      * @param string $deprecatedMethodName
      *   The deprecated implementation of the method name
-     *   @deprecated
+     *
+     * @deprecated
+     *   Since 3.1.0. The last parameter is deprecated.
      */
     public static function addMethodToDebugBlacklist($methodName, $deprecatedMethodName = null)
     {

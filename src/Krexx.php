@@ -268,6 +268,7 @@ class Krexx
      * Our fatal errorhandler is located there.
      *
      * @deprecated
+     *   Since 3.1.0. Will be removed when dropping PHP 5 support.
      *
      * @api
      */
@@ -303,6 +304,7 @@ class Krexx
      * there is a fatal.
      *
      * @deprecated
+     *   Since 3.1.0. Will be removed when dropping PHP 5 support.
      *
      * @api
      */

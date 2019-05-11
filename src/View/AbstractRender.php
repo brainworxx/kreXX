@@ -248,6 +248,7 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
      * {@inheritdoc}
      *
      * @deprecated
+     *   Since 3.1.0. Will be removed.
      */
     public function getSkinList()
     {

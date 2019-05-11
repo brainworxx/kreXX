@@ -42,6 +42,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  * This class hosts all functions which all error handlers will share
  *
  * @deprecated
+ *   Since 3.1.0. Will be removed when dropping PHP support.
  *
  * @package Brainworxx\Krexx\Errorhandler
  */

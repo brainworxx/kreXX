@@ -40,7 +40,8 @@ use Brainworxx\Krexx\Analyse\Model;
 /**
  * Abstract class for (nearly) all processing classes.
  *
- * @deprecated deprecated since version 3.1.0.
+ * @deprecated
+ *   Since 3.1.0. Will be removed.
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */

@@ -223,9 +223,10 @@ interface RenderInterface
      * Gets a list of all available skins for the frontend config.
      *
      * @deprecated
+     *   Since 3.1.0. Will be removed.
      *
      * @return array
-     *   An array with the skinnames.
+     *   An array with the skin names.
      */
     public function getSkinList();
 }
