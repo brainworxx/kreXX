@@ -93,8 +93,6 @@ abstract class AbstractTest extends TestCase
     /**
      * Setting a protected value in the class we are testing.
      *
-     * @throws \ReflectionException
-     *
      * @param string $name
      *   The name of the value.
      * @param mixed $value
@@ -105,20 +103,22 @@ abstract class AbstractTest extends TestCase
      */
     protected function setValueByReflection($name, $value, $object)
     {
-        $reflectionClass = new \ReflectionClass($object);
-        $reflectionProperty = $reflectionClass->getProperty($name);
-        $reflectionProperty->setAccessible(true);
-        if (is_object($object)) {
-            $reflectionProperty->setValue($object, $value);
-        } else {
-            $reflectionProperty->setValue($value);
+        try {
+            $reflectionClass = new \ReflectionClass($object);
+            $reflectionProperty = $reflectionClass->getProperty($name);
+            $reflectionProperty->setAccessible(true);
+            if (is_object($object)) {
+                $reflectionProperty->setValue($object, $value);
+            } else {
+                $reflectionProperty->setValue($value);
+            }
+        } catch (\ReflectionException $e) {
+            $this->fail($e->getMessage());
         }
     }
 
     /**
      * Getting a protected value in the class we are testing.
-     *
-     * @throws \ReflectionException
      *
      * @param string $name
      *   The name of the value.
@@ -131,11 +131,16 @@ abstract class AbstractTest extends TestCase
      */
     protected function getValueByReflection($name, $object)
     {
-        $reflectionClass = new \ReflectionClass($object);
-        $reflectionProperty = $reflectionClass->getProperty($name);
-        $reflectionProperty->setAccessible(true);
+        try {
+            $reflectionClass = new \ReflectionClass($object);
+            $reflectionProperty = $reflectionClass->getProperty($name);
+            $reflectionProperty->setAccessible(true);
 
-        return $reflectionProperty->getValue($object);
+            return $reflectionProperty->getValue($object);
+        } catch (\ReflectionException $e) {
+            $this->fail($e->getMessage());
+        }
+        return '';
     }
 
     /**
