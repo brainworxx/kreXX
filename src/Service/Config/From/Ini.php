@@ -96,6 +96,9 @@ class Ini extends Fallback
      * @param string $name
      *   The parameter name you want to render.
      *
+     * @deprecated
+     *   Since 3.1.0. Will be removed.
+     *
      * @return array
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
@@ -122,6 +125,28 @@ class Ini extends Fallback
             ($filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE),
             $filevalue[static::RENDER_TYPE]
         ];
+    }
+
+    /**
+     * Get the configuration of the frontend config form.
+     *
+     * @param string $name
+     *
+     * @return bool
+     *   Well? is it editable?
+     */
+    public function getFeIsEditable($name)
+    {
+        // Load it from the file.
+        $filevalue = $this->getFeConfigFromFile($name);
+
+        // Do we have a value?
+        if (empty($filevalue) === true) {
+            // Use the fallback.
+            return $this->feConfigFallback[$name][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE;
+        }
+
+        return $filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE;
     }
 
     /**

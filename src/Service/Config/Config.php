@@ -217,16 +217,17 @@ class Config extends Fallback
      */
     public function loadConfigValue($name)
     {
-        $feConfig = $this->iniConfig->getFeConfig($name);
+        $isEditable = $this->iniConfig->getFeIsEditable($name);
         $section = $this->feConfigFallback[$name][static::SECTION];
+
         /** @var Model $model */
         $model = $this->pool->createClass(Model::class)
             ->setSection($section)
-            ->setEditable($feConfig[0])
-            ->setType($feConfig[1]);
+            ->setEditable($isEditable)
+            ->setType($this->feConfigFallback[$name][static::RENDER][static::RENDER_TYPE]);
 
         // Do we accept cookie settings here?
-        if ($feConfig[0] === true) {
+        if ($isEditable === true) {
             $cookieSetting = $this->cookieConfig->getConfigFromCookies($section, $name);
             // Do we have a value in the cookies?
             if ($cookieSetting  !== null &&
