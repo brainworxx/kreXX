@@ -183,9 +183,9 @@ class Config extends Fallback
      */
     public function getDevHandler()
     {
-        static $handle = false;
+        static $handle;
 
-        if ($handle === false) {
+        if ($handle === null) {
             $handle = $this->cookieConfig->getConfigFromCookies('deep', static::SETTING_DEV_HANDLE);
         }
 
