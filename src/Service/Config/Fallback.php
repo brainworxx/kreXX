@@ -75,6 +75,7 @@ abstract class Fallback implements ConstInterface
     const VALUE_FALSE = 'false';
     const VALUE_BROWSER = 'browser';
     const VALUE_FILE = 'file';
+    const VALUE_DEBUG_METHODS = 'debug,__toArray,toArray,__toString,toString,_getProperties,__debugInfo,getProperties';
 
     const SETTING_DISABLED = 'disabled';
     const SETTING_IP_RANGE = 'iprange';
@@ -273,7 +274,7 @@ abstract class Fallback implements ConstInterface
                 // Debug methods that get called.
                 // A debug method must be public and have no parameters.
                 // Change these only if you know what you are doing.
-                Fallback::VALUE => 'debug,__toArray,toArray,__toString,toString,_getProperties,__debugInfo,getProperties',
+                Fallback::VALUE => FALLBACK::VALUE_DEBUG_METHODS,
                 Fallback::RENDER => $this->displayOnlyInput,
                 Fallback::EVALUATE => Fallback::EVAL_DEBUG_METHODS,
                 Fallback::SECTION =>  Fallback::SECTION_METHODS,
