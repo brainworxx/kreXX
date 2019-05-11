@@ -116,9 +116,7 @@ class Model
     {
         if ($value === Fallback::VALUE_TRUE) {
             $value = true;
-        }
-
-        if ($value === Fallback::VALUE_FALSE) {
+        } elseif ($value === Fallback::VALUE_FALSE) {
             $value = false;
         }
 
