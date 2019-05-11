@@ -422,22 +422,6 @@ abstract class Fallback implements ConstInterface
     ];
 
     /**
-     * These classes will never be polled by debug methods, because that would
-     * most likely cause a fatal.
-     *
-     * @see \Brainworxx\Krexx\Service\Config\Security->isAllowedDebugCall()
-     * @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects->pollAllConfiguredDebugMethods()
-     *
-     * @var array
-     */
-    protected $classBlacklist = [
-        // Fun with reflection classes. Not really.
-        \ReflectionType::class,
-        \ReflectionGenerator::class,
-        \Reflector::class,
-    ];
-
-    /**
      * The kreXX version.
      *
      * @var string

@@ -62,6 +62,22 @@ class Security extends Fallback
     protected $methodBlacklist = [];
 
     /**
+     * These classes will never be polled by debug methods, because that would
+     * most likely cause a fatal.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Security->isAllowedDebugCall()
+     * @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects->pollAllConfiguredDebugMethods()
+     *
+     * @var array
+     */
+    protected $classBlacklist = [
+        // Fun with reflection classes. Not really.
+        \ReflectionType::class,
+        \ReflectionGenerator::class,
+        \Reflector::class,
+    ];
+
+    /**
      * Setting the pool and retrieving the debug method blacklist.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
@@ -71,6 +87,10 @@ class Security extends Fallback
         parent::__construct($pool);
 
         $this->methodBlacklist = SettingsGetter::getBlacklistDebugMethods();
+        $this->classBlacklist = array_merge(
+            $this->classBlacklist,
+            SettingsGetter::getBlacklistDebugClass()
+        );
     }
 
     /**
@@ -327,6 +347,29 @@ class Security extends Fallback
             }
         }
 
+        return true;
+    }
+
+    /**
+     * Determines if the specific class is blacklisted for debug methods.
+     *
+     * @param object $data
+     *   The class we are analysing.
+     *
+     * @return bool
+     *   Whether the function is allowed to be called.
+     */
+    public function isAllowedDebugCall($data)
+    {
+        // Check if the class itself is blacklisted.
+        foreach ($this->classBlacklist as $classname) {
+            if (is_a($data, $classname) === true) {
+                // No debug methods for you.
+                return false;
+            }
+        }
+
+        // Nothing found?
         return true;
     }
 }

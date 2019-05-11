@@ -123,11 +123,6 @@ class Config extends Fallback
             static::CONFIG_FOLDER => SettingsGetter::getConfigFile(),
         ];
 
-        $this->classBlacklist = array_merge(
-            $this->classBlacklist,
-            SettingsGetter::getBlacklistDebugClass()
-        );
-
         $this->security = $pool->createClass(Security::class);
         $pool->config = $this;
 
@@ -368,21 +363,15 @@ class Config extends Fallback
      * @param object $data
      *   The class we are analysing.
      *
+     * @deprecated
+     *   Sinde 3.1.0. Will be removed
+     *
      * @return bool
      *   Whether the function is allowed to be called.
      */
     public function isAllowedDebugCall($data)
     {
-        // Check if the class itself is blacklisted.
-        foreach ($this->classBlacklist as $classname) {
-            if (is_a($data, $classname) === true) {
-                // No debug methods for you.
-                return false;
-            }
-        }
-
-        // Nothing found?
-        return true;
+        return $this->security->isAllowedDebugCall($data);
     }
 
     /**
