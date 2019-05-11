@@ -244,14 +244,14 @@ class Config extends Fallback
 
         // Do we have a value in the ini?
         $iniSettings = $this->iniConfig->getConfigFromFile($section, $name);
-        if (isset($iniSettings) === true) {
-            $model->setValue($iniSettings)->setSource('Krexx.ini settings');
+        if ($iniSettings === null) {
+            // Take the factory settings.
+            $model->setValue($this->feConfigFallback[$name][static::VALUE])->setSource('Factory settings');
             $this->settings[$name] = $model;
             return $this;
         }
 
-        // Nothing yet? Give back factory settings.
-        $model->setValue($this->feConfigFallback[$name][static::VALUE])->setSource('Factory settings');
+        $model->setValue($iniSettings)->setSource('Krexx.ini settings');
         $this->settings[$name] = $model;
 
         return $this;
