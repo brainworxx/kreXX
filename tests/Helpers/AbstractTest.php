@@ -85,9 +85,19 @@ abstract class AbstractTest extends TestCase
         Krexx::$pool->config->setDisabled(false);
         Krexx::$pool = null;
         Config::$disabledByPhp = false;
-        $this->setValueByReflection('rewriteList', [], Registration::class);
         CallbackCounter::$counter = 0;
         CallbackCounter::$staticParameters = [];
+
+        // Reset stuff from the plugins.
+        $this->setValueByReflection('logFolder', '', Registration::class);
+        $this->setValueByReflection('chunkFolder', '', Registration::class);
+        $this->setValueByReflection('configFile', '', Registration::class);
+        $this->setValueByReflection('blacklistDebugMethods', [], Registration::class);
+        $this->setValueByReflection('blacklistDebugClass', [], Registration::class);
+        $this->setValueByReflection('additionalHelpFiles', [], Registration::class);
+        $this->setValueByReflection('eventList', [], Registration::class);
+        $this->setValueByReflection('rewriteList', [], Registration::class);
+        $this->setValueByReflection('additionalSkinList', [], Registration::class);
     }
 
     /**
