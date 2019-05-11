@@ -76,12 +76,18 @@ class Config extends Fallback
     /**
      * Our ini file configuration handler.
      *
+     * @deprecated
+     *   Since 3.1.0. Will be set to protected.
+     *
      * @var Ini
      */
     public $iniConfig;
 
     /**
      * Our cookie configuration handler.
+     *
+     * @deprecated
+     *   Since 3.1.0. Will be set to protected.
      *
      * @var Cookie
      */
