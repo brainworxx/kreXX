@@ -41,7 +41,7 @@ use ReflectionGenerator;
 use Reflector;
 
 /**
- * Valideation stuff for the configuration.
+ * Validation stuff for the configuration.
  *
  * @package Brainworxx\Krexx\Service\Config
  */
@@ -123,7 +123,7 @@ class Validation extends Fallback
      */
     public function evaluateSetting($group, $name, $value)
     {
-        if ($group === 'feEditing') {
+        if ($group === static::SECTION_FE_EDITING) {
             // Logging options can never be changed in the frontend.
             // The debug methods will also not be editable.
             return !in_array($name, $this->feConfigNoEdit);

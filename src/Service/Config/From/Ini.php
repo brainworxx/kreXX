@@ -160,7 +160,7 @@ class Ini extends Fallback
     public function getFeConfigFromFile($parameterName)
     {
         // Get the human readable stuff from the ini file.
-        $value = $this->getConfigFromFile('feEditing', $parameterName);
+        $value = $this->getConfigFromFile(static::SECTION_FE_EDITING, $parameterName);
 
         if (empty($value) === true) {
             // Sorry, no value stored.

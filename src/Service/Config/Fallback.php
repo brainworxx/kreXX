@@ -70,6 +70,7 @@ abstract class Fallback implements ConstInterface
     const SECTION_PROPERTIES = 'properties';
     const SECTION_METHODS = 'methods';
     const SECTION_EMERGENCY = 'emergency';
+    const SECTION_FE_EDITING = 'feEditing';
 
     const VALUE_TRUE = 'true';
     const VALUE_FALSE = 'false';
@@ -404,7 +405,7 @@ abstract class Fallback implements ConstInterface
             SettingsGetter::getAdditionalSkinList()
         );
     }
-    
+
     /**
      * The kreXX version.
      *
