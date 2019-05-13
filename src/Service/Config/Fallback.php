@@ -404,23 +404,7 @@ abstract class Fallback implements ConstInterface
             SettingsGetter::getAdditionalSkinList()
         );
     }
-
-    /**
-     * List of stuff who's fe-editing status can not be changed. Never.
-     *
-     * @see Tools::evaluateSetting
-     *   Evaluating everything in here will fail, meaning that the
-     *   setting will not be accepted.
-     *
-     * @var array
-     */
-    protected $feConfigNoEdit = [
-        Fallback::SETTING_DESTINATION,
-        Fallback::SETTING_MAX_FILES,
-        Fallback::SETTING_DEBUG_METHODS,
-        Fallback::SETTING_IP_RANGE,
-    ];
-
+    
     /**
      * The kreXX version.
      *

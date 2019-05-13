@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
+use Brainworxx\Krexx\Service\Config\Validation;
 
 /**
  * Access the debug settings here.
@@ -69,9 +70,19 @@ class Config extends Fallback
     /**
      * Our security handler.
      *
+     * @deprecated
+     *   Since 3.1.0. Will be removed.
+     *
      * @var Security
      */
     public $security;
+
+    /**
+     * Validating configuration settings.
+     *
+     * @var Validation
+     */
+    public $validation;
 
     /**
      * Our ini file configuration handler.
@@ -124,6 +135,7 @@ class Config extends Fallback
         ];
 
         $this->security = $pool->createClass(Security::class);
+        $this->validation = $pool->createClass(Validation::class);
         $pool->config = $this;
 
         $this->iniConfig = $pool->createClass(Ini::class)
@@ -371,7 +383,7 @@ class Config extends Fallback
      */
     public function isAllowedDebugCall($data)
     {
-        return $this->security->isAllowedDebugCall($data);
+        return $this->validation->isAllowedDebugCall($data);
     }
 
     /**

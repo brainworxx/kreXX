@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Service\Config\From;
 
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Service\Config\Security;
 
 /**
  * Reads the config from the ini file, as well as the fe editing config.
@@ -48,9 +47,9 @@ class Ini extends Fallback
     /**
      * Our security handler.
      *
-     * @var Security
+     * @var \Brainworxx\Krexx\Service\Config\Validation
      */
-    public $security;
+    protected $validation;
 
     /**
      * The content of the ini file we have loaded.
@@ -67,7 +66,7 @@ class Ini extends Fallback
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
-        $this->security = $pool->config->security;
+        $this->validation = $pool->config->validation;
     }
 
     /**
@@ -216,7 +215,7 @@ class Ini extends Fallback
         // Do we have a value in the ini?
         // Does it validate?
         if (isset($this->iniSettings[$group][$name]) === true &&
-            $this->security->evaluateSetting($group, $name, $this->iniSettings[$group][$name]) === true
+            $this->validation->evaluateSetting($group, $name, $this->iniSettings[$group][$name]) === true
         ) {
             return $this->iniSettings[$group][$name];
         }

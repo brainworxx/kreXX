@@ -130,7 +130,10 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Service/Config/Fallback.php';
         include_once KREXX_DIR . 'src/Service/Config/Config.php';
         include_once KREXX_DIR . 'src/Service/Config/Model.php';
+        include_once KREXX_DIR . 'src/Service/Config/Validation.php';
+        // deprecated
         include_once KREXX_DIR . 'src/Service/Config/Security.php';
+        // deprecated
 
         include_once KREXX_DIR . 'src/Service/Config/From/Cookie.php';
         include_once KREXX_DIR . 'src/Service/Config/From/Ini.php';

@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\Config\From;
 
-use Brainworxx\Krexx\Service\Config\Security;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -47,9 +46,9 @@ class Cookie
     /**
      * Our security handler.
      *
-     * @var Security
+     * @var \Brainworxx\Krexx\Service\Config\Validation
      */
-    public $security;
+    protected $validation;
 
     /**
      * Here we cache our cookie settings.
@@ -65,7 +64,7 @@ class Cookie
      */
     public function __construct(Pool $pool)
     {
-        $this->security = $pool->config->security;
+        $this->validation = $pool->config->validation;
         $cookies = $pool->getGlobals('_COOKIE');
 
         if (isset($cookies['KrexxDebugSettings']) === true) {
@@ -92,7 +91,7 @@ class Cookie
     {
         // Do we have a value in the cookies?
         if (isset($this->settings[$name]) === true &&
-            $this->security->evaluateSetting($group, $name, $this->settings[$name]) === true
+            $this->validation->evaluateSetting($group, $name, $this->settings[$name]) === true
         ) {
             // We escape them, just in case.
             return htmlspecialchars($this->settings[$name]);
