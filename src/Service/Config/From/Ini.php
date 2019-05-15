@@ -80,7 +80,6 @@ class Ini extends Fallback
      */
     public function loadIniFile($path)
     {
-
         $this->iniSettings = (array)parse_ini_string(
             $this->pool->fileService->getFileContents($path, false),
             true
@@ -172,11 +171,6 @@ class Ini extends Fallback
 
         // Stitch together the setting.
         switch ($value) {
-            case static::RENDER_TYPE_NONE:
-                $type = static::RENDER_TYPE_NONE;
-                $editable = static::VALUE_FALSE;
-                break;
-
             case static::RENDER_TYPE_INI_DISPLAY:
                 $editable = static::VALUE_FALSE;
                 break;
@@ -186,7 +180,7 @@ class Ini extends Fallback
                 break;
 
             default:
-                // Unknown setting.
+                // Unknown setting, or render type none.
                 // Fallback to no display, just in case.
                 $type = static::RENDER_TYPE_NONE;
                 $editable = static::VALUE_FALSE;
@@ -200,15 +194,15 @@ class Ini extends Fallback
     }
 
     /**
-     * Returns settings from the ini file.
+     * Returns settings from the ini file, if it is validated.
      *
      * @param string $group
      *   The group name inside of the ini.
      * @param string $name
      *   The name of the setting.
      *
-     * @return string
-     *   The value from the file.
+     * @return string|null
+     *   The value from the file. Null, when not available or not validated.
      */
     public function getConfigFromFile($group, $name)
     {
