@@ -296,3 +296,21 @@ namespace Brainworxx\Krexx\Controller {
         return $counter;
     }
 }
+
+namespace Brainworxx\Krexx\Service\Config {
+
+    /**
+     * Mocking the max executon time settings for the validation class.
+     *
+     * @param string $what
+     * @return string
+     */
+    function ini_get(string $what): string
+    {
+        if ($what === 'max_execution_time') {
+            return '123';
+        }
+
+        return ini_get($what);
+    }
+}
