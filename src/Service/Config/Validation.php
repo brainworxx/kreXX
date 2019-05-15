@@ -316,17 +316,6 @@ class Validation extends Fallback
     }
 
     /**
-     * We do not evaluate this one.
-     *
-     * @return bool
-     *   Always true, we do not eval this one.
-     */
-    protected function doNotEval()
-    {
-        return true;
-    }
-
-    /**
      * Sanity check, if the supplied debug methods are not obviously flawed.
      *
      * @param string $value

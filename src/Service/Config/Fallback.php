@@ -57,7 +57,6 @@ abstract class Fallback implements ConstInterface
     const EVAL_BOOL = 'evalBool';
     const EVAL_INT = 'evalInt';
     const EVAL_MAX_RUNTIME = 'evalMaxRuntime';
-    const DO_NOT_EVAL = 'doNotEval';
     const EVAL_DESTINATION = 'evalDestination';
     const EVAL_SKIN = 'evalSkin';
     const EVAL_IP_RANGE = 'evalIpRange';
