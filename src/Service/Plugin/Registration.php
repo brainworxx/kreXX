@@ -229,6 +229,9 @@ class Registration implements ConstInterface
         if (isset(static::$eventList[$name]) === false) {
             static::$eventList[$name] = [];
         }
+
+        // We use the class name as key, because we need to make sure, that
+        // we do get double subscriber.
         static::$eventList[$name][$className] = $className;
     }
 
