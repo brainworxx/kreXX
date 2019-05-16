@@ -137,7 +137,7 @@ class CallerFinder extends AbstractCaller
         $possibleCommands = explode(';', $this->pool->fileService->readFile($file, $line, $line));
         // Now we must weed out the none krexx commands.
         foreach ($possibleCommands as $key => $command) {
-            if (strpos(strtolower($command), strtolower($this->pattern)) === false) {
+            if (strpos(strtolower($command), $this->pattern) === false) {
                 unset($possibleCommands[$key]);
             }
         }
