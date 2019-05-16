@@ -201,7 +201,7 @@ class Codegen implements ConstInterface
     /**
      * Gets set, as soon as we have a scope to come from.
      *
-     * @param boolean $bool
+     * @param bool $bool
      */
     public function setAllowCodegen($bool)
     {

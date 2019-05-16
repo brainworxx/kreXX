@@ -100,7 +100,7 @@ interface RenderInterface
      *   The caller of kreXX.
      * @param Model $model
      *   The pregenerated configuration markup.
-     * @param boolean $configOnly
+     * @param bool $configOnly
      *   Info if we are only displaying the configuration
      *
      * @return string
@@ -126,7 +126,7 @@ interface RenderInterface
      *
      * @param Model $model
      *   The model, which hosts all the data we need.
-     * @param boolean $isExpanded
+     * @param bool $isExpanded
      *   Is this one expanded from the beginning?
      *   TRUE when we render the settings menu only.
      *

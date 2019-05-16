@@ -164,7 +164,7 @@ abstract class AbstractController implements ConstInterface
      *
      * @param array $caller
      *   Where was kreXX initially invoked from.
-     * @param boolean $isExpanded
+     * @param bool $isExpanded
      *   Are we rendering an expanded footer?
      *   TRUE when we render the settings menu only.
      *

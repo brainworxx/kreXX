@@ -210,7 +210,7 @@ class Connectors
     /**
      * Getting the connectorLeft, according to the type.
      *
-     * @param integer $cap
+     * @param int $cap
      *   Maximum length of all parameters. 0 means no cap.
      *
      * @return string

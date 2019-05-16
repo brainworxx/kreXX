@@ -142,7 +142,7 @@ class Encoding
      *
      * @param string $data
      *   The data which needs to be sanitized.
-     * @param boolean $code
+     * @param bool $code
      *   Do we need to format the string as code?
      *
      * @return string
@@ -233,7 +233,7 @@ class Encoding
      * @param string $encoding
      *   The known encoding of the string, if known.
      *
-     * @return integer
+     * @return int
      *   The result.
      */
     public function mbStrLen($string, $encoding = null)
@@ -316,7 +316,7 @@ class Encoding
      * Complete means every single char gets escaped.
      * This one dies some extra stuff for code display.
      *
-     * @param integer $charCode
+     * @param int $charCode
      *
      * @return string
      *   The extra escaped result for code.
@@ -334,7 +334,7 @@ class Encoding
      * Callback for the complete escaping of strings.
      * Complete means every single char gets escaped.
      *
-     * @param integer $charCode
+     * @param int $charCode
      *
      * @return string
      *   The extra escaped result.

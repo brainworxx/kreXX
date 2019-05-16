@@ -164,9 +164,9 @@ class Methods extends AbstractObjectAnalysis
      *
      * @param string $data
      *   The object name from which we want the ID.
-     * @param boolean $doProtected
+     * @param bool $doProtected
      *   Are we analysing the protected methods here?
-     * @param boolean $doPrivate
+     * @param bool $doPrivate
      *   Are we analysing private methods here?
      *
      * @return string

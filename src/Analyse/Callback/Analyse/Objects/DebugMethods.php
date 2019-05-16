@@ -140,7 +140,7 @@ class DebugMethods extends AbstractObjectAnalysis
      * @param ReflectionClass $reflectionClass
      *   The reflection of the class that we are currently analysing.
      *
-     * @return boolean
+     * @return bool
      *   Whether or not we are allowed toi access this method.
      */
     protected function checkIfAccessible($data, $funcName, ReflectionClass $reflectionClass)

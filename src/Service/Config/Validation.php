@@ -142,7 +142,7 @@ class Validation extends Fallback
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
      *
-     * @return boolean
+     * @return bool
      *   Whether it does evaluate or not.
      */
     protected function evalDevHandle($value, $name)
@@ -163,7 +163,7 @@ class Validation extends Fallback
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
      *
-     * @return boolean
+     * @return bool
      *   Whether it does evaluate or not.
      */
     protected function evalSkin($value, $name)
@@ -189,7 +189,7 @@ class Validation extends Fallback
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
      *
-     * @return boolean
+     * @return bool
      *   Whether it does evaluate or not.
      */
     protected function evalDestination($value, $name)
@@ -210,7 +210,7 @@ class Validation extends Fallback
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
      *
-     * @return boolean
+     * @return bool
      *   Whether it does evaluate or not.
      */
     protected function evalIpRange($value, $name)
@@ -235,7 +235,7 @@ class Validation extends Fallback
      *   The name of the group that we are evaluating, needed for the feedback
      *   text.
      *
-     * @return boolean
+     * @return bool
      *   Whether it does evaluate or not.
      */
     protected function evalMaxRuntime($value, $name, $group)
@@ -290,7 +290,7 @@ class Validation extends Fallback
     }
 
     /**
-     * Evaluates a string of integer.
+     * Evaluates a string as integer.
      *
      * It must be greater than 0 and smaller than 101.
      *

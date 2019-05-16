@@ -78,7 +78,7 @@ class Fatal extends AbstractError
      * anything during shutdown, in case we decide after
      * registering, that we do not want to interfere.
      *
-     * @param boolean $value
+     * @param bool $value
      *   Whether the handler is active or not.
      */
     public function setIsActive($value)
