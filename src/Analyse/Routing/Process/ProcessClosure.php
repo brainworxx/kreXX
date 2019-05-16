@@ -40,6 +40,7 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 use ReflectionFunction;
+use ReflectionException;
 
 /**
  * Processing of closures.
@@ -54,14 +55,18 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
      * @param Model $model
      *   The closure we want to analyse.
      *
-     * @throws \ReflectionException
-     *
      * @return string
      *   The generated markup.
      */
     public function process(Model $model)
     {
-        $ref = new ReflectionFunction($model->getData());
+        try {
+            $ref = new ReflectionFunction($model->getData());
+        } catch (ReflectionException $e) {
+            // Not sure how this can happen.
+            return '';
+        }
+
 
         $result = [];
 

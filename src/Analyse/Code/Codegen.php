@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionParameter;
+use ReflectionException;
 
 /**
  * Code generation methods.
@@ -239,7 +240,11 @@ class Codegen implements ConstInterface
         if ($reflectionParameter->isDefaultValueAvailable()) {
             // Remove the standard value
             $paremExplode = array_slice($paremExplode, 0, 2);
-            $default = $reflectionParameter->getDefaultValue();
+            try {
+                $default = $reflectionParameter->getDefaultValue();
+            } catch (ReflectionException $e) {
+                $default = null;
+            }
 
             // If we are dealing with a reflection parameter from a closure,
             // there is a missing '=' in the return string.

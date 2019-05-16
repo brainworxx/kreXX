@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Analyse\Comment;
 use Reflector;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionException;
 
 /**
  * We get the comment of a method and try to resolve the inheritdoc stuff.
@@ -128,10 +129,15 @@ class Methods extends AbstractComment
             $parentReflection->hasMethod($this->methodName) === true
         ) {
             // Going deeper into the rabid hole!
-            $comment = $this->getMethodComment(
-                $parentReflection->getMethod($this->methodName),
-                $parentReflection
-            );
+            try {
+                $comment = $this->getMethodComment(
+                    $parentReflection->getMethod($this->methodName),
+                    $parentReflection
+                );
+            } catch (ReflectionException $e) {
+                // Do nothing.
+                // The feedback is a little bit further down.
+            }
         }
 
         // Still here? Tell the dev that we could not resolve the comment.
@@ -167,17 +173,21 @@ class Methods extends AbstractComment
 
             // We need to look further!
             if ($trait->hasMethod($this->methodName) === true) {
-                $traitComment = $this->prettifyComment(
-                    $trait->getMethod($this->methodName)->getDocComment()
-                );
-                // Replace it.
-                $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
+                try {
+                    $traitComment = $this->prettifyComment(
+                        $trait->getMethod($this->methodName)->getDocComment()
+                    );
+                    // Replace it.
+                    $originalComment = $this->replaceInheritComment($originalComment, $traitComment);
+                } catch (ReflectionException $e) {
+                    // Do nothing.
+                    // We could not resolve anything.
+                }
             }
         }
 
         // Return what we could resolve so far.
         return $originalComment;
-
     }
 
     /**
@@ -198,9 +208,16 @@ class Methods extends AbstractComment
     {
         foreach ($reflectionClass->getInterfaces() as $interface) {
             if ($interface->hasMethod($this->methodName) === true) {
-                $interfaceComment = $this->prettifyComment($interface->getMethod($this->methodName)->getDocComment());
-                // Replace it.
-                $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
+                try {
+                    $interfaceComment = $this->prettifyComment($interface->getMethod($this->methodName)
+                        ->getDocComment());
+                    // Replace it.
+                    $originalComment = $this->replaceInheritComment($originalComment, $interfaceComment);
+                } catch (ReflectionException $e) {
+                    // Failed to retrieve it from the interface.
+                    // Do nothing, and hope for the rst of the code to retrieve
+                    // the comment.
+                }
             }
             if ($this->checkComment($originalComment) === true) {
                 // Looks like we've resolved them all.

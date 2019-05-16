@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Throwable;
 use Exception;
+use ReflectionException;
 
 /**
  * Poll all configured debug methods of a class.
@@ -153,7 +154,12 @@ class DebugMethods extends AbstractObjectAnalysis
             $this->pool->config->validation->isAllowedDebugCall($data) === true) {
             // We need to check if the callable function requires any parameters.
             // We will not call those, because we simply can not provide them.
-            $ref = $reflectionClass->getMethod($funcName);
+            try {
+                $ref = $reflectionClass->getMethod($funcName);
+            } catch (ReflectionException $e) {
+                return false;
+            }
+
 
             /** @var \ReflectionParameter $param */
             foreach ($ref->getParameters() as $param) {

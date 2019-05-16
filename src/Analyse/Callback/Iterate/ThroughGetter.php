@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionMethod;
 use ReflectionClass;
+use ReflectionException;
 
 /**
  * Getter method analysis methods.
@@ -175,13 +176,17 @@ class ThroughGetter extends AbstractCallback
             }
 
             // Get ourselves a possible return value
-            $output .= $this->retrievePropertyValue(
-                $reflectionMethod,
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . static::EVENT_MARKER_END,
-                    $model
-                )
-            );
+            try {
+                $output .= $this->retrievePropertyValue(
+                    $reflectionMethod,
+                    $this->dispatchEventWithModel(
+                        __FUNCTION__ . static::EVENT_MARKER_END,
+                        $model
+                    )
+                );
+            } catch (ReflectionException $e) {
+                // Do nothing. We ignore this one.
+            }
         }
 
         return $output;
@@ -194,6 +199,8 @@ class ThroughGetter extends AbstractCallback
      *   A reflection ot the method we are analysing
      * @param Model $model
      *   The model so far.
+     *
+     * @throws \ReflectionException
      *
      * @return string
      *   The rendered markup.
@@ -256,6 +263,8 @@ class ThroughGetter extends AbstractCallback
      * @param \ReflectionMethod $reflectionMethod
      *   The reflection ot the method of which we want to coax the result from
      *   the class or sourcecode.
+     *
+     * @throws \ReflectionException
      *
      * @return \ReflectionProperty|null
      *   Either the reflection of a possibly associated Property, or null to
@@ -372,6 +381,8 @@ class ThroughGetter extends AbstractCallback
      * @param \ReflectionMethod $reflectionMethod
      *   The reflection ot the method of which we want to coax the result from
      *   the class or sourcecode.
+     *
+     * @throws \ReflectionException
      *
      * @return \ReflectionProperty|null
      *   Either the reflection of a possibly associated Property, or null to
