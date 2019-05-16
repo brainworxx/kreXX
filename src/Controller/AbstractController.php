@@ -248,6 +248,9 @@ abstract class AbstractController implements ConstInterface
      * other kreXX calls, which may be caused by the debug callbacks
      * to prevent kreXX from starting other kreXX calls.
      *
+     * @deprecated
+     *   Since 3.1.0. Will be removed
+     *
      * @return $this
      *   Return $this for chaining.
      */
@@ -267,6 +270,9 @@ abstract class AbstractController implements ConstInterface
      * We disable the tick callback and the error handler during
      * a analysis, to generate faster output. We re-enable kreXX
      * afterwards, so the dev can use it again.
+     *
+     * @deprecated
+     *   Since 3.1.0. Will be removed
      *
      * @return $this
      *   Return $this for chaining.
