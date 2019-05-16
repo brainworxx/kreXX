@@ -84,7 +84,7 @@ class Factory
      * @return array
      *   The part we are requesting.
      */
-    public function &getGlobals($what)
+    public function &getGlobals($what = '')
     {
         if (empty($what) === true) {
             return $GLOBALS;
