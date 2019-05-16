@@ -62,6 +62,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @param $data
      *   The class we are currently analysing.
+     *
      * @throws \ReflectionException
      */
     public function __construct($data)
