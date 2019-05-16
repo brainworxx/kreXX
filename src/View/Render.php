@@ -389,7 +389,7 @@ class Render extends AbstractRender
             // Here we store what the list of possible values.
             if ($model->getDomid() === Fallback::SETTING_SKIN) {
                 // Get a list of all skin folders.
-                $valueList = $this->getSkinList();
+                $valueList = $this->pool->config->getSkinList();
             } else {
                 $valueList = ['true', 'false'];
             }
