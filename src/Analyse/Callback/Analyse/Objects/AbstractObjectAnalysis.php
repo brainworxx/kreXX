@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use Reflector;
 
 /**
  * Abstract class for the object analysis.
@@ -122,7 +123,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
      *   The second reflection.
      * @return int
      */
-    protected function reflectionSorting(\Reflector $reflectionA, \Reflector $reflectionB)
+    protected function reflectionSorting(Reflector $reflectionA, Reflector $reflectionB)
     {
         /** @var \ReflectionMethod | \ReflectionProperty $reflectionA */
         /** @var \ReflectionMethod | \ReflectionProperty $reflectionB */

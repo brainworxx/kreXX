@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Analyse\Code;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
+use ReflectionParameter;
 
 /**
  * Code generation methods.
@@ -230,7 +231,7 @@ class Codegen implements ConstInterface
      * @return string
      *   The parameter data in a human readable form.
      */
-    public function parameterToString(\ReflectionParameter $reflectionParameter)
+    public function parameterToString(ReflectionParameter $reflectionParameter)
     {
         // Slice off the first part.
         $paremExplode = array_slice(explode(' ', trim($reflectionParameter->__toString(), ' ]')), 4);

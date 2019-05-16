@@ -38,6 +38,10 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
+use Throwable;
+use Exception;
+use ArrayAccess;
+use SplObjectStorage;
 
 /**
  * Object traversable analysis.
@@ -103,12 +107,12 @@ class Traversable extends AbstractObjectAnalysis
                 }
             );
             $parameter = iterator_to_array($data);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             //Restore the previous error handler, and return an empty string.
             restore_error_handler();
             $this->pool->emergencyHandler->downOneNestingLevel();
             return '';
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             //Restore the previous error handler, and return an empty string.
             restore_error_handler();
             $this->pool->emergencyHandler->downOneNestingLevel();
@@ -124,13 +128,13 @@ class Traversable extends AbstractObjectAnalysis
             $multiline = true;
 
             // Normal ArrayAccess, direct access to the array. Nothing special
-            if ($data instanceof \ArrayAccess) {
+            if ($data instanceof ArrayAccess) {
                 $multiline = false;
             }
 
             // SplObject pool use the object as keys, so we need some
             // multiline stuff!
-            if ($data instanceof \SplObjectStorage) {
+            if ($data instanceof SplObjectStorage) {
                 $multiline = true;
             }
 

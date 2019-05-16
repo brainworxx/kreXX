@@ -38,6 +38,8 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Analyse\Model;
+use ReflectionMethod;
+use ReflectionClass;
 
 /**
  * Methods analysis methods. :rolleyes:
@@ -149,7 +151,7 @@ class ThroughMethods extends AbstractCallback
      * @return string
      *   The analysis result.
      */
-    protected function getDeclarationPlace(\ReflectionMethod $reflectionMethod, \ReflectionClass $declaringClass)
+    protected function getDeclarationPlace(ReflectionMethod $reflectionMethod, ReflectionClass $declaringClass)
     {
         $filename = $this->pool->fileService->filterFilePath($reflectionMethod->getFileName());
         if (empty($filename) === true) {
@@ -192,8 +194,8 @@ class ThroughMethods extends AbstractCallback
      *   Otherwise return a reflection class.
      */
     protected function retrieveDeclaringReflection(
-        \ReflectionMethod $reflectionMethod,
-        \ReflectionClass $declaringClass
+        ReflectionMethod $reflectionMethod,
+        ReflectionClass $declaringClass
     ) {
         // Get a first impression.
         if ($reflectionMethod->getFileName() === $declaringClass->getFileName()) {
@@ -226,9 +228,9 @@ class ThroughMethods extends AbstractCallback
      *   All declaring keywords + the info if this method was inherited.
      */
     protected function getDeclarationKeywords(
-        \ReflectionMethod $reflectionMethod,
-        \ReflectionClass $declaringClass,
-        \ReflectionClass $reflectionClass
+        ReflectionMethod $reflectionMethod,
+        ReflectionClass $declaringClass,
+        ReflectionClass $reflectionClass
     ) {
         $result = '';
 

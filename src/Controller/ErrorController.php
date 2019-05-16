@@ -36,7 +36,6 @@ namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
 use Brainworxx\Krexx\Errorhandler\Fatal;
-use Brainworxx\Krexx\Service\Config\Fallback;
 
 /**
  * "Controller" for the fatal error handler "action"

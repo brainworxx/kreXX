@@ -39,6 +39,8 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Properties;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Misc\File;
+use ReflectionProperty;
+use ReflectionClass;
 
 /**
  * Class properties analysis methods.
@@ -177,7 +179,7 @@ class ThroughProperties extends AbstractCallback
      *
      * @return string
      */
-    protected function getAdditionalData(\ReflectionProperty $refProperty, \ReflectionClass $ref)
+    protected function getAdditionalData(ReflectionProperty $refProperty, ReflectionClass $ref)
     {
         // Now that we have the key and the value, we can analyse it.
         // Stitch together our additional info about the data:
@@ -212,7 +214,7 @@ class ThroughProperties extends AbstractCallback
      * @param \ReflectionProperty $refProperty
      * @return string
      */
-    protected function retrieveDeclarationPlace(\ReflectionProperty $refProperty)
+    protected function retrieveDeclarationPlace(ReflectionProperty $refProperty)
     {
         static $declarationCache = [];
 

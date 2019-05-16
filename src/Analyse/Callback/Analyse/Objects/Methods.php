@@ -37,6 +37,8 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Method analysis for objects.
@@ -111,19 +113,19 @@ class Methods extends AbstractObjectAnalysis
      * @return string
      *   The generated markup.
      */
-    protected function analyseMethods(\ReflectionClass $ref, $domId, $doProtected, $doPrivate)
+    protected function analyseMethods(ReflectionClass $ref, $domId, $doProtected, $doPrivate)
     {
         // Dumping all methods but only if we have any.
         $protected = [];
         $private = [];
-        $public = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $public = $ref->getMethods(ReflectionMethod::IS_PUBLIC);
 
         if ($doProtected === true) {
-            $protected = $ref->getMethods(\ReflectionMethod::IS_PROTECTED);
+            $protected = $ref->getMethods(ReflectionMethod::IS_PROTECTED);
         }
 
         if ($doPrivate === true) {
-            $private = $ref->getMethods(\ReflectionMethod::IS_PRIVATE);
+            $private = $ref->getMethods(ReflectionMethod::IS_PRIVATE);
         }
 
         // Is there anything to analyse?

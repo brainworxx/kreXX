@@ -39,6 +39,8 @@ use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Service\Factory\Pool;
+use ReflectionMethod;
+use ReflectionClass;
 
 /**
  * Getter method analysis methods.
@@ -196,7 +198,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The rendered markup.
      */
-    protected function retrievePropertyValue(\ReflectionMethod $reflectionMethod, Model $model)
+    protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model)
     {
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
@@ -259,7 +261,7 @@ class ThroughGetter extends AbstractCallback
      *   Either the reflection of a possibly associated Property, or null to
      *   indicate that we have found nothing.
      */
-    protected function getReflectionProperty(\ReflectionClass $classReflection, \ReflectionMethod $reflectionMethod)
+    protected function getReflectionProperty(ReflectionClass $classReflection, ReflectionMethod $reflectionMethod)
     {
         // We may be facing different writing styles.
         // The property we want from getMyProperty() should be named myProperty,
@@ -341,7 +343,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The first impression of the property name.
      */
-    protected function preparePropertyName(\ReflectionMethod $reflectionMethod)
+    protected function preparePropertyName(ReflectionMethod $reflectionMethod)
     {
         $currentPrefix = $this->parameters[static::CURRENT_PREFIX];
 
@@ -375,7 +377,7 @@ class ThroughGetter extends AbstractCallback
      *   Either the reflection of a possibly associated Property, or null to
      *   indicate that we have found nothing.
      */
-    protected function getReflectionPropertyDeep(\ReflectionClass $classReflection, \ReflectionMethod $reflectionMethod)
+    protected function getReflectionPropertyDeep(ReflectionClass $classReflection, ReflectionMethod $reflectionMethod)
     {
         // Read the sourcecode into a string.
         $sourcecode = $this->pool->fileService->readFile(

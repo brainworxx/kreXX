@@ -35,6 +35,8 @@
 namespace Brainworxx\Krexx\Analyse\Comment;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
+use Reflector;
+use ReflectionClass;
 
 /**
  * Abstract class for the comment analysis.
@@ -83,8 +85,8 @@ abstract class AbstractComment
      *   The prettified comment.
      */
     abstract public function getComment(
-        \Reflector $reflection,
-        \ReflectionClass $reflectionClass = null
+        Reflector $reflection,
+        ReflectionClass $reflectionClass = null
     );
 
     /**

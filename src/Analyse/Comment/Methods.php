@@ -34,6 +34,10 @@
 
 namespace Brainworxx\Krexx\Analyse\Comment;
 
+use Reflector;
+use ReflectionClass;
+use ReflectionMethod;
+
 /**
  * We get the comment of a method and try to resolve the inheritdoc stuff.
  *
@@ -63,7 +67,7 @@ class Methods extends AbstractComment
      * @return string
      *   The prettified and escaped comment.
      */
-    public function getComment(\Reflector $reflectionMethod, \ReflectionClass $reflectionClass = null)
+    public function getComment(Reflector $reflectionMethod, ReflectionClass $reflectionClass = null)
     {
         // Do some static caching. The comment will not change during a run.
         static $cache = [];
@@ -93,7 +97,7 @@ class Methods extends AbstractComment
      * @return string
      *   The prettified comment.
      */
-    protected function getMethodComment(\ReflectionMethod $reflectionMethod, \ReflectionClass $reflectionClass)
+    protected function getMethodComment(ReflectionMethod $reflectionMethod, ReflectionClass $reflectionClass)
     {
         // Get a first impression.
         $comment = $this->prettifyComment($reflectionMethod->getDocComment());
@@ -120,7 +124,7 @@ class Methods extends AbstractComment
         // Nothing on this level, we need to take a look at the parent.
         /** @var \ReflectionClass $parentReflection */
         $parentReflection = $reflectionClass->getParentClass();
-        if ($parentReflection instanceof \ReflectionClass &&
+        if ($parentReflection instanceof ReflectionClass &&
             $parentReflection->hasMethod($this->methodName) === true
         ) {
             // Going deeper into the rabid hole!
@@ -150,7 +154,7 @@ class Methods extends AbstractComment
      * @return string
      *   The comment from one of the trait.
      */
-    protected function getTraitComment($originalComment, \ReflectionClass $reflection)
+    protected function getTraitComment($originalComment, ReflectionClass $reflection)
     {
         // Get the traits from this class.
         // Now we should have an array with reflections of all
@@ -190,7 +194,7 @@ class Methods extends AbstractComment
      * @return string
      *   The comment from one of the interfaces.
      */
-    protected function getInterfaceComment($originalComment, \ReflectionClass $reflectionClass)
+    protected function getInterfaceComment($originalComment, ReflectionClass $reflectionClass)
     {
         foreach ($reflectionClass->getInterfaces() as $interface) {
             if ($interface->hasMethod($this->methodName) === true) {

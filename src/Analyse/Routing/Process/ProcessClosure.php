@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Comment\Functions;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use ReflectionFunction;
 
 /**
  * Processing of closures.
@@ -60,7 +61,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
      */
     public function process(Model $model)
     {
-        $ref = new \ReflectionFunction($model->getData());
+        $ref = new ReflectionFunction($model->getData());
 
         $result = [];
 

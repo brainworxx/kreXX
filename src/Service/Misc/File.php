@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Service\Misc;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
+use SplFixedArray;
 
 /**
  * File access service.
@@ -208,10 +209,10 @@ class File
         // Using \SplFixedArray to save some memory, as it can get
         // quire huge, depending on your system. 4mb is nothing here.
         if ($this->fileIsReadable($filePath) === true) {
-            return $filecache[$filePath] = \SplFixedArray::fromArray(file($filePath));
+            return $filecache[$filePath] = SplFixedArray::fromArray(file($filePath));
         }
         // Not readable!
-        return $filecache[$filePath] = new \SplFixedArray(0);
+        return $filecache[$filePath] = new SplFixedArray(0);
     }
 
     /**

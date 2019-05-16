@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Service\Reflection;
 
+use ReflectionProperty;
+
 /**
  * Added a better possibility to retrieve the object values.
  *
@@ -81,7 +83,7 @@ class ReflectionClass extends \ReflectionClass
      * @return mixed;
      *   The retrieved value.
      */
-    public function retrieveValue(\ReflectionProperty $refProperty)
+    public function retrieveValue(ReflectionProperty $refProperty)
     {
         $propName = $refProperty->getName();
 

@@ -46,6 +46,7 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessOther;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessString;
 use Brainworxx\Krexx\Service\Factory\Pool;
+use Closure;
 
 /**
  * "Routing" for kreXX
@@ -272,7 +273,7 @@ class Routing extends AbstractRouting
             // We need to check if this is an object first.
             // When calling is_a('myClass', 'anotherClass') the autoloader is
             // triggered, trying to load 'myClass', although it is just a string.
-            if ($data instanceof \Closure) {
+            if ($data instanceof Closure) {
                 // Closures are handled differently than normal objects
                 return $this->processClosure->process($model);
             }

@@ -46,6 +46,8 @@ use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Traversable;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use Throwable;
+use Exception;
 
 /**
  * Object analysis methods.
@@ -90,8 +92,8 @@ class Objects extends AbstractCallback
         }
 
         // Anaylsing error objects.
-        if (is_a($this->parameters[static::PARAM_DATA], \Throwable::class) ||
-            is_a($this->parameters[static::PARAM_DATA], \Exception::class)
+        if (is_a($this->parameters[static::PARAM_DATA], Throwable::class) ||
+            is_a($this->parameters[static::PARAM_DATA], Exception::class)
         ) {
             $output .= $this->dumpStuff(ErrorObject::class);
         }

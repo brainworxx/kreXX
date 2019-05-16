@@ -38,7 +38,6 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
-use Brainworxx\Krexx\Service\Config\Validation;
 
 /**
  * Access the debug settings here.

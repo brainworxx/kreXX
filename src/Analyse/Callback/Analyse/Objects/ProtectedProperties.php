@@ -34,6 +34,8 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use ReflectionProperty;
+
 /**
  * Analysis of protected properties.
  *
@@ -63,7 +65,7 @@ class ProtectedProperties extends AbstractObjectAnalysis
 
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
-        $refProps = $ref->getProperties(\ReflectionProperty::IS_PROTECTED);
+        $refProps = $ref->getProperties(ReflectionProperty::IS_PROTECTED);
         if (empty($refProps) === true) {
             return $output;
         }

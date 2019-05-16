@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Analysis of all getter methods.
@@ -92,14 +93,14 @@ class Getter extends AbstractObjectAnalysis
         $ref = $this->parameters[static::PARAM_REF];
 
         // Get all public methods.
-        $methodList = $ref->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $methodList = $ref->getMethods(ReflectionMethod::IS_PUBLIC);
 
         $isInScope = $this->pool->scope->isInScope();
         if ($isInScope === true) {
             // Looks like we also need the protected and private methods.
             $methodList = array_merge(
                 $methodList,
-                $ref->getMethods(\ReflectionMethod::IS_PRIVATE | \ReflectionMethod::IS_PROTECTED)
+                $ref->getMethods(ReflectionMethod::IS_PRIVATE | ReflectionMethod::IS_PROTECTED)
             );
         }
 

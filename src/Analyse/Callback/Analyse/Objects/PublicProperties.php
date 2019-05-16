@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
+use ReflectionProperty;
 
 /**
  * Analysis of public properties.
@@ -67,7 +68,7 @@ class PublicProperties extends AbstractObjectAnalysis
         $ref = $this->parameters[static::PARAM_REF];
         $data = $ref->getData();
 
-        $refProps = $ref->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $refProps = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
         $publicProps = [];
 
         // Adding undeclared public properties to the dump.

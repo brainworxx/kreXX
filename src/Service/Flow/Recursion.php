@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Service\Flow;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
+use SplObjectStorage;
 
 /**
  * Recursion handler, formerly known as Hive.
@@ -98,7 +99,7 @@ class Recursion
         // Mark the $GLOBALS array.
         $this->globals = $pool->getGlobals();
         $this->globals[$this->recursionMarker] = true;
-        $this->recursionHive = new \SplObjectStorage();
+        $this->recursionHive = new SplObjectStorage();
 
         $pool->recursionHandler = $this;
     }
