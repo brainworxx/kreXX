@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Krexx;
  *
  * @package Brainworxx\Krexx\Service\Factory
  */
-class Factory
+abstract class AbstractFactory
 {
 
     /**

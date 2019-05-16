@@ -140,7 +140,7 @@ call_user_func(function () {
 
         include_once KREXX_DIR . 'src/Service/Factory/EventHandlerInterface.php';
         include_once KREXX_DIR . 'src/Service/Factory/Event.php';
-        include_once KREXX_DIR . 'src/Service/Factory/Factory.php';
+        include_once KREXX_DIR . 'src/Service/Factory/AbstractFactory.php';
         include_once KREXX_DIR . 'src/Service/Factory/Pool.php';
 
         include_once KREXX_DIR . 'src/Service/Flow/Emergency.php';

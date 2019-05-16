@@ -53,7 +53,7 @@ use Brainworxx\Krexx\Service\Misc\Encoding;
  *
  * @package Brainworxx\Krexx\Service\Factory
  */
-class Pool extends Factory
+class Pool extends AbstractFactory
 {
 
     /**
