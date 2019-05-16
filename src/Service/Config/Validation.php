@@ -36,8 +36,8 @@ namespace Brainworxx\Krexx\Service\Config;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
-use ReflectionType;
 use ReflectionGenerator;
+use ReflectionType;
 use Reflector;
 
 /**

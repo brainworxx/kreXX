@@ -39,8 +39,8 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Properties;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Misc\File;
-use ReflectionProperty;
 use ReflectionClass;
+use ReflectionProperty;
 
 /**
  * Class properties analysis methods.

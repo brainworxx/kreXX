@@ -36,8 +36,8 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
-use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Reflector;
 

@@ -34,14 +34,14 @@
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use ArrayAccess;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
-use Throwable;
 use Exception;
-use ArrayAccess;
 use SplObjectStorage;
+use Throwable;
 
 /**
  * Object traversable analysis.

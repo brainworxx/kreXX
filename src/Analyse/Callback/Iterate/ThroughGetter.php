@@ -35,13 +35,13 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Service\Factory\Pool;
-use ReflectionMethod;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Getter method analysis methods.

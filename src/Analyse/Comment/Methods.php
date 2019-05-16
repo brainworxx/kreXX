@@ -34,10 +34,10 @@
 
 namespace Brainworxx\Krexx\Analyse\Comment;
 
-use Reflector;
 use ReflectionClass;
-use ReflectionMethod;
 use ReflectionException;
+use ReflectionMethod;
+use Reflector;
 
 /**
  * We get the comment of a method and try to resolve the inheritdoc stuff.

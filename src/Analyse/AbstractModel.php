@@ -34,9 +34,9 @@
 
 namespace Brainworxx\Krexx\Analyse;
 
-use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Housing everything that does not directly hold data.

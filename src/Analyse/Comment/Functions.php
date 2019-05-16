@@ -34,8 +34,8 @@
 
 namespace Brainworxx\Krexx\Analyse\Comment;
 
-use Reflector;
 use ReflectionClass;
+use Reflector;
 
 /**
  * Getting the comment from functions.

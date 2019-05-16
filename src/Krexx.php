@@ -34,16 +34,16 @@
 
 namespace Brainworxx\Krexx;
 
+use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Controller\BacktraceController;
 use Brainworxx\Krexx\Controller\DumpController;
 use Brainworxx\Krexx\Controller\EditSettingsController;
 use Brainworxx\Krexx\Controller\ErrorController;
 use Brainworxx\Krexx\Controller\ExceptionController;
 use Brainworxx\Krexx\Controller\TimerController;
-use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Controller\AbstractController;
-use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Config\Config;
+use Brainworxx\Krexx\Service\Config\Fallback;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Public functions, allowing access to the kreXX debug features.

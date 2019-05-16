@@ -35,8 +35,8 @@
 namespace Brainworxx\Krexx\Analyse\Comment;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
-use Reflector;
 use ReflectionClass;
+use Reflector;
 
 /**
  * Abstract class for the comment analysis.

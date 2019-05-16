@@ -39,9 +39,9 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
-use Throwable;
 use Exception;
 use ReflectionException;
+use Throwable;
 
 /**
  * Poll all configured debug methods of a class.

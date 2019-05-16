@@ -38,8 +38,8 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Analyse\Model;
-use ReflectionMethod;
 use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * Methods analysis methods. :rolleyes:

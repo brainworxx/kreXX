@@ -37,8 +37,8 @@ namespace Brainworxx\Krexx\Analyse\Code;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
-use ReflectionParameter;
 use ReflectionException;
+use ReflectionParameter;
 
 /**
  * Code generation methods.
