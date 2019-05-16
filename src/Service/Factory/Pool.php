@@ -117,7 +117,7 @@ class Pool extends AbstractFactory
     public $scope;
 
     /**
-     * Our registry. It will not be reset by the init().
+     * Our registry.
      *
      * @var Registry
      */
@@ -156,16 +156,6 @@ class Pool extends AbstractFactory
      */
     public function __construct()
     {
-        $this->init();
-        $this->registry = $this->createClass(Registry::class);
-    }
-
-    /**
-     * (Re)initializes everything in the pool, in case in-runtime
-     * factory overwrites.
-     */
-    public function init()
-    {
         // Initializes the file service.
         $this->createClass(File::class);
         // Initializes the messages.
@@ -190,8 +180,22 @@ class Pool extends AbstractFactory
         $this->createClass(Event::class);
         // Initializes the render class.
         $this->createClass($this->config->getSkinClass());
+        // Create the registry
+        $this->createClass(Registry::class);
         // Check the environment and prepare the feedback, if necessary.
         $this->checkEnvironment();
+    }
+
+    /**
+     * (Re)initializes everything in the pool, in case in-runtime
+     * factory overwrites.
+     *
+     * @deprecated
+     *   Will be removed.
+     */
+    public function init()
+    {
+        $this->__construct();
     }
 
     /**
