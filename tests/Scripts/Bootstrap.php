@@ -311,6 +311,41 @@ namespace Brainworxx\Krexx\Service\Config {
             return '123';
         }
 
-        return ini_get($what);
+        return \ini_get($what);
+    }
+}
+
+namespace Brainworxx\Krexx\Service\Factory {
+
+
+    /**
+     * Mocking the is_writable method, to simulate inaccessible folders.
+     *
+     * @param string $what
+     * @param bool|null $overwriteResult
+     * @return bool
+     */
+    function is_writable(string $what = '', bool $overwriteResult = null): bool
+    {
+        static $result = [];
+
+        // Reset the result.
+        if (empty($what)) {
+            $result = [];
+            return true;
+        }
+
+        // Overwrite the return value.
+        if (is_bool($overwriteResult)) {
+            $result[$what] = $overwriteResult;
+            return $result[$what];
+        }
+
+        // Use the overwrite value once
+        if (isset($result[$what])) {
+            return $result[$what];
+        }
+
+        return \is_writable($what);
     }
 }
