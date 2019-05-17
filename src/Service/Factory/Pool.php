@@ -210,9 +210,11 @@ class Pool extends AbstractFactory
         // Check chunk folder is writable.
         // If not, give feedback!
         $chunkFolder = $this->config->getChunkDir();
-        if (is_writeable($chunkFolder) === false) {
-            $chunkFolder = $this->fileService->filterFilePath($chunkFolder);
-            $this->messages->addMessage('chunksNotWritable', [$chunkFolder]);
+        if (is_writable($chunkFolder) === false) {
+            $this->messages->addMessage(
+                'chunksNotWritable',
+                [$this->fileService->filterFilePath($chunkFolder)]
+            );
             // We can work without chunks, but this will require much more memory!
             $this->chunks->setUseChunks(false);
         }
@@ -220,9 +222,11 @@ class Pool extends AbstractFactory
         // Check if the log folder is writable.
         // If not, give feedback!
         $logFolder = $this->config->getLogDir();
-        if (is_writeable($logFolder) === false) {
-            $logFolder = $this->fileService->filterFilePath($logFolder);
-            $this->messages->addMessage('logNotWritable', [$logFolder]);
+        if (is_writable($logFolder) === false) {
+            $this->messages->addMessage(
+                'logNotWritable',
+                [$this->fileService->filterFilePath($logFolder)]
+            );
             // Tell the chunk output that we have no write access in the logging
             // folder.
             $this->chunks->setUseLogging(false);
@@ -234,7 +238,7 @@ class Pool extends AbstractFactory
     }
 
     /**
-     * Re-new() the classes that need to be re-new()-ed.
+     * Renew the "semi-singletons" after an analysis.
      */
     public function reset()
     {
