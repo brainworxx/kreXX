@@ -109,19 +109,19 @@ class AbstractFactoryTest extends AbstractTest
 
         // Pool is gone, create a new one.
         Krexx::$pool = null;
+        Registration::addRewrite('SomeClass', 'RewriteClass');
         AbstractFactory::createPool();
         $this->assertNotSame($oldPool, Krexx::$pool);
+         // Test the retrieval of the rewrites.
+        $this->assertEquals(
+            ['SomeClass' => 'RewriteClass'],
+            Krexx::$pool->rewrite
+        );
 
         // Pool is gone, create an rewrite for it
         Registration::addRewrite(Pool::class, stdClass::class);
         Krexx::$pool = null;
         AbstractFactory::createPool();
         $this->assertInstanceOf(stdClass::class, Krexx::$pool);
-
-        // Test the retrieval of the rewrites.
-        $this->assertEquals(
-            [Pool::class => stdClass::class],
-            Krexx::$pool->rewrite
-        );
     }
 }

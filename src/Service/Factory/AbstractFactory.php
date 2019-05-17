@@ -121,11 +121,10 @@ abstract class AbstractFactory
         // Create a new pool where we store all our classes.
         // We also need to check if we have an overwrite for the pool.
         if (empty($rewrite[Pool::class]) === true) {
-            Krexx::$pool = new Pool();
+            Krexx::$pool = new Pool($rewrite);
         } else {
             $classname = $rewrite[Pool::class];
-            Krexx::$pool = new $classname();
+            Krexx::$pool = new $classname($rewrite);
         }
-        Krexx::$pool->rewrite = $rewrite;
     }
 }

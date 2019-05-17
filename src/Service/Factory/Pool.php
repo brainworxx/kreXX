@@ -152,9 +152,14 @@ class Pool extends AbstractFactory
 
     /**
      * Initializes all needed classes.
+     *
+     * @param array $rewrite
+     *   The rewrites we are using for the classes.
      */
-    public function __construct()
+    public function __construct(array $rewrite = [])
     {
+        $this->rewrite = $rewrite;
+
         // Initializes the file service.
         $this->createClass(File::class);
         // Initializes the messages.
@@ -190,7 +195,7 @@ class Pool extends AbstractFactory
      * factory overwrites.
      *
      * @deprecated
-     *   Will be removed.
+     *   Since 3.1.0. Will be removed.
      */
     public function init()
     {

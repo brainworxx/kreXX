@@ -24,6 +24,8 @@
   timer controller
 - Bugfix: The registering of blacklisted methods and classes for
   the debug methods work now, as they should.
+- Bugfix: The rewriting of singleton classes in the pool does not
+  work.
 
 3.0.2
 - Added classname to the declaration analysis of properties.
