@@ -151,7 +151,7 @@ class DebugMethods extends AbstractObjectAnalysis
         // 3.) It's not blacklisted.
         if (method_exists($data, $funcName) === true &&
             is_callable([$data, $funcName]) === true &&
-            $this->pool->config->validation->isAllowedDebugCall($data) === true) {
+            $this->pool->config->validation->isAllowedDebugCall($data, $funcName) === true) {
             // We need to check if the callable function requires any parameters.
             // We will not call those, because we simply can not provide them.
             try {

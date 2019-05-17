@@ -166,21 +166,19 @@ class Registration implements ConstInterface
      *
      * @api
      *
+     * @param string $className
+     *   The class, where the method is hosted,
      * @param string $methodName
      *   The name of the method.
-     * @param string $deprecatedMethodName
-     *   The deprecated implementation of the method name
-     *
-     * @deprecated
-     *   Since 3.1.0. The last parameter is deprecated.
      */
-    public static function addMethodToDebugBlacklist($methodName, $deprecatedMethodName = null)
+    public static function addMethodToDebugBlacklist($className, $methodName)
     {
-        if (!empty($deprecatedMethodName)) {
-            $methodName = $deprecatedMethodName;
+        if (isset(static::$blacklistDebugMethods[$className]) === false) {
+            static::$blacklistDebugMethods[$className] = [];
         }
-        if (in_array($methodName, static::$blacklistDebugMethods) === false) {
-            static::$blacklistDebugMethods[] = $methodName;
+
+        if (in_array($methodName, static::$blacklistDebugMethods[$className]) === false) {
+            static::$blacklistDebugMethods[$className][] = $methodName;
         }
     }
 

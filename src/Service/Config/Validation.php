@@ -334,14 +334,7 @@ class Validation extends Fallback
         $list = explode(',', $value);
 
         foreach ($list as $entry) {
-            // Test for whitespace and the blacklist.
-            if (in_array($entry, $this->methodBlacklist)) {
-                $this->pool->messages->addMessage(
-                    static::KEY_CONFIG_ERROR_DEBUG_BLACKLIST,
-                    [$group, $name, $entry]
-                );
-                return false;
-            }
+            // Test for whitespace.
             if (strpos($entry, ' ') !== false) {
                 $this->pool->messages->addMessage(
                     static::KEY_CONFIG_ERROR_DEBUG_INVALID,
@@ -359,17 +352,33 @@ class Validation extends Fallback
      *
      * @param object $data
      *   The class we are analysing.
+     * @param string $method
+     *   The method that we want to call.
      *
      * @return bool
      *   Whether the function is allowed to be called.
      */
-    public function isAllowedDebugCall($data)
+    public function isAllowedDebugCall($data, $method = '')
     {
         // Check if the class itself is blacklisted.
         foreach ($this->classBlacklist as $classname) {
             if (is_a($data, $classname) === true) {
                 // No debug methods for you.
                 return false;
+            }
+        }
+
+        if (empty($method)) {
+            // No method specified.
+            return true;
+        }
+
+        // Check if the combination of class and method is blacklisted.
+        foreach ($this->methodBlacklist as $classname => $debugMethod) {
+            if (is_a($data, $classname) === true) {
+                if (in_array($method, $debugMethod, true)) {
+                    return false;
+                }
             }
         }
 

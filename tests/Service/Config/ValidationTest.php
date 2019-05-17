@@ -53,15 +53,19 @@ class ValidationTest extends AbstractTest
      */
     public function test__construct()
     {
-        Registration::addMethodToDebugBlacklist('someMethod');
-        Registration::addMethodToDebugBlacklist('anotherMethod');
+        Registration::addMethodToDebugBlacklist('someClass', 'someMethod');
+        Registration::addMethodToDebugBlacklist('anotherClass', 'anotherMethod');
         Registration::addClassToDebugBlacklist('someClass');
         Registration::addClassToDebugBlacklist('anotherClass');
 
         $validation = new Validation(Krexx::$pool);
 
         $this->assertAttributeSame(Krexx::$pool, 'pool', $validation);
-        $this->assertAttributeEquals(['someMethod', 'anotherMethod'], 'methodBlacklist', $validation);
+        $this->assertAttributeEquals(
+            ['someClass' => ['someMethod'], 'anotherClass' => ['anotherMethod']],
+            'methodBlacklist',
+            $validation
+        );
         $this->assertAttributeEquals(
             [
                 ReflectionType::class,
@@ -82,13 +86,17 @@ class ValidationTest extends AbstractTest
      */
     public function testIsAllowedDebugCall()
     {
-        Registration::addClassToDebugBlacklist('stdClass');
-        $validation = new Validation(Krexx::$pool);
+        Registration::addClassToDebugBlacklist(stdClass::class);
+        Registration::addMethodToDebugBlacklist(\SplObjectStorage::class, 'readMailRealFast');
 
+        $validation = new Validation(Krexx::$pool);
         $stdClass = new stdClass();
+        $objectStorage = new \SplObjectStorage();
 
         $this->assertFalse($validation->isAllowedDebugCall($stdClass));
         $this->assertTrue($validation->isAllowedDebugCall($validation));
+        $this->assertFalse($validation->isAllowedDebugCall($objectStorage, 'readMailRealFast'));
+        $this->assertTrue($validation->isAllowedDebugCall($validation, 'someMethod'));
     }
 
     /**
@@ -106,7 +114,7 @@ class ValidationTest extends AbstractTest
      */
     public function testEvaluateSetting()
     {
-        Registration::addMethodToDebugBlacklist('forbiddenOne');
+        Registration::addMethodToDebugBlacklist('forbiddenclass', 'forbiddenOne');
         $validation = new Validation(Krexx::$pool);
 
         // Disallowed frontend editing settings.
@@ -126,7 +134,6 @@ class ValidationTest extends AbstractTest
             Fallback::EVAL_DEBUG_METHODS => [
                 'method1,method2' => true,
                 'method 1,method2' => false,
-                'method1,method2,forbiddenOne' => false,
             ],
             Fallback::EVAL_INT => [
                 '5' => true,
