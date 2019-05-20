@@ -160,9 +160,7 @@ class ThroughMethods extends AbstractCallback
 
         // If the filename of the $declaringClass and the $reflectionMethod differ,
         // we are facing a trait here.
-        if ($reflectionMethod->getFileName() !== $declaringClass->getFileName() &&
-            method_exists($declaringClass, 'getTraits')
-        ) {
+        if ($reflectionMethod->getFileName() !== $declaringClass->getFileName()) {
             // There is no real clean way to get the name of the trait that we
             // are looking at.
             $traitName = ':: unable to get the trait name ::';
