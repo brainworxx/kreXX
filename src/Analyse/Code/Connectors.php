@@ -231,7 +231,7 @@ class Connectors
         if ($cap > 0 && strlen($params) > $cap) {
             $params = substr($params, 0, $cap) . ' . . . ';
         }
-        
+
         return '(' . $params . ')';
     }
 
