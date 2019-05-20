@@ -137,7 +137,7 @@ class RenderSmokyGrey extends Render
                 $model->getType(),
                 $cssType,
                 $model->getNormal(),
-                $this->renderConnector($model->getConnectorRight(128)),
+                $this->renderConnectorRight($model->getConnectorRight(128)),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gencode),
                 '',
 
@@ -277,6 +277,9 @@ class RenderSmokyGrey extends Render
 
     /**
      * {@inheritDoc}
+     *
+     * @deprecated
+     *   Since 3.1.0. Will be removed.
      */
     protected function renderConnector($connector)
     {

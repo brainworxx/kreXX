@@ -112,8 +112,8 @@ class Render extends AbstractRender
                 $model->getName(),
                 $model->getDomid(),
                 $model->getNormal(),
-                $this->renderConnector($model->getConnectorLeft()),
-                $this->renderConnector($model->getConnectorRight()),
+                $this->renderConnectorLeft($model->getConnectorLeft()),
+                $this->renderConnectorRight($model->getConnectorRight()),
                 $this->generateDataAttribute(
                     static::DATA_ATTRIBUTE_SOURCE,
                     $this->pool->codegenHandler->generateSource($model)
@@ -272,8 +272,8 @@ class Render extends AbstractRender
                 $model->getType(),
                 $typeClasses,
                 $model->getNormal(),
-                $this->renderConnector($model->getConnectorLeft()),
-                $this->renderConnector($model->getConnectorRight()),
+                $this->renderConnectorLeft($model->getConnectorLeft()),
+                $this->renderConnectorRight($model->getConnectorRight()),
                 $this->generateDataAttribute(
                     static::DATA_ATTRIBUTE_WRAPPER_L,
                     $this->pool->codegenHandler->generateWrapperLeft()
@@ -346,8 +346,8 @@ class Render extends AbstractRender
                 $model->getType(),
                 $cssType,
                 $model->getNormal(),
-                $this->renderConnector($model->getConnectorLeft()),
-                $this->renderConnector($model->getConnectorRight(128)),
+                $this->renderConnectorLeft($model->getConnectorLeft()),
+                $this->renderConnectorRight($model->getConnectorRight(128)),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gencode),
                 $sourceButton,
                 $expandedClass,
@@ -542,5 +542,10 @@ class Render extends AbstractRender
     public function renderSingeChildHr()
     {
         return $this->getTemplateFileContent(static::FILE_SI_HR);
+    }
+
+    public function renderLinebreak()
+    {
+        return $this->getTemplateFileContent(static::FILE_BR);
     }
 }

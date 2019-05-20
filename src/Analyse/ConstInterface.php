@@ -77,7 +77,7 @@ interface ConstInterface
     const PARAM_ADDITIONAL = 'additional';
 
     const UNKNOWN_VALUE = '. . .';
-    const UNKNOWN_DECLARATION = ':: unable to determine declaration :: <br /><br />Maybe this is a predeclared class?';
+    const UNKNOWN_DECLARATION = 'unknownDeclaration';
 
     // Stuff from the backtrace.
     const TRACE_FILE = 'file';
