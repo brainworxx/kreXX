@@ -130,7 +130,7 @@ class ThroughMethods extends AbstractCallback
                         ->setIsPublic($reflectionMethod->isPublic())
                         ->injectCallback(
                             $this->pool->createClass(
-                                ThroughMethodAnalysis::class
+                                ThroughMeta::class
                             )
                         )
                 )

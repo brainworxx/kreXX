@@ -38,26 +38,20 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
- * Class MethodInfo
+ * Displaying the meta stuff from the class analysis.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
- *
- * @uses array data
- *   Associative array, the analysis result.
- *
- * @deprecated
- *   Since 3.1.0. Will be removed.
- *   Use ThroughMeta instead.
  */
-class ThroughMethodAnalysis extends AbstractCallback
+class ThroughMeta extends AbstractCallback
 {
     /**
      * {@inheritdoc}
      */
-    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethodAnalysis';
+    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMeta';
 
     /**
-     * Renders the info of a single method.
+     * Renders the meta data of a class, which is actually the same as the
+     * method analysis rendering.
      *
      * @return string
      *   The generated markup.
@@ -66,26 +60,51 @@ class ThroughMethodAnalysis extends AbstractCallback
     {
         $output = $this->dispatchStartEvent();
 
-        foreach ($this->parameters[static::PARAM_DATA] as $key => $string) {
+        foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
+            if ($metaData === '') {
+                // We ignore this one.
+                continue;
+            }
+
             /** @var Model $model */
             $model = $this->pool->createClass(Model::class)
-                ->setData($string)
+                ->setData($metaData)
                 ->setName($key)
                 ->setType(static::TYPE_REFLECTION);
 
-            if ($key === static::META_COMMENT || $key === static::META_DECLARED_IN || $key === static::META_SOURCE) {
+            if ($key === static::META_COMMENT ||
+                $key === static::META_DECLARED_IN ||
+                $key === static::META_SOURCE
+            ) {
                 $model->setNormal(static::UNKNOWN_VALUE);
                 $model->setHasExtra(true);
             } else {
-                $model->setNormal($string);
+                $model->setNormal($metaData);
             }
 
-            $output .= $this->pool->render->renderSingleChild(
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . static::EVENT_MARKER_END,
-                    $model
-                )
-            );
+            if (is_array($metaData)) {
+                // Render the list of data.
+                $output .= $this->pool->render->renderExpandableChild(
+                    $this->dispatchEventWithModel(
+                        __FUNCTION__ . $key,
+                        $this->pool->createClass(Model::class)
+                            ->setName($key)
+                            ->setType(static::TYPE_REFLECTION)
+                            ->addParameter(static::PARAM_DATA, $metaData)
+                            ->injectCallback(
+                                $this->pool->createClass(ThroughSingleMeta::class)
+                            )
+                    )
+                );
+            } else {
+                // Render a single data point.
+                $output .= $this->pool->render->renderSingleChild(
+                    $this->dispatchEventWithModel(
+                        __FUNCTION__ . $key . static::EVENT_MARKER_END,
+                        $model
+                    )
+                );
+            }
         }
 
         return $output;

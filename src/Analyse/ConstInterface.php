@@ -107,6 +107,12 @@ interface ConstInterface
     const META_ENCODING = 'Encoding';
     const META_MIME_TYPE = 'Mimetype';
     const META_METHODS = 'Methods';
+    const META_CLASS_DATA = 'Meta class data';
+    const META_CLASS_NAME = 'Classname';
+    const META_INTERFACES = 'Interfaces';
+    const META_TRAITS = 'Traits';
+    const META_INHERITED_CLASSES = 'Inherited classes';
+
 
     // Stuff for the skin registration.
     const SKIN_CLASS = 'class';

@@ -38,26 +38,22 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
- * Class MethodInfo
- *
- * @package Brainworxx\Krexx\Analyse\Callback\Iterate
+ * Rendering a list of meta data.
  *
  * @uses array data
- *   Associative array, the analysis result.
+ *   The list we need to render.
  *
- * @deprecated
- *   Since 3.1.0. Will be removed.
- *   Use ThroughMeta instead.
+ * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  */
-class ThroughMethodAnalysis extends AbstractCallback
+class ThroughSingleMeta extends AbstractCallback
 {
     /**
      * {@inheritdoc}
      */
-    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMethodAnalysis';
+    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughSingleMeta';
 
     /**
-     * Renders the info of a single method.
+     * Renders a simple list.
      *
      * @return string
      *   The generated markup.
@@ -66,24 +62,15 @@ class ThroughMethodAnalysis extends AbstractCallback
     {
         $output = $this->dispatchStartEvent();
 
-        foreach ($this->parameters[static::PARAM_DATA] as $key => $string) {
-            /** @var Model $model */
-            $model = $this->pool->createClass(Model::class)
-                ->setData($string)
-                ->setName($key)
-                ->setType(static::TYPE_REFLECTION);
-
-            if ($key === static::META_COMMENT || $key === static::META_DECLARED_IN || $key === static::META_SOURCE) {
-                $model->setNormal(static::UNKNOWN_VALUE);
-                $model->setHasExtra(true);
-            } else {
-                $model->setNormal($string);
-            }
-
+        // Pretty vanilla, not much to do anyway.
+        foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
             $output .= $this->pool->render->renderSingleChild(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . static::EVENT_MARKER_END,
-                    $model
+                    __FUNCTION__ . $metaData,
+                    $this->pool->createClass(Model::class)
+                        ->setNormal($metaData)
+                        ->setName($key)
+                        ->setType(static::TYPE_REFLECTION)
                 )
             );
         }
