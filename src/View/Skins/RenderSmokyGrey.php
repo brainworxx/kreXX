@@ -269,8 +269,16 @@ class RenderSmokyGrey extends Render
     {
         // Add the search.
         return str_replace(
-            [static::MARKER_SEARCH, static::MARKER_KREXX_ID],
-            [$this->renderSearch(), $this->pool->recursionHandler->getMarker()],
+            [
+                static::MARKER_SEARCH,
+                static::MARKER_KREXX_ID,
+                static::MARKER_PLUGINS
+            ],
+            [
+                $this->renderSearch(),
+                $this->pool->recursionHandler->getMarker(),
+                $this->renderPluginList()
+            ],
             parent::renderFatalMain($errstr, $errfile, $errline)
         );
     }

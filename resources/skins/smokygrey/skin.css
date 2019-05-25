@@ -650,7 +650,7 @@
   .kwrapper .kplugins .kchild .kel, .kfatalwrapper-outer .kplugins .kchild .kel {
     color: #B2B2B2;
     text-decoration: none;
-    padding: 3px 6px 6px; }
+    padding: 3px 6px 6px 20px; }
     .kwrapper .kplugins .kchild .kel.kisactive, .kfatalwrapper-outer .kplugins .kchild .kel.kisactive {
       color: #919191; }
       .kwrapper .kplugins .kchild .kel.kisactive::before, .kfatalwrapper-outer .kplugins .kchild .kel.kisactive::before {

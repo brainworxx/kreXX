@@ -872,7 +872,7 @@ $fontLight: lighter 10px tahoma, verdana;
       .kel {
         color: $grey;
         text-decoration: none;
-        padding: 3px 6px 6px;
+        padding: 3px 6px 6px 20px;
         &.kisactive {
           color: $greyDark;
           &::before {

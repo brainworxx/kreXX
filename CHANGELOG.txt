@@ -29,6 +29,8 @@
   work.
 - Bugfix: Adding additional data in the code generation is not
   rendered.
+- Bugfix: Added the plugin list to the (fatal) error handler
+  display of the smokygrey skin.
 
 3.0.2
 - Added classname to the declaration analysis of properties.
