@@ -48,6 +48,7 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
 {
     const MARKER_CALLER_FILE = '{callerFile}';
     const MARKER_CALLER_LINE = '{callerLine}';
+    const MARKER_CALLER_DATE = '{date}';
     const MARKER_HELP = '{help}';
     const MARKER_HELP_TITLE = '{helptitle}';
     const MARKER_HELP_TEXT = '{helptext}';
@@ -121,24 +122,23 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
     /**
      * Renders the footer part, where we display from where krexx was called.
      *
-     * @param string $file
-     *   The file from where krexx was called.
-     * @param string $line
-     *   The line number from where krexx was called.
+     * @param array $caller
      *
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderCaller($file, $line)
+    protected function renderCaller(array $caller)
     {
         return str_replace(
             [
                 static::MARKER_CALLER_FILE,
                 static::MARKER_CALLER_LINE,
+                static::MARKER_CALLER_DATE
             ],
             [
-                $file,
-                $line,
+                $caller[static::TRACE_FILE],
+                $caller[static::TRACE_LINE],
+                $caller[static::TRACE_DATE],
             ],
             $this->getTemplateFileContent(static::FILE_CALLER)
         );

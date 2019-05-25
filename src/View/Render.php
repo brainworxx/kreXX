@@ -91,7 +91,6 @@ class Render extends AbstractRender
     const MARKER_LINE_NO = '{lineNo}';
     const MARKER_SOURCE_CODE = '{sourceCode}';
     const MARKER_PLUGINS = '{plugins}';
-    const MARKER_DATE = '{date}';
 
     /**
      * {@inheritdoc}
@@ -160,7 +159,7 @@ class Render extends AbstractRender
     public function renderFooter(array $caller, Model $model, $configOnly = false)
     {
         if (isset($caller[static::TRACE_FILE]) === true) {
-            $callerString = $this->renderCaller($caller[static::TRACE_FILE], $caller[static::TRACE_LINE]);
+            $callerString = $this->renderCaller($caller);
         } else {
              // When we have no caller, we will not render it.
             $callerString = '';
@@ -171,13 +170,11 @@ class Render extends AbstractRender
                 static::MARKER_CONFIG_INFO,
                 static::MARKER_CALLER,
                 static::MARKER_PLUGINS,
-                static::MARKER_DATE
             ],
             [
                 $this->renderExpandableChild($model, $configOnly),
                 $callerString,
                 $this->renderPluginList(),
-                $caller[static::TRACE_DATE]
             ],
             $this->getTemplateFileContent(static::FILE_FOOTER)
         );
