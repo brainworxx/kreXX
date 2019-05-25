@@ -301,6 +301,20 @@ class RenderSmokyGrey extends Render
     }
 
     /**
+     * {@inheritDoc}
+     */
+    protected function renderConnectorRight($connector)
+    {
+        if (strlen($connector) > 17) {
+            // Something big, we should display it.
+            // Most likely the parameters of a method.
+            return parent::renderConnectorRight($connector);
+        }
+
+        return '';
+    }
+
+    /**
      * Do nothing. Help stuff is implemented via javascript json.
      *
      * @param Model $model
