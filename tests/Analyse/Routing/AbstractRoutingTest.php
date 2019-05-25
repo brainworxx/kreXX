@@ -45,7 +45,7 @@ class AbstractRoutingTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::__construct
      */
-    public function test__construct()
+    public function testConstruct()
     {
         $processor = new ProcessNothing(Krexx::$pool);
         $this->assertAttributeEquals(Krexx::$pool, 'pool', $processor);

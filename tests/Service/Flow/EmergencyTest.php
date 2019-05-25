@@ -73,7 +73,7 @@ class EmergencyTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Service\Flow\Emergency::__construct
      */
-    public function test__construct()
+    public function testConstruct()
     {
         // Mock config
         $configMock = $this->createMock(Config::class);

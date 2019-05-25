@@ -101,7 +101,7 @@ class CallerFinderTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::__construct
      */
-    public function test__construct()
+    public function testConstruct()
     {
         $this->assertAttributeEquals('krexx', 'pattern', $this->callerFinder);
         $this->assertAttributeEquals(

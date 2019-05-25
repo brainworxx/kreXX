@@ -48,7 +48,7 @@ class FallbackTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Service\Config\Fallback::__construct
      */
-    public function test__construct()
+    public function testConstruct()
     {
         Registration::registerAdditionalskin('Unit Test Skin', 'UnitRenderer', '/dev/null');
         $config = new Config(Krexx::$pool);

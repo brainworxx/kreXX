@@ -58,7 +58,7 @@ class ConnectorsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Connectors::__construct
      */
-    public function test__construct()
+    public function testConstruct()
     {
         $expected = array(
             $this->connectors::NOTHING => array('', ''),
