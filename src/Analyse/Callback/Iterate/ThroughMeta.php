@@ -79,7 +79,7 @@ class ThroughMeta extends AbstractCallback
                     )
                 );
             } else {
-                $output .= $this->handleString($key, $metaData);
+                $output .= $this->handleNoneReflections($key, $metaData);
             }
         }
 
@@ -91,31 +91,15 @@ class ThroughMeta extends AbstractCallback
      *
      * @param string $key
      *   The key in the output list.
-     * @param string $metatext
+     * @param string|array $meta
      *   The text to display.
      *
      * @return string
      *   The rendered html.
      */
-    protected function handleString($key, $metatext)
+    protected function handleNoneReflections($key, $meta)
     {
-        /** @var Model $model */
-        $model = $this->pool->createClass(Model::class)
-            ->setData($metatext)
-            ->setName($key)
-            ->setType(static::TYPE_REFLECTION);
-
-        if ($key === static::META_COMMENT ||
-            $key === static::META_DECLARED_IN ||
-            $key === static::META_SOURCE
-        ) {
-            $model->setNormal(static::UNKNOWN_VALUE);
-            $model->setHasExtra(true);
-        } else {
-            $model->setNormal($metatext);
-        }
-
-        if (is_array($metatext)) {
+        if (is_array($meta)) {
             // Render the list of data.
             return $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
@@ -123,13 +107,28 @@ class ThroughMeta extends AbstractCallback
                     $this->pool->createClass(Model::class)
                         ->setName($key)
                         ->setType(static::TYPE_REFLECTION)
-                        ->addParameter(static::PARAM_DATA, $metatext)
+                        ->addParameter(static::PARAM_DATA, $meta)
                         ->injectCallback(
-                            $this->pool->createClass(ThroughSingleMeta::class)
+                            $this->pool->createClass(ThroughMetaSingle::class)
                         )
                 )
             );
         } else {
+            /** @var Model $model */
+            $model = $this->pool->createClass(Model::class)
+                ->setData($meta)
+                ->setName($key)
+                ->setType(static::TYPE_REFLECTION);
+
+            if ($key === static::META_COMMENT ||
+                $key === static::META_DECLARED_IN ||
+                $key === static::META_SOURCE
+            ) {
+                $model->setNormal(static::UNKNOWN_VALUE);
+                $model->setHasExtra(true);
+            } else {
+                $model->setNormal($meta);
+            }
             // Render a single data point.
             return $this->pool->render->renderSingleChild(
                 $this->dispatchEventWithModel(
