@@ -45,12 +45,12 @@ use Brainworxx\Krexx\Analyse\Model;
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  */
-class ThroughSingleMeta extends AbstractCallback
+class ThroughMetaSingle extends AbstractCallback
 {
     /**
      * {@inheritdoc}
      */
-    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughSingleMeta';
+    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMetaSingle';
 
     /**
      * Renders a simple list.
