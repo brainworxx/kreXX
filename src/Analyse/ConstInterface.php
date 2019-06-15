@@ -68,6 +68,7 @@ interface ConstInterface
     const PARAM_DATA = 'data';
     const PARAM_REF = 'ref';
     const PARAM_NAME = 'name';
+    const PARAM_META_NAME = 'metaname';
     const PARAM_MULTILINE = 'multiline';
     const PARAM_CLASSNAME = 'classname';
     const PARAM_NORMAL_GETTER = 'normalGetter';
@@ -111,7 +112,7 @@ interface ConstInterface
     const META_CLASS_NAME = 'Classname';
     const META_INTERFACES = 'Interfaces';
     const META_TRAITS = 'Traits';
-    const META_INHERITED_CLASSES = 'Inherited classes';
+    const META_INHERITED_CLASS = 'Inherited class';
 
 
     // Stuff for the skin registration.

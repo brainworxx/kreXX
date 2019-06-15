@@ -37,13 +37,16 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Comment\Classes;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use ReflectionClass;
 
 /**
  * Class Meta
  *
  * @uses ref \ReflectionClass
  *   Here we get all out data.
+ * @uses netaname string
+ *   The name of the meta data, if available.
+ *   Fallback to static::META_CLASS_DATA
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
  */
@@ -73,6 +76,11 @@ class Meta extends AbstractObjectAnalysis
 
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
+        if (isset($this->parameters[static::PARAM_META_NAME])) {
+            $name = $this->parameters[static::PARAM_META_NAME];
+        } else {
+            $name = static::META_CLASS_DATA;
+        }
 
         // We need to check, if we have a meta recursion here.
         $domId = $this->generateDomIdFromClassname($ref->getName());
@@ -85,39 +93,36 @@ class Meta extends AbstractObjectAnalysis
                         static::EVENT_MARKER_RECURSION,
                         $this->pool->createClass(Model::class)
                             ->setDomid($domId)
-                            ->setNormal(static::META_CLASS_DATA)
-                            ->setName(static::META_CLASS_DATA)
+                            ->setNormal($name)
+                            ->setName($name)
                             ->setType(static::TYPE_INTERNALS)
                     )
                 );
         }
 
-        return $this->analyseMeta($output, $domId, $ref);
+        return $output . $this->analyseMeta($domId, $ref, $name);
     }
 
     /**
      * Do the actual analysis.
      *
-     * @param $output
-     *   The output so far.
      * @param $domId
      *   The dom id for the recursion handler.
-     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref
+     * @param \ReflectionClass $ref
      *   The reflection class, the main source of information.
+     * @param string $name
+     *   The name of the property.
      *
      * @return string
      *   The generated DOM.
      */
-    protected function analyseMeta($output, $domId, ReflectionClass $ref)
+    protected function analyseMeta($domId, ReflectionClass $ref, $name)
     {
         $this->pool->recursionHandler->addToMetaHive($domId);
 
         $data = [];
-        if ($ref->isFinal() === true) {
-            $data[static::META_CLASS_NAME] = 'final class ' . $ref->getName();
-        } else {
-            $data[static::META_CLASS_NAME] = $ref->getName();
-        }
+        // Get the naming on the way.
+        $data[static::META_CLASS_NAME] = $this->generateName($ref);
 
         $data[static::META_COMMENT] = $this->pool
             ->createClass(Classes::class)
@@ -131,46 +136,40 @@ class Meta extends AbstractObjectAnalysis
                 ->filterFilePath($ref->getFileName()) .
                 ', line ' . $ref->getStartLine() . ' to ' . $ref->getEndLine();
         }
-        $interfaces = $ref->getInterfaceNames();
-        if (empty($interfaces)) {
-            $interfaces = 'n/a';
-        }
-        $data[static::META_INTERFACES] = $interfaces;
 
         // Now to collect the inheritance stuff.
-        $previousClass = $ref->getParentClass();
-        $classList = [];
-        $traitList = [];
-        while ($previousClass !== false) {
-            $classList[] = $previousClass->getName();
-            $traits = $previousClass->getTraitNames();
-            if (empty($traits) === false) {
-                $traitList = array_merge($traitList, $previousClass->getTraitNames());
-            }
-            $previousClass = $previousClass->getParentClass();
+        // Each of them will get analysed by the ThroughMeta callback.
+        $interfaces = $ref->getInterfaces();
+        if (!empty($interfaces)) {
+            $data[static::META_INTERFACES] = $interfaces;
         }
-
+        $traitList = $ref->getTraits();
         if (!empty($traitList)) {
             $data[static::META_TRAITS] = $traitList;
         }
-        if (!empty($classList)) {
-            $data[static::META_INHERITED_CLASSES] = $classList;
+        $previousClass = $ref->getParentClass();
+        if (!empty($previousClass)) {
+            // We add it via array, because the other inheritance getters
+            // aare also supplying one.
+            $data[static::META_INHERITED_CLASS] = [
+                $previousClass->getName() => $previousClass
+            ];
         }
 
-        return $output .
-            $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(
-                    static::EVENT_MARKER_ANALYSES_END,
-                    $this->pool->createClass(Model::class)
-                        ->setName(static::META_CLASS_DATA)
-                        ->setDomid($domId)
-                        ->setType(static::TYPE_INTERNALS)
-                        ->addParameter(static::PARAM_DATA, $data)
-                        ->injectCallback(
-                            $this->pool->createClass(ThroughMeta::class)
-                        )
-                )
-            );
+
+        return $this->pool->render->renderExpandableChild(
+            $this->dispatchEventWithModel(
+                static::EVENT_MARKER_ANALYSES_END,
+                $this->pool->createClass(Model::class)
+                    ->setName($name)
+                    ->setDomid($domId)
+                    ->setType(static::TYPE_INTERNALS)
+                    ->addParameter(static::PARAM_DATA, $data)
+                    ->injectCallback(
+                        $this->pool->createClass(ThroughMeta::class)
+                    )
+            )
+        );
     }
 
     /**
@@ -188,5 +187,38 @@ class Meta extends AbstractObjectAnalysis
     protected function generateDomIdFromClassname($data)
     {
         return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_c_' . md5($data);
+    }
+
+    /**
+     * Generate the class name with all "attributes" (abstract final whatever).
+     *
+     * @param \ReflectionClass $ref
+     *   Reflection of the class we are analysing.
+     *
+     * @return string
+     *   The generated class name
+     */
+    protected function generateName(ReflectionClass $ref)
+    {
+        $result = '';
+        if ($ref->isFinal() === true) {
+            $result .= 'final ';
+        }
+        if ($ref->isAbstract() === true && $ref->isTrait() === false) {
+            // Huh, traits are abstract, but you do not declare them as such.
+            $result .= 'abstract ';
+        }
+        if ($ref->isInternal() === true) {
+            $result .= 'internal ';
+        }
+        if ($ref->isInterface() === true) {
+            $result .= 'interface ';
+        } elseif ($ref->isTrait() === true) {
+            $result .= 'trait ';
+        } else {
+            $result .= 'class ';
+        }
+
+        return $result . $ref->getName();
     }
 }

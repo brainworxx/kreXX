@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
@@ -61,52 +62,81 @@ class ThroughMeta extends AbstractCallback
         $output = $this->dispatchStartEvent();
 
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
-            if ($metaData === '') {
-                // We ignore this one.
-                continue;
-            }
-
-            /** @var Model $model */
-            $model = $this->pool->createClass(Model::class)
-                ->setData($metaData)
-                ->setName($key)
-                ->setType(static::TYPE_REFLECTION);
-
-            if ($key === static::META_COMMENT ||
-                $key === static::META_DECLARED_IN ||
-                $key === static::META_SOURCE
+            if ($key === static::META_INTERFACES ||
+                $key === static::META_TRAITS ||
+                $key === static::META_INHERITED_CLASS
             ) {
-                $model->setNormal(static::UNKNOWN_VALUE);
-                $model->setHasExtra(true);
-            } else {
-                $model->setNormal($metaData);
-            }
-
-            if (is_array($metaData)) {
-                // Render the list of data.
                 $output .= $this->pool->render->renderExpandableChild(
                     $this->dispatchEventWithModel(
-                        __FUNCTION__ . $key,
+                        $key,
                         $this->pool->createClass(Model::class)
                             ->setName($key)
-                            ->setType(static::TYPE_REFLECTION)
+                            ->setType(static::TYPE_INTERNALS)
                             ->addParameter(static::PARAM_DATA, $metaData)
                             ->injectCallback(
-                                $this->pool->createClass(ThroughSingleMeta::class)
+                                $this->pool->createClass(ThroughMetaReflections::class)
                             )
                     )
                 );
             } else {
-                // Render a single data point.
-                $output .= $this->pool->render->renderSingleChild(
-                    $this->dispatchEventWithModel(
-                        __FUNCTION__ . $key . static::EVENT_MARKER_END,
-                        $model
-                    )
-                );
+                $output .= $this->handleString($key, $metaData);
             }
         }
 
         return $output;
+    }
+
+    /**
+     * The info is already here. We just need to output them.
+     *
+     * @param string $key
+     *   The key in the output list.
+     * @param string $metatext
+     *   The text to display.
+     *
+     * @return string
+     *   The rendered html.
+     */
+    protected function handleString($key, $metatext)
+    {
+        /** @var Model $model */
+        $model = $this->pool->createClass(Model::class)
+            ->setData($metatext)
+            ->setName($key)
+            ->setType(static::TYPE_REFLECTION);
+
+        if ($key === static::META_COMMENT ||
+            $key === static::META_DECLARED_IN ||
+            $key === static::META_SOURCE
+        ) {
+            $model->setNormal(static::UNKNOWN_VALUE);
+            $model->setHasExtra(true);
+        } else {
+            $model->setNormal($metatext);
+        }
+
+        if (is_array($metatext)) {
+            // Render the list of data.
+            return $this->pool->render->renderExpandableChild(
+                $this->dispatchEventWithModel(
+                    __FUNCTION__ . $key,
+                    $this->pool->createClass(Model::class)
+                        ->setName($key)
+                        ->setType(static::TYPE_REFLECTION)
+                        ->addParameter(static::PARAM_DATA, $metatext)
+                        ->injectCallback(
+                            $this->pool->createClass(ThroughSingleMeta::class)
+                        )
+                )
+            );
+        } else {
+            // Render a single data point.
+            return $this->pool->render->renderSingleChild(
+                $this->dispatchEventWithModel(
+                    __FUNCTION__ . $key . static::EVENT_MARKER_END,
+                    $model
+                )
+            );
+        }
     }
 }
