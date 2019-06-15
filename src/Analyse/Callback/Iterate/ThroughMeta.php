@@ -35,11 +35,14 @@
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
-use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Displaying the meta stuff from the class analysis.
+ *
+ * @uses array data
+ *   An array of the meta data we need to iterate.
+ *   Might contain strings or another array.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  */
@@ -62,9 +65,9 @@ class ThroughMeta extends AbstractCallback
         $output = $this->dispatchStartEvent();
 
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
-            if ($key === static::META_INTERFACES ||
-                $key === static::META_TRAITS ||
-                $key === static::META_INHERITED_CLASS
+            if ($key === static::META_INHERITED_CLASS ||
+                $key === static::META_INTERFACES ||
+                $key === static::META_TRAITS
             ) {
                 $output .= $this->pool->render->renderExpandableChild(
                     $this->dispatchEventWithModel(
@@ -103,7 +106,7 @@ class ThroughMeta extends AbstractCallback
             // Render the list of data.
             return $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . $key,
+                    __FUNCTION__ . $key . static::EVENT_MARKER_END,
                     $this->pool->createClass(Model::class)
                         ->setName($key)
                         ->setType(static::TYPE_REFLECTION)
