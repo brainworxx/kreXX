@@ -86,7 +86,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughResource.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughMeta.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughMetaReflections.php';
-        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughSingleMeta.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughMetaSingle.php';
 
         include_once KREXX_DIR . 'src/Analyse/Caller/AbstractCaller.php';
         include_once KREXX_DIR . 'src/Analyse/Caller/CallerFinder.php';
