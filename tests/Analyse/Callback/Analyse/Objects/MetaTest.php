@@ -45,6 +45,7 @@ use Brainworxx\Krexx\Tests\Fixtures\MultitraitFixture;
 use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
+use ReflectionClass;
 
 class MetaTest extends AbstractTest
 {
@@ -75,7 +76,7 @@ class MetaTest extends AbstractTest
         $meta = new Meta(Krexx::$pool);
 
         // Setup a fixture
-        $ref = new \ReflectionClass(SimpleFixture::class);
+        $ref = new ReflectionClass(SimpleFixture::class);
         $expectedDomId = 'k42_c_' . md5(SimpleFixture::class);
 
         // Test for the events
@@ -132,7 +133,7 @@ class MetaTest extends AbstractTest
         $meta = new Meta(Krexx::$pool);
 
         // Setup a fixture
-        $ref = new \ReflectionClass(ComplexMethodFixture::class);
+        $ref = new ReflectionClass(ComplexMethodFixture::class);
         $expectedDomId = 'k42_c_' . md5(ComplexMethodFixture::class);
 
         // Test for the events
