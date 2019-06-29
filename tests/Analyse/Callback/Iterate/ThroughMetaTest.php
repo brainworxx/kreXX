@@ -84,37 +84,6 @@ class ThroughMetaTest extends AbstractTest
     }
 
     /**
-     * Test the meta iteration with a simple array and an unspecific key.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::handleNoneReflections
-     */
-    public function testCallMeArray()
-    {
-        $key = 'some array';
-        $this->mockEventService(
-            [$this->startEvent, $this->throughMeta],
-            [$this->noneRefEevent . $key . $this->throughMeta::EVENT_MARKER_END, $this->throughMeta]
-        );
-
-        $array = ['empty array whatever'];
-        $fixture = [
-            $this->throughMeta::PARAM_DATA => [
-                $key => $array
-            ]
-        ];
-        $this->throughMeta->setParams($fixture)->callMe();
-
-        $this->assertCount(1, $this->renderNothing->model['renderExpandableChild']);
-        /** @var \Brainworxx\Krexx\Analyse\Model $model */
-        $model = $this->renderNothing->model['renderExpandableChild'][0];
-        $this->assertEquals($key, $model->getName());
-        $this->assertEquals($this->throughMeta::TYPE_REFLECTION, $model->getType());
-        $parameters = $model->getParameters();
-        $this->assertEquals($array, $parameters[$this->throughMeta::PARAM_DATA]);
-    }
-
-    /**
      * Test with a comment string.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe

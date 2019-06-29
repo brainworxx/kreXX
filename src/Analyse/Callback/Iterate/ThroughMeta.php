@@ -102,43 +102,27 @@ class ThroughMeta extends AbstractCallback
      */
     protected function handleNoneReflections($key, $meta)
     {
-        if (is_array($meta)) {
-            // Render the list of data.
-            return $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . $key . static::EVENT_MARKER_END,
-                    $this->pool->createClass(Model::class)
-                        ->setName($key)
-                        ->setType(static::TYPE_REFLECTION)
-                        ->addParameter(static::PARAM_DATA, $meta)
-                        ->injectCallback(
-                            $this->pool->createClass(ThroughMetaSingle::class)
-                        )
-                )
-            );
-        } else {
-            /** @var Model $model */
-            $model = $this->pool->createClass(Model::class)
-                ->setData($meta)
-                ->setName($key)
-                ->setType(static::TYPE_REFLECTION);
+        /** @var Model $model */
+        $model = $this->pool->createClass(Model::class)
+            ->setData($meta)
+            ->setName($key)
+            ->setType(static::TYPE_REFLECTION);
 
-            if ($key === static::META_COMMENT ||
-                $key === static::META_DECLARED_IN ||
-                $key === static::META_SOURCE
-            ) {
-                $model->setNormal(static::UNKNOWN_VALUE);
-                $model->setHasExtra(true);
-            } else {
-                $model->setNormal($meta);
-            }
-            // Render a single data point.
-            return $this->pool->render->renderSingleChild(
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . $key . static::EVENT_MARKER_END,
-                    $model
-                )
-            );
+        if ($key === static::META_COMMENT ||
+            $key === static::META_DECLARED_IN ||
+            $key === static::META_SOURCE
+        ) {
+            $model->setNormal(static::UNKNOWN_VALUE);
+            $model->setHasExtra(true);
+        } else {
+            $model->setNormal($meta);
         }
+        // Render a single data point.
+        return $this->pool->render->renderSingleChild(
+            $this->dispatchEventWithModel(
+                __FUNCTION__ . $key . static::EVENT_MARKER_END,
+                $model
+            )
+        );
     }
 }
