@@ -35,8 +35,12 @@
 namespace Brainworxx\Krexx\Tests\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMetaReflections;
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMetaSingle;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 
 class ThroughMetaTest extends AbstractTest
@@ -50,6 +54,11 @@ class ThroughMetaTest extends AbstractTest
      * @var string
      */
     protected $noneRefEevent = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMeta::handleNoneReflections';
+
+    /**
+     * @var string
+     */
+    protected $refEventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughMeta::';
 
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta
@@ -66,8 +75,12 @@ class ThroughMetaTest extends AbstractTest
         parent::setUp();
 
         $this->throughMeta = new ThroughMeta(Krexx::$pool);
+        // Mock the redner class, to prevent further processing.
         $this->renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->render = $this->renderNothing;
+        // Overwrite the callbacks, to prevent further processing.
+        Krexx::$pool->rewrite[ThroughMetaReflections::class] = CallbackNothing::class;
+        Krexx::$pool->rewrite[ThroughMetaSingle::class] = CallbackNothing::class;
     }
 
     /**
@@ -109,52 +122,135 @@ class ThroughMetaTest extends AbstractTest
      */
     public function testCallMeComment()
     {
-        $key = $this->throughMeta::META_COMMENT;
+        $this->handleNoneReflections(
+            $this->throughMeta::META_COMMENT,
+            'Look at me, I\'m a comment!'
+        );
+    }
+
+    /**
+     * Test with a declared-in string
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::handleNoneReflections
+     */
+    public function testCallMeDeclaredIn()
+    {
+        $this->handleNoneReflections(
+            $this->throughMeta::META_DECLARED_IN,
+            'Some file with a line number.'
+        );
+    }
+
+    /**
+     * Test with attached source string.
+     *
+     * -> testCallMeSource
+     * Insert Matrix joke here.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::handleNoneReflections
+     */
+    public function testCallMeSource()
+    {
+        $source = '// Doing stuff.' . PHP_EOL;
+        $source .= 'echo \'something\';' . PHP_EOL;
+        $source .= PHP_EOL;
+        $source .= 'die();';
+
+        $this->handleNoneReflections(
+            $this->throughMeta::META_SOURCE,
+            $source
+        );
+    }
+
+    /**
+     * Handle the one liner strings.
+     *
+     * @param string $key
+     * @param string $payload
+     */
+    protected function handleNoneReflections(string $key, string $payload)
+    {
         $this->mockEventService(
             [$this->startEvent, $this->throughMeta],
             [$this->noneRefEevent . $key . $this->throughMeta::EVENT_MARKER_END, $this->throughMeta]
         );
 
-        $comment = 'Look at me, I\'m a comment!';
         $fixture = [
             $this->throughMeta::PARAM_DATA => [
-                $key => $comment
+                $key => $payload
             ]
         ];
+
         $this->throughMeta->setParams($fixture)->callMe();
 
         $this->assertCount(1, $this->renderNothing->model['renderSingleChild']);
         /** @var \Brainworxx\Krexx\Analyse\Model $model */
         $model = $this->renderNothing->model['renderSingleChild'][0];
-        $this->assertEquals($comment, $model->getData());
+        $this->assertEquals($payload, $model->getData());
         $this->assertEquals($key, $model->getName());
         $this->assertEquals($this->throughMeta::TYPE_REFLECTION, $model->getType());
         $this->assertEquals($this->throughMeta::UNKNOWN_VALUE, $model->getNormal());
         $this->assertTrue($model->getHasExtra());
     }
 
-    public function testCallMeDeclaredIn()
-    {
-        $this->markTestIncomplete('Write me!');
-    }
-
-    public function testCallMeSource()
-    {
-        $this->markTestIncomplete('Write me!');
-    }
-
+    /**
+     * Test the interface processing.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
+     */
     public function testCallMeInterfaces()
     {
-        $this->markTestIncomplete('Write me!');
+        $this->handleReflections($this->throughMeta::META_INTERFACES);
     }
 
+    /**
+     * Test the trait processing.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
+     */
     public function testCallMeTraits()
     {
-        $this->markTestIncomplete('Write me!');
+        $this->handleReflections($this->throughMeta::META_TRAITS);
     }
 
     public function testCallMeInherited()
     {
-        $this->markTestIncomplete('Write me!');
+        $this->handleReflections($this->throughMeta::META_INHERITED_CLASS);
+    }
+
+    /**
+     * Handle reflection payloads.
+     *
+     * @param string $key
+     *
+     * @throws \ReflectionException
+     */
+    protected function handleReflections($key)
+    {
+        $this->mockEventService(
+            [$this->startEvent, $this->throughMeta],
+            [$this->refEventPrefix . $key, $this->throughMeta]
+        );
+
+        // Actually, we just pass thei one furhter down the rabbit hole, so we
+        // might as well use a StdClass. But we don't.
+        $payload = new ReflectionClass($this);
+        $fixture = [
+            $this->throughMeta::PARAM_DATA => [
+                $key => $payload
+            ]
+        ];
+
+        $this->throughMeta->setParams($fixture)->callMe();
+
+        $this->assertCount(1, $this->renderNothing->model['renderExpandableChild']);
+        /** @var \Brainworxx\Krexx\Analyse\Model $model */
+        $model = $this->renderNothing->model['renderExpandableChild'][0];
+        $this->assertEquals($key, $model->getName());
+        $this->assertEquals($this->throughMeta::TYPE_INTERNALS, $model->getType());
+        $parameters = $model->getParameters();
+        $this->assertEquals($payload, $parameters[$this->throughMeta::PARAM_DATA]);
     }
 }
