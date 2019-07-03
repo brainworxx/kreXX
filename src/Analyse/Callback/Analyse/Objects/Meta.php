@@ -136,7 +136,7 @@ class Meta extends AbstractObjectAnalysis
             $data[static::META_DECLARED_IN] = $this->pool
                 ->fileService
                 ->filterFilePath($ref->getFileName()) .
-                ', line ' . $ref->getStartLine() . ' to ' . $ref->getEndLine();
+                ', line ' . $ref->getStartLine();
         }
 
         // Now to collect the inheritance stuff.
