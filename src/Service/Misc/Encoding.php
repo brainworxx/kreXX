@@ -156,7 +156,7 @@ class Encoding
     public function encodeString($data, $code = false)
     {
         // We will not encode an empty string.
-        if (empty($data) === true) {
+        if ($data === '') {
             return '';
         }
 
@@ -165,16 +165,13 @@ class Encoding
             // We encoding @, because we need them for our chunks.
             // The { are needed in the marker of the skin.
             // We also replace tabs with two nbsp's.
-            $sortingCallback = [$this, 'arrayMapCallbackCode'];
             $search = ['@', '{', chr(9)];
-            $replace = ['&#64;', '&#123;', '&nbsp;&nbsp;'];
         } else {
             // We encoding @, because we need them for our chunks.
             // The { are needed in the marker of the skin.
-            $sortingCallback = [$this, 'arrayMapCallbackNormal'];
             $search = ['@', '{', '  '];
-            $replace = ['&#64;', '&#123;', '&nbsp;&nbsp;'];
         }
+        $replace = ['&#64;', '&#123;', '&nbsp;&nbsp;'];
 
         // There are several places here, that may throw a warning.
         set_error_handler(
@@ -200,6 +197,11 @@ class Encoding
                 // Something went wrong with the encoding, we need to
                 // completely encode this one to be able to display it at all!
                 $data = mb_convert_encoding($data, 'UTF-32', mb_detect_encoding($data));
+                if ($code === true) {
+                    $sortingCallback = [$this, 'arrayMapCallbackCode'];
+                } else {
+                    $sortingCallback = [$this, 'arrayMapCallbackNormal'];
+                }
                 $result = implode("", array_map($sortingCallback, unpack("N*", $data)));
             }
         }
