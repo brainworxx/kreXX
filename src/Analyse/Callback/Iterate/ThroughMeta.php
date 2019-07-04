@@ -65,7 +65,7 @@ class ThroughMeta extends AbstractCallback
         $output = $this->dispatchStartEvent();
 
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
-            if ($metaData === '') {
+            if (empty($metaData) === true) {
                 // Nothing to see here, move on.
                 continue;
             }

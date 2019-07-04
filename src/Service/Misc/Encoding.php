@@ -59,7 +59,7 @@ class Encoding
     {
         $this->pool = $pool;
 
-        // Register some namspaced cheap polyfills, in case the mb-string
+        // Register some namespaced cheap polyfills, in case the mb-string
         // extension is not available
         if (function_exists('mb_detect_encoding') === false) {
 
@@ -156,7 +156,7 @@ class Encoding
     public function encodeString($data, $code = false)
     {
         // We will not encode an empty string.
-        if ($data === '') {
+        if (empty($data) === true) {
             return '';
         }
 
