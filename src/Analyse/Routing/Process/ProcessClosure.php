@@ -112,7 +112,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
             $model->setType(static::TYPE_CLOSURE)
                 ->setNormal(static::UNKNOWN_VALUE)
                 // Remove the ',' after the last char.
-                ->setConnectorParameters(trim($paramList, ', '))
+                ->setConnectorParameters(rtrim($paramList, ', '))
                 ->setDomid($this->generateDomIdFromObject($model->getData()))
                 ->setConnectorType(Connectors::METHOD)
                 ->addParameter(static::PARAM_DATA, $result)
