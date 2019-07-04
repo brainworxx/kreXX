@@ -231,21 +231,24 @@ class File
      */
     public function getFileContents($filePath, $showError = true)
     {
-        $filePath = realpath($filePath);
+        $realpath = realpath($filePath);
 
-        if ($this->fileIsReadable($filePath) === false) {
+        if ($this->fileIsReadable($realpath) === false) {
             if ($showError === true) {
+                if ($realpath === false) {
+                    $realpath = $filePath;
+                }
                 // This file was not readable! We need to tell the user!
-                $this->pool->messages->addMessage('fileserviceAccess', [$this->filterFilePath($filePath)]);
+                $this->pool->messages->addMessage('fileserviceAccess', [$this->filterFilePath($realpath)]);
             }
             // Return empty string.
             return '';
         }
 
         // Is it readable and does it have any content?
-        $size = filesize($filePath);
+        $size = filesize($realpath);
         if ($size > 0) {
-            $file = fopen($filePath, 'r');
+            $file = fopen($realpath, 'r');
             $result = fread($file, $size);
             fclose($file);
             return $result;
