@@ -239,19 +239,17 @@ class Codegen implements ConstInterface
 
         // Retrieve the type and the name, without calling a possible autoloader.
         if ($reflectionParameter->isPassedByReference() === true) {
-            if (strpos($type, '&$') !== 0) {
-                $name = $type . ' ';
-            }
-            $name .= '&$' . $reflectionParameter->getName();
+            $prefix = '&$';
         } else {
-            if (strpos($type, '$') !== 0) {
-                $name = $type . ' ';
-            }
-            $name .= '$' . $reflectionParameter->getName();
+            $prefix = '$';
         }
+        if (strpos($type, $prefix) !== 0) {
+            $name = $type . ' ';
+        }
+        $name .= $prefix . $reflectionParameter->getName();
 
         // Retrieve the default value, if available.
-        if ($reflectionParameter->isDefaultValueAvailable()) {
+        if ($reflectionParameter->isDefaultValueAvailable() === true) {
             try {
                 $default = $reflectionParameter->getDefaultValue();
             } catch (ReflectionException $e) {
