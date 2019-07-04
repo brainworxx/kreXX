@@ -119,7 +119,7 @@ class File
 
         if (isset($content[$readTo]) === false) {
             // We can not read this far, set it to the last line.
-            $readTo = count($content) - 1;
+            $readTo = $content->count() - 1;
         }
 
         for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
@@ -147,6 +147,8 @@ class File
     /**
      * Simply read a file into a string.
      *
+     * Used for source analysis.
+     *
      * @param string $filePath
      * @param int $readFrom
      * @param int $readTo
@@ -168,7 +170,7 @@ class File
             $readTo = 0;
         }
 
-        $countContent = count($content);
+        $countContent = $content->count();
 
         if ($countContent === 0) {
             return $result;
@@ -182,7 +184,6 @@ class File
         for ($currentLineNo = $readFrom; $currentLineNo <= $readTo; ++$currentLineNo) {
             $result .= $content[$currentLineNo];
         }
-
 
         return $result;
     }
@@ -217,6 +218,8 @@ class File
 
     /**
      * Reads the content of a file.
+     *
+     * Used to read kreXX resources and configuration into a string
      *
      * @param string $filePath
      *   The path to the file.
@@ -320,6 +323,7 @@ class File
     public function filterFilePath($filePath)
     {
         $realpath = realpath($filePath);
+
         // File exist?
         if ($realpath === false) {
             $realpath = ltrim($filePath, DIRECTORY_SEPARATOR);
