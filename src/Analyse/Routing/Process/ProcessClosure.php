@@ -35,7 +35,6 @@
 namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
-use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethodAnalysis;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Functions;
 use Brainworxx\Krexx\Analyse\Model;
