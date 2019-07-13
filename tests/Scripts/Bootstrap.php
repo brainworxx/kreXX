@@ -32,6 +32,10 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+namespace {
+    define('KREXX_TEST_IN_PROGRESS', true);
+}
+
 namespace Brainworxx\Krexx\Analyse\Caller {
 
     use Brainworxx\Krexx\Analyse\ConstInterface;
