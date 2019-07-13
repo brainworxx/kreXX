@@ -472,4 +472,203 @@ namespace Brainworxx\Krexx\Service\Misc {
 
         return \file_put_contents($filename, $data, $flags, $context);
     }
+
+    /**
+     * Mocking the file unlinking. We also store called parameters and return
+     * them when we are done mocking.
+     *
+     * @param string $filename
+     * @param bool|null $startMock
+     *
+     * @return array|bool
+     */
+    function unlink(string $filename, bool $startMock = null)
+    {
+        static $mockingInProgress = false;
+        // Remembering the parameters right here.
+        static $parameters = [];
+
+        if ($startMock !== null) {
+            $mockingInProgress = $startMock;
+
+            if ($startMock === true) {
+                $parameters = [];
+                return true;
+            }
+
+            if ($startMock === false) {
+                return $parameters;
+            }
+        }
+
+        if ($mockingInProgress === true) {
+            $parameters[] = $filename;
+            return true;
+        }
+
+        return \unlink($filename);
+    }
+
+    /**
+     * Simply mocking the chmod function.
+     *
+     * @param string $filename
+     * @param $mode
+     * @param bool|null $startMock
+     *
+     * @return array|bool
+     */
+    function chmod(string $filename, $mode, bool $startMock = null)
+    {
+        static $mockingInProgress = false;
+        // Remembering the parameters right here.
+        static $parameters = [];
+
+        if ($startMock !== null) {
+            $mockingInProgress = $startMock;
+
+            if ($startMock === true) {
+                $parameters = [];
+            }
+
+            if ($startMock === false) {
+                return $parameters;
+            }
+
+            return true;
+        }
+
+        if ($mockingInProgress === true) {
+            $parameters[] = $filename;
+            return true;
+        }
+
+        return \chmod($filename, $mode);
+    }
+
+    /**
+     * Mocking the realpath.
+     *
+     * @param string $filename
+     * @param bool|null $startMock
+     *
+     * @return bool|string
+     */
+    function realpath(string $filename, bool $startMock = null)
+    {
+        static $mockingInProgress = false;
+
+        if ($startMock !== null) {
+            $mockingInProgress = $startMock;
+        }
+
+        if ($mockingInProgress === true) {
+            return $filename;
+        }
+
+        return \realpath($filename);
+    }
+
+    /**
+     * Mocking the is_file.
+     *
+     * @param string $filename
+     * @param bool|null $startMock
+     * @return bool|string
+     */
+    function is_file(string $filename, bool $startMock = null)
+    {
+        static $mockingInProgress = false;
+
+        if ($startMock !== null) {
+            $mockingInProgress = $startMock;
+        }
+
+        if ($mockingInProgress === true) {
+            return true;
+        }
+
+        return \is_file($filename);
+    }
+
+    /**
+     * Mocking the ir_readable function.
+     *
+     * @param string $filename
+     * @param bool|null $startMock
+     * @return bool|array
+     */
+    function is_readable(string $filename, bool $startMock = null)
+    {
+        static $mockingInProgress = false;
+        static $parameters = [];
+
+
+        if ($startMock !== null) {
+            $mockingInProgress = $startMock;
+
+            if ($startMock === true) {
+                $parameters = [];
+                return true;
+            }
+
+            if ($startMock === false) {
+                return $parameters;
+            }
+        }
+
+        if ($mockingInProgress === true) {
+            $parameters[] = $filename;
+            return true;
+        }
+
+        return \is_readable($filename);
+    }
+
+    /**
+     * Mocking the file time.
+     *
+     * @param string $filename
+     * @param bool|null $startMock
+     *
+     * @return bool|false|int
+     */
+    function filemtime(string $filename, bool $startMock = null)
+    {
+        static $mockingInProgress = false;
+
+        if ($startMock !== null) {
+            $mockingInProgress = $startMock;
+        }
+
+        if ($mockingInProgress === true) {
+            return 42;
+        }
+
+        return \filemtime($filename);
+    }
+
+    /**
+     * Mocking the time.
+     *
+     * Take that, time!
+     *
+     * @param bool|null $startMock
+     *
+     * @return int
+     */
+    function time(bool $startMock = null)
+    {
+        static $mockingInProgress = false;
+
+        if ($startMock !== null) {
+            $mockingInProgress = $startMock;
+        }
+
+        if ($mockingInProgress === true) {
+            return 41;
+        }
+
+        return \time();
+    }
 }
