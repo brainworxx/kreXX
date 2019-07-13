@@ -231,31 +231,22 @@ class File
      */
     public function getFileContents($filePath, $showError = true)
     {
-        $realpath = realpath($filePath);
-
-        if ($this->fileIsReadable($realpath) === false) {
+        if ($this->fileIsReadable($filePath) === false) {
             if ($showError === true) {
-                if ($realpath === false) {
-                    $realpath = $filePath;
-                }
                 // This file was not readable! We need to tell the user!
-                $this->pool->messages->addMessage('fileserviceAccess', [$this->filterFilePath($realpath)]);
+                $this->pool->messages->addMessage('fileserviceAccess', [$this->filterFilePath($filePath)]);
             }
             // Return empty string.
             return '';
         }
 
-        // Is it readable and does it have any content?
-        $size = filesize($realpath);
-        if ($size > 0) {
-            $file = fopen($realpath, 'r');
-            $result = fread($file, $size);
-            fclose($file);
-            return $result;
-        }
-
-        // Empty file returns an empty string.
-        return '';
+        // Get the file contents.
+        $filePath = realpath($filePath);
+        $size = filesize($filePath);
+        $file = fopen($filePath, 'r');
+        $result = fread($file, $size);
+        fclose($file);
+        return $result;
     }
 
     /**
@@ -284,32 +275,35 @@ class File
      */
     public function deleteFile($filePath)
     {
-        $filePath = realpath($filePath);
+        $realpath = realpath($filePath);
+        if ($realpath === false) {
+            $this->pool->messages->addMessage('fileserviceDelete', [$this->filterFilePath($filePath)]);
+        }
 
         // Fast forward for the current chunk files.
-        if (isset(static::$isReadableCache[$filePath]) === true) {
-            unlink($filePath);
+        if (isset(static::$isReadableCache[$realpath]) === true) {
+            unlink($realpath);
             return;
         }
 
         // Check if it is an actual file and if it is writable.
         // Those are left over chunks from previous calls, or old logfiles.
-        if (is_file($filePath) === true) {
+        if (is_file($realpath) === true) {
             set_error_handler(
                 function () {
                     /* do nothing */
                 }
             );
             // Make sure it is unlinkable.
-            chmod($filePath, 0777);
-            if (unlink($filePath) === true) {
+            chmod($realpath, 0777);
+            if (unlink($realpath) === true) {
                 restore_error_handler();
                 return;
             }
         }
 
         // We have a permission problem here!
-        $this->pool->messages->addMessage('fileserviceDelete', [$this->filterFilePath($filePath)]);
+        $this->pool->messages->addMessage('fileserviceDelete', [$this->filterFilePath($realpath)]);
         restore_error_handler();
     }
 
