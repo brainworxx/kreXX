@@ -457,7 +457,7 @@ namespace Brainworxx\Krexx\Service\Misc {
      *
      * @return int|bool
      */
-    function file_put_contents($filename, $data, $flags = 0, $context = null, $startMock = null)
+    function file_put_contents(string $filename, string $data, int $flags = 0, $context = null, bool $startMock = null)
     {
         static $mockingInProgress = false;
 

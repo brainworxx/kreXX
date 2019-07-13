@@ -286,17 +286,18 @@ class File
     {
         $filePath = realpath($filePath);
 
-        // Fast forward for the chunk files.
-        if (static::$isReadableCache[$filePath] === true) {
+        // Fast forward for the current chunk files.
+        if (isset(static::$isReadableCache[$filePath]) === true) {
             unlink($filePath);
             return;
         }
 
         // Check if it is an actual file and if it is writable.
+        // Those are left over chunks from previous calls, or old logfiles.
         if (is_file($filePath) === true) {
             set_error_handler(
                 function () {
-                /* do nothing */
+                    /* do nothing */
                 }
             );
             // Make sure it is unlinkable.
@@ -305,11 +306,11 @@ class File
                 restore_error_handler();
                 return;
             }
-
-            // We have a permission problem here!
-            $this->pool->messages->addMessage('fileserviceDelete', [$this->filterFilePath($filePath)]);
-            restore_error_handler();
         }
+
+        // We have a permission problem here!
+        $this->pool->messages->addMessage('fileserviceDelete', [$this->filterFilePath($filePath)]);
+        restore_error_handler();
     }
 
     /**
