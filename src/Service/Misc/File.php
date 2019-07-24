@@ -60,7 +60,7 @@ class File
     /**
      * The current docroot.
      *
-     * @var string|false
+     * @var string|bool
      */
     protected $docRoot;
 
