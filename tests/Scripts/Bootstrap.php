@@ -36,36 +36,6 @@ namespace {
     define('KREXX_TEST_IN_PROGRESS', true);
 }
 
-namespace Brainworxx\Krexx\Analyse\Caller {
-
-    use Brainworxx\Krexx\Analyse\ConstInterface;
-
-    /**
-     * Mocking the debug backtrace in the CallerFinder.
-     */
-    function debug_backtrace($options, $limit, $mockData = null)
-    {
-        static $returnValue = [
-            0 => [],
-            1 => [],
-            2 => [],
-            3 => [],
-            4 => [
-                ConstInterface::TRACE_FUNCTION => 'krexx',
-                ConstInterface::TRACE_CLASS => 'MockClass',
-                ConstInterface::TRACE_FILE => 'mockfile.php',
-                ConstInterface::TRACE_LINE => 999
-            ]
-        ];
-        // Update the return data.
-        if (is_array($mockData)) {
-            $returnValue = $mockData;
-        }
-
-        return $returnValue;
-    }
-}
-
 namespace Brainworxx\Krexx\Service\Config {
 
     /**

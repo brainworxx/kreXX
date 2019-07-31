@@ -168,6 +168,7 @@ class EmergencyTest extends AbstractTest
      */
     public function testCheckEmergencyBreakFailedMemory()
     {
+        $this->mockDebugBacktraceStandard();
         $this->setValueByReflection('serverMemoryLimit', 550, $this->emergency);
         $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
         \Brainworxx\Krexx\Service\Flow\memory_get_usage(true, 500);
@@ -188,6 +189,8 @@ class EmergencyTest extends AbstractTest
      */
     public function testCheckEmergencyBreakFailedRuntime()
     {
+        $this->mockDebugBacktraceStandard();
+        
         // Make sure that the memory check succeeds.
         $this->setValueByReflection('serverMemoryLimit', 5000, $this->emergency);
         $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);

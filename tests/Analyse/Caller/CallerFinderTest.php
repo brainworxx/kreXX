@@ -130,11 +130,9 @@ class CallerFinderTest extends AbstractTest
      */
     public function testFindCallerNormal()
     {
-        \Brainworxx\Krexx\Analyse\Caller\debug_backtrace(
-            'xxx',
-            'xxx',
-            $this->createFixture()
-        );
+        $debugBacktrace = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Caller\\', 'debug_backtrace');
+        $debugBacktrace->expects($this->once())
+            ->willReturn($this->createFixture());
 
         // Run the test
         $result = $this->callerFinder->findCaller('', $this->subjectVar);
@@ -156,11 +154,10 @@ class CallerFinderTest extends AbstractTest
      */
     public function testFindCallerHeadline()
     {
-        \Brainworxx\Krexx\Analyse\Caller\debug_backtrace(
-            'xxx',
-            'xxx',
-            $this->createFixture()
-        );
+
+        $debugBacktrace = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Caller\\', 'debug_backtrace');
+        $debugBacktrace->expects($this->once())
+            ->willReturn($this->createFixture());
 
         // Run the test
         $result = $this->callerFinder->findCaller(static::HEADLINE_STRING, $this->subjectVar);
@@ -186,11 +183,9 @@ class CallerFinderTest extends AbstractTest
         $fixture = $this->createFixture();
         $fixture[4][ConstInterface::TRACE_FILE] .= ' file not there';
 
-        \Brainworxx\Krexx\Analyse\Caller\debug_backtrace(
-            'xxx',
-            'xxx',
-            $fixture
-        );
+        $debugBacktrace = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Caller\\', 'debug_backtrace');
+        $debugBacktrace->expects($this->once())
+            ->willReturn($fixture);
 
         // Run the test
         $result = $this->callerFinder->findCaller(static::HEADLINE_STRING, $this->subjectVar);
