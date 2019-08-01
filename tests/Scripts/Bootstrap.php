@@ -46,35 +46,6 @@ namespace {
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process {
 
-    use Brainworxx\Krexx\Analyse\ConstInterface;
-
-    /**
-     * Mocking the debug backtrace for the backtrace processor.
-     */
-    function debug_backtrace()
-    {
-        $data = 'data';
-        $someFile = 'some file';
-        return [
-            [
-                ConstInterface::TRACE_FILE => KREXX_DIR . 'src' . DIRECTORY_SEPARATOR . 'blargh',
-                $data => 'Step 1',
-            ],
-            [
-                ConstInterface::TRACE_FILE => $someFile,
-                $data => 'Step 2',
-            ],
-            [
-                ConstInterface::TRACE_FILE => $someFile,
-                $data => 'Step 3',
-            ],
-            [
-                ConstInterface::TRACE_FILE => KREXX_DIR . 'src' . DIRECTORY_SEPARATOR . 'whatever',
-                $data => 'Step 4',
-            ],
-        ];
-    }
-}
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process {
 
