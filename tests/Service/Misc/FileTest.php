@@ -61,23 +61,10 @@ class FileTest extends AbstractTest
         $this->setValueByReflection('docRoot', 'doc ruth', $this->file);
         // Reset the writable cache in the file service.
         $this->setValueByReflection('isReadableCache', [], $this->file);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        // undo the mocking.
-        \Brainworxx\Krexx\Service\Misc\unlink('', false);
-        \Brainworxx\Krexx\Service\Misc\chmod('', 0777, false);
-        \Brainworxx\Krexx\Service\Misc\realpath('', false);
-        \Brainworxx\Krexx\Service\Misc\is_file('', false);
-        \Brainworxx\Krexx\Service\Misc\is_file('', false);
-        \Brainworxx\Krexx\Service\Misc\filemtime('', false);
-        \Brainworxx\Krexx\Service\Misc\time(false);
+        // Mock the realpath of the not existing files.
+        $realpath = $this->getFunctionMock('\\Brainworxx\\Krexx\ßService\\Misc\\', 'realpath');
+        $realpath->expects($this->any())
+            ->will($this->returnArgument(1));
     }
 
     /**
@@ -247,19 +234,21 @@ class FileTest extends AbstractTest
     public function testDeleteFileRegistered()
     {
         // Start the mocking.
-        \Brainworxx\Krexx\Service\Misc\unlink('', true);
-        \Brainworxx\Krexx\Service\Misc\chmod('', 0777, true);
-        \Brainworxx\Krexx\Service\Misc\realpath('', true);
+        $chmod = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'chmod');
+        $chmod->expects($this->never());
+
+        $payload = 'some_file.txt';
+        $unlink = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'unlink');
+        $unlink->expects($this->once())
+            ->with($payload)
+            ->will($this->returnValue(true));
 
         // Execute the test.
-        $payload = 'some_file.txt';
         $fileService = new File(Krexx::$pool);
         $this->setValueByReflection('isReadableCache', [$payload => true], $fileService);
         $fileService->deleteFile($payload);
 
         // Check the results.
-        $this->assertEquals([$payload], \Brainworxx\Krexx\Service\Misc\unlink('', false));
-        $this->assertEquals([], \Brainworxx\Krexx\Service\Misc\chmod('', 0777, false));
         $this->assertEquals([], Krexx::$pool->messages->getKeys());
     }
 
@@ -271,8 +260,10 @@ class FileTest extends AbstractTest
     public function testDeleteFileNotExisting()
     {
         // Start the mocking.
-        \Brainworxx\Krexx\Service\Misc\unlink('', true);
-        \Brainworxx\Krexx\Service\Misc\chmod('', 0777, true);
+        $unlink = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'unlink');
+        $unlink->expects($this->never());
+        $chmod = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'chmod');
+        $chmod->expects($this->never());
 
         // Execute the test.
         $payload = 'not_existing_file.txt';
@@ -280,8 +271,6 @@ class FileTest extends AbstractTest
         $fileService->deleteFile($payload);
 
         // Check the results.
-        $this->assertEquals([], \Brainworxx\Krexx\Service\Misc\unlink('', false));
-        $this->assertEquals([], \Brainworxx\Krexx\Service\Misc\chmod('', 0777, false));
 
         $this->assertEquals(
             [],
@@ -298,19 +287,24 @@ class FileTest extends AbstractTest
     public function testDeleteFileUnRegistered()
     {
         // Start the mocking.
-        \Brainworxx\Krexx\Service\Misc\unlink('', true);
-        \Brainworxx\Krexx\Service\Misc\chmod('', 0777, true);
-        \Brainworxx\Krexx\Service\Misc\realpath('', true);
-        \Brainworxx\Krexx\Service\Misc\is_file('', true);
+        $payload = 'unregistered_file.txt';
+        $unlink = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'unlink');
+        $unlink->expects($this->once())
+            ->with($payload)
+            ->will($this->returnValue(true));
+        $chmod = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'chmod');
+        $chmod->expects($this->once())
+            ->with($payload);
+
+        $isFile = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_file');
+        $isFile->expects($this->once())
+            ->will($this->returnValue(true));
 
         // Execute the test.
-        $payload = 'unregistered_file.txt';
         $fileService = new File(Krexx::$pool);
         $fileService->deleteFile($payload);
 
         // Check the results.
-        $this->assertEquals([$payload], \Brainworxx\Krexx\Service\Misc\unlink('', false));
-        $this->assertEquals([$payload], \Brainworxx\Krexx\Service\Misc\chmod('', 0777, false));
         $this->assertEquals([], Krexx::$pool->messages->getKeys());
     }
 
@@ -321,21 +315,21 @@ class FileTest extends AbstractTest
      */
     public function testDeleteFileWithProblems()
     {
-        \Brainworxx\Krexx\Service\Misc\chmod('', 0777, true);
-        \Brainworxx\Krexx\Service\Misc\realpath('', true);
-        \Brainworxx\Krexx\Service\Misc\is_file('', true);
+        $isFile = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_file');
+        $isFile->expects($this->once())
+            ->will($this->returnValue(true));
+
+        $payload = 'unregistered_file.txt';
+        $chmod = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'chmod');
+        $chmod->expects($this->once())
+            ->with($payload);
 
         // Execute the test.
-        $payload = 'unregistered_file.txt';
+
         $fileService = new File(Krexx::$pool);
         $fileService->deleteFile($payload);
 
         // Check the results.
-        $this->assertEquals(
-            [$payload],
-            \Brainworxx\Krexx\Service\Misc\chmod('', 0777, false),
-            'Change the access rights of the file we want to delete.'
-        );
         $this->assertEquals(
             ['fileserviceDelete' => ['key' => 'fileserviceDelete', 'params' => [$payload]]],
             Krexx::$pool->messages->getKeys(),
@@ -351,7 +345,6 @@ class FileTest extends AbstractTest
     public function testFilterFilePath()
     {
         // Set the stage.
-        \Brainworxx\Krexx\Service\Misc\realpath('', true);
         $docRoot = 'somewhere on the server';
         $filename = 'some file';
         $payload = $docRoot . DIRECTORY_SEPARATOR . $filename;
@@ -374,7 +367,6 @@ class FileTest extends AbstractTest
     public function testFileIsReadableRegistered()
     {
         // Set the stage.
-        \Brainworxx\Krexx\Service\Misc\realpath('', true);
         $filename = 'some file';
         $fileService = new File(Krexx::$pool);
         $this->setValueByReflection('isReadableCache', [$filename => true], $fileService);
@@ -390,13 +382,18 @@ class FileTest extends AbstractTest
      */
     public function testFileIsReadableUnregistered()
     {
-        \Brainworxx\Krexx\Service\Misc\is_file('', true);
-        \Brainworxx\Krexx\Service\Misc\is_readable('', true);
+        $isFile = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_file');
+        $isFile->expects($this->once())
+            ->will($this->returnValue(true));
         $filename = 'some file';
+        $isReadable = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_readable');
+        $isReadable->expects($this->once())
+            ->with($filename)
+            ->will($this->returnValue(true));
+
         $fileService = new File(Krexx::$pool);
 
         $this->assertTrue($fileService->fileIsReadable($filename));
-        $this->assertEquals([$filename], \Brainworxx\Krexx\Service\Misc\is_readable('', false));
     }
 
     /**
@@ -418,19 +415,26 @@ class FileTest extends AbstractTest
     public function testFileTimeExisting()
     {
         // Set the stage for an "existing" file.
-        \Brainworxx\Krexx\Service\Misc\realpath('', true);
         $filename = 'some file';
         $fileService = new File(Krexx::$pool);
         $this->setValueByReflection('isReadableCache', [$filename => true], $fileService);
 
-        \Brainworxx\Krexx\Service\Misc\filemtime('', true);
+        $filemtime = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'filemtime');
+        $filemtime->expects($this->once())
+            ->with($filename)
+            ->will($this->returnValue(42));
+
         $this->assertEquals(42, $fileService->filetime($filename));
     }
 
     public function testFileTimeNotExisting()
     {
         $fileService = new File(Krexx::$pool);
-        \Brainworxx\Krexx\Service\Misc\time(true);
-        $this->assertEquals(41, $fileService->filetime('I am not here'));
+        $filePath = 'I am not here';
+        $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'time');
+        $time->expects($this->once())
+            ->will($this->returnValue(41));
+
+        $this->assertEquals(41, $fileService->filetime($filePath));
     }
 }
