@@ -44,21 +44,35 @@ use finfo;
 
 class ProcessStringTest extends AbstractTest
 {
+     /**
+     * Testing the setting of the pool and of the file info class.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::__construct
+     */
+    public function testConstructWithoutFinfo()
+    {
+        // Mock the class_exists method, to return always false.
+        $classExistMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'class_exists');
+        $classExistMock->expects($this->once())
+            ->will($this->returnValue(false));
+
+        $processor = new ProcessString(Krexx::$pool);
+        $this->assertAttributeEquals(Krexx::$pool, 'pool', $processor);
+        $this->assertAttributeInstanceOf(FileinfoDummy::class, 'bufferInfo', $processor);
+    }
+
     /**
      * Testing the setting of the pool and of the file info class.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::__construct
      */
-    public function testConstruct()
+    public function testConstructWithFinfo()
     {
-        // Mock the class_exists method, to return always false.
-        \Brainworxx\Krexx\Analyse\Routing\Process\class_exists('', true, true);
-        $processor = new ProcessString(Krexx::$pool);
-        $this->assertAttributeEquals(Krexx::$pool, 'pool', $processor);
-        $this->assertAttributeInstanceOf(FileinfoDummy::class, 'bufferInfo', $processor);
+        // Mock the class_exists method, to return always true.
+        $classExistMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'class_exists');
+        $classExistMock->expects($this->once())
+            ->will($this->returnValue(true));
 
-        // Un-Mock the class_exist function.
-        \Brainworxx\Krexx\Analyse\Routing\Process\class_exists('', true, false);
         $processor = new ProcessString(Krexx::$pool);
         $this->assertAttributeInstanceOf(finfo::class, 'bufferInfo', $processor);
     }

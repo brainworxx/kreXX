@@ -33,10 +33,13 @@
  */
 
 namespace {
-    define('KREXX_TEST_IN_PROGRESS', true);
-}
 
-namespace {
+    use phpmock\phpunit\PHPMock;
+
+    define('KREXX_TEST_IN_PROGRESS', true);
+
+    // Make sure, that we are able to mock the living hell out of this baby.
+    PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'class_exists');
 
     // Register a shutdown method to die, so we get no output on the shell.
     register_shutdown_function(function () {
@@ -45,40 +48,6 @@ namespace {
 }
 
 namespace Brainworxx\Krexx\Analyse\Routing\Process {
-
-
-namespace Brainworxx\Krexx\Analyse\Routing\Process {
-
-    use function foo\func;
-
-    /**
-     * Mocking the class_exist method for the string processing, to have some
-     * control over the file info class
-     *
-     * @param string $classname
-     * @param bool $useAutoloader
-     * @return bool
-     */
-    function class_exists(string $classname, bool $useAutoloader = true, bool $startMock = null): bool
-    {
-        static $activeMocking = false;
-
-        if ($startMock === true) {
-            $activeMocking = true;
-            return true;
-        }
-
-        if ($startMock === false) {
-            $activeMocking = false;
-            return true;
-        }
-
-        if ($activeMocking) {
-            return false;
-        }
-
-        return \class_exists($classname, $useAutoloader);
-    }
 
     /**
      * Mocking the get_resource_type function.
