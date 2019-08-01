@@ -48,11 +48,14 @@ use phpmock\phpunit\PHPMock;
 
 abstract class AbstractTest extends TestCase
 {
-
     use PHPMock;
 
+    /**
+     * {@inheritDoc}
+     */
     protected function setUp()
     {
+        $this->mockPhpSapiNameStandard();
         Pool::createPool();
     }
 
@@ -204,6 +207,9 @@ abstract class AbstractTest extends TestCase
         Krexx::$pool->eventService = $eventServiceMock;
     }
 
+    /**
+     * Standard mocking of the debug_backtrace.
+     */
     protected function mockDebugBacktraceStandard()
     {
         $fixture = [
@@ -222,5 +228,17 @@ abstract class AbstractTest extends TestCase
         $debugBacktrace = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Caller\\', 'debug_backtrace');
         $debugBacktrace->expects($this->once())
             ->willReturn($fixture);
+    }
+
+    /**
+     * Standard mocking of the php_sapi_name to prevent cli detection.
+     */
+    protected function mockPhpSapiNameStandard()
+    {
+        $phpSapiNameMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
+        $phpSapiNameMock->expects($this->any())
+            ->will(
+                $this->returnValue('whatever')
+            );
     }
 }

@@ -39,12 +39,29 @@ use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Config\Security;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 
 class ConfigTest extends AbstractTest
 {
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setUp()
+    {
+        Pool::createPool();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
+        unset($_SERVER[Config::REMOTE_ADDRESS]);
+    }
+
     /**
      * Test the initialisation of the configuration class.
      *
@@ -55,7 +72,7 @@ class ConfigTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Service\Config\Config::isRequestAjaxOrCli
      * @covers \Brainworxx\Krexx\Service\Config\Config::isAllowedIp
      */
-    public function testConstruct()
+    public function testConstructNormal()
     {
         // Setup some fixtures.
         $chunkPath = 'chunks path';
@@ -73,8 +90,9 @@ class ConfigTest extends AbstractTest
         Registration::addClassToDebugBlacklist($evilClassOne);
 
         // Simulate a normal call (not cli or ajax).
-        \Brainworxx\Krexx\Service\Config\php_sapi_name('not cli');
-        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
+        $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
+        $sapiMock->expects($this->exactly(2))
+            ->will($this->returnValue('not cli'));
 
         // Create the test subject.
         $config = new Config(Krexx::$pool);
@@ -99,18 +117,38 @@ class ConfigTest extends AbstractTest
 
         // kreXX should not be disabled.
         $this->assertEquals(false, $config->getSetting($config::SETTING_DISABLED));
+    }
 
-        // Testing with CLI and browser
-        \Brainworxx\Krexx\Service\Config\php_sapi_name('cli');
+    /**
+     * Test the browser output on cli.
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isRequestAjaxOrCli
+     */
+    public function testConstructCliBrowser()
+    {
+        $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
+        $sapiMock->expects($this->exactly(2))
+            ->will($this->returnValue('cli'));
         $config = new Config(Krexx::$pool);
         $this->assertEquals(
             true,
             $config->getSetting($config::SETTING_DISABLED),
             'Testing with CLI and browser'
         );
+    }
 
-        // Testing with ajax and browser
-        \Brainworxx\Krexx\Service\Config\php_sapi_name('not cli');
+    /**
+     * Test the browser output on ajax.
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isRequestAjaxOrCli
+     */
+    public function testConstructAjaxBrowser()
+    {
+        $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
+        $sapiMock->expects($this->exactly(1))
+            ->will($this->returnValue('not cli'));
         $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
         $config = new Config(Krexx::$pool);
         $this->assertEquals(
@@ -118,12 +156,21 @@ class ConfigTest extends AbstractTest
             $config->getSetting($config::SETTING_DISABLED),
             'Testing with ajax and browser'
         );
+    }
 
-        // Testing with CLI and file
-        unset($_SERVER['HTTP_X_REQUESTED_WITH']);
-        \Brainworxx\Krexx\Service\Config\php_sapi_name('cli');
+    /**
+     * Test the file output on cli.
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isRequestAjaxOrCli
+     */
+    public function testConstructCliFile()
+    {
+        $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
+        $sapiMock->expects($this->exactly(2))
+            ->will($this->returnValue('cli'));
         ConfigSupplier::$overwriteValues = [
-            $config::SETTING_DESTINATION => 'file'
+            Config::SETTING_DESTINATION => 'file'
         ];
         Krexx::$pool->rewrite[Ini::class] = ConfigSupplier::class;
         $config = new Config(Krexx::$pool);
@@ -132,26 +179,42 @@ class ConfigTest extends AbstractTest
             $config->getSetting($config::SETTING_DISABLED),
             'Testing with CLI and file'
         );
+    }
+
+    /**
+     * Test the access from different ips.
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isRequestAjaxOrCli
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isAllowedIp
+     */
+    public function testConstructIpRange()
+    {
+        ConfigSupplier::$overwriteValues = [
+            Config::SETTING_IP_RANGE => '1.2.3.4.5, 127.0.0.1'
+        ];
+        Krexx::$pool->rewrite[Ini::class] = ConfigSupplier::class;
+        $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
+        $sapiMock->expects($this->exactly(4))
+            ->will($this->returnValue('not cli'));
 
         // Testing coming from the wrong ip
-        ConfigSupplier::$overwriteValues = [
-            $config::SETTING_IP_RANGE => '1.2.3.4.5, 127.0.0.1'
-        ];
-        \Brainworxx\Krexx\Service\Config\php_sapi_name('not cli');
-        $_SERVER[$config::REMOTE_ADDRESS] = '5.4.3.2.1';
+        $_SERVER[Config::REMOTE_ADDRESS] = '5.4.3.2.1';
+
         $config = new Config(Krexx::$pool);
         $this->assertEquals(
             true,
-            $config->getSetting($config::SETTING_DISABLED),
+            $config->getSetting(Config::SETTING_DISABLED),
             'Testing coming from the wrong ip'
         );
 
         // Testing coming from the right ip
-        $_SERVER[$config::REMOTE_ADDRESS] = '1.2.3.4.5';
+        $_SERVER[Config::REMOTE_ADDRESS] = '1.2.3.4.5';
+
         $config = new Config(Krexx::$pool);
         $this->assertEquals(
             false,
-            $config->getSetting($config::SETTING_DISABLED),
+            $config->getSetting(Config::SETTING_DISABLED),
             'Testing coming from the right ip'
         );
     }
@@ -383,10 +446,6 @@ class ConfigTest extends AbstractTest
 
     /**
      * Mocking of a registered skin, that is actually selected.
-     *
-     * @param string $skinClass
-     * @param string $skinName
-     * @param string $skinDirectory
      *
      * @return \Brainworxx\Krexx\Service\Config\Config
      */

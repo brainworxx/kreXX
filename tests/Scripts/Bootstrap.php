@@ -36,29 +36,6 @@ namespace {
     define('KREXX_TEST_IN_PROGRESS', true);
 }
 
-namespace Brainworxx\Krexx\Service\Config {
-
-    /**
-     * Mocking the sapi name, to do something else in a different namespace.
-     *
-     * @param null|string $what
-     *   The return value. kreXX only checks for cli, btw.
-     *
-     * @return string
-     *   The mocked value, to coax kreXX into fileoutput.
-     */
-    function php_sapi_name($what = null)
-    {
-        static $result = 'whatever';
-
-        if (!empty($what)) {
-            $result = $what;
-        }
-
-        return $result;
-    }
-}
-
 namespace {
 
     // Register a shutdown method to die, so we get no output on the shell.
