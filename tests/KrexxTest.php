@@ -546,7 +546,7 @@ class KrexxTest extends AbstractTest
     public function testCallStatic()
     {
         $this->mockDebugBacktraceStandard();
-        
+
         $configMock = $this->createPartialMock(Config::class, ['getDevHandler']);
         $configMock->expects($this->any())
             ->method('getDevHandler')

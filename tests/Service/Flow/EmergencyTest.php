@@ -190,7 +190,7 @@ class EmergencyTest extends AbstractTest
     public function testCheckEmergencyBreakFailedRuntime()
     {
         $this->mockDebugBacktraceStandard();
-        
+
         // Make sure that the memory check succeeds.
         $this->setValueByReflection('serverMemoryLimit', 5000, $this->emergency);
         $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
