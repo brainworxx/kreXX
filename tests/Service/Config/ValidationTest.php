@@ -114,6 +114,11 @@ class ValidationTest extends AbstractTest
      */
     public function testEvaluateSetting()
     {
+        $iniGet = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'ini_get');
+        $iniGet->expects($this->exactly(2))
+            ->with('max_execution_time')
+            ->will($this->returnValue('123'));
+
         Registration::addMethodToDebugBlacklist('forbiddenclass', 'forbiddenOne');
         $validation = new Validation(Krexx::$pool);
 

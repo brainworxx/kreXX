@@ -59,7 +59,9 @@ class ProcessResourceTest extends AbstractTest
         $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
         $getResourceType->expects($this->once())
             ->will($this->returnValue('stream'));
-        \Brainworxx\Krexx\Analyse\Routing\Process\stream_get_meta_data(null, $metaResults);
+        $streamGetMetsData = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'stream_get_meta_data');
+        $streamGetMetsData->expects($this->once())
+            ->will($this->returnValue($metaResults));
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
         $model = new Model(Krexx::$pool);
@@ -90,8 +92,9 @@ class ProcessResourceTest extends AbstractTest
         $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
         $getResourceType->expects($this->once())
             ->will($this->returnValue('curl'));
-
-        \Brainworxx\Krexx\Analyse\Routing\Process\curl_getinfo(null, $metaResults);
+        $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'curl_getinfo');
+        $getResourceType->expects($this->once())
+            ->will($this->returnValue($metaResults));
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
         $model = new Model(Krexx::$pool);
@@ -119,7 +122,9 @@ class ProcessResourceTest extends AbstractTest
         $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
         $getResourceType->expects($this->once())
             ->will($this->returnValue('whatever'));
-        \Brainworxx\Krexx\Analyse\Routing\Process\version_compare(null, null, null, false);
+        $versionCompare = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'version_compare');
+        $versionCompare->expects($this->once())
+            ->will($this->returnValue(false));
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
         $model = new Model(Krexx::$pool);
@@ -148,7 +153,9 @@ class ProcessResourceTest extends AbstractTest
         $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
         $getResourceType->expects($this->once())
             ->will($this->returnValue('not a string'));
-        \Brainworxx\Krexx\Analyse\Routing\Process\version_compare(null, null, null, true);
+        $versionCompare = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'version_compare');
+        $versionCompare->expects($this->once())
+            ->will($this->returnValue(true));
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
         $model = new Model(Krexx::$pool);

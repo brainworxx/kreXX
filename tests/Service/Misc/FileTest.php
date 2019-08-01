@@ -230,25 +230,13 @@ class FileTest extends AbstractTest
     public function testPutFileContents()
     {
         // We will not really write a file here.
-        \Brainworxx\Krexx\Service\Misc\file_put_contents(
-            '',
-            '',
-            0,
-            null,
-            true
-        );
+        $filePutContents = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'file_put_contents');
+        $filePutContents->expects($this->once())
+            ->will($this->returnValue(42));
 
         $path = 'some file.html';
         $this->file->putFileContents($path, 'some text');
-
         $this->assertAttributeEquals([$path => true], 'isReadableCache', $this->file);
-        \Brainworxx\Krexx\Service\Misc\file_put_contents(
-            '',
-            '',
-            0,
-            null,
-            false
-        );
     }
 
     /**

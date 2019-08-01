@@ -53,7 +53,9 @@ class TimerControllerTest extends AbstractController
 
         // Create a clean timer controller.
         $this->controller = new TimerController(Krexx::$pool);
-        \Brainworxx\Krexx\Controller\microtime(null, true);
+        $microtime = $this->getFunctionMock('\\Brainworxx\\Krexx\\Controller\\', 'microtime');
+        $microtime->expects($this->any())
+            ->will($this->returnValue(3000));
     }
 
     public function tearDown()
@@ -63,7 +65,6 @@ class TimerControllerTest extends AbstractController
         // Clean up the timekeeping stuff.
         $this->setValueByReflection('counterCache', [], $this->controller);
         $this->setValueByReflection('timekeeping', [], $this->controller);
-        \Brainworxx\Krexx\Controller\microtime(null, false);
     }
 
     /**

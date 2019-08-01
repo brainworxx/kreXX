@@ -63,21 +63,16 @@ class EmergencyTest extends AbstractTest
     {
         parent::tearDown();
         $this->setValueByReflection('allIsOk', true, Emergency::class);
-        \Brainworxx\Krexx\Service\Flow\memory_get_usage(false);
-        \Brainworxx\Krexx\Service\Flow\time(false);
     }
 
     /**
-     * Test the caching of several settings, as well as retreating the memory
-     * limit.
-     *
-     * @covers \Brainworxx\Krexx\Service\Flow\Emergency::__construct
+     * Inject the configuration mack.
      */
-    public function testConstruct()
+    protected function setConfigMock()
     {
         // Mock config
         $configMock = $this->createMock(Config::class);
-        $configMock->expects($this->exactly(12))
+        $configMock->expects($this->exactly(4))
             ->method('getSetting')
             ->withConsecutive(
                 [Fallback::SETTING_MAX_RUNTIME],
@@ -92,9 +87,22 @@ class EmergencyTest extends AbstractTest
                 [Fallback::SETTING_NESTING_LEVEL, '5']
                 ]));
         Krexx::$pool->config = $configMock;
+    }
+
+    /**
+     * Test the caching of several settings, as well as retreating the memory
+     * limit.
+     *
+     * @covers \Brainworxx\Krexx\Service\Flow\Emergency::__construct
+     */
+    public function testConstructWithKb()
+    {
+        $this->setConfigMock();
 
         // Mock kb memory limit
-        \Brainworxx\Krexx\Service\Flow\ini_get('whatever', true, '50k');
+        $iniGet = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'ini_get');
+        $iniGet->expects($this->once())
+            ->will($this->returnValue('50k'));
 
         $this->emergency = new Emergency(Krexx::$pool);
 
@@ -108,19 +116,44 @@ class EmergencyTest extends AbstractTest
         $this->assertAttributeEquals(10, 'maxCall', $this->emergency);
         $this->assertAttributeEquals(5, 'maxNestingLevel', $this->emergency);
         $this->assertAttributeEquals(50 * 1024, 'serverMemoryLimit', $this->emergency);
+    }
+
+    /**
+     * Test the caching of several settings, as well as retreating the memory
+     * limit.
+     *
+     * @covers \Brainworxx\Krexx\Service\Flow\Emergency::__construct
+     */
+    public function testConstructWithMb()
+    {
+        $this->setConfigMock();
 
         // Mock MB memory limit.
-        \Brainworxx\Krexx\Service\Flow\ini_get('whatever', true, '50m');
+        $iniGet = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'ini_get');
+        $iniGet->expects($this->once())
+            ->will($this->returnValue('50m'));
+
         $this->emergency = new Emergency(Krexx::$pool);
         $this->assertAttributeEquals(50 * 1024 * 1024, 'serverMemoryLimit', $this->emergency);
+    }
+
+    /**
+     * Test the caching of several settings, as well as retreating the memory
+     * limit.
+     *
+     * @covers \Brainworxx\Krexx\Service\Flow\Emergency::__construct
+     */
+    public function testConstructWithNoLimit()
+    {
+        $this->setConfigMock();
 
         // No limit
-        \Brainworxx\Krexx\Service\Flow\ini_get('whatever', true, 'nothing');
+        $iniGet = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'ini_get');
+        $iniGet->expects($this->once())
+            ->will($this->returnValue('nothing'));
+
         $this->emergency = new Emergency(Krexx::$pool);
         $this->assertAttributeEquals(0, 'serverMemoryLimit', $this->emergency);
-
-        // Reset the mocking.
-        \Brainworxx\Krexx\Service\Flow\ini_get('whatever', false);
     }
 
     /**
@@ -171,7 +204,9 @@ class EmergencyTest extends AbstractTest
         $this->mockDebugBacktraceStandard();
         $this->setValueByReflection('serverMemoryLimit', 550, $this->emergency);
         $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
-        \Brainworxx\Krexx\Service\Flow\memory_get_usage(true, 500);
+        $memoryGetUsage = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_usage');
+        $memoryGetUsage->expects($this->once())
+            ->will($this->returnValue(500));
         $this->assertEquals(true, $this->emergency->checkEmergencyBreak());
         $this->assertAttributeEquals(false, 'allIsOk', $this->emergency);
         $this->assertEquals(
@@ -194,10 +229,15 @@ class EmergencyTest extends AbstractTest
         // Make sure that the memory check succeeds.
         $this->setValueByReflection('serverMemoryLimit', 5000, $this->emergency);
         $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
-        \Brainworxx\Krexx\Service\Flow\memory_get_usage(true, 500);
+        $memoryGetUsage = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_usage');
+        $memoryGetUsage->expects($this->once())
+            ->will($this->returnValue(500));
         // Make sure the runtime check fails.
         $this->setValueByReflection('timer', 12345, $this->emergency);
-        \Brainworxx\Krexx\Service\Flow\time(true, 92345);
+        $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'time');
+        $time->expects($this->once())
+            ->will($this->returnValue(92345));
+
         $this->assertEquals(true, $this->emergency->checkEmergencyBreak());
         $this->assertAttributeEquals(false, 'allIsOk', $this->emergency);
         $this->assertEquals(
@@ -218,10 +258,15 @@ class EmergencyTest extends AbstractTest
         // Make sure that the memory check succeeds.
         $this->setValueByReflection('serverMemoryLimit', 5000, $this->emergency);
         $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
-        \Brainworxx\Krexx\Service\Flow\memory_get_usage(true, 500);
+        $memoryGetUsage = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_usage');
+        $memoryGetUsage->expects($this->once())
+            ->will($this->returnValue(500));
         // Make sure the runtime check succeeds.
         $this->setValueByReflection('timer', 92345, $this->emergency);
-        \Brainworxx\Krexx\Service\Flow\time(true, 12345);
+        $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'time');
+        $time->expects($this->once())
+            ->will($this->returnValue(12345));
+
         $this->assertEquals(false, $this->emergency->checkEmergencyBreak());
         $this->assertAttributeEquals(true, 'allIsOk', $this->emergency);
         $this->assertEquals([], Krexx::$pool->messages->getKeys());
@@ -285,7 +330,9 @@ class EmergencyTest extends AbstractTest
      */
     public function testInitTimer()
     {
-        \Brainworxx\Krexx\Service\Flow\time(true, 5000);
+        $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'time');
+        $time->expects($this->once())
+            ->will($this->returnValue(5000));
         $this->setValueByReflection('maxRuntime', 60, $this->emergency);
 
         $this->assertAttributeEquals(0, 'timer', $this->emergency);
