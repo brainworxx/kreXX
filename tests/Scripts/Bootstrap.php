@@ -50,24 +50,6 @@ namespace {
 namespace Brainworxx\Krexx\Analyse\Routing\Process {
 
     /**
-     * Mocking the get_resource_type function.
-     *
-     * @param $resource
-     * @param null $mockResult
-     * @return string
-     */
-    function get_resource_type($resource, $mockResult = null)
-    {
-        static $result = '';
-
-        if (!is_null($mockResult)) {
-            $result = $mockResult;
-        }
-
-        return $result;
-    }
-
-    /**
      * Mocking the stream_get_meta_data function.
      *
      * @param $resource

@@ -56,7 +56,9 @@ class ProcessResourceTest extends AbstractTest
         $metaResults = [
             'best', 'stream', 'resource', 'ever'
         ];
-        \Brainworxx\Krexx\Analyse\Routing\Process\get_resource_type(null, 'stream');
+        $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
+        $getResourceType->expects($this->once())
+            ->will($this->returnValue('stream'));
         \Brainworxx\Krexx\Analyse\Routing\Process\stream_get_meta_data(null, $metaResults);
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
@@ -85,7 +87,10 @@ class ProcessResourceTest extends AbstractTest
         $metaResults = [
             'everybody', 'likes', 'curling'
         ];
-        \Brainworxx\Krexx\Analyse\Routing\Process\get_resource_type(null, 'curl');
+        $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
+        $getResourceType->expects($this->once())
+            ->will($this->returnValue('curl'));
+
         \Brainworxx\Krexx\Analyse\Routing\Process\curl_getinfo(null, $metaResults);
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
@@ -111,7 +116,9 @@ class ProcessResourceTest extends AbstractTest
         $this->mockEmergencyHandler();
 
         $resource = 'Letting a string look like a resource is easy.';
-        \Brainworxx\Krexx\Analyse\Routing\Process\get_resource_type(null, 'whatever');
+        $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
+        $getResourceType->expects($this->once())
+            ->will($this->returnValue('whatever'));
         \Brainworxx\Krexx\Analyse\Routing\Process\version_compare(null, null, null, false);
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
@@ -138,7 +145,9 @@ class ProcessResourceTest extends AbstractTest
         $this->mockEmergencyHandler();
 
         $resource = 'Meh, here I might not really look like a resource at all.';
-        \Brainworxx\Krexx\Analyse\Routing\Process\get_resource_type(null, 'not a string');
+        $getResourceType = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'get_resource_type');
+        $getResourceType->expects($this->once())
+            ->will($this->returnValue('not a string'));
         \Brainworxx\Krexx\Analyse\Routing\Process\version_compare(null, null, null, true);
 
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
