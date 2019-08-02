@@ -45,6 +45,17 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
  */
 class RegistrationTest extends AbstractTest
 {
+    const PLUGINS = 'plugins';
+    const CHUNK_FOLDER = 'chunkFolder';
+    const LOG_FOLDER = 'logFolder';
+    const CONFIG_FILE = 'configFile';
+    const BLACK_LIST_METHODS = 'blacklistDebugMethods';
+    const BLACK_LIST_CLASS = 'blacklistDebugClass';
+    const ADD_HELP_FILES = 'additionalHelpFiles';
+    const REWRITE_LIST = 'rewriteList';
+    const EVENT_LIST = 'eventList';
+    const ADD_SKIN_LIST = 'additionalSkinList';
+
     /**
      * @var Registration
      */
@@ -61,16 +72,16 @@ class RegistrationTest extends AbstractTest
         parent::tearDown();
 
         // Reset everything.
-        $this->setValueByReflection('plugins', [], $this->registration);
-        $this->setValueByReflection('chunkFolder', '', $this->registration);
-        $this->setValueByReflection('logFolder', '', $this->registration);
-        $this->setValueByReflection('configFile', '', $this->registration);
-        $this->setValueByReflection('blacklistDebugMethods', [], $this->registration);
-        $this->setValueByReflection('blacklistDebugClass', [], $this->registration);
-        $this->setValueByReflection('additionalHelpFiles', [], $this->registration);
-        $this->setValueByReflection('rewriteList', [], $this->registration);
-        $this->setValueByReflection('eventList', [], $this->registration);
-        $this->setValueByReflection('additionalSkinList', [], $this->registration);
+        $this->setValueByReflection(static::PLUGINS, [], $this->registration);
+        $this->setValueByReflection(static::CHUNK_FOLDER, '', $this->registration);
+        $this->setValueByReflection(static::LOG_FOLDER, '', $this->registration);
+        $this->setValueByReflection(static::CONFIG_FILE, '', $this->registration);
+        $this->setValueByReflection(static::BLACK_LIST_METHODS, [], $this->registration);
+        $this->setValueByReflection(static::BLACK_LIST_CLASS, [], $this->registration);
+        $this->setValueByReflection(static::ADD_HELP_FILES, [], $this->registration);
+        $this->setValueByReflection(static::REWRITE_LIST, [], $this->registration);
+        $this->setValueByReflection(static::EVENT_LIST, [], $this->registration);
+        $this->setValueByReflection(static::ADD_SKIN_LIST, [], $this->registration);
     }
 
     /**
@@ -82,7 +93,7 @@ class RegistrationTest extends AbstractTest
     {
         $path = 'some file.ini';
         Registration::setConfigFile($path);
-        $this->assertAttributeEquals($path, 'configFile', $this->registration);
+        $this->assertAttributeEquals($path, static::CONFIG_FILE, $this->registration);
     }
 
     /**
@@ -94,7 +105,7 @@ class RegistrationTest extends AbstractTest
     {
         $path = 'extra chunky';
         Registration::setChunksFolder($path);
-        $this->assertAttributeEquals($path, 'chunkFolder', $this->registration);
+        $this->assertAttributeEquals($path, static::CHUNK_FOLDER, $this->registration);
     }
 
     /**
@@ -106,7 +117,7 @@ class RegistrationTest extends AbstractTest
     {
         $path = 'logging';
         Registration::setLogFolder($path);
-        $this->assertAttributeEquals($path, 'logFolder', $this->registration);
+        $this->assertAttributeEquals($path, static::LOG_FOLDER, $this->registration);
     }
 
     /**
@@ -126,7 +137,7 @@ class RegistrationTest extends AbstractTest
         $this->assertAttributeEquals([$class => [
             $methodOne,
             $methodTwo
-        ]], 'blacklistDebugMethods', $this->registration);
+        ]], static::BLACK_LIST_METHODS, $this->registration);
     }
 
     /**
@@ -136,13 +147,13 @@ class RegistrationTest extends AbstractTest
      */
     public function testAddClassToDebugBlacklist()
     {
-        $classOne = 'SomClass';
+        $classOne = 'SomeClass';
         $classTwo = 'AnotherClass';
         Registration::addClassToDebugBlacklist($classOne);
         Registration::addClassToDebugBlacklist($classTwo);
         Registration::addClassToDebugBlacklist($classOne);
 
-        $this->assertAttributeEquals([$classOne, $classTwo], 'blacklistDebugClass', $this->registration);
+        $this->assertAttributeEquals([$classOne, $classTwo], static::BLACK_LIST_CLASS, $this->registration);
     }
 
     /**
@@ -152,13 +163,13 @@ class RegistrationTest extends AbstractTest
      */
     public function testAddRewrite()
     {
-        $classOne = 'SomClass';
-        $classTwo = 'AnotherClass';
+        $classOne = 'OrgClass';
+        $classTwo = 'NewClass';
         $classThree = 'MoreClasses';
         Registration::addRewrite($classOne, $classTwo);
         Registration::addRewrite($classOne, $classThree);
 
-        $this->assertAttributeEquals([$classOne => $classThree], 'rewriteList', $this->registration);
+        $this->assertAttributeEquals([$classOne => $classThree], static::REWRITE_LIST, $this->registration);
     }
 
     /**
@@ -170,8 +181,8 @@ class RegistrationTest extends AbstractTest
     {
         $eventOne = 'some event';
         $eventTwo = 'another event';
-        $classOne = 'SomClass';
-        $classTwo = 'AnotherClass';
+        $classOne = 'EventClass1';
+        $classTwo = 'EventClass2';
         $classThree = 'MoreClasses';
         Registration::registerEvent($eventOne, $classOne);
         Registration::registerEvent($eventOne, $classTwo);
@@ -180,7 +191,7 @@ class RegistrationTest extends AbstractTest
         $this->assertAttributeEquals([
             $eventOne => [$classOne => $classOne, $classTwo => $classTwo],
             $eventTwo => [$classThree => $classThree]
-        ], 'eventList', $this->registration);
+        ], static::EVENT_LIST, $this->registration);
     }
 
     /**
@@ -195,7 +206,7 @@ class RegistrationTest extends AbstractTest
         Registration::registerAdditionalHelpFile($fileOne);
         Registration::registerAdditionalHelpFile($fileTwo);
 
-        $this->assertAttributeEquals([$fileOne, $fileTwo], 'additionalHelpFiles', $this->registration);
+        $this->assertAttributeEquals([$fileOne, $fileTwo], static::ADD_HELP_FILES, $this->registration);
     }
 
     /**
@@ -213,7 +224,7 @@ class RegistrationTest extends AbstractTest
         $this->assertAttributeEquals([$skinName => [
             Registration::SKIN_CLASS => $renderClass,
             Registration::SKIN_DIRECTORY => $pathToHtmlFiles
-        ]], 'additionalSkinList', $this->registration);
+        ]], static::ADD_SKIN_LIST, $this->registration);
     }
 
     /**
@@ -243,11 +254,11 @@ class RegistrationTest extends AbstractTest
                 Registration::PLUGIN_VERSION => 'v0.0.0'
             ]
         ];
-        $this->assertAttributeEquals($expectation, 'plugins', $this->registration);
+        $this->assertAttributeEquals($expectation, static::PLUGINS, $this->registration);
 
         Registration::activatePlugin(get_class($pluginMock));
         $expectation[get_class($pluginMock)][Registration::IS_ACTIVE] = true;
-        $this->assertAttributeEquals($expectation, 'plugins', $this->registration);
+        $this->assertAttributeEquals($expectation, static::PLUGINS, $this->registration);
     }
 
     /**
@@ -257,9 +268,9 @@ class RegistrationTest extends AbstractTest
      */
     public function testDeactivatePluginDeactivated()
     {
-        $this->setValueByReflection('logFolder', 'whatever', $this->registration);
+        $this->setValueByReflection(static::LOG_FOLDER, 'whatever', $this->registration);
         Registration::deactivatePlugin('Test Plugin');
-        $this->assertAttributeEquals('whatever', 'logFolder', $this->registration);
+        $this->assertAttributeEquals('whatever', static::LOG_FOLDER, $this->registration);
     }
 
     /**
