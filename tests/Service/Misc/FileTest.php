@@ -62,7 +62,7 @@ class FileTest extends AbstractTest
         // Reset the writable cache in the file service.
         $this->setValueByReflection('isReadableCache', [], $this->file);
         // Mock the realpath of the not existing files.
-        $realpath = $this->getFunctionMock('\\Brainworxx\\Krexx\ßService\\Misc\\', 'realpath');
+        $realpath = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'realpath');
         $realpath->expects($this->any())
             ->will($this->returnArgument(1));
     }

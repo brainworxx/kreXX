@@ -46,6 +46,7 @@ PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'unlink');
 PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_file');
 PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_readable');
 PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'filemtime');
+PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_usage');
 
 // Register a shutdown method to die, so we get no output on the shell.
 register_shutdown_function(function () {
