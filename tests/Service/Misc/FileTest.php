@@ -45,6 +45,10 @@ use ReflectionClass;
 
 class FileTest extends AbstractTest
 {
+    const DOC_ROOT = 'docRoot';
+    const IS_READABLE_CACHE = 'isReadableCache';
+    const FILE_NAME = 'some file';
+
     /**
      * @var \Brainworxx\Krexx\Service\Misc\File
      */
@@ -58,9 +62,9 @@ class FileTest extends AbstractTest
         parent::setUp();
         $this->file = new File(Krexx::$pool);
         // Make sure we have a doc root, independent from everything.
-        $this->setValueByReflection('docRoot', 'doc ruth', $this->file);
+        $this->setValueByReflection(static::DOC_ROOT, 'doc ruth', $this->file);
         // Reset the writable cache in the file service.
-        $this->setValueByReflection('isReadableCache', [], $this->file);
+        $this->setValueByReflection(static::IS_READABLE_CACHE, [], $this->file);
         // Mock the realpath of the not existing files.
         $realpath = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'realpath');
         $realpath->expects($this->any())
@@ -223,7 +227,7 @@ class FileTest extends AbstractTest
 
         $path = 'some file.html';
         $this->file->putFileContents($path, 'some text');
-        $this->assertAttributeEquals([$path => true], 'isReadableCache', $this->file);
+        $this->assertAttributeEquals([$path => true], static::IS_READABLE_CACHE, $this->file);
     }
 
     /**
@@ -245,7 +249,7 @@ class FileTest extends AbstractTest
 
         // Execute the test.
         $fileService = new File(Krexx::$pool);
-        $this->setValueByReflection('isReadableCache', [$payload => true], $fileService);
+        $this->setValueByReflection(static::IS_READABLE_CACHE, [$payload => true], $fileService);
         $fileService->deleteFile($payload);
 
         // Check the results.
@@ -346,16 +350,16 @@ class FileTest extends AbstractTest
     {
         // Set the stage.
         $docRoot = 'somewhere on the server';
-        $filename = 'some file';
+        $filename = static::FILE_NAME;
         $payload = $docRoot . DIRECTORY_SEPARATOR . $filename;
         $fileService = new File(Krexx::$pool);
-        $this->setValueByReflection('docRoot', $docRoot, $fileService);
+        $this->setValueByReflection(static::DOC_ROOT, $docRoot, $fileService);
 
         // Run the test
         $this->assertEquals('...' . DIRECTORY_SEPARATOR . $filename, $fileService->filterFilePath($payload));
 
         // And now without a identifiable docroot.
-        $this->setValueByReflection('docRoot', false, $fileService);
+        $this->setValueByReflection(static::DOC_ROOT, false, $fileService);
         $this->assertEquals($payload, $fileService->filterFilePath($payload));
     }
 
@@ -367,9 +371,9 @@ class FileTest extends AbstractTest
     public function testFileIsReadableRegistered()
     {
         // Set the stage.
-        $filename = 'some file';
+        $filename = static::FILE_NAME;
         $fileService = new File(Krexx::$pool);
-        $this->setValueByReflection('isReadableCache', [$filename => true], $fileService);
+        $this->setValueByReflection(static::IS_READABLE_CACHE, [$filename => true], $fileService);
 
         // Run the test.
         $this->assertTrue($fileService->fileIsReadable($filename));
@@ -385,7 +389,7 @@ class FileTest extends AbstractTest
         $isFile = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_file');
         $isFile->expects($this->once())
             ->will($this->returnValue(true));
-        $filename = 'some file';
+        $filename = static::FILE_NAME;
         $isReadable = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'is_readable');
         $isReadable->expects($this->once())
             ->with($filename)
@@ -415,9 +419,9 @@ class FileTest extends AbstractTest
     public function testFileTimeExisting()
     {
         // Set the stage for an "existing" file.
-        $filename = 'some file';
+        $filename = static::FILE_NAME;
         $fileService = new File(Krexx::$pool);
-        $this->setValueByReflection('isReadableCache', [$filename => true], $fileService);
+        $this->setValueByReflection(static::IS_READABLE_CACHE, [$filename => true], $fileService);
 
         $filemtime = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'filemtime');
         $filemtime->expects($this->once())
