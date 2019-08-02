@@ -63,17 +63,7 @@ class ProcessResourceTest extends AbstractTest
         $streamGetMetsData->expects($this->once())
             ->will($this->returnValue($metaResults));
 
-        Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
-        $model = new Model(Krexx::$pool);
-        $model->setData($resource);
-
-        $processor = new ProcessResource(Krexx::$pool);
-        $processor->process($model);
-
-        $this->assertEquals($model::TYPE_RESOURCE, $model->getType());
-        $this->assertEquals('resource (stream)', $model->getNormal());
-        $this->assertEquals($metaResults, $model->getParameters()[$model::PARAM_DATA]);
-        $this->assertEquals(1, CallbackCounter::$counter);
+        $this->runTheTest($resource, 1, 'resource (stream)', null, $metaResults);
     }
 
     /**
@@ -96,17 +86,7 @@ class ProcessResourceTest extends AbstractTest
         $getResourceType->expects($this->once())
             ->will($this->returnValue($metaResults));
 
-        Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
-        $model = new Model(Krexx::$pool);
-        $model->setData($resource);
-
-        $processor = new ProcessResource(Krexx::$pool);
-        $processor->process($model);
-
-        $this->assertEquals($model::TYPE_RESOURCE, $model->getType());
-        $this->assertEquals('resource (curl)', $model->getNormal());
-        $this->assertEquals($metaResults, $model->getParameters()[$model::PARAM_DATA]);
-        $this->assertEquals(1, CallbackCounter::$counter);
+        $this->runTheTest($resource, 1, 'resource (curl)', null, $metaResults);
     }
 
      /**
@@ -126,18 +106,7 @@ class ProcessResourceTest extends AbstractTest
         $versionCompare->expects($this->once())
             ->will($this->returnValue(false));
 
-        Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
-        $model = new Model(Krexx::$pool);
-        $model->setData($resource);
-
-        $processor = new ProcessResource(Krexx::$pool);
-        $processor->process($model);
-
-        $this->assertEquals($model::TYPE_RESOURCE, $model->getType());
-        $this->assertEquals('resource (whatever)', $model->getNormal());
-        $this->assertEquals('resource (whatever)', $model->getData());
-        $this->assertEmpty($model->getParameters());
-        $this->assertEquals(0, CallbackCounter::$counter);
+        $this->runTheTest($resource, 0, 'resource (whatever)', 'resource (whatever)');
     }
 
     /**
@@ -157,6 +126,25 @@ class ProcessResourceTest extends AbstractTest
         $versionCompare->expects($this->once())
             ->will($this->returnValue(true));
 
+        $this->runTheTest($resource, 0, 'string', 'string');
+    }
+
+    /**
+     * Running the test is pretty much the same everyway here.
+     *
+     * @param $resource
+     * @param $counter
+     * @param $normalExpectation
+     * @param $dataExpectation
+     * @param $metaResults
+     */
+    protected function runTheTest(
+        $resource,
+        $counter,
+        $normalExpectation,
+        $dataExpectation = null,
+        $metaResults = null
+    ) {
         Krexx::$pool->rewrite[ThroughResource::class] = CallbackCounter::class;
         $model = new Model(Krexx::$pool);
         $model->setData($resource);
@@ -165,9 +153,15 @@ class ProcessResourceTest extends AbstractTest
         $processor->process($model);
 
         $this->assertEquals($model::TYPE_RESOURCE, $model->getType());
-        $this->assertEquals('string', $model->getNormal());
-        $this->assertEquals('string', $model->getData());
-        $this->assertEmpty($model->getParameters());
-        $this->assertEquals(0, CallbackCounter::$counter);
+        $this->assertEquals($normalExpectation, $model->getNormal());
+        if (isset($dataExpectation)) {
+            $this->assertEquals($dataExpectation, $model->getData());
+        }
+        if (isset($metaResults)) {
+            $this->assertEquals($metaResults, $model->getParameters()[$model::PARAM_DATA]);
+        } else {
+            $this->assertEmpty($model->getParameters());
+        }
+        $this->assertEquals($counter, CallbackCounter::$counter);
     }
 }
