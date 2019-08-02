@@ -91,7 +91,7 @@ class CallerFinderTest extends AbstractTest
                 ConstInterface::TRACE_FUNCTION => static::FUNCTION_TO_TRACE,
                 ConstInterface::TRACE_CLASS => ComplexMethodFixture::class,
                 ConstInterface::TRACE_FILE => $classRef->getFileName(),
-                ConstInterface::TRACE_LINE => 71
+                ConstInterface::TRACE_LINE => 74
             ]
         ];
     }
@@ -139,7 +139,7 @@ class CallerFinderTest extends AbstractTest
 
         // Check the result
         $this->assertEquals($this->pathToFixture, $result[ConstInterface::TRACE_FILE]);
-        $this->assertEquals(71, $result[ConstInterface::TRACE_LINE]);
+        $this->assertEquals(74, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('$parameter', $result[ConstInterface::TRACE_VARNAME]);
         $this->assertEquals('Analysis of $parameter, string', $result[ConstInterface::TRACE_TYPE]);
         $this->assertArrayHasKey(ConstInterface::TRACE_DATE, $result);
@@ -164,7 +164,7 @@ class CallerFinderTest extends AbstractTest
 
         // Check the result
         $this->assertEquals($this->pathToFixture, $result[ConstInterface::TRACE_FILE]);
-        $this->assertEquals(71, $result[ConstInterface::TRACE_LINE]);
+        $this->assertEquals(74, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('$parameter', $result[ConstInterface::TRACE_VARNAME]);
         $this->assertEquals(static::HEADLINE_STRING, $result[ConstInterface::TRACE_TYPE]);
         $this->assertArrayHasKey(ConstInterface::TRACE_DATE, $result);
@@ -192,7 +192,7 @@ class CallerFinderTest extends AbstractTest
 
         // Check the result
         $this->assertEquals($this->pathToFixture . ' file not there', $result[ConstInterface::TRACE_FILE]);
-        $this->assertEquals(71, $result[ConstInterface::TRACE_LINE]);
+        $this->assertEquals(74, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('. . .', $result[ConstInterface::TRACE_VARNAME]);
         $this->assertEquals(static::HEADLINE_STRING, $result[ConstInterface::TRACE_TYPE]);
         $this->assertArrayHasKey(ConstInterface::TRACE_DATE, $result);
