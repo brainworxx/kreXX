@@ -46,11 +46,6 @@ class ErrorObject extends AbstractObjectAnalysis
 {
 
     /**
-     * {@inheritdoc}
-     */
-    protected static $eventPrefix = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\ErrorObject';
-
-    /**
      * @return string
      */
     public function callMe()
