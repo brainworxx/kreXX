@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
-use Brainworxx\Krexx\Service\Config\Security;
+use Brainworxx\Krexx\Service\Config\Validation;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
@@ -46,6 +46,14 @@ use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 
 class ConfigTest extends AbstractTest
 {
+
+    const NOT_CLI = 'not cli';
+    const INI_CONFIG = 'iniConfig';
+    const COOKIE_CONFIG = 'cookieConfig';
+    const GET_CONFIG_FROM_COOKIES = 'getConfigFromCookies';
+    const GET_FE_IS_EDITABLE = 'getFeIsEditable';
+    const GET_CONFIG_FROM_FILE = 'getConfigFromFile';
+    const KREXX_INI_SETTINGS = 'Krexx.ini settings';
 
     /**
      * {@inheritDoc}
@@ -92,7 +100,7 @@ class ConfigTest extends AbstractTest
         // Simulate a normal call (not cli or ajax).
         $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
         $sapiMock->expects($this->exactly(2))
-            ->will($this->returnValue('not cli'));
+            ->will($this->returnValue(static::NOT_CLI));
 
         // Create the test subject.
         $config = new Config(Krexx::$pool);
@@ -106,14 +114,14 @@ class ConfigTest extends AbstractTest
         $this->assertEquals($logPath, $config->getLogDir());
 
         // Creation of the security class.
-        $this->assertInstanceOf(Security::class, $config->security);
+        $this->assertInstanceOf(Validation::class, $config->validation);
 
         // Assigning itself to the pool.
         $this->assertSame($config, Krexx::$pool->config);
 
         // Creation of the ini and cookie loader.
-        $this->assertAttributeInstanceOf(Ini::class, 'iniConfig', $config);
-        $this->assertAttributeInstanceOf(Cookie::class, 'cookieConfig', $config);
+        $this->assertAttributeInstanceOf(Ini::class, static::INI_CONFIG, $config);
+        $this->assertAttributeInstanceOf(Cookie::class, static::COOKIE_CONFIG, $config);
 
         // kreXX should not be disabled.
         $this->assertEquals(false, $config->getSetting($config::SETTING_DISABLED));
@@ -148,7 +156,7 @@ class ConfigTest extends AbstractTest
     {
         $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
         $sapiMock->expects($this->exactly(1))
-            ->will($this->returnValue('not cli'));
+            ->will($this->returnValue(static::NOT_CLI));
         $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlhttprequest';
         $config = new Config(Krexx::$pool);
         $this->assertEquals(
@@ -196,7 +204,7 @@ class ConfigTest extends AbstractTest
         Krexx::$pool->rewrite[Ini::class] = ConfigSupplier::class;
         $sapiMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
         $sapiMock->expects($this->exactly(4))
-            ->will($this->returnValue('not cli'));
+            ->will($this->returnValue(static::NOT_CLI));
 
         // Testing coming from the wrong ip
         $_SERVER[Config::REMOTE_ADDRESS] = '5.4.3.2.1';
@@ -243,10 +251,10 @@ class ConfigTest extends AbstractTest
     {
         $cookieMock = $this->createMock(Cookie::class);
         $cookieMock->expects($this->once())
-            ->method('getConfigFromCookies')
+            ->method(static::GET_CONFIG_FROM_COOKIES)
             ->will($this->returnValue('whatever'));
         $config = new Config(Krexx::$pool);
-        $this->setValueByReflection('cookieConfig', $cookieMock, $config);
+        $this->setValueByReflection(static::COOKIE_CONFIG, $cookieMock, $config);
 
         $this->assertEquals('whatever', $config->getDevHandler());
     }
@@ -273,23 +281,23 @@ class ConfigTest extends AbstractTest
         $config = new Config(Krexx::$pool);
         $iniMock = $this->createMock(Ini::class);
         $iniMock->expects($this->once())
-            ->method('getFeIsEditable')
+            ->method(static::GET_FE_IS_EDITABLE)
             ->with($config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue(true));
         $iniMock->expects($this->once())
-            ->method('getConfigFromFile')
+            ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue(null));
 
         $cookieMock = $this->createMock(Cookie::class);
         $cookieMock->expects($this->once())
-            ->method('getConfigFromCookies')
+            ->method(static::GET_CONFIG_FROM_COOKIES)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue(null));
 
         // Inject them.
-        $this->setValueByReflection('iniConfig', $iniMock, $config);
-        $this->setValueByReflection('cookieConfig', $cookieMock, $config);
+        $this->setValueByReflection(static::INI_CONFIG, $iniMock, $config);
+        $this->setValueByReflection(static::COOKIE_CONFIG, $cookieMock, $config);
 
         $this->assertSame($config, $config->loadConfigValue($config::SETTING_DEBUG_METHODS));
         $model = $config->settings[$config::SETTING_DEBUG_METHODS];
@@ -307,31 +315,32 @@ class ConfigTest extends AbstractTest
     public function testLoadConfigValueFromIni()
     {
         $config = new Config(Krexx::$pool);
+        $someMethods = 'some methods';
 
         $iniMock = $this->createMock(Ini::class);
         $iniMock->expects($this->once())
-            ->method('getFeIsEditable')
+            ->method(static::GET_FE_IS_EDITABLE)
             ->with($config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue(true));
         $iniMock->expects($this->once())
-            ->method('getConfigFromFile')
+            ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS)
-            ->will($this->returnValue('some methods'));
+            ->will($this->returnValue($someMethods));
 
         $cookieMock = $this->createMock(Cookie::class);
         $cookieMock->expects($this->once())
-            ->method('getConfigFromCookies')
+            ->method(static::GET_CONFIG_FROM_COOKIES)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue(null));
 
         // Inject them.
-        $this->setValueByReflection('iniConfig', $iniMock, $config);
-        $this->setValueByReflection('cookieConfig', $cookieMock, $config);
+        $this->setValueByReflection(static::INI_CONFIG, $iniMock, $config);
+        $this->setValueByReflection(static::COOKIE_CONFIG, $cookieMock, $config);
 
         $this->assertSame($config, $config->loadConfigValue($config::SETTING_DEBUG_METHODS));
         $model = $config->settings[$config::SETTING_DEBUG_METHODS];
-        $this->assertEquals('Krexx.ini settings', $model->getSource());
-        $this->assertEquals('some methods', $model->getValue());
+        $this->assertEquals(static::KREXX_INI_SETTINGS, $model->getSource());
+        $this->assertEquals($someMethods, $model->getValue());
         $this->assertEquals($config::SECTION_METHODS, $model->getSection());
         $this->assertEquals($config::RENDER_TYPE_INPUT, $model->getType());
     }
@@ -347,22 +356,22 @@ class ConfigTest extends AbstractTest
 
         $iniMock = $this->createMock(Ini::class);
         $iniMock->expects($this->once())
-            ->method('getFeIsEditable')
+            ->method(static::GET_FE_IS_EDITABLE)
             ->with($config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue(true));
         $iniMock->expects($this->never())
-            ->method('getConfigFromFile')
+            ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS);
 
         $cookieMock = $this->createMock(Cookie::class);
         $cookieMock->expects($this->once())
-            ->method('getConfigFromCookies')
+            ->method(static::GET_CONFIG_FROM_COOKIES)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue('cookie methods'));
 
         // Inject them.
-        $this->setValueByReflection('iniConfig', $iniMock, $config);
-        $this->setValueByReflection('cookieConfig', $cookieMock, $config);
+        $this->setValueByReflection(static::INI_CONFIG, $iniMock, $config);
+        $this->setValueByReflection(static::COOKIE_CONFIG, $cookieMock, $config);
 
         $this->assertSame($config, $config->loadConfigValue($config::SETTING_DEBUG_METHODS));
         $model = $config->settings[$config::SETTING_DEBUG_METHODS];
@@ -380,29 +389,30 @@ class ConfigTest extends AbstractTest
     public function testLoadConfigValueUneditable()
     {
         $config = new Config(Krexx::$pool);
+        $someMethods = 'some methods';
 
         $iniMock = $this->createMock(Ini::class);
         $iniMock->expects($this->once())
-            ->method('getFeIsEditable')
+            ->method(static::GET_FE_IS_EDITABLE)
             ->with($config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue(false));
         $iniMock->expects($this->once())
-            ->method('getConfigFromFile')
+            ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS)
-            ->will($this->returnValue('some methods'));
+            ->will($this->returnValue($someMethods));
 
         $cookieMock = $this->createMock(Cookie::class);
         $cookieMock->expects($this->never())
-            ->method('getConfigFromCookies');
+            ->method(static::GET_CONFIG_FROM_COOKIES);
 
         // Inject them.
-        $this->setValueByReflection('iniConfig', $iniMock, $config);
-        $this->setValueByReflection('cookieConfig', $cookieMock, $config);
+        $this->setValueByReflection(static::INI_CONFIG, $iniMock, $config);
+        $this->setValueByReflection(static::COOKIE_CONFIG, $cookieMock, $config);
 
         $this->assertSame($config, $config->loadConfigValue($config::SETTING_DEBUG_METHODS));
         $model = $config->settings[$config::SETTING_DEBUG_METHODS];
-        $this->assertEquals('Krexx.ini settings', $model->getSource());
-        $this->assertEquals('some methods', $model->getValue());
+        $this->assertEquals(static::KREXX_INI_SETTINGS, $model->getSource());
+        $this->assertEquals($someMethods, $model->getValue());
         $this->assertEquals($config::SECTION_METHODS, $model->getSection());
         $this->assertEquals($config::RENDER_TYPE_INPUT, $model->getType());
     }
@@ -418,77 +428,54 @@ class ConfigTest extends AbstractTest
 
         $iniMock = $this->createMock(Ini::class);
         $iniMock->expects($this->once())
-            ->method('getFeIsEditable')
+            ->method(static::GET_FE_IS_EDITABLE)
             ->with($config::SETTING_DISABLED)
             ->will($this->returnValue(true));
         $iniMock->expects($this->once())
-            ->method('getConfigFromFile')
+            ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_OUTPUT, $config::SETTING_DISABLED)
             ->will($this->returnValue('true'));
 
         $cookieMock = $this->createMock(Cookie::class);
         $cookieMock->expects($this->once())
-            ->method('getConfigFromCookies')
+            ->method(static::GET_CONFIG_FROM_COOKIES)
             ->with($config::SECTION_OUTPUT, $config::SETTING_DISABLED)
             ->will($this->returnValue('false'));
 
         // Inject them.
-        $this->setValueByReflection('iniConfig', $iniMock, $config);
-        $this->setValueByReflection('cookieConfig', $cookieMock, $config);
+        $this->setValueByReflection(static::INI_CONFIG, $iniMock, $config);
+        $this->setValueByReflection(static::COOKIE_CONFIG, $cookieMock, $config);
 
         $this->assertSame($config, $config->loadConfigValue($config::SETTING_DISABLED));
         $model = $config->settings[$config::SETTING_DISABLED];
-        $this->assertEquals('Krexx.ini settings', $model->getSource());
+        $this->assertEquals(static::KREXX_INI_SETTINGS, $model->getSource());
         $this->assertEquals(true, $model->getValue(), 'It is still disabled!');
         $this->assertEquals($config::SECTION_OUTPUT, $model->getSection());
         $this->assertEquals($config::RENDER_TYPE_SELECT, $model->getType());
     }
 
     /**
-     * Mocking of a registered skin, that is actually selected.
-     *
-     * @return \Brainworxx\Krexx\Service\Config\Config
-     */
-    protected function mockSkin()
-    {
-        Registration::registerAdditionalskin('some skin', 'some class', 'some directory');
-        $config = new Config(Krexx::$pool);
-        $config->settings[$config::SETTING_SKIN]->setValue('some skin');
-        return $config;
-    }
-
-    /**
-     * Test the getting of the class name of the currently selected skin.
+     * Testing all the skin related getters.
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::getSkinClass
-     */
-    public function testGetSkinClass()
-    {
-        $config = $this->mockSkin();
-        $this->assertEquals('some class', $config->getSkinClass());
-    }
-
-    /**
-     * Test the getting of the directory of the currently selected skin.
-     *
      * @covers \Brainworxx\Krexx\Service\Config\Config::getSkinDirectory
-     */
-    public function testGetSkinDirectory()
-    {
-        $config = $this->mockSkin();
-        $this->assertEquals('some directory', $config->getSkinDirectory());
-    }
-
-    /**
-     * Test the getting of the human readable names for the skins.
-     *
      * @covers \Brainworxx\Krexx\Service\Config\Config::getSkinList
      */
-    public function testGetSkinList()
+    public function testSkinStuff()
     {
-        $config = $this->mockSkin();
+        $skinName = 'some skin';
+        $skinRenderClass = 'some class';
+        $skinDirectory = 'some directory';
+
+        // Create the fixture.
+        Registration::registerAdditionalskin($skinName, $skinRenderClass, $skinDirectory);
+        $config = new Config(Krexx::$pool);
+        $config->settings[$config::SETTING_SKIN]->setValue($skinName);
+
+        $this->assertEquals($skinRenderClass, $config->getSkinClass());
+        $this->assertEquals($skinDirectory, $config->getSkinDirectory());
         $this->assertEquals(
-            [$config::SKIN_SMOKY_GREY, $config::SKIN_HANS, 'some skin'],
+            [$config::SKIN_SMOKY_GREY, $config::SKIN_HANS, $skinName],
             $config->getSkinList()
         );
     }
