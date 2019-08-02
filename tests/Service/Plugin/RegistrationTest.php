@@ -37,6 +37,8 @@ namespace Brainworxx\Krexx\Tests\Service\Plugin;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\View\Messages;
 
 /**
  * Testing a static class . So. Much. Fun.
@@ -228,13 +230,13 @@ class RegistrationTest extends AbstractTest
     }
 
     /**
-     * Test the registering of a plugin.
+     * Create a plugin mock.
      *
-     * @covers \Brainworxx\Krexx\Service\Plugin\Registration::register
-     * @covers \Brainworxx\Krexx\Service\Plugin\Registration::activatePlugin
+     * @return PluginConfigInterface
      */
-    public function testRegisterAndActivatePlugin()
+    protected function createMockPlugin()
     {
+
         $pluginMock = $this->createMock(PluginConfigInterface::class);
         $pluginMock->expects($this->once())
             ->method('getName')
@@ -244,8 +246,20 @@ class RegistrationTest extends AbstractTest
             ->will($this->returnValue('v0.0.0'));
         $pluginMock->expects($this->once())
             ->method('exec');
-        Registration::register($pluginMock);
 
+        /** @var PluginConfigInterface $pluginMock */
+        return $pluginMock;
+    }
+    /**
+     * Test the registering of a plugin.
+     *
+     * @covers \Brainworxx\Krexx\Service\Plugin\Registration::register
+     * @covers \Brainworxx\Krexx\Service\Plugin\Registration::activatePlugin
+     */
+    public function testRegisterAndActivatePlugin()
+    {
+        $pluginMock = $this->createMockPlugin();
+        Registration::register($pluginMock);
         $expectation = [
             get_class($pluginMock) => [
                 Registration::CONFIG_CLASS => $pluginMock,
@@ -278,8 +292,51 @@ class RegistrationTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Service\Plugin\Registration::deactivatePlugin
      */
-    public function testDeactivatePuginNormal()
+    public function testDeactivatePluginNormal()
     {
-        $this->markTestIncomplete('Write me!');
+        // Register a plugin with a configuration class
+        $pluginMock = $this->createMockPlugin();
+        Registration::register($pluginMock);
+        $pluginMockClassName = get_class($pluginMock);
+        Registration::activatePlugin($pluginMockClassName);
+
+        // Set some values and test if they got purged.
+        $this->setValueByReflection(static::CHUNK_FOLDER, 'xxx', $this->registration);
+        $this->setValueByReflection(static::LOG_FOLDER, 'yyy', $this->registration);
+        $this->setValueByReflection(static::CONFIG_FILE, 'zzz', $this->registration);
+        $this->setValueByReflection(static::BLACK_LIST_METHODS, [123], $this->registration);
+        $this->setValueByReflection(static::BLACK_LIST_CLASS, [345], $this->registration);
+        $this->setValueByReflection(static::ADD_HELP_FILES, [678], $this->registration);
+        $this->setValueByReflection(static::REWRITE_LIST, [900], $this->registration);
+        $this->setValueByReflection(static::EVENT_LIST, [987], $this->registration);
+        $this->setValueByReflection(static::ADD_SKIN_LIST, [654], $this->registration);
+
+        // Make sure we can test the changes to the pool.
+        $oldConfig = Krexx::$pool->config;
+        $messageMock = $this->createMock(Messages::class);
+        $messageMock->expects($this->once())
+            ->method('readHelpTexts');
+        Krexx::$pool->messages = $messageMock;
+
+        // Deactivate it, and test the purging of the values.
+        Registration::deactivatePlugin($pluginMockClassName);
+        $pluginList = $this->getValueByReflection('plugins', $this->registration);
+        $this->assertFalse($pluginList[$pluginMockClassName][Registration::IS_ACTIVE]);
+        // The configuration class writes fallback values into these variables,
+        // hence they have only changed.
+        $this->assertAttributeNotEquals('xxx', static::CHUNK_FOLDER, $this->registration);
+        $this->assertAttributeNotEquals('yyy', static::LOG_FOLDER, $this->registration);
+        $this->assertAttributeNotEquals('zzz', static::CONFIG_FILE, $this->registration);
+        $this->assertAttributeEmpty(static::BLACK_LIST_METHODS, $this->registration);
+        $this->assertAttributeEmpty(static::BLACK_LIST_CLASS, $this->registration);
+        $this->assertAttributeEmpty(static::ADD_HELP_FILES, $this->registration);
+        $this->assertAttributeEmpty(static::REWRITE_LIST, $this->registration);
+        $this->assertAttributeEmpty(static::EVENT_LIST, $this->registration);
+        $this->assertAttributeEmpty(static::ADD_SKIN_LIST, $this->registration);
+
+        // 3. Test the changes made to the pool
+        $this->assertEmpty(Krexx::$pool->rewrite);
+        $this->assertEmpty(Krexx::$pool->eventService->register);
+        $this->assertNotSame($oldConfig, Krexx::$pool->config);
     }
 }
