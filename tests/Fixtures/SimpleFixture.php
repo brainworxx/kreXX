@@ -75,4 +75,14 @@ class SimpleFixture
      * @var string
      */
     private $value5 = 'dont\'t look at me!';
+
+    /**
+     * Do something with value5 to prevent a code smell.
+     *
+     * @return string
+     */
+    protected function doSomething()
+    {
+        return $this->value5;
+    }
 }
