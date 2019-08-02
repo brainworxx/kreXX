@@ -1,3 +1,6 @@
+3.1.1 dev
+
+
 3.1.0
 - Use some real autoloading, with a fallback to manually including
   all files.
