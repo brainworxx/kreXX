@@ -91,7 +91,7 @@ class ErrorObject extends AbstractObjectAnalysis
         if (empty($source) === true) {
             $source = $this->pool->messages->getHelp('noSourceAvailable');
         }
-        $output .= $this->pool->render->renderSingleChild(
+        return $output .= $this->pool->render->renderSingleChild(
             $this->dispatchEventWithModel(
                 'source',
                 $this->pool->createClass(Model::class)
@@ -102,7 +102,5 @@ class ErrorObject extends AbstractObjectAnalysis
                     ->setType(static::TYPE_PHP)
             )
         );
-
-        return $output;
     }
 }
