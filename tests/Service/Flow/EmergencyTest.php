@@ -42,6 +42,18 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 
 class EmergencyTest extends AbstractTest
 {
+
+    const ALL_IS_OK = 'allIsOk';
+    const MAX_RUNTIME = 'maxRuntime';
+    const MIN_MEMORY_LEFT = 'minMemoryLeft';
+    const MAX_CALL = 'maxCall';
+    const MAX_NESTING_LEVEL = 'maxNestingLevel';
+    const SERVER_MEMORY_LIMIT = 'serverMemoryLimit';
+    const NESTING_LEVEL = 'nestingLevel';
+    const MESSAGE_PARAMETERS = 'params';
+    const TIMER = 'timer';
+    const KREXX_COUNT = 'krexxCount';
+
     /**
      * @var Emergency
      */
@@ -62,7 +74,7 @@ class EmergencyTest extends AbstractTest
     protected function tearDown()
     {
         parent::tearDown();
-        $this->setValueByReflection('allIsOk', true, Emergency::class);
+        $this->setValueByReflection(static::ALL_IS_OK, true, Emergency::class);
     }
 
     /**
@@ -111,11 +123,11 @@ class EmergencyTest extends AbstractTest
         // Test setting itself in pool
         $this->assertSame($this->emergency, Krexx::$pool->emergencyHandler);
         // Test setting of values from config
-        $this->assertAttributeEquals(60, 'maxRuntime', $this->emergency);
-        $this->assertAttributeEquals(64 * 1024 * 1024, 'minMemoryLeft', $this->emergency);
-        $this->assertAttributeEquals(10, 'maxCall', $this->emergency);
-        $this->assertAttributeEquals(5, 'maxNestingLevel', $this->emergency);
-        $this->assertAttributeEquals(50 * 1024, 'serverMemoryLimit', $this->emergency);
+        $this->assertAttributeEquals(60, static::MAX_RUNTIME, $this->emergency);
+        $this->assertAttributeEquals(64 * 1024 * 1024, static::MIN_MEMORY_LEFT, $this->emergency);
+        $this->assertAttributeEquals(10, static::MAX_CALL, $this->emergency);
+        $this->assertAttributeEquals(5, static::MAX_NESTING_LEVEL, $this->emergency);
+        $this->assertAttributeEquals(50 * 1024, static::SERVER_MEMORY_LIMIT, $this->emergency);
     }
 
     /**
@@ -134,7 +146,7 @@ class EmergencyTest extends AbstractTest
             ->will($this->returnValue('50m'));
 
         $this->emergency = new Emergency(Krexx::$pool);
-        $this->assertAttributeEquals(50 * 1024 * 1024, 'serverMemoryLimit', $this->emergency);
+        $this->assertAttributeEquals(50 * 1024 * 1024, static::SERVER_MEMORY_LIMIT, $this->emergency);
     }
 
     /**
@@ -153,7 +165,7 @@ class EmergencyTest extends AbstractTest
             ->will($this->returnValue('nothing'));
 
         $this->emergency = new Emergency(Krexx::$pool);
-        $this->assertAttributeEquals(0, 'serverMemoryLimit', $this->emergency);
+        $this->assertAttributeEquals(0, static::SERVER_MEMORY_LIMIT, $this->emergency);
     }
 
     /**
@@ -163,11 +175,11 @@ class EmergencyTest extends AbstractTest
      */
     public function testDisable()
     {
-        $this->assertAttributeEquals(false, 'disabled', $this->emergency);
+        $this->assertAttributeEquals(false, Fallback::SETTING_DISABLED, $this->emergency);
         $this->emergency->setDisable(true);
-        $this->assertAttributeEquals(true, 'disabled', $this->emergency);
+        $this->assertAttributeEquals(true, Fallback::SETTING_DISABLED, $this->emergency);
         $this->emergency->setDisable(false);
-        $this->assertAttributeEquals(false, 'disabled', $this->emergency);
+        $this->assertAttributeEquals(false, Fallback::SETTING_DISABLED, $this->emergency);
     }
 
     /**
@@ -177,8 +189,8 @@ class EmergencyTest extends AbstractTest
      */
     public function testCheckEmergencyBreakDisabled()
     {
-        $this->setValueByReflection('disabled', true, $this->emergency);
-        $this->setValueByReflection('allIsOk', false, Emergency::class);
+        $this->setValueByReflection(Fallback::SETTING_DISABLED, true, $this->emergency);
+        $this->setValueByReflection(static::ALL_IS_OK, false, Emergency::class);
         $this->assertEquals(false, $this->emergency->checkEmergencyBreak());
     }
 
@@ -189,7 +201,7 @@ class EmergencyTest extends AbstractTest
      */
     public function testCheckEmergencyBreakFailedBefore()
     {
-        $this->setValueByReflection('allIsOk', false, Emergency::class);
+        $this->setValueByReflection(static::ALL_IS_OK, false, Emergency::class);
         $this->assertEquals(true, $this->emergency->checkEmergencyBreak());
     }
 
@@ -202,15 +214,15 @@ class EmergencyTest extends AbstractTest
     public function testCheckEmergencyBreakFailedMemory()
     {
         $this->mockDebugBacktraceStandard();
-        $this->setValueByReflection('serverMemoryLimit', 550, $this->emergency);
-        $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
+        $this->setValueByReflection(static::SERVER_MEMORY_LIMIT, 550, $this->emergency);
+        $this->setValueByReflection(static::MIN_MEMORY_LEFT, 100, $this->emergency);
         $memoryGetUsage = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_usage');
         $memoryGetUsage->expects($this->once())
             ->will($this->returnValue(500));
         $this->assertEquals(true, $this->emergency->checkEmergencyBreak());
-        $this->assertAttributeEquals(false, 'allIsOk', $this->emergency);
+        $this->assertAttributeEquals(false, static::ALL_IS_OK, $this->emergency);
         $this->assertEquals(
-            ['emergencyMemory' => ['key' => 'emergencyMemory', 'params' => []]],
+            ['emergencyMemory' => ['key' => 'emergencyMemory', static::MESSAGE_PARAMETERS => []]],
             Krexx::$pool->messages->getKeys()
         );
     }
@@ -227,21 +239,21 @@ class EmergencyTest extends AbstractTest
         $this->mockDebugBacktraceStandard();
 
         // Make sure that the memory check succeeds.
-        $this->setValueByReflection('serverMemoryLimit', 5000, $this->emergency);
-        $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
+        $this->setValueByReflection(static::SERVER_MEMORY_LIMIT, 5000, $this->emergency);
+        $this->setValueByReflection(static::MIN_MEMORY_LEFT, 100, $this->emergency);
         $memoryGetUsage = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_usage');
         $memoryGetUsage->expects($this->once())
             ->will($this->returnValue(500));
         // Make sure the runtime check fails.
-        $this->setValueByReflection('timer', 12345, $this->emergency);
+        $this->setValueByReflection(static::TIMER, 12345, $this->emergency);
         $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'time');
         $time->expects($this->once())
             ->will($this->returnValue(92345));
 
         $this->assertEquals(true, $this->emergency->checkEmergencyBreak());
-        $this->assertAttributeEquals(false, 'allIsOk', $this->emergency);
+        $this->assertAttributeEquals(false, static::ALL_IS_OK, $this->emergency);
         $this->assertEquals(
-            ['emergencyTimer' => ['key' => 'emergencyTimer', 'params' => []]],
+            ['emergencyTimer' => ['key' => 'emergencyTimer', static::MESSAGE_PARAMETERS => []]],
             Krexx::$pool->messages->getKeys()
         );
     }
@@ -256,19 +268,19 @@ class EmergencyTest extends AbstractTest
     public function testCheckEmergencyBreakOk()
     {
         // Make sure that the memory check succeeds.
-        $this->setValueByReflection('serverMemoryLimit', 5000, $this->emergency);
-        $this->setValueByReflection('minMemoryLeft', 100, $this->emergency);
+        $this->setValueByReflection(static::SERVER_MEMORY_LIMIT, 5000, $this->emergency);
+        $this->setValueByReflection(static::MIN_MEMORY_LEFT, 100, $this->emergency);
         $memoryGetUsage = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_usage');
         $memoryGetUsage->expects($this->once())
             ->will($this->returnValue(500));
         // Make sure the runtime check succeeds.
-        $this->setValueByReflection('timer', 92345, $this->emergency);
+        $this->setValueByReflection(static::TIMER, 92345, $this->emergency);
         $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'time');
         $time->expects($this->once())
             ->will($this->returnValue(12345));
 
         $this->assertEquals(false, $this->emergency->checkEmergencyBreak());
-        $this->assertAttributeEquals(true, 'allIsOk', $this->emergency);
+        $this->assertAttributeEquals(true, static::ALL_IS_OK, $this->emergency);
         $this->assertEquals([], Krexx::$pool->messages->getKeys());
     }
 
@@ -279,9 +291,9 @@ class EmergencyTest extends AbstractTest
      */
     public function testUpOneNestingLevel()
     {
-        $this->setValueByReflection('nestingLevel', 10, $this->emergency);
+        $this->setValueByReflection(static::NESTING_LEVEL, 10, $this->emergency);
         $this->emergency->upOneNestingLevel();
-        $this->assertAttributeEquals(11, 'nestingLevel', $this->emergency);
+        $this->assertAttributeEquals(11, static::NESTING_LEVEL, $this->emergency);
     }
 
     /**
@@ -291,9 +303,9 @@ class EmergencyTest extends AbstractTest
      */
     public function testDownOneNestingLevel()
     {
-        $this->setValueByReflection('nestingLevel', 10, $this->emergency);
+        $this->setValueByReflection(static::NESTING_LEVEL, 10, $this->emergency);
         $this->emergency->downOneNestingLevel();
-        $this->assertAttributeEquals(9, 'nestingLevel', $this->emergency);
+        $this->assertAttributeEquals(9, static::NESTING_LEVEL, $this->emergency);
     }
 
     /**
@@ -303,12 +315,12 @@ class EmergencyTest extends AbstractTest
      */
     public function testCheckNesting()
     {
-        $this->setValueByReflection('nestingLevel', 10, $this->emergency);
-        $this->setValueByReflection('maxNestingLevel', 5, $this->emergency);
+        $this->setValueByReflection(static::NESTING_LEVEL, 10, $this->emergency);
+        $this->setValueByReflection(static::MAX_NESTING_LEVEL, 5, $this->emergency);
         $this->assertEquals(true, $this->emergency->checkNesting());
 
-        $this->setValueByReflection('maxNestingLevel', 10, $this->emergency);
-        $this->setValueByReflection('nestingLevel', 5, $this->emergency);
+        $this->setValueByReflection(static::MAX_NESTING_LEVEL, 10, $this->emergency);
+        $this->setValueByReflection(static::NESTING_LEVEL, 5, $this->emergency);
         $this->assertEquals(false, $this->emergency->checkNesting());
     }
 
@@ -319,7 +331,7 @@ class EmergencyTest extends AbstractTest
      */
     public function testGetNestingLevel()
     {
-        $this->setValueByReflection('nestingLevel', 10, $this->emergency);
+        $this->setValueByReflection(static::NESTING_LEVEL, 10, $this->emergency);
         $this->assertEquals(10, $this->emergency->getNestingLevel());
     }
 
@@ -333,15 +345,15 @@ class EmergencyTest extends AbstractTest
         $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'time');
         $time->expects($this->once())
             ->will($this->returnValue(5000));
-        $this->setValueByReflection('maxRuntime', 60, $this->emergency);
+        $this->setValueByReflection(static::MAX_RUNTIME, 60, $this->emergency);
 
-        $this->assertAttributeEquals(0, 'timer', $this->emergency);
+        $this->assertAttributeEquals(0, static::TIMER, $this->emergency);
         $this->emergency->initTimer();
-        $this->assertAttributeEquals(5060, 'timer', $this->emergency);
+        $this->assertAttributeEquals(5060, static::TIMER, $this->emergency);
 
         // Re-initialize should not change the alredy existing value.
         $this->emergency->initTimer();
-        $this->assertAttributeEquals(5060, 'timer', $this->emergency);
+        $this->assertAttributeEquals(5060, static::TIMER, $this->emergency);
     }
 
     /**
@@ -352,20 +364,20 @@ class EmergencyTest extends AbstractTest
     public function testCheckMaxCall()
     {
         // Called too many times.
-        $this->setValueByReflection('krexxCount', 999, $this->emergency);
-        $this->setValueByReflection('maxCall', 998, $this->emergency);
+        $this->setValueByReflection(static::KREXX_COUNT, 999, $this->emergency);
+        $this->setValueByReflection(static::MAX_CALL, 998, $this->emergency);
         $this->assertTrue($this->emergency->checkMaxCall());
 
         // Called normally
-        $this->setValueByReflection('krexxCount', 0, $this->emergency);
+        $this->setValueByReflection(static::KREXX_COUNT, 0, $this->emergency);
         $this->assertFalse($this->emergency->checkMaxCall());
         $this->assertEquals([], Krexx::$pool->messages->getKeys());
 
         // Called the last time, with stored feedback Message.
-        $this->setValueByReflection('krexxCount', 997, $this->emergency);
+        $this->setValueByReflection(static::KREXX_COUNT, 997, $this->emergency);
         $this->assertFalse($this->emergency->checkMaxCall());
         $this->assertEquals(
-            ['maxCallReached' => ['key' => 'maxCallReached', 'params' => []]],
+            ['maxCallReached' => ['key' => 'maxCallReached', static::MESSAGE_PARAMETERS => []]],
             Krexx::$pool->messages->getKeys()
         );
     }
@@ -377,7 +389,7 @@ class EmergencyTest extends AbstractTest
      */
     public function testGetKrexxCount()
     {
-        $this->setValueByReflection('krexxCount', 999, $this->emergency);
+        $this->setValueByReflection(static::KREXX_COUNT, 999, $this->emergency);
         $this->assertEquals(999, $this->emergency->getKrexxCount());
     }
 }
