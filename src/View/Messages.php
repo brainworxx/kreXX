@@ -198,7 +198,7 @@ class Messages
 
         $this->readHelpFile(KREXX_DIR . 'resources/language/Help.ini');
 
-        foreach (SettingsGetter::getAdditionelHelpFiles() as $filename) {
+        foreach (SettingsGetter::getAdditionalHelpFiles() as $filename) {
             $this->readHelpFile($filename);
         }
     }
