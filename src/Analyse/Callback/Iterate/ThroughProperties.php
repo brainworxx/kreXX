@@ -63,20 +63,6 @@ class ThroughProperties extends AbstractCallback
     protected $fileService;
 
     /**
-     * A list with the default properties from this object.
-     *
-     * @var array
-     */
-    protected $defaultProperties = [];
-
-    /**
-     * The object, cast into an array.
-     *
-     * @var array
-     */
-    protected $objectArray = [];
-
-    /**
      * Renders the properties of a class.
      *
      * @return string
@@ -221,6 +207,11 @@ class ThroughProperties extends AbstractCallback
             return $declarationCache[$key];
         }
 
+        // Not so early return for internal properties.
+        if ($declaringClass->isInternal()) {
+            return $declarationCache[$key] = $this->pool->messages->getHelp(static::META_PREDECLARED);
+        }
+
         // A class can not redeclare a property from a trait that it is using.
         // Hence, if one of the traits has the same property that we are
         // analysing, it is probably declared there.
@@ -241,7 +232,6 @@ class ThroughProperties extends AbstractCallback
                 break;
             }
         }
-
 
         $filename = $declaringClass->getFileName();
 
