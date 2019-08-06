@@ -58,6 +58,12 @@ class File extends AbstractOutput
      */
     protected $chunkStrings = [];
 
+    public function __destruct()
+    {
+        parent::__destruct();
+        $this->cleanupService->cleanupOldLogs();
+    }
+
     /**
      * Adds output to our shutdown handler.
      *

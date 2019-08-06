@@ -50,6 +50,8 @@ PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Flow\\', 'memory_get_
 PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'mb_strlen');
 PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\View\\Output\\', 'register_shutdown_function');
 PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\View\\Output\\', 'microtime');
+PHPMock::defineFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'glob');
+
 // Register a shutdown method to die, so we get no output on the shell.
 register_shutdown_function(function () {
     die();

@@ -55,4 +55,14 @@ class AbstractOutputTest extends AbstractTest
         $browser = new Browser(Krexx::$pool);
         $this->assertAttributeSame(Krexx::$pool, 'pool', $browser);
     }
+
+    /**
+     * Test the calling of the destructor.
+     *
+     * @covers \Brainworxx\Krexx\View\Output\AbstractOutput::__destruct
+     */
+    public function testDestruct()
+    {
+        $this->markTestIncomplete('Write me!');
+    }
 }

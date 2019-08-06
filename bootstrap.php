@@ -156,6 +156,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Service/Misc/File.php';
         include_once KREXX_DIR . 'src/Service/Misc/Registry.php';
         include_once KREXX_DIR . 'src/Service/Misc/FileinfoDummy.php';
+        include_once KREXX_DIR . 'src/Service/Misc/Cleanup.php';
 
         include_once KREXX_DIR . 'src/Service/Reflection/UndeclaredProperty.php';
         include_once KREXX_DIR . 'src/Service/Reflection/ReflectionClass.php';

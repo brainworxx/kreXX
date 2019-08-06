@@ -85,14 +85,14 @@ class Chunks
      *
      * @var bool
      */
-    protected $useChunks = true;
+    protected $chunksAreAllowed = true;
 
     /**
      * Is the log folder write protected?
      *
      * @var bool
      */
-    protected $useLogging = true;
+    protected $loggingIsAllowed = true;
 
     /**
      * The logfolder.
@@ -140,8 +140,8 @@ class Chunks
         $this->pool = $pool;
         $this->chunkDir = $pool->config->getChunkDir();
         $this->logDir = $pool->config->getLogDir();
-        $this->fileStamp = explode(' ', microtime());
-        $this->fileStamp = $this->fileStamp[1] . str_replace('0.', '', $this->fileStamp[0]);
+        $stamp = explode(' ', microtime());
+        $this->fileStamp = $stamp[1] . str_replace('0.', '', $stamp[0]);
 
         $pool->chunks = $this;
     }
@@ -159,7 +159,7 @@ class Chunks
      */
     public function chunkMe($string)
     {
-        if ($this->useChunks === true && strlen($string) > 10000) {
+        if ($this->chunksAreAllowed === true && strlen($string) > 10000) {
             // Get the key.
             $key = $this->genKey();
             // Detect the encoding in the chunk.
@@ -222,10 +222,6 @@ class Chunks
      */
     public function sendDechunkedToBrowser($string)
     {
-        // Do some housekeeping. Unless something dreadful had happened, there
-        // should not be anything to cleanup.
-        $this->cleanupOldChunks();
-
         // Check for HTML output.
         if ($this->isOutputHtml()) {
             $chunkPos = strpos($string, static::STRING_DELIMITER);
@@ -302,15 +298,10 @@ class Chunks
      */
     public function saveDechunkedToFile($string)
     {
-        $this->cleanupOldChunks();
-
-        if ($this->useLogging === false) {
+        if ($this->loggingIsAllowed === false) {
             // We have no write access. Do nothing.
             return;
         }
-
-        // Cleanup old logfiles to prevent a overflow.
-        $this->cleanupOldLogs($this->logDir);
 
         // Determine the filename.
         $filename = $this->logDir . $this->fileStamp . '.Krexx.html';
@@ -349,72 +340,30 @@ class Chunks
     }
 
     /**
-     * Deletes chunk files older then 1 hour, in case there are some left.
-     */
-    protected function cleanupOldChunks()
-    {
-        if ($this->useChunks === false) {
-            // We have no write access. Do nothing.
-            return;
-        }
-
-        static $beenHere = false;
-
-        // We only do this once.
-        if ($beenHere === true) {
-            return;
-        }
-
-        $beenHere = true;
-        // Clean up leftover files.
-        $chunkList = glob($this->chunkDir . '*.Krexx.tmp');
-        if (empty($chunkList) === false) {
-            $now = time();
-            foreach ($chunkList as $file) {
-                // We delete everything that is older than 15 minutes.
-                if (($this->pool->fileService->filetime($file) + 900) < $now) {
-                    $this->pool->fileService->deleteFile($file);
-                }
-            }
-        }
-    }
-
-    /**
-     * Deletes old logfiles.
+     * Setter for the $useChunks.
      *
-     * @param string $logDir
-     *   The directory with the logfiles.
+     * @deprecated
+     *   Will be removed.
+     *
+     * @param bool $bool
+     *   Are we using chunks?
      */
-    protected function cleanupOldLogs($logDir)
+    public function setUseChunks($bool)
     {
-        if ($this->useLogging === false) {
-            // We have no write access. Do nothing.
-            return;
-        }
-
-        // Cleanup old logfiles to prevent a overflow.
-        $logList = glob($logDir . '*.Krexx.html');
-        if (empty($logList) === true) {
-            return;
-        }
-
-        array_multisort(
-            array_map([$this->pool->fileService, 'filetime'], $logList),
-            SORT_DESC,
-            $logList
-        );
-
-        $maxFileCount = (int)$this->pool->config->getSetting(Fallback::SETTING_MAX_FILES);
-        $count = 1;
-        // Cleanup logfiles.
-        foreach ($logList as $file) {
-            if ($count > $maxFileCount) {
-                $this->pool->fileService->deleteFile($file);
-                $this->pool->fileService->deleteFile($file . '.json');
-            }
-
-            ++$count;
-        }
+        $this->setChunksAreAllowed($bool);
+    }
+    /**
+     * Setter for the the the $useLogging. Here we determine, if the logfolder
+     * is accessible.
+     *
+     * @deprecated
+     *   Will be removed.
+     *
+     * @param $bool
+     */
+    public function setUseLogging($bool)
+    {
+        $this->setLoggingIsAllowed($bool);
     }
 
     /**
@@ -426,9 +375,20 @@ class Chunks
      * @param bool $bool
      *   Are we using chunks?
      */
-    public function setUseChunks($bool)
+    public function setChunksAreAllowed($bool)
     {
-        $this->useChunks = $bool;
+        $this->chunksAreAllowed = $bool;
+    }
+
+    /**
+     * Getter for the useChunks value.
+     *
+     * @return bool
+     *   Are we using chunks?
+     */
+    public function getChunksAreAllowed()
+    {
+        return $this->chunksAreAllowed;
     }
 
     /**
@@ -436,10 +396,22 @@ class Chunks
      * is accessible.
      *
      * @param $bool
+     *   Is the log folder accessible?
      */
-    public function setUseLogging($bool)
+    public function setLoggingIsAllowed($bool)
     {
-        $this->useLogging = $bool;
+        $this->loggingIsAllowed = $bool;
+    }
+
+    /**
+     * Getter for the useLogging.
+     *
+     * @return bool
+     *   Is the log folder accessible?
+     */
+    public function getLoggingIsAllowed()
+    {
+        return $this->loggingIsAllowed;
     }
 
     /**

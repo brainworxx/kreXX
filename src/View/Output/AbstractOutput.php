@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\View\Output;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
+use Brainworxx\Krexx\Service\Misc\Cleanup;
 
 /**
  * Defining what is needed for an output class.
@@ -51,6 +52,13 @@ abstract class AbstractOutput
     protected $pool;
 
     /**
+     * Deleting old chunks and logfiles.
+     *
+     * @var \Brainworxx\Krexx\Service\Misc\Cleanup
+     */
+    protected $cleanupService;
+
+    /**
      * Injects the pool and register the shutdown function.
      *
      * @param Pool $pool
@@ -59,6 +67,15 @@ abstract class AbstractOutput
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
+        $this->cleanupService = $pool->createClass(Cleanup::class);
+    }
+
+    /**
+     * Cleanup stuff, after all is said and done.
+     */
+    public function __destruct()
+    {
+        $this->cleanupService->cleanupOldChunks();
     }
 
     /**
