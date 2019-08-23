@@ -197,4 +197,96 @@ class CleanupTest extends AbstractTest
         $this->cleanup = new Cleanup(\Krexx::$pool);
         $this->cleanup->cleanupOldLogs();
     }
+
+    /**
+     * Test the cleanup of old chunks, when we have no write access.
+     *
+     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::cleanupOldChunks
+     */
+    public function testCleanupOldChunksNoWriteAccess()
+    {
+        $chunksMock = $this->createMock(Chunks::class);
+        $chunksMock->expects($this->once())
+            ->method('getChunksAreAllowed')
+            ->will($this->returnValue(false));
+        Krexx::$pool->chunks = $chunksMock;
+
+        $this->cleanup->cleanupOldChunks();
+        $this->assertAttributeEquals(
+            false,
+            'chunksDone',
+            $this->cleanup,
+            'did not remove any chunks, should be untouched.'
+        );
+    }
+
+    /**
+     * Test the cleanup of old chunks, when we have no write access.
+     *
+     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::cleanupOldChunks
+     */
+    public function testCleanupOldChunksNormal()
+    {
+        $chunkDir = 'extra chunky';
+        $file1 = 'file 1';
+        $file2 = 'file 2';
+        $file3 = 'file 3';
+
+        $chunksMock = $this->createMock(Chunks::class);
+        $chunksMock->expects($this->once())
+            ->method('getChunksAreAllowed')
+            ->will($this->returnValue(true));
+        Krexx::$pool->chunks = $chunksMock;
+
+        $configMock = $this->createMock(Config::class);
+        $configMock->expects($this->once())
+            ->method('getChunkDir')
+            ->will($this->returnValue($chunkDir));
+        Krexx::$pool->config = $configMock;
+
+        $glob = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'glob');
+        $glob->expects($this->once())
+            ->with($chunkDir . '*.Krexx.tmp')
+            ->will($this->returnValue([$file1, $file2, $file3]));
+        $time = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'time');
+        $time->expects($this->once())
+            ->will($this->returnValue(10000));
+
+        // Test the retrieval of the file time.
+        $fileServiceMock = $this->createMock(File::class);
+        $fileServiceMock->expects($this->exactly(3))
+            ->method('filetime')
+            ->withConsecutive(
+                [$file1],
+                [$file2],
+                [$file3]
+            )
+            ->will(
+                $this->returnValueMap(
+                    [
+                        [$file1, 999999],
+                        [$file2, 100],
+                        [$file3, 200]
+                    ]
+                )
+            );
+
+        // Test the deleting of the two oldest files 2 and 3, while 1 is too new.
+        $fileServiceMock->expects($this->exactly(2))
+            ->method('deleteFile')
+            ->withConsecutive(
+                [$file2],
+                [$file3]
+            );
+
+        Krexx::$pool->fileService = $fileServiceMock;
+
+        $this->cleanup->cleanupOldChunks();
+        $this->assertAttributeEquals(
+            true,
+            'chunksDone',
+            $this->cleanup,
+            'Remember, that we did this before.'
+        );
+    }
 }
