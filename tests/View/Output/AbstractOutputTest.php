@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Tests\View\Output;
 
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Misc\Cleanup;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\View\Output\Browser;
 
@@ -63,6 +64,12 @@ class AbstractOutputTest extends AbstractTest
      */
     public function testDestruct()
     {
-        $this->markTestIncomplete('Write me!');
+        $cleanupMock = $this->createMock(Cleanup::class);
+        $cleanupMock->expects($this->once())
+            ->method('cleanupOldChunks');
+
+        $browser = new Browser(Krexx::$pool);
+        $this->setValueByReflection('cleanupService', $cleanupMock, $browser);
+        // No need to call it, it's the __destuct, which will be called regardless.
     }
 }
