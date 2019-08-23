@@ -36,8 +36,14 @@ namespace Brainworxx\Krexx\Tests\Service\Misc;
 
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Config;
+use Brainworxx\Krexx\Service\Config\Fallback;
+use Brainworxx\Krexx\Service\Config\From\Ini;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Misc\Cleanup;
+use Brainworxx\Krexx\Service\Misc\File;
+use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\View\Output\Chunks;
 
 class CleanupTest extends AbstractTest
@@ -66,7 +72,6 @@ class CleanupTest extends AbstractTest
      */
     public function testConstruct()
     {
-
         $this->assertAttributeSame(Krexx::$pool, 'pool', $this->cleanup);
     }
 
@@ -132,6 +137,64 @@ class CleanupTest extends AbstractTest
      */
     public function testCleanupOldLogsNormal()
     {
-        $this->markTestIncomplete('Write me!');
+        $logDir = 'some dir';
+        $file1 = 'file 1';
+        $file2 = 'file 2';
+        $file3 = 'file 3';
+
+        $glob = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'glob');
+        $glob->expects($this->once())
+            ->with($logDir . '*.Krexx.html')
+            ->will($this->returnValue([$file1, $file2, $file3]));
+
+        // Prepare the configuration
+        ConfigSupplier::$overwriteValues[Fallback::SETTING_MAX_FILES] = '1';
+        Registration::addRewrite(Ini::class, ConfigSupplier::class);
+        Registration::setLogFolder($logDir);
+        Krexx::$pool = null;
+        Pool::createPool();
+
+        // Logging is allowed.
+        $chunksMock = $this->createMock(Chunks::class);
+        $chunksMock->expects($this->once())
+            ->method('getLoggingIsAllowed')
+            ->will($this->returnValue(true));
+        Krexx::$pool->chunks = $chunksMock;
+
+        // Test the retrieval of the file time.
+        $fileServiceMock = $this->createMock(File::class);
+        $fileServiceMock->expects($this->exactly(3))
+            ->method('filetime')
+            ->withConsecutive(
+                [$file1],
+                [$file2],
+                [$file3]
+            )
+            ->will(
+                $this->returnValueMap(
+                    [
+                        [$file1, 999],
+                        [$file2, 123],
+                        [$file3, 789]
+                    ]
+                )
+            );
+
+        // Test the deleting of the two oldest files (2 and 3).
+        $fileServiceMock->expects($this->exactly(4))
+            ->method('deleteFile')
+            ->withConsecutive(
+                [$file3],
+                [$file3 . '.json'],
+                [$file2],
+                [$file2 . '.json']
+            );
+
+        // Inject hte mock
+        Krexx::$pool->fileService = $fileServiceMock;
+
+        // Run the test.
+        $this->cleanup = new Cleanup(\Krexx::$pool);
+        $this->cleanup->cleanupOldLogs();
     }
 }
