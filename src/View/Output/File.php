@@ -58,6 +58,9 @@ class File extends AbstractOutput
      */
     protected $chunkStrings = [];
 
+    /**
+     * Run the cleanup service.
+     */
     public function __destruct()
     {
         parent::__destruct();
