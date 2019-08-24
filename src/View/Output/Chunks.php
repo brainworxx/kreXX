@@ -223,7 +223,7 @@ class Chunks
     public function sendDechunkedToBrowser($string)
     {
         // Check for HTML output.
-        if ($this->isOutputHtml()) {
+        if ($this->pool->createClass(CheckOutput::class)->isOutputHtml()) {
             $chunkPos = strpos($string, static::STRING_DELIMITER);
 
             while ($chunkPos !== false) {
@@ -256,36 +256,18 @@ class Chunks
      * This one gets called during the shutdown phase of PHP. There is a high
      * chance, that the header was already set.
      *
+     * @deprecated
+     *   Will be removed.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
      * @return bool
      *   Well? Is it?
      */
     protected function isOutputHtml()
     {
-        static $result;
-
-        if ($result !== null) {
-            return $result;
-        }
-
-        if ($this->pool->config->getSetting(Fallback::SETTING_DETECT_AJAX) === Fallback::VALUE_FALSE) {
-            // We ignore the heades and send everything.
-            $result = true;
-        }
-
-        // When we have dispatched a PDF or Json, the browser will not be
-        // able to render the HTML output correctly.
-        foreach (headers_list() as $header) {
-            $header = strtolower($header);
-            if (strpos($header, 'content-type') !== false &&
-                strpos($header, 'html') === false
-            ) {
-                // We do have none html content type.
-                $result = false;
-            }
-        }
-
-        // Found nothing, must be HTML.
-        return $result = true;
+        return $this->pool->createClass(CheckOutput::class)->isOutputHtml();
     }
 
     /**

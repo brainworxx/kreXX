@@ -169,6 +169,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/View/Output/Chunks.php';
         include_once KREXX_DIR . 'src/View/Output/File.php';
         include_once KREXX_DIR . 'src/View/Output/Browser.php';
+        include_once KREXX_DIR . 'src/View/Output/CheckOutput.php';
 
         include_once KREXX_DIR . 'src/View/RenderInterface.php';
         include_once KREXX_DIR . 'src/View/AbstractRender.php';

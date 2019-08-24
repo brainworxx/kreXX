@@ -38,6 +38,7 @@ use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
+use Brainworxx\Krexx\View\Output\CheckOutput;
 
 /**
  * Access the debug settings here.
@@ -111,6 +112,11 @@ class Config extends Fallback
     protected $directories = [];
 
     /**
+     * @var CheckOutput
+     */
+    protected $checkOutput;
+
+    /**
      * Has kreXX been disabled via php call \Krexx::disable()?
      *
      * @var bool
@@ -149,9 +155,10 @@ class Config extends Fallback
         }
 
         // We may need to change the disabling again, in case we are in cli
-        // or ajax mode and have no fileoutput.
-        if ($this->isRequestAjaxOrCli() === true &&
-            $this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE
+        // or ajax mode and have no file output.
+        $this->checkOutput = $pool->createClass(CheckOutput::class);
+        if ($this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE &&
+            ($this->checkOutput->isAjax() === true || $this->checkOutput->isCli() === true)
         ) {
             // No kreXX for you. At least until you start forced logging.
             $this->setDisabled(true);
@@ -266,32 +273,18 @@ class Config extends Fallback
     /**
      * Check if the current request is an AJAX request.
      *
+     * @deprecated
+     *   Will be removed.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
      * @return bool
      *   TRUE when this is AJAX, FALSE if not
      */
     protected function isRequestAjaxOrCli()
     {
-        $server = $this->pool->getServer();
-
-        if (isset($server['HTTP_X_REQUESTED_WITH']) === true &&
-            strtolower($server['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' &&
-            $this->getSetting(static::SETTING_DETECT_AJAX) === true
-        ) {
-            // Appending stuff after a ajax request will most likely
-            // cause a js error. But there are moments when you actually
-            // want to do this.
-            //
-            // We were supposed to detect ajax, and we did it right now.
-            return true;
-        }
-
-        // Check for CLI.
-        if (php_sapi_name() === 'cli') {
-            return true;
-        }
-
-        // Still here? This means it's neither.
-        return false;
+        return $this->checkOutput->isCli() ||$this->checkOutput->isAjax();
     }
 
     /**
@@ -336,36 +329,18 @@ class Config extends Fallback
      * @param string $whitelist
      *   The ip whitelist.
      *
+     * @deprecated
+     *   Will be removed.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated stuff.
+     *
      * @return bool
      *   Whether the current client ip is allowed or not.
      */
     protected function isAllowedIp($whitelist)
     {
-        $server = $this->pool->getServer();
-
-        if (empty($server[static::REMOTE_ADDRESS]) === true) {
-            $remote = '';
-        } else {
-            $remote = $server[static::REMOTE_ADDRESS];
-        }
-
-        $whitelist = explode(',', $whitelist);
-        if (php_sapi_name() === 'cli' || in_array($remote, $whitelist) === true) {
-            // Either the IP is matched, or we are in CLI
-            return true;
-        }
-
-        // Check the wildcards.
-        foreach ($whitelist as $ip) {
-            $ip = trim($ip);
-            $wildcardPos = strpos($ip, '*');
-            // Check if the ip has a wildcard.
-            if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . '*' === $ip) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->checkOutput->isAllowedIp($whitelist);
     }
 
     /**

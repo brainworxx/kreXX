@@ -235,7 +235,7 @@ abstract class AbstractTest extends TestCase
      */
     protected function mockPhpSapiNameStandard()
     {
-        $phpSapiNameMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Config\\', 'php_sapi_name');
+        $phpSapiNameMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\View\\Output\\', 'php_sapi_name');
         $phpSapiNameMock->expects($this->any())
             ->will(
                 $this->returnValue('whatever')
