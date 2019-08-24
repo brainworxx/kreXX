@@ -57,21 +57,6 @@ class BrowserTest extends AbstractTest
     }
 
     /**
-     * Test the adding of a chunk string, just like the method name implies.
-     *
-     * @covers \Brainworxx\Krexx\View\Output\Browser::addChunkString
-     */
-    public function testAddChunkString()
-    {
-        $stringOne = 'I\'m a little string.';
-        $stringTwo = 'Tri tra whatever';
-        $this->browser->addChunkString($stringOne);
-        $this->browser->addChunkString($stringTwo);
-
-        $this->assertAttributeEquals([$stringOne, $stringTwo], 'chunkStrings', $this->browser);
-    }
-
-    /**
      * Test the initializing of the send-stuff-to-browser mechanism.
      *
      * @covers \Brainworxx\Krexx\View\Output\Browser::shutdownCallback

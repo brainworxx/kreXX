@@ -58,6 +58,23 @@ class AbstractOutputTest extends AbstractTest
     }
 
     /**
+     * Test the adding of a chunk string, just like the method name implies.
+     *
+     * @covers \Brainworxx\Krexx\View\Output\Browser::addChunkString
+     */
+    public function testAddChunkString()
+    {
+        $stringOne = 'I\'m a little string.';
+        $stringTwo = 'Tri tra whatever';
+        $browser = new Browser(Krexx::$pool);
+
+        $browser->addChunkString($stringOne);
+        $browser->addChunkString($stringTwo);
+
+        $this->assertAttributeEquals([$stringOne, $stringTwo], 'chunkStrings', $browser);
+    }
+
+    /**
      * Test the calling of the destructor.
      *
      * @covers \Brainworxx\Krexx\View\Output\AbstractOutput::__destruct
