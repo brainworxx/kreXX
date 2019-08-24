@@ -34,8 +34,6 @@
 
 namespace Brainworxx\Krexx\View\Output;
 
-use Brainworxx\Krexx\Service\Config\Config;
-use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -45,6 +43,8 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  */
 class CheckOutput
 {
+    const REMOTE_ADDRESS = 'REMOTE_ADDR';
+
     /**
      * Here we store all relevant data.
      *
@@ -98,17 +98,6 @@ class CheckOutput
      */
     public function isOutputHtml()
     {
-        static $result;
-
-        if ($result !== null) {
-            return $result;
-        }
-
-        if ($this->pool->config->getSetting(Fallback::SETTING_DETECT_AJAX) === Fallback::VALUE_FALSE) {
-            // We ignore the heades and send everything.
-            $result = true;
-        }
-
         // When we have dispatched a PDF or Json, the browser will not be
         // able to render the HTML output correctly.
         foreach (headers_list() as $header) {
@@ -117,12 +106,13 @@ class CheckOutput
                 strpos($header, 'html') === false
             ) {
                 // We do have none html content type.
-                $result = false;
+                return false;
             }
         }
 
         // Found nothing, must be HTML.
-        return $result = true;
+        // And if nothing was send at this point, it is now HTML.
+        return true;
     }
 
     /**
@@ -141,10 +131,10 @@ class CheckOutput
     {
         $server = $this->pool->getServer();
 
-        if (empty($server[Config::REMOTE_ADDRESS]) === true) {
+        if (empty($server[static::REMOTE_ADDRESS]) === true) {
             $remote = '';
         } else {
-            $remote = $server[Config::REMOTE_ADDRESS];
+            $remote = $server[static::REMOTE_ADDRESS];
         }
 
         $whitelist = explode(',', $whitelist);

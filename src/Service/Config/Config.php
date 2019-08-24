@@ -47,8 +47,6 @@ use Brainworxx\Krexx\View\Output\CheckOutput;
  */
 class Config extends Fallback
 {
-
-    const REMOTE_ADDRESS = 'REMOTE_ADDR';
     const CHUNKS_FOLDER = 'chunks';
     const LOG_FOLDER = 'log';
     const CONFIG_FOLDER = 'config';

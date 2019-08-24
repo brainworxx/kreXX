@@ -43,6 +43,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
+use Brainworxx\Krexx\View\Output\CheckOutput;
 
 class ConfigTest extends AbstractTest
 {
@@ -67,7 +68,7 @@ class ConfigTest extends AbstractTest
     {
         parent::tearDown();
         unset($_SERVER['HTTP_X_REQUESTED_WITH']);
-        unset($_SERVER[Config::REMOTE_ADDRESS]);
+        unset($_SERVER[CheckOutput::REMOTE_ADDRESS]);
     }
 
     /**
@@ -200,7 +201,7 @@ class ConfigTest extends AbstractTest
             ->will($this->returnValue(static::NOT_CLI));
 
         // Testing coming from the wrong ip
-        $_SERVER[Config::REMOTE_ADDRESS] = '5.4.3.2.1';
+        $_SERVER[CheckOutput::REMOTE_ADDRESS] = '5.4.3.2.1';
 
         $config = new Config(Krexx::$pool);
         $this->assertEquals(
@@ -210,7 +211,7 @@ class ConfigTest extends AbstractTest
         );
 
         // Testing coming from the right ip
-        $_SERVER[Config::REMOTE_ADDRESS] = '1.2.3.4.5';
+        $_SERVER[CheckOutput::REMOTE_ADDRESS] = '1.2.3.4.5';
 
         $config = new Config(Krexx::$pool);
         $this->assertEquals(
