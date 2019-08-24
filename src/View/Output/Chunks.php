@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\View\Output;
 
-use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -121,13 +120,6 @@ class Chunks
      * @var string
      */
     protected $officialEncoding = 'utf8';
-
-    /**
-     * List of encodings, where we do not change the $officialEncoding var.
-     *
-     * @var array
-     */
-    protected $doNothingEncoding = ['ASCII', 'UTF-8', false];
 
     /**
      * Injects the pool.
@@ -285,6 +277,7 @@ class Chunks
             return;
         }
 
+
         // Determine the filename.
         $filename = $this->logDir . $this->fileStamp . '.Krexx.html';
         $chunkPos = strpos($string, static::STRING_DELIMITER);
@@ -327,6 +320,9 @@ class Chunks
      * @deprecated
      *   Will be removed.
      *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
      * @param bool $bool
      *   Are we using chunks?
      */
@@ -340,6 +336,9 @@ class Chunks
      *
      * @deprecated
      *   Will be removed.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
      *
      * @param $bool
      */
@@ -429,8 +428,6 @@ class Chunks
      *
      * We also try to track the encoding we need to add to the output, so
      * people can use unicode function names.
-     * We are not using it above, because there we are only handling broken
-     * string encoding by completely encoding it, every char in there.
      *
      * @see \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString
      *
@@ -439,12 +436,13 @@ class Chunks
      */
     public function detectEncoding($string)
     {
+        static $doNothingEncoding = ['ASCII', 'UTF-8', false];
         $encoding = $this->pool->encodingService->mbDetectEncoding($string);
 
         // We need to decide, if we need to change the official encoding of
         // the HTML output with a meta tag. We ignore everything in the
         // doNothingEncoding array.
-        if (in_array($encoding, $this->doNothingEncoding, true) === false) {
+        if (in_array($encoding, $doNothingEncoding, true) === false) {
             $this->officialEncoding = $encoding;
         }
     }
