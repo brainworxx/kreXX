@@ -297,7 +297,8 @@ class RenderHans extends AbstractRender
 
         // Explode the type to get the class names right.
         $cssType = '';
-        foreach (explode(' ', $model->getType()) as $singleType) {
+        $modelType = $model->getType();
+        foreach (explode(' ', $modelType) as $singleType) {
             $cssType .= ' k' . $singleType;
         }
 
@@ -340,7 +341,7 @@ class RenderHans extends AbstractRender
             ],
             [
                 $model->getName(),
-                $model->getType(),
+                $modelType,
                 $cssType,
                 $model->getNormal(),
                 $this->renderConnectorLeft($model->getConnectorLeft()),
