@@ -54,7 +54,6 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Output\Chunks;
-use Brainworxx\Krexx\View\Render;
 use Brainworxx\Krexx\View\Skins\RenderHans;
 use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
 use stdClass;
@@ -76,7 +75,7 @@ class PoolTest extends AbstractTest
         $this->assertInstanceOf(Recursion::class, Krexx::$pool->recursionHandler);
         $this->assertInstanceOf(Codegen::class, Krexx::$pool->codegenHandler);
         $this->assertInstanceOf(Emergency::class, Krexx::$pool->emergencyHandler);
-        $this->assertInstanceOf(Render::class, Krexx::$pool->render);
+        $this->assertInstanceOf(RenderHans::class, Krexx::$pool->render);
         $this->assertInstanceOf(Config::class, Krexx::$pool->config);
         $this->assertInstanceOf(Messages::class, Krexx::$pool->messages);
         $this->assertInstanceOf(Chunks::class, Krexx::$pool->chunks);
