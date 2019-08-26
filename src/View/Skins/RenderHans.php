@@ -212,18 +212,20 @@ class RenderHans extends AbstractRender
             );
         }
 
+        $normal = $model->getNormal();
         if ($model->getIsCallback() === true) {
             // Add callable partial.
             $partCallable = str_replace(
                 static::MARKER_NORMAL,
-                $model->getNormal(),
+                $normal,
                 $this->getTemplateFileContent(static::FILE_SI_CHILD_CALL)
             );
         }
 
         // Stitching the classes together, depending on the types.
         $typeClasses = '';
-        foreach (explode(' ', $model->getType()) as $typeClass) {
+        $modelTypes = $model->getType();
+        foreach (explode(' ', $modelTypes) as $typeClass) {
             $typeClasses .= 'k' . $typeClass . ' ';
         }
 
@@ -264,9 +266,9 @@ class RenderHans extends AbstractRender
                 $partCallable,
                 $partExtra,
                 $model->getName(),
-                $model->getType(),
+                $modelTypes,
                 $typeClasses,
-                $model->getNormal(),
+                $normal,
                 $this->renderConnectorLeft($model->getConnectorLeft()),
                 $this->renderConnectorRight($model->getConnectorRight()),
                 $this->generateDataAttribute(
