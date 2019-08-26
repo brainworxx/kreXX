@@ -104,6 +104,7 @@ abstract class AbstractTest extends TestCase
         $this->setValueByReflection('eventList', [], Registration::class);
         $this->setValueByReflection('rewriteList', [], Registration::class);
         $this->setValueByReflection('additionalSkinList', [], Registration::class);
+        $this->setValueByReflection('plugins', [], Registration::class);
     }
 
     /**
