@@ -174,9 +174,11 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/View/RenderInterface.php';
         include_once KREXX_DIR . 'src/View/AbstractRender.php';
         include_once KREXX_DIR . 'src/View/Messages.php';
-        include_once KREXX_DIR . 'src/View/Render.php';
 
         include_once KREXX_DIR . 'src/View/Skins/RenderHans.php';
+        // deprecated
+        include_once KREXX_DIR . 'src/View/Render.php';
+        // deprecated
         include_once KREXX_DIR . 'src/View/Skins/RenderSmokyGrey.php';
 
         include_once KREXX_DIR . 'src/Krexx.php';

@@ -35,14 +35,13 @@
 namespace Brainworxx\Krexx\View\Skins;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\View\Render;
 
 /**
  * Individual render class for the smokey-grey skin.
  *
  * @package Brainworxx\Krexx\View\Smokygrey
  */
-class RenderSmokyGrey extends Render
+class RenderSmokyGrey extends RenderHans
 {
 
     const MARKER_LANGUAGE = '{language}';
