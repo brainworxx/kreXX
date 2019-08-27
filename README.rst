@@ -94,4 +94,4 @@ Force logging
 	// The following commands create a log file instead of a browser output.
 	\Krexx::log($myObject);
 	\Krexx::logBacktrace();
-	\Krexx::::logTimerEnd();
+	\Krexx::logTimerEnd();
