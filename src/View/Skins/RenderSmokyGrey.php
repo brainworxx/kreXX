@@ -86,14 +86,14 @@ class RenderSmokyGrey extends RenderHans
     public function renderExpandableChild(Model $model, $isExpanded = false)
     {
         // Check for emergency break.
-        if ($this->pool->emergencyHandler->checkEmergencyBreak()) {
+        if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
             return '';
         }
 
         // Explode the type to get the class names right.
-        $types = explode(' ', $model->getType());
+        $types = $model->getType();
         $cssType = '';
-        foreach ($types as $singleType) {
+        foreach (explode(' ', $types) as $singleType) {
             $cssType .= ' k' . $singleType;
         }
 
@@ -133,7 +133,7 @@ class RenderSmokyGrey extends RenderHans
             ],
             [
                 $model->getName(),
-                $model->getType(),
+                $types,
                 $cssType,
                 $model->getNormal(),
                 $this->renderConnectorRight($model->getConnectorRight(128)),
@@ -161,12 +161,11 @@ class RenderSmokyGrey extends RenderHans
      */
     public function renderRecursion(Model $model)
     {
-        $template = parent::renderRecursion($model);
         // We add our json to the output.
         return str_replace(
             static::MARKER_ADDITIONAL_JSON,
             $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
-            $template
+            parent::renderRecursion($model)
         );
     }
 
@@ -190,11 +189,12 @@ class RenderSmokyGrey extends RenderHans
     {
         // Prepare the json. Not much do display for form elements.
         return str_replace(
-            [static::MARKER_ADDITIONAL_JSON, static::MARKER_CLASS],
-            [$this->generateDataAttribute(
-                static::DATA_ATTRIBUTE_JSON,
-                $this->encodeJson($model->getJson())
-            ),
+            [
+                static::MARKER_ADDITIONAL_JSON,
+                static::MARKER_CLASS
+            ],
+            [
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
                 $model->getName()
             ],
             parent::renderButton($model)
