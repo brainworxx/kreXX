@@ -90,7 +90,7 @@ class RenderHansTest extends AbstractTest
     }
 
     /**
-     * Short circuiting the existing of a specific template file.
+     * Short circuiting the existence of a specific template file.
      * Nice, huh?
      *
      * @see \Brainworxx\Krexx\View\AbstractRender::getTemplateFileContent

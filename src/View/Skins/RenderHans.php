@@ -237,7 +237,7 @@ class RenderHans extends AbstractRender
             // Remove the markers, because here is nothing to add.
             $sourcebutton = '';
         } else {
-            // We add the buttton and the code.
+            // We add the button and the code.
             $sourcebutton = $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON);
         }
 
