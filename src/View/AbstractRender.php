@@ -332,7 +332,7 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
         if ($isExpanded === true) {
             $style = '';
         } else {
-            $style = 'khidden';
+            $style = static::STYLE_HIDDEN;
         }
 
         return str_replace(

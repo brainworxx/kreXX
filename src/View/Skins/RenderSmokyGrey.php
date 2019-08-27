@@ -209,12 +209,12 @@ class RenderSmokyGrey extends RenderHans
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch
         // to the config as the current payload.
-        if ($headline === 'Edit local settings') {
-            $debugClass = 'khidden';
-            $configClass = 'kactive';
+        if ($headline === static::HEADLINE_EDIT_SETTINGS) {
+            $debugClass = static::STYLE_HIDDEN;
+            $configClass = static::STYLE_ACTIVE;
             $linkClass = '';
         } else {
-            $debugClass = 'kactive';
+            $debugClass = static::STYLE_ACTIVE;
             $configClass = '';
             $linkClass = '';
         }
@@ -253,7 +253,7 @@ class RenderSmokyGrey extends RenderHans
         } else {
             $template = str_replace(
                 static::MARKER_K_CONFIG_CLASSES,
-                'khidden',
+                static::STYLE_HIDDEN,
                 parent::renderFooter($caller, $model, $configOnly)
             );
         }
