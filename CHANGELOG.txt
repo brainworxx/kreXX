@@ -5,6 +5,7 @@
 - Change: Move cleanup methods to their own class.
 - Change: Move the output check methods to an appropriate class.
 - Change: Deprecated classes and methods.
+- Bugfix: Missing encoding info in the error handler output
 
 3.1.0
 - Use some real autoloading, with a fallback to manually including
