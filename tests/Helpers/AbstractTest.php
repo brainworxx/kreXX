@@ -40,6 +40,8 @@ use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\KrexxTest;
+use Brainworxx\Krexx\View\AbstractRender;
+use Brainworxx\Krexx\View\Skins\RenderHans;
 use PHPUnit\Framework\TestCase;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
@@ -105,6 +107,9 @@ abstract class AbstractTest extends TestCase
         $this->setValueByReflection('rewriteList', [], Registration::class);
         $this->setValueByReflection('additionalSkinList', [], Registration::class);
         $this->setValueByReflection('plugins', [], Registration::class);
+
+        // Reset the cached template files.
+        $this->setValueByReflection('fileCache', [], AbstractRender::class);
     }
 
     /**
