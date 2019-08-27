@@ -487,14 +487,16 @@ class RenderHans extends AbstractRender
                 static::MARKER_VERSION,
                 static::MARKER_SEARCH,
                 static::MARKER_KREXX_ID,
-                static::MARKER_TYPE
+                static::MARKER_TYPE,
+                static::MARKER_ENCODING
             ],
             [
                 $cssJs,
                 $this->pool->config->version,
                 $this->renderSearch(),
                 $this->pool->recursionHandler->getMarker(),
-                $errorType
+                $errorType,
+                $this->pool->chunks->getOfficialEncoding()
             ],
             $this->getTemplateFileContent(static::FILE_FATAL_HEADER)
         );
