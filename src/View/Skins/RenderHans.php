@@ -369,23 +369,27 @@ class RenderHans extends AbstractRender
      */
     public function renderSingleEditableChild(Model $model)
     {
+        $domId = $model->getDomid();
+        $name = $model->getName();
+        $type = $model->getType();
+
         $element = str_replace(
             [
                 static::MARKER_ID,
                 static::MARKER_VALUE,
             ],
             [
-                $model->getDomid(),
-                $model->getName()
+                $domId,
+                $name
             ],
-            $this->getTemplateFileContent('single' . $model->getType())
+            $this->getTemplateFileContent('single' . $type)
         );
         $options = '';
 
         // For dropdown elements, we need to render the options.
-        if ($model->getType() === Fallback::RENDER_TYPE_SELECT) {
+        if ($type === Fallback::RENDER_TYPE_SELECT) {
             // Here we store what the list of possible values.
-            if ($model->getDomid() === Fallback::SETTING_SKIN) {
+            if ($domId === Fallback::SETTING_SKIN) {
                 // Get a list of all skin folders.
                 $valueList = $this->pool->config->getSkinList();
             } else {
@@ -394,7 +398,7 @@ class RenderHans extends AbstractRender
 
             // Paint it.
             foreach ($valueList as $value) {
-                if ($value === $model->getName()) {
+                if ($value === $name) {
                     // This one is selected.
                     $selected = 'selected="selected"';
                 } else {
@@ -453,23 +457,19 @@ class RenderHans extends AbstractRender
      */
     public function renderFatalMain($errstr, $errfile, $errline)
     {
-        $readFrom = $errline -6;
-        $readTo = $errline +5;
-        $source = $this->pool->fileService->readSourcecode($errfile, $errline -1, $readFrom, $readTo -1);
+        $source = $this->pool->fileService->readSourcecode($errfile, $errline -1, $errline -6, $errline +4);
 
         return str_replace(
             [
                 static::MARKER_ERROR_STRING,
                 static::MARKER_FILE,
                 static::MARKER_SOURCE,
-                static::MARKER_KREXX_COUNT,
                 static::MARKER_LINE,
             ],
             [
                 $errstr,
                 $errfile,
                 $source,
-                $this->pool->emergencyHandler->getKrexxCount(),
                 $errline
             ],
             $this->getTemplateFileContent(static::FILE_FATAL_MAIN)
