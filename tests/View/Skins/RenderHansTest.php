@@ -37,10 +37,11 @@ namespace Brainworxx\Krexx\Tests\View\Skins;
 use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Config\Config;
+use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Service\Misc\File;
-use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\View\Messages;
@@ -50,6 +51,17 @@ use Brainworxx\Krexx\View\Skins\RenderHans;
 class RenderHansTest extends AbstractTest
 {
     const PATH_TO_SKIN = '/some path/';
+    const GET_NAME = 'getName';
+    const GET_DOMID = 'getDomid';
+    const GET_NORMAL = 'getNormal';
+    const GET_CONNECTOR_LEFT = 'getConnectorLeft';
+    const GET_CONNECTOR_RIGHT = 'getConnectorRight';
+    const GET_JSON = 'getJson';
+    const GET_HAS_EXTRAS = 'getHasExtra';
+    const GET_DATA = 'getData';
+    const GET_IS_CALLBACK = 'getIsCallback';
+    const GET_TYPE = 'getType';
+    const RENDER_ME = 'renderMe';
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject
@@ -79,9 +91,7 @@ class RenderHansTest extends AbstractTest
 
     /**
      * Short circuiting the existing of a specific template file.
-     *
-     * Thanks to the internal static caching, these may or maqy not be called.
-     * That is why we use the expects($this->any().
+     * Nice, huh?
      *
      * @see \Brainworxx\Krexx\View\AbstractRender::getTemplateFileContent
      *
@@ -241,6 +251,93 @@ class RenderHansTest extends AbstractTest
                     $this->renderHans::MARKER_MAIN_FUNCTION .
                     $this->renderHans::MARKER_DOM_ID
                 ],
+                // singleEditableChild.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_SI_EDIT_CHILD . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_NAME .
+                    $this->renderHans::MARKER_NORMAL .
+                    $this->renderHans::MARKER_SOURCE .
+                    $this->renderHans::MARKER_HELP
+                ],
+                // singleInput.html
+                [
+                    static::PATH_TO_SKIN . 'singleInput' . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_ID .
+                    $this->renderHans::MARKER_VALUE .
+                    '<input'
+                ],
+                // singleSelect.html
+                [
+                    static::PATH_TO_SKIN . 'single' . Fallback::RENDER_TYPE_SELECT . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_ID .
+                    $this->renderHans::MARKER_OPTIONS
+                ],
+                // singleSelectOption.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_SI_SELECT_OPTIONS . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_VALUE .
+                    $this->renderHans::MARKER_SELECTED .
+                    $this->renderHans::MARKER_TEXT
+                ],
+                // singleButton.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_SI_BUTTON . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_TYPE_CLASSES .
+                    $this->renderHans::MARKER_CLASS .
+                    $this->renderHans::MARKER_TEXT .
+                    $this->renderHans::MARKER_HELP
+                ],
+                // fatalMain.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_FATAL_MAIN . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_ERROR_STRING .
+                    $this->renderHans::MARKER_FILE .
+                    $this->renderHans::MARKER_LINE .
+                    $this->renderHans::MARKER_SOURCE
+                ],
+                // fatalHeader.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_FATAL_HEADER . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_VERSION .
+                    $this->renderHans::MARKER_ENCODING .
+                    $this->renderHans::MARKER_CSS_JS .
+                    $this->renderHans::MARKER_SEARCH .
+                    $this->renderHans::MARKER_TYPE .
+                    $this->renderHans::MARKER_KREXX_ID
+                ],
+                // messages.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_MESSAGE . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_MESSAGE
+                ],
+                // backtraceSourceLine
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_BACKTRACE_SOURCELINE . $fileSuffix,
+                    true,
+                    $this->renderHans::MARKER_CLASS_NAME .
+                    $this->renderHans::MARKER_LINE_NO .
+                    $this->renderHans::MARKER_SOURCE_CODE
+                ],
+                // singleChildHr.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_SI_HR . $fileSuffix,
+                    true,
+                    'HR does not mean human resources'
+                ],
+                // br.html
+                [
+                    static::PATH_TO_SKIN . $this->renderHans::FILE_BR . $fileSuffix,
+                    true,
+                    'Breaking the line! Breaking the line!'
+                ]
             ]));
 
         Krexx::$pool->fileService = $this->fileServiceMock;
@@ -275,12 +372,12 @@ class RenderHansTest extends AbstractTest
     public function testRenderRecursion()
     {
         // Prepare the model
-        $this->mockModel('getName', 'some name');
-        $this->mockModel('getDomid', 'the DOM ID');
-        $this->mockModel('getNormal', 'normal stuff');
-        $this->mockModel('getConnectorLeft', 'connector left');
-        $this->mockModel('getConnectorRight', 'connector right');
-        $this->mockModel('getJson', ['Jason', 'and the testonauts']);
+        $this->mockModel(static::GET_NAME, 'some name');
+        $this->mockModel(static::GET_DOMID, 'the DOM ID');
+        $this->mockModel(static::GET_NORMAL, 'normal stuff');
+        $this->mockModel(static::GET_CONNECTOR_LEFT, 'connector left');
+        $this->mockModel(static::GET_CONNECTOR_RIGHT, 'connector right');
+        $this->mockModel(static::GET_JSON, ['Jason', 'and the testonauts']);
 
         // Run the test.
         $result = $this->renderHans->renderRecursion($this->modelMock);
@@ -421,15 +518,15 @@ class RenderHansTest extends AbstractTest
      */
     public function testRenderSingleChild()
     {
-        $this->mockModel('getHasExtra', true);
-        $this->mockModel('getData', 'extra data');
-        $this->mockModel('getIsCallback', true);
-        $this->mockModel('getType', 'type01 type02');
-        $this->mockModel('getName', 'my name');
-        $this->mockModel('getNormal', 'just normal');
-        $this->mockModel('getConnectorLeft', 'lefty');
-        $this->mockModel('getConnectorRight', 'righty');
-        $this->mockModel('getJson', ['someKey', 'informative text']);
+        $this->mockModel(static::GET_HAS_EXTRAS, true);
+        $this->mockModel(static::GET_DATA, 'extra data');
+        $this->mockModel(static::GET_IS_CALLBACK, true);
+        $this->mockModel(static::GET_TYPE, 'type01 type02');
+        $this->mockModel(static::GET_NAME, 'my name');
+        $this->mockModel(static::GET_NORMAL, 'just normal');
+        $this->mockModel(static::GET_CONNECTOR_LEFT, 'lefty');
+        $this->mockModel(static::GET_CONNECTOR_RIGHT, 'righty');
+        $this->mockModel(static::GET_JSON, ['someKey', 'informative text']);
 
         $codeGenMock = $this->createMock(Codegen::class);
         $codeGenMock->expects($this->once())
@@ -477,11 +574,13 @@ class RenderHansTest extends AbstractTest
             ->will($this->returnValue(false));
         Krexx::$pool->emergencyHandler = $emergencyMock;
 
-        $this->mockModel('getType', 'string integer');
-        $this->mockModel('getName', 'another name');
-        $this->mockModel('getNormal', 'not normal');
-        $this->mockModel('getConnectorLeft', 'some conn');
-        $this->mockModel('getConnectorRight', 'any conn');
+        $this->mockModel(static::GET_TYPE, 'Stringh In-Tee-Ger');
+        $this->mockModel(static::GET_NAME, 'another name');
+        $this->mockModel(static::GET_NORMAL, 'not normal');
+        $this->mockModel(static::GET_CONNECTOR_LEFT, 'some conn');
+        $this->mockModel(static::GET_CONNECTOR_RIGHT, 'any conn');
+        $this->mockModel(static::RENDER_ME, 'model html');
+        $this->mockModel(static::GET_DOMID, 'x12345');
 
         $codegenMock = $this->createMock(Codegen::class);
         $codegenMock->expects($this->once())
@@ -490,9 +589,209 @@ class RenderHansTest extends AbstractTest
             ->will($this->returnValue('generated source'));
         Krexx::$pool->codegenHandler = $codegenMock;
 
-        // @todo Mock the nest
-        // @todo Mock the chunkMe in the Chunks class.
+        $chunkMock = $this->createMock(Chunks::class);
+        $chunkMock->expects($this->once())
+            ->method('chunkMe')
+            ->with($this->anything())
+            ->willReturnArgument(0);
+        Krexx::$pool->chunks = $chunkMock;
 
-        $this->markTestIncomplete('Write me!');
+        $result = $this->renderHans->renderExpandableChild($this->modelMock, true);
+        $this->assertContains('Stringh', $result);
+        $this->assertContains('In-Tee-Ger', $result);
+        $this->assertContains('another name', $result);
+        $this->assertContains('not normal', $result);
+        $this->assertContains('some conn', $result);
+        $this->assertContains('another name', $result);
+        $this->assertContains('any conn', $result);
+        $this->assertContains('generated source', $result);
+        // Stuff from the nest.
+        $this->assertContains('model html', $result);
+        $this->assertContains('x12345', $result);
+        $this->assertNotContains('khidden', $result);
+    }
+
+    /**
+     * Test the rendering of a editable input field.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderSingleEditableChild
+     */
+    public function testRenderSingleEditableChildInput()
+    {
+        $this->mockModel(static::GET_DOMID, 'nullachtwhatever');
+        $this->mockModel(static::GET_NAME, 'myinputvalue');
+        $this->mockModel(static::GET_TYPE, 'Input');
+        $this->mockModel(static::GET_DATA, 'myData');
+        $this->mockModel(static::GET_NORMAL, 'myNormal');
+
+        // A single input field mus not ask for a skin list.
+        $configMock = $this->createMock(Config::class);
+        $configMock->expects($this->never())
+            ->method('getSkinList');
+        Krexx::$pool->config = $configMock;
+
+        $result = $this->renderHans->renderSingleEditableChild($this->modelMock);
+        $this->assertContains('nullachtwhatever', $result);
+        $this->assertContains('myinputvalue', $result);
+        $this->assertContains('myData', $result);
+        $this->assertContains('myNormal', $result);
+        $this->assertContains('<input', $result);
+    }
+
+    /**
+     * Test the rendering of a editable dropdown field., the skin list
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderSingleEditableChild
+     */
+    public function testRenderSingleEditableChildSelect()
+    {
+        $selectedSkin = 'selectedSkin';
+        $this->mockModel(static::GET_DOMID, Fallback::SETTING_SKIN);
+        $this->mockModel(static::GET_NAME, $selectedSkin);
+        $this->mockModel(static::GET_TYPE, Fallback::RENDER_TYPE_SELECT);
+        $this->mockModel(static::GET_DATA, 'more data');
+        $this->mockModel(static::GET_NORMAL, 'not normal');
+
+        $configMock = $this->createMock(Config::class);
+        $configMock->expects($this->once())
+            ->method('getSkinList')
+            ->will($this->returnValue([
+                $selectedSkin,
+                'Herbert'
+            ]));
+        Krexx::$pool->config = $configMock;
+
+        $result = $this->renderHans->renderSingleEditableChild($this->modelMock);
+        $this->assertContains(Fallback::SETTING_SKIN, $result);
+        $this->assertContains($selectedSkin, $result);
+        $this->assertContains('Herbert', $result);
+        $this->assertContains('more data', $result);
+        $this->assertContains('not normal', $result);
+        $this->assertContains('selected="selected"', $result);
+    }
+
+    /**
+     * Test the rendering of a button.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderButton
+     */
+    public function testRenderButton()
+    {
+        $this->mockModel(static::GET_NAME, 'clickme');
+        $this->mockModel(static::GET_NORMAL, 'doit');
+
+        $result = $this->renderHans->renderButton($this->modelMock);
+        $this->assertContains('clickme', $result);
+        $this->assertContains('doit', $result);
+    }
+
+    /**
+     * Test the rendering of the main part of the error handler
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderFatalMain
+     */
+    public function testRenderFatalMain()
+    {
+        $errorString = 'Dev oops error';
+        $inFile = 'deplyoment.php';
+        $line = 456;
+
+        $this->fileServiceMock->expects($this->once())
+            ->method('readSourcecode')
+            ->with($inFile, $line -1, $line -6, $line+4)
+            ->will($this->returnValue('faulty code line'));
+
+        $result = $this->renderHans->renderFatalMain($errorString, $inFile, $line);
+        $this->assertContains($errorString, $result);
+        $this->assertContains($inFile, $result);
+        $this->assertContains((string)$line, $result);
+        $this->assertContains('faulty code line', $result);
+    }
+
+    /**
+     * Test the rendering of the header of the error handler.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderFatalHeader
+     */
+    public function testRenderFatalHeader()
+    {
+        $recursionMock = $this->createMock(Recursion::class);
+        $recursionMock->expects($this->exactly(2))
+            ->method('getMarker')
+            ->will($this->returnValue('Marky Mark'));
+        Krexx::$pool->recursionHandler = $recursionMock;
+
+        $chunkMock = $this->createMock(Chunks::class);
+        $chunkMock->expects($this->once())
+            ->method('getOfficialEncoding')
+            ->will($this->returnValue('Ute Efacht'));
+        Krexx::$pool->chunks = $chunkMock;
+
+        $cssJs = 'some content';
+        $errorType = 'Oops an error occured.';
+
+        $result = $this->renderHans->renderFatalHeader($cssJs, $errorType);
+        $this->assertContains(Krexx::$pool->config->version, $result);
+        $this->assertContains('Marky Mark', $result);
+        $this->assertContains('Ute Efacht', $result);
+        $this->assertContains($cssJs, $result);
+        $this->assertContains($errorType, $result);
+    }
+
+    /**
+     * Test the message rendering.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderMessages
+     */
+    public function testRenderMessages()
+    {
+        $fixture = [
+            'How do I activate SMS?',
+            'How can I readSMS?',
+            'What is a messager?',
+            'Why am I writing this?'
+        ];
+
+        $result = $this->renderHans->renderMessages($fixture);
+        foreach ($fixture as $message) {
+            $this->assertContains($message, $result);
+        }
+    }
+
+    /**
+     * Test the rendering of a single source code line for the backtrace.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderBacktraceSourceLine
+     */
+    public function testRenderBacktraceSourceLine()
+    {
+        $className = 'first class';
+        $lineNumber = '92';
+        $sourceCode = 'some code we want to display';
+
+        $result = $this->renderHans->renderBacktraceSourceLine($className, $lineNumber, $sourceCode);
+        $this->assertContains($className, $result);
+        $this->assertContains($lineNumber, $result);
+        $this->assertContains($sourceCode, $result);
+    }
+
+    /**
+     * Test the rendering of a HR tag.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderSingeChildHr
+     */
+    public function testRenderSingeChildHr()
+    {
+        $this->assertContains('HR does not mean human resources', $this->renderHans->renderSingeChildHr());
+    }
+
+    /**
+     * Test the rednering of a line break.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderHans::renderLinebreak
+     */
+    public function testRenderLineBreak()
+    {
+        $this->assertContains('Breaking the line! Breaking the line!', $this->renderHans->renderLinebreak());
     }
 }
