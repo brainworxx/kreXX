@@ -110,6 +110,13 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
     protected $skinPath;
 
     /**
+     * Caching the content fo the template files.
+     *
+     * @var array
+     */
+    protected static $fileCache = [];
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(Pool $pool)
@@ -361,18 +368,16 @@ abstract class AbstractRender implements RenderInterface, ConstInterface
      */
     protected function getTemplateFileContent($what)
     {
-        static $fileCache = [];
-
-        if (isset($fileCache[$what]) === true) {
-            return $fileCache[$what];
+        if (isset(static::$fileCache[$what]) === true) {
+            return static::$fileCache[$what];
         }
 
-        $fileCache[$what] = preg_replace(
+        static::$fileCache[$what] = preg_replace(
             '/\s+/',
             ' ',
             $this->pool->fileService->getFileContents($this->skinPath . $what . '.html')
         );
-        return $fileCache[$what];
+        return static::$fileCache[$what];
     }
 
     /**
