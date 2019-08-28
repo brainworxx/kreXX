@@ -169,7 +169,6 @@ class RenderSmokyGreyTest extends AbstractTest
                     true,
                     $this->renderSmokyGrey::MARKER_K_DEBUG_CLASSES .
                     $this->renderSmokyGrey::MARKER_K_CONFIG_CLASSES .
-                    $this->renderSmokyGrey::MARKER_K_LINK_CLASSES .
                     $this->renderSmokyGrey::MARKER_PLUGINS
                 ]
             ]));

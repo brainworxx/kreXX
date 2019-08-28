@@ -212,24 +212,20 @@ class RenderSmokyGrey extends RenderHans
         if ($headline === static::HEADLINE_EDIT_SETTINGS) {
             $debugClass = static::STYLE_HIDDEN;
             $configClass = static::STYLE_ACTIVE;
-            $linkClass = '';
         } else {
             $debugClass = static::STYLE_ACTIVE;
             $configClass = '';
-            $linkClass = '';
         }
 
         return str_replace(
             [
                 static::MARKER_K_DEBUG_CLASSES,
                 static::MARKER_K_CONFIG_CLASSES,
-                static::MARKER_K_LINK_CLASSES,
                 static::MARKER_PLUGINS,
             ],
             [
                 $debugClass,
                 $configClass,
-                $linkClass,
                 $this->renderPluginList(),
             ],
             parent::renderHeader($headline, $cssJs)
