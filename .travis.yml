@@ -1,3 +1,7 @@
+env:
+  global:
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
+
 language: php
 php:
   - '7.3'
@@ -7,7 +11,6 @@ php:
 
 install:
   - composer install
-  - composer require codeception/codeception
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -15,8 +18,5 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - vendor/bin/codecept run unit --coverage --coverage-xml
-
-after_script:
-  - mv tests/_output/coverage.xml clover.xml
-  - ./cc-test-reporter after-build --coverage-input-type clover --id $CC_TEST_REPORTER_ID --exit-code $TRAVIS_TEST_RESULT
+  - "phpunit --testsuite=unit --coverage-text --coverage-clover build/logs/clover.xml"
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
