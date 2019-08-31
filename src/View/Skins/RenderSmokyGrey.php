@@ -241,20 +241,18 @@ class RenderSmokyGrey extends RenderHans
         // We hide the debug-tab when we are displaying the config-only and switch
         // to the config as the current payload.
         if ($configOnly === true) {
-            $template = str_replace(
+            return str_replace(
                 static::MARKER_K_CONFIG_CLASSES,
                 '',
                 parent::renderFooter($caller, $model, $configOnly)
             );
-        } else {
-            $template = str_replace(
-                static::MARKER_K_CONFIG_CLASSES,
-                static::STYLE_HIDDEN,
-                parent::renderFooter($caller, $model, $configOnly)
-            );
         }
 
-        return $template;
+        return str_replace(
+            static::MARKER_K_CONFIG_CLASSES,
+            static::STYLE_HIDDEN,
+            parent::renderFooter($caller, $model, $configOnly)
+        );
     }
 
     /**
