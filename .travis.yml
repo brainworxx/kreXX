@@ -6,5 +6,6 @@ php:
   - '7.0'
 
 install:
-  - composer require php-mock/phpunit:^6.5
-  - composer require php-mock/php-mock-phpunit:^2.4
+  - composer install
+  - composer require php-mock/phpunit ^6.5
+  - composer require php-mock/php-mock-phpunit ^2.4
