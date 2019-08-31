@@ -168,9 +168,23 @@ class RenderSmokyGreyTest extends AbstractTest
                     static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_HEADER . $fileSuffix,
                     true,
                     $this->renderSmokyGrey::MARKER_K_DEBUG_CLASSES .
-                    $this->renderSmokyGrey::MARKER_K_CONFIG_CLASSES .
+                    $this->renderSmokyGrey::MARKER_K_CONFIG_CLASSES
+                ],
+                // footer.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_FOOTER . $fileSuffix,
+                    true,
+                    $this->renderSmokyGrey::MARKER_K_CONFIG_CLASSES
+                ],
+                // fatalMain.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_FATAL_MAIN . $fileSuffix,
+                    true,
+                    $this->renderSmokyGrey::MARKER_SEARCH .
+                    $this->renderSmokyGrey::MARKER_KREXX_ID .
                     $this->renderSmokyGrey::MARKER_PLUGINS
-                ]
+                ],
+
             ]));
 
         Krexx::$pool->fileService = $this->fileServiceMock;
@@ -197,6 +211,8 @@ class RenderSmokyGreyTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\View\Skins\RenderSmokyGrey::renderSingleChild
      * @covers \Brainworxx\Krexx\View\AbstractRender::encodeJson
+     * @covers \Brainworxx\Krexx\View\AbstractRender::jsonEscape
+     * @covers \Brainworxx\Krexx\View\Skins\RenderSmokyGrey::renderHelp
      */
     public function testRenderSingleChild()
     {
@@ -224,6 +240,7 @@ class RenderSmokyGreyTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\View\Skins\RenderSmokyGrey::renderExpandableChild
      * @covers \Brainworxx\Krexx\View\Skins\RenderSmokyGrey::renderConnectorRight
+     * @covers \Brainworxx\Krexx\View\Skins\RenderSmokyGrey::renderHelp
      */
     public function testRenderExpandableChild()
     {
@@ -318,6 +335,45 @@ class RenderSmokyGreyTest extends AbstractTest
      */
     public function testRenderHeader()
     {
-        $this->markTestIncomplete('Write me!');
+        $result = $this->renderSmokyGrey->renderHeader($this->renderSmokyGrey::HEADLINE_EDIT_SETTINGS, '');
+        $this->assertContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+        $this->assertContains($this->renderSmokyGrey::STYLE_ACTIVE, $result);
+
+        $result = $this->renderSmokyGrey->renderHeader('', '');
+        $this->assertNotContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+        $this->assertContains($this->renderSmokyGrey::STYLE_ACTIVE, $result);
+    }
+
+    /**
+     * Test the removal of the debug tab, when we are in config mode.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderSmokyGrey::renderFooter
+     */
+    public function testRenderFooter()
+    {
+        $this->mockEmergencyHandler();
+        $model = $this->createMock(Model::class);
+        $model->expects($this->exactly(2))
+            ->method('getJson')
+            ->will($this->returnValue([]));
+
+        $result = $this->renderSmokyGrey->renderFooter([], $model, true);
+        $this->assertNotContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+
+        $result = $this->renderSmokyGrey->renderFooter([], $model, false);
+        $this->assertContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+    }
+
+    /**
+     * Test the additional stuff in the render fatal main.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\RenderSmokyGrey::renderFatalMain
+     */
+    public function testRenderFatalMain()
+    {
+        $result = $this->renderSmokyGrey->renderFatalMain('', '', 1);
+        $this->assertNotContains($this->renderSmokyGrey::MARKER_SEARCH, $result);
+        $this->assertNotContains($this->renderSmokyGrey::MARKER_KREXX_ID, $result);
+        $this->assertNotContains($this->renderSmokyGrey::MARKER_PLUGINS, $result);
     }
 }
