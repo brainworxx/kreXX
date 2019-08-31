@@ -107,3 +107,4 @@ Force logging
 	\Krexx::log($myObject);
 	\Krexx::logBacktrace();
 	\Krexx::logTimerEnd();
+
