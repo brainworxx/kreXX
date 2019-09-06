@@ -155,6 +155,16 @@ class Config extends Fallback
         // We may need to change the disabling again, in case we are in cli
         // or ajax mode and have no file output.
         $this->checkOutput = $pool->createClass(CheckOutput::class);
+        $this->debugFuncList = explode(',', $this->getSetting(static::SETTING_DEBUG_METHODS));
+
+        $this->checkEnabledStatus();
+    }
+
+    /**
+     * Check if kreXX can be enabled or not.
+     */
+    protected function checkEnabledStatus()
+    {
         if ($this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE &&
             ($this->checkOutput->isAjax() === true || $this->checkOutput->isCli() === true)
         ) {
@@ -169,8 +179,6 @@ class Config extends Fallback
             $this->setDisabled(true);
             static::$disabledByPhp = true;
         }
-
-        $this->debugFuncList = explode(',', $this->getSetting(static::SETTING_DEBUG_METHODS));
     }
 
     /**

@@ -78,6 +78,7 @@ class ConfigTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Service\Config\Config::getChunkDir
      * @covers \Brainworxx\Krexx\Service\Config\Config::getLogDir
      * @covers \Brainworxx\Krexx\Service\Config\Config::getPathToIniFile
+     * @covers \Brainworxx\Krexx\Service\Config\Config::checkEnabledStatus
      */
     public function testConstructNormal()
     {
@@ -130,6 +131,7 @@ class ConfigTest extends AbstractTest
      * Test the browser output on cli.
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::checkEnabledStatus
      */
     public function testConstructCliBrowser()
     {
@@ -148,6 +150,7 @@ class ConfigTest extends AbstractTest
      * Test the browser output on ajax.
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::checkEnabledStatus
      */
     public function testConstructAjaxBrowser()
     {
@@ -167,6 +170,7 @@ class ConfigTest extends AbstractTest
      * Test the file output on cli.
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::checkEnabledStatus
      */
     public function testConstructCliFile()
     {
@@ -189,6 +193,7 @@ class ConfigTest extends AbstractTest
      * Test the access from different ips.
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\Config::checkEnabledStatus
      */
     public function testConstructIpRange()
     {
