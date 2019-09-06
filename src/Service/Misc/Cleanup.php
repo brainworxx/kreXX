@@ -124,13 +124,15 @@ class Cleanup
         static::$chunksDone = true;
         // Clean up leftover files.
         $chunkList = glob($this->pool->config->getChunkDir() . '*.Krexx.tmp');
-        if (empty($chunkList) === false) {
-            $now = time();
-            foreach ($chunkList as $file) {
-                // We delete everything that is older than 15 minutes.
-                if (($this->pool->fileService->filetime($file) + 900) < $now) {
-                    $this->pool->fileService->deleteFile($file);
-                }
+        if (empty($chunkList) === true) {
+            return $this;
+        }
+
+        $now = time();
+        foreach ($chunkList as $file) {
+            // We delete everything that is older than 15 minutes.
+            if (($this->pool->fileService->filetime($file) + 900) < $now) {
+                $this->pool->fileService->deleteFile($file);
             }
         }
 
