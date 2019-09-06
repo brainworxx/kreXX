@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\KrexxTest;
 use Brainworxx\Krexx\View\AbstractRender;
-use Brainworxx\Krexx\View\Skins\RenderHans;
+use Brainworxx\Krexx\View\Output\CheckOutput;
 use PHPUnit\Framework\TestCase;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
@@ -57,6 +57,7 @@ abstract class AbstractTest extends TestCase
      */
     protected function setUp()
     {
+        $_SERVER[CheckOutput::REMOTE_ADDRESS] = '1.2.3.4';
         $this->mockPhpSapiNameStandard();
         Pool::createPool();
     }
