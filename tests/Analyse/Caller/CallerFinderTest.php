@@ -127,6 +127,8 @@ class CallerFinderTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::findCaller
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getVarName
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getType
+     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::identifyCaller
+     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::removeKrexxPartFromCommand
      */
     public function testFindCallerNormal()
     {
@@ -151,6 +153,8 @@ class CallerFinderTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::findCaller
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getVarName
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getType
+     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::identifyCaller
+     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::removeKrexxPartFromCommand
      */
     public function testFindCallerHeadline()
     {
@@ -176,6 +180,8 @@ class CallerFinderTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::findCaller
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getVarName
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getType
+     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::identifyCaller
+     * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::removeKrexxPartFromCommand
      */
     public function testFindCallerUnreadableSource()
     {
