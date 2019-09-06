@@ -133,6 +133,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Errorhandler/AbstractError.php';
         include_once KREXX_DIR . 'src/Errorhandler/Fatal.php';
 
+        include_once KREXX_DIR . 'src/Service/Config/ConfigConstInterface.php';
         include_once KREXX_DIR . 'src/Service/Config/Fallback.php';
         include_once KREXX_DIR . 'src/Service/Config/Config.php';
         include_once KREXX_DIR . 'src/Service/Config/Model.php';
