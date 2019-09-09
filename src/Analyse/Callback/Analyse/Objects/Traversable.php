@@ -156,8 +156,6 @@ class Traversable extends AbstractObjectAnalysis
      */
     protected function analyseTraversableResult($originalClass, array $result)
     {
-        $name = $this->parameters[static::PARAM_NAME];
-
         // Special Array Access here, resulting in more complicated source
         // generation. So we tell the callback to to that.
         $multiline = true;
@@ -174,7 +172,7 @@ class Traversable extends AbstractObjectAnalysis
 
         /** @var Model $model */
         $model = $this->pool->createClass(Model::class)
-            ->setName($name)
+            ->setName($this->parameters[static::PARAM_NAME])
             ->setType(static::TYPE_FOREACH)
             ->addParameter(static::PARAM_DATA, $result)
             ->addParameter(static::PARAM_MULTILINE, $multiline)
@@ -184,14 +182,12 @@ class Traversable extends AbstractObjectAnalysis
         // output, maybe even triggering a emergency break. to avoid this, we give them
         // a special callback.
         if (count($result) > (int) $this->pool->config->getSetting(Fallback::SETTING_ARRAY_COUNT_LIMIT)) {
-            $model->injectCallback(
-                $this->pool->createClass(ThroughLargeArray::class)
-            )->setNormal('Simplified Traversable Info')
+            $model->injectCallback($this->pool->createClass(ThroughLargeArray::class))
+                ->setNormal('Simplified Traversable Info')
                 ->setHelpid('simpleArray');
         } else {
-            $model->injectCallback(
-                $this->pool->createClass(ThroughArray::class)
-            )->setNormal('Traversable Info');
+            $model->injectCallback($this->pool->createClass(ThroughArray::class))
+                ->setNormal('Traversable Info');
         }
 
         $analysisResult = $this->pool->render->renderExpandableChild(
