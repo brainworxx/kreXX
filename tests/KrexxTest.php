@@ -629,4 +629,34 @@ class KrexxTest extends AbstractTest
         // Run the test
         $this->assertTrue($config::$disabledByPhp);
     }
+
+    /**
+     * Test the registering of the exception handler, when kreXX is disabled.
+     *
+     * @covers \Brainworxx\Krexx\Krexx::registerExceptionHandler
+     */
+    public function testRegisterExceptionHandlerDisabled()
+    {
+        Config::$disabledByPhp = true;
+
+        $setExceptionHandlerMock = $this
+            ->getFunctionMock('\\Brainworxx\\Krexx\\Controller\\', 'set_exception_handler');
+        $setExceptionHandlerMock->expects($this->never());
+
+        Krexx::registerExceptionHandler();
+    }
+
+    public function testRegisterExceptionHandler()
+    {
+        // Mock an already existing controller.
+        $stdClass = new \stdClass();
+        $this->setValueByReflection('exceptionController', $stdClass, ExceptionController::class);
+
+        $setExceptionHandlerMock = $this
+            ->getFunctionMock('\\Brainworxx\\Krexx\\Controller\\', 'set_exception_handler');
+        $setExceptionHandlerMock->expects($this->once())
+            ->with([$stdClass, 'exceptionAction']);
+
+        Krexx::registerExceptionHandler();
+    }
 }
