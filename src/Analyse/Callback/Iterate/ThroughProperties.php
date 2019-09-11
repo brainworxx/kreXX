@@ -212,34 +212,61 @@ class ThroughProperties extends AbstractCallback
             return $declarationCache[$key] = $this->pool->messages->getHelp(static::META_PREDECLARED);
         }
 
-        // A class can not redeclare a property from a trait that it is using.
-        // Hence, if one of the traits has the same property that we are
-        // analysing, it is probably declared there.
-        // Traits on the other hand can redeclare their properties.
-        // I'm not sure how to get the actual declaration place, when dealing
-        // with several layers of traits. We will not parse the source code
-        // for an answer.
+        $traits = $refProperty->getDeclaringClass()->getTraits();
         $type = $this->pool->render->renderLinebreak() . 'in class: ';
-        foreach ($refProperty->getDeclaringClass()->getTraits() as $trait) {
-            if ($trait->hasProperty($refProperty->name)) {
-                if (count($trait->getTraitNames()) > 0) {
-                    // Multiple layers of traits!
-                    return $declarationCache[$key] = '';
-                }
-                // From a trait.
-                $declaringClass = $trait;
+        if (empty($traits) === false) {
+            $declaringClass = $this->retrieveFilenameFromTraits($traits, $refProperty, $declaringClass);
+            // Not found.
+            if ($declaringClass === null) {
+                return $declarationCache[$key] = '';
+            } elseif ($declaringClass->isTrait() === true) {
                 $type = $this->pool->render->renderLinebreak() . 'in trait: ';
-                break;
             }
-        }
-
-        $filename = $declaringClass->getFileName();
-
-        if (empty($filename) === true) {
-            return $declarationCache[$key] = $this->pool->messages->getHelp(static::UNKNOWN_DECLARATION);
         }
 
         return $declarationCache[$key] = $this->pool->fileService
                 ->filterFilePath($declaringClass->getFileName()) . $type . $declaringClass->name;
+    }
+
+    /**
+     * Retrieve the declaration name from traits.
+     *
+     * A class can not redeclare a property from a trait that it is using.
+     * Hence, if one of the traits has the same property that we are
+     * analysing, it is probably declared there.
+     * Traits on the other hand can redeclare their properties.
+     * I'm not sure how to get the actual declaration place, when dealing
+     * with several layers of traits. We will not parse the source code
+     * for an answer.
+     *
+     * @param array $traits
+     *   THe traits of that class.
+     * @param \ReflectionProperty $refProperty
+     *   Reflection of the property we are analysing.
+     * @param \ReflectionClass $originalRef
+     *   The original reflection class for the declaration.
+     *
+     * @return \ReflectionClass|null
+     *   Either the reflection class of the trait, or null when we are unable to
+     *   retrieve it.
+     */
+    protected function retrieveFilenameFromTraits(
+        array $traits,
+        ReflectionProperty $refProperty,
+        ReflectionClass $originalRef
+    ) {
+        foreach ($traits as $trait) {
+            if ($trait->hasProperty($refProperty->name)) {
+                if (count($trait->getTraitNames()) > 0) {
+                    // Multiple layers of traits!
+                    return null;
+                }
+                // From a trait.
+                return $trait;
+            }
+        }
+
+        // Return the original reflection class.
+        return $originalRef;
     }
 }

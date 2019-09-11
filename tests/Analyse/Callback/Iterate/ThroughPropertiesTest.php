@@ -113,6 +113,7 @@ class ThroughPropertiesTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveDeclarationPlace
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveFilenameFromTraits
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::getAdditionalData
      * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::isPropertyNameNormal
      */
