@@ -646,6 +646,11 @@ class KrexxTest extends AbstractTest
         Krexx::registerExceptionHandler();
     }
 
+    /**
+     * Test the registering of the exception handler, when kreXX is enabled..
+     *
+     * @covers \Brainworxx\Krexx\Krexx::registerExceptionHandler
+     */
     public function testRegisterExceptionHandler()
     {
         // Mock an already existing controller.
@@ -658,5 +663,35 @@ class KrexxTest extends AbstractTest
             ->with([$stdClass, 'exceptionAction']);
 
         Krexx::registerExceptionHandler();
+    }
+
+    /**
+     * Test the registering of the exception handler, when kreXX is disabled.
+     *
+     * @covers \Brainworxx\Krexx\Krexx::unregisterExceptionHandler
+     */
+    public function testUnRegisterExceptionHandlerDisabled()
+    {
+        Config::$disabledByPhp = true;
+
+        $restoreExceptionHandlerMock = $this
+            ->getFunctionMock('\\Brainworxx\\Krexx\\Controller\\', 'restore_exception_handler');
+        $restoreExceptionHandlerMock->expects($this->never());
+
+        Krexx::unregisterExceptionHandler();
+    }
+
+     /**
+     * Test the registering of the exception handler, when kreXX is enabled.
+     *
+     * @covers \Brainworxx\Krexx\Krexx::unregisterExceptionHandler
+     */
+    public function testUnRegisterExceptionHandler()
+    {
+        $restoreExceptionHandlerMock = $this
+            ->getFunctionMock('\\Brainworxx\\Krexx\\Controller\\', 'restore_exception_handler');
+        $restoreExceptionHandlerMock->expects($this->once());
+
+        Krexx::unregisterExceptionHandler();
     }
 }
