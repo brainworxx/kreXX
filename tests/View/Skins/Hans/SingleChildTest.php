@@ -44,20 +44,31 @@ class SingleChildTest extends AbstractRenderHans
      * Single child rendering testing.
      *
      * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderSingleChild
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderExtra
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::retrieveTypeClasses
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderCallable
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderSourceButton
      * @covers \Brainworxx\Krexx\View\Skins\Hans\Help::renderHelp
      * @covers \Brainworxx\Krexx\View\AbstractRender::generateDataAttribute
      */
     public function testRenderSingleChild()
     {
-        $this->mockModel(static::GET_HAS_EXTRAS, true);
         $this->mockModel(static::GET_DATA, 'extra data');
         $this->mockModel(static::GET_IS_CALLBACK, true);
-        $this->mockModel(static::GET_TYPE, 'type01 type02');
         $this->mockModel(static::GET_NAME, 'my name');
-        $this->mockModel(static::GET_NORMAL, 'just normal');
         $this->mockModel(static::GET_CONNECTOR_LEFT, 'lefty');
         $this->mockModel(static::GET_CONNECTOR_RIGHT, 'righty');
         $this->mockModel(static::GET_JSON, ['someKey', 'informative text']);
+
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_HAS_EXTRAS)
+            ->will($this->returnValue(true));
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_TYPE)
+            ->will($this->returnValue('type01 type02'));
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_NORMAL)
+            ->will($this->returnValue('just normal'));
 
         $codeGenMock = $this->createMock(Codegen::class);
         $codeGenMock->expects($this->once())

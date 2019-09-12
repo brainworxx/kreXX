@@ -39,84 +39,64 @@ use Brainworxx\Krexx\Analyse\Model;
 trait SingleChild
 {
     /**
-     * {@inheritdoc}
+     * The array we use for the string replace.
+     *
+     * @var array
+     */
+    protected $renderSingleChildArray = [
+        ConstInterface::MARKER_GEN_SOURCE,
+        ConstInterface::MARKER_SOURCE_BUTTON,
+        ConstInterface::MARKER_EXPAND,
+        ConstInterface::MARKER_CALLABLE,
+        ConstInterface::MARKER_EXTRA,
+        ConstInterface::MARKER_NAME,
+        ConstInterface::MARKER_TYPE,
+        ConstInterface::MARKER_TYPE_CLASSES,
+        ConstInterface::MARKER_NORMAL,
+        ConstInterface::MARKER_CONNECTOR_LEFT,
+        ConstInterface::MARKER_CONNECTOR_RIGHT,
+        ConstInterface::MARKER_CODE_WRAPPER_LEFT,
+        ConstInterface::MARKER_CODE_WRAPPER_RIGHT,
+        ConstInterface::MARKER_HELP,
+    ];
+
+    /**
+     * Renders a "single child", containing a single not expandable value.
+     *
+     * Depending on how many characters are in there, it may be toggleable.
+     *
+     * @param Model $model
+     *   The model, which hosts all the data we need.
+     *
+     * @return string
+     *   The generated markup from the template files.
      */
     public function renderSingleChild(Model $model)
     {
         // This one is a little bit more complicated than the others,
         // because it assembles some partials and stitches them together.
         $partExpand = '';
-        $partCallable = '';
-        $partExtra = '';
-
         if ($model->getHasExtra() === true) {
             // We have a lot of text, so we render this one expandable (yellow box).
             $partExpand = 'kexpand';
-            // Add the yellow box for large output text.
-            $partExtra = str_replace(
-                static::MARKER_DATA,
-                $model->getData(),
-                $this->getTemplateFileContent(static::FILE_SI_CHILD_EX)
-            );
         }
 
-        $normal = $model->getNormal();
-        if ($model->getIsCallback() === true) {
-            // Add callable partial.
-            $partCallable = str_replace(
-                static::MARKER_NORMAL,
-                $normal,
-                $this->getTemplateFileContent(static::FILE_SI_CHILD_CALL)
-            );
-        }
-
-        // Stitching the classes together, depending on the types.
-        $typeClasses = '';
-        $modelTypes = $model->getType();
-        foreach (explode(' ', $modelTypes) as $typeClass) {
-            $typeClasses .= 'k' . $typeClass . ' ';
-        }
-
-        // Generating our code and adding the Codegen button, if there is something
-        // to generate.
+        // Generating our code.
         $gensource = $this->pool->codegenHandler->generateSource($model);
-
-        if (empty($gensource) === true || $this->pool->codegenHandler->getAllowCodegen() === false) {
-            // Remove the markers, because here is nothing to add.
-            $sourcebutton = '';
-        } else {
-            // We add the button and the code.
-            $sourcebutton = $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON);
-        }
 
         // Stitching it together.
         return str_replace(
-            [
-                static::MARKER_GEN_SOURCE,
-                static::MARKER_SOURCE_BUTTON,
-                static::MARKER_EXPAND,
-                static::MARKER_CALLABLE,
-                static::MARKER_EXTRA,
-                static::MARKER_NAME,
-                static::MARKER_TYPE,
-                static::MARKER_TYPE_CLASSES,
-                static::MARKER_NORMAL,
-                static::MARKER_CONNECTOR_LEFT,
-                static::MARKER_CONNECTOR_RIGHT,
-                static::MARKER_CODE_WRAPPER_LEFT,
-                static::MARKER_CODE_WRAPPER_RIGHT,
-                static::MARKER_HELP,
-            ],
+            $this->renderSingleChildArray,
             [
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gensource),
-                $sourcebutton,
+                $this->renderSourceButton($gensource),
                 $partExpand,
-                $partCallable,
-                $partExtra,
+                $this->renderCallable($model),
+                $this->renderExtra($model),
                 $model->getName(),
-                $modelTypes,
-                $typeClasses,
-                $normal,
+                $model->getType(),
+                $this->retrieveTypeClasses($model),
+                $model->getNormal(),
                 $this->renderConnectorLeft($model->getConnectorLeft()),
                 $this->renderConnectorRight($model->getConnectorRight()),
                 $this->generateDataAttribute(
@@ -131,5 +111,88 @@ trait SingleChild
             ],
             $this->getTemplateFileContent(static::FILE_SI_CHILD)
         );
+    }
+
+    /**
+     * Render the source button, if there is any source to add.
+     *
+     * @param string $gensource
+     *   The source we want to display.
+     *
+     * @return string
+     *   The rendered HTML output.
+     */
+    protected function renderSourceButton($gensource)
+    {
+        if (empty($gensource) === true || $this->pool->codegenHandler->getAllowCodegen() === false) {
+             // No source button for you!
+            return '';
+        }
+
+        return $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON);
+    }
+
+    /**
+     * Render the 'extra' part of the singe child output.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model.
+     *
+     * @return string
+     *   The rendered HTML output.
+     */
+    protected function renderExtra(Model $model)
+    {
+        if ($model->getHasExtra() === true) {
+            return str_replace(
+                static::MARKER_DATA,
+                $model->getData(),
+                $this->getTemplateFileContent(static::FILE_SI_CHILD_EX)
+            );
+        }
+
+        return '';
+    }
+
+    /**
+     * Retrieve the css type classes form the model.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model.
+     *
+     * @return string
+     *   The css classes.
+     */
+    protected function retrieveTypeClasses(Model $model)
+    {
+        $typeClasses = '';
+        foreach (explode(' ', $model->getType()) as $typeClass) {
+            $typeClasses .= 'k' . $typeClass . ' ';
+        }
+
+        return $typeClasses;
+    }
+
+    /**
+     * Generate the HTML to display the callable info.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model.
+     *
+     * @return string
+     *   The rendered HTML
+     */
+    protected function renderCallable(Model $model)
+    {
+        if ($model->getIsCallback() === true) {
+            // Add callable partial.
+            return str_replace(
+                static::MARKER_NORMAL,
+                $model->getNormal(),
+                $this->getTemplateFileContent(static::FILE_SI_CHILD_CALL)
+            );
+        }
+
+        return '';
     }
 }
