@@ -32,17 +32,41 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+use Brainworxx\Krexx\Analyse\Model;
+
+trait Recursion
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function renderRecursion(Model $model)
+    {
+        return str_replace(
+            [
+                static::MARKER_NAME,
+                static::MARKER_DOM_ID,
+                static::MARKER_NORMAL,
+                static::MARKER_CONNECTOR_LEFT,
+                static::MARKER_CONNECTOR_RIGHT,
+                static::MARKER_GEN_SOURCE,
+                static::MARKER_HELP,
+            ],
+            [
+                $model->getName(),
+                $model->getDomid(),
+                $model->getNormal(),
+                $this->renderConnectorLeft($model->getConnectorLeft()),
+                $this->renderConnectorRight($model->getConnectorRight()),
+                $this->generateDataAttribute(
+                    static::DATA_ATTRIBUTE_SOURCE,
+                    $this->pool->codegenHandler->generateSource($model)
+                ),
+                $this->renderHelp($model),
+            ],
+            $this->getTemplateFileContent(static::FILE_RECURSION)
+        );
+    }
 }

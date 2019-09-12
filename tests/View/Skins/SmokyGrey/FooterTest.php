@@ -32,17 +32,30 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderSmokyGrey;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class FooterTest extends AbstractRenderSmokyGrey
 {
+    /**
+     * Test the removal of the debug tab, when we are in config mode.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Footer::renderFooter
+     */
+    public function testRenderFooter()
+    {
+        $this->mockEmergencyHandler();
+        $model = $this->createMock(Model::class);
+        $model->expects($this->exactly(2))
+            ->method('getJson')
+            ->will($this->returnValue([]));
+
+        $result = $this->renderSmokyGrey->renderFooter([], $model, true);
+        $this->assertNotContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+
+        $result = $this->renderSmokyGrey->renderFooter([], $model, false);
+        $this->assertContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+    }
 }

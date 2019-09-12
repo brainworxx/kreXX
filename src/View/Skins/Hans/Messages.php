@@ -32,17 +32,21 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
-
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait Messages
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function renderMessages(array $messages)
+    {
+        $result = '';
+        $messageTemplate = $this->getTemplateFileContent(static::FILE_MESSAGE);
+        foreach ($messages as $message) {
+            $result .= str_replace(static::MARKER_MESSAGE, $message, $messageTemplate);
+        }
+
+        return $result;
+    }
 }

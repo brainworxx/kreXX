@@ -32,17 +32,27 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderSmokyGrey;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class ButtonTest extends AbstractRenderSmokyGrey
 {
+    /**
+     * Test the rendering of a button. Again we test only the additional stuff.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Button::renderButton
+     */
+    public function testRenderButton()
+    {
+        $this->mockModel(static::GET_JSON, ['buttonJson' => 'isFun']);
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_NAME)
+            ->will($this->returnValue('sayMyName'));
+
+        $result = $this->renderSmokyGrey->renderButton($this->modelMock);
+        $this->assertContains('sayMyName', $result);
+        $this->assertContains('buttonJson', $result);
+        $this->assertContains('isFun', $result);
+    }
 }

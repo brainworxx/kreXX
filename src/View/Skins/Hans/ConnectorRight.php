@@ -32,17 +32,30 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
-
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait ConnectorRight
 {
+    /**
+     * Renders the right connector.
+     *
+     * @param string $connector
+     *   The data to be displayed.
+     *
+     * @return string
+     *   The rendered connector.
+     */
+    protected function renderConnectorRight($connector)
+    {
+        if (empty($connector) === true) {
+            // No connector, no display.
+            return '';
+        }
+
+        return str_replace(
+            static::MARKER_CONNECTOR,
+            $connector,
+            $this->getTemplateFileContent(static::FILE_CONNECTOR_RIGHT)
+        );
+    }
 }

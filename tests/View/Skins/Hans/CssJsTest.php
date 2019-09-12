@@ -32,17 +32,24 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderHans;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class CssJsTest extends AbstractRenderHans
 {
+    /**
+     * Testing the inserting of css and js.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\CssJs::renderCssJs
+     */
+    public function testRenderCssJs()
+    {
+        $css = 'soem styles';
+        $javaScript = 'onClick="alert(\'xss\');"';
+
+        $result = $this->renderHans->renderCssJs($css, $javaScript);
+        $this->assertContains($css, $result);
+        $this->assertContains($javaScript, $result);
+    }
 }

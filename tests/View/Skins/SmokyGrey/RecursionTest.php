@@ -32,17 +32,22 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderSmokyGrey;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class RecursionTest extends AbstractRenderSmokyGrey
 {
+    /**
+     * Test the additional stuff of the recursion rendering.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Recursion::renderRecursion
+     */
+    public function testRenderRecursion()
+    {
+        $this->mockModel(static::GET_JSON, ['jay' => 'son']);
+        $result = $this->renderSmokyGrey->renderRecursion($this->modelMock);
+        $this->assertContains('jay', $result);
+        $this->assertContains('son', $result);
+    }
 }

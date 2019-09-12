@@ -32,17 +32,25 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderSmokyGrey;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class HeaderTest extends AbstractRenderSmokyGrey
 {
+    /**
+     * Test the additional stuff in the header rendering.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Header::renderHeader
+     */
+    public function testRenderHeader()
+    {
+        $result = $this->renderSmokyGrey->renderHeader($this->renderSmokyGrey::HEADLINE_EDIT_SETTINGS, '');
+        $this->assertContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+        $this->assertContains($this->renderSmokyGrey::STYLE_ACTIVE, $result);
+
+        $result = $this->renderSmokyGrey->renderHeader('', '');
+        $this->assertNotContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
+        $this->assertContains($this->renderSmokyGrey::STYLE_ACTIVE, $result);
+    }
 }

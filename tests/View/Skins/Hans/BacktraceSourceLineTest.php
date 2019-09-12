@@ -32,17 +32,26 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderHans;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class BacktraceSourceLineTest extends AbstractRenderHans
 {
+    /**
+     * Test the rendering of a single source code line for the backtrace.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\BacktraceSourceLine::renderBacktraceSourceLine
+     */
+    public function testRenderBacktraceSourceLine()
+    {
+        $className = 'first class';
+        $lineNumber = '92';
+        $sourceCode = 'some code we want to display';
+
+        $result = $this->renderHans->renderBacktraceSourceLine($className, $lineNumber, $sourceCode);
+        $this->assertContains($className, $result);
+        $this->assertContains($lineNumber, $result);
+        $this->assertContains($sourceCode, $result);
+    }
 }

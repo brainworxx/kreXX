@@ -32,57 +32,42 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\View\Output;
+namespace Brainworxx\Krexx\Tests\View\Skins\Hans;
 
 use Brainworxx\Krexx\Krexx;
-use Brainworxx\Krexx\Service\Misc\Cleanup;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Service\Flow\Recursion;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderHans;
 use Brainworxx\Krexx\View\Output\Chunks;
-use Brainworxx\Krexx\View\Output\File;
 
-class FileTest extends AbstractTest
+class FatalHeaderTest extends AbstractRenderHans
 {
     /**
-     * Test the creation of a file.
+     * Test the rendering of the header of the error handler.
      *
-     * @covers \Brainworxx\Krexx\View\Output\File::finalize
-     * @covers \Brainworxx\Krexx\View\Output\File::destruct
-     * @covers \Brainworxx\Krexx\View\Output\AbstractOutput::destruct
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\FatalHeader::renderFatalHeader
      */
-    public function testFinalize()
+    public function testRenderFatalHeader()
     {
-        $file = new File(Krexx::$pool);
+        $recursionMock = $this->createMock(Recursion::class);
+        $recursionMock->expects($this->exactly(2))
+            ->method('getMarker')
+            ->will($this->returnValue('Marky Mark'));
+        Krexx::$pool->recursionHandler = $recursionMock;
 
-        // Inject a fixture.
-        $fixture = [
-            'chunk 1',
-            'chunk 2',
-            'chunk 3',
-            'chunk 4',
-        ];
-        $this->setValueByReflection('chunkStrings', $fixture, $file);
-
-        // Inject the chunks mock.
         $chunkMock = $this->createMock(Chunks::class);
-        $chunkMock->expects($this->exactly(4))
-            ->method('saveDechunkedToFile')
-            ->withConsecutive(
-                [$fixture[0]],
-                [$fixture[1]],
-                [$fixture[2]],
-                [$fixture[3]]
-            );
+        $chunkMock->expects($this->once())
+            ->method('getOfficialEncoding')
+            ->will($this->returnValue('Ute Efacht'));
         Krexx::$pool->chunks = $chunkMock;
 
-        $cleanupMock = $this->createMock(Cleanup::class);
-        $cleanupMock->expects($this->once())
-            ->method('cleanupOldLogs');
-        $cleanupMock->expects($this->once())
-            ->method('cleanupOldChunks');
+        $cssJs = 'some content';
+        $errorType = 'Oops an error occured.';
 
-        $this->setValueByReflection('cleanupService', $cleanupMock, $file);
-
-        // Run the test.
-        $file->finalize();
+        $result = $this->renderHans->renderFatalHeader($cssJs, $errorType);
+        $this->assertContains(Krexx::$pool->config->version, $result);
+        $this->assertContains('Marky Mark', $result);
+        $this->assertContains('Ute Efacht', $result);
+        $this->assertContains($cssJs, $result);
+        $this->assertContains($errorType, $result);
     }
 }

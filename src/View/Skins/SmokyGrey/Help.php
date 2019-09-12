@@ -32,17 +32,20 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait Help
 {
+    /**
+     * Do nothing. Help stuff is implemented via javascript json.
+     *
+     * @param Model $model
+     * @return string
+     */
+    protected function renderHelp(Model $model)
+    {
+         return '';
+    }
 }

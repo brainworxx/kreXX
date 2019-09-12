@@ -32,17 +32,24 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderHans;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class ButtonTest extends AbstractRenderHans
 {
+    /**
+     * Test the rendering of a button.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\Button::renderButton
+     */
+    public function testRenderButton()
+    {
+        $this->mockModel(static::GET_NAME, 'clickme');
+        $this->mockModel(static::GET_NORMAL, 'doit');
+
+        $result = $this->renderHans->renderButton($this->modelMock);
+        $this->assertContains('clickme', $result);
+        $this->assertContains('doit', $result);
+    }
 }

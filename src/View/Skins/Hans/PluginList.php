@@ -32,17 +32,44 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait PluginList
 {
+    /**
+     * Render a list of all registered plugins.
+     *
+     * @return string
+     *   The generated markup from the template files.
+     */
+    protected function renderPluginList()
+    {
+        $result = '';
+        $template = $this->getTemplateFileContent(static::FILE_SI_PLUGIN);
+        foreach (SettingsGetter::getPlugins() as $plugin) {
+            if ($plugin[SettingsGetter::IS_ACTIVE] === true) {
+                $activeClass = 'kisactive';
+                $activeText = 'active';
+            } else {
+                $activeClass = 'kisinactive';
+                $activeText = 'inactive';
+            }
+            $result .= str_replace(
+                [
+                    static::MARKER_PLUGIN_ACTIVE_CLASS,
+                    static::MARKER_PLUGIN_ACTIVE_TEXT,
+                    static::MARKER_PLUGIN_TEXT,
+                ],
+                [
+                    $activeClass,
+                    $activeText,
+                    $plugin[SettingsGetter::PLUGIN_NAME] . ' ' . $plugin[SettingsGetter::PLUGIN_VERSION]
+                ],
+                $template
+            );
+        }
+        return $result;
+    }
 }

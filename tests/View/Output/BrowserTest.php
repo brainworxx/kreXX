@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\Tests\View\Output;
 
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Misc\Cleanup;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\View\Output\Browser;
 use Brainworxx\Krexx\View\Output\Chunks;
@@ -60,6 +61,7 @@ class BrowserTest extends AbstractTest
      * Test the initializing of the send-stuff-to-browser mechanism.
      *
      * @covers \Brainworxx\Krexx\View\Output\Browser::shutdownCallback
+     * @covers \Brainworxx\Krexx\View\Output\AbstractOutput::destruct
      */
     public function testShutdownCallback()
     {
@@ -80,6 +82,11 @@ class BrowserTest extends AbstractTest
         $this->browser->addChunkString($stringOne);
         $this->browser->addChunkString($stringTwo);
         $this->browser->addChunkString($stringThree);
+
+        $cleanupMock = $this->createMock(Cleanup::class);
+        $cleanupMock->expects($this->once())
+            ->method('cleanupOldChunks');
+        $this->setValueByReflection('cleanupService', $cleanupMock, $this->browser);
 
         $this->browser->shutdownCallback();
     }

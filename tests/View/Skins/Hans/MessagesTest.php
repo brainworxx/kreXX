@@ -32,17 +32,29 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderHans;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class MessagesTest extends AbstractRenderHans
 {
+    /**
+     * Test the message rendering.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\Messages::renderMessages
+     */
+    public function testRenderMessages()
+    {
+        $fixture = [
+            'How do I activate SMS?',
+            'How can I readSMS?',
+            'What is a messager?',
+            'Why am I writing this?'
+        ];
+
+        $result = $this->renderHans->renderMessages($fixture);
+        foreach ($fixture as $message) {
+            $this->assertContains($message, $result);
+        }
+    }
 }

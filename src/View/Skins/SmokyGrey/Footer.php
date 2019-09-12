@@ -32,17 +32,32 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait Footer
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function renderFooter(array $caller, Model $model, $configOnly = false)
+    {
+        // Doing special stuff for smokygrey:
+        // We hide the debug-tab when we are displaying the config-only and switch
+        // to the config as the current payload.
+        if ($configOnly === true) {
+            return str_replace(
+                static::MARKER_K_CONFIG_CLASSES,
+                '',
+                parent::renderFooter($caller, $model, $configOnly)
+            );
+        }
+
+        return str_replace(
+            static::MARKER_K_CONFIG_CLASSES,
+            static::STYLE_HIDDEN,
+            parent::renderFooter($caller, $model, $configOnly)
+        );
+    }
 }

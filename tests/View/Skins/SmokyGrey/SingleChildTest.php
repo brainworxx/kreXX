@@ -32,34 +32,39 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\View;
+namespace Brainworxx\Krexx\Tests\View\Skins\SmokyGrey;
 
+use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Krexx;
-use Brainworxx\Krexx\Service\Config\Config;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Brainworxx\Krexx\View\Skins\Render;
-use Brainworxx\Krexx\View\Skins\RenderHans;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderSmokyGrey;
 
-class AbstractRenderTest extends AbstractTest
+class SingleChildTest extends AbstractRenderSmokyGrey
 {
     /**
-     * Test the initializing of the render class.
+     * Test the additional stuff done by smoky grey.
      *
-     * @covers \Brainworxx\Krexx\View\AbstractRender::__construct
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\SingleChild::renderSingleChild
+     * @covers \Brainworxx\Krexx\View\AbstractRender::encodeJson
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Help::renderHelp
      */
-    public function testConstruct()
+    public function testRenderSingleChild()
     {
-        $skinDirectory = 'whatever';
-        $configMock = $this->createMock(Config::class);
-        $configMock->expects($this->once())
-            ->method('getSkinDirectory')
-            ->will($this->returnValue($skinDirectory));
-        Krexx::$pool->config = $configMock;
+        $this->mockModel(static::GET_CONNECTOR_LANGUAGE, 'Fortran');
+        $this->mockModel(static::GET_JSON, ['Friday' =>'the 12\'th']);
 
-        $render = new RenderHans(Krexx::$pool);
+        $codeGenMock = $this->createMock(Codegen::class);
+        $codeGenMock->expects($this->once())
+            ->method('generateSource')
+            ->will($this->returnValue('real, intent(in) :: argument1'));
+        $codeGenMock->expects($this->once())
+            ->method('getAllowCodegen')
+            ->will($this->returnValue(true));
+        Krexx::$pool->codegenHandler = $codeGenMock;
 
-        $this->assertSame(Krexx::$pool->render, $render);
-        $this->assertAttributeSame(Krexx::$pool, 'pool', $render);
-        $this->assertAttributeEquals($skinDirectory, 'skinPath', $render);
+        $result = $this->renderSmokyGrey->renderSingleChild($this->modelMock);
+        $this->assertContains('Fortran', $result);
+        // The \\\\ is the escaping of the escaping.
+        // Yo dawg, we heard  . . .
+        $this->assertContains('{&#34;Friday&#34;:&#34;the 12\\\\u0022th&#34;}', $result);
     }
 }

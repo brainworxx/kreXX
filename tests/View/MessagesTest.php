@@ -38,7 +38,7 @@ use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
+use Brainworxx\Krexx\View\Skins\RenderHans;
 
 class MessagesTest extends AbstractTest
 {
@@ -143,7 +143,7 @@ class MessagesTest extends AbstractTest
         $definedMock->expects($this->once())->will($this->returnValue(false));
 
         $messages = ['qwer', 'asdf', 'yxcv'];
-        $rendermock = $this->createMock(RenderSmokyGrey::class);
+        $rendermock = $this->createMock(RenderHans::class);
         $rendermock->expects($this->once())
             ->method('renderMessages')
             ->with($messages)

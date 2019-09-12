@@ -32,17 +32,32 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderHans;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class FatalMainTest extends AbstractRenderHans
 {
+    /**
+     * Test the rendering of the main part of the error handler
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\FatalMain::renderFatalMain
+     */
+    public function testRenderFatalMain()
+    {
+        $errorString = 'Dev oops error';
+        $inFile = 'deplyoment.php';
+        $line = 456;
+
+        $this->fileServiceMock->expects($this->once())
+            ->method('readSourcecode')
+            ->with($inFile, $line -1, $line -6, $line+4)
+            ->will($this->returnValue('faulty code line'));
+
+        $result = $this->renderHans->renderFatalMain($errorString, $inFile, $line);
+        $this->assertContains($errorString, $result);
+        $this->assertContains($inFile, $result);
+        $this->assertContains((string)$line, $result);
+        $this->assertContains('faulty code line', $result);
+    }
 }

@@ -32,17 +32,33 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
-
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait FatalHeader
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function renderFatalHeader($cssJs, $errorType)
+    {
+        return str_replace(
+            [
+                static::MARKER_CSS_JS,
+                static::MARKER_VERSION,
+                static::MARKER_SEARCH,
+                static::MARKER_KREXX_ID,
+                static::MARKER_TYPE,
+                static::MARKER_ENCODING
+            ],
+            [
+                $cssJs,
+                $this->pool->config->version,
+                $this->renderSearch(),
+                $this->pool->recursionHandler->getMarker(),
+                $errorType,
+                $this->pool->chunks->getOfficialEncoding()
+            ],
+            $this->getTemplateFileContent(static::FILE_FATAL_HEADER)
+        );
+    }
 }

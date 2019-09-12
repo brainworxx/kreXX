@@ -32,17 +32,31 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
-
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait FatalMain
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function renderFatalMain($errstr, $errfile, $errline)
+    {
+        $source = $this->pool->fileService->readSourcecode($errfile, $errline -1, $errline -6, $errline +4);
+
+        return str_replace(
+            [
+                static::MARKER_ERROR_STRING,
+                static::MARKER_FILE,
+                static::MARKER_SOURCE,
+                static::MARKER_LINE,
+            ],
+            [
+                $errstr,
+                $errfile,
+                $source,
+                $errline
+            ],
+            $this->getTemplateFileContent(static::FILE_FATAL_MAIN)
+        );
+    }
 }

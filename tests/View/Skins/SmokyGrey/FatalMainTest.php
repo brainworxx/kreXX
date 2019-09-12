@@ -32,17 +32,22 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\Tests\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Tests\View\Skins\AbstractRenderSmokyGrey;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+class FatalMainTest extends AbstractRenderSmokyGrey
 {
+    /**
+     * Test the additional stuff in the render fatal main.
+     *
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\FatalMain::renderFatalMain
+     */
+    public function testRenderFatalMain()
+    {
+        $result = $this->renderSmokyGrey->renderFatalMain('', '', 1);
+        $this->assertNotContains($this->renderSmokyGrey::MARKER_SEARCH, $result);
+        $this->assertNotContains($this->renderSmokyGrey::MARKER_KREXX_ID, $result);
+        $this->assertNotContains($this->renderSmokyGrey::MARKER_PLUGINS, $result);
+    }
 }

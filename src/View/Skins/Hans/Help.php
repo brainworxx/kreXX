@@ -32,17 +32,46 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\Hans;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait Help
 {
+     /**
+     * Renders the helptext.
+     *
+     * @param Model $model
+     *   The ID of the helptext.
+     *
+     * @see Usage
+     *
+     * @return string
+     *   The generated markup from the template files.
+     */
+    protected function renderHelp(Model $model)
+    {
+        $data = $model->getJson();
+
+        // Test if we have anything to display at all.
+        if (empty($data) === true) {
+            return '';
+        }
+
+        // We have at least something to display here.
+        $helpRow = $this->getTemplateFileContent(static::FILE_HELPROW);
+        $helpContent = '';
+
+        // Add the stuff from the json after the help text, if any.
+        foreach ($data as $title => $text) {
+            $helpContent .= str_replace(
+                [static::MARKER_HELP_TITLE, static::MARKER_HELP_TEXT],
+                [$title, $text],
+                $helpRow
+            );
+        }
+
+        // Add it into the wrapper.
+        return str_replace(static::MARKER_HELP, $helpContent, $this->getTemplateFileContent(static::FILE_HELP));
+    }
 }

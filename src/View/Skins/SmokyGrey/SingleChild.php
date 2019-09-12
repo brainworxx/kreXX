@@ -32,17 +32,37 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Smokygrey;
+namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
 
-use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Individual render class for the smokey-grey skin.
- *
- * @deprecated
- *
- * @package Brainworxx\Krexx\View\Smokygrey
- */
-class Render extends Render
+trait SingleChild
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function renderSingleChild(Model $model)
+    {
+        // We need to fetch the parent stuff first, because the str_replace
+        // works through its parameters from left to right. This means in this
+        // context, that we need to do the code generation first by fetching
+        // the parent, and then adding the help stuff here.
+        // And no, we do not do the code generation twice to avoid fetching
+        // the parentStuff in a local variable. (Not to mention code duplication
+        // by simply copying the parent method.)
+        $parentStuff = parent::renderSingleChild($model);
+
+        // Replace the source button and set the json.
+        return str_replace(
+            [
+                static::MARKER_LANGUAGE,
+                static::MARKER_ADDITIONAL_JSON,
+            ],
+            [
+                $model->getConnectorLanguage(),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson()))
+            ],
+            $parentStuff
+        );
+    }
 }
