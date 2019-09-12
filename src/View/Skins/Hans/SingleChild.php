@@ -155,25 +155,6 @@ trait SingleChild
     }
 
     /**
-     * Retrieve the css type classes form the model.
-     *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
-     *   The model.
-     *
-     * @return string
-     *   The css classes.
-     */
-    protected function retrieveTypeClasses(Model $model)
-    {
-        $typeClasses = '';
-        foreach (explode(' ', $model->getType()) as $typeClass) {
-            $typeClasses .= 'k' . $typeClass . ' ';
-        }
-
-        return $typeClasses;
-    }
-
-    /**
      * Generate the HTML to display the callable info.
      *
      * @param \Brainworxx\Krexx\Analyse\Model $model

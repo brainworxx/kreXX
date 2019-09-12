@@ -35,6 +35,7 @@
 namespace Brainworxx\Krexx\View;
 
 use Brainworxx\Krexx\Analyse\ConstInterface;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -227,5 +228,24 @@ abstract class AbstractRender implements ConstInterface
         }
 
         return ' data-' . $name . '="' . str_replace('"', '&#34;', $data) . '" ';
+    }
+
+    /**
+     * Retrieve the css type classes form the model.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model.
+     *
+     * @return string
+     *   The css classes.
+     */
+    protected function retrieveTypeClasses(Model $model)
+    {
+        $typeClasses = '';
+        foreach (explode(' ', $model->getType()) as $typeClass) {
+            $typeClasses .= 'k' . $typeClass . ' ';
+        }
+
+        return $typeClasses;
     }
 }

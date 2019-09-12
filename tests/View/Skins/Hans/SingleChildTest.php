@@ -45,7 +45,7 @@ class SingleChildTest extends AbstractRenderHans
      *
      * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderSingleChild
      * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderExtra
-     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::retrieveTypeClasses
+     * @covers \Brainworxx\Krexx\View\AbstractRender::retrieveTypeClasses
      * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderCallable
      * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleChild::renderSourceButton
      * @covers \Brainworxx\Krexx\View\Skins\Hans\Help::renderHelp
