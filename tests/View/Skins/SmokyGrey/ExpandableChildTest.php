@@ -45,19 +45,23 @@ class ExpandableChildTest extends AbstractRenderSmokyGrey
      * Test the rendering of an expandable child.
      *
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\ExpandableChild::renderExpandableChild
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\ExpandableChild::renderSourceButtonSg
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\ConnectorRight::renderConnectorRight
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Help::renderHelp
      */
     public function testRenderExpandableChild()
     {
         $this->mockModel(static::GET_NAME, 'Model name');
-        $this->mockModel(static::GET_TYPE, 'my type');
         $this->mockModel(static::GET_CONNECTOR_LANGUAGE, 'Turbo Pasquale');
         $this->mockModel(static::GET_NORMAL, 'I am not');
         $this->mockModel(static::GET_CONNECTOR_RIGHT, 'he who must not be pampered');
         $this->mockModel(static::GET_JSON, ['Voldemort' => 'noNose.']);
         $this->mockModel(static::GET_DOMID, 'passport');
         $this->mockModel(static::RENDER_ME, 'birdnest');
+
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_TYPE)
+            ->will($this->returnValue('my type'));
 
         $emergencyMock = $this->createMock(Emergency::class);
         $emergencyMock->expects($this->once())

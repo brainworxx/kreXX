@@ -43,7 +43,7 @@ trait ExpandableChild
      *
      * @var array
      */
-    protected $renderExpandableChildArray = [
+    protected $renderExpandableChildHansArray = [
         ConstInterface::MARKER_NAME,
         ConstInterface::MARKER_TYPE,
         ConstInterface::MARKER_K_TYPE,
@@ -73,7 +73,7 @@ trait ExpandableChild
         $gencode = $this->pool->codegenHandler->generateSource($model);
 
         return str_replace(
-            $this->renderExpandableChildArray,
+            $this->renderExpandableChildHansArray,
             [
                 $model->getName(),
                 $model->getType(),
@@ -120,7 +120,7 @@ trait ExpandableChild
     /**
      * Render the source button.
      *
-     * @param $gencode
+     * @param string $gencode
      *   The generated source.
      *
      * @return string

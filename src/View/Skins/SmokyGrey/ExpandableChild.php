@@ -35,9 +35,31 @@
 namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
 
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\View\Skins\Hans\ConstInterface;
+use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
 
 trait ExpandableChild
 {
+
+    /**
+     * The array we use for the string replace.
+     *
+     * @var array
+     */
+    protected $renderExpandableChildSgArray = [
+        ConstInterface::MARKER_NAME,
+        ConstInterface::MARKER_TYPE,
+        ConstInterface::MARKER_K_TYPE,
+        ConstInterface::MARKER_NORMAL,
+        ConstInterface::MARKER_CONNECTOR_RIGHT,
+        ConstInterface::MARKER_GEN_SOURCE,
+        ConstInterface::MARKER_NEST,
+        ConstInterface::MARKER_SOURCE_BUTTON,
+        ConstInterface::MARKER_CODE_WRAPPER_LEFT,
+        ConstInterface::MARKER_CODE_WRAPPER_RIGHT,
+        RenderSmokyGrey::MARKER_ADDITIONAL_JSON,
+    ];
+
     /**
      * {@inheritDoc}
      */
@@ -48,58 +70,19 @@ trait ExpandableChild
             return '';
         }
 
-        // Explode the type to get the class names right.
-        $types = $model->getType();
-        $cssType = '';
-        foreach (explode(' ', $types) as $singleType) {
-            $cssType .= ' k' . $singleType;
-        }
-
-        // Generating our code and adding the Codegen button, if there is
-        // something to generate.
+        // Generating our code.
         $gencode = $this->pool->codegenHandler->generateSource($model);
-
-        if ($gencode === ';stop;' ||
-            empty($gencode) === true ||
-            $this->pool->codegenHandler->getAllowCodegen() === false
-        ) {
-            // Remove the button marker, because here is nothing to add.
-            $sourcebutton = '';
-        } else {
-            // Add the button.
-            $sourcebutton = str_replace(
-                static::MARKER_LANGUAGE,
-                $model->getConnectorLanguage(),
-                $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON)
-            );
-        }
-
         return str_replace(
-            [
-                static::MARKER_NAME,
-                static::MARKER_TYPE,
-                static::MARKER_K_TYPE,
-                static::MARKER_NORMAL,
-                static::MARKER_CONNECTOR_RIGHT,
-                static::MARKER_GEN_SOURCE,
-                static::MARKER_IS_EXPANDED,
-                static::MARKER_NEST,
-                static::MARKER_SOURCE_BUTTON,
-                static::MARKER_CODE_WRAPPER_LEFT,
-                static::MARKER_CODE_WRAPPER_RIGHT,
-                static::MARKER_ADDITIONAL_JSON,
-            ],
+            $this->renderExpandableChildSgArray,
             [
                 $model->getName(),
-                $types,
-                $cssType,
+                $model->getType(),
+                $this->retrieveTypeClasses($model),
                 $model->getNormal(),
                 $this->renderConnectorRight($model->getConnectorRight(128)),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gencode),
-                '',
-
                 $this->pool->chunks->chunkMe($this->renderNest($model, false)),
-                $sourcebutton,
+                $this->renderSourceButtonSg($gencode, $model),
                 $this->generateDataAttribute(
                     static::DATA_ATTRIBUTE_WRAPPER_L,
                     $this->pool->codegenHandler->generateWrapperLeft()
@@ -112,5 +95,34 @@ trait ExpandableChild
             ],
             $this->getTemplateFileContent(static::FILE_EX_CHILD_NORMAL)
         );
+    }
+
+    /**
+     * Render the source button.
+     *
+     * @param string $gencode
+     *   The generated source.
+     * @param Model $model
+     *   The model.
+     *
+     * @return string
+     *   Th rendered HTML.
+     */
+    protected function renderSourceButtonSg($gencode, Model $model)
+    {
+        if ($gencode === ';stop;' ||
+            empty($gencode) === true ||
+            $this->pool->codegenHandler->getAllowCodegen() === false
+        ) {
+            // Remove the button marker, because here is nothing to add.
+            return '';
+        } else {
+            // Add the button.
+            return str_replace(
+                static::MARKER_LANGUAGE,
+                $model->getConnectorLanguage(),
+                $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON)
+            );
+        }
     }
 }
