@@ -203,7 +203,7 @@ class Methods extends AbstractComment
      * @return string
      *   The string with the comment.
      */
-    protected function retrieveComment($originalComment, \ReflectionClass $reflection)
+    protected function retrieveComment($originalComment, ReflectionClass $reflection)
     {
         if ($reflection->hasMethod($this->methodName) === true) {
             try {

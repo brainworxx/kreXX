@@ -73,20 +73,4 @@ class AbstractOutputTest extends AbstractTest
 
         $this->assertAttributeEquals([$stringOne, $stringTwo], 'chunkStrings', $browser);
     }
-
-    /**
-     * Test the calling of the destructor.
-     *
-     * @covers \Brainworxx\Krexx\View\Output\AbstractOutput::__destruct
-     */
-    public function testDestruct()
-    {
-        $cleanupMock = $this->createMock(Cleanup::class);
-        $cleanupMock->expects($this->once())
-            ->method('cleanupOldChunks');
-
-        $browser = new Browser(Krexx::$pool);
-        $this->setValueByReflection('cleanupService', $cleanupMock, $browser);
-        // No need to call it, it's the __destuct, which will be called regardless.
-    }
 }

@@ -58,6 +58,7 @@ class Browser extends AbstractOutput
             // Send it to the browser.
             $this->pool->chunks->sendDechunkedToBrowser($chunkString);
         }
+        $this->destruct();
     }
 
     /**

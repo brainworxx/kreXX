@@ -90,8 +90,8 @@ class KrexxTest extends AbstractTest
                 array('', '', '\\'),
                 $file
             );
-            $result = interface_exists($className) || class_exists($className);
-            $this->assertTrue($result, 'Interface orclass exists: ' . $className);
+            $result = interface_exists($className) || class_exists($className) || trait_exists($className);
+            $this->assertTrue($result, 'Interface or class exists: ' . $className);
         }
     }
 

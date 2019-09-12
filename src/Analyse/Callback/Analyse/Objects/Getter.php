@@ -115,7 +115,7 @@ class Getter extends AbstractObjectAnalysis
      * Filter and then populate the method list. We only dump those that have no
      * parameters and start with has, is or get.
      *
-     * @param array $methodList
+     * @param ReflectionMethod $method
      * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref
      */
     protected function populateGetterLists(ReflectionMethod $method, ReflectionClass $ref)

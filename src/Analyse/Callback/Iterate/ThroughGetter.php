@@ -275,7 +275,7 @@ class ThroughGetter extends AbstractCallback
      *
      * We try to guess the corresponding property in the class.
      *
-     * @param \ReflectionClass $classReflection
+     * @param ReflectionClass $classReflection
      *   The reflection class oof the object we are analysing.
      * @param \ReflectionMethod $reflectionMethod
      *   The reflection ot the method of which we want to coax the result from
@@ -358,7 +358,7 @@ class ThroughGetter extends AbstractCallback
      *
      * This time we are analysing the source code itself!
      *
-     * @param \ReflectionClass $classReflection
+     * @param ReflectionClass $classReflection
      *   The reflection class oof the object we are analysing.
      * @param \ReflectionMethod $reflectionMethod
      *   The reflection ot the method of which we want to coax the result from

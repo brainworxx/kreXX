@@ -37,7 +37,8 @@ namespace Brainworxx\Krexx\Tests\View;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
+use Brainworxx\Krexx\View\Skins\Render;
+use Brainworxx\Krexx\View\Skins\RenderHans;
 
 class AbstractRenderTest extends AbstractTest
 {
@@ -55,7 +56,7 @@ class AbstractRenderTest extends AbstractTest
             ->will($this->returnValue($skinDirectory));
         Krexx::$pool->config = $configMock;
 
-        $render = new RenderSmokyGrey(Krexx::$pool);
+        $render = new RenderHans(Krexx::$pool);
 
         $this->assertSame(Krexx::$pool->render, $render);
         $this->assertAttributeSame(Krexx::$pool, 'pool', $render);

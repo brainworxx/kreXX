@@ -45,7 +45,6 @@ use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Service\Misc\Registry;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Output\Chunks;
-use Brainworxx\Krexx\View\Render;
 
 /**
  * Here we store all classes that we need.
@@ -83,7 +82,7 @@ class Pool extends AbstractFactory
      *
      * Gets loaded in the output footer.
      *
-     * @var Render
+     * @var \Brainworxx\Krexx\View\RenderInterface
      */
     public $render;
 

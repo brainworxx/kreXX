@@ -125,6 +125,8 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
      *
      * @param \ReflectionFunction $ref
      *   The reflection of the closure.
+     * @param array $result
+     *   The result, so far.
      *
      * @return string
      *   Parameter list in a human readable form.

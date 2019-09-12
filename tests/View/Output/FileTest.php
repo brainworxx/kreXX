@@ -43,26 +43,11 @@ use Brainworxx\Krexx\View\Output\File;
 class FileTest extends AbstractTest
 {
     /**
-     * Test the calling of the cleanup methods.
-     *
-     * @covers \Brainworxx\Krexx\View\Output\File::__destruct
-     */
-    public function testDestruct()
-    {
-        $file = new File(Krexx::$pool);
-        $cleanupMock = $this->createMock(Cleanup::class);
-        $cleanupMock->expects($this->once())
-            ->method('cleanupOldLogs');
-        $cleanupMock->expects($this->once())
-            ->method('cleanupOldChunks');
-
-        $this->setValueByReflection('cleanupService', $cleanupMock, $file);
-    }
-
-    /**
      * Test the creation of a file.
      *
      * @covers \Brainworxx\Krexx\View\Output\File::finalize
+     * @covers \Brainworxx\Krexx\View\Output\File::destruct
+     * @covers \Brainworxx\Krexx\View\Output\AbstractOutput::destruct
      */
     public function testFinalize()
     {
@@ -88,6 +73,14 @@ class FileTest extends AbstractTest
                 [$fixture[3]]
             );
         Krexx::$pool->chunks = $chunkMock;
+
+        $cleanupMock = $this->createMock(Cleanup::class);
+        $cleanupMock->expects($this->once())
+            ->method('cleanupOldLogs');
+        $cleanupMock->expects($this->once())
+            ->method('cleanupOldChunks');
+
+        $this->setValueByReflection('cleanupService', $cleanupMock, $file);
 
         // Run the test.
         $file->finalize();

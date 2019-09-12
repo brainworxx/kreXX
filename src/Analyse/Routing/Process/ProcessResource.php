@@ -93,6 +93,10 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
      *
      * @param \Brainworxx\Krexx\Analyse\Model $model
      *   The model, so far.
+     * @param resource $resource
+     *   The resource, that we are analysing.
+     * @param string $typeString
+     *   The hunam readable type string.
      *
      * @return string
      *   The rendered HTML.

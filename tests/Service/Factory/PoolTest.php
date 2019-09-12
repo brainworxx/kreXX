@@ -52,10 +52,10 @@ use Brainworxx\Krexx\Service\Misc\Registry;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
+use Brainworxx\Krexx\View\AbstractRender;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Output\Chunks;
 use Brainworxx\Krexx\View\Skins\RenderHans;
-use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
 use stdClass;
 
 class PoolTest extends AbstractTest
@@ -88,7 +88,7 @@ class PoolTest extends AbstractTest
 
         // Testing the assigning of the right render class.
         // Smoky Grey is the standard render skin.
-        $this->assertInstanceOf(RenderSmokyGrey::class, Krexx::$pool->render);
+        $this->assertInstanceOf(AbstractRender::class, Krexx::$pool->render);
 
         Krexx::$pool = null;
         ConfigSupplier::$overwriteValues[Fallback::SETTING_SKIN] = Fallback::SKIN_HANS;
