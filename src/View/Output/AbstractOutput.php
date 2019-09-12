@@ -89,7 +89,7 @@ abstract class AbstractOutput
     /**
      * Cleanup stuff, after all is said and done.
      */
-    public function __destruct()
+    protected function destruct()
     {
         $this->cleanupService->cleanupOldChunks();
     }

@@ -45,9 +45,9 @@ class File extends AbstractOutput
     /**
      * Run the cleanup service.
      */
-    public function __destruct()
+    protected function destruct()
     {
-        parent::__destruct();
+        parent::destruct();
         $this->cleanupService->cleanupOldLogs();
     }
 
@@ -63,5 +63,7 @@ class File extends AbstractOutput
             // Save everything to the file after we are done.
             $this->pool->chunks->saveDechunkedToFile($chunkString);
         }
+
+        $this->destruct();
     }
 }
