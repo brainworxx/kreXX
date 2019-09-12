@@ -39,6 +39,27 @@ use Brainworxx\Krexx\Analyse\Model;
 trait ExpandableChild
 {
     /**
+     * The array we use for the string replace.
+     *
+     * @var array
+     */
+    protected $renderExpandableChildArray = [
+        ConstInterface::MARKER_NAME,
+        ConstInterface::MARKER_TYPE,
+        ConstInterface::MARKER_K_TYPE,
+        ConstInterface::MARKER_NORMAL,
+        ConstInterface::MARKER_CONNECTOR_LEFT,
+        ConstInterface::MARKER_CONNECTOR_RIGHT,
+        ConstInterface::MARKER_GEN_SOURCE,
+        ConstInterface::MARKER_SOURCE_BUTTON,
+        ConstInterface::MARKER_IS_EXPANDED,
+        ConstInterface::MARKER_NEST,
+        ConstInterface::MARKER_CODE_WRAPPER_LEFT,
+        ConstInterface::MARKER_CODE_WRAPPER_RIGHT,
+        ConstInterface::MARKER_HELP,
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function renderExpandableChild(Model $model, $isExpanded = false)
@@ -48,60 +69,21 @@ trait ExpandableChild
             return '';
         }
 
-        // Explode the type to get the class names right.
-        $cssType = '';
-        $modelType = $model->getType();
-        foreach (explode(' ', $modelType) as $singleType) {
-            $cssType .= ' k' . $singleType;
-        }
-
-        // Generating our code and adding the Codegen button, if there is
-        // something to generate.
+        // Generating our code.
         $gencode = $this->pool->codegenHandler->generateSource($model);
-        if ($gencode === ';stop;' ||
-            empty($gencode) === true ||
-            $this->pool->codegenHandler->getAllowCodegen() === false
-        ) {
-            // Remove the button marker, because here is nothing to add.
-            $sourceButton = '';
-        } else {
-            // Add the button.
-            $sourceButton = $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON);
-        }
-
-        // Is it expanded?
-        if ($isExpanded === true) {
-            $expandedClass = 'kopened';
-        } else {
-            $expandedClass = '';
-        }
 
         return str_replace(
-            [
-                static::MARKER_NAME,
-                static::MARKER_TYPE,
-                static::MARKER_K_TYPE,
-                static::MARKER_NORMAL,
-                static::MARKER_CONNECTOR_LEFT,
-                static::MARKER_CONNECTOR_RIGHT,
-                static::MARKER_GEN_SOURCE,
-                static::MARKER_SOURCE_BUTTON,
-                static::MARKER_IS_EXPANDED,
-                static::MARKER_NEST,
-                static::MARKER_CODE_WRAPPER_LEFT,
-                static::MARKER_CODE_WRAPPER_RIGHT,
-                static::MARKER_HELP,
-            ],
+            $this->renderExpandableChildArray,
             [
                 $model->getName(),
-                $modelType,
-                $cssType,
+                $model->getType(),
+                $this->retrieveTypeClasses($model),
                 $model->getNormal(),
                 $this->renderConnectorLeft($model->getConnectorLeft()),
                 $this->renderConnectorRight($model->getConnectorRight(128)),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gencode),
-                $sourceButton,
-                $expandedClass,
+                $this->renderSourceButtonWithStop($gencode),
+                $this->retrieveOpenedClass($isExpanded),
                 $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
                 $this->generateDataAttribute(
                     static::DATA_ATTRIBUTE_WRAPPER_L,
@@ -115,6 +97,47 @@ trait ExpandableChild
             ],
             $this->getTemplateFileContent(static::FILE_EX_CHILD_NORMAL)
         );
+    }
+
+    /**
+     * Return 'kopened', if expanded.
+     *
+     * @param bool $isExpanded
+     *   Well? Is it?
+     *
+     * @return string
+     *   The css class name.
+     */
+    protected function retrieveOpenedClass($isExpanded)
+    {
+        if ($isExpanded === true) {
+            return 'kopened';
+        }
+
+        return '';
+    }
+
+    /**
+     * Render the source button.
+     *
+     * @param $gencode
+     *   The generated source.
+     *
+     * @return string
+     *   Th rendered HTML.
+     */
+    protected function renderSourceButtonWithStop($gencode)
+    {
+        if ($gencode === ';stop;' ||
+            empty($gencode) === true ||
+            $this->pool->codegenHandler->getAllowCodegen() === false
+        ) {
+            // Remove the button marker, because here is nothing to add.
+            return '';
+        } else {
+            // Add the button.
+            return $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON);
+        }
     }
 
     /**

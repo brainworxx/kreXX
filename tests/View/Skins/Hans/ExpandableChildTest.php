@@ -49,6 +49,8 @@ class ExpandableChildTest extends AbstractRenderHans
      * with the name 'Hans'.
      *
      * @covers \Brainworxx\Krexx\View\Skins\Hans\ExpandableChild::renderExpandableChild
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\ExpandableChild::retrieveOpenedClass
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\ExpandableChild::renderSourceButtonWithStop
      * @covers \Brainworxx\Krexx\View\Skins\Hans\ExpandableChild::renderNest
      */
     public function testRenderExpandableChild()
@@ -59,13 +61,16 @@ class ExpandableChildTest extends AbstractRenderHans
             ->will($this->returnValue(false));
         Krexx::$pool->emergencyHandler = $emergencyMock;
 
-        $this->mockModel(static::GET_TYPE, 'Stringh In-Tee-Ger');
         $this->mockModel(static::GET_NAME, 'another name');
         $this->mockModel(static::GET_NORMAL, 'not normal');
         $this->mockModel(static::GET_CONNECTOR_LEFT, 'some conn');
         $this->mockModel(static::GET_CONNECTOR_RIGHT, 'any conn');
         $this->mockModel(static::RENDER_ME, 'model html');
         $this->mockModel(static::GET_DOMID, 'x12345');
+
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_TYPE)
+            ->will($this->returnValue('Stringh In-Tee-Ger'));
 
         $codegenMock = $this->createMock(Codegen::class);
         $codegenMock->expects($this->once())
