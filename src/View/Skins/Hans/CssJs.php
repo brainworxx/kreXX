@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\View\Skins\Hans;
 
-
 trait CssJs
 {
     /**

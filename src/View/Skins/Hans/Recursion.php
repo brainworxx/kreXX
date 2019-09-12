@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\View\Skins\Hans;
 
-
 use Brainworxx\Krexx\Analyse\Model;
 
 trait Recursion

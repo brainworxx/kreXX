@@ -154,29 +154,23 @@ class Routing extends AbstractRouting
         if (is_string($data) === true) {
             // String?
             $result =  $this->processString->process($model);
-
         } elseif (is_int($data) === true) {
             // Integer?
             $result =  $this->processInteger->process($model);
-
         } elseif ($data === null) {
             // Null?
             $result =  $this->processNull->process($model);
-
         } elseif (is_array($data) === true || is_object($data) === true) {
             // Handle the complex types.
             $this->pool->emergencyHandler->upOneNestingLevel();
             $result = $this->handleNoneSimpleTypes($data, $model);
             $this->pool->emergencyHandler->downOneNestingLevel();
-
         } elseif (is_bool($data) === true) {
             // Boolean?
             $result =  $this->processBoolean->process($model);
-
         } elseif (is_float($data) === true) {
             // Float?
             $result =  $this->processFloat->process($model);
-
         } elseif (empty($result) === true) {
             // Resource?
             // The is_resource can not identify closed stream resource types.
@@ -190,7 +184,6 @@ class Routing extends AbstractRouting
                 $result =  $this->processResource->process($model);
             }
             restore_error_handler();
-            
         } elseif (empty($result) === true) {
             // Tell the dev that we can not analyse this one.
             $result = $this->processOther->process($model);

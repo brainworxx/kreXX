@@ -174,7 +174,7 @@ class Config extends Fallback
 
         // Now that our settings are in place, we need to check the
         // ip to decide if we need to deactivate kreXX.
-        if ($this->isAllowedIp($this->getSetting(static::SETTING_IP_RANGE)) === false) {
+        if ($this->checkOutput->isAllowedIp($this->getSetting(static::SETTING_IP_RANGE)) === false) {
             // No kreXX for you! At all.
             $this->setDisabled(true);
             static::$disabledByPhp = true;
@@ -365,7 +365,7 @@ class Config extends Fallback
      */
     public function isAllowedDebugCall($data)
     {
-        return $this->validation->isAllowedDebugCall($data);
+        return $this->validation->isAllowedDebugCall($data, '');
     }
 
     /**

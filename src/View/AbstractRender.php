@@ -92,9 +92,9 @@ abstract class AbstractRender implements ConstInterface
     protected function renderConnector($connector)
     {
         return str_replace(
-            static::MARKER_CONNECTOR,
+            Skins\Hans\ConstInterface::MARKER_CONNECTOR,
             $connector,
-            $this->getTemplateFileContent(static::FILE_CONNECTOR)
+            $this->getTemplateFileContent(Skins\Hans\ConstInterface::FILE_CONNECTOR)
         );
     }
 
