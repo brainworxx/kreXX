@@ -45,14 +45,18 @@ class SingleEditableChildTest extends AbstractRenderHans
      * Test the rendering of a editable input field.
      *
      * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleEditableChild::renderSingleEditableChild
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleEditableChild::renderSpecificEditableElement
      */
     public function testRenderSingleEditableChildInput()
     {
         $this->mockModel(static::GET_DOMID, 'nullachtwhatever');
         $this->mockModel(static::GET_NAME, 'myinputvalue');
-        $this->mockModel(static::GET_TYPE, 'Input');
         $this->mockModel(static::GET_DATA, 'myData');
         $this->mockModel(static::GET_NORMAL, 'myNormal');
+
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_TYPE)
+            ->will($this->returnValue('Input'));
 
         // A single input field mus not ask for a skin list.
         $configMock = $this->createMock(Config::class);
@@ -72,15 +76,24 @@ class SingleEditableChildTest extends AbstractRenderHans
      * Test the rendering of a editable dropdown field., the skin list
      *
      * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleEditableChild::renderSingleEditableChild
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleEditableChild::renderSpecificEditableElement
+     * @covers \Brainworxx\Krexx\View\Skins\Hans\SingleEditableChild::renderSelectOptions
      */
     public function testRenderSingleEditableChildSelect()
     {
         $selectedSkin = 'selectedSkin';
-        $this->mockModel(static::GET_DOMID, Fallback::SETTING_SKIN);
-        $this->mockModel(static::GET_NAME, $selectedSkin);
-        $this->mockModel(static::GET_TYPE, Fallback::RENDER_TYPE_SELECT);
         $this->mockModel(static::GET_DATA, 'more data');
         $this->mockModel(static::GET_NORMAL, 'not normal');
+
+        $this->modelMock->expects($this->exactly(3))
+            ->method(static::GET_NAME)
+            ->will($this->returnValue($selectedSkin));
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_DOMID)
+            ->will($this->returnValue(Fallback::SETTING_SKIN));
+        $this->modelMock->expects($this->exactly(2))
+            ->method(static::GET_TYPE)
+            ->will($this->returnValue(Fallback::RENDER_TYPE_SELECT));
 
         $configMock = $this->createMock(Config::class);
         $configMock->expects($this->once())

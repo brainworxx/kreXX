@@ -39,71 +39,104 @@ use Brainworxx\Krexx\Service\Config\Fallback;
 
 trait SingleEditableChild
 {
+
+    /**
+     * The array we use for the string replace.
+     *
+     * @var array
+     */
+    protected $renderSingleEditableChildArray = [
+        ConstInterface::MARKER_NAME,
+        ConstInterface::MARKER_SOURCE,
+        ConstInterface::MARKER_NORMAL,
+        ConstInterface::MARKER_TYPE,
+        ConstInterface::MARKER_HELP,
+    ];
+
     /**
      * {@inheritdoc}
      */
     public function renderSingleEditableChild(Model $model)
     {
-        $domId = $model->getDomid();
-        $name = $model->getName();
-        $type = $model->getType();
+        // For dropdown elements, we need to render the options.
+        $options = '';
+        if ($model->getType() === Fallback::RENDER_TYPE_SELECT) {
+            $options = $this->renderSelectOptions($model);
+        }
 
-        $element = str_replace(
+        return str_replace(
+            $this->renderSingleEditableChildArray,
+            [
+                $model->getData(),
+                $model->getNormal(),
+                str_replace(static::MARKER_OPTIONS, $options, $this->renderSpecificEditableElement($model)),
+                Fallback::RENDER_EDITABLE,
+                $this->renderHelp($model),
+            ],
+            $this->getTemplateFileContent(static::FILE_SI_EDIT_CHILD)
+        );
+    }
+
+    /**
+     * Render the options of a select.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model.
+     *
+     * @return string
+     *   The rendered HTML.
+     */
+    protected function renderSelectOptions(Model $model)
+    {
+        // Here we store what the list of possible values.
+        if ($model->getDomid() === Fallback::SETTING_SKIN) {
+            // Get a list of all skin folders.
+            $valueList = $this->pool->config->getSkinList();
+        } else {
+            $valueList = ['true', 'false'];
+        }
+
+        // Paint it.
+        $options = '';
+        foreach ($valueList as $value) {
+            if ($value === $model->getName()) {
+                // This one is selected.
+                $selected = 'selected="selected"';
+            } else {
+                $selected = '';
+            }
+
+            $options .= str_replace(
+                [static::MARKER_TEXT, static::MARKER_VALUE, static::MARKER_SELECTED],
+                [$value, $value, $selected],
+                $this->getTemplateFileContent(static::FILE_SI_SELECT_OPTIONS)
+            );
+        }
+
+        return $options;
+    }
+
+    /**
+     * Dynamically render the element.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model.
+     *
+     * @return string
+     *   The rendered HTML.
+     */
+    protected function renderSpecificEditableElement(Model $model)
+    {
+        return str_replace(
             [
                 static::MARKER_ID,
                 static::MARKER_VALUE,
             ],
             [
-                $domId,
-                $name
+                $model->getDomid(),
+                $model->getName()
             ],
-            $this->getTemplateFileContent('single' . $type)
-        );
-        $options = '';
-
-        // For dropdown elements, we need to render the options.
-        if ($type === Fallback::RENDER_TYPE_SELECT) {
-            // Here we store what the list of possible values.
-            if ($domId === Fallback::SETTING_SKIN) {
-                // Get a list of all skin folders.
-                $valueList = $this->pool->config->getSkinList();
-            } else {
-                $valueList = ['true', 'false'];
-            }
-
-            // Paint it.
-            foreach ($valueList as $value) {
-                if ($value === $name) {
-                    // This one is selected.
-                    $selected = 'selected="selected"';
-                } else {
-                    $selected = '';
-                }
-
-                $options .= str_replace(
-                    [static::MARKER_TEXT, static::MARKER_VALUE, static::MARKER_SELECTED],
-                    [$value, $value, $selected],
-                    $this->getTemplateFileContent(static::FILE_SI_SELECT_OPTIONS)
-                );
-            }
-        }
-
-        return str_replace(
-            [
-                static::MARKER_NAME,
-                static::MARKER_SOURCE,
-                static::MARKER_NORMAL,
-                static::MARKER_TYPE,
-                static::MARKER_HELP,
-            ],
-            [
-                $model->getData(),
-                $model->getNormal(),
-                str_replace(static::MARKER_OPTIONS, $options, $element),
-                Fallback::RENDER_EDITABLE,
-                $this->renderHelp($model),
-            ],
-            $this->getTemplateFileContent(static::FILE_SI_EDIT_CHILD)
+            $this->getTemplateFileContent('single' . $model->getType())
         );
     }
 }
