@@ -4,6 +4,8 @@ kreXX Debugger
 
 .. image:: https://travis-ci.com/brainworxx/kreXX.svg
    :target: https://travis-ci.com/brainworxx/kreXX
+.. image:: https://api.codeclimate.com/v1/badges/c9d414a09928ede869c7/maintainability
+   :target: https://codeclimate.com/github/brainworxx/kreXX/maintainability
 .. image:: https://api.codeclimate.com/v1/badges/c9d414a09928ede869c7/test_coverage.svg
    :target: https://codeclimate.com/github/brainworxx/kreXX/test_coverage
 .. image:: https://poser.pugx.org/brainworxx/krexx/v/stable
