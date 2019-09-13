@@ -283,13 +283,6 @@
      * @event onDocumentReady
      */
     krexx.initSearch = function () {
-        var html = '<hr class="ksearchhr"/><label class="koptionleft"><input data-instance="{KrexxId}" class="ksearchcase" type="checkbox" autocomplete="off" name="searchcase" value="searchcase">Case sensitive</label><label class="koptionright"><input data-instance="{KrexxId}" class="ksearchshort" type="checkbox" autocomplete="off" name="searchshort" value="searchshort" checked="checked">Search short results</label><br/><label class="koptionleft"><input data-instance="{KrexxId}" class="ksearchkeys" type="checkbox" autocomplete="off" name="searchkeys" value="searchkeys" checked="checked">Search keys </label><label class="koptionright"><input data-instance="{KrexxId}" class="ksearchlong" type="checkbox" autocomplete="off" name="searchlong" value="searchlong" checked="checked">Search long results</label><br/><label class="koptionleft"><input data-instance="{KrexxId}" class="ksearchwhole" type="checkbox" autocomplete="off" name="searchwhole" value="searchwhole">Search whole values</label>';
-        var elements = document.querySelectorAll('.koptionwrapper');
-
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].innerHTML = html;
-        }
-
         // Clear our search results, because we now have new options.
         kdt.addEvent('.ksearchcase', 'change', krexx.performSearch.clearSearch);
         // Clear our search results, because we now have new options.
