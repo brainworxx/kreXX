@@ -98,13 +98,6 @@ class Hans {
         this.eventHandler.addEvent('.kwrapper .kexpand', 'click', this.toggle);
 
         /**
-         * Register the click on the tabs.
-         *
-         * @event click
-         */
-        this.eventHandler.addEvent('.ktool-tabs .ktab:not(.ksearchbutton)', 'click', this.switchTab);
-
-        /**
          * Register functions for the local dev-settings.
          *
          * @event change
@@ -506,33 +499,6 @@ class Hans {
         } else {
             codedisplay.style.display = 'none';
         }
-    };
-
-    /**
-     * Sets the kactive on the clicked element and removes it from the others.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    protected switchTab = (event:Event, element:Element) : void =>
-    {
-        let instance:string = this.kdt.getDataset((element.parentNode as Element), 'instance');
-        let what:string = this.kdt.getDataset(element, 'what');
-
-        // Toggle the highlighting.
-        this.kdt.removeClass('#' + instance + ' .kactive:not(.ksearchbutton)', 'kactive');
-
-        if (element.classList) {
-            element.classList.add('kactive');
-        } else {
-            element.className += ' kactive';
-        }
-
-        // Toggle what is displayed
-        this.kdt.addClass('#' + instance + ' .kpayload', 'khidden');
-        this.kdt.removeClass('#' + instance + ' .' + what, 'khidden');
     };
 
     /**
