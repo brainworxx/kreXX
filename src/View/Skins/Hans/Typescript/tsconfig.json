@@ -4,6 +4,6 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "outFile": "../../../../../resources/skins/hans/krexx.js",
-    "sourceMap": true
+    "sourceMap": false
   }
 }

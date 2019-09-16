@@ -142,14 +142,6 @@ class Hans {
         this.eventHandler.addEvent('.kwrapper .ksearchnow', 'click', this.search.performSearch);
 
         /**
-         * Listens for a <RETURN> in the search field.
-         *
-         * @event keyup
-         *   A <RETURN> will initiate the search.
-         */
-        this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.search.searchfieldReturn);
-
-        /**
          * Register the Collapse-All functions on it's symbol
          *
          * @event click

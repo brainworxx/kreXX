@@ -69,7 +69,7 @@ class Eventhandler
      * @param {Function} callBack
      *
      */
-    public addEvent = (selector:string, eventName:string, callBack:Function) : void =>
+    public addEvent = (selector:string, eventName:string, callBack:EventListener|Function) : void =>
     {
         // We use the clickHandler instead.
         if (eventName === 'click') {
@@ -78,7 +78,7 @@ class Eventhandler
             /** @type {NodeList} */
             let elements:NodeList = document.querySelectorAll(selector);
             for (let i = 0; i < elements.length; i++) {
-                elements[i].addEventListener(eventName, () => callBack);
+                elements[i].addEventListener(eventName, (callBack as EventListener));
             }
         }
     };

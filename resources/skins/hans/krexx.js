@@ -95,7 +95,7 @@ var Eventhandler = (function () {
             else {
                 var elements = document.querySelectorAll(selector);
                 for (var i = 0; i < elements.length; i++) {
-                    elements[i].addEventListener(eventName, function () { return callBack; });
+                    elements[i].addEventListener(eventName, callBack);
                 }
             }
         };
@@ -306,19 +306,6 @@ var Hans = (function () {
                 codedisplay.style.display = 'none';
             }
         };
-        this.switchTab = function (event, element) {
-            var instance = _this.kdt.getDataset(element.parentNode, 'instance');
-            var what = _this.kdt.getDataset(element, 'what');
-            _this.kdt.removeClass('#' + instance + ' .kactive:not(.ksearchbutton)', 'kactive');
-            if (element.classList) {
-                element.classList.add('kactive');
-            }
-            else {
-                element.className += ' kactive';
-            }
-            _this.kdt.addClass('#' + instance + ' .kpayload', 'khidden');
-            _this.kdt.removeClass('#' + instance + ' .' + what, 'khidden');
-        };
         this.setPayloadMaxHeight = function () {
             var height = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
             if (height > 0) {
@@ -338,6 +325,16 @@ var Hans = (function () {
                 search.style.top = '0px';
             }
         };
+        this.displayInfoBox = function (event, element) {
+            event.stop = true;
+            var box = element.nextElementSibling;
+            if (box.style.display === 'none') {
+                box.style.display = '';
+            }
+            else {
+                box.style.display = 'none';
+            }
+        };
         this.kdt = new Kdt();
         this.kdt.setKrexx(this);
         this.eventHandler = new Eventhandler('.kwrapper.kouterwrapper, .kfatalwrapper-outer');
@@ -346,16 +343,15 @@ var Hans = (function () {
         this.initDraxx();
         this.eventHandler.addEvent('.kwrapper .kheadnote-wrapper .kclose, .kwrapper .kfatal-headnote .kclose', 'click', this.close);
         this.eventHandler.addEvent('.kwrapper .kexpand', 'click', this.toggle);
-        this.eventHandler.addEvent('.ktool-tabs .ktab:not(.ksearchbutton)', 'click', this.switchTab);
         this.eventHandler.addEvent('.kwrapper .keditable select, .kwrapper .keditable input:not(.ksearchfield)', 'change', this.kdt.setSetting);
         this.eventHandler.addEvent('.kwrapper .kresetbutton', 'click', this.kdt.resetSetting);
         this.eventHandler.addEvent('.kwrapper .kcopyFrom', 'click', this.copyFrom);
         this.eventHandler.addEvent('.kwrapper .ksearchbutton, .kwrapper .ksearch .kclose', 'click', this.search.displaySearch);
         this.eventHandler.addEvent('.kwrapper .ksearchnow', 'click', this.search.performSearch);
-        this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.search.searchfieldReturn);
         this.eventHandler.addEvent('.kwrapper .kolps', 'click', this.kdt.collapse);
         this.eventHandler.addEvent('.kwrapper .kgencode', 'click', this.generateCode);
         this.eventHandler.addEvent('.kodsp', 'click', this.eventHandler.preventBubble);
+        this.eventHandler.addEvent('.kwrapper .kchild .kinfobutton', 'click', this.displayInfoBox);
         if (window.location.protocol === 'file:') {
             this.disableForms();
         }
@@ -596,6 +592,21 @@ var Search = (function () {
     function Search(eventHandler, jumpTo) {
         var _this = this;
         this.results = [];
+        this.stopClickEvents = function () {
+            var allSeachWindows = document.querySelectorAll('.ksearch .ksearchfield');
+            var i;
+            for (i = 0; i < allSeachWindows.length; i++) {
+                allSeachWindows[i].addEventListener('click', function (event) {
+                    this.focus();
+                });
+            }
+            allSeachWindows = document.querySelectorAll('.ksearch');
+            for (i = 0; i < allSeachWindows.length; i++) {
+                allSeachWindows[i].addEventListener('mousedown', function (event) {
+                    event.stopPropagation();
+                });
+            }
+        };
         this.displaySearch = function (event, element) {
             var instance = _this.kdt.getDataset(element, 'instance');
             var search = document.querySelector('#search-' + instance);
@@ -642,8 +653,8 @@ var Search = (function () {
             if (config.searchtext.length > 2 || config.searchWhole) {
                 config.instance = _this.kdt.getDataset(element, 'instance');
                 var direction = _this.kdt.getDataset(element, 'direction');
-                var payload = document.querySelector('#' + config.instance + ' .kbg-wrapper');
-                var collapsed = payload.querySelectorAll('.kcollapsed');
+                config.payload = document.querySelector('#' + config.instance + ' .kbg-wrapper');
+                var collapsed = config.payload.querySelectorAll('.kcollapsed');
                 for (var i = 0; i < collapsed.length; i++) {
                     _this.eventHandler.triggerEvent(collapsed[i], 'click');
                 }
@@ -738,6 +749,7 @@ var Search = (function () {
         this.eventHandler.addEvent('.ksearchwhole', 'change', this.clearSearch);
         this.eventHandler.addEvent('.koptions', 'click', this.displaySearchOptions);
         this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.searchfieldReturn);
+        this.stopClickEvents();
     }
     return Search;
 }());
@@ -746,4 +758,3 @@ var SearchConfig = (function () {
     }
     return SearchConfig;
 }());
-//# sourceMappingURL=krexx.js.map

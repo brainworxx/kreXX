@@ -90,7 +90,31 @@ class Search
         this.eventHandler.addEvent('.koptions', 'click', this.displaySearchOptions);
         // Listen for a return key in the seach field.
         this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.searchfieldReturn);
+        // Prevent a bubbeling when clicking on the search window.
+        this.stopClickEvents();
     }
+
+    /**
+     * Add the focus to the input field of the search on click.
+     */
+    protected stopClickEvents = () : void =>
+    {
+        let allSeachWindows:NodeList = document.querySelectorAll('.ksearch .ksearchfield');
+        let i:number;
+
+        for (i = 0; i < allSeachWindows.length; i++) {
+            allSeachWindows[i].addEventListener('click', function(event:Event) {
+                this.focus();
+            });
+        }
+
+        allSeachWindows = document.querySelectorAll('.ksearch');
+        for (i = 0; i < allSeachWindows.length; i++) {
+            allSeachWindows[i].addEventListener('mousedown', function(event:Event) {
+                event.stopPropagation();
+            });
+        }
+    };
 
     /**
      * Display the search dialog
@@ -188,10 +212,10 @@ class Search
         if (config.searchtext.length > 2 || config.searchWhole) {
             config.instance = this.kdt.getDataset(element, 'instance');
             var direction = this.kdt.getDataset(element, 'direction');
-            var payload = document.querySelector('#' + config.instance + ' .kbg-wrapper');
+            config.payload = document.querySelector('#' + config.instance + ' .kbg-wrapper');
 
             // We need to un-collapse everything, in case it it collapsed.
-            var collapsed = payload.querySelectorAll('.kcollapsed');
+            var collapsed = config.payload.querySelectorAll('.kcollapsed');
             for (var i = 0; i < collapsed.length; i++) {
                 this.eventHandler.triggerEvent(collapsed[i], 'click');
             }
@@ -300,7 +324,7 @@ class Search
      * @param {Event} event
      * @event keyUp
      */
-    public searchfieldReturn = (event) : void =>
+    public searchfieldReturn = (event:Event) : void =>
     {
         // Prevents the default event behavior (ie: click).
         event.preventDefault();
