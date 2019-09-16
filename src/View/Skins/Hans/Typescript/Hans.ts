@@ -170,6 +170,13 @@ class Hans {
          */
         this.eventHandler.addEvent('.kodsp', 'click', this.eventHandler.preventBubble);
 
+        /**
+         * Display the content of the info box.
+         *
+         * @event click
+         */
+        this.eventHandler.addEvent('.kwrapper .kchild .kinfobutton', 'click', this.displayInfoBox);
+
         // Disable form-buttons in case a logfile is opened local.
         if (window.location.protocol === 'file:') {
             this.disableForms();
@@ -537,4 +544,27 @@ class Hans {
             search.style.top = '0px';
         }
     }
+
+    /**
+     * Toggle the display of t he infobox.
+     *
+     * @param {Event} event
+     * @param {Element} element
+     *
+     * @event keyUp
+     */
+    protected displayInfoBox = (event:Event, element:Element) : void =>
+    {
+        // We don't want to bubble the click any further.
+        event.stop = true;
+
+        // Find the corresponding info box.
+        var box:HTMLElement = (element.nextElementSibling as HTMLElement);
+
+        if (box.style.display === 'none') {
+            box.style.display = '';
+        } else {
+            box.style.display = 'none';
+        }
+    };
 }
