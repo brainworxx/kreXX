@@ -90,31 +90,7 @@ class Search
         this.eventHandler.addEvent('.koptions', 'click', this.displaySearchOptions);
         // Listen for a return key in the seach field.
         this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.searchfieldReturn);
-        // Prevent a bubbeling when clicking on the search window.
-        this.stopClickEvents();
     }
-
-    /**
-     * Add the focus to the input field of the search on click.
-     */
-    protected stopClickEvents = () : void =>
-    {
-        let allSeachWindows:NodeList = document.querySelectorAll('.ksearch .ksearchfield');
-        let i:number;
-
-        for (i = 0; i < allSeachWindows.length; i++) {
-            allSeachWindows[i].addEventListener('click', function(event:Event) {
-                this.focus();
-            });
-        }
-
-        allSeachWindows = document.querySelectorAll('.ksearch');
-        for (i = 0; i < allSeachWindows.length; i++) {
-            allSeachWindows[i].addEventListener('mousedown', function(event:Event) {
-                event.stopPropagation();
-            });
-        }
-    };
 
     /**
      * Display the search dialog

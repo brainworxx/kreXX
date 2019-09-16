@@ -181,7 +181,7 @@ class Hans {
     /**
      * Initialize the draggable.
      */
-    protected initDraxx() : void
+    protected initDraxx = () : void =>
     {
         this.draxx = new Draxx(
             '.kwrapper',
@@ -203,7 +203,7 @@ class Hans {
                 }
             }
         );
-    }
+    };
 
     /**
      * When clicked on s recursion, this function will

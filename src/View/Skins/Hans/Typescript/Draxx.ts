@@ -95,7 +95,7 @@ class Draxx {
         this.callbackDrag = callbackDrag;
         this.kdt = new Kdt();
 
-        let elements:NodeList = document.querySelectorAll(selector);
+        let elements:NodeList = document.querySelectorAll(handle);
         for (let i = 0; i < elements.length; i++) {
             elements[i].addEventListener('mousedown', this.startDraxx);
         }

@@ -77,7 +77,7 @@ var Draxx = (function () {
         this.callbackUp = callbackUp;
         this.callbackDrag = callbackDrag;
         this.kdt = new Kdt();
-        var elements = document.querySelectorAll(selector);
+        var elements = document.querySelectorAll(handle);
         for (var i = 0; i < elements.length; i++) {
             elements[i].addEventListener('mousedown', this.startDraxx);
         }
@@ -149,6 +149,23 @@ var Eventhandler = (function () {
 var Hans = (function () {
     function Hans() {
         var _this = this;
+        this.initDraxx = function () {
+            _this.draxx = new Draxx('.kwrapper', '.kheadnote', function () {
+                var searchWrapper = document.querySelectorAll('.search-wrapper');
+                var viewportOffset;
+                for (var i = 0; i < searchWrapper.length; i++) {
+                    viewportOffset = searchWrapper[i].getBoundingClientRect();
+                    searchWrapper[i].style.position = 'fixed';
+                    searchWrapper[i].style.top = viewportOffset.top + 'px';
+                }
+            }, function () {
+                var searchWrapper = document.querySelectorAll('.search-wrapper');
+                for (var i = 0; i < searchWrapper.length; i++) {
+                    searchWrapper[i].style.position = 'absolute';
+                    searchWrapper[i].style.top = '';
+                }
+            });
+        };
         this.copyFrom = function (event, element) {
             var i;
             var domid = _this.kdt.getDataset(element, 'domid');
@@ -357,23 +374,6 @@ var Hans = (function () {
         }
         this.draxx.moveToViewport('.kouterwrapper');
     }
-    Hans.prototype.initDraxx = function () {
-        this.draxx = new Draxx('.kwrapper', '.kheadnote', function () {
-            var searchWrapper = document.querySelectorAll('.search-wrapper');
-            var viewportOffset;
-            for (var i = 0; i < searchWrapper.length; i++) {
-                viewportOffset = searchWrapper[i].getBoundingClientRect();
-                searchWrapper[i].style.position = 'fixed';
-                searchWrapper[i].style.top = viewportOffset.top + 'px';
-            }
-        }, function () {
-            var searchWrapper = document.querySelectorAll('.search-wrapper');
-            for (var i = 0; i < searchWrapper.length; i++) {
-                searchWrapper[i].style.position = 'absolute';
-                searchWrapper[i].style.top = '';
-            }
-        });
-    };
     return Hans;
 }());
 var Kdt = (function () {
@@ -592,21 +592,6 @@ var Search = (function () {
     function Search(eventHandler, jumpTo) {
         var _this = this;
         this.results = [];
-        this.stopClickEvents = function () {
-            var allSeachWindows = document.querySelectorAll('.ksearch .ksearchfield');
-            var i;
-            for (i = 0; i < allSeachWindows.length; i++) {
-                allSeachWindows[i].addEventListener('click', function (event) {
-                    this.focus();
-                });
-            }
-            allSeachWindows = document.querySelectorAll('.ksearch');
-            for (i = 0; i < allSeachWindows.length; i++) {
-                allSeachWindows[i].addEventListener('mousedown', function (event) {
-                    event.stopPropagation();
-                });
-            }
-        };
         this.displaySearch = function (event, element) {
             var instance = _this.kdt.getDataset(element, 'instance');
             var search = document.querySelector('#search-' + instance);
@@ -749,7 +734,6 @@ var Search = (function () {
         this.eventHandler.addEvent('.ksearchwhole', 'change', this.clearSearch);
         this.eventHandler.addEvent('.koptions', 'click', this.displaySearchOptions);
         this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.searchfieldReturn);
-        this.stopClickEvents();
     }
     return Search;
 }());
