@@ -1,658 +1,298 @@
-/**
- * kreXX: Krumo eXXtended
- *
- * kreXX is a debugging tool, which displays structured information
- * about any PHP object. It is a nice replacement for print_r() or var_dump()
- * which are used by a lot of PHP developers.
- *
- * kreXX is a fork of Krumo, which was originally written by:
- * Kaloyan K. Tsvetkov <kaloyan@kaloyan.info>
- *
- * @author
- *   brainworXX GmbH <info@brainworxx.de>
- *
- * @license
- *   http://opensource.org/licenses/LGPL-2.1
- *
- *   GNU Lesser General Public License Version 2.1
- *
- *   kreXX Copyright (C) 2014-2019 Brainworxx GmbH
- *
- *   This library is free software; you can redistribute it and/or modify it
- *   under the terms of the GNU Lesser General Public License as published by
- *   the Free Software Foundation; either version 2.1 of the License, or (at
- *   your option) any later version.
- *   This library is distributed in the hope that it will be useful, but WITHOUT
- *   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
- *   for more details.
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with this library; if not, write to the Free Software Foundation,
- *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
-
-(function (kdt) {
-    "use strict";
-
-    /**
-     * Register the frontend functions.
-     *
-     * @event onDocumentReady
-     *   All events are getting registered as soon as the
-     *   document is complete.
-     */
-    document.addEventListener("DOMContentLoaded", function () {
-        krexx.onDocumentReady();
-    });
-
-    /**
-     * kreXX JS Class.
-     *
-     * @namespace krexx
-     *   It a just a collection of used js routines.
-     */
-    function krexx() {}
-
-    /**
-     * Executed on document ready
-     */
-    krexx.onDocumentReady = function () {
-        // Init our kdt lib before usage.
-        kdt.initialize(krexx);
-
-        // In case we are handling a broken html structure, we must move everything
-        // to the bottom.
-        kdt.moveToBottom('.kouterwrapper');
-
-        // Initialize the draggable.
-        kdt.draXX(
-            '.kwrapper',
-            '.kheadnote',
-            function () {
-                var searchWrapper = document.querySelectorAll('.search-wrapper');
-                var viewportOffset;
-                for (var i = 0; i < searchWrapper.length; i++) {
-                    viewportOffset = searchWrapper[i].getBoundingClientRect();
-                    searchWrapper[i].style.position = 'fixed';
-                    searchWrapper[i].style.top = viewportOffset.top + 'px';
+var Draxx = (function () {
+    function Draxx(selector, handle, callbackUp, callbackDrag) {
+        var _this = this;
+        if (callbackUp === void 0) { callbackUp = null; }
+        if (callbackDrag === void 0) { callbackDrag = null; }
+        this.startDraxx = function (event) {
+            var elContent = _this.kdt.getParents(event.target, _this.selector)[0];
+            var offset = _this.getElementOffset(elContent);
+            _this.offSetY = offset.top + elContent.offsetHeight - event.pageY - elContent.offsetHeight;
+            _this.offSetX = offset.left + _this.outerWidth(elContent) - event.pageX - _this.outerWidth(elContent);
+            _this.elContentStyle = elContent.style;
+            var bodyStyle = getComputedStyle(document.querySelector('body'));
+            if (bodyStyle.position === 'relative') {
+                var relOffsetY = void 0;
+                var relOffsetX = void 0;
+                relOffsetY = parseInt(bodyStyle.marginTop, 10);
+                relOffsetX = parseInt(bodyStyle.marginLeft, 10);
+                if (relOffsetY > 0) {
                 }
-            },
-            function () {
-                var searchWrapper = document.querySelectorAll('.search-wrapper');
-                for (var i = 0; i < searchWrapper.length; i++) {
-                    searchWrapper[i].style.position = 'absolute';
-                    searchWrapper[i].style.top = '';
+                else {
+                    var prev = elContent.previousElementSibling;
+                    do {
+                        relOffsetY = parseInt(getComputedStyle(prev).marginTop, 10);
+                        prev = prev.previousElementSibling;
+                    } while (prev && relOffsetY === 0);
+                }
+                _this.offSetY -= relOffsetY;
+                _this.offSetX -= relOffsetX;
+            }
+            document.addEventListener("mousemove", _this.drag);
+            document.addEventListener("mouseup", _this.mouseUp);
+            event.preventDefault();
+            event.stopPropagation();
+        };
+        this.mouseUp = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            document.removeEventListener("mousemove", _this.drag);
+            document.removeEventListener("mouseup", _this.mouseUp);
+            _this.callbackUp();
+        };
+        this.drag = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            _this.elContentStyle.left = (event.pageX + _this.offSetX) + "px";
+            _this.elContentStyle.top = (event.pageY + _this.offSetY) + "px";
+            _this.callbackDrag();
+        };
+        this.selector = selector;
+        this.callbackUp = callbackUp;
+        this.callbackDrag = callbackDrag;
+        this.kdt = new Kdt();
+        var elements = document.querySelectorAll(selector);
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('mousedown', this.startDraxx);
+        }
+    }
+    Draxx.prototype.moveToViewport = function (selector) {
+        setTimeout(function () {
+            var viewportTop = document.documentElement.scrollTop;
+            if (viewportTop === 0) {
+                viewportTop = document.body.scrollTop;
+            }
+            var elements = document.querySelectorAll(selector);
+            var oldOffset = 0;
+            for (var i = 0; i < elements.length; i++) {
+                oldOffset = parseInt(elements[i].style.top.slice(0, -2), 10);
+                elements[i].style.top = (oldOffset + viewportTop) + 'px';
+            }
+        }, 500);
+    };
+    Draxx.prototype.getElementOffset = function (element) {
+        var de = document.documentElement;
+        var box = element.getBoundingClientRect();
+        var top = box.top + window.pageYOffset - de.clientTop;
+        var left = box.left + window.pageXOffset - de.clientLeft;
+        return { top: top, left: left };
+    };
+    Draxx.prototype.outerWidth = function (element) {
+        var width = element.offsetWidth;
+        var style = getComputedStyle(element);
+        width += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
+        return width;
+    };
+    return Draxx;
+}());
+var Eventhandler = (function () {
+    function Eventhandler(selector) {
+        this.storage = [];
+        this.kdt = new Kdt();
+        var elements = document.querySelectorAll(selector);
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', this.handle);
+        }
+    }
+    Eventhandler.prototype.addEvent = function (selector, eventName, callBack) {
+        if (eventName === 'click') {
+            this.addToStorage(selector, callBack);
+        }
+        else {
+            var elements = document.querySelectorAll(selector);
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].addEventListener(eventName, function () { return callBack; });
+            }
+        }
+    };
+    Eventhandler.prototype.preventBubble = function (event) {
+        event.stop = true;
+    };
+    Eventhandler.prototype.addToStorage = function (selector, callback) {
+        if (!(selector in this.storage)) {
+            this.storage[selector] = [];
+        }
+        this.storage[selector].push(callback);
+    };
+    Eventhandler.prototype.handle = function (event) {
+        event.stopPropagation();
+        event.stop = false;
+        var element = event.target;
+        var selector;
+        var i;
+        var callbackArray = [];
+        do {
+            for (selector in this.storage) {
+                if (element.matches(selector)) {
+                    callbackArray = this.storage[selector];
+                    for (i = 0; i < callbackArray.length; i++) {
+                        callbackArray[i](event, element);
+                        if (event.stop) {
+                            return;
+                        }
+                    }
                 }
             }
-        );
-
-        /**
-         * Register krexx close button function.
-         *
-         * @event click
-         *   Displays a closing animation of the corresponding
-         *   krexx output "window" and then removes it from the markup.
-         */
-        kdt.addEvent('.kwrapper .kheadnote-wrapper .kclose, .kwrapper .kfatal-headnote .kclose', 'click', krexx.close);
-
-        /**
-         * Register toggling to the elements.
-         *
-         * @event click
-         *   Expands a krexx node when it is not expanded.
-         *   When it is already expanded, it closes it.
-         */
-        kdt.addEvent('.kwrapper .kexpand', 'click', krexx.toggle);
-
-        /**
-         * Register the click on the tabs.
-         *
-         * @event click
-         */
-        kdt.addEvent('.ktool-tabs .ktab:not(.ksearchbutton)', 'click', krexx.switchTab);
-
-        /**
-         * Register functions for the local dev-settings.
-         *
-         * @event change
-         *   Changes on the krexx html forms.
-         *   All changes will automatically be written to the browser cookies.
-         */
-        kdt.addEvent('.kwrapper .keditable select, .kwrapper .keditable input:not(.ksearchfield)', 'change', kdt.setSetting);
-
-        /**
-         * Register cookie reset function on the reset button.
-         *
-         * @event click
-         *   Resets the local settings in the settings cookie,
-         *   when the reset button ic clicked.
-         */
-        kdt.addEvent('.kwrapper .kresetbutton', 'click', kdt.resetSetting);
-
-        /**
-         * Register the recursions resolving.
-         *
-         * @event click
-         *   When a recursion is clicked, krexx tries to locate the
-         *   first output of the object and highlight it.
-         */
-        kdt.addEvent('.kwrapper .kcopyFrom', 'click', krexx.copyFrom);
-
-        /**
-         * Register the displaying of the search menu
-         *
-         * @event click
-         *   When the button is clicked, krexx will display the
-         *   search menu associated this the same output window.
-         */
-        kdt.addEvent('.kwrapper .ksearchbutton, .kwrapper .ksearch .kclose', 'click', krexx.displaySearch);
-
-        /**
-         * Register the search event on the next button.
-         *
-         * @event click
-         *   When the button is clicked, krexx will start searching.
-         */
-        kdt.addEvent('.kwrapper .ksearchnow', 'click', krexx.performSearch);
-
-        /**
-         * Listens for a <RETURN> in the search field.
-         *
-         * @event keyup
-         *   A <RETURN> will initiate the search.
-         */
-        kdt.addEvent('.kwrapper .ksearchfield', 'keyup', krexx.searchfieldReturn);
-
-        /**
-         * Register the Collapse-All functions on it's symbol
-         *
-         * @event click
-         */
-        kdt.addEvent('.kwrapper .kolps', 'click', kdt.collapse);
-
-        /**
-         * Register the code generator on the P symbol.
-         *
-         * @event click
-         */
-        kdt.addEvent('.kwrapper .kgencode', 'click', krexx.generateCode);
-
-        /**
-         * Prevents the click-event-bubbling on the generated code.
-         *
-         * @event click
-         */
-        kdt.addEvent('.kodsp', 'click', kdt.preventBubble);
-
-        /**
-         * Display the content of the info box.
-         *
-         * @event click
-         */
-        kdt.addEvent('.kwrapper .kchild .kinfobutton', 'click', krexx.displayInfoBox);
-
-        // Disable form-buttons in case a logfile is opened local.
-        if (window.location.protocol === 'file:') {
-            krexx.disableForms();
-        }
-
-        // Move the output into the viewport. Debugging onepager is so annoying, otherwise.
-        kdt.moveToViewport('.kouterwrapper');
-
-        // Draw the search form and register its events.
-        krexx.initSearch();
-
-        // Register the click handler on all kreXX instances.
-        kdt.clickHandler.register('.kwrapper.kouterwrapper, .kfatalwrapper-outer');
+            element = element.parentNode;
+            if (element === event.currentTarget) {
+                element = null;
+            }
+        } while (element !== null);
     };
-
-    /**
-     * When clicked on s recursion, this function will
-     * copy the original analysis result there and delete
-     * the recursion.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.copyFrom = function (event, element) {
+    Eventhandler.prototype.triggerEvent = function (el, eventName) {
+        var event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, false);
+        el.dispatchEvent(event);
+    };
+    return Eventhandler;
+}());
+var Hans = (function () {
+    function Hans() {
+        this.kdt = new Kdt();
+        this.kdt.setKrexx(this);
+        this.eventHandler = new Eventhandler('.kwrapper.kouterwrapper, .kfatalwrapper-outer');
+        this.search = new Search(this.eventHandler, this.jumpTo);
+        this.kdt.moveToBottom('.kouterwrapper');
+        this.initDraxx();
+        this.eventHandler.addEvent('.kwrapper .kheadnote-wrapper .kclose, .kwrapper .kfatal-headnote .kclose', 'click', this.close);
+        this.eventHandler.addEvent('.kwrapper .kexpand', 'click', this.toggle);
+        this.eventHandler.addEvent('.ktool-tabs .ktab:not(.ksearchbutton)', 'click', this.switchTab);
+        this.eventHandler.addEvent('.kwrapper .keditable select, .kwrapper .keditable input:not(.ksearchfield)', 'change', this.kdt.setSetting);
+        this.eventHandler.addEvent('.kwrapper .kresetbutton', 'click', this.kdt.resetSetting);
+        this.eventHandler.addEvent('.kwrapper .kcopyFrom', 'click', this.copyFrom);
+        this.eventHandler.addEvent('.kwrapper .ksearchbutton, .kwrapper .ksearch .kclose', 'click', this.search.displaySearch);
+        this.eventHandler.addEvent('.kwrapper .ksearchnow', 'click', this.search.performSearch);
+        this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.search.searchfieldReturn);
+        this.eventHandler.addEvent('.kwrapper .kolps', 'click', this.kdt.collapse);
+        this.eventHandler.addEvent('.kwrapper .kgencode', 'click', this.generateCode);
+        this.eventHandler.addEvent('.kodsp', 'click', this.eventHandler.preventBubble);
+        if (window.location.protocol === 'file:') {
+            this.disableForms();
+        }
+        this.draxx.moveToViewport('.kouterwrapper');
+    }
+    Hans.prototype.initDraxx = function () {
+        this.draxx = new Draxx('.kwrapper', '.kheadnote', function () {
+            var searchWrapper = document.querySelectorAll('.search-wrapper');
+            var viewportOffset;
+            for (var i = 0; i < searchWrapper.length; i++) {
+                viewportOffset = searchWrapper[i].getBoundingClientRect();
+                searchWrapper[i].style.position = 'fixed';
+                searchWrapper[i].style.top = viewportOffset.top + 'px';
+            }
+        }, function () {
+            var searchWrapper = document.querySelectorAll('.search-wrapper');
+            for (var i = 0; i < searchWrapper.length; i++) {
+                searchWrapper[i].style.position = 'absolute';
+                searchWrapper[i].style.top = '';
+            }
+        });
+    };
+    Hans.prototype.copyFrom = function (event, element) {
         var i;
-
-        // Get the DOM id of the original analysis.
-        var domid = kdt.getDataset(element, 'domid');
-        // Get the analysis data.
+        var domid = this.kdt.getDataset(element, 'domid');
         var orgNest = document.querySelector('#' + domid);
-
-        // Does the element exist?
         if (orgNest) {
-            // Get the EL of the data (element with the arrow).
             var orgEl = orgNest.previousElementSibling;
-            // Clone the analysis data and insert it after the recursion EL.
             element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
-            // Clone the EL of the analysis data and insert it after the recursion EL.
             var newEl = orgEl.cloneNode(true);
             element.parentNode.insertBefore(newEl, element.nextSibling);
-
-            // Change the key of the just cloned EL to the one from the recursion.
-            kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML = kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
-            // We  need to remove the ids from the copy to avoid double ids.
+            this.kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML = this.kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
             var allChildren = newEl.nextElementSibling.getElementsByTagName("*");
             for (i = 0; i < allChildren.length; i++) {
                 allChildren[i].removeAttribute('id');
             }
             newEl.nextElementSibling.removeAttribute('id');
-
-            // Now we add the dom-id to the clone, as a data-field. this way we can
-            // make sure to always produce the right path to this value during source
-            // generation.
-            kdt.setDataset(newEl.parentNode, 'domid', domid);
-
-            // Remove the infobox from the copy, if available and add the one from the
-            // recursion.
+            this.kdt.setDataset(newEl.parentNode, 'domid', domid);
             var newInfobox = newEl.querySelector('.khelp');
             var newButton = newEl.querySelector('.kinfobutton');
             var realInfobox = element.querySelector('.khelp');
             var realButton = element.querySelector('.kinfobutton');
-
-            // We don't need the infobox on newEl, so we will remove it.
             if (newInfobox !== null) {
                 newInfobox.parentNode.removeChild(newInfobox);
             }
             if (newButton !== null) {
                 newButton.parentNode.removeChild(newButton);
             }
-
-            // We copy the Infobox from the recursion to the newEl, if it exists.
             if (realInfobox !== null) {
                 newEl.appendChild(realButton);
                 newEl.appendChild(realInfobox);
             }
-
-            // Remove the recursion EL.
             element.parentNode.removeChild(element);
         }
     };
-
-    /**
-     * Initialize the search.
-     *
-     * - Draw the search form
-     * - Register the events
-     *
-     * @event onDocumentReady
-     */
-    krexx.initSearch = function () {
-        // Clear our search results, because we now have new options.
-        kdt.addEvent('.ksearchcase', 'change', krexx.performSearch.clearSearch);
-        // Clear our search results, because we now have new options.
-        kdt.addEvent('.ksearchkeys', 'change', krexx.performSearch.clearSearch);
-        // Clear our search results, because we now have new options.
-        kdt.addEvent('.ksearchshort', 'change', krexx.performSearch.clearSearch);
-        // Clear our search results, because we now have new options.
-        kdt.addEvent('.ksearchlong', 'change', krexx.performSearch.clearSearch);
-        // Clear our search results, because we now have new options.
-        kdt.addEvent('.ksearchwhole', 'change', krexx.performSearch.clearSearch);
-        // Display our search options.
-        kdt.addEvent('.koptions', 'click', krexx.displaySearchOptions);
+    Hans.prototype.toggle = function (event, element) {
+        this.kdt.toggleClass(element, 'kopened');
+        this.kdt.toggleClass(element.nextElementSibling, 'khidden');
     };
-
-     /**
-     * Initiates the search.
-     *
-     * The results are saved in the var results.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.performSearch = function (event, element) {
-
-        // Hide the search options.
-        kdt.addClass([element.parentNode.nextElementSibling], 'khidden');
-
-        // Stitching together our configuration.
-        var searchtext = element.parentNode.querySelector('.ksearchfield').value;
-        var caseSensitive = element.parentNode.parentNode.querySelector('.ksearchcase').checked;
-        var searchKeys = element.parentNode.parentNode.querySelector('.ksearchkeys').checked;
-        var searchShort = element.parentNode.parentNode.querySelector('.ksearchshort').checked;
-        var searchLong = element.parentNode.parentNode.querySelector('.ksearchlong').checked;
-        var searchWhole = element.parentNode.parentNode.querySelector('.ksearchwhole').checked;
-
-        // Apply our configuration.
-        if (caseSensitive === false) {
-            searchtext = searchtext.toLowerCase();
-        }
-
-        // Nothing to search for.
-        if (searchtext.length === 0) {
-            // Not enough chars as a searchtext!
-            element.parentNode.querySelector('.ksearch-state').textContent = '<- Please enter a search text.';
-            return
-        }
-
-        // We only search for more than 3 chars.
-        if (searchtext.length > 2 || searchWhole) {
-            var instance = kdt.getDataset(element, 'instance');
-            var direction = kdt.getDataset(element, 'direction');
-            var payload = document.querySelector('#' + instance + ' .kbg-wrapper');
-
-            // We need to un-collapse everything, in case it it collapsed.
-            var collapsed = payload.querySelectorAll('.kcollapsed');
-            for (var i = 0; i < collapsed.length; i++) {
-                kdt.trigger(collapsed[i], 'click');
-            }
-
-            // Are we already having some results?
-            if (typeof krexx.performSearch.results[instance] !== "undefined") {
-                if (typeof krexx.performSearch.results[instance][searchtext] === "undefined") {
-                    refreshResultlist();
-                }
-            } else {
-                refreshResultlist();
-            }
-
-            // Set the pointer to the next or previous element
-            if (direction === 'forward') {
-                krexx.performSearch.results[instance][searchtext]['pointer']++;
-            } else {
-                krexx.performSearch.results[instance][searchtext]['pointer']--;
-            }
-
-            // Do we have an element?
-            if (typeof krexx.performSearch.results[instance][searchtext]['data'][krexx.performSearch.results[instance][searchtext]['pointer']] === "undefined") {
-                if (direction === 'forward') {
-                    // There is no next element, we go back to the first one.
-                    krexx.performSearch.results[instance][searchtext]['pointer'] = 0;
-                } else {
-                    krexx.performSearch.results[instance][searchtext]['pointer'] = krexx.performSearch.results[instance][searchtext]['data'].length - 1;
-                }
-            }
-
-            // Feedback about where we are
-            element.parentNode.querySelector('.ksearch-state').textContent = (krexx.performSearch.results[instance][searchtext]['pointer'] + 1) + ' / ' + (krexx.performSearch.results[instance][searchtext]['data'].length);
-            // Now we simply jump to the element in the array.
-            if (typeof krexx.performSearch.results[instance][searchtext]['data'][krexx.performSearch.results[instance][searchtext]['pointer']] !== 'undefined') {
-                // We got another one!
-                krexx.jumpTo(krexx.performSearch.results[instance][searchtext]['data'][krexx.performSearch.results[instance][searchtext]['pointer']]);
-            }
-        } else {
-            // Not enough chars as a searchtext!
-            element.parentNode.querySelector('.ksearch-state').textContent = '<- must be bigger than 3 characters';
-        }
-
-        /**
-         * Resets our searchlist and fills it with results.
-         */
-        function refreshResultlist() {
-            // Remove all previous highlights
-            kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
-
-            // Apply our configuration.
-            var selector = [];
-            if (searchKeys === true) {
-                selector.push('li.kchild span.kname');
-            }
-            if (searchShort === true) {
-                selector.push('li.kchild span.kshort')
-            }
-            if (searchLong === true) {
-                selector.push('li div.kpreview');
-            }
-
-            // Get a new list of elements
-            krexx.performSearch.results[instance] = [];
-            krexx.performSearch.results[instance][searchtext] = [];
-            krexx.performSearch.results[instance][searchtext]['data'] = [];
-            krexx.performSearch.results[instance][searchtext]['pointer'] = [];
-
-            // Poll out payload for elements to search
-            var list = [];
-            if (selector.length > 0) {
-                list = payload.querySelectorAll(selector.join(', '));
-            }
-
-            var textContent = '';
-            for (var i = 0; i < list.length; ++i) {
-                // Does it contain our search string?
-                textContent = list[i].textContent;
-                if (caseSensitive === false) {
-                    textContent = textContent.toLowerCase();
-                }
-                if (searchWhole) {
-                    if (textContent === searchtext) {
-                        kdt.toggleClass(list[i], 'ksearch-found-highlight');
-                        krexx.performSearch.results[instance][searchtext]['data'].push(list[i]);
-                    }
-                } else {
-                    if (textContent.indexOf(searchtext) > -1) {
-                        kdt.toggleClass(list[i], 'ksearch-found-highlight');
-                        krexx.performSearch.results[instance][searchtext]['data'].push(list[i]);
-                    }
-                }
-            }
-            // Reset our index.
-            krexx.performSearch.results[instance][searchtext]['pointer'] = -1;
-        }
-    };
-
-    /**
-     * Here we save the search results
-     *
-     * This is multidimensional array:
-     * results[kreXX-instance][search text][search results]
-     *                                     [pointer]
-     * The [pointer] is the key of the [search result] where
-     * you would jump to when you click "next"
-     *
-     */
-    krexx.performSearch.results = [];
-
-    /**
-     * Reset the searchresults, because we now have new search options.
-     */
-    krexx.performSearch.clearSearch = function () {
-        // Wipe our instance data, nothing more
-        krexx.performSearch.results[kdt.getDataset(this, 'instance')] = [];
-    };
-
-    /**
-     * Display the search dialog
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.displaySearch = function (event, element) {
-
-        var instance = kdt.getDataset(element, 'instance');
-        var search = document.querySelector('#search-' + instance);
-        var viewportOffset;
-
-        // Toggle display / hidden.
-        if (kdt.hasClass(search, 'hidden')) {
-            // Display it.
-            kdt.toggleClass(search, 'hidden');
-            search.querySelector('.ksearchfield').focus();
-            search.style.position = 'absolute';
-            search.style.top = '';
-            viewportOffset = search.getBoundingClientRect();
-            search.style.position = 'fixed';
-            search.style.top = viewportOffset.top + 'px';
-        } else {
-            // Hide it.
-            kdt.toggleClass(search, 'hidden');
-            kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
-            search.style.position = 'absolute';
-            search.style.top = '';
-            // Clear the results.
-           krexx.performSearch.results = [];
-        }
-    };
-
-    /**
-     * Toggle the display of the search options.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.displaySearchOptions = function (event, element) {
-        // Get the options and switch the display class.
-        kdt.toggleClass(element.parentNode.nextElementSibling, 'khidden');
-    };
-
-    /**
-     * Hides or displays the nest under an expandable element.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.toggle = function (event, element) {
-        kdt.toggleClass(element, 'kopened');
-        kdt.toggleClass(element.nextElementSibling, 'khidden');
-    };
-
-    /**
-     * "Jumps" to an element in the markup and highlights it.
-     *
-     * It is used when we are facing a recursion in our analysis.
-     *
-     * @param {Element} el
-     *   The element you want to focus on.
-     * @param {boolean} noHighlight
-     *   Do we need to highlight the elenemt we arejuming to?
-     */
-    krexx.jumpTo = function (el, noHighlight) {
-
-        var nests = kdt.getParents(el, '.knest');
+    Hans.prototype.jumpTo = function (el, noHighlight) {
+        var nests = this.kdt.getParents(el, '.knest');
         var container;
         var destination;
-
-        // Show them.
-        kdt.removeClass(nests, 'khidden');
-        // We need to expand them all.
+        var diff;
+        var step;
+        this.kdt.removeClass(nests, 'khidden');
         for (var i = 0; i < nests.length; i++) {
-            kdt.addClass([nests[i].previousElementSibling], 'kopened');
+            this.kdt.addClass([nests[i].previousElementSibling], 'kopened');
         }
-
         if (noHighlight !== true) {
-            // Remove old highlighting.
-            kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
-            // Highlight new one.
-            kdt.addClass([el], 'highlight-jumpto');
+            this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
+            this.kdt.addClass([el], 'highlight-jumpto');
         }
-
-        // Getting our scroll container
         container = document.querySelector('.kfatalwrapper-outer');
-
         if (container === null) {
-            // Normal scrolling
             container = document.querySelector('html');
-            // The html container may not accept any scrollTop value.
             ++container.scrollTop;
             if (container.scrollTop === 0 || container.scrollHeight <= container.clientHeight) {
                 container = document.querySelector('body');
             }
             --container.scrollTop;
             destination = el.getBoundingClientRect().top + container.scrollTop - 50;
-        } else {
-            // Fatal Error scrolling.
+        }
+        else {
             destination = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
         }
-
-        var diff = Math.abs(container.scrollTop - destination);
+        diff = Math.abs(container.scrollTop - destination);
         if (diff < 250) {
-            // No need to jump there
             return;
         }
-
-        var step;
-
-        // Getting the direction
         if (container.scrollTop < destination) {
-            // Forward.
             step = Math.round(diff / 12);
-        } else {
-            // Backward.
+        }
+        else {
             step = Math.round(diff / 12) * -1;
         }
-
-        // We also need to check if the setting of the new value was successful.
         var lastValue = container.scrollTop;
         var interval = setInterval(function () {
-
             container.scrollTop += step;
             if (Math.abs(container.scrollTop - destination) <= Math.abs(step) || container.scrollTop === lastValue) {
-                // We are here now, the next step would take us too far.
-                // So we jump there right now and then clear the interval.
                 container.scrollTop = destination;
                 clearInterval(interval);
             }
             lastValue = container.scrollTop;
         }, 10);
-
     };
-
-    /**
-     * Shows a "fast" closing animation and then removes the krexx window from the markup.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.close = function (event, element) {
-
-        var instance = kdt.getDataset(element, 'instance');
+    Hans.prototype.close = function (event, element) {
+        var instance = this.kdt.getDataset(element, 'instance');
         var elInstance = document.querySelector('#' + instance);
-
-        // Remove it nice and "slow".
         var opacity = 1;
         var interval = setInterval(function () {
             if (opacity < 0) {
-                // It's invisible now, so we clear the timer and remove it from the DOM.
                 clearInterval(interval);
                 elInstance.parentNode.removeChild(elInstance);
                 return;
             }
             opacity -= 0.1;
-            elInstance.style.opacity = opacity;
+            elInstance.style.opacity = opacity.toString();
         }, 20);
     };
-
-    /**
-     * Disables the editing functions, when a krexx output is loaded as a file.
-     *
-     * These local settings would actually do
-     * nothing at all, because they would land inside a cookie
-     * for that file, and not for the server.
-     */
-    krexx.disableForms = function () {
+    Hans.prototype.disableForms = function () {
         var elements = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
         for (var i = 0; i < elements.length; i++) {
             elements[i].disabled = true;
         }
     };
-
-    /**
-     * The kreXX code generator.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.generateCode = function (event, element) {
-
-        // We don't want to bubble the click any further.
+    Hans.prototype.generateCode = function (event, element) {
         event.stop = true;
-
         var codedisplay = element.nextElementSibling;
         var resultArray = [];
         var resultString = '';
@@ -660,109 +300,65 @@
         var domid;
         var wrapperLeft = '';
         var wrapperRight = '';
-
-        // Get the first element
-        var el = kdt.getParents(element, 'li.kchild')[0];
-
-        // Start the loop to collect all the date
+        var el = this.kdt.getParents(element, 'li.kchild')[0];
         while (el) {
-            // Get the domid
-            domid = kdt.getDataset(el, 'domid');
-            sourcedata = kdt.getDataset(el, 'source');
-
-            wrapperLeft = kdt.getDataset(el, 'codewrapperLeft');
-            wrapperRight = kdt.getDataset(el, 'codewrapperRight');
-
+            domid = this.kdt.getDataset(el, 'domid');
+            sourcedata = this.kdt.getDataset(el, 'source');
+            wrapperLeft = this.kdt.getDataset(el, 'codewrapperLeft');
+            wrapperRight = this.kdt.getDataset(el, 'codewrapperRight');
             if (sourcedata === '. . .') {
                 if (domid !== '') {
-                    // We need to get a new el, because we are facing a recursion, and the
-                    // current path is not really reachable.
                     el = document.querySelector('#' + domid).parentNode;
-                    // Get the source, again.
-                    resultArray.push(kdt.getDataset(el, 'source'));
+                    resultArray.push(this.kdt.getDataset(el, 'source'));
                 }
             }
             if (sourcedata !== '') {
                 resultArray.push(sourcedata);
             }
-            // Get the next el.
-            el = kdt.getParents(el, 'li.kchild')[0];
+            el = this.kdt.getParents(el, 'li.kchild')[0];
         }
-        // Now we reverse our result, so that we can resolve it from the beginning.
         resultArray.reverse();
-
         for (var i = 0; i < resultArray.length; i++) {
-            // We must check if our value is actually reachable.
-                // '. . .' means it is not reachable,
-                // we will stop right here and display a comment stating this.
             if (resultArray[i] === '. . .') {
                 resultString = '// Value is either protected or private.<br /> // Sorry . . ';
                 break;
             }
-
-            // Check if we are facing a ;stop; instruction
             if (resultArray[i] === ';stop;') {
                 resultString = '';
                 resultArray[i] = '';
             }
-
-            // We're good, value can be reached!
             if (resultArray[i].indexOf(';firstMarker;') !== -1) {
-                // We add our result so far into the "source template"
                 resultString = resultArray[i].replace(';firstMarker;', resultString);
-            } else {
-                // Normal concatenation.
+            }
+            else {
                 resultString = resultString + resultArray[i];
             }
         }
-
-        // Add the wrapper that we collected so far
         resultString = wrapperLeft + resultString + wrapperRight;
-
-        // 3. Add the text
         codedisplay.innerHTML = '<div class="kcode-inner">' + resultString + '</div>';
         if (codedisplay.style.display === 'none') {
             codedisplay.style.display = '';
-            kdt.selectText(codedisplay);
-        } else {
+            this.kdt.selectText(codedisplay);
+        }
+        else {
             codedisplay.style.display = 'none';
         }
     };
-
-    /**
-     * Sets the kactive on the clicked element and removes it from the others.
-     *
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    krexx.switchTab = function (event, element) {
-
-        var instance = kdt.getDataset(element.parentNode, 'instance');
-        var what = kdt.getDataset(element, 'what');
-
-        // Toggle the highlighting.
-        kdt.removeClass('#' + instance + ' .kactive:not(.ksearchbutton)', 'kactive');
-
+    Hans.prototype.switchTab = function (event, element) {
+        var instance = this.kdt.getDataset(element.parentNode, 'instance');
+        var what = this.kdt.getDataset(element, 'what');
+        this.kdt.removeClass('#' + instance + ' .kactive:not(.ksearchbutton)', 'kactive');
         if (element.classList) {
             element.classList.add('kactive');
-        } else {
+        }
+        else {
             element.className += ' kactive';
         }
-
-        // Toggle what is displayed
-        kdt.addClass('#' + instance + ' .kpayload', 'khidden');
-        kdt.removeClass('#' + instance + ' .' + what, 'khidden');
+        this.kdt.addClass('#' + instance + ' .kpayload', 'khidden');
+        this.kdt.removeClass('#' + instance + ' .' + what, 'khidden');
     };
-
-    /**
-     * Sets the max-height on the payload elements, depending on the viewport.
-     */
-    krexx.setPayloadMaxHeight = function () {
-        // Get the height.
+    Hans.prototype.setPayloadMaxHeight = function () {
         var height = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
-
         if (height > 0) {
             var elements = document.querySelectorAll('.krela-wrapper .kpayload');
             for (var i = 0; i < elements.length; i++) {
@@ -770,69 +366,380 @@
             }
         }
     };
-
-    /**
-     * Checks if the search form is inside the viewport. If not, fixes it on top.
-     * Gets triggered on,y when scolling the fatal error handler.
-     *
-     * @param {Event} event
-     */
-    krexx.checkSeachInViewport = function (event) {
-        // Get the search
+    Hans.prototype.checkSearchInViewport = function () {
         var search = document.querySelector('.kfatalwrapper-outer .search-wrapper');
-        // Reset the inline styles
         search.style.position = '';
         search.style.top = '';
-
-        // Measure it!
         var rect = search.getBoundingClientRect();
         if (rect.top < 0) {
-            // Set it to the top
             search.style.position = 'fixed';
             search.style.top = '0px';
         }
     };
-
-    /**
-     * Listens for a <RETURN> in the search field.
-     *
-     * @param {Event} event
-     * @event keyUp
-     */
-    krexx.searchfieldReturn = function (event) {
-        // Prevents the default event behavior (ie: click).
+    return Hans;
+}());
+var Kdt = (function () {
+    function Kdt() {
+    }
+    Kdt.prototype.setKrexx = function (krexx) {
+        this.krexx = krexx;
+    };
+    Kdt.prototype.getParents = function (el, selector) {
+        var result = [];
+        var parent = el.parentNode;
+        var body = document.querySelector('body');
+        while (parent !== null) {
+            if (parent.matches(selector)) {
+                result.push(parent);
+            }
+            parent = parent.parentNode;
+            if (parent === body) {
+                parent = null;
+            }
+        }
+        return result;
+    };
+    Kdt.prototype.hasClass = function (el, className) {
+        if (el.classList) {
+            return el.classList.contains(className);
+        }
+        else {
+            return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+        }
+    };
+    Kdt.prototype.findInDomlistByClass = function (elements, className) {
+        className = " " + className + " ";
+        for (var i = 0; i < elements.length; i++) {
+            if ((" " + elements[i].className + " ").replace(/[\n\t]/g, " ").indexOf(className) > -1) {
+                return elements[i];
+            }
+        }
+        return null;
+    };
+    Kdt.prototype.addClass = function (selector, className) {
+        var elements;
+        if (typeof selector === 'string') {
+            elements = document.querySelectorAll(selector);
+        }
+        else {
+            elements = selector;
+        }
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].classList) {
+                elements[i].classList.add(className);
+            }
+            else {
+                elements[i].className += ' ' + className;
+            }
+        }
+    };
+    Kdt.prototype.removeClass = function (selector, className) {
+        var elements;
+        if (typeof selector === 'string') {
+            elements = document.querySelectorAll(selector);
+        }
+        else {
+            elements = selector;
+        }
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].classList) {
+                elements[i].classList.remove(className);
+            }
+            else {
+                elements[i].className = elements[i].className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+            }
+        }
+    };
+    Kdt.prototype.toggleClass = function (el, className) {
+        if (el.classList) {
+            el.classList.toggle(className);
+        }
+        else {
+            var classes = el.className.split(' ');
+            var existingIndex = classes.indexOf(className);
+            if (existingIndex >= 0) {
+                classes.splice(existingIndex, 1);
+            }
+            else {
+                classes.push(className);
+            }
+            el.className = classes.join(' ');
+        }
+    };
+    Kdt.prototype.getDataset = function (el, what, mustEscape) {
+        if (mustEscape === void 0) { mustEscape = false; }
+        var result;
+        if (typeof el === 'undefined' ||
+            typeof el.getAttribute !== 'function') {
+            return '';
+        }
+        result = el.getAttribute('data-' + what);
+        if (result !== null) {
+            if (mustEscape === false) {
+                return result;
+            }
+            else {
+                return result.replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;")
+                    .replace('&lt;small&gt;', '<small>')
+                    .replace('&lt;/small&gt;', '</small>');
+            }
+        }
+        return '';
+    };
+    Kdt.prototype.setDataset = function (el, what, value) {
+        if (typeof el !== 'undefined') {
+            el.setAttribute('data-' + what, value);
+        }
+    };
+    Kdt.prototype.selectText = function (el) {
+        var range = document.createRange();
+        var selection = window.getSelection();
+        range.selectNodeContents(el);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    };
+    Kdt.prototype.readSettings = function (cookieName) {
+        cookieName = cookieName + "=";
+        var cookieArray = document.cookie.split(';');
+        var result = '';
+        var c;
+        for (var i = 0; i < cookieArray.length; i++) {
+            c = cookieArray[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1, c.length);
+            }
+            if (c.indexOf(cookieName) === 0) {
+                try {
+                    result = JSON.parse(c.substring(cookieName.length, c.length));
+                }
+                catch (error) {
+                    result = c.substring(cookieName.length, c.length);
+                }
+            }
+        }
+        return result;
+    };
+    Kdt.prototype.setSetting = function (event) {
         event.preventDefault();
-        // Prevents the event from propagating (ie: "bubbling").
         event.stopPropagation();
-
-        // If this is no <RETURN> key, do nothing.
+        var settings = this.readSettings('KrexxDebugSettings');
+        var newValue = event.target.value.replace('"', '').replace("'", '');
+        var valueName = event.target.name.replace('"', '').replace("'", '');
+        settings[valueName] = newValue;
+        var date = new Date();
+        date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+        var expires = 'expires=' + date.toUTCString();
+        document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
+        alert(valueName + ' --> ' + newValue + '\n\nPlease reload the page to use the new local settings.');
+    };
+    Kdt.prototype.resetSetting = function (event, element) {
+        var settings = {};
+        var date = new Date();
+        date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+        var expires = 'expires=' + date.toUTCString();
+        document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
+        alert('All local configuration have been reset.\n\nPlease reload the page to use the these settings.');
+    };
+    Kdt.prototype.parseJson = function (string) {
+        try {
+            return JSON.parse(string);
+        }
+        catch (error) {
+            return false;
+        }
+    };
+    Kdt.prototype.moveToBottom = function (selector) {
+        var elements = document.querySelectorAll(selector);
+        for (var i = 0; i < elements.length; i++) {
+            if (elements[i].parentNode.nodeName.toUpperCase() !== 'BODY') {
+                document.querySelector('body').appendChild(elements[i]);
+            }
+        }
+    };
+    Kdt.prototype.collapse = function (event, element) {
+        event.stop = true;
+        var wrapper = this.getParents(element, '.kwrapper')[0];
+        this.removeClass(wrapper.querySelectorAll('.kfilterroot'), 'kfilterroot');
+        this.removeClass(wrapper.querySelectorAll('.krootline'), 'krootline');
+        this.removeClass(wrapper.querySelectorAll('.ktopline'), 'ktopline');
+        if (!this.hasClass(element, 'kcollapsed')) {
+            this.addClass(this.getParents(element, 'div.kbg-wrapper > ul'), 'kfilterroot');
+            this.addClass(this.getParents(element, 'ul.knode, li.kchild'), 'krootline');
+            this.addClass([this.getParents(element, '.krootline')[0]], 'ktopline');
+            this.removeClass(wrapper.querySelectorAll('.kcollapsed'), 'kcollapsed');
+            this.addClass([element], 'kcollapsed');
+        }
+        else {
+            this.removeClass(wrapper.querySelectorAll('.kcollapsed'), 'kcollapsed');
+        }
+        var currentKrexx = this.krexx;
+        setTimeout(function () {
+            currentKrexx.jumpTo(element, true);
+        }, 100);
+    };
+    return Kdt;
+}());
+(function () {
+    document.addEventListener("DOMContentLoaded", function () {
+        var hans = new Hans();
+    });
+})();
+var Search = (function () {
+    function Search(eventHandler, jumpTo) {
+        this.results = [];
+        this.kdt = new Kdt();
+        this.eventHandler = eventHandler;
+        this.jumpTo = jumpTo;
+        this.eventHandler.addEvent('.ksearchcase', 'change', this.clearSearch);
+        this.eventHandler.addEvent('.ksearchkeys', 'change', this.clearSearch);
+        this.eventHandler.addEvent('.ksearchshort', 'change', this.clearSearch);
+        this.eventHandler.addEvent('.ksearchlong', 'change', this.clearSearch);
+        this.eventHandler.addEvent('.ksearchwhole', 'change', this.clearSearch);
+        this.eventHandler.addEvent('.koptions', 'click', this.displaySearchOptions);
+        this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.searchfieldReturn);
+    }
+    Search.prototype.displaySearch = function (event, element) {
+        var instance = this.kdt.getDataset(element, 'instance');
+        var search = document.querySelector('#search-' + instance);
+        var viewportOffset;
+        if (this.kdt.hasClass(search, 'hidden')) {
+            this.kdt.toggleClass(search, 'hidden');
+            search.querySelector('.ksearchfield').focus();
+            search.style.position = 'absolute';
+            search.style.top = '';
+            viewportOffset = search.getBoundingClientRect();
+            search.style.position = 'fixed';
+            search.style.top = viewportOffset.top + 'px';
+        }
+        else {
+            this.kdt.toggleClass(search, 'hidden');
+            this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
+            search.style.position = 'absolute';
+            search.style.top = '';
+            this.results = [];
+        }
+    };
+    Search.prototype.clearSearch = function (event) {
+        this.results[this.kdt.getDataset(event.target, 'instance')] = [];
+    };
+    Search.prototype.displaySearchOptions = function (event, element) {
+        this.kdt.toggleClass(element.parentNode.nextElementSibling, 'khidden');
+    };
+    Search.prototype.performSearch = function (event, element) {
+        this.kdt.addClass([element.parentNode.nextElementSibling], 'khidden');
+        var config = new SearchConfig();
+        config.searchtext = element.parentNode.querySelector('.ksearchfield').value;
+        config.caseSensitive = element.parentNode.parentNode.querySelector('.ksearchcase').checked;
+        config.searchKeys = element.parentNode.parentNode.querySelector('.ksearchkeys').checked;
+        config.searchShort = element.parentNode.parentNode.querySelector('.ksearchshort').checked;
+        config.searchLong = element.parentNode.parentNode.querySelector('.ksearchlong').checked;
+        config.searchWhole = element.parentNode.parentNode.querySelector('.ksearchwhole').checked;
+        if (config.caseSensitive === false) {
+            config.searchtext = config.searchtext.toLowerCase();
+        }
+        if (config.searchtext.length === 0) {
+            element.parentNode.querySelector('.ksearch-state').textContent = '<- Please enter a search text.';
+            return;
+        }
+        if (config.searchtext.length > 2 || config.searchWhole) {
+            config.instance = this.kdt.getDataset(element, 'instance');
+            var direction = this.kdt.getDataset(element, 'direction');
+            var payload = document.querySelector('#' + config.instance + ' .kbg-wrapper');
+            var collapsed = payload.querySelectorAll('.kcollapsed');
+            for (var i = 0; i < collapsed.length; i++) {
+                this.eventHandler.triggerEvent(collapsed[i], 'click');
+            }
+            if (typeof this.results[config.instance] !== "undefined") {
+                if (typeof this.results[config.instance][config.searchtext] === "undefined") {
+                    this.refreshResultlist(config);
+                }
+            }
+            else {
+                this.refreshResultlist(config);
+            }
+            if (direction === 'forward') {
+                this.results[config.instance][config.searchtext]['pointer']++;
+            }
+            else {
+                this.results[config.instance][config.searchtext]['pointer']--;
+            }
+            if (typeof this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']] === "undefined") {
+                if (direction === 'forward') {
+                    this.results[config.instance][config.searchtext]['pointer'] = 0;
+                }
+                else {
+                    this.results[config.instance][config.searchtext]['pointer'] = this.results[config.instance][config.searchtext]['data'].length - 1;
+                }
+            }
+            element.parentNode.querySelector('.ksearch-state').textContent =
+                (this.results[config.instance][config.searchtext]['pointer'] + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
+            if (typeof this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']] !== 'undefined') {
+                this.jumpTo(this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']]);
+            }
+        }
+        else {
+            element.parentNode.querySelector('.ksearch-state').textContent = '<- must be bigger than 3 characters';
+        }
+    };
+    Search.prototype.refreshResultlist = function (config) {
+        this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
+        var selector = [];
+        if (config.searchKeys === true) {
+            selector.push('li.kchild span.kname');
+        }
+        if (config.searchShort === true) {
+            selector.push('li.kchild span.kshort');
+        }
+        if (config.searchLong === true) {
+            selector.push('li div.kpreview');
+        }
+        this.results[config.instance] = [];
+        this.results[config.instance][config.searchtext] = [];
+        this.results[config.instance][config.searchtext]['data'] = [];
+        this.results[config.instance][config.searchtext]['pointer'] = [];
+        if (selector.length > 0) {
+            var list = void 0;
+            list = config.payload.querySelectorAll(selector.join(', '));
+            var textContent = '';
+            for (var i = 0; i < list.length; ++i) {
+                textContent = list[i].textContent;
+                if (config.caseSensitive === false) {
+                    textContent = textContent.toLowerCase();
+                }
+                if (config.searchWhole) {
+                    if (textContent === config.searchtext) {
+                        this.kdt.toggleClass(list[i], 'ksearch-found-highlight');
+                        this.results[config.instance][config.searchtext]['data'].push(list[i]);
+                    }
+                }
+                else {
+                    if (textContent.indexOf(config.searchtext) > -1) {
+                        this.kdt.toggleClass(list[i], 'ksearch-found-highlight');
+                        this.results[config.instance][config.searchtext]['data'].push(list[i]);
+                    }
+                }
+            }
+        }
+        this.results[config.instance][config.searchtext]['pointer'] = -1;
+    };
+    Search.prototype.searchfieldReturn = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
         if (event.which !== 13) {
             return;
         }
-
-        kdt.trigger(this.parentNode.querySelectorAll('.ksearchnow')[1], 'click');
+        this.eventHandler.triggerEvent(event.target.parentNode.querySelectorAll('.ksearchnow')[1], 'click');
     };
-
-    /**
-     * Toggle the display of t he infobox.
-     *
-     * @param {Event} event
-     * @param element
-     *
-     * @event keyUp
-     */
-    krexx.displayInfoBox = function (event, element) {
-        // We don't want to bubble the click any further.
-        event.stop = true;
-
-        // Find the corresponding info box.
-        var box = element.nextElementSibling;
-
-        if (box.style.display === 'none') {
-            box.style.display = '';
-        } else {
-            box.style.display = 'none';
-        }
+    return Search;
+}());
+var SearchConfig = (function () {
+    function SearchConfig() {
     }
-
-})(kreXXdomTools);
+    return SearchConfig;
+}());
+//# sourceMappingURL=krexx.js.map

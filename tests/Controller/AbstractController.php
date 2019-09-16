@@ -121,7 +121,6 @@ class AbstractController extends AbstractTest
     {
         $pathToIni = 'some path';
         $pathToSkin = 'skin directory';
-        $pathToKdt = 'resources/jsLibs/kdt.min.js';
         $skinJs = 'krexx.min.js';
         $skinCss = 'skin.css';
 
@@ -135,16 +134,14 @@ class AbstractController extends AbstractTest
         $poolMock->config = $configMock;
 
         $fileServiceMock = $this->createMock(File::class);
-        $fileServiceMock->expects($this->exactly(3))
+        $fileServiceMock->expects($this->exactly(2))
             ->method('fileIsReadable')
             ->withConsecutive(
                 [$pathToIni],
-                [KREXX_DIR . $pathToKdt],
                 [$pathToSkin . $skinJs]
             )->will($this->returnValueMap(
                 [
                     [$pathToIni, true],
-                    [KREXX_DIR . $pathToKdt, true],
                     [$pathToSkin . $skinJs, true]
                 ]
             ));
@@ -152,15 +149,13 @@ class AbstractController extends AbstractTest
             ->method('filterFilePath')
             ->with($pathToIni)
             ->will($this->returnValue('filtered path'));
-        $fileServiceMock->expects($this->exactly(3))
+        $fileServiceMock->expects($this->exactly(2))
             ->method('getFileContents')
             ->withConsecutive(
-                [KREXX_DIR . $pathToKdt],
                 [$pathToSkin . $skinCss],
                 [$pathToSkin . $skinJs]
             )->will($this->returnValueMap(
                 [
-                    [KREXX_DIR . $pathToKdt, true, 'some js'],
                     [$pathToSkin . $skinCss, true, 'some styles'],
                     [$pathToSkin . $skinJs, true, 'more js']
                 ]

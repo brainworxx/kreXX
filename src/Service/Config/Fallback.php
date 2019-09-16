@@ -335,7 +335,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     protected function returnSkin()
     {
         return [
-            Fallback::VALUE => Fallback::SKIN_SMOKY_GREY,
+            Fallback::VALUE => Fallback::SKIN_HANS,
             Fallback::RENDER => $this->editableSelect,
             Fallback::EVALUATE => Fallback::EVAL_SKIN,
             Fallback::SECTION => Fallback::SECTION_BEHAVIOR,

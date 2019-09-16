@@ -122,7 +122,7 @@ class RenderNothing extends Render
      * @param $javascript
      * @return mixed|string
      */
-    public function renderCssJs(&$css, &$javascript)
+    public function renderCssJs(&$css, $javascript)
     {
         $this->css = $css;
         $this->js = $javascript;

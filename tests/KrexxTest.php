@@ -61,13 +61,32 @@ class KrexxTest extends AbstractTest
         foreach ($files as $value) {
             $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
             if (is_dir($path) === false) {
-                $results[] = $path;
+                if ($this->endsWith($path, '.php')) {
+                    $results[] = $path;
+                }
             } elseif ($value != "." && $value != "..") {
                 $this->getDirContents($path, $results);
             }
         }
 
         return $results;
+    }
+
+    /**
+     * Find out, if a string ends with a certain string.
+     *
+     * @param $string
+     * @param $test
+     * @return bool
+     */
+    protected function endsWith($string, $test)
+    {
+        $stringLength = strlen($string);
+        $testLength = strlen($test);
+        if ($testLength > $stringLength) {
+            return false;
+        }
+        return substr_compare($string, $test, $stringLength - $testLength, $testLength) === 0;
     }
 
     /**

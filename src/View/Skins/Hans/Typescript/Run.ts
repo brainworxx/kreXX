@@ -1,4 +1,3 @@
-<?php
 /**
  * kreXX: Krumo eXXtended
  *
@@ -32,19 +31,17 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Skins\Hans;
+(function () {
 
-trait CssJs
-{
     /**
-     * {@inheritdoc}
+     * Start everything, whe the DOM is loaded.
+     *
+     * @event onDocumentReady
+     *   All events are getting registered as soon as the
+     *   document is complete.
      */
-    public function renderCssJs(&$css, $javascript)
-    {
-        return str_replace(
-            [static::MARKER_CSS, static::MARKER_JS],
-            [$css, $javascript],
-            $this->getTemplateFileContent(static::FILE_CSSJS)
-        );
-    }
-}
+    document.addEventListener("DOMContentLoaded", function () {
+        let hans = new Hans();
+    });
+
+})();

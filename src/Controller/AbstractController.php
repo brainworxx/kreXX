@@ -217,14 +217,6 @@ abstract class AbstractController implements ConstInterface
             return '';
         }
 
-        // Adding our DOM tools to the js.
-        if ($this->pool->fileService->fileIsReadable(KREXX_DIR . 'resources/jsLibs/kdt.min.js') === true) {
-            $kdtPath = KREXX_DIR . 'resources/jsLibs/kdt.min.js';
-        } else {
-            $kdtPath = KREXX_DIR . 'resources/jsLibs/kdt.js';
-        }
-        $jsCode = $this->pool->fileService->getFileContents($kdtPath);
-
         // Adding the skin css and js.
         $skinDirectory = $this->pool->config->getSkinDirectory();
         // Get the css file.
@@ -237,9 +229,8 @@ abstract class AbstractController implements ConstInterface
         } else {
             $skinJsPath = $skinDirectory . 'krexx.js';
         }
-        $jsCode .= $this->pool->fileService->getFileContents($skinJsPath);
 
-        return $this->pool->render->renderCssJs($css, $jsCode);
+        return $this->pool->render->renderCssJs($css, $this->pool->fileService->getFileContents($skinJsPath));
     }
 
     /**
