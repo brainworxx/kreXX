@@ -66,7 +66,7 @@ class Draxx {
      */
     protected offSetX:number;
 
-     /**
+    /**
      * The current y-axis offset.
      *
      * @var {number}
@@ -106,7 +106,7 @@ class Draxx {
      *
      * @param {string} selector
      */
-    public moveToViewport(selector:string) : void
+    public moveToViewport = (selector:string) : void =>
     {
         // Meh, we need to use the timeout to make this work on MS-Edge.
         // Edge remembers the last scrolling position *after* the onDocumentReady
@@ -133,7 +133,7 @@ class Draxx {
                 (elements[i] as HTMLElement).style.top = (oldOffset + viewportTop) + 'px';
             }
         }, 500);
-    }
+    };
 
     /**
      * Starts the dragging on a mousedown.
@@ -234,14 +234,14 @@ class Draxx {
      *
      * @returns {Offset}
      */
-    protected getElementOffset(element:Element) : Offset
+    protected getElementOffset = (element:Element) : Offset =>
     {
         let de:Element = document.documentElement;
         let box:ClientRect = element.getBoundingClientRect();
         let top:number = box.top + window.pageYOffset - de.clientTop;
         let left:number = box.left + window.pageXOffset - de.clientLeft;
         return {top: top, left: left};
-    }
+    };
 
     /**
      * Gets the outer width of an element.
@@ -250,7 +250,7 @@ class Draxx {
      *
      * @returns {number}
      */
-    protected outerWidth(element:HTMLElement) : number
+    protected outerWidth = (element:HTMLElement) : number =>
     {
         let width:number = element.offsetWidth;
         let style:CSSStyleDeclaration = getComputedStyle(element);

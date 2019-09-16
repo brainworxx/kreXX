@@ -223,7 +223,7 @@ class Hans {
      * @param {HTMLElement} element
      *   The element that was clicked.
      */
-    protected copyFrom(event:Event, element:HTMLElement) : void
+    protected copyFrom = (event:Event, element:HTMLElement) : void =>
     {
         let i:number;
 
@@ -280,7 +280,7 @@ class Hans {
             // Remove the recursion EL.
             element.parentNode.removeChild(element);
         }
-    }
+    };
 
     /**
      * Hides or displays the nest under an expandable element.
@@ -290,11 +290,11 @@ class Hans {
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected toggle(event, element) : void
+    protected toggle = (event, element) : void =>
     {
         this.kdt.toggleClass(element, 'kopened');
         this.kdt.toggleClass(element.nextElementSibling, 'khidden');
-    }
+    };
 
     /**
      * "Jumps" to an element in the markup and highlights it.
@@ -306,7 +306,7 @@ class Hans {
      * @param {boolean} noHighlight
      *   Do we need to highlight the elenemt we arejuming to?
      */
-    protected jumpTo(el:Element, noHighlight:boolean) : void
+    protected jumpTo = (el:Element, noHighlight:boolean) : void =>
     {
         let nests:Node[] = this.kdt.getParents(el, '.knest');
         let container:Element|null;
@@ -374,7 +374,7 @@ class Hans {
             }
             lastValue = container.scrollTop;
         }, 10);
-    }
+    };
 
     /**
      * Shows a "fast" closing animation and then removes the krexx window from the markup.
@@ -384,7 +384,7 @@ class Hans {
      * @param {Element} element
      *   The element that was clicked.
      */
-    protected close(event:Event, element:Element) : void
+    protected close = (event:Event, element:Element) : void =>
     {
         let instance:string = this.kdt.getDataset(element, 'instance');
         let elInstance:HTMLElement = document.querySelector('#' + instance);
@@ -401,7 +401,7 @@ class Hans {
             opacity -= 0.1;
             elInstance.style.opacity = opacity.toString();
         }, 20);
-    }
+    };
 
     /**
      * Disables the editing functions, when a krexx output is loaded as a file.
@@ -410,13 +410,13 @@ class Hans {
      * nothing at all, because they would land inside a cookie
      * for that file, and not for the server.
      */
-    protected disableForms() : void
+    protected disableForms = () : void =>
     {
         var elements:NodeList = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
         for (var i = 0; i < elements.length; i++) {
             elements[i].disabled = true;
         }
-    }
+    };
 
     /**
      * The kreXX code generator.
@@ -426,7 +426,7 @@ class Hans {
      * @param {Element} element
      *   The element that was clicked.
      */
-    protected generateCode(event:Event, element:Element) : void
+    protected generateCode = (event:Event, element:Element) : void =>
     {
 
         // We don't want to bubble the click any further.
@@ -506,7 +506,7 @@ class Hans {
         } else {
             codedisplay.style.display = 'none';
         }
-    }
+    };
 
     /**
      * Sets the kactive on the clicked element and removes it from the others.
@@ -516,7 +516,7 @@ class Hans {
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected switchTab(event:Event, element:Element) : void
+    protected switchTab = (event:Event, element:Element) : void =>
     {
         let instance:string = this.kdt.getDataset((element.parentNode as Element), 'instance');
         let what:string = this.kdt.getDataset(element, 'what');
@@ -533,12 +533,12 @@ class Hans {
         // Toggle what is displayed
         this.kdt.addClass('#' + instance + ' .kpayload', 'khidden');
         this.kdt.removeClass('#' + instance + ' .' + what, 'khidden');
-    }
+    };
 
     /**
      * Sets the max-height on the payload elements, depending on the viewport.
      */
-    protected setPayloadMaxHeight() : void
+    protected setPayloadMaxHeight = () : void =>
     {
         // Get the height.
         let height:number = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
@@ -549,13 +549,13 @@ class Hans {
                 (elements[i] as HTMLElement).style.maxHeight = height + 'px';
             }
         }
-    }
+    };
 
     /**
      * Checks if the search form is inside the viewport. If not, fixes it on top.
      * Gets triggered on,y when scolling the fatal error handler.
      */
-    protected checkSearchInViewport() : void
+    protected checkSearchInViewport = () : void =>
     {
         // Get the search
         let search:HTMLElement = document.querySelector('.kfatalwrapper-outer .search-wrapper');

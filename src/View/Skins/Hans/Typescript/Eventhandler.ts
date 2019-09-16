@@ -69,7 +69,7 @@ class Eventhandler
      * @param {Function} callBack
      *
      */
-    public addEvent(selector:string, eventName:string, callBack:Function) : void
+    public addEvent = (selector:string, eventName:string, callBack:Function) : void =>
     {
         // We use the clickHandler instead.
         if (eventName === 'click') {
@@ -81,17 +81,17 @@ class Eventhandler
                 elements[i].addEventListener(eventName, () => callBack);
             }
         }
-    }
+    };
 
     /**
      * Prevent the bubbling of an event in the kdt event handler.
      *
      * @param {Event} event
      */
-    public preventBubble(event:Event) : void
+    public preventBubble = (event:Event) : void =>
     {
         event.stop = true;
-    }
+    };
 
     /**
      * Add another event to the storage.
@@ -99,13 +99,13 @@ class Eventhandler
      * @param {string} selector
      * @param {Function} callback
      */
-    protected addToStorage(selector:string, callback:Function) : void
+    protected addToStorage = (selector:string, callback:Function) : void =>
     {
         if (!(selector in this.storage)) {
             this.storage[selector] = [];
         }
         this.storage[selector].push(callback);
-    }
+    };
 
     /**
      * Whenever a click is bubbled on a kreXX instance, we try to find
@@ -114,16 +114,16 @@ class Eventhandler
      * @param {Event} event
      * @event click
      */
-    protected handle(event:Event) : void
+    protected handle = (event:Event) : void =>
     {
         // We stop the event in it's tracks.
         event.stopPropagation();
         event.stop = false;
 
-        var element:Node = (event.target as Node);
-        var selector:string;
-        var i;
-        var callbackArray:Function[] = [];
+        let element:Node = (event.target as Node);
+        let selector:string;
+        let i:number;
+        let callbackArray:Function[] = [];
 
         do {
             // We need to test the element on all selectors.
@@ -149,7 +149,7 @@ class Eventhandler
             }
 
         } while (element !== null);
-    }
+    };
 
     /**
      * Triggers an event on an element.
@@ -157,11 +157,11 @@ class Eventhandler
      * @param {Element} el
      * @param {string} eventName
      */
-    public triggerEvent(el:Element, eventName:string) : void
+    public triggerEvent = (el:Element, eventName:string) : void =>
     {
         /** @type {Event} */
         let event:Event = document.createEvent('HTMLEvents');
         event.initEvent(eventName, true, false);
         el.dispatchEvent(event);
-    }
+    };
 }

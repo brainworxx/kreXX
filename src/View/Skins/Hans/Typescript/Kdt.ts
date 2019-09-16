@@ -43,10 +43,10 @@ class Kdt
      *
      * @param {Object} krexx
      */
-    public setKrexx(krexx:Object) : void
+    public setKrexx = (krexx:Object) : void =>
     {
         this.krexx = krexx;
-    }
+    };
 
     /**
      * Gets all parents of an element which has the specified class.
@@ -54,7 +54,7 @@ class Kdt
      * @param {Node} el
      * @param {string} selector
      */
-    public getParents(el:Node, selector:string) : Node[]
+    public getParents = (el:Node, selector:string) : Node[] =>
     {
         let result:Node[] = [];
         let parent:Node = el.parentNode;
@@ -75,7 +75,7 @@ class Kdt
         }
 
         return result;
-    }
+    };
 
     /**
      * Determines if an element has a class.
@@ -83,14 +83,14 @@ class Kdt
      * @param {Element} el
      * @param {string} className
      */
-    public hasClass(el:Element, className:string) : boolean
+    public hasClass = (el:Element, className:string) : boolean =>
     {
         if (el.classList) {
             return el.classList.contains(className);
         } else {
             return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
         }
-    }
+    };
 
     /**
      * Gets the first element from a list which hat that class.
@@ -100,7 +100,7 @@ class Kdt
      *
      * @returns {Element|null} the element
      */
-    public findInDomlistByClass(elements:NodeList, className:string) : Node | null
+    public findInDomlistByClass = (elements:NodeList, className:string) : Node | null =>
     {
         className = " " + className + " ";
         for (let i = 0; i < elements.length; i++) {
@@ -109,7 +109,7 @@ class Kdt
             }
         }
         return null;
-    }
+    };
 
     /**
      * Adds a class to elements.
@@ -117,7 +117,7 @@ class Kdt
      * @param {NodeList|string|Array} selector
      * @param {string} className
      */
-    public addClass(selector:NodeList|string|Node[], className:string) : void
+    public addClass = (selector:NodeList|string|Node[], className:string) : void =>
     {
         /** @type {NodeList|null|Array} */
         let elements:NodeList|null|Node[];
@@ -139,7 +139,7 @@ class Kdt
                 (elements[i] as Element).className += ' ' + className;
             }
         }
-    }
+    };
 
     /**
      * Removes a class from elements
@@ -147,7 +147,7 @@ class Kdt
      * @param {NodeList|string} selector
      * @param {string} className
      */
-    public removeClass(selector:NodeList|string|Node[], className:string) : void
+    public removeClass = (selector:NodeList|string|Node[], className:string) : void =>
     {
         let elements:any;
 
@@ -168,7 +168,7 @@ class Kdt
                 );
             }
         }
-    }
+    };
 
     /**
      * Toggles the class of an element
@@ -176,7 +176,7 @@ class Kdt
      * @param {Element} el
      * @param {string} className
      */
-    public toggleClass(el:Element, className:string) : void
+    public toggleClass = (el:Element, className:string) : void =>
     {
         if (el.classList) {
             // Just toggle it.
@@ -196,7 +196,7 @@ class Kdt
 
             el.className = classes.join(' ');
         }
-    }
+    };
 
     /**
      * Gets the dataset from en element.
@@ -207,7 +207,7 @@ class Kdt
      *
      * @returns {string}
      */
-    public getDataset(el:Element, what:string, mustEscape:boolean = false) : string
+    public getDataset = (el:Element, what:string, mustEscape:boolean = false) : string =>
     {
         let result:string|null;
 
@@ -238,7 +238,7 @@ class Kdt
 
         // Still here?!? No data fount, hence an empty string.
         return '';
-    }
+    };
 
     /**
      * Sets the dataset from en element.
@@ -247,19 +247,19 @@ class Kdt
      * @param {string} what
      * @param {string} value
      */
-    public setDataset(el:Element, what:string, value:string) : void
+    public setDataset = (el:Element, what:string, value:string) : void =>
     {
         if (typeof el !== 'undefined') {
             el.setAttribute('data-' + what, value);
         }
-    }
+    };
 
     /**
      * Selects some text
      *
      * @param {Element} el
      */
-    public selectText(el:Element) : void
+    public selectText = (el:Element) : void =>
     {
         let range:Range = document.createRange();
         let selection:Selection = window.getSelection();
@@ -267,7 +267,7 @@ class Kdt
         range.selectNodeContents(el);
         selection.removeAllRanges();
         selection.addRange(range);
-    }
+    };
 
     /**
      * Reads the values from a cookie.
@@ -278,7 +278,7 @@ class Kdt
      * @return {string|object}
      *   The value, set in the cookie.
      */
-    public readSettings(cookieName:string) : string|object
+    public readSettings = (cookieName:string) : string|object =>
     {
         /** @type {string} */
         cookieName = cookieName + "=";
@@ -304,14 +304,14 @@ class Kdt
             }
         }
         return result;
-    }
+    };
 
     /**
      * Adds the value from a html element to the local cookie settings.
      *
      * @param {Event} event
      */
-    public setSetting(event:Event) : void
+    public setSetting = (event:Event) : void =>
     {
         // Prevents the default event behavior (ie: click).
         event.preventDefault();
@@ -337,7 +337,7 @@ class Kdt
         document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
         // Feedback about update.
         alert(valueName + ' --> ' + newValue + '\n\nPlease reload the page to use the new local settings.');
-    }
+    };
 
     /**
      * Resets all values in the local cookie settings.
@@ -347,7 +347,7 @@ class Kdt
      * @param {Node} element
      *   The element that was clicked.
      */
-    public resetSetting(event:Event, element:Node) : void
+    public resetSetting = (event:Event, element:Node) : void =>
     {
         // We do not delete the cookie, we simply remove all settings in it.
         let settings:Object = {};
@@ -357,7 +357,7 @@ class Kdt
 
         document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
         alert('All local configuration have been reset.\n\nPlease reload the page to use the these settings.');
-    }
+    };
 
     /**
      * Wrapper to parse a json, without the danger of an error.
@@ -382,7 +382,7 @@ class Kdt
      *
      * @param {string} selector
      */
-    public moveToBottom(selector:string) : void
+    public moveToBottom = (selector:string) : void =>
     {
         // Get all elements.
         let elements:NodeList = document.querySelectorAll(selector);
@@ -395,7 +395,7 @@ class Kdt
                 document.querySelector('body').appendChild(elements[i]);
             }
         }
-    }
+    };
 
     /**
      * Collapses elements for a breadcrumb
@@ -409,7 +409,7 @@ class Kdt
      * @param {Element} element
      *   The element that was clicked.
      */
-    public collapse(event:Event, element:Element) : void
+    public collapse = (event:Event, element:Element) : void =>
     {
         event.stop = true;
 
@@ -445,5 +445,5 @@ class Kdt
                 currentKrexx.jumpTo(element, true);
             }, 100
         );
-    }
+    };
 }

@@ -33,7 +33,6 @@
 
 class Search
 {
-
     /**
      * Here we save the search results
      *
@@ -101,7 +100,7 @@ class Search
      * @param {Node} element
      *   The element that was clicked.
      */
-    public displaySearch(event:Event, element:Node) : void
+    public displaySearch = (event:Event, element:Node) : void =>
     {
         let instance:string = this.kdt.getDataset((element as Element), 'instance');
         let search:HTMLElement = document.querySelector('#search-' + instance);
@@ -126,16 +125,16 @@ class Search
             // Clear the results.
             this.results = [];
         }
-    }
+    };
 
     /**
      * Reset the search results, because we now have new search options.
      */
-    protected clearSearch(event:Event) : void
+    protected clearSearch = (event:Event) : void =>
     {
         // Wipe our instance data, nothing more
         this.results[this.kdt.getDataset((event.target as Element), 'instance')] = [];
-    }
+    };
 
     /**
      * Toggle the display of the search options.
@@ -145,11 +144,11 @@ class Search
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected displaySearchOptions(event:Event, element:Node) : void
+    protected displaySearchOptions = (event:Event, element:Node) : void =>
     {
         // Get the options and switch the display class.
         this.kdt.toggleClass((element.parentNode as Element).nextElementSibling, 'khidden');
-    }
+    };
 
     /**
      * Initiates the search.
@@ -159,7 +158,7 @@ class Search
      * @param {Element} element
      *   The element that was clicked.
      */
-    public performSearch(event:Event, element:Element) : void
+    public performSearch = (event:Event, element:Element) : void =>
     {
         // Hide the search options.
         this.kdt.addClass([(element.parentNode as HTMLElement).nextElementSibling], 'khidden');
@@ -235,14 +234,14 @@ class Search
             // Not enough chars as a searchtext!
             element.parentNode.querySelector('.ksearch-state').textContent = '<- must be bigger than 3 characters';
         }
-    }
+    };
 
     /**
      * Resets our searchlist and fills it with results.
      *
      * @param {SearchConfig} config
      */
-    protected refreshResultlist(config:SearchConfig) : void
+    protected refreshResultlist = (config:SearchConfig) : void =>
     {
         // Remove all previous highlights
         this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
@@ -293,7 +292,7 @@ class Search
         // Reset our index.
         // When nothing is found, the pointer is toggeling -1, to show that there is something happening.
         this.results[config.instance][config.searchtext]['pointer'] = -1;
-    }
+    };
 
     /**
      * Listens for a <RETURN> in the search field.
@@ -301,7 +300,7 @@ class Search
      * @param {Event} event
      * @event keyUp
      */
-    public searchfieldReturn(event) : void
+    public searchfieldReturn = (event) : void =>
     {
         // Prevents the default event behavior (ie: click).
         event.preventDefault();
@@ -314,7 +313,7 @@ class Search
         }
 
         this.eventHandler.triggerEvent(event.target.parentNode.querySelectorAll('.ksearchnow')[1], 'click');
-    }
+    };
 }
 
 /**
