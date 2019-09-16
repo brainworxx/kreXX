@@ -190,7 +190,7 @@ class Hans {
             function () {
                 let searchWrapper:NodeList = document.querySelectorAll('.search-wrapper');
                 let viewportOffset:ClientRect;
-                for (var i = 0; i < searchWrapper.length; i++) {
+                for (let i = 0; i < searchWrapper.length; i++) {
                     viewportOffset = (searchWrapper[i] as HTMLElement).getBoundingClientRect();
                     (searchWrapper[i] as HTMLElement).style.position = 'fixed';
                     (searchWrapper[i] as HTMLElement).style.top = viewportOffset.top + 'px';
@@ -198,7 +198,7 @@ class Hans {
             },
             function () {
                 let searchWrapper = document.querySelectorAll('.search-wrapper');
-                for (var i = 0; i < searchWrapper.length; i++) {
+                for (let i = 0; i < searchWrapper.length; i++) {
                     (searchWrapper[i] as HTMLElement).style.position = 'absolute';
                     (searchWrapper[i] as HTMLElement).style.top = '';
                 }
@@ -221,24 +221,24 @@ class Hans {
         let i:number;
 
         // Get the DOM id of the original analysis.
-        var domid:string = this.kdt.getDataset((element as Element), 'domid');
+        let domid:string = this.kdt.getDataset((element as Element), 'domid');
         // Get the analysis data.
-        var orgNest:Node = document.querySelector('#' + domid);
+        let orgNest:Node = document.querySelector('#' + domid);
 
         // Does the element exist?
         if (orgNest) {
             // Get the EL of the data (element with the arrow).
-            var orgEl:Node = (orgNest as HTMLElement).previousElementSibling;
+            let orgEl:Node = (orgNest as HTMLElement).previousElementSibling;
             // Clone the analysis data and insert it after the recursion EL.
             element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
             // Clone the EL of the analysis data and insert it after the recursion EL.
-            var newEl:Element = (orgEl.cloneNode(true) as Element);
+            let newEl:Element = (orgEl.cloneNode(true) as Element);
             element.parentNode.insertBefore(newEl, element.nextSibling);
 
             // Change the key of the just cloned EL to the one from the recursion.
             this.kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML = this.kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
             // We  need to remove the ids from the copy to avoid double ids.
-            var allChildren = newEl.nextElementSibling.getElementsByTagName("*");
+            let allChildren = newEl.nextElementSibling.getElementsByTagName("*");
             for (i = 0; i < allChildren.length; i++) {
                 allChildren[i].removeAttribute('id');
             }
@@ -251,10 +251,10 @@ class Hans {
 
             // Remove the infobox from the copy, if available and add the one from the
             // recursion.
-            var newInfobox = newEl.querySelector('.khelp');
-            var newButton = newEl.querySelector('.kinfobutton');
-            var realInfobox = element.querySelector('.khelp');
-            var realButton = element.querySelector('.kinfobutton');
+            let newInfobox = newEl.querySelector('.khelp');
+            let newButton = newEl.querySelector('.kinfobutton');
+            let realInfobox = element.querySelector('.khelp');
+            let realButton = element.querySelector('.kinfobutton');
 
             // We don't need the infobox on newEl, so we will remove it.
             if (newInfobox !== null) {
@@ -305,7 +305,7 @@ class Hans {
         let container:Element|null;
         let destination:number;
         let diff:number;
-        var step:number;
+        let step:number;
 
         // Show them.
         this.kdt.removeClass(nests, 'khidden');
@@ -405,8 +405,8 @@ class Hans {
      */
     protected disableForms = () : void =>
     {
-        var elements:NodeList = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
-        for (var i = 0; i < elements.length; i++) {
+        let elements:NodeList = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
+        for (let i = 0; i < elements.length; i++) {
             elements[i].disabled = true;
         }
     };
@@ -439,11 +439,11 @@ class Hans {
         // Start the loop to collect all the date
         while (el) {
             // Get the domid
-            domid = this.kdt.getDataset(el, 'domid');
-            sourcedata = this.kdt.getDataset(el, 'source');
+            domid = this.kdt.getDataset((el as Element), 'domid');
+            sourcedata = this.kdt.getDataset((el as Element), 'source');
 
-            wrapperLeft = this.kdt.getDataset(el, 'codewrapperLeft');
-            wrapperRight = this.kdt.getDataset(el, 'codewrapperRight');
+            wrapperLeft = this.kdt.getDataset((el as Element), 'codewrapperLeft');
+            wrapperRight = this.kdt.getDataset((el as Element), 'codewrapperRight');
 
             if (sourcedata === '. . .') {
                 if (domid !== '') {
@@ -451,7 +451,7 @@ class Hans {
                     // current path is not really reachable.
                     el = document.querySelector('#' + domid).parentNode;
                     // Get the source, again.
-                    resultArray.push(this.kdt.getDataset(el, 'source'));
+                    resultArray.push(this.kdt.getDataset((el as Element), 'source'));
                 }
             }
             if (sourcedata !== '') {
@@ -511,7 +511,7 @@ class Hans {
 
         if (height > 0) {
             let elements:NodeList = document.querySelectorAll('.krela-wrapper .kpayload');
-            for (var i = 0; i < elements.length; i++) {
+            for (let i = 0; i < elements.length; i++) {
                 (elements[i] as HTMLElement).style.maxHeight = height + 'px';
             }
         }
@@ -530,7 +530,7 @@ class Hans {
         search.style.top = '';
 
         // Measure it!
-        var rect = search.getBoundingClientRect();
+        let rect = search.getBoundingClientRect();
         if (rect.top < 0) {
             // Set it to the top
             search.style.position = 'fixed';
