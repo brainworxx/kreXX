@@ -97,7 +97,7 @@ class Hans
     {
         // Init our libs before usage.
         this.kdt = new Kdt();
-        this.kdt.setKrexx(this);
+        this.kdt.setJumpTo(this.jumpTo);
         this.eventHandler = new Eventhandler(this.selectors.eventHandler);
         this.search = new Search(this.eventHandler, this.jumpTo);
 
@@ -265,7 +265,7 @@ class Hans
             element.parentNode.insertBefore(newEl, element.nextSibling);
 
             // Change the key of the just cloned EL to the one from the recursion.
-            this.kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML = this.kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
+            (this.kdt.findInDomlistByClass(newEl.children, 'kname') as HTMLElement).innerHTML = (this.kdt.findInDomlistByClass(element.children, 'kname') as HTMLElement).innerHTML;
             // We  need to remove the ids from the copy to avoid double ids.
             let allChildren = newEl.nextElementSibling.getElementsByTagName("*");
             for (i = 0; i < allChildren.length; i++) {

@@ -155,13 +155,13 @@ class Search
         // We only search for more than 3 chars.
         if (config.searchtext.length > 2 || config.searchWhole) {
             config.instance = this.kdt.getDataset(element, 'instance');
-            var direction = this.kdt.getDataset(element, 'direction');
+            let direction:string = this.kdt.getDataset(element, 'direction');
             config.payload = document.querySelector('#' + config.instance + ' .kbg-wrapper');
 
             // We need to un-collapse everything, in case it it collapsed.
-            var collapsed = config.payload.querySelectorAll('.kcollapsed');
-            for (var i = 0; i < collapsed.length; i++) {
-                this.eventHandler.triggerEvent(collapsed[i], 'click');
+            let collapsed:NodeList = config.payload.querySelectorAll('.kcollapsed');
+            for (let i:number = 0; i < collapsed.length; i++) {
+                this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
             }
 
             // Are we already having some results?
@@ -237,7 +237,7 @@ class Search
             let list:NodeList;
             list = config.payload.querySelectorAll(selector.join(', '));
             let textContent:string = '';
-            for (var i = 0; i < list.length; ++i) {
+            for (let i:number = 0; i < list.length; ++i) {
                 // Does it contain our search string?
                 textContent = list[i].textContent;
                 if (config.caseSensitive === false) {
@@ -265,10 +265,10 @@ class Search
     /**
      * Listens for a <RETURN> in the search field.
      *
-     * @param {Event} event
+     * @param {KeyboardEvent} event
      * @event keyUp
      */
-    public searchfieldReturn = (event:Event) : void =>
+    public searchfieldReturn = (event:KeyboardEvent) : void =>
     {
         // Prevents the default event behavior (ie: click).
         event.preventDefault();
@@ -280,6 +280,6 @@ class Search
             return;
         }
 
-        this.eventHandler.triggerEvent(event.target.parentNode.querySelectorAll('.ksearchnow')[1], 'click');
+        this.eventHandler.triggerEvent((event.target as Node).parentNode.querySelectorAll('.ksearchnow')[1], 'click');
     };
 }

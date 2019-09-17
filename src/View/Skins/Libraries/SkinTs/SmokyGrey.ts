@@ -180,16 +180,16 @@ class SmokyGrey extends Hans
     protected displaySearch = (event, element) =>
     {
 
-        var instance = this.kdt.getDataset(element.parentNode, 'instance');
-        var search = document.querySelector('#search-' + instance);
-        var searchtab = document.querySelector('#' + instance + ' .ksearchbutton');
+        let instance:string = this.kdt.getDataset(element.parentNode, 'instance');
+        let search:HTMLElement = document.querySelector('#search-' + instance);
+        let searchtab:HTMLElement = document.querySelector('#' + instance + ' .ksearchbutton');
 
         // Toggle display / hidden.
         if (this.kdt.hasClass(search, 'khidden')) {
             // Display it.
             this.kdt.toggleClass(search, 'khidden');
             this.kdt.toggleClass(searchtab, 'kactive');
-            search.querySelector('.ksearchfield').focus();
+            (search.querySelector('.ksearchfield') as HTMLElement).focus();
         } else {
             // Hide it.
             this.kdt.toggleClass(search, 'khidden');
@@ -198,4 +198,66 @@ class SmokyGrey extends Hans
             this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
         }
     };
+
+    /**
+     * "Jumps" to an element in the markup and highlights it.
+     *
+     * It is used when we are facing a recursion in our analysis.
+     *
+     * @param {Element} el
+     *   The element you want to focus on.
+     * @param {boolean} noHighlight
+     *   Do we need to highlight the elenemt we arejuming to?
+     */
+    protected jumpTo = (el:Element, noHighlight:boolean) =>
+    {
+        let nests:Node[] = this.kdt.getParents(el, '.knest');
+        let container:Node[];
+
+        // Show them.
+        this.kdt.removeClass(nests, 'khidden');
+        // We need to expand them all.
+        for (var i = 0; i < nests.length; i++) {
+            this.kdt.addClass([(nests[i] as Element).previousElementSibling], 'kopened');
+        }
+
+        if (noHighlight !== true) {
+            // Remove old highlighting.
+            this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
+            // Highlight new one.
+            this.kdt.addClass([el], 'highlight-jumpto');
+        }
+
+        // Getting our scroll container
+        container = this.kdt.getParents(el, '.kpayload');
+
+        container.push(document.querySelector('.kfatalwrapper-outer'));
+        if (container.length > 0) {
+            // We need to find out in which direction we must go.
+            // We also must determine the speed we want to travel.
+            let step:number;
+            let destination:number = el.getBoundingClientRect().top - (container[0] as Element).getBoundingClientRect().top + (container[0] as Element).scrollTop - 50;
+            let diff:number = Math.abs((container[0] as Element).scrollTop - destination);
+            if ((container[0] as Element).scrollTop < destination) {
+                // Forward.
+                step = Math.round(diff / 12);
+            } else {
+                // Backward.
+                step = Math.round(diff / 12) * -1;
+            }
+
+            // We also need to check if the setting of the new valkue was successful.
+            let lastValue:number = (container[0] as Element).scrollTop;
+            let interval = setInterval(function () {
+                (container[0] as Element).scrollTop += step;
+                if (Math.abs((container[0] as Element).scrollTop - destination) <= Math.abs(step) || (container[0] as Element).scrollTop === lastValue) {
+                    // We are here now, the next step would take us too far.
+                    // So we jump there right now and then clear the interval.
+                    (container[0] as Element).scrollTop = destination;
+                    clearInterval(interval);
+                }
+                lastValue = (container[0] as Element).scrollTop;
+            }, 1);
+        }
+    }
 }

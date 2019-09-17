@@ -34,18 +34,18 @@
 class Kdt
 {
     /**
-     * The currently used kreXX js implementation.
+     * The jump-to implementation.
      */
-    protected krexx:Object;
+    protected jumpTo:Function;
 
     /**
-     * Set the currently used kreXX js implementation.
+     * Set the currently used jump to callback.
      *
-     * @param {Object} krexx
+     * @param {Function} jumpTo
      */
-    public setKrexx = (krexx:Object) : void =>
+    public setJumpTo = (jumpTo:Function) : void =>
     {
-        this.krexx = krexx;
+        this.jumpTo = jumpTo;
     };
 
     /**
@@ -95,12 +95,12 @@ class Kdt
     /**
      * Gets the first element from a list which hat that class.
      *
-     * @param {NodeList} elements
+     * @param {NodeList|HTMLCollection} elements
      * @param {string} className
      *
      * @returns {Element|null} the element
      */
-    public findInDomlistByClass(elements:NodeList, className:string) : Node | null
+    public findInDomlistByClass(elements:NodeList|HTMLCollection, className:string) : Node | null
     {
         className = " " + className + " ";
         for (let i = 0; i < elements.length; i++) {
@@ -440,11 +440,11 @@ class Kdt
             this.removeClass((wrapper as Element).querySelectorAll('.kcollapsed'), 'kcollapsed');
         }
 
-        let currentKrexx =  this.krexx;
+        let jumpTo =  this.jumpTo;
         setTimeout(
             function () {
                 // Move the element into the viewport.
-                currentKrexx.jumpTo(element, true);
+                jumpTo(element, true);
             }, 100
         );
     };

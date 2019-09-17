@@ -166,8 +166,8 @@ var Eventhandler = (function () {
 var Kdt = (function () {
     function Kdt() {
         var _this = this;
-        this.setKrexx = function (krexx) {
-            _this.krexx = krexx;
+        this.setJumpTo = function (jumpTo) {
+            _this.jumpTo = jumpTo;
         };
         this.setSetting = function (event) {
             event.preventDefault();
@@ -199,9 +199,9 @@ var Kdt = (function () {
             else {
                 _this.removeClass(wrapper.querySelectorAll('.kcollapsed'), 'kcollapsed');
             }
-            var currentKrexx = _this.krexx;
+            var jumpTo = _this.jumpTo;
             setTimeout(function () {
-                currentKrexx.jumpTo(element, true);
+                jumpTo(element, true);
             }, 100);
         };
     }
@@ -727,7 +727,7 @@ var Hans = (function () {
     }
     Hans.prototype.run = function () {
         this.kdt = new Kdt();
-        this.kdt.setKrexx(this);
+        this.kdt.setJumpTo(this.jumpTo);
         this.eventHandler = new Eventhandler(this.selectors.eventHandler);
         this.search = new Search(this.eventHandler, this.jumpTo);
         this.kdt.moveToBottom(this.selectors.moveToBottom);
@@ -852,6 +852,40 @@ var SmokyGrey = (function (_super) {
                 _this.kdt.toggleClass(search, 'khidden');
                 _this.kdt.toggleClass(searchtab, 'kactive');
                 _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
+            }
+        };
+        _this.jumpTo = function (el, noHighlight) {
+            var nests = _this.kdt.getParents(el, '.knest');
+            var container;
+            _this.kdt.removeClass(nests, 'khidden');
+            for (var i = 0; i < nests.length; i++) {
+                _this.kdt.addClass([nests[i].previousElementSibling], 'kopened');
+            }
+            if (noHighlight !== true) {
+                _this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
+                _this.kdt.addClass([el], 'highlight-jumpto');
+            }
+            container = _this.kdt.getParents(el, '.kpayload');
+            container.push(document.querySelector('.kfatalwrapper-outer'));
+            if (container.length > 0) {
+                var step_1;
+                var destination_1 = el.getBoundingClientRect().top - container[0].getBoundingClientRect().top + container[0].scrollTop - 50;
+                var diff = Math.abs(container[0].scrollTop - destination_1);
+                if (container[0].scrollTop < destination_1) {
+                    step_1 = Math.round(diff / 12);
+                }
+                else {
+                    step_1 = Math.round(diff / 12) * -1;
+                }
+                var lastValue_1 = container[0].scrollTop;
+                var interval_1 = setInterval(function () {
+                    container[0].scrollTop += step_1;
+                    if (Math.abs(container[0].scrollTop - destination_1) <= Math.abs(step_1) || container[0].scrollTop === lastValue_1) {
+                        container[0].scrollTop = destination_1;
+                        clearInterval(interval_1);
+                    }
+                    lastValue_1 = container[0].scrollTop;
+                }, 1);
             }
         };
         _this.selectors.close = '.kwrapper .ktool-tabs .kclose, .kwrapper .kheadnote-wrapper .kclose';
