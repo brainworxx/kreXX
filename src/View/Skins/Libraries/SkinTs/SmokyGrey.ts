@@ -31,7 +31,18 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-class SmokyGrey extends Hans {
+class SmokyGrey extends Hans
+{
+    /**
+     * Adjusting the selectors for the Smoky Grey skin.
+     */
+    constructor()
+    {
+        // Get the definitions from Hans.
+        super();
+
+        this.selectors.close = '.kwrapper .ktool-tabs .kclose, .kwrapper .kheadnote-wrapper .kclose';
+    }
 
     /**
      * Getting our act together.
@@ -64,7 +75,6 @@ class SmokyGrey extends Hans {
      */
     protected initDraxx = () : void =>
     {
-        console.log('Schmoki Gräi');
         this.draxx = new Draxx('.kwrapper', '.khandle', function (){},function (){});
     };
 
@@ -109,25 +119,24 @@ class SmokyGrey extends Hans {
         // When dealing with 400MB output, or more, this one takes more time than anything else.
         // We will delay it, so that is does not slow down other stuff.
         setTimeout(function() {
-            var wrapper = kdt.getParents(element, '.kwrapper')[0];
+            let wrapper = kdt.getParents(element, '.kwrapper')[0];
             if (typeof wrapper === 'undefined') {
                 // This only happens, when we are facing a recursion. There is no
                 // additional json data, anyway.
                 return;
             }
 
-            var body = wrapper.querySelector('.kdatabody');
-            var html = '';
-            var counter = 0;
-            var regex = /\\u([\d\w]{4})/gi;
+            let body = wrapper.querySelector('.kdatabody');
+            let html = '';
+            let counter = 0;
+            let regex = /\\u([\d\w]{4})/gi;
 
             // Mark the clicked el, clear the others.
             kdt.removeClass(wrapper.querySelectorAll('.kcurrent-additional'), 'kcurrent-additional');
             kdt.addClass([element], 'kcurrent-additional');
 
             // Load the Json.
-            var json = kdt.getDataset(element, 'addjson', false);
-            json = kdt.parseJson(json);
+            let json = kdt.parseJson(kdt.getDataset(element, 'addjson', false));
 
             if (typeof json === 'object') {
                 // We've got data!
@@ -158,5 +167,35 @@ class SmokyGrey extends Hans {
             this.setPayloadMaxHeight();
 
         }, 100);
-    }
+    };
+
+    /**
+     * Display the search dialog
+     *
+     * @param {Event} event
+     *   The click event.
+     * @param {Node} element
+     *   The element that was clicked.
+     */
+    protected displaySearch = (event, element) =>
+    {
+
+        var instance = this.kdt.getDataset(element.parentNode, 'instance');
+        var search = document.querySelector('#search-' + instance);
+        var searchtab = document.querySelector('#' + instance + ' .ksearchbutton');
+
+        // Toggle display / hidden.
+        if (this.kdt.hasClass(search, 'khidden')) {
+            // Display it.
+            this.kdt.toggleClass(search, 'khidden');
+            this.kdt.toggleClass(searchtab, 'kactive');
+            search.querySelector('.ksearchfield').focus();
+        } else {
+            // Hide it.
+            this.kdt.toggleClass(search, 'khidden');
+            this.kdt.toggleClass(searchtab, 'kactive');
+            // Clear the results.
+            this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
+        }
+    };
 }

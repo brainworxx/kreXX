@@ -31,8 +31,8 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-class Hans {
-
+class Hans
+{
     /**
      * kreXX dom tools.
      *
@@ -62,6 +62,35 @@ class Hans {
     protected eventHandler:Eventhandler;
 
     /**
+     * Here we store the selectors for the ruin initialization.
+     *
+     * @var {Selectors}
+     */
+    protected selectors:Selectors;
+
+    /**
+     * Defining all selectors for the run method.
+     */
+    constructor()
+    {
+        this.selectors = new Selectors();
+        this.selectors.eventHandler = '.kwrapper.kouterwrapper, .kfatalwrapper-outer';
+        this.selectors.moveToBottom = '.kouterwrapper';
+        this.selectors.close = '.kwrapper .kheadnote-wrapper .kclose, .kwrapper .kfatal-headnote .kclose';
+        this.selectors.toggle = '.kwrapper .kexpand';
+        this.selectors.setSetting = '.kwrapper .keditable select, .kwrapper .keditable input:not(.ksearchfield)';
+        this.selectors.resetSetting = '.kwrapper .kresetbutton';
+        this.selectors.copyFrom = '.kwrapper .kcopyFrom';
+        this.selectors.displaySearch = '.kwrapper .ksearchbutton, .kwrapper .ksearch .kclose';
+        this.selectors.performSearch = '.kwrapper .ksearchnow';
+        this.selectors.collapse = '.kwrapper .kolps';
+        this.selectors.generateCode = '.kwrapper .kgencode';
+        this.selectors.preventBubble = '.kodsp';
+        this.selectors.displayInfoBox = '.kwrapper .kchild .kinfobutton';
+        this.selectors.moveToViewport = '.kouterwrapper';
+    }
+
+    /**
      * Getting our act together.
      */
     public run() : void
@@ -69,12 +98,12 @@ class Hans {
         // Init our libs before usage.
         this.kdt = new Kdt();
         this.kdt.setKrexx(this);
-        this.eventHandler = new Eventhandler('.kwrapper.kouterwrapper, .kfatalwrapper-outer');
+        this.eventHandler = new Eventhandler(this.selectors.eventHandler);
         this.search = new Search(this.eventHandler, this.jumpTo);
 
         // In case we are handling a broken html structure, we must move everything
         // to the bottom.
-        this.kdt.moveToBottom('.kouterwrapper');
+        this.kdt.moveToBottom(this.selectors.moveToBottom);
 
         // Initialize the draggable.
         this.initDraxx();
@@ -86,7 +115,7 @@ class Hans {
          *   Displays a closing animation of the corresponding
          *   krexx output "window" and then removes it from the markup.
          */
-        this.eventHandler.addEvent('.kwrapper .kheadnote-wrapper .kclose, .kwrapper .kfatal-headnote .kclose', 'click', this.close);
+        this.eventHandler.addEvent(this.selectors.close, 'click', this.close);
 
         /**
          * Register toggling to the elements.
@@ -95,7 +124,7 @@ class Hans {
          *   Expands a krexx node when it is not expanded.
          *   When it is already expanded, it closes it.
          */
-        this.eventHandler.addEvent('.kwrapper .kexpand', 'click', this.toggle);
+        this.eventHandler.addEvent(this.selectors.toggle, 'click', this.toggle);
 
         /**
          * Register functions for the local dev-settings.
@@ -104,7 +133,7 @@ class Hans {
          *   Changes on the krexx html forms.
          *   All changes will automatically be written to the browser cookies.
          */
-        this.eventHandler.addEvent('.kwrapper .keditable select, .kwrapper .keditable input:not(.ksearchfield)', 'change', this.kdt.setSetting);
+        this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.kdt.setSetting);
 
         /**
          * Register cookie reset function on the reset button.
@@ -113,7 +142,7 @@ class Hans {
          *   Resets the local settings in the settings cookie,
          *   when the reset button ic clicked.
          */
-        this.eventHandler.addEvent('.kwrapper .kresetbutton', 'click', this.kdt.resetSetting);
+        this.eventHandler.addEvent(this.selectors.resetSetting, 'click', this.kdt.resetSetting);
 
         /**
          * Register the recursions resolving.
@@ -122,7 +151,7 @@ class Hans {
          *   When a recursion is clicked, krexx tries to locate the
          *   first output of the object and highlight it.
          */
-        this.eventHandler.addEvent('.kwrapper .kcopyFrom', 'click', this.copyFrom);
+        this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.copyFrom);
 
         /**
          * Register the displaying of the search menu
@@ -131,7 +160,7 @@ class Hans {
          *   When the button is clicked, krexx will display the
          *   search menu associated this the same output window.
          */
-        this.eventHandler.addEvent('.kwrapper .ksearchbutton, .kwrapper .ksearch .kclose', 'click', this.search.displaySearch);
+        this.eventHandler.addEvent(this.selectors.displaySearch, 'click', this.displaySearch);
 
         /**
          * Register the search event on the next button.
@@ -139,35 +168,35 @@ class Hans {
          * @event click
          *   When the button is clicked, krexx will start searching.
          */
-        this.eventHandler.addEvent('.kwrapper .ksearchnow', 'click', this.search.performSearch);
+        this.eventHandler.addEvent(this.selectors.performSearch, 'click', this.search.performSearch);
 
         /**
          * Register the Collapse-All functions on it's symbol
          *
          * @event click
          */
-        this.eventHandler.addEvent('.kwrapper .kolps', 'click', this.kdt.collapse);
+        this.eventHandler.addEvent(this.selectors.collapse, 'click', this.kdt.collapse);
 
         /**
          * Register the code generator on the P symbol.
          *
          * @event click
          */
-        this.eventHandler.addEvent('.kwrapper .kgencode', 'click', this.generateCode);
+        this.eventHandler.addEvent(this.selectors.generateCode, 'click', this.generateCode);
 
         /**
          * Prevents the click-event-bubbling on the generated code.
          *
          * @event click
          */
-        this.eventHandler.addEvent('.kodsp', 'click', this.eventHandler.preventBubble);
+        this.eventHandler.addEvent(this.selectors.preventBubble, 'click', this.eventHandler.preventBubble);
 
         /**
          * Display the content of the info box.
          *
          * @event click
          */
-        this.eventHandler.addEvent('.kwrapper .kchild .kinfobutton', 'click', this.displayInfoBox);
+        this.eventHandler.addEvent(this.selectors.displayInfoBox, 'click', this.displayInfoBox);
 
         // Disable form-buttons in case a logfile is opened local.
         if (window.location.protocol === 'file:') {
@@ -175,7 +204,7 @@ class Hans {
         }
 
         // Move the output into the viewport. Debugging onepager is so annoying, otherwise.
-        this.draxx.moveToViewport('.kouterwrapper');
+        this.draxx.moveToViewport(this.selectors.moveToViewport);
     }
 
     /**
@@ -561,6 +590,40 @@ class Hans {
             box.style.display = '';
         } else {
             box.style.display = 'none';
+        }
+    };
+
+    /**
+     * Display the search dialog
+     *
+     * @event click
+     * @param {Event} event
+     *   The click event.
+     * @param {Node} element
+     *   The element that was clicked.
+     */
+    protected displaySearch = (event:Event, element:Node) : void =>
+    {
+        let instance:string = this.kdt.getDataset((element as Element), 'instance');
+        let search:HTMLElement = document.querySelector('#search-' + instance);
+        let viewportOffset;
+
+        // Toggle display / hidden.
+        if (this.kdt.hasClass(search, 'khidden')) {
+            // Display it.
+            this.kdt.toggleClass(search, 'khidden');
+            (search.querySelector('.ksearchfield') as HTMLElement).focus();
+            search.style.position = 'absolute';
+            search.style.top = '';
+            viewportOffset = search.getBoundingClientRect();
+            search.style.position = 'fixed';
+            search.style.top = viewportOffset.top + 'px';
+        } else {
+            // Hide it.
+            this.kdt.toggleClass(search, 'khidden');
+            this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
+            search.style.position = 'absolute';
+            search.style.top = '';
         }
     };
 }

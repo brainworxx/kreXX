@@ -31,8 +31,8 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-class Draxx {
-
+class Draxx
+{
     /**
      * The selector, where we init the draXX
      *

@@ -93,42 +93,6 @@ class Search
     }
 
     /**
-     * Display the search dialog
-     *
-     * @event click
-     * @param {Event} event
-     *   The click event.
-     * @param {Node} element
-     *   The element that was clicked.
-     */
-    public displaySearch = (event:Event, element:Node) : void =>
-    {
-        let instance:string = this.kdt.getDataset((element as Element), 'instance');
-        let search:HTMLElement = document.querySelector('#search-' + instance);
-        let viewportOffset;
-
-        // Toggle display / hidden.
-        if (this.kdt.hasClass(search, 'hidden')) {
-            // Display it.
-            this.kdt.toggleClass(search, 'hidden');
-            (search.querySelector('.ksearchfield') as HTMLElement).focus();
-            search.style.position = 'absolute';
-            search.style.top = '';
-            viewportOffset = search.getBoundingClientRect();
-            search.style.position = 'fixed';
-            search.style.top = viewportOffset.top + 'px';
-        } else {
-            // Hide it.
-            this.kdt.toggleClass(search, 'hidden');
-            this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
-            search.style.position = 'absolute';
-            search.style.top = '';
-            // Clear the results.
-            this.results = [];
-        }
-    };
-
-    /**
      * Reset the search results, because we now have new search options.
      *
      * @event change
