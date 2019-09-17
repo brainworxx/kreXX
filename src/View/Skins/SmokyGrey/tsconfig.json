@@ -3,7 +3,7 @@
     "target": "ES5",
     "removeComments": true,
     "preserveConstEnums": true,
-    "outFile": "../../../../../resources/skins/hans/krexx.js",
-    "sourceMap": false
+    "sourceMap": false,
+    "outFile": "../../../../resources/skins/smokygrey/krexx.js"
   }
 }

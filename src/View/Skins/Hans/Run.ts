@@ -42,6 +42,7 @@
      */
     document.addEventListener("DOMContentLoaded", function () {
         let hans = new Hans();
+        hans.run();
     });
 
 })();

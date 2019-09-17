@@ -88,7 +88,7 @@ class Draxx {
      * @param {Function} callbackUp
      * @param {Function} callbackDrag
      */
-    constructor(selector:string, handle:string, callbackUp:Function|null = null, callbackDrag:Function|null = null)
+    constructor(selector:string, handle:string, callbackUp:Function, callbackDrag:Function)
     {
         this.selector = selector;
         this.callbackUp = callbackUp;
@@ -106,7 +106,7 @@ class Draxx {
      *
      * @param {string} selector
      */
-    public moveToViewport = (selector:string) : void =>
+    public moveToViewport(selector:string) : void
     {
         // Meh, we need to use the timeout to make this work on MS-Edge.
         // Edge remembers the last scrolling position *after* the onDocumentReady
@@ -138,6 +138,7 @@ class Draxx {
     /**
      * Starts the dragging on a mousedown.
      *
+     * @event mousedown
      * @param {MouseEvent} event
      */
     protected startDraxx = (event:MouseEvent) : void =>
@@ -194,9 +195,10 @@ class Draxx {
     /**
      * Stops the dragging process.
      *
-     * @param {Event} event
+     * @event mouseup
+     * @param {MouseEvent} event
      */
-    protected mouseUp = (event:Event) : void =>
+    protected mouseUp = (event:MouseEvent) : void =>
     {
         event.preventDefault();
         event.stopPropagation();
@@ -234,7 +236,7 @@ class Draxx {
      *
      * @returns {Offset}
      */
-    protected getElementOffset = (element:Element) : Offset =>
+    protected getElementOffset(element:Element) : Offset
     {
         let de:Element = document.documentElement;
         let box:ClientRect = element.getBoundingClientRect();
@@ -250,7 +252,7 @@ class Draxx {
      *
      * @returns {number}
      */
-    protected outerWidth = (element:HTMLElement) : number =>
+    protected outerWidth(element:HTMLElement) : number
     {
         let width:number = element.offsetWidth;
         let style:CSSStyleDeclaration = getComputedStyle(element);

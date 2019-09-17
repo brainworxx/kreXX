@@ -119,7 +119,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderCssJs(&$css, $javascript);
+    public function renderCssJs(&$css, &$javascript);
 
     /**
      * Renders a expandable child with a callback in the middle.

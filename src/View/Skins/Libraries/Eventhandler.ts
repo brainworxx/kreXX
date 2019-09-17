@@ -69,7 +69,7 @@ class Eventhandler
      * @param {Function} callBack
      *
      */
-    public addEvent = (selector:string, eventName:string, callBack:EventListener|Function) : void =>
+    public addEvent(selector:string, eventName:string, callBack:EventListener|Function) : void
     {
         // We use the clickHandler instead.
         if (eventName === 'click') {
@@ -88,7 +88,7 @@ class Eventhandler
      *
      * @param {Event} event
      */
-    public preventBubble = (event:Event) : void =>
+    public preventBubble (event:Event) : void
     {
         event.stop = true;
     };
@@ -99,7 +99,7 @@ class Eventhandler
      * @param {string} selector
      * @param {Function} callback
      */
-    protected addToStorage = (selector:string, callback:Function) : void =>
+    protected addToStorage(selector:string, callback:Function) : void
     {
         if (!(selector in this.storage)) {
             this.storage[selector] = [];
@@ -157,7 +157,7 @@ class Eventhandler
      * @param {Element} el
      * @param {string} eventName
      */
-    public triggerEvent = (el:Element, eventName:string) : void =>
+    public triggerEvent(el:Element, eventName:string) : void
     {
         /** @type {Event} */
         let event:Event = document.createEvent('HTMLEvents');

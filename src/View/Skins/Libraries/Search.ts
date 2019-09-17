@@ -95,6 +95,7 @@ class Search
     /**
      * Display the search dialog
      *
+     * @event click
      * @param {Event} event
      *   The click event.
      * @param {Node} element
@@ -129,6 +130,8 @@ class Search
 
     /**
      * Reset the search results, because we now have new search options.
+     *
+     * @event change
      */
     protected clearSearch = (event:Event) : void =>
     {
@@ -139,6 +142,7 @@ class Search
     /**
      * Toggle the display of the search options.
      *
+     * @event click
      * @param {Event} event
      *   The click event.
      * @param {Node} element
@@ -314,18 +318,4 @@ class Search
 
         this.eventHandler.triggerEvent(event.target.parentNode.querySelectorAll('.ksearchnow')[1], 'click');
     };
-}
-
-/**
- * configuration for the search.
- */
-class SearchConfig {
-    public searchKeys:boolean;
-    public searchShort:boolean;
-    public searchLong:boolean;
-    public caseSensitive:boolean;
-    public searchWhole:boolean;
-    public instance:string;
-    public searchtext:string;
-    public payload:HTMLElement;
 }

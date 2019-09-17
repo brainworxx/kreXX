@@ -1,4 +1,3 @@
-<?php
 /**
  * kreXX: Krumo eXXtended
  *
@@ -32,19 +31,16 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\View\Skins\Hans;
-
-trait CssJs
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function renderCssJs(&$css, &$javascript)
-    {
-        return str_replace(
-            [static::MARKER_CSS, static::MARKER_JS],
-            [$css, $javascript],
-            $this->getTemplateFileContent(static::FILE_CSSJS)
-        );
-    }
+/**
+ * configuration for the search.
+ */
+class SearchConfig {
+    public searchKeys:boolean;
+    public searchShort:boolean;
+    public searchLong:boolean;
+    public caseSensitive:boolean;
+    public searchWhole:boolean;
+    public instance:string;
+    public searchtext:string;
+    public payload:HTMLElement;
 }

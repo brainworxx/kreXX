@@ -64,7 +64,7 @@ class Hans {
     /**
      * Getting our act together.
      */
-    constructor()
+    public run() : void
     {
         // Init our libs before usage.
         this.kdt = new Kdt();
@@ -181,7 +181,7 @@ class Hans {
     /**
      * Initialize the draggable.
      */
-    protected initDraxx = () : void =>
+    protected initDraxx() : void
     {
         this.draxx = new Draxx(
             '.kwrapper',
@@ -210,6 +210,7 @@ class Hans {
      * copy the original analysis result there and delete
      * the recursion.
      *
+     * @event click
      * @param {Event} event
      *   The click event.
      * @param {HTMLElement} element
@@ -277,12 +278,13 @@ class Hans {
     /**
      * Hides or displays the nest under an expandable element.
      *
+     * @event click
      * @param {Event} event
      *   The click event.
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected toggle = (event, element) : void =>
+    protected toggle = (event:Event, element:Element) : void =>
     {
         this.kdt.toggleClass(element, 'kopened');
         this.kdt.toggleClass(element.nextElementSibling, 'khidden');
@@ -293,6 +295,7 @@ class Hans {
      *
      * It is used when we are facing a recursion in our analysis.
      *
+     * @event search
      * @param {Element} el
      *   The element you want to focus on.
      * @param {boolean} noHighlight
@@ -371,6 +374,7 @@ class Hans {
     /**
      * Shows a "fast" closing animation and then removes the krexx window from the markup.
      *
+     * @event click
      * @param {Event} event
      *   The click event.
      * @param {Element} element
@@ -402,7 +406,7 @@ class Hans {
      * nothing at all, because they would land inside a cookie
      * for that file, and not for the server.
      */
-    protected disableForms = () : void =>
+    protected disableForms() : void
     {
         let elements:NodeList = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
         for (let i = 0; i < elements.length; i++) {
@@ -413,6 +417,7 @@ class Hans {
     /**
      * The kreXX code generator.
      *
+     * @event click
      * @param {Event} event
      *   The click event.
      * @param {Element} element
@@ -420,7 +425,6 @@ class Hans {
      */
     protected generateCode = (event:Event, element:Element) : void =>
     {
-
         // We don't want to bubble the click any further.
         event.stop = true;
 
@@ -503,7 +507,7 @@ class Hans {
     /**
      * Sets the max-height on the payload elements, depending on the viewport.
      */
-    protected setPayloadMaxHeight = () : void =>
+    protected setPayloadMaxHeight() : void
     {
         // Get the height.
         let height:number = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
@@ -535,7 +539,7 @@ class Hans {
             search.style.position = 'fixed';
             search.style.top = '0px';
         }
-    }
+    };
 
     /**
      * Toggle the display of t he infobox.
