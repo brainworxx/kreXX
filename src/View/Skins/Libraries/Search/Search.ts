@@ -133,12 +133,12 @@ class Search
 
         // Stitching together our configuration.
         let config:SearchConfig = new SearchConfig();
-        config.searchtext = element.parentNode.querySelector('.ksearchfield').value;
-        config.caseSensitive = element.parentNode.parentNode.querySelector('.ksearchcase').checked;
-        config.searchKeys = element.parentNode.parentNode.querySelector('.ksearchkeys').checked;
-        config.searchShort = element.parentNode.parentNode.querySelector('.ksearchshort').checked;
-        config.searchLong = element.parentNode.parentNode.querySelector('.ksearchlong').checked;
-        config.searchWhole = element.parentNode.parentNode.querySelector('.ksearchwhole').checked;
+        config.searchtext = (element.parentNode.querySelector('.ksearchfield') as HTMLInputElement).value;
+        config.caseSensitive = (element.parentNode.parentNode.querySelector('.ksearchcase') as HTMLInputElement).checked;
+        config.searchKeys = (element.parentNode.parentNode.querySelector('.ksearchkeys') as HTMLInputElement).checked;
+        config.searchShort = (element.parentNode.parentNode.querySelector('.ksearchshort') as HTMLInputElement).checked;
+        config.searchLong = (element.parentNode.parentNode.querySelector('.ksearchlong') as HTMLInputElement).checked;
+        config.searchWhole = (element.parentNode.parentNode.querySelector('.ksearchwhole') as HTMLInputElement).checked;
 
         // Apply our configuration.
         if (config.caseSensitive === false) {
@@ -173,29 +173,36 @@ class Search
                 this.refreshResultlist(config);
             }
 
+            let pointer:number = this.results[config.instance][config.searchtext]['pointer'];
+
             // Set the pointer to the next or previous element
             if (direction === 'forward') {
-                this.results[config.instance][config.searchtext]['pointer']++;
+                pointer++;
             } else {
-                this.results[config.instance][config.searchtext]['pointer']--;
+                pointer--;
             }
 
-            // Do we have an element?
-            if (typeof this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']] === "undefined") {
+            // Do we have an element? We may need to adjust the pointer.
+            if (typeof this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
                 if (direction === 'forward') {
                     // There is no next element, we go back to the first one.
-                    this.results[config.instance][config.searchtext]['pointer'] = 0;
+                    pointer = 0;
                 } else {
-                    this.results[config.instance][config.searchtext]['pointer'] = this.results[config.instance][config.searchtext]['data'].length - 1;
+                    // There is no previous element, we go forward to the last one.
+                    pointer = this.results[config.instance][config.searchtext]['data'].length - 1;
                 }
-            } else {
-               // Now we simply jump to the element in the array.
-                this.jumpTo(this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']]);
             }
-            
+            // Check again.
+            if (this.results[config.instance][config.searchtext]['data'][pointer]) {
+                // Now we simply jump to the element in the array.
+                this.jumpTo(this.results[config.instance][config.searchtext]['data'][pointer]);
+            }
+
             // Feedback about where we are
             element.parentNode.querySelector('.ksearch-state').textContent =
-                (this.results[config.instance][config.searchtext]['pointer'] + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
+                (pointer + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
+
+            this.results[config.instance][config.searchtext]['pointer'] = pointer;
         } else {
             // Not enough chars as a searchtext!
             element.parentNode.querySelector('.ksearch-state').textContent = '<- must be bigger than 3 characters';

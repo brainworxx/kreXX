@@ -424,25 +424,27 @@ var Search = (function () {
                 else {
                     _this.refreshResultlist(config);
                 }
+                var pointer = _this.results[config.instance][config.searchtext]['pointer'];
                 if (direction === 'forward') {
-                    _this.results[config.instance][config.searchtext]['pointer']++;
+                    pointer++;
                 }
                 else {
-                    _this.results[config.instance][config.searchtext]['pointer']--;
+                    pointer--;
                 }
-                if (typeof _this.results[config.instance][config.searchtext]['data'][_this.results[config.instance][config.searchtext]['pointer']] === "undefined") {
+                if (typeof _this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
                     if (direction === 'forward') {
-                        _this.results[config.instance][config.searchtext]['pointer'] = 0;
+                        pointer = 0;
                     }
                     else {
-                        _this.results[config.instance][config.searchtext]['pointer'] = _this.results[config.instance][config.searchtext]['data'].length - 1;
+                        pointer = _this.results[config.instance][config.searchtext]['data'].length - 1;
                     }
                 }
-                else {
-                    _this.jumpTo(_this.results[config.instance][config.searchtext]['data'][_this.results[config.instance][config.searchtext]['pointer']]);
+                if (_this.results[config.instance][config.searchtext]['data'][pointer]) {
+                    _this.jumpTo(_this.results[config.instance][config.searchtext]['data'][pointer]);
                 }
                 element.parentNode.querySelector('.ksearch-state').textContent =
-                    (_this.results[config.instance][config.searchtext]['pointer'] + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
+                    (pointer + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
+                _this.results[config.instance][config.searchtext]['pointer'] = pointer;
             }
             else {
                 element.parentNode.querySelector('.ksearch-state').textContent = '<- must be bigger than 3 characters';
@@ -549,20 +551,9 @@ var Hans = (function () {
             _this.kdt.toggleClass(element.nextElementSibling, 'khidden');
         };
         this.jumpTo = function (el, noHighlight) {
-            var nests = _this.kdt.getParents(el, '.knest');
-            var container;
+            _this.setHighlighting(el, noHighlight);
             var destination;
-            var diff;
-            var step;
-            _this.kdt.removeClass(nests, 'khidden');
-            for (var i = 0; i < nests.length; i++) {
-                _this.kdt.addClass([nests[i].previousElementSibling], 'kopened');
-            }
-            if (noHighlight !== true) {
-                _this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
-                _this.kdt.addClass([el], 'highlight-jumpto');
-            }
-            container = document.querySelector('.kfatalwrapper-outer');
+            var container = document.querySelector('.kfatalwrapper-outer');
             if (container === null) {
                 container = document.querySelector('html');
                 ++container.scrollTop;
@@ -575,10 +566,11 @@ var Hans = (function () {
             else {
                 destination = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
             }
-            diff = Math.abs(container.scrollTop - destination);
+            var diff = Math.abs(container.scrollTop - destination);
             if (diff < 250) {
                 return;
             }
+            var step;
             if (container.scrollTop < destination) {
                 step = Math.round(diff / 12);
             }
@@ -759,6 +751,17 @@ var Hans = (function () {
         });
     };
     ;
+    Hans.prototype.setHighlighting = function (el, noHighlight) {
+        var nests = this.kdt.getParents(el, '.knest');
+        this.kdt.removeClass(nests, 'khidden');
+        for (var i = 0; i < nests.length; i++) {
+            this.kdt.addClass([nests[i].previousElementSibling], 'kopened');
+        }
+        if (noHighlight !== true) {
+            this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
+            this.kdt.addClass([el], 'highlight-jumpto');
+        }
+    };
     Hans.prototype.disableForms = function () {
         var elements = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
         for (var i = 0; i < elements.length; i++) {
@@ -853,22 +856,13 @@ var SmokyGrey = (function (_super) {
             }
         };
         _this.jumpTo = function (el, noHighlight) {
-            var nests = _this.kdt.getParents(el, '.knest');
-            var container;
-            _this.kdt.removeClass(nests, 'khidden');
-            for (var i = 0; i < nests.length; i++) {
-                _this.kdt.addClass([nests[i].previousElementSibling], 'kopened');
-            }
-            if (noHighlight !== true) {
-                _this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
-                _this.kdt.addClass([el], 'highlight-jumpto');
-            }
-            container = _this.kdt.getParents(el, '.kpayload');
+            _this.setHighlighting(el, noHighlight);
+            var container = _this.kdt.getParents(el, '.kpayload');
             container.push(document.querySelector('.kfatalwrapper-outer'));
             if (container.length > 0) {
-                var step_1;
                 var destination_1 = el.getBoundingClientRect().top - container[0].getBoundingClientRect().top + container[0].scrollTop - 50;
                 var diff = Math.abs(container[0].scrollTop - destination_1);
+                var step_1;
                 if (container[0].scrollTop < destination_1) {
                     step_1 = Math.round(diff / 12);
                 }
