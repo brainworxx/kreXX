@@ -276,7 +276,7 @@ class Hans
             // Now we add the dom-id to the clone, as a data-field. this way we can
             // make sure to always produce the right path to this value during source
             // generation.
-            this.kdt.setDataset(newEl.parentNode, 'domid', domid);
+            this.kdt.setDataset((newEl.parentNode as Element), 'domid', domid);
 
             // Remove the infobox from the copy, if available and add the one from the
             // recursion.
@@ -446,7 +446,7 @@ class Hans
     {
         let elements:NodeList = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
         for (let i = 0; i < elements.length; i++) {
-            elements[i].disabled = true;
+            (elements[i] as HTMLInputElement).disabled = true;
         }
     };
 
@@ -541,22 +541,6 @@ class Hans
     };
 
     /**
-     * Sets the max-height on the payload elements, depending on the viewport.
-     */
-    protected setPayloadMaxHeight() : void
-    {
-        // Get the height.
-        let height:number = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
-
-        if (height > 0) {
-            let elements:NodeList = document.querySelectorAll('.krela-wrapper .kpayload');
-            for (let i = 0; i < elements.length; i++) {
-                (elements[i] as HTMLElement).style.maxHeight = height + 'px';
-            }
-        }
-    };
-
-    /**
      * Checks if the search form is inside the viewport. If not, fixes it on top.
      * Gets triggered on,y when scolling the fatal error handler.
      */
@@ -591,7 +575,7 @@ class Hans
         event.stop = true;
 
         // Find the corresponding info box.
-        var box:HTMLElement = (element.nextElementSibling as HTMLElement);
+        let box:HTMLElement = (element.nextElementSibling as HTMLElement);
 
         if (box.style.display === 'none') {
             box.style.display = '';

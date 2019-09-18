@@ -769,16 +769,6 @@ var Hans = (function () {
         }
     };
     ;
-    Hans.prototype.setPayloadMaxHeight = function () {
-        var height = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
-        if (height > 0) {
-            var elements = document.querySelectorAll('.krela-wrapper .kpayload');
-            for (var i = 0; i < elements.length; i++) {
-                elements[i].style.maxHeight = height + 'px';
-            }
-        }
-    };
-    ;
     return Hans;
 }());
 var Selectors = (function () {
@@ -808,6 +798,7 @@ var SmokyGrey = (function (_super) {
         };
         _this.setAdditionalData = function (event, element) {
             var kdt = _this.kdt;
+            var setPayloadMaxHeight = _this.setPayloadMaxHeight;
             setTimeout(function () {
                 var wrapper = kdt.getParents(element, '.kwrapper')[0];
                 if (typeof wrapper === 'undefined') {
@@ -837,7 +828,7 @@ var SmokyGrey = (function (_super) {
                 }
                 html = '<table><caption class="kheadline">Additional data</caption><tbody class="kdatabody">' + html + '</tbody></table>';
                 body.parentNode.parentNode.innerHTML = html;
-                this.setPayloadMaxHeight();
+                setPayloadMaxHeight();
             }, 100);
         };
         _this.displaySearch = function (event, element) {
@@ -889,5 +880,15 @@ var SmokyGrey = (function (_super) {
         this.eventHandler.addEvent('.ktool-tabs .ktab:not(.ksearchbutton)', 'click', this.switchTab);
         this.eventHandler.addEvent('.kwrapper .kel', 'click', this.setAdditionalData);
     };
+    SmokyGrey.prototype.setPayloadMaxHeight = function () {
+        var height = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
+        if (height > 0) {
+            var elements = document.querySelectorAll('.krela-wrapper .kpayload');
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.maxHeight = height + 'px';
+            }
+        }
+    };
+    ;
     return SmokyGrey;
 }(Hans));

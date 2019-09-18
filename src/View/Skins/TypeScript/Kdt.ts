@@ -323,8 +323,8 @@ class Kdt
         let settings = this.readSettings('KrexxDebugSettings');
 
         // Get new settings from element.
-        let newValue:string|number = event.target.value.replace('"', '').replace("'", '');
-        let valueName:string = event.target.name.replace('"', '').replace("'", '');
+        let newValue:string|number = (event.target as HTMLInputElement).value.replace('"', '').replace("'", '');
+        let valueName:string = (event.target as HTMLInputElement).name.replace('"', '').replace("'", '');
         settings[valueName] = newValue;
 
         // Save it.

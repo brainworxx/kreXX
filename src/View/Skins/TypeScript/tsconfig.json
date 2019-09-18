@@ -4,6 +4,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": false,
+    "pretty": false,
     "outFile": "../../../../resources/jsLibs/kdt.js"
   }
 }

@@ -88,8 +88,8 @@ class SmokyGrey extends Hans
      */
     protected switchTab = (event:Event, element:Element) : void =>
     {
-        var instance = this.kdt.getDataset(element.parentNode, 'instance');
-        var what = this.kdt.getDataset(element, 'what');
+        let instance = this.kdt.getDataset((element.parentNode as Element), 'instance');
+        let what = this.kdt.getDataset(element, 'what');
 
         // Toggle the highlighting.
         this.kdt.removeClass('#' + instance + ' .kactive:not(.ksearchbutton)', 'kactive');
@@ -116,10 +116,11 @@ class SmokyGrey extends Hans
     protected setAdditionalData = (event:Event, element:Node) : void =>
     {
         let kdt:Kdt = this.kdt;
+        let setPayloadMaxHeight:Function = this.setPayloadMaxHeight;
         // When dealing with 400MB output, or more, this one takes more time than anything else.
         // We will delay it, so that is does not slow down other stuff.
         setTimeout(function() {
-            let wrapper = kdt.getParents(element, '.kwrapper')[0];
+            let wrapper:HTMLElement = (kdt.getParents(element, '.kwrapper')[0] as HTMLElement);
             if (typeof wrapper === 'undefined') {
                 // This only happens, when we are facing a recursion. There is no
                 // additional json data, anyway.
@@ -136,11 +137,11 @@ class SmokyGrey extends Hans
             kdt.addClass([element], 'kcurrent-additional');
 
             // Load the Json.
-            let json = kdt.parseJson(kdt.getDataset(element, 'addjson', false));
+            let json = kdt.parseJson(kdt.getDataset((element as Element), 'addjson', false));
 
             if (typeof json === 'object') {
                 // We've got data!
-                for (var prop in json) {
+                for (let prop in json) {
                     if (json[prop].length > 0) {
                         json[prop] = json[prop].replace(regex, function (match, grp) {
                             return String.fromCharCode(parseInt(grp, 16));
@@ -160,11 +161,11 @@ class SmokyGrey extends Hans
             html = '<table><caption class="kheadline">Additional data</caption><tbody class="kdatabody">' + html + '</tbody></table>';
             // Meh, IE9 does not allow me to edit the contents of a table. I have to
             // redraw the whole thing.  :-(
-            body.parentNode.parentNode.innerHTML = html;
+            (body.parentNode.parentNode as HTMLElement).innerHTML = html;
 
             // Since the additional data table might now be larger or smaller than,
             // we need to recalculate the height of the payload.
-            this.setPayloadMaxHeight();
+            setPayloadMaxHeight();
 
         }, 100);
     };
@@ -245,5 +246,21 @@ class SmokyGrey extends Hans
                 lastValue = (container[0] as Element).scrollTop;
             }, 1);
         }
-    }
+    };
+
+    /**
+     * Sets the max-height on the payload elements, depending on the viewport.
+     */
+    protected setPayloadMaxHeight() : void
+    {
+        // Get the height.
+        let height:number = Math.round(Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * 0.60);
+
+        if (height > 0) {
+            let elements:NodeList = document.querySelectorAll('.krela-wrapper .kpayload');
+            for (let i = 0; i < elements.length; i++) {
+                (elements[i] as HTMLElement).style.maxHeight = height + 'px';
+            }
+        }
+    };
 }
