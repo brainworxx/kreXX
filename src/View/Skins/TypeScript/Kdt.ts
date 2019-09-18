@@ -125,19 +125,13 @@ class Kdt
         if (typeof selector === 'string') {
             // Get our elements.
             elements = document.querySelectorAll(selector);
-        }
-        else {
+        } else {
             // We already have our list that we will use.
             elements = selector;
         }
 
         for (let i = 0; i < elements.length; i++) {
-            if ((elements[i] as Element).classList) {
-                (elements[i] as Element).classList.add(className);
-            }
-            else {
-                (elements[i] as Element).className += ' ' + className;
-            }
+            (elements[i] as Element).className += ' ' + className;
         }
     };
 
@@ -160,13 +154,9 @@ class Kdt
         }
 
         for (let i = 0; i < elements.length; i++) {
-            if ((elements[i] as Element).classList) {
-                (elements[i] as Element).classList.remove(className);
-            } else {
-                (elements[i] as Element).className = (elements[i] as Element).className.replace(
-                    new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' '
-                );
-            }
+            (elements[i] as Element).className = (elements[i] as Element).className.replace(
+                new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' '
+            );
         }
     };
 
@@ -220,24 +210,22 @@ class Kdt
 
         result = el.getAttribute('data-' + what);
 
-        if (result !== null) {
-            if (mustEscape === false) {
-                return result;
-            } else {
-                return result.replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#039;")
-                    // <small> is allowed. Parameters are better readable
-                    // this way.
-                    .replace('&lt;small&gt;', '<small>')
-                    .replace('&lt;/small&gt;', '</small>');
-            }
+        if (result === null) {
+            return '';
         }
 
-        // Still here?!? No data fount, hence an empty string.
-        return '';
+        if (mustEscape === true) {
+            return result.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;")
+                // <small> is allowed. Parameters are better readable this way.
+                .replace('&lt;small&gt;', '<small>')
+                .replace('&lt;/small&gt;', '</small>');
+        }
+
+        return result;
     };
 
     /**
@@ -287,7 +275,6 @@ class Kdt
         let c:string;
 
         for (let i = 0; i < cookieArray.length; i++) {
-            /** @type {string} */
             c = cookieArray[i];
             while (c.charAt(0) === ' ') {
                 c = c.substring(1, c.length);

@@ -249,12 +249,7 @@ var Kdt = (function () {
             elements = selector;
         }
         for (var i = 0; i < elements.length; i++) {
-            if (elements[i].classList) {
-                elements[i].classList.add(className);
-            }
-            else {
-                elements[i].className += ' ' + className;
-            }
+            elements[i].className += ' ' + className;
         }
     };
     ;
@@ -267,12 +262,7 @@ var Kdt = (function () {
             elements = selector;
         }
         for (var i = 0; i < elements.length; i++) {
-            if (elements[i].classList) {
-                elements[i].classList.remove(className);
-            }
-            else {
-                elements[i].className = elements[i].className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-            }
+            elements[i].className = elements[i].className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
         }
     };
     ;
@@ -301,21 +291,19 @@ var Kdt = (function () {
             return '';
         }
         result = el.getAttribute('data-' + what);
-        if (result !== null) {
-            if (mustEscape === false) {
-                return result;
-            }
-            else {
-                return result.replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#039;")
-                    .replace('&lt;small&gt;', '<small>')
-                    .replace('&lt;/small&gt;', '</small>');
-            }
+        if (result === null) {
+            return '';
         }
-        return '';
+        if (mustEscape === true) {
+            return result.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;")
+                .replace('&lt;small&gt;', '<small>')
+                .replace('&lt;/small&gt;', '</small>');
+        }
+        return result;
     };
     ;
     Kdt.prototype.setDataset = function (el, what, value) {
