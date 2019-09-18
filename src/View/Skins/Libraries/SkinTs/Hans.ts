@@ -320,23 +320,14 @@ class Hans
     };
 
     /**
-     * "Jumps" to an element in the markup and highlights it.
+     * Removes the old highlight and sets the new one.
      *
-     * It is used when we are facing a recursion in our analysis.
-     *
-     * @event search
      * @param {Element} el
-     *   The element you want to focus on.
      * @param {boolean} noHighlight
-     *   Do we need to highlight the elenemt we arejuming to?
      */
-    protected jumpTo = (el:Element, noHighlight:boolean) : void =>
+    protected setHighlighting(el:Element, noHighlight:boolean) : void
     {
         let nests:Node[] = this.kdt.getParents(el, '.knest');
-        let container:Element|null;
-        let destination:number;
-        let diff:number;
-        let step:number;
 
         // Show them.
         this.kdt.removeClass(nests, 'khidden');
@@ -349,12 +340,28 @@ class Hans
             // Remove old highlighting.
             this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
             // Highlight new one.
-           this.kdt.addClass([el], 'highlight-jumpto');
+            this.kdt.addClass([el], 'highlight-jumpto');
         }
+    }
+
+    /**
+     * "Jumps" to an element in the markup and highlights it.
+     *
+     * It is used when we are facing a recursion in our analysis.
+     *
+     * @event search
+     * @param {Element} el
+     *   The element you want to focus on.
+     * @param {boolean} noHighlight
+     *   Do we need to highlight the elenemt we arejuming to?
+     */
+    protected jumpTo = (el:Element, noHighlight:boolean) : void =>
+    {
+        this.setHighlighting(el, noHighlight);
 
         // Getting our scroll container
-        container = document.querySelector('.kfatalwrapper-outer');
-
+        let destination:number;
+        let container:Element|null = document.querySelector('.kfatalwrapper-outer');
         if (container === null) {
             // Normal scrolling
             container = document.querySelector('html');
@@ -370,13 +377,14 @@ class Hans
             destination = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
         }
 
-        diff = Math.abs(container.scrollTop - destination);
+        let diff:number = Math.abs(container.scrollTop - destination);
         if (diff < 250) {
             // No need to jump there
             return;
         }
 
         // Getting the direction
+        let step:number;
         if (container.scrollTop < destination) {
             // Forward.
             step = Math.round(diff / 12);
@@ -386,9 +394,8 @@ class Hans
         }
 
         // We also need to check if the setting of the new value was successful.
-        let lastValue = container.scrollTop;
-        let interval = setInterval(function () {
-
+        let lastValue:number = container.scrollTop;
+        let interval:number = setInterval(function () {
             container.scrollTop += step;
             if (Math.abs(container.scrollTop - destination) <= Math.abs(step) || container.scrollTop === lastValue) {
                 // We are here now, the next step would take us too far.

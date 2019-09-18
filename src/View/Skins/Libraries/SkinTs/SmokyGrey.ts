@@ -211,33 +211,19 @@ class SmokyGrey extends Hans
      */
     protected jumpTo = (el:Element, noHighlight:boolean) =>
     {
-        let nests:Node[] = this.kdt.getParents(el, '.knest');
-        let container:Node[];
-
-        // Show them.
-        this.kdt.removeClass(nests, 'khidden');
-        // We need to expand them all.
-        for (var i = 0; i < nests.length; i++) {
-            this.kdt.addClass([(nests[i] as Element).previousElementSibling], 'kopened');
-        }
-
-        if (noHighlight !== true) {
-            // Remove old highlighting.
-            this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
-            // Highlight new one.
-            this.kdt.addClass([el], 'highlight-jumpto');
-        }
+        this.setHighlighting(el, noHighlight);
 
         // Getting our scroll container
-        container = this.kdt.getParents(el, '.kpayload');
-
+        let container:Node[] = this.kdt.getParents(el, '.kpayload');
         container.push(document.querySelector('.kfatalwrapper-outer'));
+
         if (container.length > 0) {
             // We need to find out in which direction we must go.
             // We also must determine the speed we want to travel.
-            let step:number;
+
             let destination:number = el.getBoundingClientRect().top - (container[0] as Element).getBoundingClientRect().top + (container[0] as Element).scrollTop - 50;
             let diff:number = Math.abs((container[0] as Element).scrollTop - destination);
+            let step:number;
             if ((container[0] as Element).scrollTop < destination) {
                 // Forward.
                 step = Math.round(diff / 12);
@@ -248,7 +234,7 @@ class SmokyGrey extends Hans
 
             // We also need to check if the setting of the new valkue was successful.
             let lastValue:number = (container[0] as Element).scrollTop;
-            let interval = setInterval(function () {
+            let interval:number = setInterval(function () {
                 (container[0] as Element).scrollTop += step;
                 if (Math.abs((container[0] as Element).scrollTop - destination) <= Math.abs(step) || (container[0] as Element).scrollTop === lastValue) {
                     // We are here now, the next step would take us too far.
