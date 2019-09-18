@@ -188,16 +188,14 @@ class Search
                 } else {
                     this.results[config.instance][config.searchtext]['pointer'] = this.results[config.instance][config.searchtext]['data'].length - 1;
                 }
+            } else {
+               // Now we simply jump to the element in the array.
+                this.jumpTo(this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']]);
             }
-
+            
             // Feedback about where we are
             element.parentNode.querySelector('.ksearch-state').textContent =
                 (this.results[config.instance][config.searchtext]['pointer'] + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
-            // Now we simply jump to the element in the array.
-            if (typeof this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']] !== 'undefined') {
-                // We got another one!
-                this.jumpTo(this.results[config.instance][config.searchtext]['data'][this.results[config.instance][config.searchtext]['pointer']]);
-            }
         } else {
             // Not enough chars as a searchtext!
             element.parentNode.querySelector('.ksearch-state').textContent = '<- must be bigger than 3 characters';
@@ -243,16 +241,11 @@ class Search
                 if (config.caseSensitive === false) {
                     textContent = textContent.toLowerCase();
                 }
-                if (config.searchWhole) {
-                    if (textContent === config.searchtext) {
-                        this.kdt.toggleClass((list[i] as Element), 'ksearch-found-highlight');
-                        this.results[config.instance][config.searchtext]['data'].push(list[i]);
-                    }
-                } else {
-                    if (textContent.indexOf(config.searchtext) > -1) {
-                        this.kdt.toggleClass((list[i] as Element), 'ksearch-found-highlight');
-                        this.results[config.instance][config.searchtext]['data'].push(list[i]);
-                    }
+                if (textContent === config.searchtext ||
+                    textContent.indexOf(config.searchtext) > -1
+                ) {
+                    this.kdt.toggleClass((list[i] as Element), 'ksearch-found-highlight');
+                    this.results[config.instance][config.searchtext]['data'].push(list[i]);
                 }
             }
         }

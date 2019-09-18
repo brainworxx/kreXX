@@ -438,11 +438,11 @@ var Search = (function () {
                         _this.results[config.instance][config.searchtext]['pointer'] = _this.results[config.instance][config.searchtext]['data'].length - 1;
                     }
                 }
-                element.parentNode.querySelector('.ksearch-state').textContent =
-                    (_this.results[config.instance][config.searchtext]['pointer'] + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
-                if (typeof _this.results[config.instance][config.searchtext]['data'][_this.results[config.instance][config.searchtext]['pointer']] !== 'undefined') {
+                else {
                     _this.jumpTo(_this.results[config.instance][config.searchtext]['data'][_this.results[config.instance][config.searchtext]['pointer']]);
                 }
+                element.parentNode.querySelector('.ksearch-state').textContent =
+                    (_this.results[config.instance][config.searchtext]['pointer'] + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
             }
             else {
                 element.parentNode.querySelector('.ksearch-state').textContent = '<- must be bigger than 3 characters';
@@ -473,17 +473,10 @@ var Search = (function () {
                     if (config.caseSensitive === false) {
                         textContent = textContent.toLowerCase();
                     }
-                    if (config.searchWhole) {
-                        if (textContent === config.searchtext) {
-                            _this.kdt.toggleClass(list[i], 'ksearch-found-highlight');
-                            _this.results[config.instance][config.searchtext]['data'].push(list[i]);
-                        }
-                    }
-                    else {
-                        if (textContent.indexOf(config.searchtext) > -1) {
-                            _this.kdt.toggleClass(list[i], 'ksearch-found-highlight');
-                            _this.results[config.instance][config.searchtext]['data'].push(list[i]);
-                        }
+                    if (textContent === config.searchtext ||
+                        textContent.indexOf(config.searchtext) > -1) {
+                        _this.kdt.toggleClass(list[i], 'ksearch-found-highlight');
+                        _this.results[config.instance][config.searchtext]['data'].push(list[i]);
                     }
                 }
             }
@@ -785,6 +778,11 @@ var Hans = (function () {
     ;
     return Hans;
 }());
+var Selectors = (function () {
+    function Selectors() {
+    }
+    return Selectors;
+}());
 var SmokyGrey = (function (_super) {
     __extends(SmokyGrey, _super);
     function SmokyGrey() {
@@ -899,8 +897,3 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
-var Selectors = (function () {
-    function Selectors() {
-    }
-    return Selectors;
-}());
