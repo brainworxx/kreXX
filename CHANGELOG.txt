@@ -4,6 +4,7 @@
 - Added event system to the process classes.
 - Clean(er) interface list inside the meta analysis.
 - Added current url to the caller finder output.
+- Better timer-emergency management on CLI
 - Change: Remove the event prefix and use static::class instead.
 - Change: Move cleanup methods to their own class.
 - Change: Move the output check methods to an appropriate class.
