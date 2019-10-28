@@ -113,7 +113,6 @@ class TimerControllerTest extends AbstractController
     /**
      * Testing the output of the timer.
      *
-     * @covers \Brainworxx\Krexx\Controller\TimerController::timerEndAction
      * @covers \Brainworxx\Krexx\Controller\TimerController::miniBenchTo
      * @covers \Brainworxx\Krexx\Controller\TimerController::getCurrentUrl
      */
@@ -127,7 +126,6 @@ class TimerControllerTest extends AbstractController
                     $this->assertEquals('kreXX timer', $headline);
                     $this->assertEquals(
                         [
-                            'url' => 'encoded url',
                             'total_time' => 2000000.0,
                             'first->second' => '50%',
                             'second->end' => '50%'
@@ -142,22 +140,6 @@ class TimerControllerTest extends AbstractController
             ->method('createClass')
             ->with(DumpController::class)
             ->will($this->returnValue($dumpMock));
-        $poolMock->expects($this->once())
-            ->method('getServer')
-            ->will($this->returnValue([
-                'SERVER_PROTOCOL' => 'abcd/',
-                'SERVER_PORT' => 123,
-                'SERVER_NAME' => 'localhorst',
-                'HTTPS' => 'on',
-                'REQUEST_URI' => 'some/uri'
-            ]));
-
-        $encodingMock = $this->createMock(Encoding::class);
-        $encodingMock->expects($this->once())
-            ->method('encodeString')
-            ->with('abcds://localhorst:123some/uri')
-            ->will($this->returnValue('encoded url'));
-        $poolMock->encodingService = $encodingMock;
 
         $this->setValueByReflection('pool', $poolMock, $this->controller);
         $this->setValueByReflection(static::TIME_KEEPING, ['first' => 1000, 'second' => 2000], $this->controller);
