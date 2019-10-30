@@ -113,6 +113,7 @@ class TimerControllerTest extends AbstractController
     /**
      * Testing the output of the timer.
      *
+     * @covers \Brainworxx\Krexx\Controller\TimerController::timerEndAction
      * @covers \Brainworxx\Krexx\Controller\TimerController::miniBenchTo
      * @covers \Brainworxx\Krexx\Controller\TimerController::getCurrentUrl
      */
