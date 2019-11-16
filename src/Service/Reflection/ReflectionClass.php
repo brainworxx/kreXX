@@ -203,7 +203,6 @@ class ReflectionClass extends \ReflectionClass
             } catch (ReflectionException $e) {
                 // We skip this one.
             }
-
         }
 
         return $result;
