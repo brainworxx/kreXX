@@ -14,6 +14,7 @@
 - Bugfix: Missing encoding info in the error handler output.
 - Bugfix: Wrong null values for dynamically declared properties.
 - Bugfix: Inaccessible array values from array casted objects.
+- Bugfix: Wrong variable name retrieval when used inline.
 
 3.1.0
 - Use some real autoloading, with a fallback to manually including
