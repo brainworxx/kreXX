@@ -86,6 +86,7 @@ class ThroughArrayTest extends AbstractTest
             ->callMe();
 
         // Check the result
+        /** @var \Brainworxx\Krexx\Analyse\Model[] $models */
         $models = Krexx::$pool->routing->model;
         $this->assertEquals(2, count($models));
 
@@ -127,12 +128,13 @@ class ThroughArrayTest extends AbstractTest
             ->callMe();
 
         // Check the result
+        /** @var \Brainworxx\Krexx\Analyse\Model[] $models */
         $models = Krexx::$pool->routing->model;
         $this->assertEquals(1, count($models));
         // This bug may or may not be fixed on the used PHP version.
         // Hence, we need to test it
         if (array_key_exists(5, $fixture['data'])) {
-            $this->assertEquals(Codegen::ITERATOR_TO_ARRAY, $models[0]->getMultiLineCodeGen());
+            $this->assertEmpty($models[0]->getMultiLineCodeGen());
         } else {
             $this->assertEquals(Codegen::ARRAY_VALUES_ACCESS, $models[0]->getMultiLineCodeGen());
         }
