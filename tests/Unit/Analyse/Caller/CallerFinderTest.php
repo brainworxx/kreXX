@@ -184,7 +184,7 @@ class CallerFinderTest extends AbstractTest
     {
         $debugBacktrace = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Caller\\', 'debug_backtrace');
         $debugBacktrace->expects($this->once())
-            ->willReturn($this->createFixture(83));
+            ->willReturn($this->createFixture(84));
 
         // Run the test
         $result = $this->callerFinder->findCaller('', $this->subjectVar);
