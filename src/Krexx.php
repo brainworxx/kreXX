@@ -38,7 +38,6 @@ use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Controller\BacktraceController;
 use Brainworxx\Krexx\Controller\DumpController;
 use Brainworxx\Krexx\Controller\EditSettingsController;
-use Brainworxx\Krexx\Controller\ErrorController;
 use Brainworxx\Krexx\Controller\ExceptionController;
 use Brainworxx\Krexx\Controller\TimerController;
 use Brainworxx\Krexx\Service\Config\Config;
