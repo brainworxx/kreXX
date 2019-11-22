@@ -39,7 +39,6 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
-use Exception;
 use ReflectionException;
 use Throwable;
 
@@ -127,8 +126,6 @@ class DebugMethods extends AbstractObjectAnalysis
         try {
             $result = $object->$methodName();
         } catch (Throwable $e) {
-            // Do nothing.
-        } catch (Exception $e) {
             // Do nothing.
         }
 

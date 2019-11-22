@@ -39,7 +39,6 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
-use Exception;
 use SplObjectStorage;
 use Throwable;
 
@@ -104,11 +103,6 @@ class Traversable extends AbstractObjectAnalysis
             );
             $parameter = iterator_to_array($data);
         } catch (Throwable $e) {
-            //Restore the previous error handler, and return an empty string.
-            restore_error_handler();
-            $this->pool->emergencyHandler->downOneNestingLevel();
-            return '';
-        } catch (Exception $e) {
             //Restore the previous error handler, and return an empty string.
             restore_error_handler();
             $this->pool->emergencyHandler->downOneNestingLevel();
