@@ -51,7 +51,6 @@ class Validation extends Fallback
     const KEY_CONFIG_ERROR = 'configError';
     const KEY_CONFIG_ERROR_BOOL = 'configErrorBool';
     const KEY_CONFIG_ERROR_INT = 'configErrorInt';
-    const KEY_CONFIG_ERROR_DEBUG_BLACKLIST = 'configErrorDebugBlacklist';
     const KEY_CONFIG_ERROR_DEBUG_INVALID = 'configErrorDebugInvalid';
 
     /**

@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\View\Skins;
 
-use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\View\RenderInterface;
 use Brainworxx\Krexx\View\Skins\SmokyGrey\Button;
 use Brainworxx\Krexx\View\Skins\SmokyGrey\ConnectorRight;

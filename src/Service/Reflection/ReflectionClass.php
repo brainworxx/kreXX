@@ -34,7 +34,6 @@
 
 namespace Brainworxx\Krexx\Service\Reflection;
 
-use Brainworxx\Krexx\Krexx;
 use ReflectionProperty;
 use ReflectionException;
 

@@ -37,7 +37,6 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResource;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
-use phpDocumentor\Reflection\Types\Resource_;
 
 /**
  * Processing of resources.

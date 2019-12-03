@@ -42,7 +42,6 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use ReflectionProperty;
 
 /**
  * Getter method analysis methods.

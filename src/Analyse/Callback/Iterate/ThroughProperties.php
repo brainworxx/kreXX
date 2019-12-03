@@ -56,13 +56,6 @@ class ThroughProperties extends AbstractCallback
 {
 
     /**
-     * The file service, used to read and write files.
-     *
-     * @var File
-     */
-    protected $fileService;
-
-    /**
      * Renders the properties of a class.
      *
      * @return string
