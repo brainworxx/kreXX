@@ -1,8 +1,10 @@
-4.0.0
+4.0.0 dev
 - Change: Removed all deprecations.
 - Change: Removed the PHP 5.x fatal error handler.
 - Change: Dropped PHP 5.x support.
 - Change: Remove all double Exception / Throwable catching
+
+3.2.2 dev
 - Bugfix: The process other routing is never called.
 - Bugfix: The cookie editor needs to be "initialized" prior usage.
 
