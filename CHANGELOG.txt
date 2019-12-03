@@ -1,3 +1,5 @@
+3.2.2 dev
+
 3.2.1
 - Bugfix: Wrong error handler restoration after deleting
   a file.
