@@ -36,9 +36,14 @@ namespace Brainworxx\Krexx\Tests\Unit\View\Output;
 
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Config;
+use Brainworxx\Krexx\Service\Config\Fallback;
+use Brainworxx\Krexx\Service\Config\From\Ini;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Misc\Encoding;
 use Brainworxx\Krexx\Service\Misc\File;
+use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\View\Output\Chunks;
 
 /**
@@ -379,9 +384,20 @@ class ChunksTest extends AbstractTest
     public function testAddMetaData()
     {
         $metadata = ['some meta stuff'];
+
+        // Test with browser output.
         $chunks = new Chunks(Krexx::$pool);
         $chunks->addMetadata($metadata);
-        $this->assertEquals([$metadata], $this->retrieveValueByReflection(static::META_DATA, $chunks));
+        $this->assertEmpty($this->retrieveValueByReflection('metadata', $chunks));
+
+        // Test with file output
+        ConfigSupplier::$overwriteValues[Fallback::SETTING_DESTINATION] = Fallback::VALUE_FILE;
+        Registration::addRewrite(Ini::class, ConfigSupplier::class);
+        Krexx::$pool = null;
+        Pool::createPool();
+        $chunks = new Chunks(Krexx::$pool);
+        $chunks->addMetadata($metadata);
+        $this->assertEquals([$metadata], $this->retrieveValueByReflection('metadata', $chunks));
     }
 
     /**

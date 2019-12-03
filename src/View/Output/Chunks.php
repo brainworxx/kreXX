@@ -34,6 +34,7 @@
 
 namespace Brainworxx\Krexx\View\Output;
 
+use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -350,7 +351,9 @@ class Chunks
      */
     public function addMetadata($caller)
     {
-        $this->metadata[] = $caller;
+        if ($this->pool->config->getSetting(Fallback::SETTING_DESTINATION) === Fallback::VALUE_FILE) {
+            $this->metadata[] = $caller;
+        }
     }
 
     /**
