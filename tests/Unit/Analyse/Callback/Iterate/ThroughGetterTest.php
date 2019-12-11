@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -43,6 +44,7 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\View\Skins\RenderHans;
+use ReflectionMethod;
 
 class ThroughGetterTest extends AbstractTest
 {
@@ -71,6 +73,8 @@ class ThroughGetterTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::convertToSnakeCase
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::findIt
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::regexEscaping
+     *
+     * @throws \ReflectionException
      */
     public function testCallMe()
     {
@@ -108,16 +112,16 @@ class ThroughGetterTest extends AbstractTest
         $ref = new ReflectionClass($data);
         $fixture = [
           'normalGetter' => [
-              new \ReflectionMethod($data, 'getMyPropertyOne'),
-              new \ReflectionMethod($data, 'getMyPropertyTwo'),
-              new \ReflectionMethod($data, 'getMyPropertyThree'),
-              new \ReflectionMethod($data, 'getMyPropertyFour'),
-              new \ReflectionMethod($data, 'getMyPropertyFive'),
-              new \ReflectionMethod($data, 'getMyPropertySix'),
-              new \ReflectionMethod($data, 'getMyPropertySeven'),
-              new \ReflectionMethod($data, 'getMyPropertyEight'),
-              new \ReflectionMethod($data, 'getMyPropertyNine'),
-              new \ReflectionMethod($data, 'getLiterallyNoting'),
+              new ReflectionMethod($data, 'getMyPropertyOne'),
+              new ReflectionMethod($data, 'getMyPropertyTwo'),
+              new ReflectionMethod($data, 'getMyPropertyThree'),
+              new ReflectionMethod($data, 'getMyPropertyFour'),
+              new ReflectionMethod($data, 'getMyPropertyFive'),
+              new ReflectionMethod($data, 'getMyPropertySix'),
+              new ReflectionMethod($data, 'getMyPropertySeven'),
+              new ReflectionMethod($data, 'getMyPropertyEight'),
+              new ReflectionMethod($data, 'getMyPropertyNine'),
+              new ReflectionMethod($data, 'getLiterallyNoting'),
           ],
           'isGetter' => [],
           'hasGetter' => [],

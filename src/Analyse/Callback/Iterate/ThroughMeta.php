@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -102,7 +103,8 @@ class ThroughMeta extends AbstractCallback
             ->setName($key)
             ->setType(static::TYPE_REFLECTION);
 
-        if ($key === static::META_COMMENT ||
+        if (
+            $key === static::META_COMMENT ||
             $key === static::META_DECLARED_IN ||
             $key === static::META_SOURCE
         ) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -34,12 +35,14 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
+use Iterator;
+
 /**
  * Simple fixture for the traversable analysis.
  *
  * @package Brainworxx\Krexx\Tests\Fixtures
  */
-class TraversableFixture implements \Iterator
+class TraversableFixture implements Iterator
 {
     private $position = 0;
 

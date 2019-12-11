@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -41,7 +42,7 @@ namespace Brainworxx\Krexx\Analyse;
  */
 interface ConstInterface
 {
-    // Variable types. Css, array keys and frontend dosplay.
+    // Variable types. Css, array keys and frontend display.
     const TYPE_STRING = 'string ';
     const TYPE_INTEGER = 'integer';
     const TYPE_PHP = 'PHP';
@@ -96,7 +97,7 @@ interface ConstInterface
     const TRACE_DATE = 'date';
     const TRACE_URL = 'url';
 
-    // Stuff directly displaysed in the FE, not just array keys.
+    // Stuff directly displayed in the FE, not just array keys.
     const META_DECLARED_IN = 'Declared in';
     const META_COMMENT = 'Comment';
     const META_SOURCE = 'Source';

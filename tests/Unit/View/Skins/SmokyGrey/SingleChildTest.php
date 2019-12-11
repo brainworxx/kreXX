@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -50,7 +51,7 @@ class SingleChildTest extends AbstractRenderSmokyGrey
     public function testRenderSingleChild()
     {
         $this->mockModel(static::GET_CONNECTOR_LANGUAGE, 'Fortran');
-        $this->mockModel(static::GET_JSON, ['Friday' =>'the 12\'th']);
+        $this->mockModel(static::GET_JSON, ['Friday' => 'the 12\'th']);
 
         $codeGenMock = $this->createMock(Codegen::class);
         $codeGenMock->expects($this->once())

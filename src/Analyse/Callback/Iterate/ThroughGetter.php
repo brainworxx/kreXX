@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -231,7 +232,7 @@ class ThroughGetter extends AbstractCallback
      * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass
      *   The reflection class of the object we are analysing.
      * @param \ReflectionMethod $reflectionMethod
-     *   The reflection of the getter where we want to retive the return value
+     *   The reflection of the getter where we want to retrieve the return value
      * @param \ReflectionProperty|null $refProp
      *   The reflection of the property that it may return.
      * @param \Brainworxx\Krexx\Analyse\Model $model

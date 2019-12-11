@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -41,7 +42,12 @@ trait FatalMain
      */
     public function renderFatalMain($errstr, $errfile, $errline)
     {
-        $source = $this->pool->fileService->readSourcecode($errfile, $errline -1, $errline -6, $errline +4);
+        $source = $this->pool->fileService->readSourcecode(
+            $errfile,
+            $errline - 1,
+            $errline - 6,
+            $errline + 4
+        );
 
         return str_replace(
             [

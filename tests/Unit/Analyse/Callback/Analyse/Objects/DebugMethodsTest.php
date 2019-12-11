@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -52,6 +53,11 @@ class DebugMethodsTest extends AbstractTest
      */
     protected $debugMethods;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @throws \ReflectionException
+     */
     public function setUp()
     {
         parent::setUp();
@@ -65,7 +71,7 @@ class DebugMethodsTest extends AbstractTest
          // Setup the fixture.
         $fixtureClass = new DebugMethodFixture();
         $fixture = [
-            'data' =>$fixtureClass,
+            'data' => $fixtureClass,
             'name' => 'some name,',
             'ref' => new ReflectionClass($fixtureClass)
         ];

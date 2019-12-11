@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -252,7 +253,7 @@ class Registration implements ConstInterface
      * skins, if you use their name.
      *
      * @param string $name
-     *   The name of the skin. 'hans' and 'smokygrey' are the bundeled ones.
+     *   The name of the skin. 'hans' and 'smokygrey' are the bundled ones.
      * @param string $className
      *   The full qualified class name of the renderer
      * @param string $directory

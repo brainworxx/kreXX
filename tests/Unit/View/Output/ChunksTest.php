@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -45,6 +46,7 @@ use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\View\Output\Chunks;
+use StdClass;
 
 /**
  * The second most important part. Here we save memory by avoiding large string
@@ -261,7 +263,7 @@ class ChunksTest extends AbstractTest
         $chunk3File = $chunkDir . '1236' . $fileEnding;
         $logFileName = $logDir . $fileStamp . '.Krexx.html';
         $metaFileName = $logFileName . '.json';
-        $metaData = new \StdClass();
+        $metaData = new StdClass();
         $metaData->whatever = 'some data';
 
         // Simulate the actual files.

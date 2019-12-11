@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -46,6 +47,7 @@ use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\View\Output\CheckOutput;
 use FilesystemIterator;
+use stdClass;
 
 class KrexxTest extends AbstractTest
 {
@@ -561,7 +563,7 @@ class KrexxTest extends AbstractTest
     public function testRegisterExceptionHandler()
     {
         // Mock an already existing controller.
-        $stdClass = new \stdClass();
+        $stdClass = new stdClass();
         $this->setValueByReflection('exceptionController', $stdClass, ExceptionController::class);
 
         $setExceptionHandlerMock = $this

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -103,17 +104,17 @@ class FileTest extends AbstractTest
         $renderMock->expects($this->exactly(11))
             ->method('renderBacktraceSourceLine')
             ->withConsecutive(
-                [$source, 42, $returnValue],
                 [$source, 43, $returnValue],
                 [$source, 44, $returnValue],
                 [$source, 45, $returnValue],
-                ['highlight', 46, $returnValue],
-                [$source, 47, $returnValue],
+                [$source, 46, $returnValue],
+                ['highlight', 47, $returnValue],
                 [$source, 48, $returnValue],
                 [$source, 49, $returnValue],
                 [$source, 50, $returnValue],
                 [$source, 51, $returnValue],
-                [$source, 52, $returnValue]
+                [$source, 52, $returnValue],
+                [$source, 53, $returnValue]
             )
             ->will($this->returnValue(''));
         Krexx::$pool->render = $renderMock;
@@ -140,9 +141,9 @@ class FileTest extends AbstractTest
         $simpleReflection = new ReflectionClass(SimpleFixture::class);
         $this->file->readSourcecode(
             $simpleReflection->getFileName(),
-            45,
-            41,
-            51
+            46,
+            42,
+            52
         );
     }
 
@@ -187,8 +188,8 @@ class FileTest extends AbstractTest
     public function testReadFile()
     {
         $reflection = new ReflectionClass(TraversableFixture::class);
-        $result = $this->file->readFile($reflection->getFileName(), 41, 45);
-        $expectation = 'class TraversableFixture implements \Iterator' . "\n";
+        $result = $this->file->readFile($reflection->getFileName(), 44, 48);
+        $expectation = 'class TraversableFixture implements Iterator' . "\n";
         $expectation .= '{' . "\n";
         $expectation .= '    private $position = 0;' . "\n";
         $expectation .= "\n";
@@ -196,8 +197,8 @@ class FileTest extends AbstractTest
 
         $this->assertEquals($expectation, $result, 'Read a file range.');
         $this->assertEquals(
-            'class TraversableFixture implements \Iterator' . "\n",
-            $this->file->readFile($reflection->getFileName(), 41, 41),
+            'class TraversableFixture implements Iterator' . "\n",
+            $this->file->readFile($reflection->getFileName(), 44, 44),
             'Read a single line.'
         );
 

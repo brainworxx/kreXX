@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -34,7 +35,7 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
-use \Exception;
+use Exception;
 
 class TestException extends Exception
 {

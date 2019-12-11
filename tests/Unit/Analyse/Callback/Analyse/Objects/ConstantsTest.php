@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -40,6 +41,7 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\View\Skins\RenderHans;
+use ReflectionClass;
 
 class ConstantsTest extends AbstractTest
 {
@@ -62,7 +64,7 @@ class ConstantsTest extends AbstractTest
     public function testCallMeNoConstants()
     {
         // Create the fixture mock, without any constants.
-        $reflectionMock = $this->createMock(\ReflectionClass::class);
+        $reflectionMock = $this->createMock(ReflectionClass::class);
         $reflectionMock->expects($this->once())
             ->method('getConstants')
             ->will($this->returnValue([]));
@@ -101,7 +103,7 @@ class ConstantsTest extends AbstractTest
     public function testCallMeWithConstants()
     {
         // Create the fixture mock, without any constants.
-        $reflectionMock = $this->createMock(\ReflectionClass::class);
+        $reflectionMock = $this->createMock(ReflectionClass::class);
         $reflectionMock->expects($this->once())
             ->method('getConstants')
             ->will($this->returnValue('some constants'));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -69,7 +70,10 @@ class RecursionTest extends AbstractTest
         $this->assertContains('Krexx', $this->recursion->getMarker());
         $this->assertSame($GLOBALS, $this->retrieveValueByReflection('globals', $this->recursion));
         $this->assertTrue($GLOBALS[$this->recursion->getMarker()]);
-        $this->assertEquals(new SplObjectStorage(), $this->retrieveValueByReflection(static::RECURSION_HIVE, $this->recursion));
+        $this->assertEquals(
+            new SplObjectStorage(),
+            $this->retrieveValueByReflection(static::RECURSION_HIVE, $this->recursion)
+        );
         $this->assertSame($this->recursion, Krexx::$pool->recursionHandler);
     }
 

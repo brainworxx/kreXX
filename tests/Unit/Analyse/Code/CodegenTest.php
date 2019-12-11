@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -40,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Code\Scope;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Krexx;
+use ReflectionParameter;
 
 class CodegenTest extends AbstractTest
 {
@@ -87,8 +89,8 @@ class CodegenTest extends AbstractTest
     /**
      * Add the expects calls to the already injected connector mock.
      *
-     * @param integer $left
-     * @param integer $right
+     * @param int $left
+     * @param int $right
      */
     protected function expectConnectorCalls($left, $right)
     {
@@ -321,7 +323,7 @@ class CodegenTest extends AbstractTest
     public function testParameterToStringWithDefaultPhpFive()
     {
         // Create a mock with some supply data.
-        $refParamMock = $this->createMock(\ReflectionParameter::class);
+        $refParamMock = $this->createMock(ReflectionParameter::class);
         $refParamMock->expects($this->once())
             ->method('__toString')
             ->will($this->returnValue('Parameter #8 [ <required> Brainworxx\Krexx\Analyse\Callback\Analyse\ConfigSection $wahtever = \'<h1>Default Stuff</h...\' ]'));
@@ -354,7 +356,7 @@ class CodegenTest extends AbstractTest
     public function testParameterToStringWithRequiredPhpSeven()
     {
         // Create a mock with some supply data.
-        $refParamMock = $this->createMock(\ReflectionParameter::class);
+        $refParamMock = $this->createMock(ReflectionParameter::class);
         $refParamMock->expects($this->once())
             ->method('__toString')
             ->will($this->returnValue('Parameter #2 [ <required> DateTimeZone $object ]'));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -148,6 +149,8 @@ class MethodsTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
+     *
+     * @throws \ReflectionException
      */
     public function testCallMePublic()
     {
@@ -184,6 +187,8 @@ class MethodsTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeProtected()
     {
@@ -202,7 +207,7 @@ class MethodsTest extends AbstractTest
             false,
             1,
             [
-                0 =>[
+                0 => [
                     'data' => [
                         new ReflectionMethod($this->fixture['data'], static::PROTECTED_METHOD),
                         new ReflectionMethod($this->fixture['data'], static::PUBLIC_METHOD),
@@ -221,6 +226,8 @@ class MethodsTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
+     *
+     * @throws \ReflectionException
      */
     public function testCallMePrivate()
     {
@@ -239,7 +246,7 @@ class MethodsTest extends AbstractTest
             false,
             1,
             [
-                0 =>[
+                0 => [
                     'data' => [
                         new ReflectionMethod($this->fixture['data'], static::PRIVATE_METHOD),
                         new ReflectionMethod($this->fixture['data'], static::PUBLIC_METHOD),
@@ -258,6 +265,8 @@ class MethodsTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::analyseMethods
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods::generateDomIdFromClassname
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
+     *
+     * @throws \ReflectionException
      */
     public function testCallMePrivateProtected()
     {
@@ -276,7 +285,7 @@ class MethodsTest extends AbstractTest
             false,
             1,
             [
-                0 =>[
+                0 => [
                     'data' => [
                         new ReflectionMethod($this->fixture['data'], static::PRIVATE_METHOD),
                         new ReflectionMethod($this->fixture['data'], static::PROTECTED_METHOD),

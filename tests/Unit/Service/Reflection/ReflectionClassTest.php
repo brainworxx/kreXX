@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -52,6 +53,8 @@ class ReflectionClassTest extends AbstractTest
      * reflection.
      *
      * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::__construct
+     *
+     * @throws \ReflectionException
      */
     public function testConstruct()
     {
@@ -74,6 +77,8 @@ class ReflectionClassTest extends AbstractTest
      * Simple getter tester.
      *
      * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::getData
+     *
+     * @throws \ReflectionException
      */
     public function testGetData()
     {
@@ -88,6 +93,8 @@ class ReflectionClassTest extends AbstractTest
      * Here we retrieve the values from objects.
      *
      * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::retrieveValue
+     *
+     * @throws \ReflectionException
      */
     public function testRetrieveValue()
     {
@@ -129,6 +136,8 @@ class ReflectionClassTest extends AbstractTest
      * Test the retrieval of the actually implemented interfaces of this class.
      *
      * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::getInterfaces
+     *
+     * @throws \ReflectionException
      */
     public function testGetInterfaces()
     {
@@ -151,6 +160,8 @@ class ReflectionClassTest extends AbstractTest
      * Test the retrieval of the traits.
      *
      * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::getTraits
+     *
+     * @throws \ReflectionException
      */
     public function testGetTraits()
     {
@@ -169,6 +180,8 @@ class ReflectionClassTest extends AbstractTest
      * Test the retrieval and caching of the parent class.
      *
      * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::getParentClass
+     *
+     * @throws \ReflectionException
      */
     public function testGetParentClass()
     {

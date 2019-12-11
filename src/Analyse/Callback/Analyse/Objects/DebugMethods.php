@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -154,9 +155,11 @@ class DebugMethods extends AbstractObjectAnalysis
         // 1.) Method exists. It may be protected though.
         // 2.) Method can be called. There may be a magical method, though.
         // 3.) It's not blacklisted.
-        if (method_exists($data, $funcName) === true &&
+        if (
+            method_exists($data, $funcName) === true &&
             is_callable([$data, $funcName]) === true &&
-            $this->pool->config->validation->isAllowedDebugCall($data, $funcName) === true) {
+            $this->pool->config->validation->isAllowedDebugCall($data, $funcName) === true
+        ) {
             // We need to check if the callable function requires any parameters.
             // We will not call those, because we simply can not provide them.
             try {

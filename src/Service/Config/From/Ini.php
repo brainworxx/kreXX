@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -171,7 +172,8 @@ class Ini extends Fallback
     {
         // Do we have a value in the ini?
         // Does it validate?
-        if (isset($this->iniSettings[$group][$name]) === true &&
+        if (
+            isset($this->iniSettings[$group][$name]) === true &&
             $this->validation->evaluateSetting($group, $name, $this->iniSettings[$group][$name]) === true
         ) {
             return $this->iniSettings[$group][$name];

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -135,7 +136,8 @@ class Messages
     public function outputMessages()
     {
         // Simple Wrapper for OutputActions::$render->renderMessages
-        if (php_sapi_name() === 'cli' &&
+        if (
+            php_sapi_name() === 'cli' &&
             empty($this->messages) === false &&
             defined('KREXX_TEST_IN_PROGRESS') === false
         ) {

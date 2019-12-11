@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -41,6 +42,7 @@ use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
+use Exception;
 
 class ErrorObjectTest extends AbstractTest
 {
@@ -79,7 +81,7 @@ class ErrorObjectTest extends AbstractTest
         $file = 'some file';
         $code = 'some code';
 
-        $exception = new \Exception();
+        $exception = new Exception();
         $this->setValueByReflection('trace', $backtrace, $exception);
         $this->setValueByReflection('line', $line, $exception);
         $this->setValueByReflection('file', $file, $exception);

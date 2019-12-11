@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -189,7 +190,7 @@ class ThroughMethods extends AbstractCallback
      *   The original declaring class, the one with the traits.
      *
      * @return bool|\ReflectionClass
-     *   false = unable to retrieve someting.
+     *   false = unable to retrieve something.
      *   Otherwise return a reflection class.
      */
     protected function retrieveDeclaringReflection(

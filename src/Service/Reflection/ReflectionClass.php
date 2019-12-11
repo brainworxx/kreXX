@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -160,6 +161,7 @@ class ReflectionClass extends \ReflectionClass
         }
 
         // Compare the names with the ones from the parent.
+        /** @var \ReflectionClass $parent */
         $parent = $this->getParentClass();
         if ($parent !== false) {
             $parentInterfaces = $parent->getInterfaceNames();

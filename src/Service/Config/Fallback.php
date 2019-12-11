@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -61,7 +62,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
             Fallback::SETTING_IP_RANGE,
             Fallback::SETTING_DETECT_AJAX,
         ],
-        Fallback::SECTION_BEHAVIOR =>[
+        Fallback::SECTION_BEHAVIOR => [
             Fallback::SETTING_SKIN,
             Fallback::SETTING_DESTINATION,
             Fallback::SETTING_MAX_FILES,

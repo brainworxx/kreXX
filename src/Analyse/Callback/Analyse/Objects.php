@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -81,7 +82,8 @@ class Objects extends AbstractCallback
 
         // Dumping getter methods.
         // We will not dump the getters for internal classes, though.
-        if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_GETTER) === true &&
+        if (
+            $this->pool->config->getSetting(Fallback::SETTING_ANALYSE_GETTER) === true &&
             $ref->isUserDefined() === true
         ) {
             $output .= $this->dumpStuff(Getter::class);
@@ -89,20 +91,22 @@ class Objects extends AbstractCallback
 
         $output .= $this->dumpStuff(Meta::class);
 
-        // Anaylsing error objects.
+        // Analysing error objects.
         if (is_a($this->parameters[static::PARAM_DATA], Throwable::class)) {
             $output .= $this->dumpStuff(ErrorObject::class);
         }
 
         // Dumping protected properties.
-        if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PROTECTED) === true ||
+        if (
+            $this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PROTECTED) === true ||
             $this->pool->scope->isInScope() === true
         ) {
             $output .= $this->dumpStuff(ProtectedProperties::class);
         }
 
         // Dumping private properties.
-        if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PRIVATE) === true ||
+        if (
+            $this->pool->config->getSetting(Fallback::SETTING_ANALYSE_PRIVATE) === true ||
             $this->pool->scope->isInScope() === true
         ) {
             $output .= $this->dumpStuff(PrivateProperties::class);
@@ -115,7 +119,8 @@ class Objects extends AbstractCallback
         $output .= $this->dumpStuff(Methods::class);
 
         // Dumping traversable data.
-        if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_TRAVERSABLE) === true &&
+        if (
+            $this->pool->config->getSetting(Fallback::SETTING_ANALYSE_TRAVERSABLE) === true &&
             $this->parameters[static::PARAM_DATA] instanceof \Traversable
         ) {
             $output .= $this->dumpStuff(Traversable::class);

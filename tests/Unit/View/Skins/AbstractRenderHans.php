@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -34,18 +35,11 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\View\Skins;
 
-use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Krexx;
-use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\Fallback;
-use Brainworxx\Krexx\Service\Flow\Emergency;
-use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Service\Misc\File;
-use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Brainworxx\Krexx\View\Messages;
-use Brainworxx\Krexx\View\Output\Chunks;
 use Brainworxx\Krexx\View\Skins\RenderHans;
 
 abstract class AbstractRenderHans extends AbstractTest
@@ -162,7 +156,7 @@ abstract class AbstractRenderHans extends AbstractTest
                     static::PATH_TO_SKIN . $this->renderHans::FILE_FOOTER . $fileSuffix,
                     true,
                     $this->renderHans::MARKER_CALLER .
-                    $this->renderHans::MARKER_CONFIG_INFO.
+                    $this->renderHans::MARKER_CONFIG_INFO .
                     $this->renderHans::MARKER_PLUGINS
                 ],
                 // caller.html

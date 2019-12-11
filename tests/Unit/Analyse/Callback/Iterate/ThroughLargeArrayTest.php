@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -42,6 +43,7 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 use Brainworxx\Krexx\Krexx;
+use stdClass;
 
 class ThroughLargeArrayTest extends AbstractTest
 {
@@ -122,7 +124,7 @@ class ThroughLargeArrayTest extends AbstractTest
             'data' => [
                 'key1' => 'some string',
                 'key2' => ['some', 'array'],
-                'key3' => new \stdClass()
+                'key3' => new stdClass()
             ]
         ];
 
@@ -153,7 +155,7 @@ class ThroughLargeArrayTest extends AbstractTest
             'data' => [
                 'key1' => 'some string',
                 'key2' => ['some', 'array'],
-                'key3' => new \stdClass()
+                'key3' => new stdClass()
             ]
         ];
 
@@ -162,9 +164,18 @@ class ThroughLargeArrayTest extends AbstractTest
             ->callMe();
 
         // Test multiline generation
-        $this->assertEquals(Codegen::ITERATOR_TO_ARRAY, $this->routingMock->model[0]->getMultiLineCodeGen());
-        $this->assertEquals(Codegen::ITERATOR_TO_ARRAY, $this->renderMock->model[static::RENDER_SINGLE_CHILD][0]->getMultiLineCodeGen());
-        $this->assertEquals(Codegen::ITERATOR_TO_ARRAY, $this->renderMock->model[static::RENDER_SINGLE_CHILD][1]->getMultiLineCodeGen());
+        $this->assertEquals(
+            Codegen::ITERATOR_TO_ARRAY,
+            $this->routingMock->model[0]->getMultiLineCodeGen()
+        );
+        $this->assertEquals(
+            Codegen::ITERATOR_TO_ARRAY,
+            $this->renderMock->model[static::RENDER_SINGLE_CHILD][0]->getMultiLineCodeGen()
+        );
+        $this->assertEquals(
+            Codegen::ITERATOR_TO_ARRAY,
+            $this->renderMock->model[static::RENDER_SINGLE_CHILD][1]->getMultiLineCodeGen()
+        );
 
         $this->alwaysRun($fixture);
     }

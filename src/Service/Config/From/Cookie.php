@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -90,7 +91,8 @@ class Cookie
     public function getConfigFromCookies($group, $name)
     {
         // Do we have a value in the cookies?
-        if (isset($this->settings[$name]) === true &&
+        if (
+            isset($this->settings[$name]) === true &&
             $this->validation->evaluateSetting($group, $name, $this->settings[$name]) === true
         ) {
             // We escape them, just in case.

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -127,11 +128,26 @@ class EmergencyTest extends AbstractTest
         // Test setting itself in pool
         $this->assertSame($this->emergency, Krexx::$pool->emergencyHandler);
         // Test setting of values from config
-        $this->assertEquals(60, $this->retrieveValueByReflection(static::MAX_RUNTIME, $this->emergency));
-        $this->assertEquals(64 * 1024 * 1024, $this->retrieveValueByReflection(static::MIN_MEMORY_LEFT, $this->emergency));
-        $this->assertEquals(10, $this->retrieveValueByReflection(static::MAX_CALL, $this->emergency));
-        $this->assertEquals(5, $this->retrieveValueByReflection(static::MAX_NESTING_LEVEL, $this->emergency));
-        $this->assertEquals(50 * 1024, $this->retrieveValueByReflection(static::SERVER_MEMORY_LIMIT, $this->emergency));
+        $this->assertEquals(
+            60,
+            $this->retrieveValueByReflection(static::MAX_RUNTIME, $this->emergency)
+        );
+        $this->assertEquals(
+            64 * 1024 * 1024,
+            $this->retrieveValueByReflection(static::MIN_MEMORY_LEFT, $this->emergency)
+        );
+        $this->assertEquals(
+            10,
+            $this->retrieveValueByReflection(static::MAX_CALL, $this->emergency)
+        );
+        $this->assertEquals(
+            5,
+            $this->retrieveValueByReflection(static::MAX_NESTING_LEVEL, $this->emergency)
+        );
+        $this->assertEquals(
+            50 * 1024,
+            $this->retrieveValueByReflection(static::SERVER_MEMORY_LIMIT, $this->emergency)
+        );
     }
 
     /**
@@ -150,7 +166,10 @@ class EmergencyTest extends AbstractTest
             ->will($this->returnValue('50m'));
 
         $this->emergency = new Emergency(Krexx::$pool);
-        $this->assertEquals(50 * 1024 * 1024, $this->retrieveValueByReflection(static::SERVER_MEMORY_LIMIT, $this->emergency));
+        $this->assertEquals(
+            50 * 1024 * 1024,
+            $this->retrieveValueByReflection(static::SERVER_MEMORY_LIMIT, $this->emergency)
+        );
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -72,7 +73,7 @@ class Krexx
      *   The arguments of said function.
      *
      * @return mixed|null
-     *   Return the original anslysis value.
+     *   Return the original analysis value.
      */
     public static function __callStatic($name, array $arguments)
     {
@@ -133,7 +134,8 @@ class Krexx
         Pool::createPool();
 
         // Disabled ?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+        if (
+            static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
             AbstractController::$analysisInProgress ||
             Config::$disabledByPhp
         ) {
@@ -157,14 +159,15 @@ class Krexx
      *   The variable we want to analyse.
      *
      * @return mixed
-     *   Return the original anslysis value.
+     *   Return the original analysis value.
      */
     public static function open($data = null)
     {
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+        if (
+            static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
             AbstractController::$analysisInProgress ||
             Config::$disabledByPhp
         ) {
@@ -197,7 +200,8 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+        if (
+            static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
             AbstractController::$analysisInProgress ||
             Config::$disabledByPhp
         ) {
@@ -240,7 +244,8 @@ class Krexx
 
         // Disabled?
         // We are ignoring local settings here.
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+        if (
+            static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
             Config::$disabledByPhp
         ) {
             return;
@@ -260,7 +265,8 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+        if (
+            static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
             Config::$disabledByPhp
         ) {
             return;
@@ -271,7 +277,7 @@ class Krexx
     }
 
     /**
-     * Ungistering our exception handler.
+     * Unregistering our exception handler.
      *
      * @api
      */
@@ -280,7 +286,8 @@ class Krexx
         Pool::createPool();
 
         // Disabled?
-        if (static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
+        if (
+            static::$pool->config->getSetting(Fallback::SETTING_DISABLED) ||
             Config::$disabledByPhp
         ) {
             return;
@@ -299,7 +306,7 @@ class Krexx
      *   The variable we want to analyse.
      *
      * @return mixed
-     *   Return the original anslysis value.
+     *   Return the original analysis value.
      */
     public static function log($data = null)
     {

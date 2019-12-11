@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -191,6 +192,6 @@ class Recursion
      */
     public function addToMetaHive($domId)
     {
-        $this->metaRecursionHive[$domId]= true;
+        $this->metaRecursionHive[$domId] = true;
     }
 }

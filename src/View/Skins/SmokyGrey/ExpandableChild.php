@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -110,7 +111,8 @@ trait ExpandableChild
      */
     protected function renderSourceButtonSg($gencode, Model $model)
     {
-        if ($gencode === ';stop;' ||
+        if (
+            $gencode === ';stop;' ||
             empty($gencode) === true ||
             $this->pool->codegenHandler->getAllowCodegen() === false
         ) {

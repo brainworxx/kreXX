@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -48,7 +49,7 @@ use Brainworxx\Krexx\Service\Config\Fallback;
 class ProcessBacktrace extends AbstractCallback
 {
     /**
-     * Wrapper arround the process method, so we can use this one as a callback.
+     * Wrapper around the process method, so we can use this one as a callback.
      *
      * @return string
      *   The generated DOM.
@@ -119,7 +120,7 @@ class ProcessBacktrace extends AbstractCallback
             if (isset($step[static::TRACE_FILE]) && strpos($step[static::TRACE_FILE], $krexxScr) !== false) {
                 unset($backtrace[$key]);
             } else {
-                // No need to ga wurther, because we should have passed the
+                // No need to go further, because we should have passed the
                 // kreXX part.
                 break;
             }

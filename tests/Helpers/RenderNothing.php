@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -109,6 +110,7 @@ class RenderNothing extends RenderHans
     /**
      * @param $caller
      * @param Model $model
+     * @param bool $configOnly
      * @return string
      */
     public function renderFooter(array $caller, Model $model, $configOnly = false)
@@ -138,7 +140,6 @@ class RenderNothing extends RenderHans
     }
 
     /**
-     * @param $type
      * @param $errstr
      * @param $errfile
      * @param $errline

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -49,6 +50,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Krexx;
 use phpmock\phpunit\PHPMock;
+use ReflectionException;
 
 abstract class AbstractTest extends TestCase
 {
@@ -140,7 +142,7 @@ abstract class AbstractTest extends TestCase
             } else {
                 $reflectionProperty->setValue($value);
             }
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -168,7 +170,7 @@ abstract class AbstractTest extends TestCase
             } else {
                 return $reflectionProperty->getValue();
             }
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             $this->fail($e->getMessage());
         }
 
@@ -275,7 +277,7 @@ abstract class AbstractTest extends TestCase
             $reflectionMethod = $reflection->getMethod('dispatchStartEvent');
             $reflectionMethod->setAccessible(true);
             return $reflectionMethod->invoke($object);
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             $this->fail($e->getMessage());
             return '';
         }

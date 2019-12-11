@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -43,6 +44,7 @@ use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
+use ReflectionProperty;
 
 class ProtectedPropertiesTest extends AbstractTest
 {
@@ -77,6 +79,8 @@ class ProtectedPropertiesTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ProtectedProperties::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeNoProtected()
     {
@@ -109,6 +113,8 @@ class ProtectedPropertiesTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ProtectedProperties::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::getReflectionPropertiesData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeWithProtected()
     {
@@ -140,10 +146,10 @@ class ProtectedPropertiesTest extends AbstractTest
 
         // Create the expectations.
         $expectations = [
-            new \ReflectionProperty(ProtectedFixture::class, 'myProperty'),
-            new \ReflectionProperty(ProtectedFixture::class, 'nullProperty'),
-            new \ReflectionProperty(SimpleFixture::class, 'value3'),
-            new \ReflectionProperty(SimpleFixture::class, 'value4'),
+            new ReflectionProperty(ProtectedFixture::class, 'myProperty'),
+            new ReflectionProperty(ProtectedFixture::class, 'nullProperty'),
+            new ReflectionProperty(SimpleFixture::class, 'value3'),
+            new ReflectionProperty(SimpleFixture::class, 'value4'),
         ];
 
         $this->assertEquals($expectations, $params['data']);

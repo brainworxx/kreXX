@@ -357,7 +357,7 @@ class Hans
      * @param {Element} el
      *   The element you want to focus on.
      * @param {boolean} noHighlight
-     *   Do we need to highlight the elenemt we arejuming to?
+     *   Do we need to highlight the element we are jumping to?
      */
     protected jumpTo = (el:Element, noHighlight:boolean) : void =>
     {

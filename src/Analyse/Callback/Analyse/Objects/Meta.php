@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -145,10 +146,12 @@ class Meta extends AbstractObjectAnalysis
         if (!empty($traitList)) {
             $data[static::META_TRAITS] = $traitList;
         }
+
+        /** @var ReflectionClass $previousClass */
         $previousClass = $ref->getParentClass();
         if (!empty($previousClass)) {
             // We add it via array, because the other inheritance getters
-            // aare also supplying one.
+            // are also supplying one.
             $data[static::META_INHERITED_CLASS] = [
                 $previousClass->getName() => $previousClass
             ];

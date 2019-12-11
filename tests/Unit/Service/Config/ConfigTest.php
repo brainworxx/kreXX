@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -95,7 +96,7 @@ class ConfigTest extends AbstractTest
         $configPath = 'config path';
         $logPath = 'log path';
         $evilClassOne = 'some classname';
-        $evilClassTwo ='another classname';
+        $evilClassTwo = 'another classname';
 
         // Assign them
         Registration::setChunksFolder($chunkPath);

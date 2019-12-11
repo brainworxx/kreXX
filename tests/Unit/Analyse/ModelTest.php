@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -38,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Krexx;
+use stdClass;
 
 class ModelTest extends AbstractTest
 {
@@ -56,7 +58,6 @@ class ModelTest extends AbstractTest
      *
      * {@inheritdoc}
      *
-     * @throws \ReflectionException
      */
     public function setUp()
     {
@@ -82,7 +83,7 @@ class ModelTest extends AbstractTest
      */
     public function testSetData()
     {
-        $data = new \stdClass();
+        $data = new stdClass();
         $this->assertEquals($this->model, $this->model->setData($data));
         $this->assertEquals($data, $this->model->getData());
     }
@@ -94,7 +95,7 @@ class ModelTest extends AbstractTest
      */
     public function testGetData()
     {
-        $data = new \stdClass();
+        $data = new stdClass();
         $this->setValueByReflection('data', $data, $this->model);
         $this->assertEquals($data, $this->model->getData());
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -210,7 +211,8 @@ class Connectors
      */
     public function getConnectorRight($cap)
     {
-        if (empty($this->params) === true ||
+        if (
+            empty($this->params) === true ||
             ($this->type !== static::METHOD && $this->type !== static::STATIC_METHOD)
         ) {
             return $this->connectorArray[$this->type][1];

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -113,12 +114,12 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
     protected function retrieveSourceCode(ReflectionFunction $ref)
     {
         // Adding the sourcecode
-        $highlight = $ref->getStartLine() -1;
+        $highlight = $ref->getStartLine() - 1;
         return $this->pool->fileService->readSourcecode(
             $ref->getFileName(),
             $highlight,
             $highlight - 3,
-            $ref->getEndLine() -1
+            $ref->getEndLine() - 1
         );
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -43,6 +44,7 @@ use ReflectionType;
 use ReflectionGenerator;
 use Reflector;
 use stdClass;
+use SplObjectStorage;
 
 class ValidationTest extends AbstractTest
 {
@@ -90,11 +92,11 @@ class ValidationTest extends AbstractTest
     public function testIsAllowedDebugCall()
     {
         Registration::addClassToDebugBlacklist(stdClass::class);
-        Registration::addMethodToDebugBlacklist(\SplObjectStorage::class, 'readMailRealFast');
+        Registration::addMethodToDebugBlacklist(SplObjectStorage::class, 'readMailRealFast');
 
         $validation = new Validation(Krexx::$pool);
         $stdClass = new stdClass();
-        $objectStorage = new \SplObjectStorage();
+        $objectStorage = new SplObjectStorage();
 
         $this->assertFalse($validation->isAllowedDebugCall($stdClass, ''));
         $this->assertTrue($validation->isAllowedDebugCall($validation, ''));
@@ -181,10 +183,9 @@ class ValidationTest extends AbstractTest
                         $name,
                         $value
                     ),
-                    'name: "' . $name . '", test value: "'. $value .
+                    'name: "' . $name . '", test value: "' . $value .
                     '", validation method: "' . $setting[$validation::EVALUATE] . '"'
                 );
-
             }
         }
     }

@@ -208,7 +208,7 @@ class SmokyGrey extends Hans
      * @param {Element} el
      *   The element you want to focus on.
      * @param {boolean} noHighlight
-     *   Do we need to highlight the elenemt we arejuming to?
+     *   Do we need to highlight the element we are jumping to?
      */
     protected jumpTo = (el:Element, noHighlight:boolean) =>
     {
@@ -233,7 +233,7 @@ class SmokyGrey extends Hans
                 step = Math.round(diff / 12) * -1;
             }
 
-            // We also need to check if the setting of the new valkue was successful.
+            // We also need to check if the setting of the new value was successful.
             let lastValue:number = (container[0] as Element).scrollTop;
             let interval:number = setInterval(function () {
                 (container[0] as Element).scrollTop += step;

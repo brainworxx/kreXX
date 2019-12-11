@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -95,7 +96,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
      * @param resource $resource
      *   The resource, that we are analysing.
      * @param string $typeString
-     *   The hunam readable type string.
+     *   The human readable type string.
      *
      * @return string
      *   The rendered HTML.

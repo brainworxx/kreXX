@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -40,6 +41,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Krexx;
+use ReflectionClass;
 
 class CallerFinderTest extends AbstractTest
 {
@@ -96,7 +98,7 @@ class CallerFinderTest extends AbstractTest
         $poolMock->messages = Krexx::$pool->messages;
         $poolMock->expects($this->any())
             ->method('createClass')
-            ->will($this->returnCallback(function ($classname){
+            ->will($this->returnCallback(function ($classname) {
                 return Krexx::$pool->createClass($classname);
             }));
 
@@ -110,11 +112,14 @@ class CallerFinderTest extends AbstractTest
      * Return the fixture.
      *
      * @param int $line
+     *
+     * @throws \ReflectionException
+     *
      * @return array
      */
     protected function createFixture($line)
     {
-        $classRef = new \ReflectionClass(ComplexMethodFixture::class);
+        $classRef = new ReflectionClass(ComplexMethodFixture::class);
         return [
             0 => [],
             1 => [],
@@ -163,19 +168,21 @@ class CallerFinderTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::removeKrexxPartFromCommand
      * @covers \Brainworxx\Krexx\Analyse\Caller\AbstractCaller::getCurrentUrl
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::cleanupVarName
+     *
+     * @throws \ReflectionException
      */
     public function testFindCallerNormal()
     {
         $this->mockDebugBacktrace()
             ->expects($this->once())
-            ->willReturn($this->createFixture(74));
+            ->willReturn($this->createFixture(75));
 
         // Run the test
         $result = $this->callerFinder->findCaller('', $this->subjectVar);
 
         // Check the result
         $this->assertStringEndsWith($this->pathToFixture, $result[ConstInterface::TRACE_FILE]);
-        $this->assertEquals(74, $result[ConstInterface::TRACE_LINE]);
+        $this->assertEquals(75, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('$parameter', $result[ConstInterface::TRACE_VARNAME]);
         $this->assertEquals('Analysis of $parameter, string', $result[ConstInterface::TRACE_TYPE]);
         $this->assertArrayHasKey(ConstInterface::TRACE_DATE, $result);
@@ -187,12 +194,14 @@ class CallerFinderTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::findCaller
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::cleanupVarName
+     *
+     * @throws \ReflectionException
      */
     public function testFindCallerInline()
     {
         $this->mockDebugBacktrace()
             ->expects($this->once())
-            ->willReturn($this->createFixture(84));
+            ->willReturn($this->createFixture(85));
 
         // Run the test
         $result = $this->callerFinder->findCaller('', $this->subjectVar);
@@ -209,20 +218,22 @@ class CallerFinderTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getType
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::identifyCaller
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::removeKrexxPartFromCommand
+     *
+     * @throws \ReflectionException
      */
     public function testFindCallerHeadline()
     {
 
         $this->mockDebugBacktrace()
             ->expects($this->once())
-            ->willReturn($this->createFixture(74));
+            ->willReturn($this->createFixture(75));
 
         // Run the test
         $result = $this->callerFinder->findCaller(static::HEADLINE_STRING, $this->subjectVar);
 
         // Check the result
         $this->assertStringEndsWith($this->pathToFixture, $result[ConstInterface::TRACE_FILE]);
-        $this->assertEquals(74, $result[ConstInterface::TRACE_LINE]);
+        $this->assertEquals(75, $result[ConstInterface::TRACE_LINE]);
         $this->assertEquals('$parameter', $result[ConstInterface::TRACE_VARNAME]);
         $this->assertEquals(static::HEADLINE_STRING, $result[ConstInterface::TRACE_TYPE]);
         $this->assertArrayHasKey(ConstInterface::TRACE_DATE, $result);
@@ -236,6 +247,8 @@ class CallerFinderTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::getType
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::identifyCaller
      * @covers \Brainworxx\Krexx\Analyse\Caller\CallerFinder::removeKrexxPartFromCommand
+     *
+     * @throws \ReflectionException
      */
     public function testFindCallerUnreadableSource()
     {

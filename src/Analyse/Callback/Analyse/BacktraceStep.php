@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -123,8 +124,8 @@ class BacktraceStep extends AbstractCallback
                 $this->pool->fileService->readSourcecode(
                     $stepData[static::TRACE_FILE],
                     $lineNo,
-                    $lineNo -5,
-                    $lineNo +5
+                    $lineNo - 5,
+                    $lineNo + 5
                 )
             );
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -148,7 +149,8 @@ class Config extends Fallback
      */
     protected function checkEnabledStatus()
     {
-        if ($this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE &&
+        if (
+            $this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE &&
             ($this->checkOutput->isAjax() === true || $this->checkOutput->isCli() === true)
         ) {
             // No kreXX for you. At least until you start forced logging.
@@ -232,7 +234,8 @@ class Config extends Fallback
         if ($isEditable === true) {
             $cookieSetting = $this->cookieConfig->getConfigFromCookies($section, $name);
             // Do we have a value in the cookies?
-            if ($cookieSetting  !== null &&
+            if (
+                $cookieSetting  !== null &&
                 ($name === static::SETTING_DISABLED && $cookieSetting === static::VALUE_FALSE) === false
             ) {
                 // We must not overwrite a disabled=true with local cookie settings!

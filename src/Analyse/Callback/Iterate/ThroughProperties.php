@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -38,7 +39,6 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Properties;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Service\Misc\File;
 use ReflectionClass;
 use ReflectionProperty;
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -63,8 +64,8 @@ class ErrorObject extends AbstractObjectAnalysis
             $this->pool->fileService->readSourcecode(
                 $data->getFile(),
                 $lineNo,
-                $lineNo -5,
-                $lineNo +5
+                $lineNo - 5,
+                $lineNo + 5
             )
         );
         if (empty($source) === true) {

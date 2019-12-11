@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -304,7 +305,7 @@ class ThroughMethodsTest extends AbstractTest
             $model->getParameters()[$this->throughMethods::PARAM_DATA][ConstInterface::META_DECLARED_IN]
         );
         $this->assertTrue(
-            $this->throughMethods->getParameters()[$this->throughMethods::PARAM_REF_METHOD] instanceof \ReflectionMethod
+            $this->throughMethods->getParameters()[$this->throughMethods::PARAM_REF_METHOD] instanceof ReflectionMethod
         );
     }
 }

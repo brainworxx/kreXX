@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -49,17 +50,17 @@ class EventHandler implements EventHandlerInterface
     /**
      * @var Pool
      */
-    static public $pool;
+    public static $pool;
 
     /**
      * @var AbstractCallback
      */
-    static public $callback;
+    public static $callback;
 
     /**
      * @var Model
      */
-    static public $model;
+    public static $model;
 
     /**
      * Setting the pool.

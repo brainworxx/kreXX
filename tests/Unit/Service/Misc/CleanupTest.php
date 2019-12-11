@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -49,7 +50,6 @@ use Brainworxx\Krexx\View\Output\Chunks;
 class CleanupTest extends AbstractTest
 {
     const CHUNKS_DONE = 'chunksDone';
-    const GET_LOGGING_IS_ALLOWED = 'getLoggingIsAllowed';
     const MISC_NAMESPACE = '\\Brainworxx\\Krexx\\Service\\Misc\\';
 
     protected $cleanup;

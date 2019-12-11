@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -43,9 +44,9 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
  */
 class CallbackCounter extends AbstractCallback
 {
-    static public $counter = 0;
+    public static $counter = 0;
 
-    static public $staticParameters = [];
+    public static $staticParameters = [];
 
     public function callMe()
     {

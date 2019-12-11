@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -167,7 +168,8 @@ abstract class AbstractCaller implements ConstInterface
 
         // Check if someone has been messing with the $_SERVER, to prevent
         // warnings and notices.
-        if (empty($server) === true ||
+        if (
+            empty($server) === true ||
             empty($server['SERVER_PROTOCOL']) === true ||
             empty($server['SERVER_PORT']) === true ||
             empty($server['SERVER_NAME']) === true ||

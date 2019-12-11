@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -53,7 +54,6 @@ use Brainworxx\Krexx\View\Skins\SmokyGrey\SingleEditableChild;
  */
 class RenderSmokyGrey extends RenderHans implements RenderInterface
 {
-
     use SingleChild;
     use ExpandableChild;
     use Recursion;
@@ -71,5 +71,4 @@ class RenderSmokyGrey extends RenderHans implements RenderInterface
     const MARKER_K_CONFIG_CLASSES = '{kconfiguration-classes}';
 
     const DATA_ATTRIBUTE_JSON = 'addjson';
-
 }

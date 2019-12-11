@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -33,7 +34,6 @@
  */
 
 namespace Brainworxx\Krexx\Tests\Unit\Service\Factory;
-
 
 use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Code\Scope;

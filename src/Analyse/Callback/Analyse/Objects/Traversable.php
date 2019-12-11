@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -68,7 +69,8 @@ class Traversable extends AbstractObjectAnalysis
 
         // Check nesting level, memory and runtime.
         $this->pool->emergencyHandler->upOneNestingLevel();
-        if ($this->pool->emergencyHandler->checkNesting() === true ||
+        if (
+            $this->pool->emergencyHandler->checkNesting() === true ||
             $this->pool->emergencyHandler->checkEmergencyBreak() === true
         ) {
             // We will not be doing this one, but we need to get down with our
@@ -142,7 +144,8 @@ class Traversable extends AbstractObjectAnalysis
         // SplObject pool use the object as keys, so we need some
         // multiline stuff!
         // A SplObject is also an ArrayAccess btw.
-        if (($originalClass instanceof ArrayAccess) &&
+        if (
+            ($originalClass instanceof ArrayAccess) &&
             ($originalClass instanceof SplObjectStorage) === false
         ) {
             $multiline = false;

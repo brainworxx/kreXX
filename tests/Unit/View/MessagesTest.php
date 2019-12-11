@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -197,6 +198,9 @@ class MessagesTest extends AbstractTest
         Krexx::$pool->fileService = $fileServiceMock;
 
         $this->messagesClass->readHelpTexts();
-        $this->assertEquals(['someKey' => 'a string'], $this->retrieveValueByReflection('helpArray', $this->messagesClass));
+        $this->assertEquals(
+            ['someKey' => 'a string'],
+            $this->retrieveValueByReflection('helpArray', $this->messagesClass)
+        );
     }
 }

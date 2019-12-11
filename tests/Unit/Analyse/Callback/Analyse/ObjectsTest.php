@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -114,6 +115,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeEvent()
     {
@@ -131,6 +134,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMePublic()
     {
@@ -151,6 +156,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeGetter()
     {
@@ -178,6 +185,8 @@ class ObjectsTest extends AbstractTest
 
     /**
      * Test, if the meta stuff is analysed.
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeMeta()
     {
@@ -193,6 +202,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeProtected()
     {
@@ -222,6 +233,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMePrivate()
     {
@@ -253,6 +266,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeConstants()
     {
@@ -271,6 +286,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeMethods()
     {
@@ -289,6 +306,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeTraversableDeactivatedTraversable()
     {
@@ -304,6 +323,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeTraversableDeactivatedNormal()
     {
@@ -318,6 +339,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeTraversableActivatedTraversable()
     {
@@ -332,6 +355,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeTraversableActivated()
     {
@@ -350,6 +375,8 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     *
+     * @throws \ReflectionException
      */
     public function testCallMeDebugMethods()
     {

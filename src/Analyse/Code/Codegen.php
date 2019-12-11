@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -134,7 +135,8 @@ class Codegen implements ConstInterface
             $result = 'iterator_to_array(;firstMarker;)' . $this->concatenation($model);
         } elseif ($model->getMultiLineCodeGen() === static::ARRAY_VALUES_ACCESS) {
             $result = 'array_values(;firstMarker;)[' . $model->getConnectorParameters() . ']';
-        } elseif ($model->getIsPublic() === true ||
+        } elseif (
+            $model->getIsPublic() === true ||
             $this->pool->scope->testModelForCodegen($model) === true
         ) {
             // Test for private or protected access.
@@ -206,7 +208,7 @@ class Codegen implements ConstInterface
     }
 
     /**
-     * Abusing the __toString() magic to get informations about a parameter.
+     * Abusing the __toString() magic to get information about a parameter.
      *
      * If a parameter must have a specific class, that is not present in the
      * system, we will get a reflection error. That is why we abuse the

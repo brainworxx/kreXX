@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -64,7 +65,10 @@ class ProcessStringTest extends AbstractTest
 
         $processor = new ProcessString(Krexx::$pool);
         $this->assertEquals(Krexx::$pool, $this->retrieveValueByReflection('pool', $processor));
-        $this->assertInstanceOf(FileinfoDummy::class, $this->retrieveValueByReflection(static::BUFFER_INFO, $processor));
+        $this->assertInstanceOf(
+            FileinfoDummy::class,
+            $this->retrieveValueByReflection(static::BUFFER_INFO, $processor)
+        );
     }
 
     /**
@@ -188,7 +192,10 @@ class ProcessStringTest extends AbstractTest
 
         $this->assertEquals($model::TYPE_STRING . $length, $model->getType());
         $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
-        $this->assertEquals(static::ENCODING_PREFIX . substr($fixture, 0, 50) .  $model::UNKNOWN_VALUE, $model->getNormal());
+        $this->assertEquals(
+            static::ENCODING_PREFIX . substr($fixture, 0, 50) .  $model::UNKNOWN_VALUE,
+            $model->getNormal()
+        );
         $this->assertEquals(static::ENCODING_PREFIX . $fixture, $model->getData());
         $this->assertEquals($fileInfo, $model->getJson()[$model::META_MIME_TYPE]);
         $this->assertEquals(true, $model->getHasExtra());
@@ -226,8 +233,6 @@ class ProcessStringTest extends AbstractTest
     /**
      * Testing with linebreaks in the fixture.
      *
-     * @throws \ReflectionException
-     *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::retrieveLengthAndEncoding
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
@@ -259,8 +264,7 @@ class ProcessStringTest extends AbstractTest
      * @param string $fixture
      * @param $encoding
      * @param int $length
-     *
-     * @throws \ReflectionException
+     * @param $bufferOutput
      *
      * @return \Brainworxx\Krexx\Analyse\Model
      */
@@ -303,7 +307,7 @@ class ProcessStringTest extends AbstractTest
         }
         Krexx::$pool->encodingService = $encodingMock;
 
-        $fileinfoMock = $this->createMock(\finfo::class);
+        $fileinfoMock = $this->createMock(finfo::class);
         if (empty($bufferOutput)) {
              $fileinfoMock->expects($this->never())
                 ->method('buffer');

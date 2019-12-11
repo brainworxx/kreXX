@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -40,6 +41,7 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\Krexx;
+use stdClass;
 
 class AbstractModelTest extends AbstractTest
 {
@@ -117,7 +119,7 @@ class AbstractModelTest extends AbstractTest
      */
     public function testAddParameter()
     {
-        $parameterOne = new \stdClass();
+        $parameterOne = new stdClass();
         $parameterTwo = "some value";
 
         $model = new Model(Krexx::$pool);

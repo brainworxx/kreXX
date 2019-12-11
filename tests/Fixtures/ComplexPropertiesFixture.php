@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -33,6 +34,8 @@
  */
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
+
+use stdClass;
 
 class ComplexPropertiesFixture extends ComplexPropertiesInheritanceFixture
 {
@@ -90,6 +93,6 @@ class ComplexPropertiesFixture extends ComplexPropertiesInheritanceFixture
         unset($this->unsetProperty);
         $this->undeclaredProperty = 'dynamically declaration';
         $this->myProperty = 'asdf';
-        $this->inheritedProtected = new \stdClass();
+        $this->inheritedProtected = new stdClass();
     }
 }

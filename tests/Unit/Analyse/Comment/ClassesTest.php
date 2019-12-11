@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -36,7 +37,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Comment;
 
 use Brainworxx\Krexx\Analyse\Comment\Classes;
 use Brainworxx\Krexx\Krexx;
-use \ReflectionClass;
+use ReflectionClass;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 
 class ClassesTest extends AbstractTest

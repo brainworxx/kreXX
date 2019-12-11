@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -80,7 +81,7 @@ class CheckOutput
     }
 
     /**
-     * Check for a cli request, simple wrapper aound php_sapi_name.
+     * Check for a cli request, simple wrapper around php_sapi_name.
      *
      * @return bool
      *   Well? Is it an cli request?
@@ -102,7 +103,8 @@ class CheckOutput
         // able to render the HTML output correctly.
         foreach (headers_list() as $header) {
             $header = strtolower($header);
-            if (strpos($header, 'content-type') !== false &&
+            if (
+                strpos($header, 'content-type') !== false &&
                 strpos($header, 'html') === false
             ) {
                 // We do have none html content type.

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * kreXX: Krumo eXXtended
  *
@@ -35,7 +36,6 @@
 namespace Brainworxx\Krexx\Tests\Unit\Controller;
 
 use Brainworxx\Krexx\Controller\DumpController;
-use Brainworxx\Krexx\Errorhandler\Fatal;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\Fallback;
@@ -45,11 +45,6 @@ use Brainworxx\Krexx\View\Output\File;
 
 class AbstractControllerTest extends AbstractTest
 {
-
-    const FATAL_SHOULD_ACTIVATE = 'fatalShouldActive';
-    const SET_IS_ACTIVE = 'setIsActive';
-    const KREXX_FATAL = 'krexxFatal';
-
     /**
      * Testing the construction phase of the controller
      *
