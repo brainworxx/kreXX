@@ -105,6 +105,8 @@ class ThroughMethodsTest extends AbstractTest
      * Normal testrun for the method analysis.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::retrieveConnectorType
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::retrieveParameters
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::getDeclarationPlace
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::getDeclarationKeywords
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::retrieveDeclaringReflection

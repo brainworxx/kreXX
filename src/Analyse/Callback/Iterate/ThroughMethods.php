@@ -66,6 +66,7 @@ class ThroughMethods extends AbstractCallback
         $result = $this->dispatchStartEvent();
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
+        /** @var Methods $commentAnalysis */
         $commentAnalysis = $this->pool->createClass(Methods::class);
 
         // Deep analysis of the methods.
@@ -74,8 +75,7 @@ class ThroughMethods extends AbstractCallback
             $methodData = [];
 
             // Get the comment from the class, it's parents, interfaces or traits.
-            $methodComment = $commentAnalysis->getComment($reflectionMethod, $reflectionClass);
-            if (empty($methodComment) === false) {
+            if (empty($methodComment = $commentAnalysis->getComment($reflectionMethod, $reflectionClass)) === false) {
                 $methodData[static::META_COMMENT] = $methodComment;
             }
 
@@ -83,31 +83,9 @@ class ThroughMethods extends AbstractCallback
             $declaringClass = $reflectionMethod->getDeclaringClass();
             $methodData[static::META_DECLARED_IN] = $this->getDeclarationPlace($reflectionMethod, $declaringClass);
 
-            // Get parameters.
-            $paramList = '';
-            foreach ($reflectionMethod->getParameters() as $key => $reflectionParameter) {
-                ++$key;
-                $paramList .= $methodData[static::META_PARAM_NO . $key] = $this->pool
-                    ->codegenHandler
-                    ->parameterToString($reflectionParameter);
-                // We add a comma to the parameter list, to separate them for a
-                // better readability.
-                $paramList .= ', ';
-            }
-
             // Get declaring keywords.
-            $methodData['declaration keywords'] = $this->getDeclarationKeywords(
-                $reflectionMethod,
-                $declaringClass,
-                $reflectionClass
-            );
-
-            // Get the connector.
-            if ($reflectionMethod->isStatic() === true) {
-                $connectorType = Connectors::STATIC_METHOD;
-            } else {
-                $connectorType = Connectors::METHOD;
-            }
+            $methodData['declaration keywords'] = $this
+                ->getDeclarationKeywords($reflectionMethod, $declaringClass, $reflectionClass);
 
             // Update the reflection method, so an event subscriber can do
             // something with it.
@@ -119,22 +97,62 @@ class ThroughMethods extends AbstractCallback
                     __FUNCTION__ . static::EVENT_MARKER_END,
                     $this->pool->createClass(Model::class)
                         ->setName($reflectionMethod->name)
-                        ->setType($methodData['declaration keywords'] . static::TYPE_METHOD)
-                        ->setConnectorType($connectorType)
                         // Remove the ',' after the last char.
-                        ->setConnectorParameters(rtrim($paramList, ', '))
+                        ->setConnectorParameters(rtrim($this->retrieveParameters($reflectionMethod, $methodData), ', '))
+                        ->setType($methodData['declaration keywords'] . static::TYPE_METHOD)
+                        ->setConnectorType($this->retrieveConnectorType($reflectionMethod))
                         ->addParameter(static::PARAM_DATA, $methodData)
                         ->setIsPublic($reflectionMethod->isPublic())
-                        ->injectCallback(
-                            $this->pool->createClass(
-                                ThroughMeta::class
-                            )
-                        )
+                        ->injectCallback($this->pool->createClass(ThroughMeta::class))
                 )
             );
         }
 
         return $result;
+    }
+
+    /**
+     * Retrieve the connector type.
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     *   The reflection method.
+     * @return int
+     *   The connector type,
+     */
+    protected function retrieveConnectorType(ReflectionMethod $reflectionMethod)
+    {
+        if ($reflectionMethod->isStatic() === true) {
+            return Connectors::STATIC_METHOD;
+        }
+
+        return Connectors::METHOD;
+    }
+
+    /**
+     * Retrieve the parameter data from the reflection method.
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     *   The reflection method.
+     * @param array $methodData
+     *   The method data so far.
+     *
+     * @return string
+     *   The human readable parameter list.
+     */
+    protected function retrieveParameters(ReflectionMethod $reflectionMethod, array &$methodData)
+    {
+        $paramList = '';
+        foreach ($reflectionMethod->getParameters() as $key => $reflectionParameter) {
+            ++$key;
+            $paramList .= $methodData[static::META_PARAM_NO . $key] = $this->pool
+                ->codegenHandler
+                ->parameterToString($reflectionParameter);
+            // We add a comma to the parameter list, to separate them for a
+            // better readability.
+            $paramList .= ', ';
+        }
+
+        return $paramList;
     }
 
     /**
