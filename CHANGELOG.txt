@@ -10,6 +10,7 @@
 - Bugfix: The cookie editor needs to be "initialized" prior usage.
 - Bugfix: Wrong meta data, when using dual output.
 - Bugfix: Missing css definitions for label.
+- Bugfix: Unwanted re-enabling of the source generation.
 
 3.2.1
 - Bugfix: Wrong error handler restoration after deleting

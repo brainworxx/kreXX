@@ -81,6 +81,20 @@ class Codegen implements ConstInterface
     protected $firstRun = true;
 
     /**
+     * Here we count haw often the code generation was disabled.
+     *
+     * We ony enable it, when it is 0.
+     *
+     * Background:
+     * Some code may disable it, while it is still disabled.
+     * When that code part re-enables it, it is not aware that it must not
+     * re-enable it, because it was disabled before hand.
+     *
+     * @var int
+     */
+    protected $disableCount = 0;
+
+    /**
      * Initializes the code generation.
      *
      * @param Pool $pool
@@ -194,7 +208,20 @@ class Codegen implements ConstInterface
      */
     public function setAllowCodegen($bool)
     {
-        $this->allowCodegen = $bool;
+        if ($bool === false) {
+            $this->allowCodegen = false;
+            ++$this->disableCount;
+            return;
+        } else {
+            --$this->disableCount;
+            if ($this->disableCount < 1) {
+                $this->allowCodegen = true;
+            }
+        }
+
+        if ($this->disableCount < 0) {
+            $this->disableCount = 0;
+        }
     }
 
     /**
