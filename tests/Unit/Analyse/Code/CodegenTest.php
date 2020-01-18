@@ -357,10 +357,17 @@ class CodegenTest extends AbstractTest
     public function testParameterToStringWithDefaultPhpFive()
     {
         // Create a mock with some supply data.
+        $refTypeMock = $this->createMock(\ReflectionType::class);
+        $refTypeMock->expects($this->once())
+            ->method('__toString')
+            ->will($this->returnValue('Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\ConfigSection'));
         $refParamMock = $this->createMock(ReflectionParameter::class);
         $refParamMock->expects($this->once())
-            ->method('__toString')
-            ->will($this->returnValue('Parameter #8 [ <required> Brainworxx\Krexx\Analyse\Callback\Analyse\ConfigSection $wahtever = \'<h1>Default Stuff</h...\' ]'));
+            ->method('hasType')
+            ->will($this->returnValue(true));
+        $refParamMock->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue($refTypeMock));
         $refParamMock->expects($this->once())
             ->method('isDefaultValueAvailable')
             ->will($this->returnValue(true));
@@ -382,7 +389,7 @@ class CodegenTest extends AbstractTest
 
     /**
      * Test the parameter analysis, with a required parameter.
-     * We use a speciaql DetTime parameter as a fixture.
+     * We use a special DetTime parameter as a fixture.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::parameterToString
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::translateDefaultValue
@@ -390,10 +397,17 @@ class CodegenTest extends AbstractTest
     public function testParameterToStringWithRequiredPhpSeven()
     {
         // Create a mock with some supply data.
+        $refTypeMock = $this->createMock(\ReflectionType::class);
+        $refTypeMock->expects($this->once())
+            ->method('__toString')
+            ->will($this->returnValue('DateTimeZone'));
         $refParamMock = $this->createMock(ReflectionParameter::class);
         $refParamMock->expects($this->once())
-            ->method('__toString')
-            ->will($this->returnValue('Parameter #2 [ <required> DateTimeZone $object ]'));
+            ->method('hasType')
+            ->will($this->returnValue(true));
+        $refParamMock->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue($refTypeMock));
         $refParamMock->expects($this->once())
             ->method('isDefaultValueAvailable')
             ->will($this->returnValue(false));

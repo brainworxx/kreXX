@@ -40,6 +40,8 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionException;
 use ReflectionParameter;
+use ReflectionNamedType;
+use ReflectionType;
 
 /**
  * Code generation methods.
@@ -250,8 +252,19 @@ class Codegen implements ConstInterface
      */
     public function parameterToString(ReflectionParameter $reflectionParameter)
     {
-        $type = explode(' ', $reflectionParameter->__toString())[4];
-        $name = '';
+        $type = '';
+        if ($reflectionParameter->hasType() === true) {
+            $reflectionNamedType = $reflectionParameter->getType();
+            if (is_a($reflectionNamedType, '\\ReflectionNamedType')) {
+                // PHP 7.1 and later
+                /** @var ReflectionNamedType $reflectionNamedType */
+                $type = $reflectionNamedType->getName() . ' ';
+            } else {
+                // PHP 7.0 only.
+                /** @var ReflectionType $reflectionNamedType */
+                $type = $reflectionNamedType->__toString() . ' ';
+            }
+        }
 
         // Retrieve the type and the name, without calling a possible autoloader.
         if ($reflectionParameter->isPassedByReference() === true) {
@@ -259,10 +272,8 @@ class Codegen implements ConstInterface
         } else {
             $prefix = '$';
         }
-        if (strpos($type, $prefix) !== 0) {
-            $name = $type . ' ';
-        }
-        $name .= $prefix . $reflectionParameter->getName();
+
+        $name = $type . $prefix . $reflectionParameter->getName();
 
         // Retrieve the default value, if available.
         if ($reflectionParameter->isDefaultValueAvailable() === true) {
