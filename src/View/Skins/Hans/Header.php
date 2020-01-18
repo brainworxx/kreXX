@@ -38,21 +38,26 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait Header
 {
     /**
+     * @var array
+     */
+    private $markerHeader = [
+        '{version}',
+        '{KrexxCount}',
+        '{headline}',
+        '{cssJs}',
+        '{KrexxId}',
+        '{search}',
+        '{messages}',
+        '{encoding}',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function renderHeader($headline, $cssJs)
     {
         return str_replace(
-            [
-                static::MARKER_VERSION,
-                static::MARKER_KREXX_COUNT,
-                static::MARKER_HEADLINE,
-                static::MARKER_CSS_JS,
-                static::MARKER_KREXX_ID,
-                static::MARKER_SEARCH,
-                static::MARKER_MESSAGES,
-                static::MARKER_ENCODING,
-            ],
+            $this->markerHeader,
             [
                 $this->pool->config->version,
                 $this->pool->emergencyHandler->getKrexxCount(),
@@ -65,5 +70,19 @@ trait Header
             ],
             $this->getTemplateFileContent(static::FILE_HEADER)
         );
+    }
+
+    /**
+     * Getter of the header for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerHeader()
+    {
+        return $this->markerHeader;
     }
 }

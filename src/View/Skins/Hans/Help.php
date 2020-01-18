@@ -39,6 +39,19 @@ use Brainworxx\Krexx\Analyse\Model;
 
 trait Help
 {
+    /**
+     * @var array
+     */
+    private $markerHelpRow = [
+        '{helptitle}',
+        '{helptext}'
+    ];
+
+    /**
+     * @var string
+     */
+    private $markerHelp = '{help}';
+
      /**
      * Renders the helptext.
      *
@@ -66,13 +79,41 @@ trait Help
         // Add the stuff from the json after the help text, if any.
         foreach ($data as $title => $text) {
             $helpContent .= str_replace(
-                [static::MARKER_HELP_TITLE, static::MARKER_HELP_TEXT],
+                $this->markerHelpRow,
                 [$title, $text],
                 $helpRow
             );
         }
 
         // Add it into the wrapper.
-        return str_replace(static::MARKER_HELP, $helpContent, $this->getTemplateFileContent(static::FILE_HELP));
+        return str_replace($this->markerHelp, $helpContent, $this->getTemplateFileContent(static::FILE_HELP));
+    }
+
+    /**
+     * Getter of the help row for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerHelpRow()
+    {
+        return $this->markerHelpRow;
+    }
+
+    /**
+     * Getter of the help for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerHelp()
+    {
+        return [$this->markerHelp];
     }
 }

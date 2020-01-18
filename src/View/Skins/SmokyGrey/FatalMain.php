@@ -38,17 +38,22 @@ namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
 trait FatalMain
 {
     /**
+     * @var array
+     */
+    private $markerFatalMain = [
+        '{search}',
+        '{KrexxId}',
+        '{plugins}'
+    ];
+
+    /**
      * {@inheritDoc}
      */
     public function renderFatalMain($errstr, $errfile, $errline)
     {
         // Add the search.
         return str_replace(
-            [
-                static::MARKER_SEARCH,
-                static::MARKER_KREXX_ID,
-                static::MARKER_PLUGINS
-            ],
+            $this->markerFatalMain,
             [
                 $this->renderSearch(),
                 $this->pool->recursionHandler->getMarker(),
@@ -56,5 +61,19 @@ trait FatalMain
             ],
             parent::renderFatalMain($errstr, $errfile, $errline)
         );
+    }
+
+    /**
+     * Getter of the fatal header for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerFatalMain(): array
+    {
+        return $this->markerFatalMain;
     }
 }

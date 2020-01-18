@@ -38,6 +38,11 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait ConnectorLeft
 {
     /**
+     * @var string
+     */
+    private $markerConnectorLeft = '{connector}';
+
+    /**
      * Renders the left connector.
      *
      * @param string $connector
@@ -49,9 +54,23 @@ trait ConnectorLeft
     protected function renderConnectorLeft($connector)
     {
         return str_replace(
-            static::MARKER_CONNECTOR,
+            $this->markerConnectorLeft,
             $connector,
             $this->getTemplateFileContent(static::FILE_CONNECTOR_LEFT)
         );
+    }
+
+    /**
+     * Getter of the connector left for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerConnectorLeft()
+    {
+        return [$this->markerConnectorLeft];
     }
 }

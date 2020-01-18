@@ -40,16 +40,21 @@ use Brainworxx\Krexx\Analyse\Model;
 trait Button
 {
     /**
+     * @var array
+     */
+    private $markerSingleButton = [
+        '{text}',
+        '{class}',
+        '{help}',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function renderButton(Model $model)
     {
         return str_replace(
-            [
-                static::MARKER_TEXT,
-                static::MARKER_CLASS,
-                static::MARKER_HELP,
-            ],
+            $this->markerSingleButton,
             [
                 $model->getNormal(),
                 $model->getName(),
@@ -57,5 +62,19 @@ trait Button
             ],
             $this->getTemplateFileContent(static::FILE_SI_BUTTON)
         );
+    }
+
+    /**
+     * Getter of the button for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSingleButton()
+    {
+        return $this->markerSingleButton;
     }
 }

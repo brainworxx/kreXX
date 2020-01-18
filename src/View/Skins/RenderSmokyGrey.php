@@ -35,7 +35,6 @@
 
 namespace Brainworxx\Krexx\View\Skins;
 
-use Brainworxx\Krexx\View\RenderInterface;
 use Brainworxx\Krexx\View\Skins\SmokyGrey\Button;
 use Brainworxx\Krexx\View\Skins\SmokyGrey\ConnectorRight;
 use Brainworxx\Krexx\View\Skins\SmokyGrey\ExpandableChild;
@@ -52,7 +51,7 @@ use Brainworxx\Krexx\View\Skins\SmokyGrey\SingleEditableChild;
  *
  * @package Brainworxx\Krexx\View\Smokygrey
  */
-class RenderSmokyGrey extends RenderHans implements RenderInterface
+class RenderSmokyGrey extends RenderHans
 {
     use SingleChild;
     use ExpandableChild;
@@ -64,11 +63,6 @@ class RenderSmokyGrey extends RenderHans implements RenderInterface
     use FatalMain;
     use ConnectorRight;
     use Help;
-
-    const MARKER_LANGUAGE = '{language}';
-    const MARKER_ADDITIONAL_JSON = '{addjson}';
-    const MARKER_K_DEBUG_CLASSES = '{kdebug-classes}';
-    const MARKER_K_CONFIG_CLASSES = '{kconfiguration-classes}';
 
     const DATA_ATTRIBUTE_JSON = 'addjson';
 }

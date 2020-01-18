@@ -40,24 +40,31 @@ use Brainworxx\Krexx\Analyse\Model;
 trait ExpandableChild
 {
     /**
-     * The array we use for the string replace.
-     *
      * @var array
      */
-    protected $renderExpandableChildHansArray = [
-        ConstInterface::MARKER_NAME,
-        ConstInterface::MARKER_TYPE,
-        ConstInterface::MARKER_K_TYPE,
-        ConstInterface::MARKER_NORMAL,
-        ConstInterface::MARKER_CONNECTOR_LEFT,
-        ConstInterface::MARKER_CONNECTOR_RIGHT,
-        ConstInterface::MARKER_GEN_SOURCE,
-        ConstInterface::MARKER_SOURCE_BUTTON,
-        ConstInterface::MARKER_IS_EXPANDED,
-        ConstInterface::MARKER_NEST,
-        ConstInterface::MARKER_CODE_WRAPPER_LEFT,
-        ConstInterface::MARKER_CODE_WRAPPER_RIGHT,
-        ConstInterface::MARKER_HELP,
+    private $markerExpandableChild = [
+        '{name}',
+        '{type}',
+        '{ktype}',
+        '{normal}',
+        '{connectorLeft}',
+        '{connectorRight}',
+        '{gensource}',
+        '{sourcebutton}',
+        '{isExpanded}',
+        '{nest}',
+        '{codewrapperLeft}',
+        '{codewrapperRight}',
+        '{help}',
+    ];
+
+    /**
+     * @var array
+     */
+    private $markerNest = [
+        '{style}',
+        '{mainfunction}',
+        '{domId}',
     ];
 
     /**
@@ -74,7 +81,7 @@ trait ExpandableChild
         $gencode = $this->pool->codegenHandler->generateSource($model);
 
         return str_replace(
-            $this->renderExpandableChildHansArray,
+            $this->markerExpandableChild,
             [
                 $model->getName(),
                 $model->getType(),
@@ -170,11 +177,7 @@ trait ExpandableChild
         }
 
         return str_replace(
-            [
-                static::MARKER_STYLE,
-                static::MARKER_MAIN_FUNCTION,
-                static::MARKER_DOM_ID,
-            ],
+            $this->markerNest,
             [
                 $style,
                 $model->renderMe(),
@@ -182,5 +185,33 @@ trait ExpandableChild
             ],
             $this->getTemplateFileContent(static::FILE_NEST)
         );
+    }
+
+    /**
+     * Getter of the expandable child for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerExpandableChild()
+    {
+        return $this->markerExpandableChild;
+    }
+
+    /**
+     * Getter of the nest for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerNest()
+    {
+        return $this->markerNest;
     }
 }

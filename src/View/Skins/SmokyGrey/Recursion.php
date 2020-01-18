@@ -40,15 +40,34 @@ use Brainworxx\Krexx\Analyse\Model;
 trait Recursion
 {
     /**
+     * @var string
+     */
+    private $markerRecursion = '{addjson}';
+
+    /**
      * {@inheritDoc}
      */
     public function renderRecursion(Model $model)
     {
         // We add our json to the output.
         return str_replace(
-            static::MARKER_ADDITIONAL_JSON,
+            $this->markerRecursion,
             $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
             parent::renderRecursion($model)
         );
+    }
+
+    /**
+     * Getter of the recursion for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerRecursion()
+    {
+        return [$this->markerRecursion];
     }
 }

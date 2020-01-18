@@ -38,6 +38,16 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait FatalMain
 {
     /**
+     * @var array
+     */
+    private $markerFatalMain = [
+        '{errstr}',
+        '{file}',
+        '{source}',
+        '{line}',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function renderFatalMain($errstr, $errfile, $errline)
@@ -50,12 +60,7 @@ trait FatalMain
         );
 
         return str_replace(
-            [
-                static::MARKER_ERROR_STRING,
-                static::MARKER_FILE,
-                static::MARKER_SOURCE,
-                static::MARKER_LINE,
-            ],
+            $this->markerFatalMain,
             [
                 $errstr,
                 $errfile,
@@ -64,5 +69,19 @@ trait FatalMain
             ],
             $this->getTemplateFileContent(static::FILE_FATAL_MAIN)
         );
+    }
+
+    /**
+     * Getter of the fatal header for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerFatalMain()
+    {
+        return $this->markerFatalMain;
     }
 }

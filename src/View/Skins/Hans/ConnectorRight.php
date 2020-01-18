@@ -38,6 +38,11 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait ConnectorRight
 {
     /**
+     * @var string
+     */
+    private $markerConnectorRight = '{connector}';
+
+    /**
      * Renders the right connector.
      *
      * @param string $connector
@@ -54,9 +59,23 @@ trait ConnectorRight
         }
 
         return str_replace(
-            static::MARKER_CONNECTOR,
+            $this->markerConnectorRight,
             $connector,
             $this->getTemplateFileContent(static::FILE_CONNECTOR_RIGHT)
         );
+    }
+
+    /**
+     * Getter of the connector left for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerConnectorRight()
+    {
+        return [$this->markerConnectorRight];
     }
 }

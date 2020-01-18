@@ -40,20 +40,25 @@ use Brainworxx\Krexx\Analyse\Model;
 trait Recursion
 {
     /**
+     * @var array
+     */
+    private $markerRecursion = [
+        '{name}',
+        '{domId}',
+        '{normal}',
+        '{connectorLeft}',
+        '{connectorRight}',
+        '{gensource}',
+        '{help}',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function renderRecursion(Model $model)
     {
         return str_replace(
-            [
-                static::MARKER_NAME,
-                static::MARKER_DOM_ID,
-                static::MARKER_NORMAL,
-                static::MARKER_CONNECTOR_LEFT,
-                static::MARKER_CONNECTOR_RIGHT,
-                static::MARKER_GEN_SOURCE,
-                static::MARKER_HELP,
-            ],
+            $this->markerRecursion,
             [
                 $model->getName(),
                 $model->getDomid(),
@@ -68,5 +73,19 @@ trait Recursion
             ],
             $this->getTemplateFileContent(static::FILE_RECURSION)
         );
+    }
+
+    /**
+     * Getter of the recursion for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerRecursion()
+    {
+        return $this->markerRecursion;
     }
 }

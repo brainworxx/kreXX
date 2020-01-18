@@ -37,20 +37,22 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 
 trait FatalHeader
 {
+
+    private $markerFatalHeader = [
+        '{cssJs}',
+        '{version}',
+        '{search}',
+        '{KrexxId}',
+        '{type}',
+        '{encoding}'
+    ];
     /**
      * {@inheritdoc}
      */
     public function renderFatalHeader($cssJs, $errorType)
     {
         return str_replace(
-            [
-                static::MARKER_CSS_JS,
-                static::MARKER_VERSION,
-                static::MARKER_SEARCH,
-                static::MARKER_KREXX_ID,
-                static::MARKER_TYPE,
-                static::MARKER_ENCODING
-            ],
+            $this->markerFatalHeader,
             [
                 $cssJs,
                 $this->pool->config->version,
@@ -61,5 +63,19 @@ trait FatalHeader
             ],
             $this->getTemplateFileContent(static::FILE_FATAL_HEADER)
         );
+    }
+
+    /**
+     * Getter of the fatal header for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerFatalHeader()
+    {
+        return $this->markerFatalHeader;
     }
 }

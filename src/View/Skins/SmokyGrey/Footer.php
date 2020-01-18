@@ -40,6 +40,11 @@ use Brainworxx\Krexx\Analyse\Model;
 trait Footer
 {
     /**
+     * @var string
+     */
+    private $markerFooter = '{kconfiguration-classes}';
+
+    /**
      * {@inheritDoc}
      */
     public function renderFooter(array $caller, Model $model, $configOnly = false)
@@ -49,16 +54,30 @@ trait Footer
         // to the config as the current payload.
         if ($configOnly === true) {
             return str_replace(
-                static::MARKER_K_CONFIG_CLASSES,
+                $this->markerFooter,
                 '',
                 parent::renderFooter($caller, $model, $configOnly)
             );
         }
 
         return str_replace(
-            static::MARKER_K_CONFIG_CLASSES,
+            $this->markerFooter,
             static::STYLE_HIDDEN,
             parent::renderFooter($caller, $model, $configOnly)
         );
+    }
+
+    /**
+     * Getter of the footer for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerFooter()
+    {
+        return [$this->markerFooter];
     }
 }

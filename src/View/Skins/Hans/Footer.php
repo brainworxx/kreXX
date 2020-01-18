@@ -39,6 +39,25 @@ use Brainworxx\Krexx\Analyse\Model;
 
 trait Footer
 {
+    /**
+     * @var array
+     */
+    private $markerFooter = [
+        '{configInfo}',
+        '{caller}',
+        '{plugins}',
+    ];
+
+    /**
+     * @var array
+     */
+    private $markerCaller = [
+        '{callerFile}',
+        '{callerLine}',
+        '{date}',
+        '{callerUrl}',
+    ];
+
      /**
      * {@inheritdoc}
      */
@@ -52,11 +71,7 @@ trait Footer
         }
 
         return str_replace(
-            [
-                static::MARKER_CONFIG_INFO,
-                static::MARKER_CALLER,
-                static::MARKER_PLUGINS,
-            ],
+            $this->markerFooter,
             [
                 $this->renderExpandableChild($model, $configOnly),
                 $callerString,
@@ -77,12 +92,7 @@ trait Footer
     protected function renderCaller(array $caller)
     {
         return str_replace(
-            [
-                static::MARKER_CALLER_FILE,
-                static::MARKER_CALLER_LINE,
-                static::MARKER_CALLER_DATE,
-                static::MARKER_CALLER_URL,
-            ],
+            $this->markerCaller,
             [
                 $caller[static::TRACE_FILE],
                 $caller[static::TRACE_LINE],
@@ -91,5 +101,33 @@ trait Footer
             ],
             $this->getTemplateFileContent(static::FILE_CALLER)
         );
+    }
+
+    /**
+     * Getter of the footer for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerFooter()
+    {
+        return $this->markerFooter;
+    }
+
+    /**
+     * Getter of the caller for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerCaller()
+    {
+        return $this->markerCaller;
     }
 }

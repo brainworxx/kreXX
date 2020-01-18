@@ -47,8 +47,8 @@ class FatalMainTest extends AbstractRenderSmokyGrey
     public function testRenderFatalMain()
     {
         $result = $this->renderSmokyGrey->renderFatalMain('', '', 1);
-        $this->assertNotContains($this->renderSmokyGrey::MARKER_SEARCH, $result);
-        $this->assertNotContains($this->renderSmokyGrey::MARKER_KREXX_ID, $result);
-        $this->assertNotContains($this->renderSmokyGrey::MARKER_PLUGINS, $result);
+        foreach ($this->renderSmokyGrey->getMarkerFatalMain() as $marker) {
+            $this->assertNotContains($marker, $result);
+        }
     }
 }

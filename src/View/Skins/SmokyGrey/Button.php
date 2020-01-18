@@ -40,21 +40,40 @@ use Brainworxx\Krexx\Analyse\Model;
 trait Button
 {
     /**
+     * @var array
+     */
+    private $markerSingleButton = [
+        '{addjson}',
+        '{class}',
+    ];
+
+    /**
      * {@inheritDoc}
      */
     public function renderButton(Model $model)
     {
         // Prepare the json. Not much do display for form elements.
         return str_replace(
-            [
-                static::MARKER_ADDITIONAL_JSON,
-                static::MARKER_CLASS
-            ],
+            $this->markerSingleButton,
             [
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
                 $model->getName()
             ],
             parent::renderButton($model)
         );
+    }
+
+    /**
+     * Getter of the button for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSingleButton(): array
+    {
+        return $this->markerSingleButton;
     }
 }

@@ -40,26 +40,34 @@ use Brainworxx\Krexx\Analyse\Model;
 trait SingleChild
 {
     /**
-     * The array we use for the string replace.
-     *
      * @var array
      */
-    protected $renderSingleChildArray = [
-        ConstInterface::MARKER_GEN_SOURCE,
-        ConstInterface::MARKER_SOURCE_BUTTON,
-        ConstInterface::MARKER_EXPAND,
-        ConstInterface::MARKER_CALLABLE,
-        ConstInterface::MARKER_EXTRA,
-        ConstInterface::MARKER_NAME,
-        ConstInterface::MARKER_TYPE,
-        ConstInterface::MARKER_TYPE_CLASSES,
-        ConstInterface::MARKER_NORMAL,
-        ConstInterface::MARKER_CONNECTOR_LEFT,
-        ConstInterface::MARKER_CONNECTOR_RIGHT,
-        ConstInterface::MARKER_CODE_WRAPPER_LEFT,
-        ConstInterface::MARKER_CODE_WRAPPER_RIGHT,
-        ConstInterface::MARKER_HELP,
+    private $markerSingleChild = [
+        '{gensource}',
+        '{sourcebutton}',
+        '{expand}',
+        '{callable}',
+        '{extra}',
+        '{name}',
+        '{type}',
+        '{type-classes}',
+        '{normal}',
+        '{connectorLeft}',
+        '{connectorRight}',
+        '{codewrapperLeft}',
+        '{codewrapperRight}',
+        '{help}',
     ];
+
+    /**
+     * @var string
+     */
+    private $markerSingleChildCallable = '{normal}';
+
+    /**
+     * @var string
+     */
+    private $markerSingleChildExtra = '{data}';
 
     /**
      * Renders a "single child", containing a single not expandable value.
@@ -87,7 +95,7 @@ trait SingleChild
 
         // Stitching it together.
         return str_replace(
-            $this->renderSingleChildArray,
+            $this->markerSingleChild,
             [
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gensource),
                 $this->renderSourceButton($gensource),
@@ -146,7 +154,7 @@ trait SingleChild
     {
         if ($model->getHasExtra() === true) {
             return str_replace(
-                static::MARKER_DATA,
+                $this->markerSingleChildExtra,
                 $model->getData(),
                 $this->getTemplateFileContent(static::FILE_SI_CHILD_EX)
             );
@@ -169,12 +177,54 @@ trait SingleChild
         if ($model->getIsCallback() === true) {
             // Add callable partial.
             return str_replace(
-                static::MARKER_NORMAL,
+                $this->markerSingleChildCallable,
                 $model->getNormal(),
                 $this->getTemplateFileContent(static::FILE_SI_CHILD_CALL)
             );
         }
 
         return '';
+    }
+
+    /**
+     * Getter of the single child for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSingleChild(): array
+    {
+        return $this->markerSingleChild;
+    }
+
+    /**
+     * Getter of the extra for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSingleChildExtra()
+    {
+        return [$this->markerSingleChildExtra];
+    }
+
+    /**
+     * Getter of the callable for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSingleChildCallable()
+    {
+        return [$this->markerSingleChildCallable];
     }
 }

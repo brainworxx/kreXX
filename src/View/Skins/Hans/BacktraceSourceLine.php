@@ -38,16 +38,21 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait BacktraceSourceLine
 {
     /**
+     * @var array
+     */
+    private $markerBacktraceSourceLine = [
+        '{className}',
+        '{lineNo}',
+        '{sourceCode}',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function renderBacktraceSourceLine($className, $lineNo, $sourceCode)
     {
         return str_replace(
-            [
-                static::MARKER_CLASS_NAME,
-                static::MARKER_LINE_NO,
-                static::MARKER_SOURCE_CODE,
-            ],
+            $this->markerBacktraceSourceLine,
             [
                 $className,
                 $lineNo,
@@ -55,5 +60,19 @@ trait BacktraceSourceLine
             ],
             $this->getTemplateFileContent(static::FILE_BACKTRACE_SOURCELINE)
         );
+    }
+
+    /**
+     * Getter of the backtrace source line for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerBacktraceSourceLine()
+    {
+        return $this->markerBacktraceSourceLine;
     }
 }

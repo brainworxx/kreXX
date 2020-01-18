@@ -38,6 +38,11 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait Search
 {
     /**
+     * @var string
+     */
+    private $markerSearch = '{KrexxId}';
+
+    /**
      * Renders the search button and the search menu.
      *
      * @return string
@@ -46,9 +51,23 @@ trait Search
     protected function renderSearch()
     {
         return str_replace(
-            static::MARKER_KREXX_ID,
+            $this->markerSearch,
             $this->pool->recursionHandler->getMarker(),
             $this->getTemplateFileContent(static::FILE_SEARCH)
         );
+    }
+
+    /**
+     * Getter of the search for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSearch()
+    {
+        return [$this->markerSearch];
     }
 }

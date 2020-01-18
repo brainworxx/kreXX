@@ -35,6 +35,13 @@
 
 namespace Brainworxx\Krexx\View\Skins\Hans;
 
+/**
+ * Interface ConstInterface
+ *
+ * @deprecated
+ *
+ * @package Brainworxx\Krexx\View\Skins\Hans
+ */
 interface ConstInterface
 {
     const MARKER_NAME = '{name}';
@@ -96,7 +103,12 @@ interface ConstInterface
     const MARKER_PLUGIN_TEXT = '{plugintext}';
     const MARKER_PLUGIN_ACTIVE_TEXT = '{activetext}';
     const MARKER_PLUGIN_ACTIVE_CLASS = '{activeclass}';
+    const MARKER_LANGUAGE = '{language}';
+    const MARKER_ADDITIONAL_JSON = '{addjson}';
+    const MARKER_K_DEBUG_CLASSES = '{kdebug-classes}';
+    const MARKER_K_CONFIG_CLASSES = '{kconfiguration-classes}';
 
+    const DATA_ATTRIBUTE_JSON = 'addjson';
     const DATA_ATTRIBUTE_SOURCE = 'source';
     const DATA_ATTRIBUTE_WRAPPER_R = 'codewrapperRight';
     const DATA_ATTRIBUTE_WRAPPER_L = 'codewrapperLeft';

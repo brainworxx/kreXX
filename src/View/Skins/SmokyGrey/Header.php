@@ -38,6 +38,15 @@ namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
 trait Header
 {
     /**
+     * @var array
+     */
+    private $markerHeader = [
+        '{kdebug-classes}',
+        '{kconfiguration-classes}',
+        '{plugins}'
+    ];
+
+    /**
      * {@inheritDoc}
      */
     public function renderHeader($headline, $cssJs)
@@ -54,11 +63,7 @@ trait Header
         }
 
         return str_replace(
-            [
-                static::MARKER_K_DEBUG_CLASSES,
-                static::MARKER_K_CONFIG_CLASSES,
-                static::MARKER_PLUGINS,
-            ],
+            $this->markerHeader,
             [
                 $debugClass,
                 $configClass,
@@ -66,5 +71,19 @@ trait Header
             ],
             parent::renderHeader($headline, $cssJs)
         );
+    }
+
+    /**
+     * Getter of the header for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerHeader(): array
+    {
+        return $this->markerHeader;
     }
 }

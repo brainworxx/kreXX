@@ -36,30 +36,30 @@
 namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\View\Skins\Hans\ConstInterface;
-use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
 
 trait ExpandableChild
 {
-
     /**
-     * The array we use for the string replace.
-     *
      * @var array
      */
-    protected $renderExpandableChildSgArray = [
-        ConstInterface::MARKER_NAME,
-        ConstInterface::MARKER_TYPE,
-        ConstInterface::MARKER_K_TYPE,
-        ConstInterface::MARKER_NORMAL,
-        ConstInterface::MARKER_CONNECTOR_RIGHT,
-        ConstInterface::MARKER_GEN_SOURCE,
-        ConstInterface::MARKER_NEST,
-        ConstInterface::MARKER_SOURCE_BUTTON,
-        ConstInterface::MARKER_CODE_WRAPPER_LEFT,
-        ConstInterface::MARKER_CODE_WRAPPER_RIGHT,
-        RenderSmokyGrey::MARKER_ADDITIONAL_JSON,
+    private $markerExpandableChild = [
+        '{name}',
+        '{type}',
+        '{ktype}',
+        '{normal}',
+        '{connectorRight}',
+        '{gensource}',
+        '{nest}',
+        '{sourcebutton}',
+        '{codewrapperLeft}',
+        '{codewrapperRight}',
+        '{addjson}',
     ];
+
+    /**
+     * @var string
+     */
+    private $markerSourceButton = '{language}';
 
     /**
      * {@inheritDoc}
@@ -74,7 +74,7 @@ trait ExpandableChild
         // Generating our code.
         $gencode = $this->pool->codegenHandler->generateSource($model);
         return str_replace(
-            $this->renderExpandableChildSgArray,
+            $this->markerExpandableChild,
             [
                 $model->getName(),
                 $model->getType(),
@@ -121,10 +121,38 @@ trait ExpandableChild
         } else {
             // Add the button.
             return str_replace(
-                static::MARKER_LANGUAGE,
+                $this->markerSourceButton,
                 $model->getConnectorLanguage(),
                 $this->getTemplateFileContent(static::FILE_SOURCE_BUTTON)
             );
         }
+    }
+
+    /**
+     * Getter of the expandable child for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerExpandableChild(): array
+    {
+        return $this->markerExpandableChild;
+    }
+
+    /**
+     * Getter of the source button for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSourceButton()
+    {
+        return [$this->markerSourceButton];
     }
 }

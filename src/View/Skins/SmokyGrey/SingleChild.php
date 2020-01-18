@@ -39,6 +39,11 @@ use Brainworxx\Krexx\Analyse\Model;
 
 trait SingleChild
 {
+    private $markerSingleChild = [
+        '{language}',
+        '{addjson}'
+    ];
+
     /**
      * {@inheritDoc}
      */
@@ -55,15 +60,26 @@ trait SingleChild
 
         // Replace the source button and set the json.
         return str_replace(
-            [
-                static::MARKER_LANGUAGE,
-                static::MARKER_ADDITIONAL_JSON,
-            ],
+            $this->markerSingleChild,
             [
                 $model->getConnectorLanguage(),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson()))
             ],
             $parentStuff
         );
+    }
+
+    /**
+     * Getter of the single child for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSingleChild(): array
+    {
+        return $this->markerSingleChild;
     }
 }

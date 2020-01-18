@@ -38,6 +38,11 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait Messages
 {
     /**
+     * @var string
+     */
+    private $markerMessages = '{message}';
+
+    /**
      * {@inheritdoc}
      */
     public function renderMessages(array $messages)
@@ -45,9 +50,23 @@ trait Messages
         $result = '';
         $messageTemplate = $this->getTemplateFileContent(static::FILE_MESSAGE);
         foreach ($messages as $message) {
-            $result .= str_replace(static::MARKER_MESSAGE, $message, $messageTemplate);
+            $result .= str_replace($this->markerMessages, $message, $messageTemplate);
         }
 
         return $result;
+    }
+
+   /**
+     * Getter of the messages for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerMessages()
+    {
+        return [$this->markerMessages];
     }
 }

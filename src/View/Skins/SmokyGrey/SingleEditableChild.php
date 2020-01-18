@@ -40,15 +40,34 @@ use Brainworxx\Krexx\Analyse\Model;
 trait SingleEditableChild
 {
     /**
+     * @var string
+     */
+    private $markerSingleEditableChild = '{addjson}';
+
+    /**
      * {@inheritDoc}
      */
     public function renderSingleEditableChild(Model $model)
     {
         // Prepare the json. Not much do display for form elements.
         return str_replace(
-            static::MARKER_ADDITIONAL_JSON,
+            $this->markerSingleEditableChild,
             $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
             parent::renderSingleEditableChild($model)
         );
+    }
+
+    /**
+     * Getter of the single editable child for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSingleEditableChild()
+    {
+        return [$this->markerSingleEditableChild];
     }
 }

@@ -4,6 +4,7 @@
 - Change: Dropped PHP 5.x support.
 - Change: Remove all double Exception / Throwable catching
 - Change: Introduced PSR-12 coding style
+- Change: Simplified the skin rendering.
 
 3.2.2 dev
 - Bugfix: The process other routing is never called.

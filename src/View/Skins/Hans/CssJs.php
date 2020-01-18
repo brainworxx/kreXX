@@ -38,14 +38,36 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
 trait CssJs
 {
     /**
+     * @var array
+     */
+    private $markerCssJs = [
+        '{css}',
+        '{js}'
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function renderCssJs(&$css, &$javascript)
     {
         return str_replace(
-            [static::MARKER_CSS, static::MARKER_JS],
+            $this->markerCssJs,
             [$css, $javascript],
             $this->getTemplateFileContent(static::FILE_CSSJS)
         );
+    }
+
+    /**
+     * Getter of the css js for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerCssJs()
+    {
+        return $this->markerCssJs;
     }
 }

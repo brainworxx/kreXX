@@ -40,6 +40,15 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 trait PluginList
 {
     /**
+     * @var array
+     */
+    private $markerSinglePlugin = [
+        '{activeclass}',
+        '{activetext}',
+        '{plugintext}',
+    ];
+
+    /**
      * Render a list of all registered plugins.
      *
      * @return string
@@ -57,12 +66,9 @@ trait PluginList
                 $activeClass = 'kisinactive';
                 $activeText = 'inactive';
             }
+
             $result .= str_replace(
-                [
-                    static::MARKER_PLUGIN_ACTIVE_CLASS,
-                    static::MARKER_PLUGIN_ACTIVE_TEXT,
-                    static::MARKER_PLUGIN_TEXT,
-                ],
+                $this->markerSinglePlugin,
                 [
                     $activeClass,
                     $activeText,
@@ -72,5 +78,19 @@ trait PluginList
             );
         }
         return $result;
+    }
+
+    /**
+     * Getter of the plugin list for unit tests.
+     *
+     * @codeCoverageIgnore
+     *   We are not testing the unit tests.
+     *
+     * @return array
+     *   The marker array.
+     */
+    public function getMarkerSinglePlugin()
+    {
+        return $this->markerSinglePlugin;
     }
 }
