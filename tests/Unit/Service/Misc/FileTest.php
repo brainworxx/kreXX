@@ -423,7 +423,7 @@ class FileTest extends AbstractTest
     }
 
     /**
-     * Test the getting of a file stemp from an "existing" file.
+     * Test the getting of a file stamp from an "existing" file.
      *
      * @covers \Brainworxx\Krexx\Service\Misc\File::filetime
      */
@@ -442,6 +442,11 @@ class FileTest extends AbstractTest
         $this->assertEquals(42, $fileService->filetime($filename));
     }
 
+    /**
+     * Test the getting of a file stamp from a not "existing" file.
+     *
+     * @covers \Brainworxx\Krexx\Service\Misc\File::filetime
+     */
     public function testFileTimeNotExisting()
     {
         $fileService = new File(Krexx::$pool);
