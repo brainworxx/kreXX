@@ -60,8 +60,8 @@ class ModelTest extends AbstractTest
      */
     public function testSetEditable()
     {
-        $this->assertSame($this->model, $this->model->setEditable(static::VALUE));
-        $this->assertEquals(static::VALUE, $this->model->getEditable());
+        $this->assertSame($this->model, $this->model->setEditable(true));
+        $this->assertEquals(true, $this->model->getEditable());
     }
 
     /**

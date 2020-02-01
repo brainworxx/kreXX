@@ -349,6 +349,9 @@ class KrexxTest extends AbstractTest
         $settingsMockDest->expects($this->any())
             ->method('getValue')
             ->will($this->returnValue(Fallback::VALUE_FILE));
+        $settingsMockDest->expects($this->once())
+            ->method('getSource')
+            ->will($this->returnValue('forced logging'));
 
         $settingsMockAjax = $this->createMock(Model::class);
         $settingsMockAjax->expects($this->once())
@@ -361,6 +364,9 @@ class KrexxTest extends AbstractTest
         $settingsMockAjax->expects($this->any())
             ->method('getValue')
             ->will($this->returnValue(false));
+        $settingsMockAjax->expects($this->once())
+            ->method('getSource')
+            ->will($this->returnValue('forced logging'));
 
         // Inject the mock into the settings
         Krexx::$pool->config->settings[Fallback::SETTING_DESTINATION] = $settingsMockDest;

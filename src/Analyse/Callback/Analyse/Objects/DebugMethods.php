@@ -117,7 +117,7 @@ class DebugMethods extends AbstractObjectAnalysis
      * @return mixed
      *   Whatever the method would return.
      */
-    protected function retrieveValue($object, $methodName)
+    protected function retrieveValue($object, string $methodName)
     {
         $result = null;
         // Add a try to prevent the hosting CMS from doing something stupid.
@@ -151,7 +151,7 @@ class DebugMethods extends AbstractObjectAnalysis
      * @return bool
      *   Whether or not we are allowed toi access this method.
      */
-    protected function checkIfAccessible($data, $funcName, ReflectionClass $reflectionClass)
+    protected function checkIfAccessible($data, string $funcName, ReflectionClass $reflectionClass)
     {
         // We need to check if:
         // 1.) Method exists. It may be protected though.

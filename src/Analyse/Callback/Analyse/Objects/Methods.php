@@ -103,16 +103,16 @@ class Methods extends AbstractObjectAnalysis
     /**
      * @param \ReflectionClass $ref
      *   The reflection of t he class we are analysing
-     * @param $domId
+     * @param string $domId
      *   The already generated dom id.
-     * @param $doProtected
+     * @param bool $doProtected
      *   Are we analysing the protected methods here?
-     * @param $doPrivate
+     * @param bool $doPrivate
      *   Are we analysing private methods here?
      * @return string
      *   The generated markup.
      */
-    protected function analyseMethods(ReflectionClass $ref, $domId, $doProtected, $doPrivate)
+    protected function analyseMethods(ReflectionClass $ref, string $domId, bool $doProtected, bool $doPrivate)
     {
         // Dumping all methods but only if we have any.
         $protected = [];
@@ -171,7 +171,7 @@ class Methods extends AbstractObjectAnalysis
      * @return string
      *   The generated id.
      */
-    protected function generateDomIdFromClassname($data, $doProtected, $doPrivate)
+    protected function generateDomIdFromClassname(string $data, bool $doProtected, bool $doPrivate)
     {
         $string = 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_m_';
         if ($doProtected === true) {

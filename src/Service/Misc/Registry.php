@@ -91,7 +91,7 @@ class Registry
     /**
      * Getter for the registry.
      *
-     * @param $key
+     * @param mixed $key
      *   The key under what we once stored the $value,
      *
      * @return null|mixed
@@ -109,7 +109,7 @@ class Registry
     /**
      * Check if we actually have a value to this key.
      *
-     * @param $key
+     * @param mixed $key
      *   The key we want to check.
      *
      * @return bool

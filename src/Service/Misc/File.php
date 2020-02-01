@@ -98,7 +98,7 @@ class File
      * @return string
      *   The source code, HTML formatted.
      */
-    public function readSourcecode($filePath, $highlight, $readFrom, $readTo)
+    public function readSourcecode(string $filePath, int $highlight, int $readFrom, int $readTo)
     {
         $result = '';
 
@@ -159,7 +159,7 @@ class File
      * @return string
      *   The content of the file, between the $from and $to.
      */
-    public function readFile($filePath, $readFrom = 0, $readTo = 0)
+    public function readFile(string $filePath, int $readFrom = 0, int $readTo = 0)
     {
         $result = '';
 
@@ -200,7 +200,7 @@ class File
      * @return \SplFixedArray
      *   The file in a \SplFixedArray.
      */
-    protected function getFileContentsArray($filePath)
+    protected function getFileContentsArray(string $filePath)
     {
         $filePath = $this->realpath($filePath);
 
@@ -232,7 +232,7 @@ class File
      * @return string
      *   The content of the file, if readable.
      */
-    public function getFileContents($filePath, $showError = true)
+    public function getFileContents(string $filePath, bool $showError = true)
     {
         if ($this->fileIsReadable($filePath) === false) {
             if ($showError === true) {
@@ -264,7 +264,7 @@ class File
      * @param string $string
      *   The string we want to write.
      */
-    public function putFileContents($filePath, $string)
+    public function putFileContents(string $filePath, string $string)
     {
         // Register the file as a readable one.
         static::$isReadableCache[$filePath] = true;
@@ -276,7 +276,7 @@ class File
      *
      * @param string $filePath
      */
-    public function deleteFile($filePath)
+    public function deleteFile(string $filePath)
     {
         $realpath = $this->realpath($filePath);
 
@@ -310,13 +310,13 @@ class File
      * Return the original path, in case we can not determine the
      * $_SERVER['DOCUMENT_ROOT']
      *
-     * @param $filePath
+     * @param string $filePath
      *   The path we want to filter
      *
      * @return string
      *   The filtered path to the calling file.
      */
-    public function filterFilePath($filePath)
+    public function filterFilePath(string $filePath)
     {
         $realpath = ltrim($this->realpath($filePath), DIRECTORY_SEPARATOR);
         if ($this->docRoot !== false && strpos($realpath, $this->docRoot) === 0) {
@@ -336,7 +336,7 @@ class File
      * @return bool
      *   If the file is readable, or not.
      */
-    public function fileIsReadable($filePath)
+    public function fileIsReadable(string $filePath)
     {
         $realPath = $this->realpath($filePath);
 
@@ -357,7 +357,7 @@ class File
      * @return int
      *   Timestamp of the file.
      */
-    public function filetime($filePath)
+    public function filetime(string $filePath)
     {
         $filePath = $this->realpath($filePath);
 
@@ -383,7 +383,7 @@ class File
      * @return string
      *   The real path, if possible. The original path as fallback
      */
-    protected function realpath($filePath)
+    protected function realpath(string $filePath)
     {
         $realpath = realpath($filePath);
 
@@ -405,7 +405,7 @@ class File
      * @return bool
      *   Well? Can we create and delete files in there?
      */
-    public function isDirectoryWritable($path)
+    public function isDirectoryWritable(string $path)
     {
         $filename = 'test';
         set_error_handler(function () {

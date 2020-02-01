@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
+use \Throwable;
 
 /**
  * Handling exceptions.
@@ -56,9 +57,9 @@ class ExceptionController extends AbstractController
     /**
      * Analysing the error object and generating the output.
      *
-     * @param \Throwable|\Exception $exception
+     * @param \Throwable $exception
      */
-    public function exceptionAction($exception)
+    public function exceptionAction(Throwable $exception)
     {
         $this->pool->reset();
 

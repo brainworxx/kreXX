@@ -237,7 +237,7 @@ call_user_func(function () {
      * @return mixed
      *   Return the original anslysis value.
      */
-    function krexx($data = null, $handle = '')
+    function krexx($data = null, string $handle = '')
     {
         if (empty($handle)) {
             \Brainworxx\Krexx\Krexx::open($data);

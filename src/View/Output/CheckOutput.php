@@ -131,7 +131,7 @@ class CheckOutput
      * @return bool
      *   Whether the current client ip is allowed or not.
      */
-    public function isAllowedIp($whitelist)
+    public function isAllowedIp(string $whitelist)
     {
         if ($this->isCli() === true || $whitelist === '*') {
             // There is no IP on the shell.

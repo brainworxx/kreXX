@@ -158,10 +158,10 @@ class Emergency
     /**
      * Setter for the enabling of the break.
      *
-     * @param $bool
+     * @param bool $bool
      *  Whether it is enabled, or not.
      */
-    public function setDisable($bool)
+    public function setDisable(bool $bool)
     {
         $this->disabled = $bool;
     }

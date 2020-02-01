@@ -144,7 +144,7 @@ class Objects extends AbstractCallback
      * @return string
      *   The generated html markup.
      */
-    protected function dumpStuff($classname)
+    protected function dumpStuff(string $classname)
     {
         return $this->pool
             ->createClass($classname)

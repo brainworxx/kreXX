@@ -144,19 +144,19 @@ class BacktraceStep extends AbstractCallback
     /**
      * Directly render the output by an processor.
      *
-     * @param $name
+     * @param string $name
      *   The human readable name of what we are rendering
-     * @param $type
+     * @param string $type
      *   The array key inside the backtrace
-     * @param $eventName
+     * @param string $eventName
      *   The event name of what we dispatch.
-     * @param $processorName
+     * @param string $processorName
      *   The class name of the processor.
      *
      * @return string
      *   The rendered HTML.
      */
-    protected function outputProcessor($name, $type, $eventName, $processorName)
+    protected function outputProcessor(string $name, string $type, string $eventName, string $processorName)
     {
         $stepData = $this->parameters[static::PARAM_DATA];
         if (isset($stepData[$type]) === true) {
@@ -188,7 +188,7 @@ class BacktraceStep extends AbstractCallback
      * @return string
      *   The rendered HTML.
      */
-    protected function outputSingleChild($name, $type, $eventName)
+    protected function outputSingleChild(string $name, string $type, string $eventName)
     {
         $stepData = $this->parameters[static::PARAM_DATA];
         if (isset($stepData[$type]) === true) {

@@ -52,6 +52,7 @@ class SingleChildTest extends AbstractRenderSmokyGrey
     {
         $this->mockModel(static::GET_CONNECTOR_LANGUAGE, 'Fortran');
         $this->mockModel(static::GET_JSON, ['Friday' => 'the 12\'th']);
+        $this->mockModel('getConnectorLeft', '');
         $this->modelMock->expects($this->any())
             ->method('getType')
             ->will($this->returnValue(''));

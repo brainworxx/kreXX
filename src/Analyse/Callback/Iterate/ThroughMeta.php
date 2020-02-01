@@ -97,7 +97,7 @@ class ThroughMeta extends AbstractCallback
      * @return string
      *   The rendered html.
      */
-    protected function handleNoneReflections($key, $meta)
+    protected function handleNoneReflections(string $key, string $meta)
     {
         /** @var Model $model */
         $model = $this->pool->createClass(Model::class)

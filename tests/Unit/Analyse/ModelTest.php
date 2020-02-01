@@ -382,7 +382,7 @@ class ModelTest extends AbstractTest
      */
     public function testSetConnectorType()
     {
-        $data = static::SOME_STRING_TO_PASS_THROUGH;
+        $data = 1234;
 
         $mockConnector = $this->createMock(Connectors::class);
         $mockConnector->expects($this->once())
@@ -400,7 +400,7 @@ class ModelTest extends AbstractTest
      */
     public function testSetCustomConnectorLeft()
     {
-        $data = static::SOME_STRING_TO_PASS_THROUGH;
+        $data = 5678;
 
         $mockConnector = $this->createMock(Connectors::class);
         $mockConnector->expects($this->once())

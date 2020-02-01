@@ -51,7 +51,7 @@ trait BacktraceSourceLine
     /**
      * {@inheritdoc}
      */
-    public function renderBacktraceSourceLine($className, $lineNo, $sourceCode)
+    public function renderBacktraceSourceLine(string $className, int $lineNo, string $sourceCode)
     {
         return str_replace(
             $this->markerBacktraceSourceLine,

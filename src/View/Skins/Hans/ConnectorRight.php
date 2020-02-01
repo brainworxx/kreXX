@@ -53,7 +53,7 @@ trait ConnectorRight
      * @return string
      *   The rendered connector.
      */
-    protected function renderConnectorRight($connector)
+    protected function renderConnectorRight(string $connector)
     {
         if (empty($connector) === true) {
             // No connector, no display.

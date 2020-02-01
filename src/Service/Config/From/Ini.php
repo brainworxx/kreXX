@@ -81,7 +81,7 @@ class Ini extends Fallback
      * @return $this
      *   Return $this, for chaining.
      */
-    public function loadIniFile($path)
+    public function loadIniFile(string $path)
     {
         $this->iniSettings = (array)parse_ini_string(
             $this->pool->fileService->getFileContents($path, false),
@@ -99,7 +99,7 @@ class Ini extends Fallback
      * @return bool
      *   Well? is it editable?
      */
-    public function getFeIsEditable($name)
+    public function getFeIsEditable(string $name)
     {
         // Load it from the file.
         $filevalue = $this->getFeConfigFromFile($name);
@@ -122,7 +122,7 @@ class Ini extends Fallback
      * @return array|null
      *   The configuration (is it editable, a dropdown, a textfield, ...)
      */
-    public function getFeConfigFromFile($parameterName)
+    public function getFeConfigFromFile(string $parameterName)
     {
         // Get the human readable stuff from the ini file.
         $value = $this->getConfigFromFile(static::SECTION_FE_EDITING, $parameterName);
@@ -170,7 +170,7 @@ class Ini extends Fallback
      * @return string|null
      *   The value from the file. Null, when not available or not validated.
      */
-    public function getConfigFromFile($group, $name)
+    public function getConfigFromFile(string $group, string $name)
     {
         // Do we have a value in the ini?
         // Does it validate?

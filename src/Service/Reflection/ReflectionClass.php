@@ -67,7 +67,7 @@ class ReflectionClass extends \ReflectionClass
     /**
      * ReflectionClass constructor.
      *
-     * @param $data
+     * @param object $data
      *   The class we are currently analysing.
      *
      * @throws \ReflectionException

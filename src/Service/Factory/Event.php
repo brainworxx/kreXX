@@ -90,7 +90,7 @@ class Event
      * @return string
      *   The generated markup from the event handlers
      */
-    public function dispatch($name, AbstractCallback $callback = null, Model $model = null)
+    public function dispatch(string $name, AbstractCallback $callback = null, Model $model = null)
     {
         if (isset($this->register[$name]) === false) {
             // No registered handler. Early return.

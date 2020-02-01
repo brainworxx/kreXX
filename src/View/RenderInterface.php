@@ -94,7 +94,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderHeader($headline, $cssJs);
+    public function renderHeader(string $headline, string $cssJs);
 
     /**
      * Renders the kreXX footer.
@@ -109,7 +109,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderFooter(array $caller, Model $model, $configOnly = false);
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false);
 
     /**
      * Simply outputs the css and js stuff.
@@ -122,7 +122,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderCssJs(&$css, &$javascript);
+    public function renderCssJs(string &$css, string &$javascript);
 
     /**
      * Renders a expandable child with a callback in the middle.
@@ -136,7 +136,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderExpandableChild(Model $model, $isExpanded = false);
+    public function renderExpandableChild(Model $model, bool $isExpanded = false);
 
     /**
      * Renders a simple editable child node.
@@ -173,7 +173,7 @@ interface RenderInterface
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalMain($errstr, $errfile, $errline);
+    public function renderFatalMain(string $errstr, string $errfile, int $errline);
 
     /**
      * Renders the header part of the fatal error handler.
@@ -186,7 +186,7 @@ interface RenderInterface
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalHeader($cssJs, $errorType);
+    public function renderFatalHeader(string $cssJs, string $errorType);
 
     /**
      * Renders all internal messages.
@@ -204,15 +204,15 @@ interface RenderInterface
      *
      * @param string $className
      *   The class name where the sourcecode is from.
-     * @param string $lineNo
-     *   The kine number from the file.
+     * @param int $lineNo
+     *   The line number from the file.
      * @param string $sourceCode
      *   Part of the sourcecode, where the backtrace is coming from.
      *
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderBacktraceSourceLine($className, $lineNo, $sourceCode);
+    public function renderBacktraceSourceLine(string $className, int $lineNo, string $sourceCode);
 
     /**
      * Renders the hr.

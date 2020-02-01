@@ -141,7 +141,7 @@ abstract class AbstractCallback implements ConstInterface
      * @return Model
      *   Return the model for chaining.
      */
-    protected function dispatchEventWithModel($name, Model $model)
+    protected function dispatchEventWithModel(string $name, Model $model)
     {
         $this->pool->eventService->dispatch(
             static::class . '::' . $name,

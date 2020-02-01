@@ -133,7 +133,7 @@ trait SingleChild
      * @return string
      *   The rendered HTML output.
      */
-    protected function renderSourceButton($gensource)
+    protected function renderSourceButton(string $gensource)
     {
         if (empty($gensource) === true || $this->pool->codegenHandler->getAllowCodegen() === false) {
              // No source button for you!
@@ -197,7 +197,7 @@ trait SingleChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSingleChild(): array
+    public function getMarkerSingleChild() : array
     {
         return $this->markerSingleChild;
     }

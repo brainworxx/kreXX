@@ -96,7 +96,7 @@ class Recursion
      *
      * @param Pool $pool
      */
-    public function __construct($pool)
+    public function __construct(Pool $pool)
     {
         $this->recursionMarker = 'Krexx' . substr(str_shuffle(md5(microtime())), 0, 10);
         // Mark the $GLOBALS array.
@@ -181,7 +181,7 @@ class Recursion
      * @return bool
      *   Boolean which shows whether we are facing a recursion.
      */
-    public function isInMetaHive($domId)
+    public function isInMetaHive(string $domId)
     {
         return isset($this->metaRecursionHive[$domId]);
     }
@@ -192,7 +192,7 @@ class Recursion
      * @param string $domId
      *   The dom id we want to track.
      */
-    public function addToMetaHive($domId)
+    public function addToMetaHive(string $domId)
     {
         $this->metaRecursionHive[$domId] = true;
     }

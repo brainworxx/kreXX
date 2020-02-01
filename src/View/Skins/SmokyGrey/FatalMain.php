@@ -51,7 +51,7 @@ trait FatalMain
     /**
      * {@inheritDoc}
      */
-    public function renderFatalMain($errstr, $errfile, $errline)
+    public function renderFatalMain(string $errstr, string $errfile, int $errline)
     {
         // Add the search.
         return str_replace(

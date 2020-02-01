@@ -65,6 +65,9 @@ class FooterTest extends AbstractRenderHans
         Krexx::$pool->fileService->expects($this->once())
             ->method('readFile')
             ->will($this->returnValue(''));
+        Krexx::$pool->fileService->expects($this->any())
+            ->method('filterFilePath')
+            ->will($this->returnValue(''));
 
         // Mock the model for the renderExpandableChild, which we will not test
         // here.

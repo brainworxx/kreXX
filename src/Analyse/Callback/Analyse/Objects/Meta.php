@@ -117,7 +117,7 @@ class Meta extends AbstractObjectAnalysis
      * @return string
      *   The generated DOM.
      */
-    protected function analyseMeta($domId, ReflectionClass $ref, $name)
+    protected function analyseMeta(string $domId, ReflectionClass $ref, string $name)
     {
         $this->pool->recursionHandler->addToMetaHive($domId);
 
@@ -186,7 +186,7 @@ class Meta extends AbstractObjectAnalysis
      * @return string
      *   The generated id.
      */
-    protected function generateDomIdFromClassname($data)
+    protected function generateDomIdFromClassname(string $data)
     {
         return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_c_' . md5($data);
     }

@@ -54,7 +54,7 @@ class ConfigSupplier extends Ini
     /**
      * {@inheritdoc}
      */
-    public function getConfigFromFile($group, $name)
+    public function getConfigFromFile(string $group, string $name)
     {
         // Deliver the overwrites.
         if (isset(static::$overwriteValues[$name])) {

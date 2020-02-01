@@ -80,7 +80,7 @@ class TimerController extends AbstractController
      * @return $this
      *   Return $this for chaining
      */
-    public function timerAction($string)
+    public function timerAction(string $string)
     {
         // Did we use this one before?
         if (isset(static::$counterCache[$string]) === true) {

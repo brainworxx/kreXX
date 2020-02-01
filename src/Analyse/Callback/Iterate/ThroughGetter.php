@@ -424,7 +424,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The de-camelized string.
      */
-    protected function convertToSnakeCase($string)
+    protected function convertToSnakeCase(string $string)
     {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
     }
@@ -441,7 +441,7 @@ class ThroughGetter extends AbstractCallback
      * @return array
      *   The findings.
      */
-    protected function findIt(array $searchArray, $haystack)
+    protected function findIt(array $searchArray, string $haystack)
     {
 
         // Defining our regex.
@@ -471,7 +471,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The escaped string.
      */
-    protected function regexEscaping($string)
+    protected function regexEscaping(string $string)
     {
         return str_replace(
             $this->regexEscapeFind,

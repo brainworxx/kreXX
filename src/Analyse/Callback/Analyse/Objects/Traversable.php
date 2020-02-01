@@ -128,7 +128,7 @@ class Traversable extends AbstractObjectAnalysis
     /**
      * Analyse the traversable retrieval result.
      *
-     * @param $originalClass
+     * @param object $originalClass
      *   The class that we are analysing.
      * @param array $result
      *   The retrieved traversable result.

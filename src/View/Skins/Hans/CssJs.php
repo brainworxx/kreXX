@@ -50,7 +50,7 @@ trait CssJs
     /**
      * {@inheritdoc}
      */
-    public function renderCssJs(&$css, &$javascript)
+    public function renderCssJs(string &$css, string &$javascript)
     {
         return str_replace(
             $this->markerCssJs,

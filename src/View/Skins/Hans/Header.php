@@ -56,7 +56,7 @@ trait Header
     /**
      * {@inheritdoc}
      */
-    public function renderHeader($headline, $cssJs)
+    public function renderHeader(string $headline, string $cssJs)
     {
         return str_replace(
             $this->markerHeader,

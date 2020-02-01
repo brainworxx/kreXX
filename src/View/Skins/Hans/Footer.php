@@ -63,7 +63,7 @@ trait Footer
      /**
      * {@inheritdoc}
      */
-    public function renderFooter(array $caller, Model $model, $configOnly = false)
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false)
     {
         if (isset($caller[static::TRACE_FILE]) === true) {
             $callerString = $this->renderCaller($caller);

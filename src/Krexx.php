@@ -77,7 +77,7 @@ class Krexx
      * @return mixed|null
      *   Return the original analysis value.
      */
-    public static function __callStatic($name, array $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
         Pool::createPool();
 
@@ -103,7 +103,7 @@ class Krexx
      *   Defines a "moment" during a benchmark test.
      *   The string should be something meaningful, like "Model invoice db call".
      */
-    public static function timerMoment($string)
+    public static function timerMoment(string $string)
     {
         Pool::createPool();
 

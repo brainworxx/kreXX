@@ -80,7 +80,7 @@ abstract class AbstractObjectAnalysis extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    protected function getReflectionPropertiesData(array $refProps, ReflectionClass $ref, $label = null)
+    protected function getReflectionPropertiesData(array $refProps, ReflectionClass $ref, string $label = null)
     {
         // We are dumping public properties direct into the main-level, without
         // any "abstraction level", because they can be accessed directly.

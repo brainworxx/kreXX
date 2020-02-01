@@ -180,7 +180,7 @@ class Model extends AbstractModel
     /**
      * Setter for normal.
      *
-     * @param string $normal
+     * @param string|int $normal
      *   The short result of the analysis.
      *
      * @return $this
@@ -212,7 +212,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setAdditional($additional)
+    public function setAdditional(string $additional)
     {
         $this->additional = $additional;
         return $this;
@@ -238,7 +238,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setType($type)
+    public function setType(string $type)
     {
         $this->type = $type;
         return $this;
@@ -289,7 +289,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setDomid($domid)
+    public function setDomid(string $domid)
     {
         $this->domid = $domid;
         return $this;
@@ -326,7 +326,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setHasExtra($value)
+    public function setHasExtra(bool $value)
     {
         $this->hasExtra = $value;
         return $this;
@@ -345,7 +345,7 @@ class Model extends AbstractModel
     /**
      * Setter for the multiline code generation.
      *
-     * @param string $multiLineCodeGen
+     * @param string|int $multiLineCodeGen
      *   The constant from the Codegen class.
      *
      * @return $this
@@ -376,7 +376,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this for chaining.
      */
-    public function setIsCallback($isCallback)
+    public function setIsCallback(bool $isCallback)
     {
         $this->isCallback = $isCallback;
 
@@ -387,7 +387,7 @@ class Model extends AbstractModel
      * Setter for the $params. It is used in case we are connection a method or
      * closure.
      *
-     * @param string $params
+     * @param string|int $params
      *   The parameters as a sting.
      *
      * @return $this
@@ -413,12 +413,12 @@ class Model extends AbstractModel
     /**
      * Setter for the type we are rendering, using the class constants.
      *
-     * @param string $type
+     * @param int $type
      *
      * @return $this
      *   Return $this, for chaining.
      */
-    public function setConnectorType($type)
+    public function setConnectorType(int $type)
     {
         $this->connectorService->setType($type);
         return $this;
@@ -433,7 +433,7 @@ class Model extends AbstractModel
      * @return $this
      *   Return $this for chaining.
      */
-    public function setCustomConnectorLeft($string)
+    public function setCustomConnectorLeft(string $string)
     {
         $this->connectorService->setCustomConnectorLeft($string);
         return $this;
@@ -479,7 +479,7 @@ class Model extends AbstractModel
      * @return $this
      *   Return $this for chaining.
      */
-    public function setIsMetaConstants($bool)
+    public function setIsMetaConstants(bool $bool)
     {
         $this->isMetaConstants = $bool;
         return $this;
@@ -493,7 +493,7 @@ class Model extends AbstractModel
      * @return $this
      *   Return $this for chaining.
      */
-    public function setIsPublic($bool)
+    public function setIsPublic(bool $bool)
     {
         $this->isPublic = $bool;
         return $this;

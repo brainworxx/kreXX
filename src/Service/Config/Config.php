@@ -174,7 +174,7 @@ class Config extends Fallback
      * @param bool $value
      *   Whether it it enabled, or not.
      */
-    public function setDisabled($value)
+    public function setDisabled(bool $value)
     {
         $this->settings[static::SETTING_DISABLED]
             ->setValue($value)
@@ -207,7 +207,7 @@ class Config extends Fallback
      * @return string|null
      *   The setting.
      */
-    public function getSetting($name)
+    public function getSetting(string $name)
     {
         return $this->settings[$name]->getValue();
     }
@@ -221,7 +221,7 @@ class Config extends Fallback
      * @return $this
      *   Return this, for chaining.
      */
-    public function loadConfigValue($name)
+    public function loadConfigValue(string $name)
     {
         $isEditable = $this->iniConfig->getFeIsEditable($name);
         $section = $this->feConfigFallback[$name][static::SECTION];

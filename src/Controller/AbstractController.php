@@ -134,7 +134,7 @@ abstract class AbstractController implements ConstInterface
      * @return string
      *   The generated markup.
      */
-    protected function outputFooter(array $caller, $isExpanded = false)
+    protected function outputFooter(array $caller, bool $isExpanded = false)
     {
         // Now we need to stitch together the content of the ini file
         // as well as it's path.

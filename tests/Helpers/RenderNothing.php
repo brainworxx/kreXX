@@ -101,7 +101,7 @@ class RenderNothing extends RenderHans
      * @param bool $is
      * @return string
      */
-    public function renderExpandableChild(Model $model, $is = false)
+    public function renderExpandableChild(Model $model, bool $is = false)
     {
         $this->model[__FUNCTION__][] = $model;
         return '';
@@ -113,7 +113,7 @@ class RenderNothing extends RenderHans
      * @param bool $configOnly
      * @return string
      */
-    public function renderFooter(array $caller, Model $model, $configOnly = false)
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false)
     {
         $this->model[__FUNCTION__][] = $model;
         return $this->footer;
@@ -124,7 +124,7 @@ class RenderNothing extends RenderHans
      * @param $javascript
      * @return mixed|string
      */
-    public function renderCssJs(&$css, &$javascript)
+    public function renderCssJs(string &$css, string &$javascript)
     {
         $this->css = $css;
         $this->js = $javascript;
@@ -145,7 +145,7 @@ class RenderNothing extends RenderHans
      * @param $errline
      * @return string
      */
-    public function renderFatalMain($errstr, $errfile, $errline): string
+    public function renderFatalMain(string $errstr, string $errfile, int $errline): string
     {
         return $this->fatalMain;
     }

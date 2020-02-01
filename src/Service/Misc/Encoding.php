@@ -168,7 +168,7 @@ class Encoding
      * @return string
      *   The encoded string.
      */
-    public function encodeString($data, $code = false)
+    public function encodeString(string $data, bool $code = false)
     {
         // We will not encode an empty string.
         if ($data === '') {
@@ -244,7 +244,7 @@ class Encoding
      * @return string
      *   The result.
      */
-    public function mbDetectEncoding($string, $encodinglist = 'auto', $strict = false)
+    public function mbDetectEncoding(string $string, string $encodinglist = 'auto', $strict = false)
     {
         return mb_detect_encoding($string, $encodinglist, $strict);
     }
@@ -261,7 +261,7 @@ class Encoding
      * @return int
      *   The result.
      */
-    public function mbStrLen($string, $encoding = null)
+    public function mbStrLen(string $string, string $encoding = null)
     {
         // Meh, the original mb_strlen interprets a null here as an empty string.
         if ($encoding === null) {
@@ -287,7 +287,7 @@ class Encoding
      * @return string
      *   The result.
      */
-    public function mbSubStr($string, $start, $length)
+    public function mbSubStr(string $string, int $start, int $length)
     {
         return mb_substr($string, $start, $length);
     }
@@ -301,13 +301,17 @@ class Encoding
      * If anybody is actually reading this, and knows of a fast solution,
      * please open a ticket in our bug tracker.
      *
-     * @param string $name
+     * @param string|int $name
      *
      * @return string
      */
     public function encodeStringForCodeGeneration($name)
     {
         static $cache = [];
+
+        if (is_int($name)) {
+            return $name;
+        }
 
         if (isset($cache[$name])) {
             return $cache[$name];
@@ -349,7 +353,7 @@ class Encoding
      * @return string
      *   The extra escaped result for code.
      */
-    protected function arrayMapCallbackCode($charCode)
+    protected function arrayMapCallbackCode(int $charCode)
     {
         if ($charCode === 9) {
             // Replace TAB with two spaces, it's better readable that way.
@@ -367,7 +371,7 @@ class Encoding
      * @return string
      *   The extra escaped result.
      */
-    protected function arrayMapCallbackNormal($charCode)
+    protected function arrayMapCallbackNormal(int $charCode)
     {
         return '&#' . $charCode . ';';
     }
@@ -381,7 +385,7 @@ class Encoding
      * @see https://stackoverflow.com/questions/29019484/validate-a-php-variable
      * @author AbraCadaver
      *
-     * @param $propName
+     * @param string|int $propName
      *   The property name we want to check.
      * @return bool
      *   Whether we have a special char in there, or not.

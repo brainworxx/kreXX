@@ -49,7 +49,7 @@ trait Footer
     /**
      * {@inheritDoc}
      */
-    public function renderFooter(array $caller, Model $model, $configOnly = false)
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false)
     {
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch

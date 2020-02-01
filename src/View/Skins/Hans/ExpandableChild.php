@@ -72,7 +72,7 @@ trait ExpandableChild
     /**
      * {@inheritdoc}
      */
-    public function renderExpandableChild(Model $model, $isExpanded = false)
+    public function renderExpandableChild(Model $model, bool $isExpanded = false)
     {
         // Check for emergency break.
         if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
@@ -118,7 +118,7 @@ trait ExpandableChild
      * @return string
      *   The css class name.
      */
-    protected function retrieveOpenedClass($isExpanded)
+    protected function retrieveOpenedClass(bool $isExpanded)
     {
         if ($isExpanded === true) {
             return 'kopened';
@@ -136,7 +136,7 @@ trait ExpandableChild
      * @return string
      *   Th rendered HTML.
      */
-    protected function renderSourceButtonWithStop($gencode)
+    protected function renderSourceButtonWithStop(string $gencode)
     {
         if (
             $gencode === ';stop;' ||
@@ -163,7 +163,7 @@ trait ExpandableChild
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderNest(Model $model, $isExpanded = false)
+    protected function renderNest(Model $model, bool $isExpanded = false)
     {
         // Get the dom id.
         $domid = $model->getDomid();

@@ -51,7 +51,7 @@ trait Header
     /**
      * {@inheritDoc}
      */
-    public function renderHeader($headline, $cssJs)
+    public function renderHeader(string $headline, string $cssJs)
     {
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch

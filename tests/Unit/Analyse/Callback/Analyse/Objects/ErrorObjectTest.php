@@ -93,6 +93,9 @@ class ErrorObjectTest extends AbstractTest
                 [false],
                 [true]
             );
+        $codegenMock->expects($this->exactly(2))
+            ->method('generateSource')
+            ->will($this->returnValue(''));
         Krexx::$pool->codegenHandler = $codegenMock;
 
         $fileServiceMock = $this->createMock(File::class);

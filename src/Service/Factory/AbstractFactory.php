@@ -68,7 +68,7 @@ abstract class AbstractFactory
      * @return mixed
      *   The requested object.
      */
-    public function createClass($classname)
+    public function createClass(string $classname)
     {
         // Check for possible overwrite.
         if (isset($this->rewrite[$classname]) === true) {
@@ -81,7 +81,7 @@ abstract class AbstractFactory
     /**
      * Return a part the superglobal $GLOBALS.
      *
-     * @param string $what
+     * @param string|int $what
      *   The part of the globals we want to access.
      *
      * @return array

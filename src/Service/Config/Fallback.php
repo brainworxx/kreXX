@@ -325,7 +325,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      * @return array
      *   The settings.
      */
-    protected function returnBoolSelectFalse($section)
+    protected function returnBoolSelectFalse(string $section)
     {
         return [
             Fallback::VALUE => Fallback::VALUE_FALSE,
@@ -344,7 +344,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      * @return array
      *   The settings.
      */
-    protected function returnBoolSelectTrue($section)
+    protected function returnBoolSelectTrue(string $section)
     {
         return [
             Fallback::VALUE => Fallback::VALUE_TRUE,
@@ -365,7 +365,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      * @return array
      *   The settings.
      */
-    protected function returnInput($section, $value)
+    protected function returnInput(string $section, int $value)
     {
         return [
             Fallback::VALUE => $value,

@@ -153,7 +153,7 @@ class Chunks
      * @return string
      *   The key to the chunk, wrapped up in @@@@@@.
      */
-    public function chunkMe($string)
+    public function chunkMe(string $string)
     {
         if ($this->chunksAreAllowed === true && strlen($string) > 10000) {
             // Get the key.
@@ -198,7 +198,7 @@ class Chunks
      *   The original date
      *
      */
-    protected function dechunkMe($key)
+    protected function dechunkMe(string $key)
     {
         $filename = $this->chunkDir . $key . '.Krexx.tmp';
         // Read the file.
@@ -216,7 +216,7 @@ class Chunks
      * @param string $string
      *   The chunk string.
      */
-    public function sendDechunkedToBrowser($string)
+    public function sendDechunkedToBrowser(string $string)
     {
         // Check for HTML output.
         if ($this->pool->createClass(CheckOutput::class)->isOutputHtml()) {
@@ -254,7 +254,7 @@ class Chunks
      * @param string $string
      *   The chunked version of the output.
      */
-    public function saveDechunkedToFile($string)
+    public function saveDechunkedToFile(string $string)
     {
         if ($this->loggingIsAllowed === false) {
             // We have no write access. Do nothing.
@@ -307,7 +307,7 @@ class Chunks
      * @param bool $bool
      *   Are we using chunks?
      */
-    public function setChunksAreAllowed($bool)
+    public function setChunksAreAllowed(bool $bool)
     {
         $this->chunksAreAllowed = $bool;
     }
@@ -330,7 +330,7 @@ class Chunks
      * @param $bool
      *   Is the log folder accessible?
      */
-    public function setLoggingIsAllowed($bool)
+    public function setLoggingIsAllowed(bool $bool)
     {
         $this->loggingIsAllowed = $bool;
     }
@@ -352,7 +352,7 @@ class Chunks
      * @param array $caller
      *   The caller from the caller finder.
      */
-    public function addMetadata($caller)
+    public function addMetadata(array $caller)
     {
         if ($this->pool->config->getSetting(Fallback::SETTING_DESTINATION) === Fallback::VALUE_FILE) {
             $this->metadata[] = $caller;
@@ -387,7 +387,7 @@ class Chunks
      * @param string $string
      *   The string we are processing.
      */
-    public function detectEncoding($string)
+    public function detectEncoding(string $string)
     {
         static $doNothingEncoding = ['ASCII', 'UTF-8', false];
         $encoding = $this->pool->encodingService->mbDetectEncoding($string);

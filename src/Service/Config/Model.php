@@ -87,7 +87,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setEditable($editable)
+    public function setEditable(bool $editable)
     {
         $this->editable = $editable;
         return $this;
@@ -101,7 +101,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setType($type)
+    public function setType(string $type)
     {
         $this->type = $type;
         return $this;
@@ -110,7 +110,7 @@ class Model
     /**
      * Setter for the value.
      *
-     * @param string $value
+     * @param string|int|null $value
      *
      * @return $this
      *   Return $this for Chaining.
@@ -175,7 +175,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setSection($section)
+    public function setSection(string $section)
     {
         $this->section = $section;
         return $this;
@@ -199,7 +199,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setSource($source)
+    public function setSource(string $source)
     {
         $this->source = $source;
 

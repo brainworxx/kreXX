@@ -172,6 +172,9 @@ class AbstractController extends AbstractTest
             ->method('getHelp')
             ->with('currentConfig')
             ->will($this->returnValue('some helpful description'));
+        $messageMock->expects($this->any())
+            ->method('outputMessages')
+            ->will($this->returnValue(''));
         $poolMock->messages = $messageMock;
     }
 }

@@ -131,15 +131,15 @@ abstract class AbstractModel implements ConstInterface
     /**
      * Simply add a parameter for the $closure.
      *
-     * @param $name
+     * @param string $name
      *   The name of the parameter.
-     * @param $value
+     * @param mixed $value
      *   The value of the parameter, by reference.
      *
      * @return $this
      *   $this, for chaining.
      */
-    public function addParameter($name, &$value)
+    public function addParameter(string $name, &$value)
     {
         $this->parameters[$name] = $value;
         return $this;
@@ -154,7 +154,7 @@ abstract class AbstractModel implements ConstInterface
      * @return $this
      *   $this, for chaining.
      */
-    public function setHelpid($helpId)
+    public function setHelpid(string $helpId)
     {
         $this->addToJson(static::META_HELP, $this->pool->messages->getHelp($helpId));
         return $this;
@@ -167,13 +167,13 @@ abstract class AbstractModel implements ConstInterface
      *
      * @param string $key
      *   The array key.
-     * @param string $value
+     * @param mixed $value
      *   The value we want to set.
      *
      * @return $this
      *   $this for chaining.
      */
-    public function addToJson($key, $value)
+    public function addToJson(string $key, $value)
     {
 
         if (empty($value) === true) {

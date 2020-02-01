@@ -52,7 +52,7 @@ trait FatalMain
     /**
      * {@inheritdoc}
      */
-    public function renderFatalMain($errstr, $errfile, $errline)
+    public function renderFatalMain(string $errstr, string $errfile, int $errline)
     {
         $source = $this->pool->fileService->readSourcecode(
             $errfile,
