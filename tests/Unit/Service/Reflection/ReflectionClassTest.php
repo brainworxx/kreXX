@@ -98,8 +98,10 @@ class ReflectionClassTest extends AbstractTest
      */
     public function testRetrieveValue()
     {
+        $normal = 'normal';
         $fixture = new PublicFixture();
         $fixture->{50} = 'special';
+        $fixture->notSoSpecial = $normal;
         unset($fixture->value2);
 
         $reflection = new ReflectionClass($fixture);
@@ -111,7 +113,8 @@ class ReflectionClassTest extends AbstractTest
             'value4' => 4,
             'value5' => 'dont\'t look at me!',
             'static' => 'static stuff',
-            50 => 'special'
+            50 => 'special',
+            'notSoSpecial' => $normal
         ];
 
         foreach ($expectations as $name => $expectation) {
@@ -121,6 +124,8 @@ class ReflectionClassTest extends AbstractTest
             } elseif ($name === 50) {
                 // This one is dynamically declared.
                 $refProperty = new UndeclaredProperty($reflection, 50);
+            } elseif ($name === 'notSoSpecial') {
+                $refProperty = new UndeclaredProperty($reflection, 'notSoSpecial');
             } else {
                 $refProperty = $reflection->getProperty($name);
             }

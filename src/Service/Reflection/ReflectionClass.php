@@ -114,9 +114,9 @@ class ReflectionClass extends \ReflectionClass
         // We are facing a numeric property name (yes, that is possible).
         // To be honest, this one of the most bizarre things I've encountered so
         // far. Depending on your PHP version, that value may not be accessible
-        // via normal means from the array we have got here.. And no, we are not
+        // via normal means from the array we have got here. And no, we are not
         // accessing the object directly.
-        if (is_int($propName) === true) {
+        if ($refProperty instanceof UndeclaredProperty && is_int($refProperty->propertyName)) {
             return array_values($this->objectArray)[
                 array_search($propName, array_keys($this->objectArray))
             ];

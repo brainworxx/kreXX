@@ -71,7 +71,7 @@ class UndeclaredProperty extends ReflectionProperty
      *
      * @var string
      */
-    protected $propertyName;
+    public $propertyName;
 
     /**
      * A reflection of the class, where the property was declared.
