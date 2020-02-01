@@ -52,7 +52,88 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 {
 
     /**
+     * The fallback configuration.
+     */
+    const CONFIG_FALLBACK = [
+        Fallback::SECTION_OUTPUT => [
+            Fallback::SETTING_DISABLED,
+            Fallback::SETTING_IP_RANGE,
+            Fallback::SETTING_DETECT_AJAX,
+        ],
+        Fallback::SECTION_BEHAVIOR => [
+            Fallback::SETTING_SKIN,
+            Fallback::SETTING_DESTINATION,
+            Fallback::SETTING_MAX_FILES,
+            Fallback::SETTING_USE_SCOPE_ANALYSIS,
+        ],
+        Fallback::SECTION_PRUNE => [
+            Fallback::SETTING_MAX_STEP_NUMBER,
+            Fallback::SETTING_ARRAY_COUNT_LIMIT,
+            Fallback::SETTING_NESTING_LEVEL,
+        ],
+        Fallback::SECTION_PROPERTIES => [
+            Fallback::SETTING_ANALYSE_PROTECTED,
+            Fallback::SETTING_ANALYSE_PRIVATE,
+            Fallback::SETTING_ANALYSE_TRAVERSABLE,
+        ],
+        Fallback::SECTION_METHODS => [
+            Fallback::SETTING_ANALYSE_PROTECTED_METHODS,
+            Fallback::SETTING_ANALYSE_PRIVATE_METHODS,
+            Fallback::SETTING_ANALYSE_GETTER,
+            Fallback::SETTING_DEBUG_METHODS,
+        ],
+        Fallback::SECTION_EMERGENCY => [
+            Fallback::SETTING_MAX_CALL,
+            Fallback::SETTING_MAX_RUNTIME,
+            Fallback::SETTING_MEMORY_LEFT,
+        ],
+    ];
+
+    /**
+     * Render settings for a editable select field.
+     */
+    const EDITABLE_SELECT = [
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_SELECT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_TRUE,
+    ];
+
+    /**
+     * Render settings for a display only input field.
+     */
+    const DISPLAY_ONLY_INPUT = [
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_INPUT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
+    ];
+
+    /**
+     * Render settings for a editable input field.
+     */
+    const EDITABLE_INPUT = [
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_INPUT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_TRUE,
+    ];
+
+    /**
+     * Render settings for a display only select field.
+     */
+    const DISPLAY_ONLY_SELECT = [
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_SELECT,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
+    ];
+
+    /**
+     * Render settings for a field which will not be displayed, or accept values.
+     */
+    const DISPLAY_NOTHING = [
+        Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_NONE,
+        Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
+    ];
+
+    /**
      * Defining the layout of the frontend editing form.
+     *
+     * @deprecated
+     *   Since 4.0.0. use CONFIG_FALLBACK instead
      *
      * @var array
      */
@@ -92,14 +173,10 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     ];
 
     /**
-     * Values, rendering settings and the actual fallback value.
-     *
-     * @var array
-     */
-    public $feConfigFallback = [];
-
-    /**
      * Render settings for a editable select field.
+     *
+     * @deprecated
+     *   Sinde 4.0.0. Use Fallback::EDITABLE_SELECT
      *
      * @var array
      */
@@ -111,6 +188,9 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     /**
      * Render settings for a editable input field.
      *
+     * @deprecated
+     *   Since 4.0.0. Use Fallback::EDITABLE_INPUT.
+     *
      * @var array
      */
     protected $editableInput = [
@@ -120,6 +200,9 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 
     /**
      * Render settings for a display only input field.
+     *
+     * @deprecated
+     *   Since 4.0.0. Use Fallback::DISPLAY_ONLY_INPUT.
      *
      * @var array
      */
@@ -131,6 +214,8 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     /**
      * Render settings for a display only select field.
      *
+     * @deprecated
+     *   Since 4.0.0. Use FALLBACK::DISPLAY_ONLY_SELECT
      * @var array
      */
     protected $displayOnlySelect = [
@@ -141,12 +226,22 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     /**
      * Render settings for a field which will not be displayed, or accept values.
      *
+     * @deprecated
+     *   Since 4.0.0. Use Fallback::DISPLAY_NOTHING.
+     *
      * @var array
      */
     protected $displayNothing = [
         Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_NONE,
         Fallback::RENDER_EDITABLE => Fallback::VALUE_FALSE,
     ];
+
+    /**
+     * Values, rendering settings and the actual fallback value.
+     *
+     * @var array
+     */
+    public $feConfigFallback = [];
 
     /**
      * The skin configuration.
@@ -232,7 +327,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     {
         return [
             Fallback::VALUE => Fallback::VALUE_FALSE,
-            Fallback::RENDER => $this->editableSelect,
+            Fallback::RENDER => Fallback::EDITABLE_SELECT,
             Fallback::EVALUATE => Fallback::EVAL_BOOL,
             Fallback::SECTION => $section,
         ];
@@ -251,7 +346,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     {
         return [
             Fallback::VALUE => Fallback::VALUE_TRUE,
-            Fallback::RENDER => $this->editableSelect,
+            Fallback::RENDER => Fallback::EDITABLE_SELECT,
             Fallback::EVALUATE => Fallback::EVAL_BOOL,
             Fallback::SECTION => $section,
         ];
@@ -272,7 +367,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     {
         return [
             Fallback::VALUE => $value,
-            Fallback::RENDER => $this->editableInput,
+            Fallback::RENDER => Fallback::EDITABLE_INPUT,
             Fallback::EVALUATE => Fallback::EVAL_INT,
             Fallback::SECTION => $section,
         ];
@@ -290,7 +385,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
             // A debug method must be public and have no parameters.
             // Change these only if you know what you are doing.
             Fallback::VALUE => Fallback::VALUE_DEBUG_METHODS,
-            Fallback::RENDER => $this->displayOnlyInput,
+            Fallback::RENDER => Fallback::DISPLAY_ONLY_INPUT,
             Fallback::EVALUATE => Fallback::EVAL_DEBUG_METHODS,
             Fallback::SECTION =>  Fallback::SECTION_METHODS,
         ];
@@ -306,7 +401,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
         return [
                 // Either 'file' or 'browser'.
                 Fallback::VALUE => Fallback::VALUE_BROWSER,
-                Fallback::RENDER => $this->displayOnlySelect,
+                Fallback::RENDER => FALLBACK::DISPLAY_ONLY_SELECT,
                 Fallback::EVALUATE => Fallback::EVAL_DESTINATION,
                 Fallback::SECTION => Fallback::SECTION_BEHAVIOR,
             ];
@@ -322,7 +417,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
         return [
             // Maximum files that are kept inside the logfolder.
             Fallback::VALUE => 10,
-            Fallback::RENDER => $this->displayOnlyInput,
+            Fallback::RENDER => Fallback::DISPLAY_ONLY_INPUT,
             Fallback::EVALUATE => Fallback::EVAL_INT,
             Fallback::SECTION => Fallback::SECTION_BEHAVIOR,
         ];
@@ -337,7 +432,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     {
         return [
             Fallback::VALUE => Fallback::SKIN_SMOKY_GREY,
-            Fallback::RENDER => $this->editableSelect,
+            Fallback::RENDER => Fallback::EDITABLE_SELECT,
             Fallback::EVALUATE => Fallback::EVAL_SKIN,
             Fallback::SECTION => Fallback::SECTION_BEHAVIOR,
         ];
@@ -354,7 +449,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
             // IP range for calling kreXX.
             // kreXX is disabled for everyone who dies not fit into this range.
             Fallback::VALUE => '*',
-            Fallback::RENDER => $this->displayNothing,
+            Fallback::RENDER => Fallback::DISPLAY_NOTHING,
             Fallback::EVALUATE => Fallback::EVAL_IP_RANGE,
             Fallback::SECTION => Fallback::SECTION_OUTPUT,
         ];
@@ -369,7 +464,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     {
         return [
             Fallback::VALUE => '',
-            Fallback::RENDER => $this->editableInput,
+            Fallback::RENDER => Fallback::EDITABLE_INPUT,
             Fallback::EVALUATE => Fallback::EVAL_DEV_HANDLE,
             Fallback::SECTION => ''
         ];
@@ -385,7 +480,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
         return [
             // Maximum runtime in seconds, before triggering an emergency break.
             Fallback::VALUE => 60,
-            Fallback::RENDER => $this->editableInput,
+            Fallback::RENDER => Fallback::EDITABLE_INPUT,
             Fallback::EVALUATE => Fallback::EVAL_MAX_RUNTIME,
             Fallback::SECTION => Fallback::SECTION_EMERGENCY,
         ];
