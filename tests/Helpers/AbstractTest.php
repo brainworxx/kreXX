@@ -94,8 +94,6 @@ abstract class AbstractTest extends TestCase
 
         // Reset the pool and the settings.
         AbstractController::$analysisInProgress = false;
-        Krexx::$pool->config = new Config(Krexx::$pool);
-        Krexx::$pool->config->setDisabled(false);
         Krexx::$pool = null;
         Config::$disabledByPhp = false;
         CallbackCounter::$counter = 0;

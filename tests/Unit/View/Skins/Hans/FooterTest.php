@@ -62,6 +62,9 @@ class FooterTest extends AbstractRenderHans
             $this->renderHans::TRACE_DATE => 'yesteryear',
             $this->renderHans::TRACE_URL => 'https://www.google.biz',
         ];
+        Krexx::$pool->fileService->expects($this->once())
+            ->method('readFile')
+            ->will($this->returnValue(''));
 
         // Mock the model for the renderExpandableChild, which we will not test
         // here.

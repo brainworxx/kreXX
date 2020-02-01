@@ -47,6 +47,8 @@ class RecursionTest extends AbstractRenderSmokyGrey
     public function testRenderRecursion()
     {
         $this->mockModel(static::GET_JSON, ['jay' => 'son']);
+        $this->mockModel('getConnectorRight', '');
+
         $result = $this->renderSmokyGrey->renderRecursion($this->modelMock);
         $this->assertContains('jay', $result);
         $this->assertContains('son', $result);

@@ -5,6 +5,8 @@
 - Change: Remove all double Exception / Throwable catching
 - Change: Introduced PSR-12 coding style
 - Change: Simplified the skin rendering.
+- Change: Deprecations for the fallback settings class.
+- Change: Introduced strict mode.
 
 3.2.2
 - Updated to PHP 7.4

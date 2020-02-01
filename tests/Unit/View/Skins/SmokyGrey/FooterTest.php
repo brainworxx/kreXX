@@ -52,6 +52,12 @@ class FooterTest extends AbstractRenderSmokyGrey
         $model->expects($this->exactly(2))
             ->method('getJson')
             ->will($this->returnValue([]));
+        $model->expects($this->any())
+            ->method('getType')
+            ->will($this->returnValue(''));
+        $model->expects($this->any())
+            ->method('getConnectorRight')
+            ->will($this->returnValue(''));
 
         $result = $this->renderSmokyGrey->renderFooter([], $model, true);
         $this->assertNotContains($this->renderSmokyGrey::STYLE_HIDDEN, $result);
