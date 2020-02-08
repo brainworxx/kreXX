@@ -71,7 +71,7 @@ class CallerFinder extends AbstractCaller
             'Krexx::log',
             'krexx::log',
         ];
-        $this->pattern = 'krexx';
+        $this->pattern = static::FUNCTION_PATTERN;
     }
 
     /**

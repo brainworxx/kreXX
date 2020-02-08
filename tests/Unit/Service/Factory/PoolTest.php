@@ -60,6 +60,8 @@ use stdClass;
 
 class PoolTest extends AbstractTest
 {
+    const MISC_NAMESPACE = '\\Brainworxx\\Krexx\\Service\\Misc\\';
+
     /**
      * Testing the creation of all neccessary classes.
      *
@@ -108,7 +110,7 @@ class PoolTest extends AbstractTest
         $filename = 'test';
         // Chunks folder is writable
         // Log folder is writable
-        $filePutContents = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'file_put_contents');
+        $filePutContents = $this->getFunctionMock(static::MISC_NAMESPACE, 'file_put_contents');
         $filePutContents->expects($this->exactly(2))
             ->will(
                 $this->returnValueMap([
@@ -116,7 +118,7 @@ class PoolTest extends AbstractTest
                     [Krexx::$pool->config->getLogDir() . $filename, 'x', true]
                 ])
             );
-        $unlink = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'unlink');
+        $unlink = $this->getFunctionMock(static::MISC_NAMESPACE, 'unlink');
         $unlink->expects($this->exactly(2))
             ->will(
                 $this->returnValueMap([
@@ -143,7 +145,7 @@ class PoolTest extends AbstractTest
         $filename = 'test';
         // Chunks folder is not writable
         // Log folder is not writable
-        $filePutContents = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'file_put_contents');
+        $filePutContents = $this->getFunctionMock(static::MISC_NAMESPACE, 'file_put_contents');
         $filePutContents->expects($this->exactly(2))
             ->will(
                 $this->returnValueMap([
@@ -151,7 +153,7 @@ class PoolTest extends AbstractTest
                     [Krexx::$pool->config->getLogDir() . $filename, 'x', false]
                 ])
             );
-        $unlink = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Misc\\', 'unlink');
+        $unlink = $this->getFunctionMock(static::MISC_NAMESPACE, 'unlink');
         // Ther was no file "created", hence there is no unlink'ing done.
         $unlink->expects($this->never());
 

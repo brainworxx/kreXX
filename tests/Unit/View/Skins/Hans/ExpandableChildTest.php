@@ -93,7 +93,6 @@ class ExpandableChildTest extends AbstractRenderHans
         $this->assertContains('another name', $result);
         $this->assertContains('not normal', $result);
         $this->assertContains('some conn', $result);
-        $this->assertContains('another name', $result);
         $this->assertContains('any conn', $result);
         $this->assertContains('generated source', $result);
         // Stuff from the nest.

@@ -302,19 +302,19 @@ class ThroughGetter extends AbstractCallback
             // myProperty
             $propertyName = $this->preparePropertyName($reflectionMethod),
             // _myProperty
-            $testName = '_' . $propertyName,
+            '_' . $propertyName,
             // MyProperty
-            $testName = ucfirst($propertyName),
+            ucfirst($propertyName),
             // _MyProperty
-            $testName = '_' . ucfirst($propertyName),
+            '_' . ucfirst($propertyName),
             // myproperty
-            $testName = strtolower($propertyName),
+            strtolower($propertyName),
             // _myproperty
-            $testName = '_' . strtolower($propertyName),
+            '_' . strtolower($propertyName),
             // my_property
-            $testName = $this->convertToSnakeCase($propertyName),
+            $this->convertToSnakeCase($propertyName),
             // _my_property
-            $testName = '_' . $this->convertToSnakeCase($propertyName)
+            '_' . $this->convertToSnakeCase($propertyName)
         ];
 
         foreach ($names as $name) {

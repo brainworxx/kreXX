@@ -172,6 +172,7 @@ class ThroughPropertiesTest extends AbstractTest
             ->callMe();
 
         // Retrieve the result models and assert them.
+        $public = 'public ';
         $models = $routeNothing->model;
 
         $complexDeclarationString = DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR .
@@ -192,7 +193,7 @@ class ThroughPropertiesTest extends AbstractTest
             ],
             '->',
             '',
-            'public '
+            $public
         );
 
         // publicIntProperty
@@ -206,7 +207,7 @@ class ThroughPropertiesTest extends AbstractTest
             ],
             '->',
             '',
-            'public '
+            $public
         );
 
         // unsetProperty
@@ -262,7 +263,7 @@ class ThroughPropertiesTest extends AbstractTest
             ],
             '->',
             '',
-            'public '
+            $public
         );
 
         // publicStatic

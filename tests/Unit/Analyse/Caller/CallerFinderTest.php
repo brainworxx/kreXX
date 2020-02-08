@@ -141,10 +141,11 @@ class CallerFinderTest extends AbstractTest
      */
     public function testConstruct()
     {
-        $this->assertEquals('krexx', $this->callerFinder->getPattern());
+        $krexx = 'krexx';
+        $this->assertEquals($krexx, $this->callerFinder->getPattern());
         $this->assertEquals(
             [
-                'krexx',
+                $krexx,
                 'krexx::open',
                 'krexx::' . Krexx::$pool->config->getDevHandler(),
                 'Krexx',

@@ -51,6 +51,7 @@ class CleanupTest extends AbstractTest
 {
     const CHUNKS_DONE = 'chunksDone';
     const MISC_NAMESPACE = '\\Brainworxx\\Krexx\\Service\\Misc\\';
+    const GET_LOGGING_IS_ALLOWED = 'getLoggingIsAllowed';
 
     protected $cleanup;
 
@@ -94,7 +95,7 @@ class CleanupTest extends AbstractTest
         // Logging is not allowed.
         $chunksMock = $this->createMock(Chunks::class);
         $chunksMock->expects($this->once())
-            ->method('getLoggingIsAllowed')
+            ->method(static::GET_LOGGING_IS_ALLOWED)
             ->will($this->returnValue(false));
         Krexx::$pool->chunks = $chunksMock;
 
@@ -116,7 +117,7 @@ class CleanupTest extends AbstractTest
         // Logging is allowed.
         $chunksMock = $this->createMock(Chunks::class);
         $chunksMock->expects($this->once())
-            ->method('getLoggingIsAllowed')
+            ->method(static::GET_LOGGING_IS_ALLOWED)
             ->will($this->returnValue(true));
         Krexx::$pool->chunks = $chunksMock;
 
@@ -163,7 +164,7 @@ class CleanupTest extends AbstractTest
         // Logging is allowed.
         $chunksMock = $this->createMock(Chunks::class);
         $chunksMock->expects($this->once())
-            ->method('getLoggingIsAllowed')
+            ->method(static::GET_LOGGING_IS_ALLOWED)
             ->will($this->returnValue(true));
         Krexx::$pool->chunks = $chunksMock;
 
