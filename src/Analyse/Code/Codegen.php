@@ -239,12 +239,7 @@ class Codegen implements ConstInterface
     }
 
     /**
-     * Abusing the __toString() magic to get information about a parameter.
-     *
-     * If a parameter must have a specific class, that is not present in the
-     * system, we will get a reflection error. That is why we abuse the
-     * __string() method.
-     * The method getType() is available for PHP 7 only.
+     * Transorm a reflection parameter into a human readable form.
      *
      * @param \ReflectionParameter $reflectionParameter
      *   The reflection parameter we want to wrap.
@@ -253,6 +248,42 @@ class Codegen implements ConstInterface
      *   The parameter data in a human readable form.
      */
     public function parameterToString(ReflectionParameter $reflectionParameter): string
+    {
+        // Retrieve the type and the name, without calling a possible autoloader.
+        $prefix = '';
+        if ($reflectionParameter->isPassedByReference() === true) {
+            $prefix = '&' ;
+        }
+
+        $name = $this->retrieveParameterType($reflectionParameter) . $prefix . '$' . $reflectionParameter->getName();
+
+        // Retrieve the default value, if available.
+        if ($reflectionParameter->isDefaultValueAvailable() === true) {
+            try {
+                $default = $reflectionParameter->getDefaultValue();
+            } catch (ReflectionException $e) {
+                $default = null;
+            }
+
+            $name .= ' = ' . $this->translateDefaultValue($default);
+        }
+
+        // Escape it, just in case.
+        return $this->pool->encodingService->encodeString($name);
+    }
+
+    /**
+     * Retrieve the parameter type.
+     *
+     * Depending on the available PHP version, we need to take different measures.
+     *
+     * @param \ReflectionParameter $reflectionParameter
+     *   The reflection parameter, what the variable name says.
+     *
+     * @return string
+     *   The parameter type, if available.
+     */
+    protected function retrieveParameterType(ReflectionParameter $reflectionParameter): string
     {
         $type = '';
         if ($reflectionParameter->hasType() === true) {
@@ -268,28 +299,7 @@ class Codegen implements ConstInterface
             }
         }
 
-        // Retrieve the type and the name, without calling a possible autoloader.
-        if ($reflectionParameter->isPassedByReference() === true) {
-            $prefix = '&$';
-        } else {
-            $prefix = '$';
-        }
-
-        $name = $type . $prefix . $reflectionParameter->getName();
-
-        // Retrieve the default value, if available.
-        if ($reflectionParameter->isDefaultValueAvailable() === true) {
-            try {
-                $default = $reflectionParameter->getDefaultValue();
-            } catch (ReflectionException $e) {
-                $default = null;
-            }
-
-            $name .= ' = ' . $this->translateDefaultValue($default);
-        }
-
-        // Escape it, just in case.
-        return $this->pool->encodingService->encodeString($name);
+        return $type;
     }
 
     /**
