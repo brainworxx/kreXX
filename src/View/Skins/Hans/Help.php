@@ -60,12 +60,10 @@ trait Help
      * @param Model $model
      *   The ID of the helptext.
      *
-     * @see Usage
-     *
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderHelp(Model $model)
+    protected function renderHelp(Model $model): string
     {
         $data = $model->getJson();
 
@@ -100,7 +98,7 @@ trait Help
      * @return array
      *   The marker array.
      */
-    public function getMarkerHelpRow()
+    public function getMarkerHelpRow(): array
     {
         return $this->markerHelpRow;
     }
@@ -114,7 +112,7 @@ trait Help
      * @return array
      *   The marker array.
      */
-    public function getMarkerHelp()
+    public function getMarkerHelp(): array
     {
         return [$this->markerHelp];
     }

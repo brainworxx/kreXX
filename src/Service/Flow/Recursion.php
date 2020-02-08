@@ -136,7 +136,7 @@ class Recursion
      * @return bool
      *   Boolean which shows whether we are facing a recursion.
      */
-    public function isInHive($bee)
+    public function isInHive($bee): bool
     {
         // Check objects.
         if (is_object($bee) === true) {
@@ -167,7 +167,7 @@ class Recursion
      * @return string
      *   The marker.
      */
-    public function getMarker()
+    public function getMarker(): string
     {
         return $this->recursionMarker;
     }
@@ -181,7 +181,7 @@ class Recursion
      * @return bool
      *   Boolean which shows whether we are facing a recursion.
      */
-    public function isInMetaHive(string $domId)
+    public function isInMetaHive(string $domId): bool
     {
         return isset($this->metaRecursionHive[$domId]);
     }

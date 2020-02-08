@@ -42,7 +42,7 @@ trait ConnectorRight
     /**
      * {@inheritDoc}
      */
-    protected function renderConnectorRight(string $connector)
+    protected function renderConnectorRight(string $connector): string
     {
         if (strlen($connector) > 2) {
             // Something big, we should display it.

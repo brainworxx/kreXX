@@ -80,7 +80,7 @@ class TimerController extends AbstractController
      * @return $this
      *   Return $this for chaining
      */
-    public function timerAction(string $string)
+    public function timerAction(string $string): TimerController
     {
         // Did we use this one before?
         if (isset(static::$counterCache[$string]) === true) {
@@ -102,7 +102,7 @@ class TimerController extends AbstractController
      * @return $this
      *   Return $this for chaining
      */
-    public function timerEndAction()
+    public function timerEndAction(): TimerController
     {
         $this->timerAction('end');
         // And we are done. Feedback to the user.
@@ -128,7 +128,7 @@ class TimerController extends AbstractController
      * @see http://php.net/manual/de/function.microtime.php
      * @author gomodo at free dot fr
      */
-    protected function miniBenchTo(array $timeKeeping)
+    protected function miniBenchTo(array $timeKeeping): array
     {
         // Get the very first key.
         $start = key($timeKeeping);

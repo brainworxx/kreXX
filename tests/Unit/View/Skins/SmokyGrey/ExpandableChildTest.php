@@ -81,6 +81,9 @@ class ExpandableChildTest extends AbstractRenderSmokyGrey
         $codegenMock->expects($this->once())
             ->method('generateWrapperRight')
             ->will($this->returnValue(''));
+        $codegenMock->expects($this->once())
+            ->method('getAllowCodegen')
+            ->will($this->returnValue(true));
         Krexx::$pool->codegenHandler = $codegenMock;
 
         $result = $this->renderSmokyGrey->renderExpandableChild($this->modelMock);

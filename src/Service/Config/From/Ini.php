@@ -81,7 +81,7 @@ class Ini extends Fallback
      * @return $this
      *   Return $this, for chaining.
      */
-    public function loadIniFile(string $path)
+    public function loadIniFile(string $path): Ini
     {
         $this->iniSettings = (array)parse_ini_string(
             $this->pool->fileService->getFileContents($path, false),
@@ -99,7 +99,7 @@ class Ini extends Fallback
      * @return bool
      *   Well? is it editable?
      */
-    public function getFeIsEditable(string $name)
+    public function getFeIsEditable(string $name): bool
     {
         // Load it from the file.
         $filevalue = $this->getFeConfigFromFile($name);

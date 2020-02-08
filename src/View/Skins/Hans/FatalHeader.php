@@ -51,7 +51,7 @@ trait FatalHeader
     /**
      * {@inheritdoc}
      */
-    public function renderFatalHeader(string $cssJs, string $errorType)
+    public function renderFatalHeader(string $cssJs, string $errorType): string
     {
         return str_replace(
             $this->markerFatalHeader,
@@ -76,7 +76,7 @@ trait FatalHeader
      * @return array
      *   The marker array.
      */
-    public function getMarkerFatalHeader()
+    public function getMarkerFatalHeader(): array
     {
         return $this->markerFatalHeader;
     }

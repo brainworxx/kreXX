@@ -57,7 +57,7 @@ class ProcessObject extends AbstractRouting implements ProcessInterface
      * @return string
      *   The generated markup.
      */
-    public function process(Model $model)
+    public function process(Model $model): string
     {
         $object = $model->getData();
         // Output data from the class.

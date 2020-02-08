@@ -73,7 +73,7 @@ class Objects extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->pool->render->renderSingeChildHr() . $this->dispatchStartEvent();
 
@@ -144,7 +144,7 @@ class Objects extends AbstractCallback
      * @return string
      *   The generated html markup.
      */
-    protected function dumpStuff(string $classname)
+    protected function dumpStuff(string $classname): string
     {
         return $this->pool
             ->createClass($classname)

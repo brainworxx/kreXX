@@ -76,7 +76,7 @@ class Registry
      * @return $this
      *   Return $this for chaining.
      */
-    public function set($key, $value)
+    public function set($key, $value): Registry
     {
         if ($value === null) {
             unset($this->data[$key]);
@@ -94,7 +94,7 @@ class Registry
      * @param mixed $key
      *   The key under what we once stored the $value,
      *
-     * @return null|mixed
+     * @return mixed
      *   The value, if available.
      */
     public function get($key)
@@ -115,7 +115,7 @@ class Registry
      * @return bool
      *   If we have a value, or not.
      */
-    public function has($key)
+    public function has($key): bool
     {
         return isset($this->data[$key]);
     }

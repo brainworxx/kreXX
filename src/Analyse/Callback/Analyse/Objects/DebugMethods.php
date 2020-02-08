@@ -71,7 +71,7 @@ class DebugMethods extends AbstractObjectAnalysis
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
@@ -151,7 +151,7 @@ class DebugMethods extends AbstractObjectAnalysis
      * @return bool
      *   Whether or not we are allowed toi access this method.
      */
-    protected function checkIfAccessible($data, string $funcName, ReflectionClass $reflectionClass)
+    protected function checkIfAccessible($data, string $funcName, ReflectionClass $reflectionClass): bool
     {
         // We need to check if:
         // 1.) Method exists. It may be protected though.

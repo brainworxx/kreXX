@@ -58,7 +58,7 @@ class Functions extends AbstractComment
      * @return string
      *   The prettified comment.
      */
-    public function getComment(Reflector $reflectionFunction, ReflectionClass $reflectionClass = null)
+    public function getComment(Reflector $reflectionFunction, ReflectionClass $reflectionClass = null): string
     {
         // Do some static caching. The comment will not change during a run.
         static $cache = [];

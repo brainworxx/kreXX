@@ -61,7 +61,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
      * @return string
      *   The generated markup.
      */
-    public function process(Model $model)
+    public function process(Model $model): string
     {
         try {
             $ref = new ReflectionFunction($model->getData());
@@ -113,7 +113,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
      * @return string
      *   The rendered HTML.
      */
-    protected function retrieveSourceCode(ReflectionFunction $ref)
+    protected function retrieveSourceCode(ReflectionFunction $ref): string
     {
         // Adding the sourcecode
         $highlight = $ref->getStartLine() - 1;
@@ -136,7 +136,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
      * @return string
      *   Parameter list in a human readable form.
      */
-    protected function retrieveParameterList(ReflectionFunction $ref, array &$result)
+    protected function retrieveParameterList(ReflectionFunction $ref, array &$result): string
     {
         $paramList = '';
         foreach ($ref->getParameters() as $key => $reflectionParameter) {

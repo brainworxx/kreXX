@@ -58,7 +58,7 @@ class ProcessOther extends AbstractRouting implements ProcessInterface
      * @return string
      *   The rendered markup.
      */
-    public function process(Model $model)
+    public function process(Model $model): string
     {
         // Unknown type, better encode it, just to be sure.
         $type = $this->pool->encodingService->encodeString(gettype($model->getData()));

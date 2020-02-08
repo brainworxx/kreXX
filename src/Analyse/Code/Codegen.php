@@ -124,7 +124,7 @@ class Codegen implements ConstInterface
      * @return string
      *   The generated PHP source.
      */
-    public function generateSource(Model $model)
+    public function generateSource(Model $model): string
     {
         $result = static::UNKNOWN_VALUE;
 
@@ -172,7 +172,7 @@ class Codegen implements ConstInterface
      * @return string
      *   Return an empty string.
      */
-    public function generateWrapperLeft()
+    public function generateWrapperLeft(): string
     {
         return '';
     }
@@ -184,7 +184,7 @@ class Codegen implements ConstInterface
      * @return string
      *   Return an empty string.
      */
-    public function generateWrapperRight()
+    public function generateWrapperRight(): string
     {
         return '';
     }
@@ -197,7 +197,7 @@ class Codegen implements ConstInterface
      * @return string
      *   The generated code.
      */
-    protected function concatenation(Model $model)
+    protected function concatenation(Model $model): string
     {
         // We simply add the connectors for public access.
         return $model->getConnectorLeft() .
@@ -233,7 +233,7 @@ class Codegen implements ConstInterface
      *
      * @return bool
      */
-    public function getAllowCodegen()
+    public function getAllowCodegen(): bool
     {
         return $this->allowCodegen;
     }
@@ -252,7 +252,7 @@ class Codegen implements ConstInterface
      * @return string
      *   The parameter data in a human readable form.
      */
-    public function parameterToString(ReflectionParameter $reflectionParameter)
+    public function parameterToString(ReflectionParameter $reflectionParameter): string
     {
         $type = '';
         if ($reflectionParameter->hasType() === true) {
@@ -300,7 +300,7 @@ class Codegen implements ConstInterface
      * @return string
      *   The type in a human readable form.
      */
-    protected function translateDefaultValue($default)
+    protected function translateDefaultValue($default): string
     {
         if (is_string($default)) {
             $default = '\'' . $default . '\'';

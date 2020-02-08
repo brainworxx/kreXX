@@ -69,7 +69,7 @@ class Meta extends AbstractObjectAnalysis
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
         $this->pool->codegenHandler->setAllowCodegen(false);
@@ -117,7 +117,7 @@ class Meta extends AbstractObjectAnalysis
      * @return string
      *   The generated DOM.
      */
-    protected function analyseMeta(string $domId, ReflectionClass $ref, string $name)
+    protected function analyseMeta(string $domId, ReflectionClass $ref, string $name): string
     {
         $this->pool->recursionHandler->addToMetaHive($domId);
 
@@ -186,7 +186,7 @@ class Meta extends AbstractObjectAnalysis
      * @return string
      *   The generated id.
      */
-    protected function generateDomIdFromClassname(string $data)
+    protected function generateDomIdFromClassname(string $data): string
     {
         return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_c_' . md5($data);
     }
@@ -200,7 +200,7 @@ class Meta extends AbstractObjectAnalysis
      * @return string
      *   The generated class name
      */
-    protected function generateName(ReflectionClass $ref)
+    protected function generateName(ReflectionClass $ref): string
     {
         $result = '';
         if ($ref->isFinal() === true) {

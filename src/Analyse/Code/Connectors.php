@@ -171,7 +171,7 @@ class Connectors
      * @return string
      *   The connection parameters.
      */
-    public function getParameters()
+    public function getParameters(): string
     {
         return $this->params;
     }
@@ -193,7 +193,7 @@ class Connectors
      * @return string
      *   The PHP connector, what else?
      */
-    public function getConnectorLeft()
+    public function getConnectorLeft(): string
     {
         if ($this->customConnectorLeft === null) {
             return $this->connectorArray[$this->type][0];
@@ -211,7 +211,7 @@ class Connectors
      * @return string
      *   The PHP connector, what else?
      */
-    public function getConnectorRight($cap)
+    public function getConnectorRight($cap): string
     {
         if (
             empty($this->params) === true ||
@@ -247,7 +247,7 @@ class Connectors
      *
      * @return string
      */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->language;
     }

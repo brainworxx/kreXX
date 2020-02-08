@@ -82,7 +82,7 @@ trait SingleChild
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderSingleChild(Model $model)
+    public function renderSingleChild(Model $model): string
     {
         // This one is a little bit more complicated than the others,
         // because it assembles some partials and stitches them together.
@@ -133,7 +133,7 @@ trait SingleChild
      * @return string
      *   The rendered HTML output.
      */
-    protected function renderSourceButton(string $gensource)
+    protected function renderSourceButton(string $gensource): string
     {
         if (empty($gensource) === true || $this->pool->codegenHandler->getAllowCodegen() === false) {
              // No source button for you!
@@ -152,7 +152,7 @@ trait SingleChild
      * @return string
      *   The rendered HTML output.
      */
-    protected function renderExtra(Model $model)
+    protected function renderExtra(Model $model): string
     {
         if ($model->getHasExtra() === true) {
             return str_replace(
@@ -174,7 +174,7 @@ trait SingleChild
      * @return string
      *   The rendered HTML
      */
-    protected function renderCallable(Model $model)
+    protected function renderCallable(Model $model): string
     {
         if ($model->getIsCallback() === true) {
             // Add callable partial.
@@ -211,7 +211,7 @@ trait SingleChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSingleChildExtra()
+    public function getMarkerSingleChildExtra(): array
     {
         return [$this->markerSingleChildExtra];
     }
@@ -225,7 +225,7 @@ trait SingleChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSingleChildCallable()
+    public function getMarkerSingleChildCallable(): array
     {
         return [$this->markerSingleChildCallable];
     }

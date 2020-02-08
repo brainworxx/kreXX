@@ -66,7 +66,7 @@ trait ExpandableChild
     /**
      * {@inheritDoc}
      */
-    public function renderExpandableChild(Model $model, bool $isExpanded = false)
+    public function renderExpandableChild(Model $model, bool $isExpanded = false): string
     {
         // Check for emergency break.
         if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
@@ -111,7 +111,7 @@ trait ExpandableChild
      * @return string
      *   Th rendered HTML.
      */
-    protected function renderSourceButtonSg(string $gencode, Model $model)
+    protected function renderSourceButtonSg(string $gencode, Model $model): string
     {
         if (
             $gencode === ';stop;' ||
@@ -153,7 +153,7 @@ trait ExpandableChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSourceButton()
+    public function getMarkerSourceButton(): array
     {
         return [$this->markerSourceButton];
     }

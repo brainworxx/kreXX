@@ -48,13 +48,14 @@ class CallbackCounter extends AbstractCallback
 
     public static $staticParameters = [];
 
-    public function callMe()
+    public function callMe(): string
     {
         // Update the counter.
         ++static::$counter;
+        return '';
     }
 
-    public function setParameters(array &$params)
+    public function setParameters(array &$params): AbstractCallback
     {
         static::$staticParameters[static::$counter] = $params;
         return parent::setParameters($params);

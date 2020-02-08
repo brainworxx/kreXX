@@ -57,7 +57,7 @@ trait Recursion
     /**
      * {@inheritdoc}
      */
-    public function renderRecursion(Model $model)
+    public function renderRecursion(Model $model): string
     {
         return str_replace(
             $this->markerRecursion,
@@ -86,7 +86,7 @@ trait Recursion
      * @return array
      *   The marker array.
      */
-    public function getMarkerRecursion()
+    public function getMarkerRecursion(): array
     {
         return $this->markerRecursion;
     }

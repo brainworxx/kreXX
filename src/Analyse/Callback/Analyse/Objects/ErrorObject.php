@@ -54,7 +54,7 @@ class ErrorObject extends AbstractObjectAnalysis
      * @return string
      *   The rendered HTML.
      */
-    public function callMe()
+    public function callMe(): string
     {
         // Call the start event, even if this is not an error object.
         $output = $this->dispatchStartEvent() . $this->renderBacktrace();
@@ -93,7 +93,7 @@ class ErrorObject extends AbstractObjectAnalysis
      * @return string
      *   The rendered HTML.
      */
-    protected function renderBacktrace()
+    protected function renderBacktrace(): string
     {
         $output = '';
         $trace = $this->parameters[static::PARAM_DATA]->getTrace();

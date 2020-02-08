@@ -153,7 +153,7 @@ class Chunks
      * @return string
      *   The key to the chunk, wrapped up in @@@@@@.
      */
-    public function chunkMe(string $string)
+    public function chunkMe(string $string): string
     {
         if ($this->chunksAreAllowed === true && strlen($string) > 10000) {
             // Get the key.
@@ -176,7 +176,7 @@ class Chunks
      * @return string
      *   The generated key.
      */
-    protected function genKey()
+    protected function genKey(): string
     {
         static $counter = 0;
         ++$counter;
@@ -196,9 +196,8 @@ class Chunks
      *
      * @return string
      *   The original date
-     *
      */
-    protected function dechunkMe(string $key)
+    protected function dechunkMe(string $key): string
     {
         $filename = $this->chunkDir . $key . '.Krexx.tmp';
         // Read the file.
@@ -318,7 +317,7 @@ class Chunks
      * @return bool
      *   Are we using chunks?
      */
-    public function getChunksAreAllowed()
+    public function getChunksAreAllowed(): bool
     {
         return $this->chunksAreAllowed;
     }
@@ -341,7 +340,7 @@ class Chunks
      * @return bool
      *   Is the log folder accessible?
      */
-    public function getLoggingIsAllowed()
+    public function getLoggingIsAllowed(): bool
     {
         return $this->loggingIsAllowed;
     }
@@ -405,7 +404,7 @@ class Chunks
      *
      * @return string
      */
-    public function getOfficialEncoding()
+    public function getOfficialEncoding(): string
     {
         return $this->officialEncoding;
     }

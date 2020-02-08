@@ -134,7 +134,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setData(&$data)
+    public function setData(&$data): Model
     {
         $this->data = $data;
         return $this;
@@ -160,7 +160,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setName($name)
+    public function setName($name): Model
     {
         $this->name = $name;
         return $this;
@@ -186,7 +186,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setNormal($normal)
+    public function setNormal($normal): Model
     {
         $this->normal = $normal;
         return $this;
@@ -195,7 +195,7 @@ class Model extends AbstractModel
     /**
      * Getter for normal.
      *
-     * @return string
+     * @return string|int
      *   The short result of the analysis.
      */
     public function getNormal()
@@ -212,7 +212,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setAdditional(string $additional)
+    public function setAdditional(string $additional): Model
     {
         $this->additional = $additional;
         return $this;
@@ -224,7 +224,7 @@ class Model extends AbstractModel
      * @return string
      *   The long result of the analysis.
      */
-    public function getAdditional()
+    public function getAdditional(): string
     {
         return $this->additional;
     }
@@ -238,7 +238,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setType(string $type)
+    public function setType(string $type): Model
     {
         $this->type = $type;
         return $this;
@@ -250,7 +250,7 @@ class Model extends AbstractModel
      * @return string
      *   The type of the variable we are analysing
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->additional . $this->type;
     }
@@ -261,7 +261,7 @@ class Model extends AbstractModel
      * @return string
      *   The first connector.
      */
-    public function getConnectorLeft()
+    public function getConnectorLeft(): string
     {
         return $this->connectorService->getConnectorLeft();
     }
@@ -275,7 +275,7 @@ class Model extends AbstractModel
      * @return string
      *   The second connector.
      */
-    public function getConnectorRight($cap = 0)
+    public function getConnectorRight($cap = 0): string
     {
         return $this->connectorService->getConnectorRight($cap);
     }
@@ -289,7 +289,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setDomid(string $domid)
+    public function setDomid(string $domid): Model
     {
         $this->domid = $domid;
         return $this;
@@ -301,7 +301,7 @@ class Model extends AbstractModel
      * @return string
      *   The dom id, of cause.
      */
-    public function getDomid()
+    public function getDomid(): string
     {
         return $this->domid;
     }
@@ -312,7 +312,7 @@ class Model extends AbstractModel
      * @return bool
      *   Info for the render class, if we need to render the extras part.
      */
-    public function getHasExtra()
+    public function getHasExtra(): bool
     {
         return $this->hasExtra;
     }
@@ -326,7 +326,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this, for chaining.
      */
-    public function setHasExtra(bool $value)
+    public function setHasExtra(bool $value): Model
     {
         $this->hasExtra = $value;
         return $this;
@@ -337,7 +337,7 @@ class Model extends AbstractModel
      *
      * @return string
      */
-    public function getMultiLineCodeGen()
+    public function getMultiLineCodeGen(): string
     {
         return $this->multiLineCodeGen;
     }
@@ -345,13 +345,13 @@ class Model extends AbstractModel
     /**
      * Setter for the multiline code generation.
      *
-     * @param string|int $multiLineCodeGen
+     * @param string $multiLineCodeGen
      *   The constant from the Codegen class.
      *
      * @return $this
      *   $this, for chaining.
      */
-    public function setMultiLineCodeGen($multiLineCodeGen)
+    public function setMultiLineCodeGen(string $multiLineCodeGen): Model
     {
         $this->multiLineCodeGen = $multiLineCodeGen;
         return $this;
@@ -362,7 +362,7 @@ class Model extends AbstractModel
      *
      * @return bool
      */
-    public function getIsCallback()
+    public function getIsCallback(): bool
     {
         return $this->isCallback;
     }
@@ -376,7 +376,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this for chaining.
      */
-    public function setIsCallback(bool $isCallback)
+    public function setIsCallback(bool $isCallback): Model
     {
         $this->isCallback = $isCallback;
 
@@ -393,7 +393,7 @@ class Model extends AbstractModel
      * @return $this
      *   $this for chaining.
      */
-    public function setConnectorParameters($params)
+    public function setConnectorParameters($params): Model
     {
         $this->connectorService->setParameters($params);
         return $this;
@@ -405,7 +405,7 @@ class Model extends AbstractModel
      * @return string
      *   The connection parameters.
      */
-    public function getConnectorParameters()
+    public function getConnectorParameters(): string
     {
         return $this->connectorService->getParameters();
     }
@@ -418,7 +418,7 @@ class Model extends AbstractModel
      * @return $this
      *   Return $this, for chaining.
      */
-    public function setConnectorType(int $type)
+    public function setConnectorType(int $type): Model
     {
         $this->connectorService->setType($type);
         return $this;
@@ -433,7 +433,7 @@ class Model extends AbstractModel
      * @return $this
      *   Return $this for chaining.
      */
-    public function setCustomConnectorLeft(string $string)
+    public function setCustomConnectorLeft(string $string): Model
     {
         $this->connectorService->setCustomConnectorLeft($string);
         return $this;
@@ -444,7 +444,7 @@ class Model extends AbstractModel
      *
      * @return string
      */
-    public function getConnectorLanguage()
+    public function getConnectorLanguage(): string
     {
         return $this->connectorService->getLanguage();
     }
@@ -454,7 +454,7 @@ class Model extends AbstractModel
      *
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -466,7 +466,7 @@ class Model extends AbstractModel
      *   True means that we are currently rendering the expandable child for
      *   the constants.
      */
-    public function getIsMetaConstants()
+    public function getIsMetaConstants(): bool
     {
         return $this->isMetaConstants;
     }
@@ -479,7 +479,7 @@ class Model extends AbstractModel
      * @return $this
      *   Return $this for chaining.
      */
-    public function setIsMetaConstants(bool $bool)
+    public function setIsMetaConstants(bool $bool): Model
     {
         $this->isMetaConstants = $bool;
         return $this;
@@ -493,7 +493,7 @@ class Model extends AbstractModel
      * @return $this
      *   Return $this for chaining.
      */
-    public function setIsPublic(bool $bool)
+    public function setIsPublic(bool $bool): Model
     {
         $this->isPublic = $bool;
         return $this;
@@ -504,7 +504,7 @@ class Model extends AbstractModel
      *
      * @return bool
      */
-    public function getIsPublic()
+    public function getIsPublic(): bool
     {
         return $this->isPublic;
     }

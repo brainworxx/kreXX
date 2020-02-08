@@ -80,7 +80,7 @@ class RenderNothing extends RenderHans
      * @param \Brainworxx\Krexx\Analyse\Model $model
      * @return string
      */
-    public function renderSingleChild(Model $model)
+    public function renderSingleChild(Model $model): string
     {
         $this->model[__FUNCTION__][] = $model;
         return '';
@@ -90,7 +90,7 @@ class RenderNothing extends RenderHans
      * @param \Brainworxx\Krexx\Analyse\Model $model
      * @return mixed|string
      */
-    public function renderRecursion(Model $model)
+    public function renderRecursion(Model $model): string
     {
         $this->model[__FUNCTION__][] = $model;
         return '';
@@ -101,7 +101,7 @@ class RenderNothing extends RenderHans
      * @param bool $is
      * @return string
      */
-    public function renderExpandableChild(Model $model, bool $is = false)
+    public function renderExpandableChild(Model $model, bool $is = false): string
     {
         $this->model[__FUNCTION__][] = $model;
         return '';
@@ -113,7 +113,7 @@ class RenderNothing extends RenderHans
      * @param bool $configOnly
      * @return string
      */
-    public function renderFooter(array $caller, Model $model, bool $configOnly = false)
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false): string
     {
         $this->model[__FUNCTION__][] = $model;
         return $this->footer;
@@ -124,7 +124,7 @@ class RenderNothing extends RenderHans
      * @param $javascript
      * @return mixed|string
      */
-    public function renderCssJs(string &$css, string &$javascript)
+    public function renderCssJs(string &$css, string &$javascript): string
     {
         $this->css = $css;
         $this->js = $javascript;

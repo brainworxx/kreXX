@@ -108,7 +108,7 @@ class Scope implements ConstInterface
      *
      * @return string
      */
-    public function getScope()
+    public function getScope(): string
     {
         return $this->scope;
     }
@@ -119,7 +119,7 @@ class Scope implements ConstInterface
      * @return bool
      *   Whether it is within the scope or not.
      */
-    public function isInScope()
+    public function isInScope(): bool
     {
         return  $this->pool->emergencyHandler->getNestingLevel() <= 1 &&
             $this->scope === static::THIS_SCOPE &&
@@ -135,7 +135,7 @@ class Scope implements ConstInterface
      * @return bool
      *   Can we allow code generation here?
      */
-    public function testModelForCodegen(Model $model)
+    public function testModelForCodegen(Model $model): bool
     {
         $nestingLevel = $this->pool->emergencyHandler->getNestingLevel();
 

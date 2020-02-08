@@ -50,7 +50,7 @@ class EditSettingsController extends AbstractController
      * @return $this
      *   Return $this for chaining
      */
-    public function editSettingsAction()
+    public function editSettingsAction(): EditSettingsController
     {
         if ($this->pool->emergencyHandler->checkMaxCall() === true) {
             // Called too often, we might get into trouble here!

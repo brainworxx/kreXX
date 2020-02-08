@@ -69,7 +69,7 @@ class ThroughLargeArray extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
 
@@ -80,7 +80,7 @@ class ThroughLargeArray extends AbstractCallback
         if ($this->parameters[static::PARAM_MULTILINE] === true) {
             $multilineCodeGen = Codegen::ITERATOR_TO_ARRAY;
         } else {
-            $multilineCodeGen = 0;
+            $multilineCodeGen = '';
         }
 
         // Iterate through.
@@ -137,7 +137,7 @@ class ThroughLargeArray extends AbstractCallback
      * @return string
      *   The generated markup
      */
-    protected function handleValue($value, Model $model)
+    protected function handleValue($value, Model $model): string
     {
         if (is_object($value) === true) {
             // We will not go too deep here, and say only what it is.

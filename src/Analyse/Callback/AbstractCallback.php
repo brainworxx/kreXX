@@ -76,7 +76,7 @@ abstract class AbstractCallback implements ConstInterface
      * @return string
      *   The generated markup.
      */
-    abstract public function callMe();
+    abstract public function callMe(): string;
 
     /**
      * Injects the pool.
@@ -98,7 +98,7 @@ abstract class AbstractCallback implements ConstInterface
      * @return $this
      *   Return $this, for chaining.
      */
-    public function setParameters(array &$parameters)
+    public function setParameters(array &$parameters): AbstractCallback
     {
         $this->parameters = $parameters;
         return $this;
@@ -111,7 +111,7 @@ abstract class AbstractCallback implements ConstInterface
      * @return array
      *   The internal parameters for the callback.
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -122,7 +122,7 @@ abstract class AbstractCallback implements ConstInterface
      * @return string
      *   The generated markup from the event handler.
      */
-    protected function dispatchStartEvent()
+    protected function dispatchStartEvent(): string
     {
         return $this->pool->eventService->dispatch(
             static::class . PluginConfigInterface::START_EVENT,
@@ -141,7 +141,7 @@ abstract class AbstractCallback implements ConstInterface
      * @return Model
      *   Return the model for chaining.
      */
-    protected function dispatchEventWithModel(string $name, Model $model)
+    protected function dispatchEventWithModel(string $name, Model $model): Model
     {
         $this->pool->eventService->dispatch(
             static::class . '::' . $name,

@@ -42,7 +42,7 @@ trait SingeChildHr
     /**
      * {@inheritdoc}
      */
-    public function renderSingeChildHr()
+    public function renderSingeChildHr(): string
     {
         return $this->getTemplateFileContent(static::FILE_SI_HR);
     }

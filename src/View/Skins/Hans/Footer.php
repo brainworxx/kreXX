@@ -63,7 +63,7 @@ trait Footer
      /**
      * {@inheritdoc}
      */
-    public function renderFooter(array $caller, Model $model, bool $configOnly = false)
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false): string
     {
         if (isset($caller[static::TRACE_FILE]) === true) {
             $callerString = $this->renderCaller($caller);
@@ -91,7 +91,7 @@ trait Footer
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderCaller(array $caller)
+    protected function renderCaller(array $caller): string
     {
         return str_replace(
             $this->markerCaller,
@@ -114,7 +114,7 @@ trait Footer
      * @return array
      *   The marker array.
      */
-    public function getMarkerFooter()
+    public function getMarkerFooter(): array
     {
         return $this->markerFooter;
     }
@@ -128,7 +128,7 @@ trait Footer
      * @return array
      *   The marker array.
      */
-    public function getMarkerCaller()
+    public function getMarkerCaller(): array
     {
         return $this->markerCaller;
     }

@@ -58,7 +58,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
      * @return string
      *   The rendered markup.
      */
-    public function process(Model $model)
+    public function process(Model $model): string
     {
         $resource = $model->getData();
         $type = get_resource_type($resource);
@@ -103,7 +103,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
      * @return string
      *   The rendered HTML.
      */
-    protected function renderUnknownOrClosed(Model $model, $resource, $typeString)
+    protected function renderUnknownOrClosed(Model $model, $resource, $typeString): string
     {
         // If we are facing a closed resource, 'Unknown' is a little bit sparse.
         // PHP 7.2 can provide more info by calling gettype().

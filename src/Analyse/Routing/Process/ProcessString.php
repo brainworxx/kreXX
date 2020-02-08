@@ -80,7 +80,7 @@ class ProcessString extends AbstractRouting implements ProcessInterface
      * @return string
      *   The rendered markup.
      */
-    public function process(Model $model)
+    public function process(Model $model): string
     {
         $data = $model->getData();
 
@@ -127,11 +127,15 @@ class ProcessString extends AbstractRouting implements ProcessInterface
     /**
      * Retrieve the length and set the encoding in the model.
      *
-     * @param $data
+     * @param string $data
+     *   The string of which we want ot know the length and encoding.
      * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model so far.
+     *
      * @return int
+     *   the length of the string.
      */
-    protected function retrieveLengthAndEncoding($data, Model $model)
+    protected function retrieveLengthAndEncoding(string $data, Model $model): int
     {
         $encoding = $this->pool->encodingService->mbDetectEncoding($data);
         if ($encoding === false) {

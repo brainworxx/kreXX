@@ -110,7 +110,7 @@ abstract class AbstractModel implements ConstInterface
      * @return $this
      *   $this for chaining
      */
-    public function injectCallback(AbstractCallback $object)
+    public function injectCallback(AbstractCallback $object): AbstractModel
     {
         $this->callback = $object;
         return $this;
@@ -121,7 +121,7 @@ abstract class AbstractModel implements ConstInterface
      *
      * @return string
      */
-    public function renderMe()
+    public function renderMe(): string
     {
         return $this->callback
             ->setParameters($this->parameters)
@@ -139,7 +139,7 @@ abstract class AbstractModel implements ConstInterface
      * @return $this
      *   $this, for chaining.
      */
-    public function addParameter(string $name, &$value)
+    public function addParameter(string $name, &$value): AbstractModel
     {
         $this->parameters[$name] = $value;
         return $this;
@@ -154,7 +154,7 @@ abstract class AbstractModel implements ConstInterface
      * @return $this
      *   $this, for chaining.
      */
-    public function setHelpid(string $helpId)
+    public function setHelpid(string $helpId): AbstractModel
     {
         $this->addToJson(static::META_HELP, $this->pool->messages->getHelp($helpId));
         return $this;
@@ -173,7 +173,7 @@ abstract class AbstractModel implements ConstInterface
      * @return $this
      *   $this for chaining.
      */
-    public function addToJson(string $key, $value)
+    public function addToJson(string $key, $value): AbstractModel
     {
 
         if (empty($value) === true) {
@@ -193,7 +193,7 @@ abstract class AbstractModel implements ConstInterface
      * @return array
      *   More analysis data.
      */
-    public function getJson()
+    public function getJson(): array
     {
         return $this->json;
     }

@@ -45,7 +45,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  */
 class CallbackNothing extends AbstractCallback
 {
-    public function callMe()
+    public function callMe(): string
     {
         return 'some string';
     }

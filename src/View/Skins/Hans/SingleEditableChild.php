@@ -75,7 +75,7 @@ trait SingleEditableChild
     /**
      * {@inheritdoc}
      */
-    public function renderSingleEditableChild(Model $model)
+    public function renderSingleEditableChild(Model $model): string
     {
         // For dropdown elements, we need to render the options.
         $options = '';
@@ -105,7 +105,7 @@ trait SingleEditableChild
      * @return string
      *   The rendered HTML.
      */
-    protected function renderSelectOptions(Model $model)
+    protected function renderSelectOptions(Model $model): string
     {
         // Here we store what the list of possible values.
         if ($model->getDomid() === Fallback::SETTING_SKIN) {
@@ -144,7 +144,7 @@ trait SingleEditableChild
      * @return string
      *   The rendered HTML.
      */
-    protected function renderSpecificEditableElement(Model $model)
+    protected function renderSpecificEditableElement(Model $model): string
     {
         return str_replace(
             $this->markerSingleInput,
@@ -165,7 +165,7 @@ trait SingleEditableChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSingleEditableChild()
+    public function getMarkerSingleEditableChild(): array
     {
         return $this->markerSingleEditableChild;
     }
@@ -179,7 +179,7 @@ trait SingleEditableChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerDropdownOptions()
+    public function getMarkerDropdownOptions(): array
     {
         return [$this->markerDropdownOptions];
     }
@@ -193,7 +193,7 @@ trait SingleEditableChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSelectOption()
+    public function getMarkerSelectOption(): array
     {
         return $this->markerSelectOption;
     }

@@ -52,7 +52,7 @@ trait FatalMain
     /**
      * {@inheritdoc}
      */
-    public function renderFatalMain(string $errstr, string $errfile, int $errline)
+    public function renderFatalMain(string $errstr, string $errfile, int $errline): string
     {
         $source = $this->pool->fileService->readSourcecode(
             $errfile,
@@ -82,7 +82,7 @@ trait FatalMain
      * @return array
      *   The marker array.
      */
-    public function getMarkerFatalMain()
+    public function getMarkerFatalMain(): array
     {
         return $this->markerFatalMain;
     }

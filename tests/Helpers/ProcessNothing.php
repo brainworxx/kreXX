@@ -46,7 +46,7 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessInterface;
  */
 class ProcessNothing extends AbstractRouting implements ProcessInterface
 {
-    public function process(Model $model)
+    public function process(Model $model): string
     {
         // Do nothing.
         return '';

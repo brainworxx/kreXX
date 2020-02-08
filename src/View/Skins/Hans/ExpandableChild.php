@@ -72,7 +72,7 @@ trait ExpandableChild
     /**
      * {@inheritdoc}
      */
-    public function renderExpandableChild(Model $model, bool $isExpanded = false)
+    public function renderExpandableChild(Model $model, bool $isExpanded = false): string
     {
         // Check for emergency break.
         if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
@@ -118,7 +118,7 @@ trait ExpandableChild
      * @return string
      *   The css class name.
      */
-    protected function retrieveOpenedClass(bool $isExpanded)
+    protected function retrieveOpenedClass(bool $isExpanded): string
     {
         if ($isExpanded === true) {
             return 'kopened';
@@ -136,7 +136,7 @@ trait ExpandableChild
      * @return string
      *   Th rendered HTML.
      */
-    protected function renderSourceButtonWithStop(string $gencode)
+    protected function renderSourceButtonWithStop(string $gencode): string
     {
         if (
             $gencode === ';stop;' ||
@@ -163,7 +163,7 @@ trait ExpandableChild
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderNest(Model $model, bool $isExpanded = false)
+    protected function renderNest(Model $model, bool $isExpanded = false): string
     {
         // Get the dom id.
         $domid = $model->getDomid();
@@ -198,7 +198,7 @@ trait ExpandableChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerExpandableChild()
+    public function getMarkerExpandableChild(): array
     {
         return $this->markerExpandableChild;
     }
@@ -212,7 +212,7 @@ trait ExpandableChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerNest()
+    public function getMarkerNest(): array
     {
         return $this->markerNest;
     }

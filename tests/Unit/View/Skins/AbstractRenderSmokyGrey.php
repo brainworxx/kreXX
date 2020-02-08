@@ -128,7 +128,7 @@ abstract class AbstractRenderSmokyGrey extends AbstractTest
                 [
                     static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_RECURSION . $fileSuffix,
                     true,
-                   implode('', $this->renderSmokyGrey->getMarkerRecursion())
+                    implode('', $this->renderSmokyGrey->getMarkerRecursion())
                 ],
                 // singleEditableChild.html
                 [
@@ -159,6 +159,49 @@ abstract class AbstractRenderSmokyGrey extends AbstractTest
                     static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_FATAL_MAIN . $fileSuffix,
                     true,
                     implode('', $this->renderSmokyGrey->getMarkerFatalMain())
+                ],
+                // search.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_SEARCH . $fileSuffix,
+                    true,
+                    implode('', $this->renderSmokyGrey->getMarkerSearch())
+                ],
+                // singlePlugin.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_SI_PLUGIN . $fileSuffix,
+                    true,
+                    implode('', $this->renderSmokyGrey->getMarkerSinglePlugin())
+                ],
+                // connectorLeft.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_CONNECTOR_LEFT . $fileSuffix,
+                    true,
+                    implode('', $this->renderSmokyGrey->getMarkerConnectorLeft())
+                ],
+                // connectorRight.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_CONNECTOR_RIGHT . $fileSuffix,
+                    true,
+                    implode('', $this->renderSmokyGrey->getMarkerConnectorRight())
+                ],
+                // singleSelectOption.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_SI_SELECT_OPTIONS . $fileSuffix,
+                    true,
+                    implode('', $this->renderSmokyGrey->getMarkerSelectOption())
+                ],
+                // single.html
+                // Meh, whatever. Rendering of a 'single' undefined editable child.
+                [
+                    static::PATH_TO_SKIN . 'single' . $fileSuffix,
+                    true,
+                    implode('', [])
+                ],
+                // message.html
+                [
+                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_MESSAGE . $fileSuffix,
+                    true,
+                    implode('', $this->renderSmokyGrey->getMarkerMessages())
                 ],
             ]));
 

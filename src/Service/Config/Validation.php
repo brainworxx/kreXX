@@ -132,7 +132,7 @@ class Validation extends Fallback
      * @return bool
      *   If it was evaluated.
      */
-    public function evaluateSetting(string $group, string $name, $value)
+    public function evaluateSetting(string $group, string $name, $value): bool
     {
         if ($group === static::SECTION_FE_EDITING) {
             // Logging options can never be changed in the frontend.
@@ -156,7 +156,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalDevHandle($value, string $name)
+    protected function evalDevHandle($value, string $name): bool
     {
         $result = preg_match('/[^a-zA-Z]/', $value) === 0;
         if ($result === false) {
@@ -177,7 +177,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalSkin($value, string $name)
+    protected function evalSkin($value, string $name): bool
     {
         $result = isset($this->skinConfiguration[$value]) &&
             class_exists($this->skinConfiguration[$value][static::SKIN_CLASS]) &&
@@ -203,7 +203,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalDestination($value, string $name)
+    protected function evalDestination($value, string $name): bool
     {
         $result = ($value === static::VALUE_BROWSER || $value === 'file');
         if ($result === false) {
@@ -224,7 +224,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalIpRange($value, string $name)
+    protected function evalIpRange($value, string $name): bool
     {
         $result = empty($value);
         if ($result === true) {
@@ -249,7 +249,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalMaxRuntime($value, string $name, string $group)
+    protected function evalMaxRuntime($value, string $name, string $group): bool
     {
         // Check for integer first.
         if ($this->evalInt($value, $name, $group) === false) {
@@ -290,7 +290,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalBool($value, string $name, string $group)
+    protected function evalBool($value, string $name, string $group): bool
     {
         $result = ($value === static::VALUE_TRUE || $value === static::VALUE_FALSE);
         if ($result === false) {
@@ -316,7 +316,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalInt($value, string $name, string $group)
+    protected function evalInt($value, string $name, string $group): bool
     {
         $result = ((int) $value) > 0;
         if ($result === false) {
@@ -340,7 +340,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalDebugMethods($value, string $name, string $group)
+    protected function evalDebugMethods($value, string $name, string $group): bool
     {
         $list = explode(',', $value);
 
@@ -369,7 +369,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether the function is allowed to be called.
      */
-    public function isAllowedDebugCall($data, string $method)
+    public function isAllowedDebugCall($data, string $method): bool
     {
         // Check if the class itself is blacklisted.
         foreach ($this->classBlacklist as $classname) {

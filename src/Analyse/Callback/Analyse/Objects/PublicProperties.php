@@ -59,7 +59,7 @@ class PublicProperties extends AbstractObjectAnalysis
      * @return string
      *   The generated HTML markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
 

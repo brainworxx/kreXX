@@ -63,7 +63,7 @@ class ThroughMethods extends AbstractCallback
      * @return string
      *   The rendered markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $result = $this->dispatchStartEvent();
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
@@ -118,10 +118,11 @@ class ThroughMethods extends AbstractCallback
      *
      * @param \ReflectionMethod $reflectionMethod
      *   The reflection method.
+     *
      * @return int
      *   The connector type,
      */
-    protected function retrieveConnectorType(ReflectionMethod $reflectionMethod)
+    protected function retrieveConnectorType(ReflectionMethod $reflectionMethod): int
     {
         if ($reflectionMethod->isStatic() === true) {
             return Connectors::STATIC_METHOD;
@@ -141,7 +142,7 @@ class ThroughMethods extends AbstractCallback
      * @return string
      *   The human readable parameter list.
      */
-    protected function retrieveParameters(ReflectionMethod $reflectionMethod, array &$methodData)
+    protected function retrieveParameters(ReflectionMethod $reflectionMethod, array &$methodData): string
     {
         $paramList = '';
         foreach ($reflectionMethod->getParameters() as $key => $reflectionParameter) {
@@ -168,7 +169,7 @@ class ThroughMethods extends AbstractCallback
      * @return string
      *   The analysis result.
      */
-    protected function getDeclarationPlace(ReflectionMethod $reflectionMethod, ReflectionClass $declaringClass)
+    protected function getDeclarationPlace(ReflectionMethod $reflectionMethod, ReflectionClass $declaringClass): string
     {
         if ($declaringClass->isInternal() === true) {
             return static::META_PREDECLARED;
@@ -213,10 +214,8 @@ class ThroughMethods extends AbstractCallback
      *   false = unable to retrieve something.
      *   Otherwise return a reflection class.
      */
-    protected function retrieveDeclaringReflection(
-        ReflectionMethod $reflectionMethod,
-        ReflectionClass $declaringClass
-    ) {
+    protected function retrieveDeclaringReflection(ReflectionMethod $reflectionMethod, ReflectionClass $declaringClass)
+    {
         // Get a first impression.
         if ($reflectionMethod->getFileName() === $declaringClass->getFileName()) {
             return $declaringClass;
@@ -251,7 +250,7 @@ class ThroughMethods extends AbstractCallback
         ReflectionMethod $reflectionMethod,
         ReflectionClass $declaringClass,
         ReflectionClass $reflectionClass
-    ) {
+    ): string {
         $result = '';
 
         if ($reflectionMethod->isPrivate() === true) {

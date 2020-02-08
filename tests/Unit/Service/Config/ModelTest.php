@@ -95,8 +95,8 @@ class ModelTest extends AbstractTest
      */
     public function testGetEditable()
     {
-        $this->setValueByReflection('editable', static::VALUE, $this->model);
-        $this->assertEquals(static::VALUE, $this->model->getEditable());
+        $this->setValueByReflection('editable', true, $this->model);
+        $this->assertEquals(true, $this->model->getEditable());
     }
 
     /**

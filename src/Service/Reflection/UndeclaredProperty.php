@@ -100,7 +100,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return bool
      *   Always false.
      */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return false;
     }
@@ -111,7 +111,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return \ReflectionClass
      *   The refection.
      */
-    public function getDeclaringClass()
+    public function getDeclaringClass(): \ReflectionClass
     {
         return $this->declaringClass;
     }
@@ -122,7 +122,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return bool
      *   Always false.
      */
-    public function isDefault()
+    public function isDefault(): bool
     {
         return false;
     }
@@ -133,7 +133,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return bool
      *   Always false.
      */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return false;
     }
@@ -144,7 +144,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return bool
      *   Always false.
      */
-    public function isProtected()
+    public function isProtected(): bool
     {
         return false;
     }
@@ -155,7 +155,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return bool
      *   Always true.
      */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return true;
     }
@@ -166,7 +166,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return string
      *   The property name.
      */
-    public function getName()
+    public function getName(): string
     {
         return (string)$this->propertyName;
     }
@@ -178,7 +178,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @return string
      *   Always an empty string.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return '';
     }

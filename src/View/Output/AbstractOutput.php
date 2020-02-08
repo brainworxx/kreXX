@@ -106,7 +106,7 @@ abstract class AbstractOutput
      * @return $this
      *   Return $this, for chaining.
      */
-    public function addChunkString(string $chunkString)
+    public function addChunkString(string $chunkString): AbstractOutput
     {
         $this->chunkStrings[] = $chunkString;
         return $this;

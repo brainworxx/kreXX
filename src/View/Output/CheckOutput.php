@@ -74,7 +74,7 @@ class CheckOutput
      * @return bool
      *   Well? Is it an ajax request?
      */
-    public function isAjax()
+    public function isAjax(): bool
     {
         $server = $this->pool->getServer();
 
@@ -88,7 +88,7 @@ class CheckOutput
      * @return bool
      *   Well? Is it an cli request?
      */
-    public function isCli()
+    public function isCli(): bool
     {
         return php_sapi_name() === 'cli';
     }
@@ -99,7 +99,7 @@ class CheckOutput
      * @return bool
      *   Well? Is did we output HTML so far?
      */
-    public function isOutputHtml()
+    public function isOutputHtml(): bool
     {
         // When we have dispatched a PDF or Json, the browser will not be
         // able to render the HTML output correctly.
@@ -131,7 +131,7 @@ class CheckOutput
      * @return bool
      *   Whether the current client ip is allowed or not.
      */
-    public function isAllowedIp(string $whitelist)
+    public function isAllowedIp(string $whitelist): bool
     {
         if ($this->isCli() === true || $whitelist === '*') {
             // There is no IP on the shell.

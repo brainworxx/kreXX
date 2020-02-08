@@ -49,7 +49,7 @@ trait Recursion
     /**
      * {@inheritDoc}
      */
-    public function renderRecursion(Model $model)
+    public function renderRecursion(Model $model): string
     {
         // We add our json to the output.
         return str_replace(
@@ -68,7 +68,7 @@ trait Recursion
      * @return array
      *   The marker array.
      */
-    public function getMarkerRecursion()
+    public function getMarkerRecursion(): array
     {
         return [$this->markerRecursion];
     }

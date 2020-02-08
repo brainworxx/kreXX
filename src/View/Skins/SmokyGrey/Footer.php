@@ -49,7 +49,7 @@ trait Footer
     /**
      * {@inheritDoc}
      */
-    public function renderFooter(array $caller, Model $model, bool $configOnly = false)
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false): string
     {
         // Doing special stuff for smokygrey:
         // We hide the debug-tab when we are displaying the config-only and switch
@@ -78,7 +78,7 @@ trait Footer
      * @return array
      *   The marker array.
      */
-    public function getMarkerFooter()
+    public function getMarkerFooter(): array
     {
         return [$this->markerFooter];
     }

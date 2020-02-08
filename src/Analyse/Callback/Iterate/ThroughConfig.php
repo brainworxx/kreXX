@@ -59,7 +59,7 @@ class ThroughConfig extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $configOutput = $this->dispatchStartEvent() . $this->renderAllSections();
 
@@ -90,7 +90,7 @@ class ThroughConfig extends AbstractCallback
      * @return string
      *   The output html.
      */
-    protected function renderAllSections()
+    protected function renderAllSections(): string
     {
         // We need to "explode" our config array into the
         // sections again, for better readability.

@@ -47,7 +47,7 @@ trait Help
      * @param Model $model
      * @return string
      */
-    protected function renderHelp(Model $model)
+    protected function renderHelp(Model $model): string
     {
          return '';
     }

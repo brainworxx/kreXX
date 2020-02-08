@@ -58,7 +58,7 @@ class Classes extends AbstractComment
      * @return string
      *   The comment.
      */
-    public function getComment(Reflector $reflection, ReflectionClass $reflectionClass = null)
+    public function getComment(Reflector $reflection, ReflectionClass $reflectionClass = null): string
     {
         static $cache = [];
         $name = $reflection->getName();

@@ -61,7 +61,7 @@ class BacktraceStep extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         // We are handling the following values here:
         // file, line, function, object, type, args, sourcecode.
@@ -80,7 +80,7 @@ class BacktraceStep extends AbstractCallback
      * @return string
      *   The generated dom.
      */
-    protected function lineToOutput()
+    protected function lineToOutput(): string
     {
         $model = $this->pool->createClass(Model::class)
             ->setName('Sourcecode')
@@ -103,9 +103,9 @@ class BacktraceStep extends AbstractCallback
      *   The model, where we assign the code.
      *
      * @return string
-     *   Th rendered HTML.
+     *   The rendered HTML.
      */
-    protected function retrieveSource(Model $model)
+    protected function retrieveSource(Model $model): string
     {
         $stepData = $this->parameters[static::PARAM_DATA];
         $output = '';
@@ -156,7 +156,7 @@ class BacktraceStep extends AbstractCallback
      * @return string
      *   The rendered HTML.
      */
-    protected function outputProcessor(string $name, string $type, string $eventName, string $processorName)
+    protected function outputProcessor(string $name, string $type, string $eventName, string $processorName): string
     {
         $stepData = $this->parameters[static::PARAM_DATA];
         if (isset($stepData[$type]) === true) {
@@ -188,7 +188,7 @@ class BacktraceStep extends AbstractCallback
      * @return string
      *   The rendered HTML.
      */
-    protected function outputSingleChild(string $name, string $type, string $eventName)
+    protected function outputSingleChild(string $name, string $type, string $eventName): string
     {
         $stepData = $this->parameters[static::PARAM_DATA];
         if (isset($stepData[$type]) === true) {

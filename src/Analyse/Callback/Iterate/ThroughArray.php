@@ -61,7 +61,7 @@ class ThroughArray extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->pool->render->renderSingeChildHr() .
             $this->dispatchStartEvent();

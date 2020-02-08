@@ -60,7 +60,7 @@ class DumpController extends AbstractController
      * @return $this;
      *   Return $this for chaining.
      */
-    public function dumpAction(&$data, string $headline = '')
+    public function dumpAction(&$data, string $headline = ''): DumpController
     {
         if ($this->pool->emergencyHandler->checkMaxCall() === true) {
             // Called too often, we might get into trouble here!

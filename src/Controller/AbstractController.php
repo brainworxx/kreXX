@@ -134,7 +134,7 @@ abstract class AbstractController implements ConstInterface
      * @return string
      *   The generated markup.
      */
-    protected function outputFooter(array $caller, bool $isExpanded = false)
+    protected function outputFooter(array $caller, bool $isExpanded = false): string
     {
         // Now we need to stitch together the content of the ini file
         // as well as it's path.
@@ -168,7 +168,7 @@ abstract class AbstractController implements ConstInterface
      * @return string
      *   The generated markup.
      */
-    protected function outputCssAndJs()
+    protected function outputCssAndJs(): string
     {
         // We only do this once per output type.
         $result = isset(static::$jsCssSend[$this->destination]);

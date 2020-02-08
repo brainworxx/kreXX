@@ -67,7 +67,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderSingleChild(Model $model);
+    public function renderSingleChild(Model $model): string;
 
     /**
      * Render a block of a detected recursion.
@@ -81,7 +81,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderRecursion(Model $model);
+    public function renderRecursion(Model $model): string;
 
     /**
      * Renders the kreXX header.
@@ -94,7 +94,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderHeader(string $headline, string $cssJs);
+    public function renderHeader(string $headline, string $cssJs): string;
 
     /**
      * Renders the kreXX footer.
@@ -109,7 +109,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderFooter(array $caller, Model $model, bool $configOnly = false);
+    public function renderFooter(array $caller, Model $model, bool $configOnly = false): string;
 
     /**
      * Simply outputs the css and js stuff.
@@ -122,7 +122,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderCssJs(string &$css, string &$javascript);
+    public function renderCssJs(string &$css, string &$javascript): string;
 
     /**
      * Renders a expandable child with a callback in the middle.
@@ -136,7 +136,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderExpandableChild(Model $model, bool $isExpanded = false);
+    public function renderExpandableChild(Model $model, bool $isExpanded = false): string;
 
     /**
      * Renders a simple editable child node.
@@ -147,7 +147,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderSingleEditableChild(Model $model);
+    public function renderSingleEditableChild(Model $model): string;
 
     /**
      * Renders a simple button.
@@ -158,7 +158,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderButton(Model $model);
+    public function renderButton(Model $model): string;
 
     /**
      * Renders the second part of the fatal error handler.
@@ -173,7 +173,7 @@ interface RenderInterface
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalMain(string $errstr, string $errfile, int $errline);
+    public function renderFatalMain(string $errstr, string $errfile, int $errline): string;
 
     /**
      * Renders the header part of the fatal error handler.
@@ -186,7 +186,7 @@ interface RenderInterface
      * @return string
      *   The template file, with all markers replaced.
      */
-    public function renderFatalHeader(string $cssJs, string $errorType);
+    public function renderFatalHeader(string $cssJs, string $errorType): string;
 
     /**
      * Renders all internal messages.
@@ -197,7 +197,7 @@ interface RenderInterface
      * @return string
      *   The generates html output
      */
-    public function renderMessages(array $messages);
+    public function renderMessages(array $messages): string;
 
     /**
      * Renders the line of the sourcecode, from where the backtrace is coming.
@@ -212,7 +212,7 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template files.
      */
-    public function renderBacktraceSourceLine(string $className, int $lineNo, string $sourceCode);
+    public function renderBacktraceSourceLine(string $className, int $lineNo, string $sourceCode): string;
 
     /**
      * Renders the hr.
@@ -220,12 +220,12 @@ interface RenderInterface
      * @return string
      *   The generated markup from the template file.
      */
-    public function renderSingeChildHr();
+    public function renderSingeChildHr(): string;
 
     /**
      * Render a simple line break.
      *
      * @return string
      */
-    public function renderLinebreak();
+    public function renderLinebreak(): string;
 }

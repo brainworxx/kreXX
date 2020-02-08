@@ -54,7 +54,7 @@ class Properties extends AbstractComment
      * @param \ReflectionClass|null $reflectionClass
      * @return mixed
      */
-    public function getComment(Reflector $reflectionProperty, ReflectionClass $reflectionClass = null)
+    public function getComment(Reflector $reflectionProperty, ReflectionClass $reflectionClass = null): string
     {
         // Do some static caching. The comment will not change during a run.
         static $cache = [];

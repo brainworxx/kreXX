@@ -63,7 +63,7 @@ class ThroughProperties extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
 
@@ -156,7 +156,7 @@ class ThroughProperties extends AbstractCallback
      *
      * @return string
      */
-    protected function getAdditionalData(ReflectionProperty $refProperty, ReflectionClass $ref)
+    protected function getAdditionalData(ReflectionProperty $refProperty, ReflectionClass $ref): string
     {
         // Now that we have the key and the value, we can analyse it.
         // Stitch together our additional info about the data:
@@ -189,9 +189,12 @@ class ThroughProperties extends AbstractCallback
      * Retrieve the declaration place of a property.
      *
      * @param \ReflectionProperty $refProperty
+     *   A reflection of the property we are analysing.
+     *
      * @return string
+     *   Human readable string, where the property was declared.
      */
-    protected function retrieveDeclarationPlace(ReflectionProperty $refProperty)
+    protected function retrieveDeclarationPlace(ReflectionProperty $refProperty): string
     {
         static $declarationCache = [];
 

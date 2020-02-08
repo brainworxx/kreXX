@@ -57,7 +57,7 @@ class ThroughResource extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         // Allow the start event to change the provided meta data.
         $output = $this->dispatchStartEvent();

@@ -64,7 +64,7 @@ class Methods extends AbstractObjectAnalysis
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
 
@@ -109,10 +109,11 @@ class Methods extends AbstractObjectAnalysis
      *   Are we analysing the protected methods here?
      * @param bool $doPrivate
      *   Are we analysing private methods here?
+     *
      * @return string
      *   The generated markup.
      */
-    protected function analyseMethods(ReflectionClass $ref, string $domId, bool $doProtected, bool $doPrivate)
+    protected function analyseMethods(ReflectionClass $ref, string $domId, bool $doProtected, bool $doPrivate): string
     {
         // Dumping all methods but only if we have any.
         $protected = [];
@@ -171,7 +172,7 @@ class Methods extends AbstractObjectAnalysis
      * @return string
      *   The generated id.
      */
-    protected function generateDomIdFromClassname(string $data, bool $doProtected, bool $doPrivate)
+    protected function generateDomIdFromClassname(string $data, bool $doProtected, bool $doPrivate): string
     {
         $string = 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_m_';
         if ($doProtected === true) {

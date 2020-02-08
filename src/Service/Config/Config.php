@@ -184,8 +184,8 @@ class Config extends Fallback
     /**
      * Returns the developer handle from the cookies.
      *
-     * @return string
-     *   The Developer handle.
+     * @return string|null
+     *   The Developer handle. Null when nothing was set.
      */
     public function getDevHandler()
     {
@@ -204,7 +204,7 @@ class Config extends Fallback
      * @param string $name
      *   The name of the setting.
      *
-     * @return string|null
+     * @return int|bool|string|null
      *   The setting.
      */
     public function getSetting(string $name)
@@ -221,7 +221,7 @@ class Config extends Fallback
      * @return $this
      *   Return this, for chaining.
      */
-    public function loadConfigValue(string $name)
+    public function loadConfigValue(string $name): Config
     {
         $isEditable = $this->iniConfig->getFeIsEditable($name);
         $section = $this->feConfigFallback[$name][static::SECTION];
@@ -270,7 +270,7 @@ class Config extends Fallback
      * @return string
      *   The absolute path, trailed by the '/'
      */
-    public function getChunkDir()
+    public function getChunkDir(): string
     {
         return $this->directories[static::CHUNKS_FOLDER];
     }
@@ -281,7 +281,7 @@ class Config extends Fallback
      * @return string
      *   The absolute path, trailed by the '/'
      */
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return $this->directories[static::LOG_FOLDER];
     }
@@ -292,7 +292,7 @@ class Config extends Fallback
      * @return string
      *   The absolute path to the Krexx.ini.
      */
-    public function getPathToIniFile()
+    public function getPathToIniFile(): string
     {
         return $this->directories[static::CONFIG_FOLDER];
     }
@@ -302,7 +302,7 @@ class Config extends Fallback
      *
      * @return string
      */
-    public function getSkinClass()
+    public function getSkinClass(): string
     {
         return $this->skinConfiguration[$this->getSetting(static::SETTING_SKIN)][static::SKIN_CLASS];
     }
@@ -312,7 +312,7 @@ class Config extends Fallback
      *
      * @return string
      */
-    public function getSkinDirectory()
+    public function getSkinDirectory(): string
     {
         return $this->skinConfiguration[$this->getSetting(static::SETTING_SKIN)][static::SKIN_DIRECTORY];
     }
@@ -322,7 +322,7 @@ class Config extends Fallback
      *
      * @return array
      */
-    public function getSkinList()
+    public function getSkinList(): array
     {
         return array_keys($this->skinConfiguration);
     }

@@ -168,7 +168,7 @@ class Encoding
      * @return string
      *   The encoded string.
      */
-    public function encodeString(string $data, bool $code = false)
+    public function encodeString(string $data, bool $code = false): string
     {
         // We will not encode an empty string.
         if ($data === '') {
@@ -241,7 +241,7 @@ class Encoding
      * @codeCoverageIgnore
      *   We will not tests simple wrappers
      *
-     * @return string
+     * @return string|false
      *   The result.
      */
     public function mbDetectEncoding(string $string, string $encodinglist = 'auto', $strict = false)
@@ -261,7 +261,7 @@ class Encoding
      * @return int
      *   The result.
      */
-    public function mbStrLen(string $string, string $encoding = null)
+    public function mbStrLen(string $string, string $encoding = null): int
     {
         // Meh, the original mb_strlen interprets a null here as an empty string.
         if ($encoding === null) {
@@ -287,7 +287,7 @@ class Encoding
      * @return string
      *   The result.
      */
-    public function mbSubStr(string $string, int $start, int $length)
+    public function mbSubStr(string $string, int $start, int $length): string
     {
         return mb_substr($string, $start, $length);
     }
@@ -303,7 +303,7 @@ class Encoding
      *
      * @param string|int $name
      *
-     * @return string
+     * @return string|int
      */
     public function encodeStringForCodeGeneration($name)
     {
@@ -353,7 +353,7 @@ class Encoding
      * @return string
      *   The extra escaped result for code.
      */
-    protected function arrayMapCallbackCode(int $charCode)
+    protected function arrayMapCallbackCode(int $charCode): string
     {
         if ($charCode === 9) {
             // Replace TAB with two spaces, it's better readable that way.
@@ -371,7 +371,7 @@ class Encoding
      * @return string
      *   The extra escaped result.
      */
-    protected function arrayMapCallbackNormal(int $charCode)
+    protected function arrayMapCallbackNormal(int $charCode): string
     {
         return '&#' . $charCode . ';';
     }
@@ -390,7 +390,7 @@ class Encoding
      * @return bool
      *   Whether we have a special char in there, or not.
      */
-    public function isPropertyNameNormal($propName)
+    public function isPropertyNameNormal($propName): bool
     {
         static $cache = [];
 

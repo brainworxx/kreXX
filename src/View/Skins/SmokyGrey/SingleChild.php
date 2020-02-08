@@ -49,7 +49,7 @@ trait SingleChild
     /**
      * {@inheritDoc}
      */
-    public function renderSingleChild(Model $model)
+    public function renderSingleChild(Model $model): string
     {
         // We need to fetch the parent stuff first, because the str_replace
         // works through its parameters from left to right. This means in this

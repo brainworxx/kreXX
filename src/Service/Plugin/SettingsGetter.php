@@ -54,7 +54,7 @@ class SettingsGetter extends Registration
      * @return string
      *   Absolute path to the configuration file.
      */
-    public static function getConfigFile()
+    public static function getConfigFile(): string
     {
         if (empty(static::$configFile)) {
             static::$configFile = KREXX_DIR . 'config' . DIRECTORY_SEPARATOR . 'Krexx.ini';
@@ -71,7 +71,7 @@ class SettingsGetter extends Registration
      * @return string
      *   The absolute path to the chunks folder.
      */
-    public static function getChunkFolder()
+    public static function getChunkFolder(): string
     {
         if (empty(static::$chunkFolder)) {
             static::$chunkFolder = KREXX_DIR . 'chunks' . DIRECTORY_SEPARATOR;
@@ -88,7 +88,7 @@ class SettingsGetter extends Registration
      * @return string
      *   The absolute path to the log folder.
      */
-    public static function getLogFolder()
+    public static function getLogFolder(): string
     {
         if (empty(static::$logFolder)) {
             static::$logFolder = KREXX_DIR . 'log' . DIRECTORY_SEPARATOR;
@@ -105,7 +105,7 @@ class SettingsGetter extends Registration
      * @return array
      *   The debug methods.
      */
-    public static function getBlacklistDebugMethods()
+    public static function getBlacklistDebugMethods(): array
     {
         return static::$blacklistDebugMethods;
     }
@@ -118,7 +118,7 @@ class SettingsGetter extends Registration
      * @return array
      *   The list with classes.
      */
-    public static function getBlacklistDebugClass()
+    public static function getBlacklistDebugClass(): array
     {
         return static::$blacklistDebugClass;
     }
@@ -134,7 +134,7 @@ class SettingsGetter extends Registration
      * @return array
      *   The rewrites.
      */
-    public static function getRewriteList()
+    public static function getRewriteList(): array
     {
         return static::$rewriteList;
     }
@@ -147,7 +147,7 @@ class SettingsGetter extends Registration
      * @return array
      *   The event list.
      */
-    public static function getEventList()
+    public static function getEventList(): array
     {
         return static::$eventList;
     }
@@ -160,7 +160,7 @@ class SettingsGetter extends Registration
      * @return array
      *   List of these files
      */
-    public static function getAdditionalHelpFiles()
+    public static function getAdditionalHelpFiles(): array
     {
         return static::$additionalHelpFiles;
     }
@@ -173,7 +173,7 @@ class SettingsGetter extends Registration
      * @return array
      *   The configuration data for the view
      */
-    public static function getPlugins()
+    public static function getPlugins(): array
     {
         return static::$plugins;
     }
@@ -186,7 +186,7 @@ class SettingsGetter extends Registration
      * @return array
      *   The configuration arrays of additional skins.
      */
-    public static function getAdditionalSkinList()
+    public static function getAdditionalSkinList(): array
     {
         return self::$additionalSkinList;
     }

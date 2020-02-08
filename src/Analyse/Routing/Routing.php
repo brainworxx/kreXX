@@ -144,7 +144,7 @@ class Routing extends AbstractRouting
      * @return string
      *   The generated markup.
      */
-    public function analysisHub(Model $model)
+    public function analysisHub(Model $model): string
     {
         // Check memory and runtime.
         if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
@@ -207,7 +207,7 @@ class Routing extends AbstractRouting
      * @return string
      *   The rendered HTML code.
      */
-    protected function handleNoneSimpleTypes($data, Model $model)
+    protected function handleNoneSimpleTypes($data, Model $model): string
     {
         // Check the nesting level.
         if ($this->pool->emergencyHandler->checkNesting() === true) {
@@ -234,7 +234,7 @@ class Routing extends AbstractRouting
      * @return string
      *   The rendered HTML.
      */
-    protected function handleRecursion($data, Model $model)
+    protected function handleRecursion($data, Model $model): string
     {
         if (is_object($data) === true) {
             $normal = '\\' . get_class($data);
@@ -261,7 +261,7 @@ class Routing extends AbstractRouting
      * @return string
      *   The rendered HTML.
      */
-    protected function handleNestedTooDeep($data, Model $model)
+    protected function handleNestedTooDeep($data, Model $model): string
     {
         $text = $this->pool->messages->getHelp('maximumLevelReached2');
 
@@ -291,7 +291,7 @@ class Routing extends AbstractRouting
      * @return string
      *   The rendered HTML code.
      */
-    protected function preprocessNoneSimpleTypes($data, Model $model)
+    protected function preprocessNoneSimpleTypes($data, Model $model): string
     {
         if (is_object($data) === true) {
             // Object?

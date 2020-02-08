@@ -56,7 +56,7 @@ class BacktraceController extends AbstractController
      * @return $this
      *   Return $this for chaining.
      */
-    public function backtraceAction(array $backtrace = null)
+    public function backtraceAction(array $backtrace = null): BacktraceController
     {
         if ($this->pool->emergencyHandler->checkMaxCall() === true) {
             // Called too often, we might get into trouble here!

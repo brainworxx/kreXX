@@ -53,7 +53,7 @@ trait ConnectorRight
      * @return string
      *   The rendered connector.
      */
-    protected function renderConnectorRight(string $connector)
+    protected function renderConnectorRight(string $connector): string
     {
         if (empty($connector) === true) {
             // No connector, no display.
@@ -76,7 +76,7 @@ trait ConnectorRight
      * @return array
      *   The marker array.
      */
-    public function getMarkerConnectorRight()
+    public function getMarkerConnectorRight(): array
     {
         return [$this->markerConnectorRight];
     }

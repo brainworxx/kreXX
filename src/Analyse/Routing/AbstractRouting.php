@@ -80,7 +80,7 @@ abstract class AbstractRouting implements ConstInterface
      * @return string
      *   The generated id.
      */
-    protected function generateDomIdFromObject($data)
+    protected function generateDomIdFromObject($data): string
     {
         return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_' . spl_object_hash($data);
     }
@@ -94,7 +94,7 @@ abstract class AbstractRouting implements ConstInterface
      * @return Model
      *   The changed Model.
      */
-    protected function dispatchProcessEvent(Model $model)
+    protected function dispatchProcessEvent(Model $model): Model
     {
         $this->pool->eventService->dispatch(
             static::class . PluginConfigInterface::START_PROCESS,
@@ -116,7 +116,7 @@ abstract class AbstractRouting implements ConstInterface
      * @return \Brainworxx\Krexx\Analyse\Model
      *   The changed model.
      */
-    protected function dispatchNamedEvent($name, Model $model)
+    protected function dispatchNamedEvent($name, Model $model): Model
     {
         $this->pool->eventService->dispatch(
             static::class . '::' . $name,

@@ -87,7 +87,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setEditable(bool $editable)
+    public function setEditable(bool $editable): Model
     {
         $this->editable = $editable;
         return $this;
@@ -101,7 +101,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setType(string $type)
+    public function setType(string $type): Model
     {
         $this->type = $type;
         return $this;
@@ -115,7 +115,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setValue($value)
+    public function setValue($value): Model
     {
         if ($value === Fallback::VALUE_TRUE) {
             $value = true;
@@ -132,7 +132,7 @@ class Model
      *
      * @return bool
      */
-    public function getEditable()
+    public function getEditable(): bool
     {
         return $this->editable;
     }
@@ -142,7 +142,7 @@ class Model
      *
      * @return string
      */
-    public function getSection()
+    public function getSection(): string
     {
         return $this->section;
     }
@@ -152,7 +152,7 @@ class Model
      *
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -160,7 +160,7 @@ class Model
     /**
      * Getter for the value.
      *
-     * @return string
+     * @return int|string|bool|null
      */
     public function getValue()
     {
@@ -175,7 +175,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setSection(string $section)
+    public function setSection(string $section): Model
     {
         $this->section = $section;
         return $this;
@@ -186,7 +186,7 @@ class Model
      *
      * @return string
      */
-    public function getSource()
+    public function getSource(): string
     {
         return $this->source;
     }
@@ -199,7 +199,7 @@ class Model
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setSource(string $source)
+    public function setSource(string $source): Model
     {
         $this->source = $source;
 

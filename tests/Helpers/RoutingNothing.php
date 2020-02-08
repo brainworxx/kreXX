@@ -67,7 +67,7 @@ class RoutingNothing extends Routing
      *
      * @return string
      */
-    public function analysisHub(Model $model)
+    public function analysisHub(Model $model): string
     {
         $this->model[] = $model;
 

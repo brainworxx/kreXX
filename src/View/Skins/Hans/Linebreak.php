@@ -42,7 +42,7 @@ trait Linebreak
     /**
      * {@inheritDoc}
      */
-    public function renderLinebreak()
+    public function renderLinebreak(): string
     {
         return $this->getTemplateFileContent(static::FILE_BR);
     }

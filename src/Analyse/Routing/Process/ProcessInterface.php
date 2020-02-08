@@ -54,5 +54,5 @@ interface ProcessInterface
      *
      * @return string
      */
-    public function process(Model $model);
+    public function process(Model $model): string;
 }

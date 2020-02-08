@@ -53,7 +53,7 @@ trait Button
     /**
      * {@inheritdoc}
      */
-    public function renderButton(Model $model)
+    public function renderButton(Model $model): string
     {
         return str_replace(
             $this->markerSingleButton,
@@ -75,7 +75,7 @@ trait Button
      * @return array
      *   The marker array.
      */
-    public function getMarkerSingleButton()
+    public function getMarkerSingleButton(): array
     {
         return $this->markerSingleButton;
     }

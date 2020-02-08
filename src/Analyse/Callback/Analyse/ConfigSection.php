@@ -58,7 +58,7 @@ class ConfigSection extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $sectionOutput = $this->dispatchStartEvent();
 

@@ -59,7 +59,7 @@ class ThroughMeta extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
         $reflectionStuff = [static::META_INHERITED_CLASS, static::META_INTERFACES, static::META_TRAITS];
@@ -97,7 +97,7 @@ class ThroughMeta extends AbstractCallback
      * @return string
      *   The rendered html.
      */
-    protected function handleNoneReflections(string $key, string $meta)
+    protected function handleNoneReflections(string $key, string $meta): string
     {
         /** @var Model $model */
         $model = $this->pool->createClass(Model::class)

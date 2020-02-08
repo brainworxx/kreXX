@@ -57,7 +57,7 @@ class FileinfoDummy
      * @return string
      *   An empty sting. nothing to do here.
      */
-    public function buffer($file)
+    public function buffer($file): string
     {
         return '';
     }

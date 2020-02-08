@@ -65,7 +65,7 @@ abstract class AbstractFactory
      *
      * @param string $classname
      *
-     * @return mixed
+     * @return object
      *   The requested object.
      */
     public function createClass(string $classname)
@@ -84,7 +84,7 @@ abstract class AbstractFactory
      * @param string|int $what
      *   The part of the globals we want to access.
      *
-     * @return array
+     * @return mixed
      *   The part we are requesting.
      */
     public function &getGlobals($what = '')
@@ -102,7 +102,7 @@ abstract class AbstractFactory
      * @return array
      *   The superglobal $_SERVER
      */
-    public function &getServer()
+    public function &getServer(): array
     {
         return $_SERVER;
     }

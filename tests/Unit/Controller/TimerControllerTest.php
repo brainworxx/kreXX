@@ -139,6 +139,7 @@ class TimerControllerTest extends AbstractController
                         ],
                         $bench
                     );
+                    return new DumpController(new Pool());
                 }
             ));
 

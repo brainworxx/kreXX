@@ -50,7 +50,7 @@ trait Search
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderSearch()
+    protected function renderSearch(): string
     {
         return str_replace(
             $this->markerSearch,
@@ -68,7 +68,7 @@ trait Search
      * @return array
      *   The marker array.
      */
-    public function getMarkerSearch()
+    public function getMarkerSearch(): array
     {
         return [$this->markerSearch];
     }

@@ -54,14 +54,14 @@ interface PluginConfigInterface
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Get the version of the plugin.
      *
      * @return string
      */
-    public function getVersion();
+    public function getVersion(): string;
 
     /**
      * Registers all Overwrites

@@ -92,7 +92,7 @@ abstract class AbstractCaller implements ConstInterface
      * @return $this
      *   Return this for chaining.
      */
-    public function setPattern($pattern)
+    public function setPattern($pattern): AbstractCaller
     {
         $this->pattern = strtolower($pattern);
         return $this;
@@ -103,7 +103,7 @@ abstract class AbstractCaller implements ConstInterface
      *
      * @return string
      */
-    public function getPattern()
+    public function getPattern(): string
     {
         return $this->pattern;
     }
@@ -125,7 +125,7 @@ abstract class AbstractCaller implements ConstInterface
      *     'type' => 'Analysis of $myString, string'
      *   );
      */
-    abstract public function findCaller($headline, $data);
+    abstract public function findCaller($headline, $data): array;
 
     /**
      * Get the analysis type for the metadata and the page title.
@@ -140,7 +140,7 @@ abstract class AbstractCaller implements ConstInterface
      * @return string
      *   The analysis type.
      */
-    protected function getType($headline, $varname, $data)
+    protected function getType($headline, $varname, $data): string
     {
         if (empty($headline) === true) {
             if (is_object($data) === true) {
@@ -164,7 +164,7 @@ abstract class AbstractCaller implements ConstInterface
      * @return string
      *   The current URL.
      */
-    protected function getCurrentUrl()
+    protected function getCurrentUrl(): string
     {
         $server = $this->pool->getServer();
 

@@ -56,7 +56,7 @@ class ProcessBacktrace extends AbstractCallback
      * @return string
      *   The generated DOM.
      */
-    public function callMe()
+    public function callMe(): string
     {
         return $this->process($this->parameters[static::PARAM_DATA]);
     }
@@ -71,7 +71,7 @@ class ProcessBacktrace extends AbstractCallback
      * @return string
      *   The rendered backtrace.
      */
-    public function process(&$backtrace = [])
+    public function process(&$backtrace = []): string
     {
         if (empty($backtrace) === true) {
             $backtrace = $this->getBacktrace();
@@ -110,7 +110,7 @@ class ProcessBacktrace extends AbstractCallback
      * @return array
      *   The scrubbed backtrace.
      */
-    protected function getBacktrace()
+    protected function getBacktrace(): array
     {
         // Remove the fist step from the backtrace,
         // because that is the internal function in kreXX.

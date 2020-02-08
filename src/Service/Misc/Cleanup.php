@@ -77,7 +77,7 @@ class Cleanup
      * @return $this
      *   For chaining.
      */
-    public function cleanupOldLogs()
+    public function cleanupOldLogs(): Cleanup
     {
         if ($this->pool->chunks->getLoggingIsAllowed() === false) {
             // We have no write access. Do nothing.
@@ -117,7 +117,7 @@ class Cleanup
      * @return $this
      *   For chaining.
      */
-    public function cleanupOldChunks()
+    public function cleanupOldChunks(): Cleanup
     {
         // Check for write access. We also do this only once.
         if (static::$chunksDone === true || $this->pool->chunks->getChunksAreAllowed() === false) {

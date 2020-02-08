@@ -57,7 +57,7 @@ class Constants extends AbstractObjectAnalysis
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
 

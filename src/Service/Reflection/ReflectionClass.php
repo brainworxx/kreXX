@@ -154,7 +154,7 @@ class ReflectionClass extends \ReflectionClass
      *   Array with the interfaces.
      */
 
-    public function getInterfaces()
+    public function getInterfaces(): array
     {
         // Get a list of the names.
         $interfaceNames = $this->getInterfaceNames();
@@ -192,7 +192,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @return array|\ReflectionClass[]
      */
-    public function getTraits()
+    public function getTraits(): array
     {
         $traits = parent::getTraitNames();
         if (empty($traits)) {

@@ -124,7 +124,7 @@ class Messages
      * @return array
      *   The language keys we added beforehand.
      */
-    public function getKeys()
+    public function getKeys(): array
     {
         return $this->keys;
     }
@@ -135,7 +135,7 @@ class Messages
      * @return string
      *   The rendered html output of the messages.
      */
-    public function outputMessages()
+    public function outputMessages(): string
     {
         // Simple Wrapper for OutputActions::$render->renderMessages
         if (
@@ -168,7 +168,7 @@ class Messages
      * @return string
      *   The help text.
      */
-    public function getHelp($key, array $args = [])
+    public function getHelp($key, array $args = []): string
     {
         // Check if we can get a value, at all.
         if (empty($this->helpArray[$key]) === true) {

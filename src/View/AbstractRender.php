@@ -88,7 +88,7 @@ abstract class AbstractRender implements ConstInterface
      * @return string
      *   The template file, without whitespaces.
      */
-    protected function getTemplateFileContent($what)
+    protected function getTemplateFileContent($what): string
     {
         if (isset(static::$fileCache[$what]) === true) {
             return static::$fileCache[$what];
@@ -110,7 +110,7 @@ abstract class AbstractRender implements ConstInterface
      * @return string
      *   The json from the array.
      */
-    protected function encodeJson(array $array)
+    protected function encodeJson(array $array): string
     {
         // No data, no json!
         if (empty($array) === true) {
@@ -151,7 +151,7 @@ abstract class AbstractRender implements ConstInterface
      * @return string
      *   The generated data attribute.
      */
-    protected function generateDataAttribute($name, $data)
+    protected function generateDataAttribute($name, $data): string
     {
         if (empty($data) === true) {
             return '';
@@ -169,7 +169,7 @@ abstract class AbstractRender implements ConstInterface
      * @return string
      *   The css classes.
      */
-    protected function retrieveTypeClasses(Model $model)
+    protected function retrieveTypeClasses(Model $model): string
     {
         $typeClasses = '';
         foreach (explode(' ', $model->getType()) as $typeClass) {

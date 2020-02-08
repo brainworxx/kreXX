@@ -120,7 +120,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
 
@@ -143,7 +143,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The generated DOM.
      */
-    protected function goThroughMethodList(array $methodList)
+    protected function goThroughMethodList(array $methodList): string
     {
         $output = '';
 
@@ -197,7 +197,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The rendered markup.
      */
-    protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model)
+    protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model): string
     {
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
@@ -336,7 +336,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The first impression of the property name.
      */
-    protected function preparePropertyName(ReflectionMethod $reflectionMethod)
+    protected function preparePropertyName(ReflectionMethod $reflectionMethod): string
     {
         $currentPrefix = $this->parameters[static::CURRENT_PREFIX];
 
@@ -424,7 +424,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The de-camelized string.
      */
-    protected function convertToSnakeCase(string $string)
+    protected function convertToSnakeCase(string $string): string
     {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
     }
@@ -441,7 +441,7 @@ class ThroughGetter extends AbstractCallback
      * @return array
      *   The findings.
      */
-    protected function findIt(array $searchArray, string $haystack)
+    protected function findIt(array $searchArray, string $haystack): array
     {
 
         // Defining our regex.
@@ -471,7 +471,7 @@ class ThroughGetter extends AbstractCallback
      * @return string
      *   The escaped string.
      */
-    protected function regexEscaping(string $string)
+    protected function regexEscaping(string $string): string
     {
         return str_replace(
             $this->regexEscapeFind,

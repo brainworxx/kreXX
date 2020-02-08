@@ -56,7 +56,7 @@ trait PluginList
      * @return string
      *   The generated markup from the template files.
      */
-    protected function renderPluginList()
+    protected function renderPluginList(): string
     {
         $result = '';
         $template = $this->getTemplateFileContent(static::FILE_SI_PLUGIN);
@@ -91,7 +91,7 @@ trait PluginList
      * @return array
      *   The marker array.
      */
-    public function getMarkerSinglePlugin()
+    public function getMarkerSinglePlugin(): array
     {
         return $this->markerSinglePlugin;
     }

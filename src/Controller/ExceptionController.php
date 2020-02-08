@@ -116,7 +116,7 @@ class ExceptionController extends AbstractController
      * @return $this
      *   Return $this, for chaining.
      */
-    public function registerAction()
+    public function registerAction(): ExceptionController
     {
         if (empty(static::$exceptionController)) {
             static::$exceptionController = $this;

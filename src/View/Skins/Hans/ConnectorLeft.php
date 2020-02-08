@@ -53,7 +53,7 @@ trait ConnectorLeft
      * @return string
      *   The rendered connector.
      */
-    protected function renderConnectorLeft(string $connector)
+    protected function renderConnectorLeft(string $connector): string
     {
         return str_replace(
             $this->markerConnectorLeft,
@@ -71,7 +71,7 @@ trait ConnectorLeft
      * @return array
      *   The marker array.
      */
-    public function getMarkerConnectorLeft()
+    public function getMarkerConnectorLeft(): array
     {
         return [$this->markerConnectorLeft];
     }

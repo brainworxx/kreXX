@@ -47,7 +47,7 @@ trait Messages
     /**
      * {@inheritdoc}
      */
-    public function renderMessages(array $messages)
+    public function renderMessages(array $messages): string
     {
         $result = '';
         $messageTemplate = $this->getTemplateFileContent(static::FILE_MESSAGE);
@@ -67,7 +67,7 @@ trait Messages
      * @return array
      *   The marker array.
      */
-    public function getMarkerMessages()
+    public function getMarkerMessages(): array
     {
         return [$this->markerMessages];
     }

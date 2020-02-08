@@ -57,7 +57,7 @@ class Debug extends AbstractCallback
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         // This could be anything, we need to route it.
         return $this->dispatchStartEvent() .

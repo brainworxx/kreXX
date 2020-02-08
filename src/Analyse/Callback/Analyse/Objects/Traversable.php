@@ -65,7 +65,7 @@ class Traversable extends AbstractObjectAnalysis
      * @return string
      *   The generated markup.
      */
-    public function callMe()
+    public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
 
@@ -91,7 +91,7 @@ class Traversable extends AbstractObjectAnalysis
      * @return string
      *   The generated markup.
      */
-    protected function retrieveTraversableData()
+    protected function retrieveTraversableData(): string
     {
         $data = $this->parameters[static::PARAM_DATA];
 
@@ -136,7 +136,7 @@ class Traversable extends AbstractObjectAnalysis
      * @return string
      *   The rendered HTML.
      */
-    protected function analyseTraversableResult($originalClass, array $result)
+    protected function analyseTraversableResult($originalClass, array $result): string
     {
         // Special Array Access here, resulting in more complicated source
         // generation. So we tell the callback to to that.

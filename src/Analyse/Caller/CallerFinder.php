@@ -77,7 +77,7 @@ class CallerFinder extends AbstractCaller
     /**
      * {@inheritdoc}
      */
-    public function findCaller($headline, $data)
+    public function findCaller($headline, $data): array
     {
         $backtrace = array_reverse(debug_backtrace(0, 5));
 

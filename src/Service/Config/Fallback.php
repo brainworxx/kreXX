@@ -325,7 +325,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      * @return array
      *   The settings.
      */
-    protected function returnBoolSelectFalse(string $section)
+    protected function returnBoolSelectFalse(string $section): array
     {
         return [
             Fallback::VALUE => Fallback::VALUE_FALSE,
@@ -344,7 +344,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      * @return array
      *   The settings.
      */
-    protected function returnBoolSelectTrue(string $section)
+    protected function returnBoolSelectTrue(string $section): array
     {
         return [
             Fallback::VALUE => Fallback::VALUE_TRUE,
@@ -365,7 +365,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      * @return array
      *   The settings.
      */
-    protected function returnInput(string $section, int $value)
+    protected function returnInput(string $section, int $value): array
     {
         return [
             Fallback::VALUE => $value,
@@ -380,7 +380,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      *
      * @return array
      */
-    protected function returnDebugMethods()
+    protected function returnDebugMethods(): array
     {
         return [
             // Debug methods that get called.
@@ -398,7 +398,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      *
      * @return array
      */
-    protected function returnDestination()
+    protected function returnDestination(): array
     {
         return [
                 // Either 'file' or 'browser'.
@@ -414,7 +414,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      *
      * @return array
      */
-    protected function returnMaxFiles()
+    protected function returnMaxFiles(): array
     {
         return [
             // Maximum files that are kept inside the logfolder.
@@ -430,7 +430,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      *
      * @return array
      */
-    protected function returnSkin()
+    protected function returnSkin(): array
     {
         return [
             Fallback::VALUE => Fallback::SKIN_SMOKY_GREY,
@@ -445,7 +445,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      *
      * @return array
      */
-    protected function returnIpRange()
+    protected function returnIpRange(): array
     {
         return [
             // IP range for calling kreXX.
@@ -462,7 +462,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      *
      * @return array
      */
-    protected function returnDevHandle()
+    protected function returnDevHandle(): array
     {
         return [
             Fallback::VALUE => '',
@@ -477,7 +477,7 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
      *
      * @return array
      */
-    protected function returnMaxRuntime()
+    protected function returnMaxRuntime(): array
     {
         return [
             // Maximum runtime in seconds, before triggering an emergency break.

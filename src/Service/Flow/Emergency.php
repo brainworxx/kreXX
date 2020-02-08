@@ -174,7 +174,7 @@ class Emergency
      *   FALSE = all is OK.
      *   TRUE = we have a problem.
      */
-    public function checkEmergencyBreak()
+    public function checkEmergencyBreak(): bool
     {
         if ($this->disabled === true) {
             // Tell them, everything is OK!
@@ -198,7 +198,7 @@ class Emergency
      *   FALSE = all is OK.
      *   TRUE = we have a problem.
      */
-    protected function checkRuntime()
+    protected function checkRuntime(): bool
     {
         // Check Runtime.
         if ($this->timer < time()) {
@@ -221,7 +221,7 @@ class Emergency
      *   FALSE = all is OK.
      *   TRUE = we have a problem.
      */
-    protected function checkMemory()
+    protected function checkMemory(): bool
     {
         // We will only check, if we were able to determine a memory limit
         // in the first place.
@@ -263,7 +263,7 @@ class Emergency
      * @return bool
      *   TRUE if we are too deep.
      */
-    public function checkNesting()
+    public function checkNesting(): bool
     {
         return ($this->nestingLevel > $this->maxNestingLevel);
     }
@@ -273,7 +273,7 @@ class Emergency
      *
      * @return int
      */
-    public function getNestingLevel()
+    public function getNestingLevel(): int
     {
         return $this->nestingLevel;
     }
@@ -301,7 +301,7 @@ class Emergency
      * @return bool
      *   Whether kreXX was called too often or not.
      */
-    public function checkMaxCall()
+    public function checkMaxCall(): bool
     {
         if ($this->krexxCount >= $this->maxCall) {
             // Called too often, we might get into trouble here!
@@ -325,7 +325,7 @@ class Emergency
      * @return int
      *   How often kreXX was called.
      */
-    public function getKrexxCount()
+    public function getKrexxCount(): int
     {
         return $this->krexxCount;
     }

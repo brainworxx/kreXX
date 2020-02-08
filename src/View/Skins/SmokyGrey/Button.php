@@ -52,7 +52,7 @@ trait Button
     /**
      * {@inheritDoc}
      */
-    public function renderButton(Model $model)
+    public function renderButton(Model $model): string
     {
         // Prepare the json. Not much do display for form elements.
         return str_replace(

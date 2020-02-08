@@ -133,9 +133,9 @@ class ThroughLargeArrayTest extends AbstractTest
             ->callMe();
 
         // Test multiline generation
-        $this->assertEquals(0, $this->routingMock->model[0]->getMultiLineCodeGen());
-        $this->assertEquals(0, $this->renderMock->model[static::RENDER_SINGLE_CHILD][0]->getMultiLineCodeGen());
-        $this->assertEquals(0, $this->renderMock->model[static::RENDER_SINGLE_CHILD][1]->getMultiLineCodeGen());
+        $this->assertEquals('', $this->routingMock->model[0]->getMultiLineCodeGen());
+        $this->assertEquals('', $this->renderMock->model[static::RENDER_SINGLE_CHILD][0]->getMultiLineCodeGen());
+        $this->assertEquals('', $this->renderMock->model[static::RENDER_SINGLE_CHILD][1]->getMultiLineCodeGen());
 
         $this->alwaysRun($fixture);
     }

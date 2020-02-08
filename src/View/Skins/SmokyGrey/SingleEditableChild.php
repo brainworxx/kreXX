@@ -49,7 +49,7 @@ trait SingleEditableChild
     /**
      * {@inheritDoc}
      */
-    public function renderSingleEditableChild(Model $model)
+    public function renderSingleEditableChild(Model $model): string
     {
         // Prepare the json. Not much do display for form elements.
         return str_replace(
@@ -68,7 +68,7 @@ trait SingleEditableChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSingleEditableChild()
+    public function getMarkerSingleEditableChild(): array
     {
         return [$this->markerSingleEditableChild];
     }
