@@ -73,9 +73,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
         $result = [];
 
         // Adding comments from the file.
-        $result[static::META_COMMENT] =  $this->pool
-            ->createClass(Functions::class)
-            ->getComment($ref);
+        $result[static::META_COMMENT] =  $this->pool->createClass(Functions::class)->getComment($ref);
 
         // Adding the sourcecode
         $result[static::META_SOURCE] = $this->retrieveSourceCode($ref);

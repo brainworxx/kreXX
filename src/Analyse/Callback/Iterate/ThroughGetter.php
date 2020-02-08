@@ -386,16 +386,9 @@ class ThroughGetter extends AbstractCallback
         // Later on, we may also try to parse deeper for stuff.
         foreach ($this->findIt(['return $this->', ';'], $sourcecode) as $propertyName) {
             // Check if this is a property and return the first we find.
-            $parentClass = $classReflection;
-            while ($parentClass !== false) {
-                // Check if it was declared somewhere deeper in the
-                // class structure.
-                if ($parentClass->hasProperty($propertyName) === true) {
-                    return $parentClass->getProperty($propertyName);
-                }
-                $parentClass = $parentClass->getParentClass();
+            if (($result = $this->retrievePropertyByName($propertyName, $classReflection)) !== null) {
+                return $result;
             }
-
             // Check if this is a method and go deeper!
             $methodName = rtrim($propertyName, '()');
             if ($classReflection->hasMethod($methodName) === true) {
@@ -409,6 +402,33 @@ class ThroughGetter extends AbstractCallback
         }
 
         // Nothing?
+        return null;
+    }
+
+    /**
+     * Retrieve the property by name from a reflection class.
+     *
+     * @param string $propertyName
+     *   The name of the property.
+     * @param \ReflectionClass $parentClass
+     *   The class where it may be located.
+     *
+     * @throws \ReflectionException
+     *
+     * @return \ReflectionProperty|null
+     *   The reflection property, if found.
+     */
+    protected function retrievePropertyByName(string $propertyName, \ReflectionClass $parentClass)
+    {
+        while ($parentClass !== false) {
+            // Check if it was declared somewhere deeper in the
+            // class structure.
+            if ($parentClass->hasProperty($propertyName) === true) {
+                return $parentClass->getProperty($propertyName);
+            }
+            $parentClass = $parentClass->getParentClass();
+        }
+
         return null;
     }
 

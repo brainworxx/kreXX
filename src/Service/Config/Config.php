@@ -227,8 +227,7 @@ class Config extends Fallback
         $section = $this->feConfigFallback[$name][static::SECTION];
 
         /** @var Model $model */
-        $model = $this->pool->createClass(Model::class)
-            ->setSection($section)
+        $model = $this->pool->createClass(Model::class)->setSection($section)
             ->setEditable($isEditable)
             ->setType($this->feConfigFallback[$name][static::RENDER][static::RENDER_TYPE]);
 

@@ -63,20 +63,12 @@ class ExceptionController extends AbstractController
     {
         $this->pool->reset();
 
-        $type = get_class($exception);
-
         // Get the main part.
-        $main = $this->pool->render->renderFatalMain(
-            $exception->getMessage(),
-            $exception->getFile(),
-            $exception->getLine()
-        );
+        $main = $this->pool->render->renderFatalMain($exception->getMessage(), $exception->getFile(), $exception->getLine());
 
         // Get the backtrace.
         $trace = $exception->getTrace();
-        $backtrace = $this->pool
-            ->createClass(ProcessBacktrace::class)
-            ->process($trace);
+        $backtrace = $this->pool->createClass(ProcessBacktrace::class)->process($trace);
 
         if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
             return;
@@ -87,6 +79,7 @@ class ExceptionController extends AbstractController
         $this->pool->chunks->detectEncoding($main . $backtrace);
 
         // Get the header, footer and messages
+        $type = get_class($exception);
         $footer = $this->outputFooter([]);
         $header = $this->pool->render->renderFatalHeader($this->outputCssAndJs(), $type);
         $messages = $this->pool->messages->outputMessages();
@@ -101,8 +94,7 @@ class ExceptionController extends AbstractController
             ]
         );
 
-        $this->outputService->addChunkString($header)
-            ->addChunkString($messages)
+        $this->outputService->addChunkString($header)->addChunkString($messages)
             ->addChunkString($main)
             ->addChunkString($backtrace)
             ->addChunkString($footer)

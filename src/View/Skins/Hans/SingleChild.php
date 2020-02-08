@@ -93,14 +93,14 @@ trait SingleChild
         }
 
         // Generating our code.
-        $gensource = $this->pool->codegenHandler->generateSource($model);
-
+        $codegenHandler = $this->pool->codegenHandler;
+        $generateSource = $codegenHandler->generateSource($model);
         // Stitching it together.
         return str_replace(
             $this->markerSingleChild,
             [
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gensource),
-                $this->renderSourceButton($gensource),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $generateSource),
+                $this->renderSourceButton($generateSource),
                 $partExpand,
                 $this->renderCallable($model),
                 $this->renderExtra($model),
@@ -110,14 +110,8 @@ trait SingleChild
                 $model->getNormal(),
                 $this->renderConnectorLeft($model->getConnectorLeft()),
                 $this->renderConnectorRight($model->getConnectorRight()),
-                $this->generateDataAttribute(
-                    static::DATA_ATTRIBUTE_WRAPPER_L,
-                    $this->pool->codegenHandler->generateWrapperLeft()
-                ),
-                $this->generateDataAttribute(
-                    static::DATA_ATTRIBUTE_WRAPPER_R,
-                    $this->pool->codegenHandler->generateWrapperRight()
-                ),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_L, $codegenHandler->generateWrapperLeft()),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $codegenHandler->generateWrapperRight()),
                 $this->renderHelp($model),
             ],
             $this->getTemplateFileContent(static::FILE_SI_CHILD)

@@ -169,8 +169,7 @@ class Traversable extends AbstractObjectAnalysis
                 ->setNormal('Simplified Traversable Info')
                 ->setHelpid('simpleArray');
         } else {
-            $model->injectCallback($this->pool->createClass(ThroughArray::class))
-                ->setNormal('Traversable Info');
+            $model->injectCallback($this->pool->createClass(ThroughArray::class))->setNormal('Traversable Info');
         }
 
         $analysisResult = $this->pool->render->renderExpandableChild(

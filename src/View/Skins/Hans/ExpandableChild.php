@@ -80,8 +80,8 @@ trait ExpandableChild
         }
 
         // Generating our code.
-        $gencode = $this->pool->codegenHandler->generateSource($model);
-
+        $codegenHandler = $this->pool->codegenHandler;
+        $generateSource = $codegenHandler->generateSource($model);
         return str_replace(
             $this->markerExpandableChild,
             [
@@ -91,18 +91,12 @@ trait ExpandableChild
                 $model->getNormal(),
                 $this->renderConnectorLeft($model->getConnectorLeft()),
                 $this->renderConnectorRight($model->getConnectorRight(128)),
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $gencode),
-                $this->renderSourceButtonWithStop($gencode),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $generateSource),
+                $this->renderSourceButtonWithStop($generateSource),
                 $this->retrieveOpenedClass($isExpanded),
                 $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
-                $this->generateDataAttribute(
-                    static::DATA_ATTRIBUTE_WRAPPER_L,
-                    $this->pool->codegenHandler->generateWrapperLeft()
-                ),
-                $this->generateDataAttribute(
-                    static::DATA_ATTRIBUTE_WRAPPER_R,
-                    $this->pool->codegenHandler->generateWrapperRight()
-                ),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_L, $codegenHandler->generateWrapperLeft()),
+                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $codegenHandler->generateWrapperRight()),
                 $this->renderHelp($model),
             ],
             $this->getTemplateFileContent(static::FILE_EX_CHILD_NORMAL)

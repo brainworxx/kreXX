@@ -98,9 +98,8 @@ class Methods extends AbstractObjectAnalysis
     }
 
     /**
-     * Do the real analysis.
-     */
-    /**
+     * Dumping all methods but only if we have any.
+     *
      * @param \ReflectionClass $ref
      *   The reflection of t he class we are analysing
      * @param string $domId
@@ -115,21 +114,15 @@ class Methods extends AbstractObjectAnalysis
      */
     protected function analyseMethods(ReflectionClass $ref, string $domId, bool $doProtected, bool $doPrivate): string
     {
-        // Dumping all methods but only if we have any.
-        $protected = [];
-        $private = [];
-        $public = $ref->getMethods(ReflectionMethod::IS_PUBLIC);
-
+        $methods = $ref->getMethods(ReflectionMethod::IS_PUBLIC);
         if ($doProtected === true) {
-            $protected = $ref->getMethods(ReflectionMethod::IS_PROTECTED);
+            $methods = array_merge($methods, $ref->getMethods(ReflectionMethod::IS_PROTECTED));
         }
-
         if ($doPrivate === true) {
-            $private = $ref->getMethods(ReflectionMethod::IS_PRIVATE);
+            $methods = array_merge($methods, $ref->getMethods(ReflectionMethod::IS_PRIVATE));
         }
 
         // Is there anything to analyse?
-        $methods = array_merge($public, $protected, $private);
         if (empty($methods) === true) {
             return '';
         }
@@ -149,9 +142,7 @@ class Methods extends AbstractObjectAnalysis
                     ->addParameter(static::PARAM_DATA, $methods)
                     ->addParameter(static::PARAM_REF, $ref)
                     ->setDomId($domId)
-                    ->injectCallback(
-                        $this->pool->createClass(ThroughMethods::class)
-                    )
+                    ->injectCallback($this->pool->createClass(ThroughMethods::class))
             )
         );
     }
