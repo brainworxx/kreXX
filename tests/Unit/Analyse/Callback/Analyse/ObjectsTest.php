@@ -115,6 +115,7 @@ class ObjectsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchStartEvent
      *
      * @throws \ReflectionException
      */

@@ -60,6 +60,7 @@ class ConstantsTest extends AbstractTest
      * Testing the analysis of constants (without any constants).
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Constants::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchStartEvent
      */
     public function testCallMeNoConstants()
     {
@@ -95,10 +96,12 @@ class ConstantsTest extends AbstractTest
         $this->assertEquals(0, CallbackCounter::$counter);
     }
 
-     /**
+    /**
      * Testing the analysis of constants,
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Constants::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchStartEvent
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchEventWithModel
      */
     public function testCallMeWithConstants()
     {

@@ -113,6 +113,7 @@ class PublicPropertyTest extends AbstractTest
      * We also add some undeclared ones to the mix.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::getReflectionPropertiesData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
      *
      * @throws \ReflectionException

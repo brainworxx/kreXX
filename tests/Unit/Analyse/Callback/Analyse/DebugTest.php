@@ -46,6 +46,8 @@ class DebugTest extends AbstractTest
      * Testing if the debug method output gets routed.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Debug
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchStartEvent
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchEventWithModel
      */
     public function testCallMe()
     {

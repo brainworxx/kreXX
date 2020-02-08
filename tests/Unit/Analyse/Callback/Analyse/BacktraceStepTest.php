@@ -67,6 +67,8 @@ class BacktraceStepTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::outputProcessor
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::outputSingleChild
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep::retrieveSource
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchStartEvent
+     * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchEventWithModel
      */
     public function testCallMe()
     {
