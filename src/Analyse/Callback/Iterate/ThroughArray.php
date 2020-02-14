@@ -63,15 +63,10 @@ class ThroughArray extends AbstractCallback
      */
     public function callMe(): string
     {
-        $output = $this->pool->render->renderSingeChildHr() .
-            $this->dispatchStartEvent();
+        $output = $this->pool->render->renderSingeChildHr() . $this->dispatchStartEvent();
 
         // Are we dealing with multiline code generation?
-        if ($this->parameters[static::PARAM_MULTILINE] === true) {
-            $multilineCodeGen = Codegen::ITERATOR_TO_ARRAY;
-        } else {
-            $multilineCodeGen = '';
-        }
+        $multilineCodeGen = ($this->parameters[static::PARAM_MULTILINE] === true ? Codegen::ITERATOR_TO_ARRAY : '');
 
         $recursionMarker = $this->pool->recursionHandler->getMarker();
         $encodingService = $this->pool->encodingService;
@@ -88,25 +83,19 @@ class ThroughArray extends AbstractCallback
             }
 
             /** @var Model $model */
-            $model = $this->pool
-                ->createClass(Model::class)
-                ->setMultiLineCodeGen($multilineCodeGen);
+            $model = $this->pool->createClass(Model::class)->setData($value)->setMultiLineCodeGen($multilineCodeGen);
 
             if (array_key_exists($key, $array) === false) {
                 // Looks like we have an inaccessible array value here.
-                // was fixed later.
                 $model->setMultiLineCodeGen(Codegen::ARRAY_VALUES_ACCESS)
                     ->setConnectorParameters(array_search($key, array_keys($array)));
             }
 
             if (is_string($key) === true) {
-                $model->setData($value)
-                    ->setName($encodingService->encodeStringForCodeGeneration($encodingService->encodeString($key)))
+                $model->setName($encodingService->encodeStringForCodeGeneration($encodingService->encodeString($key)))
                     ->setConnectorType(Connectors::ASSOCIATIVE_ARRAY);
             } else {
-                $model->setData($value)
-                    ->setName($key)
-                    ->setConnectorType(Connectors::NORMAL_ARRAY);
+                $model->setName($key)->setConnectorType(Connectors::NORMAL_ARRAY);
             }
 
             $output .= $this->pool->routing->analysisHub($model);
