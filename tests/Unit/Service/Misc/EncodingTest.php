@@ -69,6 +69,7 @@ class EncodingTest extends AbstractTest
      * Testing the early return with an empty string.
      *
      * @covers \Brainworxx\Krexx\Service\Misc\Encoding::encodeString
+     * @covers \Brainworxx\Krexx\Service\Misc\Encoding::encodeCompletely
      */
     public function testEncodeStringEmpty()
     {
@@ -80,6 +81,7 @@ class EncodingTest extends AbstractTest
      * Testing the encoding of strings, also with some special stuff.
      *
      * @covers \Brainworxx\Krexx\Service\Misc\Encoding::encodeString
+     * @covers \Brainworxx\Krexx\Service\Misc\Encoding::encodeCompletely
      */
     public function testEncodeStringNormal()
     {
@@ -98,6 +100,7 @@ class EncodingTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Service\Misc\Encoding::encodeString
      * @covers \Brainworxx\Krexx\Service\Misc\Encoding::arrayMapCallbackCode
      * @covers \Brainworxx\Krexx\Service\Misc\Encoding::arrayMapCallbackNormal
+     * @covers \Brainworxx\Krexx\Service\Misc\Encoding::encodeCompletely
      */
     public function testEncodeStringBroken()
     {
