@@ -35,40 +35,42 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse;
+namespace Brainworxx\Krexx\Analyse\Model;
 
-use Brainworxx\Krexx\Analyse\Model\AdditionalType;
-use Brainworxx\Krexx\Analyse\Model\Callback;
-use Brainworxx\Krexx\Analyse\Model\ConnectorService;
-use Brainworxx\Krexx\Analyse\Model\Data;
-use Brainworxx\Krexx\Analyse\Model\DomId;
-use Brainworxx\Krexx\Analyse\Model\HasExtra;
-use Brainworxx\Krexx\Analyse\Model\IsCallback;
-use Brainworxx\Krexx\Analyse\Model\IsMetaConstants;
-use Brainworxx\Krexx\Analyse\Model\IsPublic;
-use Brainworxx\Krexx\Analyse\Model\Json;
-use Brainworxx\Krexx\Analyse\Model\MultiLineCodeGen;
-use Brainworxx\Krexx\Analyse\Model\Name;
-use Brainworxx\Krexx\Analyse\Model\Normal;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Model for the view rendering
- *
- * @package Brainworxx\Krexx\Analyse
- */
-class Model implements ConstInterface
+trait DomId
 {
-    use ConnectorService;
-    use Callback;
-    use Json;
-    use Data;
-    use Name;
-    use Normal;
-    use AdditionalType;
-    use DomId;
-    use HasExtra;
-    use MultiLineCodeGen;
-    use IsPublic;
-    use IsCallback;
-    use IsMetaConstants;
+    /**
+     * A unique ID for the dom. We use this one for recursion resolving via JS.
+     *
+     * @var string
+     */
+    protected $domid = '';
+
+    /**
+     * Setter for domid.
+     *
+     * @param string $domid
+     *   The dom id, of cause.
+     *
+     * @return Model
+     *   $this, for chaining.
+     */
+    public function setDomid(string $domid): Model
+    {
+        $this->domid = $domid;
+        return $this;
+    }
+
+    /**
+     * Getter for domid.
+     *
+     * @return string
+     *   The dom id, of cause.
+     */
+    public function getDomid(): string
+    {
+        return $this->domid;
+    }
 }

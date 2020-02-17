@@ -35,40 +35,42 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse;
+namespace Brainworxx\Krexx\Analyse\Model;
 
-use Brainworxx\Krexx\Analyse\Model\AdditionalType;
-use Brainworxx\Krexx\Analyse\Model\Callback;
-use Brainworxx\Krexx\Analyse\Model\ConnectorService;
-use Brainworxx\Krexx\Analyse\Model\Data;
-use Brainworxx\Krexx\Analyse\Model\DomId;
-use Brainworxx\Krexx\Analyse\Model\HasExtra;
-use Brainworxx\Krexx\Analyse\Model\IsCallback;
-use Brainworxx\Krexx\Analyse\Model\IsMetaConstants;
-use Brainworxx\Krexx\Analyse\Model\IsPublic;
-use Brainworxx\Krexx\Analyse\Model\Json;
-use Brainworxx\Krexx\Analyse\Model\MultiLineCodeGen;
-use Brainworxx\Krexx\Analyse\Model\Name;
-use Brainworxx\Krexx\Analyse\Model\Normal;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Model for the view rendering
- *
- * @package Brainworxx\Krexx\Analyse
- */
-class Model implements ConstInterface
+trait Name
 {
-    use ConnectorService;
-    use Callback;
-    use Json;
-    use Data;
-    use Name;
-    use Normal;
-    use AdditionalType;
-    use DomId;
-    use HasExtra;
-    use MultiLineCodeGen;
-    use IsPublic;
-    use IsCallback;
-    use IsMetaConstants;
+    /**
+     * The name/key of it.
+     *
+     * @var string|int
+     */
+    protected $name = '';
+
+    /**
+     * Setter for the name.
+     *
+     * @param int|string $name
+     *   The name/key we are analysing.
+     *
+     * @return Model
+     *   $this, for chaining.
+     */
+    public function setName($name): Model
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Getter for the name.
+     *
+     * @return int|string
+     *   The name/key we are analysing.
+     */
+    public function &getName()
+    {
+        return $this->name;
+    }
 }

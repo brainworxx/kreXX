@@ -136,7 +136,7 @@ class Codegen implements ConstInterface
             // variable name to the source generation.
             $this->firstRun = false;
             $result = $this->concatenation($model);
-        } elseif ($model->getIsMetaConstants() === true) {
+        } elseif ($model->isMetaConstants() === true) {
             // Test for constants.
             // They have no connectors, but are marked as such.
             // although this is meta stuff, we need to add the stop info here.
@@ -154,7 +154,7 @@ class Codegen implements ConstInterface
         } elseif ($model->getMultiLineCodeGen() === static::ARRAY_VALUES_ACCESS) {
             $result = 'array_values(;firstMarker;)[' . $model->getConnectorParameters() . ']';
         } elseif (
-            $model->getIsPublic() === true ||
+            $model->isPublic() === true ||
             $this->pool->scope->testModelForCodegen($model) === true
         ) {
             // Test for private or protected access.

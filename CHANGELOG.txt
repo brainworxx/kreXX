@@ -9,6 +9,7 @@
 - Change: Introduced strict mode.
 - Change: Introduced scalar type hints.
 - Change: Introduced method return types.
+- Change: Simplified the Model.
 
 3.2.2
 - Updated to PHP 7.4

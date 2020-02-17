@@ -35,40 +35,61 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse;
+namespace Brainworxx\Krexx\Analyse\Model;
 
-use Brainworxx\Krexx\Analyse\Model\AdditionalType;
-use Brainworxx\Krexx\Analyse\Model\Callback;
-use Brainworxx\Krexx\Analyse\Model\ConnectorService;
-use Brainworxx\Krexx\Analyse\Model\Data;
-use Brainworxx\Krexx\Analyse\Model\DomId;
-use Brainworxx\Krexx\Analyse\Model\HasExtra;
-use Brainworxx\Krexx\Analyse\Model\IsCallback;
-use Brainworxx\Krexx\Analyse\Model\IsMetaConstants;
-use Brainworxx\Krexx\Analyse\Model\IsPublic;
-use Brainworxx\Krexx\Analyse\Model\Json;
-use Brainworxx\Krexx\Analyse\Model\MultiLineCodeGen;
-use Brainworxx\Krexx\Analyse\Model\Name;
-use Brainworxx\Krexx\Analyse\Model\Normal;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Model for the view rendering
- *
- * @package Brainworxx\Krexx\Analyse
- */
-class Model implements ConstInterface
+trait HasExtra
 {
-    use ConnectorService;
-    use Callback;
-    use Json;
-    use Data;
-    use Name;
-    use Normal;
-    use AdditionalType;
-    use DomId;
-    use HasExtra;
-    use MultiLineCodeGen;
-    use IsPublic;
-    use IsCallback;
-    use IsMetaConstants;
+    /**
+     * Info, if we have "extra" data to render.
+     *
+     * @see \Brainworxx\Krexx\View\Render::renderSingleChild
+     *
+     * @var bool
+     */
+    protected $hasExtra = false;
+
+    /**
+     * Getter for the hasExtra property.
+     *
+     * @deprecated
+     *   Since 4.0.0. Use $this->hasExtra() instead.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
+     * @return bool
+     *   Info for the render class, if we need to render the extras part.
+     */
+    public function getHasExtra(): bool
+    {
+        return $this->hasExtra();
+    }
+
+    /**
+     * Getter for the hasExtra property.
+     *
+     * @return bool
+     *   Info for the render class, if we need to render the extras part.
+     */
+    public function hasExtra(): bool
+    {
+        return $this->hasExtra;
+    }
+
+    /**
+     * "Setter" for the hasExtra property.
+     *
+     * @param bool $value
+     *   The value we want to set.
+     *
+     * @return Model
+     *   $this, for chaining.
+     */
+    public function setHasExtra(bool $value): Model
+    {
+        $this->hasExtra = $value;
+        return $this;
+    }
 }

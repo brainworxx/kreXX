@@ -35,40 +35,41 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse;
+namespace Brainworxx\Krexx\Analyse\Model;
 
-use Brainworxx\Krexx\Analyse\Model\AdditionalType;
-use Brainworxx\Krexx\Analyse\Model\Callback;
-use Brainworxx\Krexx\Analyse\Model\ConnectorService;
-use Brainworxx\Krexx\Analyse\Model\Data;
-use Brainworxx\Krexx\Analyse\Model\DomId;
-use Brainworxx\Krexx\Analyse\Model\HasExtra;
-use Brainworxx\Krexx\Analyse\Model\IsCallback;
-use Brainworxx\Krexx\Analyse\Model\IsMetaConstants;
-use Brainworxx\Krexx\Analyse\Model\IsPublic;
-use Brainworxx\Krexx\Analyse\Model\Json;
-use Brainworxx\Krexx\Analyse\Model\MultiLineCodeGen;
-use Brainworxx\Krexx\Analyse\Model\Name;
-use Brainworxx\Krexx\Analyse\Model\Normal;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Model for the view rendering
- *
- * @package Brainworxx\Krexx\Analyse
- */
-class Model implements ConstInterface
+trait MultiLineCodeGen
 {
-    use ConnectorService;
-    use Callback;
-    use Json;
-    use Data;
-    use Name;
-    use Normal;
-    use AdditionalType;
-    use DomId;
-    use HasExtra;
-    use MultiLineCodeGen;
-    use IsPublic;
-    use IsCallback;
-    use IsMetaConstants;
+    /**
+     * Are we dealing with multiline code generation?
+     *
+     * @var string
+     */
+    protected $multiLineCodeGen = '';
+
+    /**
+     * Getter for the multiline code generation.
+     *
+     * @return string
+     */
+    public function getMultiLineCodeGen(): string
+    {
+        return $this->multiLineCodeGen;
+    }
+
+    /**
+     * Setter for the multiline code generation.
+     *
+     * @param string $multiLineCodeGen
+     *   The constant from the Codegen class.
+     *
+     * @return Model
+     *   $this, for chaining.
+     */
+    public function setMultiLineCodeGen(string $multiLineCodeGen): Model
+    {
+        $this->multiLineCodeGen = $multiLineCodeGen;
+        return $this;
+    }
 }

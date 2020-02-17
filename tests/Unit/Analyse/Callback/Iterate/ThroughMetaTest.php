@@ -160,7 +160,7 @@ class ThroughMetaTest extends AbstractTest
         $this->assertEquals($key, $model->getName());
         $this->assertEquals($this->throughMeta::TYPE_REFLECTION, $model->getType());
         $this->assertEquals($this->throughMeta::UNKNOWN_VALUE, $model->getNormal());
-        $this->assertTrue($model->getHasExtra());
+        $this->assertTrue($model->hasExtra());
     }
 
     /**

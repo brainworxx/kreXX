@@ -35,45 +35,12 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse;
+namespace Brainworxx\Krexx\Analyse\Model;
 
-use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
-use Brainworxx\Krexx\Analyse\Code\Connectors;
-use Brainworxx\Krexx\Service\Factory\Pool;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Housing everything that does not directly hold data.
- *
- * @package Brainworxx\Krexx\Analyse
- *
- * @deprecated
- *   Since 4.0.0. We moved everything into traits. Use them instead.
- */
-abstract class AbstractModel implements ConstInterface
+trait Json
 {
-    /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected $pool;
-
-    /**
-     * Callback for the renderMe() method.
-     *
-     * @var AbstractCallback
-     */
-    protected $callback;
-
-    /**
-     * Parameters for the renderMe method.
-     *
-     * Should be used in the extending classes.
-     *
-     * @var array
-     */
-    protected $parameters = [];
-
     /**
      * Additional data, we are sending to the FE vas a json, hence the name.
      *
@@ -84,80 +51,15 @@ abstract class AbstractModel implements ConstInterface
     protected $json = [];
 
     /**
-     * The connector service, used for source generation.
-     *
-     * @var Connectors
-     */
-    protected $connectorService;
-
-
-    /**
-     * Inject the pool and create the connector service.
-     *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
-     */
-    public function __construct(Pool $pool)
-    {
-        $this->connectorService = $pool->createClass(
-            Connectors::class
-        );
-        $this->pool = $pool;
-    }
-
-    /**
-     * Inject the callback for the renderer
-     *
-     * @param AbstractCallback $object
-     *   The callback.
-     *
-     * @return $this
-     *   $this for chaining
-     */
-    public function injectCallback(AbstractCallback $object): AbstractModel
-    {
-        $this->callback = $object;
-        return $this;
-    }
-
-    /**
-     * Triggers the callback (if set).
-     *
-     * @return string
-     */
-    public function renderMe(): string
-    {
-        return $this->callback
-            ->setParameters($this->parameters)
-            ->callMe();
-    }
-
-    /**
-     * Simply add a parameter for the $closure.
-     *
-     * @param string $name
-     *   The name of the parameter.
-     * @param mixed $value
-     *   The value of the parameter, by reference.
-     *
-     * @return $this
-     *   $this, for chaining.
-     */
-    public function addParameter(string $name, &$value): AbstractModel
-    {
-        $this->parameters[$name] = $value;
-        return $this;
-    }
-
-        /**
      * Setter for the $helpId.
      *
      * @param string $helpId
      *   The ID of the help text.
      *
-     * @return $this
+     * @return Model
      *   $this, for chaining.
      */
-    public function setHelpid(string $helpId): AbstractModel
+    public function setHelpid(string $helpId): Model
     {
         $this->addToJson(static::META_HELP, $this->pool->messages->getHelp($helpId));
         return $this;
@@ -173,10 +75,10 @@ abstract class AbstractModel implements ConstInterface
      * @param mixed $value
      *   The value we want to set.
      *
-     * @return $this
+     * @return Model
      *   $this for chaining.
      */
-    public function addToJson(string $key, $value): AbstractModel
+    public function addToJson(string $key, $value): Model
     {
 
         if (empty($value) === true) {

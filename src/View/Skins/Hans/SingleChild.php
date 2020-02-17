@@ -87,7 +87,7 @@ trait SingleChild
         // This one is a little bit more complicated than the others,
         // because it assembles some partials and stitches them together.
         $partExpand = '';
-        if ($model->getHasExtra() === true) {
+        if ($model->hasExtra() === true) {
             // We have a lot of text, so we render this one expandable (yellow box).
             $partExpand = 'kexpand';
         }
@@ -148,7 +148,7 @@ trait SingleChild
      */
     protected function renderExtra(Model $model): string
     {
-        if ($model->getHasExtra() === true) {
+        if ($model->hasExtra() === true) {
             return str_replace(
                 $this->markerSingleChildExtra,
                 $model->getData(),
@@ -170,7 +170,7 @@ trait SingleChild
      */
     protected function renderCallable(Model $model): string
     {
-        if ($model->getIsCallback() === true) {
+        if ($model->isCallback() === true) {
             // Add callable partial.
             return str_replace(
                 $this->markerSingleChildCallable,

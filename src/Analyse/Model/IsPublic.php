@@ -35,40 +35,56 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse;
+namespace Brainworxx\Krexx\Analyse\Model;
 
-use Brainworxx\Krexx\Analyse\Model\AdditionalType;
-use Brainworxx\Krexx\Analyse\Model\Callback;
-use Brainworxx\Krexx\Analyse\Model\ConnectorService;
-use Brainworxx\Krexx\Analyse\Model\Data;
-use Brainworxx\Krexx\Analyse\Model\DomId;
-use Brainworxx\Krexx\Analyse\Model\HasExtra;
-use Brainworxx\Krexx\Analyse\Model\IsCallback;
-use Brainworxx\Krexx\Analyse\Model\IsMetaConstants;
-use Brainworxx\Krexx\Analyse\Model\IsPublic;
-use Brainworxx\Krexx\Analyse\Model\Json;
-use Brainworxx\Krexx\Analyse\Model\MultiLineCodeGen;
-use Brainworxx\Krexx\Analyse\Model\Name;
-use Brainworxx\Krexx\Analyse\Model\Normal;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Model for the view rendering
- *
- * @package Brainworxx\Krexx\Analyse
- */
-class Model implements ConstInterface
+trait IsPublic
 {
-    use ConnectorService;
-    use Callback;
-    use Json;
-    use Data;
-    use Name;
-    use Normal;
-    use AdditionalType;
-    use DomId;
-    use HasExtra;
-    use MultiLineCodeGen;
-    use IsPublic;
-    use IsCallback;
-    use IsMetaConstants;
+    /**
+     * Is this a public property or method?
+     *
+     * @var bool
+     */
+    protected $isPublic = true;
+
+    /**
+     * Setter for the isProtectedPrivate.
+     *
+     * @param $bool
+     *   The value we want to set.
+     * @return Model
+     *   Return $this for chaining.
+     */
+    public function setIsPublic(bool $bool): Model
+    {
+        $this->isPublic = $bool;
+        return $this;
+    }
+
+    /**
+     * Getter for the isPublic.
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->isPublic;
+    }
+
+    /**
+     * Getter for the isPublic.
+     *
+     * @deprecated
+     *   Since 4.0.0. Use $this->isPublic().
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
+     * @return bool
+     */
+    public function getIsPublic(): bool
+    {
+        return $this->isPublic();
+    }
 }

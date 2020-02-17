@@ -116,7 +116,22 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessString.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessOther.php';
 
+        // Deprecated
         include_once KREXX_DIR . 'src/Analyse/AbstractModel.php';
+        // Deprecated
+        include_once KREXX_DIR . 'src/Analyse/Model/ConnectorService.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/Callback.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/Data.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/Name.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/Normal.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/Json.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/AdditionalType.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/DomId.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/HasExtra.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/MultiLineCodeGen.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/IsPublic.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/IsCallback.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/IsMetaConstants.php';
         include_once KREXX_DIR . 'src/Analyse/Model.php';
 
         include_once KREXX_DIR . 'src/Controller/AbstractController.php';
