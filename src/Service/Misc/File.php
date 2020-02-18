@@ -47,7 +47,6 @@ use SplFixedArray;
  */
 class File
 {
-
     /**
      * Here we cache, if a file exists and is readable.
      *
@@ -129,19 +128,12 @@ class File
             // Add it to the result.
             $realLineNo = $currentLineNo + 1;
 
-            if ($currentLineNo === $highlight) {
-                $result .= $this->pool->render->renderBacktraceSourceLine(
-                    'highlight',
-                    $realLineNo,
-                    $this->pool->encodingService->encodeString($content[$currentLineNo], true)
-                );
-            } else {
-                $result .= $this->pool->render->renderBacktraceSourceLine(
-                    'source',
-                    $realLineNo,
-                    $this->pool->encodingService->encodeString($content[$currentLineNo], true)
-                );
-            }
+            $currentLineNo === $highlight ? $className = 'highlight' : $className = 'source';
+            $result .= $this->pool->render->renderBacktraceSourceLine(
+                $className,
+                $realLineNo,
+                $this->pool->encodingService->encodeString($content[$currentLineNo], true)
+            );
         }
 
         return $result;
