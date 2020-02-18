@@ -46,6 +46,9 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  *
  * @package Brainworxx\Krexx\Analyse
  *
+ * @codeCoverageIgnore
+ *   We will not test deprecated classes.
+ *
  * @deprecated
  *   Since 4.0.0. We moved everything into traits. Use them instead.
  */
