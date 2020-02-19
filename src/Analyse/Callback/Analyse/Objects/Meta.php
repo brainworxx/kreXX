@@ -124,18 +124,13 @@ class Meta extends AbstractObjectAnalysis
         $data = [];
         // Get the naming on the way.
         $data[static::META_CLASS_NAME] = $this->generateName($ref);
-
-        $data[static::META_COMMENT] = $this->pool
-            ->createClass(Classes::class)
-            ->getComment($ref);
+        $data[static::META_COMMENT] = $this->pool->createClass(Classes::class)->getComment($ref);
 
         if ($ref->isInternal()) {
             $data[static::META_DECLARED_IN] = static::META_PREDECLARED;
         } else {
-            $data[static::META_DECLARED_IN] = $this->pool
-                ->fileService
-                ->filterFilePath($ref->getFileName()) .
-                ', line ' . $ref->getStartLine();
+            $data[static::META_DECLARED_IN] = $this->pool->fileService
+                    ->filterFilePath($ref->getFileName()) . ', line ' . $ref->getStartLine();
         }
 
         // Now to collect the inheritance stuff.
@@ -154,24 +149,18 @@ class Meta extends AbstractObjectAnalysis
         if (!empty($previousClass)) {
             // We add it via array, because the other inheritance getters
             // are also supplying one.
-            $data[static::META_INHERITED_CLASS] = [
-                $previousClass->getName() => $previousClass
-            ];
+            $data[static::META_INHERITED_CLASS] = [$previousClass->getName() => $previousClass];
         }
 
-        return $this->pool->render->renderExpandableChild(
-            $this->dispatchEventWithModel(
-                static::EVENT_MARKER_ANALYSES_END,
-                $this->pool->createClass(Model::class)
-                    ->setName($name)
-                    ->setDomid($domId)
-                    ->setType(static::TYPE_INTERNALS)
-                    ->addParameter(static::PARAM_DATA, $data)
-                    ->injectCallback(
-                        $this->pool->createClass(ThroughMeta::class)
-                    )
-            )
-        );
+        return $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
+            static::EVENT_MARKER_ANALYSES_END,
+            $this->pool->createClass(Model::class)
+                ->setName($name)
+                ->setDomid($domId)
+                ->setType(static::TYPE_INTERNALS)
+                ->addParameter(static::PARAM_DATA, $data)
+                ->injectCallback($this->pool->createClass(ThroughMeta::class))
+        ));
     }
 
     /**
