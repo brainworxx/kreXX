@@ -166,8 +166,7 @@ class ReflectionClass extends \ReflectionClass
         /** @var \ReflectionClass $parent */
         $parent = $this->getParentClass();
         if ($parent !== false) {
-            $parentInterfaces = $parent->getInterfaceNames();
-            $interfaceNames = array_diff($interfaceNames, $parentInterfaces);
+            $interfaceNames = array_diff($interfaceNames, $parent->getInterfaceNames());
         }
         if (empty($interfaceNames)) {
             return [];
