@@ -118,13 +118,7 @@ trait SingleEditableChild
         // Paint it.
         $options = '';
         foreach ($valueList as $value) {
-            if ($value === $model->getName()) {
-                // This one is selected.
-                $selected = 'selected="selected"';
-            } else {
-                $selected = '';
-            }
-
+            $value === $model->getName() ? $selected = 'selected="selected"' : $selected = '';
             $options .= str_replace(
                 $this->markerSelectOption,
                 [$value, $value, $selected],
