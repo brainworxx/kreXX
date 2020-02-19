@@ -195,11 +195,11 @@ class ThroughMethods extends AbstractCallback
             return $filename . "\n" .
                 'in trait: ' . $traitName . "\n" .
                 'in line: ' . $reflectionMethod->getStartLine();
-        } else {
-            return $filename . "\n" .
-                'in class: ' . $reflectionMethod->class . "\n" .
-                'in line: ' . $reflectionMethod->getStartLine();
         }
+
+        return $filename . "\n" .
+            'in class: ' . $reflectionMethod->class . "\n" .
+            'in line: ' . $reflectionMethod->getStartLine();
     }
 
     /**
@@ -251,14 +251,12 @@ class ThroughMethods extends AbstractCallback
         ReflectionClass $declaringClass,
         ReflectionClass $reflectionClass
     ): string {
-        $result = '';
-
         if ($reflectionMethod->isPrivate() === true) {
-            $result .= ' private';
+            $result = ' private';
         } elseif ($reflectionMethod->isProtected() === true) {
-            $result .= ' protected';
+            $result = ' protected';
         } elseif ($reflectionMethod->isPublic() === true) {
-            $result .= ' public';
+            $result = ' public';
         }
 
         if ($declaringClass->getName() !== $reflectionClass->getName()) {
