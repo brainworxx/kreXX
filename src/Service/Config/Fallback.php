@@ -55,6 +55,8 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 
     /**
      * The fallback configuration.
+     *
+     * @internal
      */
     const CONFIG_FALLBACK = [
         Fallback::SECTION_OUTPUT => [
@@ -93,6 +95,8 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 
     /**
      * Render settings for a editable select field.
+     *
+     * @internal
      */
     const EDITABLE_SELECT = [
         Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_SELECT,
@@ -101,6 +105,8 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 
     /**
      * Render settings for a display only input field.
+     *
+     * @internal
      */
     const DISPLAY_ONLY_INPUT = [
         Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_INPUT,
@@ -109,6 +115,8 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 
     /**
      * Render settings for a editable input field.
+     *
+     * @internal
      */
     const EDITABLE_INPUT = [
         Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_INPUT,
@@ -117,6 +125,8 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 
     /**
      * Render settings for a display only select field.
+     *
+     * @internal
      */
     const DISPLAY_ONLY_SELECT = [
         Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_SELECT,
@@ -125,6 +135,8 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
 
     /**
      * Render settings for a field which will not be displayed, or accept values.
+     *
+     * @internal
      */
     const DISPLAY_NOTHING = [
         Fallback::RENDER_TYPE => Fallback::RENDER_TYPE_NONE,
@@ -134,12 +146,9 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     /**
      * Defining the layout of the frontend editing form.
      *
-     * @deprecated
-     *   Since 4.0.0. use CONFIG_FALLBACK instead
-     *
      * @var array
      */
-    public $configFallback;
+    public $configFallback = [];
 
     /**
      * Render settings for a editable select field.
@@ -235,8 +244,28 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
     {
         $this->pool = $pool;
 
-        $this->configFallback = static::CONFIG_FALLBACK;
+        // Generate the configuration fallback.
+        $this->generateConfigFallback();
+        // Generate the configuration for the fe editor.
+        $this->generateFeConfigFallback();
+        // Setting up out two bundled skins.
+        $this->generateSkinConfiguration();
+    }
 
+    /**
+     * Generate the configuration fallback.
+     */
+    protected function generateConfigFallback()
+    {
+        // Not much so far. . .
+        $this->configFallback = static::CONFIG_FALLBACK;
+    }
+
+    /**
+     * Generate the frontend configuration fallback.
+     */
+    protected function generateFeConfigFallback()
+    {
         $this->feConfigFallback = [
             Fallback::SETTING_ANALYSE_PROTECTED_METHODS => $this->returnBoolSelectFalse(Fallback::SECTION_METHODS),
             Fallback::SETTING_ANALYSE_PRIVATE_METHODS => $this->returnBoolSelectFalse(Fallback::SECTION_METHODS),
@@ -260,9 +289,6 @@ abstract class Fallback implements ConstInterface, ConfigConstInterface
             Fallback::SETTING_MAX_STEP_NUMBER => $this->returnInput(Fallback::SECTION_PRUNE, 10),
             Fallback::SETTING_ARRAY_COUNT_LIMIT => $this->returnInput(Fallback::SECTION_PRUNE, 300),
         ];
-
-        // Setting up out two bundled skins.
-        $this->generateSkinConfiguration();
     }
 
     /**

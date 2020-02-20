@@ -59,6 +59,7 @@ class FallbackTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Service\Config\Fallback::returnMaxRuntime
      * @covers \Brainworxx\Krexx\Service\Config\Fallback::returnSkin
      * @covers \Brainworxx\Krexx\Service\Config\Fallback::generateSkinConfiguration
+     * @covers \Brainworxx\Krexx\Service\Config\Fallback::generateConfigFallback
      */
     public function testConstruct()
     {

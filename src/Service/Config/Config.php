@@ -132,7 +132,7 @@ class Config extends Fallback
         $this->cookieConfig = $pool->createClass(Cookie::class);
 
         // Loading the settings.
-        foreach (static::CONFIG_FALLBACK as $settings) {
+        foreach ($this->configFallback as $settings) {
             foreach ($settings as $name) {
                 $this->loadConfigValue($name);
             }
