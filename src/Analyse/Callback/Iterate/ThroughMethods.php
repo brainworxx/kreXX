@@ -66,48 +66,43 @@ class ThroughMethods extends AbstractCallback
     public function callMe(): string
     {
         $result = $this->dispatchStartEvent();
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
-        $reflectionClass = $this->parameters[static::PARAM_REF];
+        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $refClass */
+        $refClass = $this->parameters[static::PARAM_REF];
         /** @var Methods $commentAnalysis */
         $commentAnalysis = $this->pool->createClass(Methods::class);
 
         // Deep analysis of the methods.
-        /** @var \ReflectionMethod $reflectionMethod */
-        foreach ($this->parameters[static::PARAM_DATA] as $reflectionMethod) {
+        /** @var \ReflectionMethod $refMethod */
+        foreach ($this->parameters[static::PARAM_DATA] as $refMethod) {
             $methodData = [];
 
             // Get the comment from the class, it's parents, interfaces or traits.
-            if (empty($methodComment = $commentAnalysis->getComment($reflectionMethod, $reflectionClass)) === false) {
+            if (empty($methodComment = $commentAnalysis->getComment($refMethod, $refClass)) === false) {
                 $methodData[static::META_COMMENT] = $methodComment;
             }
 
             // Get declaration place.
-            $declaringClass = $reflectionMethod->getDeclaringClass();
-            $methodData[static::META_DECLARED_IN] = $this->getDeclarationPlace($reflectionMethod, $declaringClass);
-
-            // Get declaring keywords.
-            $methodData['declaration keywords'] = $this
-                ->getDeclarationKeywords($reflectionMethod, $declaringClass, $reflectionClass);
+            $declaringClass = $refMethod->getDeclaringClass();
+            $methodData[static::META_DECLARED_IN] = $this->getDeclarationPlace($refMethod, $declaringClass);
 
             // Update the reflection method, so an event subscriber can do
             // something with it.
-            $this->parameters[static::PARAM_REF_METHOD] = $reflectionMethod;
+            $this->parameters[static::PARAM_REF_METHOD] = $refMethod;
 
             // Render it!
-            $result .= $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . static::EVENT_MARKER_END,
-                    $this->pool->createClass(Model::class)
-                        ->setName($reflectionMethod->name)
-                        // Remove the ',' after the last char.
-                        ->setConnectorParameters(rtrim($this->retrieveParameters($reflectionMethod, $methodData), ', '))
-                        ->setType($methodData['declaration keywords'] . static::TYPE_METHOD)
-                        ->setConnectorType($this->retrieveConnectorType($reflectionMethod))
-                        ->addParameter(static::PARAM_DATA, $methodData)
-                        ->setIsPublic($reflectionMethod->isPublic())
-                        ->injectCallback($this->pool->createClass(ThroughMeta::class))
-                )
-            );
+            $result .= $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
+                __FUNCTION__ . static::EVENT_MARKER_END,
+                $this->pool->createClass(Model::class)
+                    ->setName($refMethod->name)
+                    // Remove the ',' after the last char.
+                    ->setConnectorParameters(rtrim($this->retrieveParameters($refMethod, $methodData), ', '))
+                    ->setType(
+                        $this->getDeclarationKeywords($refMethod, $declaringClass, $refClass) . static::TYPE_METHOD
+                    )->setConnectorType($this->retrieveConnectorType($refMethod))
+                    ->addParameter(static::PARAM_DATA, $methodData)
+                    ->setIsPublic($refMethod->isPublic())
+                    ->injectCallback($this->pool->createClass(ThroughMeta::class))
+            ));
         }
 
         return $result;
