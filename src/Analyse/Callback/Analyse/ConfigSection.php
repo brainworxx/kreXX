@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Config\Model as SettingModel;
 use Brainworxx\Krexx\Service\Config\Fallback;
 
 /**
@@ -65,39 +66,55 @@ class ConfigSection extends AbstractCallback
         foreach ($this->parameters[static::PARAM_DATA] as $id => $setting) {
             // Render the single value.
             // We need to find out where the value comes from.
-            /** @var \Brainworxx\Krexx\Service\Config\Model $setting */
-            if ($setting->getType() !== Fallback::RENDER_TYPE_NONE) {
-                $value = $setting->getValue();
-                // We need to re-translate booleans to something the
-                // frontend can understand.
-                if ($value === true) {
-                    $value = 'true';
-                }
+            /** @var SettingModel $setting */
+            if ($setting->getType() === Fallback::RENDER_TYPE_NONE) {
+                // We do not render these.
+                continue;
+            }
 
-                if ($value === false) {
-                    $value = 'false';
-                }
-
-                /** @var Model $model */
-                $model = $this->pool->createClass(Model::class)->setHelpid($id . static::META_HELP);
-                $name = $this->pool->messages->getHelp($id . 'Readable');
-                if ($setting->getEditable() === true) {
+            /** @var Model $model */
+            $model = $this->pool->createClass(Model::class)->setHelpid($id . static::META_HELP);
+            $name = $this->pool->messages->getHelp($id . 'Readable');
+            $value = $this->prepareValue($setting);
+            if ($setting->getEditable() === true) {
+                $sectionOutput .= $this->pool->render->renderSingleEditableChild(
                     $model->setData($name)
-                        ->setDomid($id)
                         ->setName($value)
                         ->setNormal($setting->getSource())
-                        ->setType($setting->getType());
-                    $sectionOutput .= $this->pool->render->renderSingleEditableChild($model);
-                } else {
-                    $model->setData($value)
-                        ->setName($name)
-                        ->setNormal($value)
-                        ->setType($setting->getSource());
-                    $sectionOutput .= $this->pool->render->renderSingleChild($model);
-                }
+                        ->setType($setting->getType())->setDomid($id)
+                );
+            } else {
+                $sectionOutput .= $this->pool->render->renderSingleChild(
+                    $model->setData($value)->setName($name)->setNormal($value)->setType($setting->getSource())
+                );
             }
         }
 
         return $sectionOutput;
+    }
+
+    /**
+     * Transform booleans into readable strings.
+     *
+     * @param \Brainworxx\Krexx\Service\Config\Model $setting
+     *   The setting model.
+     *
+     * @return bool|int|string|null
+     *   The prepared value.
+     */
+    protected function prepareValue(SettingModel $setting)
+    {
+        $value = $setting->getValue();
+
+        // We need to re-translate booleans to something the frontend can understand.
+        if ($value === true) {
+            $value = 'true';
+        }
+
+        if ($value === false) {
+            $value = 'false';
+        }
+
+        return $value;
     }
 }
