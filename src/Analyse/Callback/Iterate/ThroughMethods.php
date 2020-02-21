@@ -246,12 +246,12 @@ class ThroughMethods extends AbstractCallback
         ReflectionClass $declaringClass,
         ReflectionClass $reflectionClass
     ): string {
-        if ($reflectionMethod->isPrivate() === true) {
-            $result = ' private';
+        if ($reflectionMethod->isPublic() === true) {
+            $result = ' public';
         } elseif ($reflectionMethod->isProtected() === true) {
             $result = ' protected';
-        } elseif ($reflectionMethod->isPublic() === true) {
-            $result = ' public';
+        } else {
+            $result = ' private';
         }
 
         if ($declaringClass->getName() !== $reflectionClass->getName()) {
