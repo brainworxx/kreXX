@@ -115,10 +115,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessResource.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessString.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessOther.php';
-
-        // Deprecated
-        include_once KREXX_DIR . 'src/Analyse/AbstractModel.php';
-        // Deprecated
+        
         include_once KREXX_DIR . 'src/Analyse/Model/ConnectorService.php';
         include_once KREXX_DIR . 'src/Analyse/Model/Callback.php';
         include_once KREXX_DIR . 'src/Analyse/Model/Data.php';
@@ -132,6 +129,9 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Model/IsPublic.php';
         include_once KREXX_DIR . 'src/Analyse/Model/IsCallback.php';
         include_once KREXX_DIR . 'src/Analyse/Model/IsMetaConstants.php';
+        // Deprecated
+        include_once KREXX_DIR . 'src/Analyse/AbstractModel.php';
+        // Deprecated
         include_once KREXX_DIR . 'src/Analyse/Model.php';
 
         include_once KREXX_DIR . 'src/Controller/AbstractController.php';
