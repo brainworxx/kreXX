@@ -143,11 +143,8 @@ abstract class AbstractCaller implements ConstInterface
     protected function getType($headline, $varname, $data): string
     {
         if (empty($headline) === true) {
-            if (is_object($data) === true) {
-                $type = get_class($data);
-            } else {
-                $type = gettype($data);
-            }
+            is_object($data) === true ? $type = get_class($data) : $type = gettype($data);
+
             return 'Analysis of ' . $varname . ', ' . $type;
         }
 
@@ -191,13 +188,7 @@ abstract class AbstractCaller implements ConstInterface
 
         $port = $server['SERVER_PORT'];
 
-        if (($ssl === false && $port === '80') || ($ssl === true && $port === '443')) {
-            // Normal combo with port and protocol.
-            $port = '';
-        } else {
-            // We have a special port here.
-            $port = ':' . $port;
-        }
+        ($ssl === false && $port === '80') || ($ssl === true && $port === '443') ? $port = '' : $port = ':' . $port;
 
         if (isset($server['HTTP_HOST']) === true) {
             $host = $server['HTTP_HOST'];
