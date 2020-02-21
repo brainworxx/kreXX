@@ -81,8 +81,7 @@ class DebugMethods extends AbstractObjectAnalysis
         foreach (explode(',', $this->pool->config->getSetting(Fallback::SETTING_DEBUG_METHODS)) as $funcName) {
             if ($this->checkIfAccessible($data, $funcName, $reflectionClass) === true) {
                 // We ignore NULL values.
-                $result = $this->retrieveValue($data, $funcName);
-                if (isset($result) === true) {
+                if (($result = $this->retrieveValue($data, $funcName)) !== null) {
                     $output .= $this->pool->render->renderExpandableChild(
                         $this->dispatchEventWithModel(
                             $funcName,
@@ -93,9 +92,7 @@ class DebugMethods extends AbstractObjectAnalysis
                                 ->setHelpid($funcName)
                                 ->setConnectorType(Connectors::METHOD)
                                 ->addParameter(static::PARAM_DATA, $result)
-                                ->injectCallback(
-                                    $this->pool->createClass(Debug::class)
-                                )
+                                ->injectCallback($this->pool->createClass(Debug::class))
                         )
                     );
                     unset($result);
