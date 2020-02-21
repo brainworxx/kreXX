@@ -78,17 +78,11 @@ class ThroughProperties extends AbstractCallback
                 return '';
             }
 
-            // Stitch together our additional info about the data:
-            // public access, protected access, private access and info if it was
-            // inherited from somewhere.
-            $additional = $this->getAdditionalData($refProperty, $ref);
-
             // Every other additional string requires a special connector,
             // so we do this here.
             $connectorType = Connectors::NORMAL_PROPERTY;
             /** @var \ReflectionProperty $refProperty */
             $propName = $refProperty->getName();
-
             // Static properties are very special.
             if ($refProperty->isStatic() === true) {
                 $connectorType = Connectors::STATIC_PROPERTY;
@@ -96,8 +90,11 @@ class ThroughProperties extends AbstractCallback
                 $propName = '$' . $propName;
             }
 
+            // Stitch together our additional info about the data:
+            // public access, protected access, private access and info if it was
+            // inherited from somewhere.
+            $additional = $this->getAdditionalData($refProperty, $ref);
             $value = $ref->retrieveValue($refProperty);
-
             if (isset($refProperty->isUnset) === true) {
                 $additional .= 'unset ';
             }
@@ -121,9 +118,7 @@ class ThroughProperties extends AbstractCallback
             } else {
                 // Since we are dealing with a declared Property here, we can
                 // get the comment and the declaration place.
-                $comment = $this->pool
-                    ->createClass(Properties::class)
-                    ->getComment($refProperty);
+                $comment = $this->pool->createClass(Properties::class)->getComment($refProperty);
                 $declarationPlace = $this->retrieveDeclarationPlace($refProperty);
             }
 
