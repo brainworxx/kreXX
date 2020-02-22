@@ -46,6 +46,7 @@ interface PluginConfigInterface
 {
 
     const START_EVENT = '::callMe::start';
+    const END_EVENT = '::callMe::end';
     const START_PROCESS = '::process';
 
     /**
