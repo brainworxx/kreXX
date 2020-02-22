@@ -79,24 +79,25 @@ class DebugMethods extends AbstractObjectAnalysis
         $output = $this->dispatchStartEvent();
 
         foreach (explode(',', $this->pool->config->getSetting(Fallback::SETTING_DEBUG_METHODS)) as $funcName) {
-            if ($this->checkIfAccessible($data, $funcName, $reflectionClass) === true) {
+            if (
+                $this->checkIfAccessible($data, $funcName, $reflectionClass) === true &&
                 // We ignore NULL values.
-                if (($result = $this->retrieveValue($data, $funcName)) !== null) {
-                    $output .= $this->pool->render->renderExpandableChild(
-                        $this->dispatchEventWithModel(
-                            $funcName,
-                            $this->pool->createClass(Model::class)
-                                ->setName($funcName)
-                                ->setType(static::TYPE_DEBUG_METHOD)
-                                ->setNormal(static::UNKNOWN_VALUE)
-                                ->setHelpid($funcName)
-                                ->setConnectorType(Connectors::METHOD)
-                                ->addParameter(static::PARAM_DATA, $result)
-                                ->injectCallback($this->pool->createClass(Debug::class))
-                        )
-                    );
-                    unset($result);
-                }
+                ($result = $this->retrieveValue($data, $funcName)) !== null
+            ) {
+                $output .= $this->pool->render->renderExpandableChild(
+                    $this->dispatchEventWithModel(
+                        $funcName,
+                        $this->pool->createClass(Model::class)
+                            ->setName($funcName)
+                            ->setType(static::TYPE_DEBUG_METHOD)
+                            ->setNormal(static::UNKNOWN_VALUE)
+                            ->setHelpid($funcName)
+                            ->setConnectorType(Connectors::METHOD)
+                            ->addParameter(static::PARAM_DATA, $result)
+                            ->injectCallback($this->pool->createClass(Debug::class))
+                    )
+                );
+                unset($result);
             }
         }
 
