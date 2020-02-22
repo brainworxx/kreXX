@@ -768,7 +768,7 @@ var SmokyGrey = (function (_super) {
         };
         _this.setAdditionalData = function (event, element) {
             var kdt = _this.kdt;
-            var setPayloadMaxHeight = _this.setPayloadMaxHeight;
+            var setPayloadMaxHeight = _this.setPayloadMaxHeight.bind(_this);
             setTimeout(function () {
                 var wrapper = kdt.getParents(element, '.kwrapper')[0];
                 if (typeof wrapper === 'undefined') {
@@ -851,25 +851,21 @@ var SmokyGrey = (function (_super) {
         this.eventHandler.addEvent('.kwrapper .kel', 'click', this.setAdditionalData);
     };
     SmokyGrey.prototype.setPayloadMaxHeight = function () {
-        var height = Math.round(Math.min(document.documentElement.clientHeight, window.innerHeight || 0) * 0.70);
-        var elements;
-        var i;
-        if (height > 350) {
-            elements = document.querySelectorAll('.krela-wrapper .kpayload');
-            for (i = 0; i < elements.length; i++) {
-                elements[i].style.maxHeight = height + 'px';
-            }
-        }
+        var elements = document.querySelectorAll('.krela-wrapper .kpayload');
+        this.handlePayloadMinHeight(Math.round(Math.min(document.documentElement.clientHeight, window.innerHeight || 0) * 0.70), elements);
         elements = document.querySelectorAll('.kfatalwrapper-outer .kpayload');
         if (elements.length > 0) {
             var header = document.querySelector('.kfatalwrapper-outer ul.knode.kfirst').offsetHeight;
             var footer = document.querySelector('.kfatalwrapper-outer .kinfo-wrapper').offsetHeight;
             var handler = document.querySelector('.kfatalwrapper-outer').offsetHeight;
-            height = handler - header - footer - 17;
-            if (height > 350) {
-                for (i = 0; i < elements.length; i++) {
-                    elements[i].style.maxHeight = height + 'px';
-                }
+            this.handlePayloadMinHeight(handler - header - footer - 17, elements);
+        }
+    };
+    SmokyGrey.prototype.handlePayloadMinHeight = function (height, elements) {
+        var i;
+        if (height > 350) {
+            for (i = 0; i < elements.length; i++) {
+                elements[i].style.maxHeight = height + 'px';
             }
         }
     };

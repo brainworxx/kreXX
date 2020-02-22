@@ -116,7 +116,7 @@ class SmokyGrey extends Hans
     protected setAdditionalData = (event:Event, element:Node): void =>
     {
         let kdt:Kdt = this.kdt;
-        let setPayloadMaxHeight:Function = this.setPayloadMaxHeight;
+        let setPayloadMaxHeight:Function = this.setPayloadMaxHeight.bind(this);
         // When dealing with 400MB output, or more, this one takes more time than anything else.
         // We will delay it, so that is does not slow down other stuff.
         setTimeout(function() {
@@ -253,18 +253,11 @@ class SmokyGrey extends Hans
      */
     protected setPayloadMaxHeight(): void
     {
-        // Get the height.
-        let height = Math.round(Math.min(document.documentElement.clientHeight, window.innerHeight || 0) * 0.70);
-        let elements;
-        let i;
-
-        if (height > 350) {
-            // For the debug display
-            elements = document.querySelectorAll('.krela-wrapper .kpayload');
-            for (i = 0; i < elements.length; i++) {
-                elements[i].style.maxHeight = height + 'px';
-            }
-        }
+        let elements = document.querySelectorAll('.krela-wrapper .kpayload');
+        this.handlePayloadMinHeight(
+            Math.round(Math.min(document.documentElement.clientHeight, window.innerHeight || 0) * 0.70),
+            elements
+        );
 
         // For the fatal error handler.
         elements = document.querySelectorAll('.kfatalwrapper-outer .kpayload');
@@ -274,11 +267,23 @@ class SmokyGrey extends Hans
             let handler = (document.querySelector('.kfatalwrapper-outer') as HTMLElement).offsetHeight;
             // This sets the max payload height to the remaining height of the window,
             // sending the footer straight to the bottom of the viewport.
-            height = handler - header - footer - 17;
-            if (height > 350) {
-                for (i = 0; i < elements.length; i++) {
-                    elements[i].style.maxHeight = height + 'px';
-                }
+            this.handlePayloadMinHeight(handler - header - footer - 17, elements);
+        }
+    }
+
+    /**
+     * What the method name says. We handle the minimum height of the payload.
+     *
+     * @param {number} height
+     * @param {NodeList} elements
+     */
+    protected handlePayloadMinHeight(height:number, elements:NodeList): void
+    {
+        let i:number;
+
+        if (height > 350) {
+            for (i = 0; i < elements.length; i++) {
+                (elements[i] as HTMLElement).style.maxHeight = height + 'px';
             }
         }
     }
