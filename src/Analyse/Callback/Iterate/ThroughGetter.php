@@ -391,13 +391,13 @@ class ThroughGetter extends AbstractCallback
             }
             // Check if this is a method and go deeper!
             $methodName = rtrim($propertyName, '()');
-            if ($classReflection->hasMethod($methodName) === true) {
+            if (
+                $classReflection->hasMethod($methodName) === true &&
+                ++$this->deep < 3
+            ) {
                 // We need to be careful not to goo too deep, we might end up
                 // in a loop.
-                ++$this->deep;
-                if ($this->deep < 3) {
-                    return $this->getReflectionProperty($classReflection, $classReflection->getMethod($methodName));
-                }
+                return $this->getReflectionProperty($classReflection, $classReflection->getMethod($methodName));
             }
         }
 
