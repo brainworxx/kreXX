@@ -151,7 +151,7 @@ class Hans
          *   When a recursion is clicked, krexx tries to locate the
          *   first output of the object and highlight it.
          */
-        this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.copyFrom);
+        this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.kdt.copyFrom);
 
         /**
          * Register the displaying of the search menu
@@ -233,80 +233,6 @@ class Hans
             }
         );
     }
-
-    /**
-     * When clicked on s recursion, this function will
-     * copy the original analysis result there and delete
-     * the recursion.
-     *
-     * @event click
-     * @param {Event} event
-     *   The click event.
-     * @param {HTMLElement} element
-     *   The element that was clicked.
-     */
-    protected copyFrom = (event:Event, element:HTMLElement): void =>
-    {
-        let i:number;
-
-        // Get the DOM id of the original analysis.
-        let domid:string = this.kdt.getDataset((element as Element), 'domid');
-        if (domid === '') {
-            // Do nothing.
-            return;
-        }
-        // Get the analysis data.
-        let orgNest:Node = document.querySelector('#' + domid);
-
-        // Does the element exist?
-        if (orgNest) {
-            // Get the EL of the data (element with the arrow).
-            let orgEl:Node = (orgNest as HTMLElement).previousElementSibling;
-            // Clone the analysis data and insert it after the recursion EL.
-            element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
-            // Clone the EL of the analysis data and insert it after the recursion EL.
-            let newEl:Element = (orgEl.cloneNode(true) as Element);
-            element.parentNode.insertBefore(newEl, element.nextSibling);
-
-            // Change the key of the just cloned EL to the one from the recursion.
-            (this.kdt.findInDomlistByClass(newEl.children, 'kname') as HTMLElement).innerHTML = (this.kdt.findInDomlistByClass(element.children, 'kname') as HTMLElement).innerHTML;
-            // We  need to remove the ids from the copy to avoid double ids.
-            let allChildren = newEl.nextElementSibling.getElementsByTagName("*");
-            for (i = 0; i < allChildren.length; i++) {
-                allChildren[i].removeAttribute('id');
-            }
-            newEl.nextElementSibling.removeAttribute('id');
-
-            // Now we add the dom-id to the clone, as a data-field. this way we can
-            // make sure to always produce the right path to this value during source
-            // generation.
-            this.kdt.setDataset((newEl.parentNode as Element), 'domid', domid);
-
-            // Remove the infobox from the copy, if available and add the one from the
-            // recursion.
-            let newInfobox = newEl.querySelector('.khelp');
-            let newButton = newEl.querySelector('.kinfobutton');
-            let realInfobox = element.querySelector('.khelp');
-            let realButton = element.querySelector('.kinfobutton');
-
-            // We don't need the infobox on newEl, so we will remove it.
-            if (newInfobox !== null) {
-                newInfobox.parentNode.removeChild(newInfobox);
-            }
-            if (newButton !== null) {
-                newButton.parentNode.removeChild(newButton);
-            }
-
-            // We copy the Infobox from the recursion to the newEl, if it exists.
-            if (realInfobox !== null) {
-                newEl.appendChild(realButton);
-                newEl.appendChild(realInfobox);
-            }
-
-            // Remove the recursion EL.
-            element.parentNode.removeChild(element);
-        }
-    };
 
     /**
      * Hides or displays the nest under an expandable element.

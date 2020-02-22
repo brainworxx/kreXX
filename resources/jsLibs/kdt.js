@@ -198,6 +198,42 @@ var Kdt = (function () {
                 jumpTo(element, true);
             }, 100);
         };
+        this.copyFrom = function (event, element) {
+            var i;
+            var domid = _this.getDataset(element, 'domid');
+            if (domid === '') {
+                return;
+            }
+            var orgNest = document.querySelector('#' + domid);
+            if (orgNest) {
+                var orgEl = orgNest.previousElementSibling;
+                element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
+                var newEl = orgEl.cloneNode(true);
+                element.parentNode.insertBefore(newEl, element.nextSibling);
+                _this.findInDomlistByClass(newEl.children, 'kname').innerHTML = _this.findInDomlistByClass(element.children, 'kname').innerHTML;
+                var allChildren = newEl.nextElementSibling.getElementsByTagName("*");
+                for (i = 0; i < allChildren.length; i++) {
+                    allChildren[i].removeAttribute('id');
+                }
+                newEl.nextElementSibling.removeAttribute('id');
+                _this.setDataset(newEl.parentNode, 'domid', domid);
+                var newInfobox = newEl.querySelector('.khelp');
+                var newButton = newEl.querySelector('.kinfobutton');
+                var realInfobox = element.querySelector('.khelp');
+                var realButton = element.querySelector('.kinfobutton');
+                if (newInfobox !== null) {
+                    newInfobox.parentNode.removeChild(newInfobox);
+                }
+                if (newButton !== null) {
+                    newButton.parentNode.removeChild(newButton);
+                }
+                if (realInfobox !== null) {
+                    newEl.appendChild(realButton);
+                    newEl.appendChild(realInfobox);
+                }
+                element.parentNode.removeChild(element);
+            }
+        };
     }
     Kdt.prototype.getParents = function (el, selector) {
         var result = [];
@@ -482,42 +518,6 @@ var SearchConfig = (function () {
 var Hans = (function () {
     function Hans() {
         var _this = this;
-        this.copyFrom = function (event, element) {
-            var i;
-            var domid = _this.kdt.getDataset(element, 'domid');
-            if (domid === '') {
-                return;
-            }
-            var orgNest = document.querySelector('#' + domid);
-            if (orgNest) {
-                var orgEl = orgNest.previousElementSibling;
-                element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
-                var newEl = orgEl.cloneNode(true);
-                element.parentNode.insertBefore(newEl, element.nextSibling);
-                _this.kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML = _this.kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
-                var allChildren = newEl.nextElementSibling.getElementsByTagName("*");
-                for (i = 0; i < allChildren.length; i++) {
-                    allChildren[i].removeAttribute('id');
-                }
-                newEl.nextElementSibling.removeAttribute('id');
-                _this.kdt.setDataset(newEl.parentNode, 'domid', domid);
-                var newInfobox = newEl.querySelector('.khelp');
-                var newButton = newEl.querySelector('.kinfobutton');
-                var realInfobox = element.querySelector('.khelp');
-                var realButton = element.querySelector('.kinfobutton');
-                if (newInfobox !== null) {
-                    newInfobox.parentNode.removeChild(newInfobox);
-                }
-                if (newButton !== null) {
-                    newButton.parentNode.removeChild(newButton);
-                }
-                if (realInfobox !== null) {
-                    newEl.appendChild(realButton);
-                    newEl.appendChild(realInfobox);
-                }
-                element.parentNode.removeChild(element);
-            }
-        };
         this.toggle = function (event, element) {
             _this.kdt.toggleClass(element, 'kopened');
             _this.kdt.toggleClass(element.nextElementSibling, 'khidden');
@@ -693,7 +693,7 @@ var Hans = (function () {
         this.eventHandler.addEvent(this.selectors.toggle, 'click', this.toggle);
         this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.kdt.setSetting);
         this.eventHandler.addEvent(this.selectors.resetSetting, 'click', this.kdt.resetSetting);
-        this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.copyFrom);
+        this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.kdt.copyFrom);
         this.eventHandler.addEvent(this.selectors.displaySearch, 'click', this.displaySearch);
         this.eventHandler.addEvent(this.selectors.performSearch, 'click', this.search.performSearch);
         this.eventHandler.addEvent(this.selectors.collapse, 'click', this.kdt.collapse);
