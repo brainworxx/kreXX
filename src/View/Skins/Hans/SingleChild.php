@@ -84,14 +84,6 @@ trait SingleChild
      */
     public function renderSingleChild(Model $model): string
     {
-        // This one is a little bit more complicated than the others,
-        // because it assembles some partials and stitches them together.
-        $partExpand = '';
-        if ($model->hasExtra() === true) {
-            // We have a lot of text, so we render this one expandable (yellow box).
-            $partExpand = 'kexpand';
-        }
-
         // Generating our code.
         $codegenHandler = $this->pool->codegenHandler;
         $generateSource = $codegenHandler->generateSource($model);
@@ -101,7 +93,7 @@ trait SingleChild
             [
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $generateSource),
                 $this->renderSourceButton($generateSource),
-                $partExpand,
+                $model->hasExtra() === true ?  'kexpand' :  '',
                 $this->renderCallable($model),
                 $this->renderExtra($model),
                 $model->getName(),
