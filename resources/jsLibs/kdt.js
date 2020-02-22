@@ -308,23 +308,20 @@ var Kdt = (function () {
     Kdt.prototype.readSettings = function (cookieName) {
         cookieName = cookieName + "=";
         var cookieArray = document.cookie.split(';');
-        var result = JSON.parse('{}');
-        var c;
+        var result = {};
+        var cookieString;
         for (var i = 0; i < cookieArray.length; i++) {
-            c = cookieArray[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1, c.length);
+            cookieString = cookieArray[i];
+            while (cookieString.charAt(0) === ' ') {
+                cookieString = cookieString.substring(1, cookieString.length);
             }
-            if (c.indexOf(cookieName) === 0) {
+            if (cookieString.indexOf(cookieName) === 0) {
                 try {
-                    result = JSON.parse(c.substring(cookieName.length, c.length));
+                    result = JSON.parse(cookieString.substring(cookieName.length, cookieString.length));
                 }
                 catch (error) {
                 }
             }
-        }
-        if (typeof result !== 'object') {
-            result = JSON.parse('{}');
         }
         return result;
     };

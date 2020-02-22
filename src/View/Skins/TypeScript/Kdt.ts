@@ -271,28 +271,23 @@ class Kdt
         /** @type {string} */
         cookieName = cookieName + "=";
         let cookieArray:string[] = document.cookie.split(';');
-        let result:object = JSON.parse('{}');
-        let c:string;
+        let result:object = {};
+        let cookieString:string;
 
         for (let i = 0; i < cookieArray.length; i++) {
-            c = cookieArray[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1, c.length);
+            cookieString = cookieArray[i];
+            while (cookieString.charAt(0) === ' ') {
+                cookieString = cookieString.substring(1, cookieString.length);
             }
-            if (c.indexOf(cookieName) === 0) {
+            if (cookieString.indexOf(cookieName) === 0) {
                 try {
                     // Return json, if possible.
-                    result = JSON.parse(c.substring(cookieName.length, c.length));
+                    result = JSON.parse(cookieString.substring(cookieName.length, cookieString.length));
                 }
                 catch (error) {
                     // Do nothing, we already have a fallback.
                 }
             }
-        }
-
-        // A last test, of we have an actual object to send.
-        if (typeof result !== 'object') {
-            result = JSON.parse('{}');
         }
 
         return result;
