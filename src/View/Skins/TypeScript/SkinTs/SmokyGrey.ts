@@ -73,7 +73,7 @@ class SmokyGrey extends Hans
     /**
      * Initialize the draggable.
      */
-    protected initDraxx = () : void =>
+    protected initDraxx = (): void =>
     {
         this.draxx = new Draxx('.kwrapper', '.khandle', function (){},function (){});
     };
@@ -86,7 +86,7 @@ class SmokyGrey extends Hans
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected switchTab = (event:Event, element:Element) : void =>
+    protected switchTab = (event:Event, element:Element): void =>
     {
         let instance = this.kdt.getDataset((element.parentNode as Element), 'instance');
         let what = this.kdt.getDataset(element, 'what');
@@ -113,7 +113,7 @@ class SmokyGrey extends Hans
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected setAdditionalData = (event:Event, element:Node) : void =>
+    protected setAdditionalData = (event:Event, element:Node): void =>
     {
         let kdt:Kdt = this.kdt;
         let setPayloadMaxHeight:Function = this.setPayloadMaxHeight;
@@ -251,7 +251,7 @@ class SmokyGrey extends Hans
     /**
      * Sets the max-height on the payload elements, depending on the viewport.
      */
-    protected setPayloadMaxHeight() : void
+    protected setPayloadMaxHeight(): void
     {
         // Get the height.
         let height = Math.round(Math.min(document.documentElement.clientHeight, window.innerHeight || 0) * 0.70);

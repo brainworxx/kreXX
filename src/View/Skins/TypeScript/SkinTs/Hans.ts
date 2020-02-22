@@ -93,7 +93,7 @@ class Hans
     /**
      * Getting our act together.
      */
-    public run() : void
+    public run(): void
     {
         // Init our libs before usage.
         this.kdt = new Kdt();
@@ -210,7 +210,7 @@ class Hans
     /**
      * Initialize the draggable.
      */
-    protected initDraxx() : void
+    protected initDraxx(): void
     {
         this.draxx = new Draxx(
             '.kwrapper',
@@ -245,7 +245,7 @@ class Hans
      * @param {HTMLElement} element
      *   The element that was clicked.
      */
-    protected copyFrom = (event:Event, element:HTMLElement) : void =>
+    protected copyFrom = (event:Event, element:HTMLElement): void =>
     {
         let i:number;
 
@@ -317,7 +317,7 @@ class Hans
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected toggle = (event:Event, element:Element) : void =>
+    protected toggle = (event:Event, element:Element): void =>
     {
         this.kdt.toggleClass(element, 'kopened');
         this.kdt.toggleClass(element.nextElementSibling, 'khidden');
@@ -329,7 +329,7 @@ class Hans
      * @param {Element} el
      * @param {boolean} noHighlight
      */
-    protected setHighlighting(el:Element, noHighlight:boolean) : void
+    protected setHighlighting(el:Element, noHighlight:boolean): void
     {
         let nests:Node[] = this.kdt.getParents(el, '.knest');
 
@@ -359,7 +359,7 @@ class Hans
      * @param {boolean} noHighlight
      *   Do we need to highlight the element we are jumping to?
      */
-    protected jumpTo = (el:Element, noHighlight:boolean) : void =>
+    protected jumpTo = (el:Element, noHighlight:boolean): void =>
     {
         this.setHighlighting(el, noHighlight);
 
@@ -420,7 +420,7 @@ class Hans
      * @param {Element} element
      *   The element that was clicked.
      */
-    protected close = (event:Event, element:Element) : void =>
+    protected close = (event:Event, element:Element): void =>
     {
         let instance:string = this.kdt.getDataset(element, 'instance');
         let elInstance:HTMLElement = document.querySelector('#' + instance);
@@ -446,7 +446,7 @@ class Hans
      * nothing at all, because they would land inside a cookie
      * for that file, and not for the server.
      */
-    protected disableForms() : void
+    protected disableForms(): void
     {
         let elements:NodeList = document.querySelectorAll('.kwrapper .keditable input, .kwrapper .keditable select');
         for (let i = 0; i < elements.length; i++) {
@@ -463,7 +463,7 @@ class Hans
      * @param {Element} element
      *   The element that was clicked.
      */
-    protected generateCode = (event:Event, element:Element) : void =>
+    protected generateCode = (event:Event, element:Element): void =>
     {
         // We don't want to bubble the click any further.
         event.stop = true;
@@ -548,7 +548,7 @@ class Hans
      * Checks if the search form is inside the viewport. If not, fixes it on top.
      * Gets triggered on,y when scolling the fatal error handler.
      */
-    protected checkSearchInViewport = () : void =>
+    protected checkSearchInViewport = (): void =>
     {
         // Get the search
         let search:HTMLElement = document.querySelector('.kfatalwrapper-outer .search-wrapper');
@@ -573,7 +573,7 @@ class Hans
      *
      * @event keyUp
      */
-    protected displayInfoBox = (event:Event, element:Element) : void =>
+    protected displayInfoBox = (event:Event, element:Element): void =>
     {
         // We don't want to bubble the click any further.
         event.stop = true;
@@ -597,7 +597,7 @@ class Hans
      * @param {Node} element
      *   The element that was clicked.
      */
-    protected displaySearch = (event:Event, element:Node) : void =>
+    protected displaySearch = (event:Event, element:Node): void =>
     {
         let instance:string = this.kdt.getDataset((element as Element), 'instance');
         let search:HTMLElement = document.querySelector('#search-' + instance);

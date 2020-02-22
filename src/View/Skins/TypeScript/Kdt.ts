@@ -43,7 +43,7 @@ class Kdt
      *
      * @param {Function} jumpTo
      */
-    public setJumpTo = (jumpTo:Function) : void =>
+    public setJumpTo = (jumpTo:Function): void =>
     {
         this.jumpTo = jumpTo;
     };
@@ -54,7 +54,7 @@ class Kdt
      * @param {Node} el
      * @param {string} selector
      */
-    public getParents(el:Node, selector:string) : Node[]
+    public getParents(el:Node, selector:string): Node[]
     {
         let result:Node[] = [];
         let parent:Node = el.parentNode;
@@ -83,7 +83,7 @@ class Kdt
      * @param {Element} el
      * @param {string} className
      */
-    public hasClass(el:Element, className:string) : boolean
+    public hasClass(el:Element, className:string): boolean
     {
         if (el.classList) {
             return el.classList.contains(className);
@@ -100,7 +100,7 @@ class Kdt
      *
      * @returns {Element|null} the element
      */
-    public findInDomlistByClass(elements:NodeList|HTMLCollection, className:string) : Node | null
+    public findInDomlistByClass(elements:NodeList|HTMLCollection, className:string): Node | null
     {
         className = " " + className + " ";
         for (let i = 0; i < elements.length; i++) {
@@ -117,7 +117,7 @@ class Kdt
      * @param {NodeList|string|Array} selector
      * @param {string} className
      */
-    public addClass(selector:NodeList|string|Node[], className:string) : void
+    public addClass(selector:NodeList|string|Node[], className:string): void
     {
         /** @type {NodeList|null|Array} */
         let elements:NodeList|null|Node[];
@@ -141,7 +141,7 @@ class Kdt
      * @param {NodeList|string} selector
      * @param {string} className
      */
-    public removeClass(selector:NodeList|string|Node[], className:string) : void
+    public removeClass(selector:NodeList|string|Node[], className:string): void
     {
         let elements:any;
 
@@ -166,7 +166,7 @@ class Kdt
      * @param {Element} el
      * @param {string} className
      */
-    public toggleClass(el:Element, className:string) : void
+    public toggleClass(el:Element, className:string): void
     {
         if (el.classList) {
             // Just toggle it.
@@ -197,7 +197,7 @@ class Kdt
      *
      * @returns {string}
      */
-    public getDataset(el:Element, what:string, mustEscape:boolean = false) : string
+    public getDataset(el:Element, what:string, mustEscape:boolean = false): string
     {
         let result:string|null;
 
@@ -235,7 +235,7 @@ class Kdt
      * @param {string} what
      * @param {string} value
      */
-    public setDataset(el:Element, what:string, value:string) : void
+    public setDataset(el:Element, what:string, value:string): void
     {
         if (typeof el !== 'undefined') {
             el.setAttribute('data-' + what, value);
@@ -247,7 +247,7 @@ class Kdt
      *
      * @param {Element} el
      */
-    public selectText(el:Element) : void
+    public selectText(el:Element): void
     {
         let range:Range = document.createRange();
         let selection:Selection = window.getSelection();
@@ -266,7 +266,7 @@ class Kdt
      * @return {object}
      *   The value, set in the cookie.
      */
-    public readSettings(cookieName:string) : string|object
+    public readSettings(cookieName:string): string|object
     {
         /** @type {string} */
         cookieName = cookieName + "=";
@@ -299,7 +299,7 @@ class Kdt
      * @event change
      * @param {Event} event
      */
-    public setSetting = (event:Event) : void =>
+    public setSetting = (event:Event): void =>
     {
         // Prevents the default event behavior (ie: click).
         event.preventDefault();
@@ -336,7 +336,7 @@ class Kdt
      * @param {Node} element
      *   The element that was clicked.
      */
-    public resetSetting(event:Event, element:Node) : void
+    public resetSetting(event:Event, element:Node): void
     {
         // We do not delete the cookie, we simply remove all settings in it.
         let date:Date = new Date();
@@ -353,7 +353,7 @@ class Kdt
      * @param {string} string
      * @returns {Object|boolean}
      */
-    public parseJson(string:string) : Object|boolean
+    public parseJson(string:string): Object|boolean
     {
         try {
             return JSON.parse(string);
@@ -370,7 +370,7 @@ class Kdt
      *
      * @param {string} selector
      */
-    public moveToBottom(selector:string) : void
+    public moveToBottom(selector:string): void
     {
         // Get all elements.
         let elements:NodeList = document.querySelectorAll(selector);
@@ -398,7 +398,7 @@ class Kdt
      * @param {Element} element
      *   The element that was clicked.
      */
-    public collapse = (event:Event, element:Element) : void =>
+    public collapse = (event:Event, element:Element): void =>
     {
         event.stop = true;
 
