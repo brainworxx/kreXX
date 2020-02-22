@@ -92,9 +92,6 @@ interface ConstInterface
     const TRACE_CLASS = 'class';
     const TRACE_OBJECT = 'object';
     const TRACE_ARGS = 'args';
-    const TRACE_ERROR_STRING = 'errstr';
-    const TRACE_ERROR_FILE = 'errfile';
-    const TRACE_ERROR_LINE = 'errline';
     const TRACE_BACKTRACE = 'backtrace';
     const TRACE_DATE = 'date';
     const TRACE_URL = 'url';

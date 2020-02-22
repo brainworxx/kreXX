@@ -80,7 +80,7 @@ trait IsCallback
      * @param bool $isCallback
      *   The value we want to set.
      *
-     * @return Model
+     * @return $this
      *   $this for chaining.
      */
     public function setIsCallback(bool $isCallback): Model

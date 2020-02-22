@@ -38,7 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Controller;
 
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
-use \Throwable;
+use Throwable;
 
 /**
  * Handling exceptions.
@@ -64,7 +64,11 @@ class ExceptionController extends AbstractController
         $this->pool->reset();
 
         // Get the main part.
-        $main = $this->pool->render->renderFatalMain($exception->getMessage(), $exception->getFile(), $exception->getLine());
+        $main = $this->pool->render->renderFatalMain(
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine()
+        );
 
         // Get the backtrace.
         $trace = $exception->getTrace();

@@ -37,7 +37,6 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Model;
 
-
 use Brainworxx\Krexx\Analyse\Model;
 
 trait IsMetaConstants
@@ -85,7 +84,7 @@ trait IsMetaConstants
      *
      * @param bool $bool
      *   The value we want to set.
-     * @return Model
+     * @return $this
      *   Return $this for chaining.
      */
     public function setIsMetaConstants(bool $bool): Model

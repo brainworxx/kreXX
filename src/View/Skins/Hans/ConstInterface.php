@@ -41,6 +41,7 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
  * Interface ConstInterface
  *
  * @deprecated
+ *   Since 4.0.0. Will be removed.
  *
  * @package Brainworxx\Krexx\View\Skins\Hans
  */

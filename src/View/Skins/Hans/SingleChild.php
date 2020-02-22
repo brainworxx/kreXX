@@ -183,7 +183,7 @@ trait SingleChild
      * @return array
      *   The marker array.
      */
-    public function getMarkerSingleChild() : array
+    public function getMarkerSingleChild(): array
     {
         return $this->markerSingleChild;
     }
