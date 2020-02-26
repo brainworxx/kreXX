@@ -57,6 +57,18 @@ class ProcessString extends AbstractRouting implements ProcessInterface
      */
     protected $bufferInfo;
 
+    /**
+     * Length threshold, where we do a buffer-info analysis.
+     *
+     * @var int
+     */
+    protected $bufferInfoThreshold = 20;
+
+    /**
+     * Inject the pool and initialize the buffer-info class.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
@@ -91,18 +103,11 @@ class ProcessString extends AbstractRouting implements ProcessInterface
             $model->setIsCallback(true);
         }
 
-        $length = $this->retrieveLengthAndEncoding($data, $model);
-        if ($length > 20) {
-            // Getting mime type from the string.
-            // With larger strings, there is a good chance that there is
-            // something interesting in there.
-            $model->addToJson(static::META_MIME_TYPE, $this->bufferInfo->buffer($data));
-        }
-
         // Check, if we are handling large string, and if we need to use a
         // preview (which we call "extra").
         // We also need to check for linebreaks, because the preview can not
         // display those.
+        $length = $this->retrieveLengthAndEncoding($data, $model);
         if ($length > 50 || strstr($data, PHP_EOL) !== false) {
             $cut = $this->pool->encodingService->encodeString(
                 $this->pool->encodingService->mbSubStr($data, 0, 50)
@@ -140,15 +145,25 @@ class ProcessString extends AbstractRouting implements ProcessInterface
         $encoding = $this->pool->encodingService->mbDetectEncoding($data);
         if ($encoding === false) {
             // Looks like we have a mixed encoded string.
-            // We need to tell the dev!
             $length = $this->pool->encodingService->mbStrLen($data);
-            $strlen = 'broken encoding ' . $length;
-            $model->addToJson(static::META_ENCODING, 'broken');
         } else {
             // Normal encoding, nothing special here.
-            $length = $strlen = $this->pool->encodingService->mbStrLen($data, $encoding);
+            $length = $this->pool->encodingService->mbStrLen($data, $encoding);
         }
-        $model->setType(static::TYPE_STRING . $strlen);
+
+        // Long string or with broken encoding.
+        if ($length > $this->bufferInfoThreshold) {
+            // Let's see, what the buffer-info can do with it.
+            $model->addToJson(static::META_MIME_TYPE, $this->bufferInfo->buffer($data));
+        } elseif ($encoding === false) {
+            // Short string with broken encoding.
+            $model->addToJson(static::META_ENCODING, 'broken');
+        } else {
+            // Short string with normal encoding.
+            $model->addToJson(static::META_ENCODING, $encoding);
+        }
+
+        $model->setType(static::TYPE_STRING . $length);
 
         return $length;
     }

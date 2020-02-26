@@ -11,6 +11,8 @@
 - Change: Introduced scalar type hints.
 - Change: Introduced method return types.
 - Change: Simplified the Model.
+- Change: Do not display the encoding info, if we have a buffer
+  info available.
 
 3.2.2
 - Updated to PHP 7.4
