@@ -1,4 +1,5 @@
 4.0.0 dev
+- Added process resource analysis.
 - Change: Removed all deprecations.
 - Change: Removed the PHP 5.x fatal error handler.
 - Change: Dropped PHP 5.x support.

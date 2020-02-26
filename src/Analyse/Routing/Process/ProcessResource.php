@@ -75,6 +75,10 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
                 $meta = curl_getinfo($resource);
                 break;
 
+            case 'process':
+                $meta = proc_get_status($resource);
+                break;
+
             default:
                 return $this->renderUnknownOrClosed($model, $resource, $typeString);
         }
