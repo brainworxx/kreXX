@@ -13,6 +13,8 @@
 - Change: Simplified the Model.
 - Change: Do not display the encoding info, if we have a buffer
   info available.
+- Bugfix: Added missing closing li tag to the expandableChild
+  template.
 
 3.2.2
 - Updated to PHP 7.4
