@@ -206,31 +206,6 @@ class ProcessStringTest extends AbstractTest
     }
 
     /**
-     * Testing with a short callback string.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
-     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::retrieveLengthAndEncoding
-     * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
-     */
-    public function testProcessWithCallback()
-    {
-        $fixture = 'substr';
-        $encoding = static::ENCODING;
-        $length = 12;
-        $model = $this->prepareMocksAndRunTest(
-            $fixture,
-            $encoding,
-            $length
-        );
-
-        $this->assertEquals($model::TYPE_STRING . $length, $model->getType());
-        $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
-        $this->assertEquals(static::ENCODING_PREFIX . $fixture, $model->getNormal());
-        $this->assertEquals(false, $model->hasExtra());
-        $this->assertArrayNotHasKey($model::META_MIME_TYPE, $model->getJson());
-    }
-
-    /**
      * Testing with linebreaks in the fixture.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process

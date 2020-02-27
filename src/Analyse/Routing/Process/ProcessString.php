@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use Brainworxx\Krexx\Analyse\Scalar\ScalarString;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Misc\FileinfoDummy;
 use finfo;
@@ -56,6 +57,13 @@ class ProcessString extends AbstractRouting implements ProcessInterface
      * @var \finfo|\Brainworxx\Krexx\Service\Misc\FileinfoDummy
      */
     protected $bufferInfo;
+
+    /**
+     * The deeper string analysis.
+     *
+     * @var \Brainworxx\Krexx\Analyse\Scalar\AbstractScalar;
+     */
+    protected $scalarString;
 
     /**
      * Length threshold, where we do a buffer-info analysis.
@@ -81,6 +89,8 @@ class ProcessString extends AbstractRouting implements ProcessInterface
             $this->bufferInfo = $pool->createClass(FileinfoDummy::class);
             $pool->messages->addMessage('fileinfoNotInstalled');
         }
+
+        $this->scalarString = $pool->createClass(ScalarString::class);
     }
 
     /**
@@ -115,11 +125,28 @@ class ProcessString extends AbstractRouting implements ProcessInterface
             $model->setNormal($this->pool->encodingService->encodeString($data));
         }
 
-        return $this->pool->render->renderExpandableChild(
-            $this->dispatchProcessEvent(
-                $model->addToJson(static::META_LENGTH, $length)
-            )
-        );
+        return $this->handleStringScalar($model->addToJson(static::META_LENGTH, $length));
+    }
+
+    /**
+     * Inject the scalar analysis callback and handle possible recursions.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model, so far.
+     *
+     * @return string
+     *   The generated DOM.
+     */
+    protected function handleStringScalar(Model $model): string
+    {
+        $this->scalarString->handle($model);
+        $domId = $model->getDomid();
+        if ($domId !== '' && $this->pool->recursionHandler->isInMetaHive($domId) === true) {
+            return $this->pool->render->renderRecursion($model);
+        }
+
+        $this->pool->recursionHandler->addToMetaHive($domId);
+        return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent($model));
     }
 
     /**
