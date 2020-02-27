@@ -55,7 +55,6 @@ class SingleChildTest extends AbstractRenderHans
     public function testRenderSingleChild()
     {
         $this->mockModel(static::GET_DATA, 'extra data');
-        $this->mockModel(static::GET_IS_CALLBACK, true);
         $this->mockModel(static::GET_NAME, 'my name');
         $this->mockModel(static::GET_CONNECTOR_LEFT, 'lefty');
         $this->mockModel(static::GET_CONNECTOR_RIGHT, 'righty');
@@ -67,7 +66,7 @@ class SingleChildTest extends AbstractRenderHans
         $this->modelMock->expects($this->exactly(2))
             ->method(static::GET_TYPE)
             ->will($this->returnValue('type01 type02'));
-        $this->modelMock->expects($this->exactly(2))
+        $this->modelMock->expects($this->exactly(1))
             ->method(static::GET_NORMAL)
             ->will($this->returnValue('just normal'));
 

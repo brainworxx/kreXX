@@ -96,13 +96,6 @@ class ProcessString extends AbstractRouting implements ProcessInterface
     {
         $data = $model->getData();
 
-        // Check if this is a possible callback.
-        // We are not going to analyse this further, because modern systems
-        // do not use these anymore.
-        if (function_exists($data) === true) {
-            $model->setIsCallback(true);
-        }
-
         // Check, if we are handling large string, and if we need to use a
         // preview (which we call "extra").
         // We also need to check for linebreaks, because the preview can not
