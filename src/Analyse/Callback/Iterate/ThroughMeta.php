@@ -117,7 +117,7 @@ class ThroughMeta extends AbstractCallback
         }
 
         // Render a single data point.
-        return $this->pool->render->renderSingleChild(
+        return $this->pool->render->renderExpandableChild(
             $this->dispatchEventWithModel(
                 __FUNCTION__ . $key . static::EVENT_MARKER_END,
                 $model

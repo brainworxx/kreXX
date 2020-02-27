@@ -43,6 +43,7 @@ class SingleEditableChildTest extends AbstractRenderSmokyGrey
      * Test the additional stuff of the singel editable child rendering.
      *
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\SingleEditableChild::renderSingleEditableChild
+     * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Help::renderHelp
      */
     public function testRenderSingleEditableChild()
     {

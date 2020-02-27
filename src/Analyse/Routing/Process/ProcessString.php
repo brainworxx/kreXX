@@ -115,7 +115,7 @@ class ProcessString extends AbstractRouting implements ProcessInterface
             $model->setNormal($this->pool->encodingService->encodeString($data));
         }
 
-        return $this->pool->render->renderSingleChild(
+        return $this->pool->render->renderExpandableChild(
             $this->dispatchProcessEvent(
                 $model->addToJson(static::META_LENGTH, $length)
             )

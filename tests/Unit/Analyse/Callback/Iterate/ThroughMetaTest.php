@@ -153,9 +153,9 @@ class ThroughMetaTest extends AbstractTest
 
         $this->throughMeta->setParameters($fixture)->callMe();
 
-        $this->assertCount(1, $this->renderNothing->model['renderSingleChild']);
+        $this->assertCount(1, $this->renderNothing->model['renderExpandableChild']);
         /** @var \Brainworxx\Krexx\Analyse\Model $model */
-        $model = $this->renderNothing->model['renderSingleChild'][0];
+        $model = $this->renderNothing->model['renderExpandableChild'][0];
         $this->assertEquals($payload, $model->getData());
         $this->assertEquals($key, $model->getName());
         $this->assertEquals($this->throughMeta::TYPE_REFLECTION, $model->getType());

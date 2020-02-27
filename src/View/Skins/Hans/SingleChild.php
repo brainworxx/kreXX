@@ -78,6 +78,12 @@ trait SingleChild
      * @param Model $model
      *   The model, which hosts all the data we need.
      *
+     * @deprecated
+     *   Since 4.0.0. Use renderExpandableChild instead.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
      * @return string
      *   The generated markup from the template files.
      */
@@ -114,6 +120,12 @@ trait SingleChild
      * @param string $gensource
      *   The source we want to display.
      *
+     * @deprecated
+     *   Since 4.0.0. Use renderExpandableChild instead.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
      * @return string
      *   The rendered HTML output.
      */
@@ -132,6 +144,7 @@ trait SingleChild
      *
      * @param \Brainworxx\Krexx\Analyse\Model $model
      *   The model.
+     *
      *
      * @return string
      *   The rendered HTML output.

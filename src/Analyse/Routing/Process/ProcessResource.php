@@ -115,7 +115,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface
             $typeString = gettype($resource);
         }
 
-        return $this->pool->render->renderSingleChild(
+        return $this->pool->render->renderExpandableChild(
             $this->dispatchNamedEvent(
                 __FUNCTION__,
                 $model->setNormal($typeString)

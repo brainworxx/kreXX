@@ -51,7 +51,14 @@ class ProcessStringTest extends AbstractTest
     const ENCODING = 'some encoding';
     const ENCODING_PREFIX = 'encoded ';
 
-     /**
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->mockEmergencyHandler();
+    }
+
+    /**
      * Testing the setting of the pool and of the file info class.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::__construct
