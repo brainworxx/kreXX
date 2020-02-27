@@ -87,7 +87,7 @@ class StringCallbackTest extends AbstractTest
         $this->assertEquals(1, CallbackCounter::$counter);
 
         $this->assertStringStartsWith('Fixture for the callback analysis.', $result['Comment']);
-        $this->assertContains('tests\Fixtures\Callback.php', $result['Declared in']);
+        $this->assertContains('tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'Callback.php', $result['Declared in']);
         $this->assertContains('in line: 45', $result['Declared in']);
         $this->assertEquals('string $justAString', $result['Parameter #1']);
     }
