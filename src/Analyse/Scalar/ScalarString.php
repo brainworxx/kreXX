@@ -40,6 +40,8 @@ namespace Brainworxx\Krexx\Analyse\Scalar;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
+use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 
 /**
  * Deeper analyses methods for strings.
@@ -61,6 +63,17 @@ class ScalarString extends AbstractScalar implements ConstInterface
     protected $classList = [
         StringCallback::class
     ];
+
+    /**
+     * Get the additional analysis classes from the plugins.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(Pool $pool)
+    {
+        $this->classList = array_merge($this->classList, SettingsGetter::getAdditionalScalarString());
+        parent::__construct($pool);
+    }
 
     /**
      * Doing special analysis with strings.

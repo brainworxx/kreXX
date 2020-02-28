@@ -38,6 +38,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Scalar;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Scalar\ScalarString;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ScalarNothing;
 
@@ -68,6 +69,21 @@ class ScalarStringTest  extends AbstractTest
         $this->scalarString = new ScalarString(Krexx::$pool);
         // Inject the scalar helper, to track the processing.
         $this->setValueByReflection('classList', [ScalarNothing::class], $this->scalarString);
+    }
+
+    /**
+     * Test the retrieval of the plugin scalar string analysis classes.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Scalar\ScalarString::__construct
+     */
+    public function testConstruct()
+    {
+        Registration::addScalarStringAnalyser(ScalarNothing::class);
+        $this->scalarString = new ScalarString(Krexx::$pool);
+
+        $this->assertTrue(
+            in_array(ScalarNothing::class, $this->retrieveValueByReflection('classList', $this->scalarString))
+        );
     }
 
     /**
