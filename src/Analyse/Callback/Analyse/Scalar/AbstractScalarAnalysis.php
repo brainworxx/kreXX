@@ -38,6 +38,8 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
+use Brainworxx\Krexx\Analyse\Model;
 
 abstract class AbstractScalarAnalysis extends AbstractCallback
 {
@@ -51,4 +53,38 @@ abstract class AbstractScalarAnalysis extends AbstractCallback
      *   Got this one get handled?
      */
     abstract public function canHandle($string): bool;
+
+    /**
+     * Retrieve the meta array and render it.
+     *
+     * @return string
+     *   The rendered DOM.
+     */
+    public function callMe(): string
+    {
+        $output = $this->dispatchStartEvent();
+        $meta = $this->handle();
+
+        if (empty($meta)) {
+            // Nothing to render.
+            return '';
+        }
+
+        // Prepare the rendering.
+        /** @var Model $model */
+        $model = $this->pool->createClass(Model::class)
+            ->addParameter(static::PARAM_DATA, $meta)
+            ->injectCallback($this->pool->createClass(ThroughMeta::class));
+
+        // We render the model directly. This class acts only as a proxy.
+        return $output . $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $model)->renderMe();
+    }
+
+    /**
+     * Stitch together the meta array for the rendering.
+     *
+     * @return array
+     *   The meta array.
+     */
+    abstract protected function handle(): array;
 }

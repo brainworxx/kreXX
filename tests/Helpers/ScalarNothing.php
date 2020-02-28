@@ -50,6 +50,12 @@ class ScalarNothing extends AbstractScalarAnalysis
         return '';
     }
 
+    public function handle(): array
+    {
+        // Do nothing. This onedoes not get called. At all.
+        return [];
+    }
+
     /**
      *
      * @param bool|int|string $string

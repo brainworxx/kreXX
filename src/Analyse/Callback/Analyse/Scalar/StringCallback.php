@@ -39,8 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Comment\Functions;
 use ReflectionFunction;
-use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
-use Brainworxx\Krexx\Analyse\Model;
+use ReflectionException;
 
 /**
  * The stuff we are doing here is very similar to the method analysis. The
@@ -48,29 +47,25 @@ use Brainworxx\Krexx\Analyse\Model;
  * inheritance. We can extract the needed data directly out of the
  * reflection and dump it via ThroughMeta.
  *
- * @uses \Brainworxx\Krexx\Analyse\Model data
+ * @uses string data
+ *   The string we are analysing.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar
  */
 class StringCallback extends AbstractScalarAnalysis
 {
     /**
-     * Add a function analysis to the output.
-     *
-     * @return string
-     *   The generated DOM.
+     * {@inheritDoc}
      */
-    public function callMe(): string
+    public function handle(): array
     {
         try {
             $reflectionFunction = new ReflectionFunction($this->parameters[static::PARAM_DATA]);
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             // Huh, we were unable to retrieve the reflection.
             // Nothing left to do here.
-            return '';
+            return [];
         }
-
-        $output = $this->dispatchStartEvent();
 
         // Stitching together the main analysis.
         /** @var Functions $comment */
@@ -81,14 +76,7 @@ class StringCallback extends AbstractScalarAnalysis
         ];
         $this->insertParameters($reflectionFunction, $meta);
 
-        // Prepare the rendering.
-        /** @var Model $model */
-        $model = $this->pool->createClass(Model::class)
-            ->addParameter(static::PARAM_DATA, $meta)
-            ->injectCallback($this->pool->createClass(ThroughMeta::class));
-
-        // We render the model directly. This class acts only as a proxy.
-        return $output . $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $model)->renderMe();
+        return $meta;
     }
 
     /**
@@ -114,7 +102,7 @@ class StringCallback extends AbstractScalarAnalysis
      * @return string
      *   The declaration place.
      */
-    protected function retrieveDeclarationPlace(\ReflectionFunction $reflectionFunction): string
+    protected function retrieveDeclarationPlace(ReflectionFunction $reflectionFunction): string
     {
         if ($reflectionFunction->isInternal() === true) {
             return static::META_PREDECLARED;
@@ -132,11 +120,11 @@ class StringCallback extends AbstractScalarAnalysis
      * @param array $meta
      *   The meta array, so far.
      */
-    protected function insertParameters(\ReflectionFunction $reflectionFunction, array &$meta)
+    protected function insertParameters(ReflectionFunction $reflectionFunction, array &$meta)
     {
         foreach ($reflectionFunction->getParameters() as $key => $reflectionParameter) {
             ++$key;
-            $reflectionFunction .=  $meta[static::META_PARAM_NO . $key] = $this->pool
+            $meta[static::META_PARAM_NO . $key] = $this->pool
                 ->codegenHandler
                 ->parameterToString($reflectionParameter);
         }

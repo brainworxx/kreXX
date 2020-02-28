@@ -60,6 +60,7 @@ class StringCallbackTest extends AbstractTest
      * Test the analysis of a callback.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::handle
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::retrieveDeclarationPlace
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::insertParameters
      */
@@ -96,6 +97,7 @@ class StringCallbackTest extends AbstractTest
      * Test the error handling in the callMe.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::handle
      */
     public function testCallMeError()
     {
@@ -104,11 +106,8 @@ class StringCallbackTest extends AbstractTest
         $fixture = [StringCallback::PARAM_DATA => 'dgdg dsf '];
         $stringCallback->setParameters($fixture);
 
-        // Test the early return.
-        $eventServiceMock = $this->createMock(Event::class);
-        $eventServiceMock->expects($this->never())
-            ->method('dispatch');
-        \Krexx::$pool->eventService = $eventServiceMock;
+        // Expect a start event. nothing more here.
+        $this->mockEventService([StringCallback::class . PluginConfigInterface::START_EVENT, $stringCallback]);
 
         $stringCallback->callMe();
     }
