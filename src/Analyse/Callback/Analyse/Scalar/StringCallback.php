@@ -57,7 +57,7 @@ class StringCallback extends AbstractScalarAnalysis
     /**
      * {@inheritDoc}
      */
-    public function handle(): array
+    protected function handle(): array
     {
         try {
             $reflectionFunction = new ReflectionFunction($this->parameters[static::PARAM_DATA]);
