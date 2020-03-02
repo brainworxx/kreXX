@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\ScalarNothing;
 
-class ScalarStringTest  extends AbstractTest
+class ScalarStringTest extends AbstractTest
 {
     /**
      * @var ScalarString

@@ -52,7 +52,7 @@ use ReflectionException;
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar
  */
-class StringCallback extends AbstractScalarAnalysis
+class Callback extends AbstractScalarAnalysis
 {
     /**
      * {@inheritDoc}

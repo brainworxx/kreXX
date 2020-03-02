@@ -37,7 +37,8 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Scalar;
 
-use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\FilePath;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -61,7 +62,8 @@ class ScalarString extends AbstractScalar implements ConstInterface
 {
 
     protected $classList = [
-        StringCallback::class
+        Callback::class,
+        FilePath::class
     ];
 
     /**

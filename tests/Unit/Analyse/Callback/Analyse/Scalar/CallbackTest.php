@@ -35,23 +35,22 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Analyse\Scalar;
 
-use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
-use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 
-class StringCallbackTest extends AbstractTest
+class CallbackTest extends AbstractTest
 {
     /**
      * Test if the callback analyser can identify a callback.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::canHandle
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback::canHandle
      */
     public function testCanHandle()
     {
-        $stringCallback = new StringCallback(\Krexx::$pool);
+        $stringCallback = new Callback(\Krexx::$pool);
         $this->assertTrue($stringCallback->canHandle('strpos'), 'This ia a predefinedphp function.');
         $this->assertFalse($stringCallback->canHandle('sdfsd dsf sdf '), 'Just a random string.');
     }
@@ -59,24 +58,24 @@ class StringCallbackTest extends AbstractTest
     /**
      * Test the analysis of a callback.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::callMe
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::handle
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::retrieveDeclarationPlace
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::insertParameters
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback::handle
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback::retrieveDeclarationPlace
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback::insertParameters
      */
     public function testCallMeNormal()
     {
         $this->mockEmergencyHandler();
 
         // Prepare the guinea pig.
-        $stringCallback = new StringCallback(\Krexx::$pool);
-        $fixture = [StringCallback::PARAM_DATA => 'myLittleCallback'];
+        $stringCallback = new Callback(\Krexx::$pool);
+        $fixture = [Callback::PARAM_DATA => 'myLittleCallback'];
         $stringCallback->setParameters($fixture);
 
         // Test the calling of the events.
         $this->mockEventService(
-            [StringCallback::class . PluginConfigInterface::START_EVENT, $stringCallback],
-            [StringCallback::class . '::callMe' . StringCallback::EVENT_MARKER_END, $stringCallback]
+            [Callback::class . PluginConfigInterface::START_EVENT, $stringCallback],
+            [Callback::class . '::callMe' . Callback::EVENT_MARKER_END, $stringCallback]
         );
 
         \Krexx::$pool->rewrite = [
@@ -84,7 +83,7 @@ class StringCallbackTest extends AbstractTest
         ];
 
         $stringCallback->callMe();
-        $result = CallbackCounter::$staticParameters[0][StringCallback::PARAM_DATA];
+        $result = CallbackCounter::$staticParameters[0][Callback::PARAM_DATA];
         $this->assertEquals(1, CallbackCounter::$counter);
 
         $this->assertStringStartsWith('Fixture for the callback analysis.', $result['Comment']);
@@ -96,18 +95,18 @@ class StringCallbackTest extends AbstractTest
     /**
      * Test the error handling in the callMe.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::callMe
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\StringCallback::handle
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback::handle
      */
     public function testCallMeError()
     {
         // Create a fixture that is supposed to trigger a ReflectionException.
-        $stringCallback = new StringCallback(\Krexx::$pool);
-        $fixture = [StringCallback::PARAM_DATA => 'dgdg dsf '];
+        $stringCallback = new Callback(\Krexx::$pool);
+        $fixture = [Callback::PARAM_DATA => 'dgdg dsf '];
         $stringCallback->setParameters($fixture);
 
         // Expect a start event. nothing more here.
-        $this->mockEventService([StringCallback::class . PluginConfigInterface::START_EVENT, $stringCallback]);
+        $this->mockEventService([Callback::class . PluginConfigInterface::START_EVENT, $stringCallback]);
 
         $stringCallback->callMe();
     }
