@@ -98,7 +98,7 @@ class ScalarStringTest extends AbstractTest
         $fixture = new Model(Krexx::$pool);
         $fixture->setData($string);
 
-        $this->assertSame($fixture, $this->scalarString->handle($fixture));
+        $this->assertSame($fixture, $this->scalarString->handle($fixture, $string));
         $fixture->renderMe();
 
         $this->assertEquals(
@@ -129,7 +129,7 @@ class ScalarStringTest extends AbstractTest
 
         ScalarNothing::$canHandle = true;
 
-        $this->assertSame($fixture, $this->scalarString->handle($fixture));
+        $this->assertSame($fixture, $this->scalarString->handle($fixture, $string));
         $fixture->renderMe();
 
         $this->assertStringStartsWith('k0_scalar_', $fixture->getDomid());

@@ -43,6 +43,11 @@ class ScalarNothing extends AbstractScalarAnalysis
     public static $callMeList = [];
     public static $canHandleList = [];
 
+    public static function isActive(): bool
+    {
+        return true;
+    }
+
     public function callMe(): string
     {
         static::$callMeList[] = $this->parameters[static::PARAM_DATA];

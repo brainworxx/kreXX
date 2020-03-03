@@ -59,6 +59,7 @@ PHPMock::defineFunctionMock($serviceMisc, 'glob');
 PHPMock::defineFunctionMock($serviceMisc, 'time');
 PHPMock::defineFunctionMock($callbackScalar, 'class_exists');
 PHPMock::defineFunctionMock($callbackScalar, 'is_file');
+PHPMock::defineFunctionMock($callbackScalar, 'function_exists');
 PHPMock::defineFunctionMock($viewOutput, 'register_shutdown_function');
 PHPMock::defineFunctionMock($viewOutput, 'microtime');
 PHPMock::defineFunctionMock($viewOutput, 'glob');

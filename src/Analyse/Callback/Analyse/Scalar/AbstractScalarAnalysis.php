@@ -55,6 +55,15 @@ abstract class AbstractScalarAnalysis extends AbstractCallback
     abstract public function canHandle($string): bool;
 
     /**
+     * Are all perquisites met for this class to do anything?
+     *
+     * If false, this class will not even get asked if it can handle something.
+     *
+     * @return bool
+     */
+    abstract public static function isActive(): bool;
+
+    /**
      * Retrieve the meta array and render it.
      *
      * @return string

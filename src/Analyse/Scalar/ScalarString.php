@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\FilePath;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Json;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -61,10 +62,12 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 class ScalarString extends AbstractScalar implements ConstInterface
 {
 
-    protected $classList = [
-        Callback::class,
-        FilePath::class
-    ];
+    /**
+     * The list of analysis classes, that we use.
+     *
+     * @var []
+     */
+    protected $classList = [];
 
     /**
      * Get the additional analysis classes from the plugins.
@@ -73,7 +76,20 @@ class ScalarString extends AbstractScalar implements ConstInterface
      */
     public function __construct(Pool $pool)
     {
-        $this->classList = array_merge($this->classList, SettingsGetter::getAdditionalScalarString());
+        $classList = [
+            Callback::class,
+            FilePath::class,
+            Json::class
+        ];
+
+        $classList = array_merge($classList, SettingsGetter::getAdditionalScalarString());
+
+        foreach ($classList as $className) {
+            if ($className::isActive() === true) {
+                $this->classList[] = $className;
+            }
+        }
+
         parent::__construct($pool);
     }
 
@@ -86,18 +102,16 @@ class ScalarString extends AbstractScalar implements ConstInterface
      * @return Model
      *   The adjusted model.
      */
-    public function handle(Model $model): Model
+    public function handle(Model $model, string $originalData): Model
     {
-        $data = $model->getData();
-
         foreach ($this->classList as $className) {
             /** @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\AbstractScalarAnalysis $scalarHandler */
             $scalarHandler = $this->pool->createClass($className);
 
-            if ($scalarHandler->canHandle($data) === true) {
+            if ($scalarHandler->canHandle($originalData) === true) {
                 $model->injectCallback($scalarHandler)
-                    ->addParameter(static::PARAM_DATA, $data)
-                    ->setDomid($this->generateDomId($data, $className));
+                    ->addParameter(static::PARAM_DATA, $originalData)
+                    ->setDomid($this->generateDomId($originalData, $className));
                 return $model;
             }
         }

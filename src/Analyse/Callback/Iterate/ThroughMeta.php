@@ -91,13 +91,13 @@ class ThroughMeta extends AbstractCallback
      *
      * @param string $key
      *   The key in the output list.
-     * @param string $meta
+     * @param mixed $meta
      *   The text to display.
      *
      * @return string
      *   The rendered html.
      */
-    protected function handleNoneReflections(string $key, string $meta): string
+    protected function handleNoneReflections(string $key, $meta): string
     {
         /** @var Model $model */
         $model = $this->pool->createClass(Model::class)
@@ -108,7 +108,8 @@ class ThroughMeta extends AbstractCallback
         if (
             $key === static::META_COMMENT ||
             $key === static::META_DECLARED_IN ||
-            $key === static::META_SOURCE
+            $key === static::META_SOURCE ||
+            $key === static::META_PRETTY_PRINT
         ) {
             $model->setNormal(static::UNKNOWN_VALUE);
             $model->setHasExtra(true);
@@ -116,12 +117,17 @@ class ThroughMeta extends AbstractCallback
             $model->setNormal($meta);
         }
 
-        // Render a single data point.
-        return $this->pool->render->renderExpandableChild(
-            $this->dispatchEventWithModel(
-                __FUNCTION__ . $key . static::EVENT_MARKER_END,
-                $model
-            )
-        );
+        if (is_string($meta)) {
+            // Render a single data point.
+            return $this->pool->render->renderExpandableChild(
+                $this->dispatchEventWithModel(
+                    __FUNCTION__ . $key . static::EVENT_MARKER_END,
+                    $model
+                )
+            );
+        }
+
+        // Fallback to whatever-rendering.
+        return $this->pool->routing->analysisHub($model);
     }
 }

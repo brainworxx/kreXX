@@ -67,6 +67,7 @@ trait ExpandableChild
         '{style}',
         '{mainfunction}',
         '{domId}',
+        '{extra}',
     ];
 
     /**
@@ -94,7 +95,7 @@ trait ExpandableChild
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $generateSource),
                 $this->renderSourceButtonWithStop($generateSource),
                 $this->retrieveOpenedClass($isExpanded),
-                $this->renderExtra($model) . $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
+                $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_L, $codegenHandler->generateWrapperLeft()),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $codegenHandler->generateWrapperRight()),
                 $this->renderHelp($model),
@@ -178,6 +179,7 @@ trait ExpandableChild
                 $style,
                 $model->renderMe(),
                 $domid,
+                $this->renderExtra($model),
             ],
             $this->getTemplateFileContent(static::FILE_NEST)
         );

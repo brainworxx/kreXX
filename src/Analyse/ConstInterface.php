@@ -122,6 +122,8 @@ interface ConstInterface
     const META_IN_TRAIT =  'in trait: ';
     const META_IN_LINE = 'in line: ';
     const META_IN_CLASS = 'in class: ';
+    const META_PRETTY_PRINT = 'Pretty print';
+    const META_DECODED = 'Decoded';
 
     // Stuff for the skin registration.
     const SKIN_CLASS = 'class';

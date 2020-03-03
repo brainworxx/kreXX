@@ -104,7 +104,7 @@ class ProcessString extends AbstractRouting implements ProcessInterface
      */
     public function process(Model $model): string
     {
-        $data = $model->getData();
+        $originalData = $data = $model->getData();
 
         // Check, if we are handling large string, and if we need to use a
         // preview (which we call "extra").
@@ -125,7 +125,7 @@ class ProcessString extends AbstractRouting implements ProcessInterface
             $model->setNormal($this->pool->encodingService->encodeString($data));
         }
 
-        return $this->handleStringScalar($model->addToJson(static::META_LENGTH, $length));
+        return $this->handleStringScalar($model->addToJson(static::META_LENGTH, $length), $originalData);
     }
 
     /**
@@ -137,9 +137,9 @@ class ProcessString extends AbstractRouting implements ProcessInterface
      * @return string
      *   The generated DOM.
      */
-    protected function handleStringScalar(Model $model): string
+    protected function handleStringScalar(Model $model, string $originalData): string
     {
-        $this->scalarString->handle($model);
+        $this->scalarString->handle($model, $originalData);
         $domId = $model->getDomid();
         if ($domId !== '' && $this->pool->recursionHandler->isInMetaHive($domId) === true) {
             return $this->pool->render->renderRecursion($model);

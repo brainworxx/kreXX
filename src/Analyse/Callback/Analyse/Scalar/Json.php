@@ -35,58 +35,60 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse\Scalar;
+namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
-use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Service\Factory\Pool;
-
-abstract class AbstractScalar
+class Json extends AbstractScalarAnalysis
 {
     /**
-     * The pool, like the variable name says.
-     *
-     * @var \Brainworxx\Krexx\Service\Factory\Pool
+     * @var \stdClass
      */
-    protected $pool;
+    protected $decodedJson;
 
-    /**
-     * Inject hte pool.
-     *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
-     */
-    public function __construct(Pool $pool)
+    public static function isActive(): bool
     {
-        $this->pool = $pool;
+        return function_exists('json_decode');
     }
 
     /**
-     * Generate a DOM id for recursion handling.
+     * Test, if this is a json, and if we can decode it.
      *
-     * The meta analysis should always be the same.
+     * @param bool|int|string $string
+     *   The possible json.
      *
-     * @param string $string
-     *   The string we are analysing.
-     * @param string $className
-     *   The class name of the callback.
-     *
-     * @return string
-     *   The generated DOM id.
+     * @return bool
+     *   Well? Can we handle it?
      */
-    protected function generateDomId(string $string, string $className): string
+    public function canHandle($string): bool
     {
-        return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_scalar_' . md5($string . '_' . $className);
+        // Get a fist impression.
+        $first = substr($string, 0, 1);
+        if (($first === '{' xor $first === '[') === false) {
+            return false;
+        }
+
+        // The only way to test a valid json, is to decode it.
+        $this->decodedJson = json_decode($string);
+        if (json_last_error() === JSON_ERROR_NONE || $this->decodedJson !== null) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Doing special analysis with scalar types.
+     * Add the decode json and a pretty-print-json to the output.
      *
-     * @param Model $model
-     *   The model, so far.
-     * @param string $originalData
-     *   The unescaped original data of the analysis.
-     *
-     * @return \Brainworxx\Krexx\Analyse\Model
-     *   The adjusted model.
+     * @return array
+     *   The array for the meta callback.
      */
-    abstract public function handle(Model $model, string $originalData): Model;
+    protected function handle(): array
+    {
+        $meta = [];
+        $meta[static::META_DECODED] = $this->decodedJson;
+        $meta[static::META_PRETTY_PRINT] =  $this->pool->encodingService
+            ->encodeString(json_encode($this->decodedJson, JSON_PRETTY_PRINT));
+
+        return $meta;
+    }
+
 }

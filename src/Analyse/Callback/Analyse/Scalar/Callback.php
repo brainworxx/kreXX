@@ -54,6 +54,11 @@ use ReflectionException;
  */
 class Callback extends AbstractScalarAnalysis
 {
+    public static function isActive(): bool
+    {
+        return true;
+    }
+
     /**
      * {@inheritDoc}
      */

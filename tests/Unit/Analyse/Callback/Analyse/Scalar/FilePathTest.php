@@ -52,6 +52,17 @@ class FilePathTest extends AbstractTest
      */
     public function testConstruct()
     {
+        $filePath = new FilePath(\Krexx::$pool);
+        $this->assertInstanceOf(finfo::class, $this->retrieveValueByReflection('bufferInfo', $filePath));
+    }
+
+    /**
+     * Test the recognition of the finfo class in the system.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\FilePath::isActive()
+     */
+    public function testIsActive()
+    {
         $classExistsMock = $this->getFunctionMock(
             '\\Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Scalar\\',
             'class_exists'
@@ -68,11 +79,8 @@ class FilePathTest extends AbstractTest
                 return false;
             });
 
-        $filePath = new FilePath(\Krexx::$pool);
-        $this->assertInstanceOf(finfo::class, $this->retrieveValueByReflection('bufferInfo', $filePath));
-
-        $filePath = new FilePath(\Krexx::$pool);
-        $this->assertNull($this->retrieveValueByReflection('bufferInfo', $filePath));
+        $this->assertTrue(FilePath::isActive());
+        $this->assertFalse(FilePath::isActive());
     }
 
     /**

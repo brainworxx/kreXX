@@ -58,6 +58,11 @@ class FilePath extends AbstractScalarAnalysis
      */
     protected $bufferInfo;
 
+    public static function isActive(): bool
+    {
+        return class_exists(finfo::class, false);
+    }
+
     /**
      * Get the finfo class ready, if available.
      *
@@ -66,10 +71,8 @@ class FilePath extends AbstractScalarAnalysis
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
+        $this->bufferInfo = new finfo(FILEINFO_MIME);
 
-        if (class_exists(finfo::class, false)) {
-            $this->bufferInfo = new finfo(FILEINFO_MIME);
-        }
     }
 
     /**

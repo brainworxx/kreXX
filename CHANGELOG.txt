@@ -1,6 +1,7 @@
 4.0.0 dev
 - Added process resource analysis.
 - Added better callback analysis.
+- Added better string analysis (json, file path, callback)
 - Change: Removed all deprecations.
 - Change: Removed the PHP 5.x fatal error handler.
 - Change: Dropped PHP 5.x support.
