@@ -37,11 +37,13 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMetaReflections;
+use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
+use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 
 class ThroughMetaTest extends AbstractTest
 {
@@ -94,6 +96,29 @@ class ThroughMetaTest extends AbstractTest
             $this->throughMeta::META_COMMENT,
             'Look at me, I\'m a comment!'
         );
+    }
+
+    /**
+     * Test with a decoded json
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::handleNoneReflections
+     */
+    public function testcallMeDecodedJson()
+    {
+        $this->mockEventService([$this->startEvent, $this->throughMeta]);
+        $fixture = [
+            $this->throughMeta::PARAM_DATA => [
+                $this->throughMeta::META_DECODED_JSON => json_decode('{"Friday": "the 13\'th"}')
+            ]
+        ];
+
+        $routeNothing = new RoutingNothing(\Krexx::$pool);
+        Krexx::$pool->routing = $routeNothing;
+        $this->throughMeta->setParameters($fixture)->callMe();
+        $model = $routeNothing->model[0];
+        $this->assertCount(1, $routeNothing->model);
+        $this->assertEquals(Codegen::JSON_DECODE, $model->getMultiLineCodeGen());
     }
 
     /**

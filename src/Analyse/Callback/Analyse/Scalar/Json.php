@@ -84,7 +84,7 @@ class Json extends AbstractScalarAnalysis
     protected function handle(): array
     {
         $meta = [];
-        $meta[static::META_DECODED] = $this->decodedJson;
+        $meta[static::META_DECODED_JSON] = $this->decodedJson;
         $meta[static::META_PRETTY_PRINT] =  $this->pool->encodingService
             ->encodeString(json_encode($this->decodedJson, JSON_PRETTY_PRINT));
 

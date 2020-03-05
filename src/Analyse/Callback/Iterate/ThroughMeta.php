@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
@@ -125,6 +126,11 @@ class ThroughMeta extends AbstractCallback
                     $model
                 )
             );
+        }
+
+        if ($key === static::META_DECODED_JSON) {
+            // Prepare the json code generation.
+            $model->setMultiLineCodeGen(Codegen::JSON_DECODE);
         }
 
         // Fallback to whatever-rendering.

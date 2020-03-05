@@ -123,7 +123,7 @@ interface ConstInterface
     const META_IN_LINE = 'in line: ';
     const META_IN_CLASS = 'in class: ';
     const META_PRETTY_PRINT = 'Pretty print';
-    const META_DECODED = 'Decoded';
+    const META_DECODED_JSON = 'Decoded json';
 
     // Stuff for the skin registration.
     const SKIN_CLASS = 'class';
