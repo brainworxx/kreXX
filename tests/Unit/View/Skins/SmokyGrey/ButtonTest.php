@@ -44,6 +44,7 @@ class ButtonTest extends AbstractRenderSmokyGrey
      *
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Button::renderButton
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Help::renderHelp
+     * @covers \Brainworxx\Krexx\View\AbstractRender::encodeJson
      */
     public function testRenderButton()
     {

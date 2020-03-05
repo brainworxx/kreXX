@@ -44,6 +44,7 @@ class SingleEditableChildTest extends AbstractRenderSmokyGrey
      *
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\SingleEditableChild::renderSingleEditableChild
      * @covers \Brainworxx\Krexx\View\Skins\SmokyGrey\Help::renderHelp
+     * @covers \Brainworxx\Krexx\View\AbstractRender::encodeJson
      */
     public function testRenderSingleEditableChild()
     {
