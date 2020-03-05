@@ -103,7 +103,7 @@ class ThroughMeta extends AbstractCallback
         $model = $this->pool->createClass(Model::class)
             ->setData($meta)
             ->setName($key)
-            ->setType(static::TYPE_REFLECTION);
+            ->setType($key === static::META_PRETTY_PRINT ? $key : static::TYPE_REFLECTION);
 
         if (
             $key === static::META_COMMENT ||
