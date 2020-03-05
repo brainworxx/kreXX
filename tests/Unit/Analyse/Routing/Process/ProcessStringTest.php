@@ -37,11 +37,13 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessString;
+use Brainworxx\Krexx\Analyse\Scalar\ScalarString;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Misc\Encoding;
 use Brainworxx\Krexx\Service\Misc\FileinfoDummy;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use finfo;
 
 class ProcessStringTest extends AbstractTest
@@ -51,10 +53,16 @@ class ProcessStringTest extends AbstractTest
     const ENCODING = 'some encoding';
     const ENCODING_PREFIX = 'encoded ';
 
+    /**
+     * @var ProcessString
+     */
+    protected $processString;
+
     protected function setUp()
     {
         parent::setUp();
 
+        $this->processString = new ProcessString(Krexx::$pool);
         $this->mockEmergencyHandler();
     }
 
@@ -100,6 +108,7 @@ class ProcessStringTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::retrieveLengthAndEncoding
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::handleStringScalar
      */
     public function testProcessNormal()
     {
@@ -125,6 +134,7 @@ class ProcessStringTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::retrieveLengthAndEncoding
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::handleStringScalar
      */
     public function testProcessBrokenEncodung()
     {
@@ -151,6 +161,7 @@ class ProcessStringTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::retrieveLengthAndEncoding
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::handleStringScalar
      */
     public function testProcessLargerString()
     {
@@ -179,6 +190,7 @@ class ProcessStringTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::retrieveLengthAndEncoding
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::handleStringScalar
      */
     public function testProcessHugeString()
     {
@@ -211,6 +223,7 @@ class ProcessStringTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::retrieveLengthAndEncoding
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::handleStringScalar
      */
     public function testProcessWithLinebreaks()
     {
@@ -228,6 +241,40 @@ class ProcessStringTest extends AbstractTest
         $this->assertEquals(static::ENCODING_PREFIX . $fixture . $model::UNKNOWN_VALUE, $model->getNormal());
         $this->assertEquals(true, $model->hasExtra());
         $this->assertArrayNotHasKey($model::META_MIME_TYPE, $model->getJson());
+    }
+
+    /**
+     * Testing the triggering of the scalar analysis and its recursion handling.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::process
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString::handleStringScalar
+     */
+    public function testProcessWithScalar()
+    {
+        $fixture = '{"whatever": "okay"}';
+        $renderNothing = new RenderNothing(Krexx::$pool);
+        Krexx::$pool->render = $renderNothing;
+
+        // Normal.
+        $model = new Model(Krexx::$pool);
+        $model->setData($fixture);
+        $this->processString->process($model);
+
+        // And with a recursion.
+        $model = new Model(Krexx::$pool);
+        $model->setData($fixture);
+        $this->processString->process($model);
+
+        $this->assertCount(
+            1,
+            $renderNothing->model['renderRecursion'],
+            'We should have something in the recursion array.'
+        );
+        $this->assertCount(
+            1,
+            $renderNothing->model['renderExpandableChild'],
+            'The first one should be in the expandable child.'
+        );
     }
 
     /**
@@ -294,12 +341,11 @@ class ProcessStringTest extends AbstractTest
         $model = new Model(Krexx::$pool);
         $model->setData($fixture);
 
-        $processString = new ProcessString(Krexx::$pool);
-        $this->setValueByReflection(static::BUFFER_INFO, $fileinfoMock, $processString);
+        $this->setValueByReflection(static::BUFFER_INFO, $fileinfoMock, $this->processString);
         $this->mockEventService(
             [ProcessString::class . PluginConfigInterface::START_PROCESS, null, $model]
         );
-        $processString->process($model);
+        $this->processString->process($model);
 
         return $model;
     }
