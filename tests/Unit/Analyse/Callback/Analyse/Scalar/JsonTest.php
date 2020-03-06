@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Json;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
@@ -107,10 +108,17 @@ class JsonTest extends AbstractTest
             ThroughMeta::class => CallbackCounter::class
         ];
 
-        $fixture = '{"asdf": "yxcv"}';
+        $string = '{"asdf": "yxcv"}';
+        $encodedString = 'meh';
+        $model = new Model(\Krexx::$pool);
+        $model->setHasExtra(true)
+            ->setData($encodedString);
+        $fixture = [$json::PARAM_MODEL => $model];
+
         $expectation = new stdClass();
         $expectation->asdf = 'yxcv';
-        $json->canHandle($fixture);
+        $json->canHandle($string);
+        $json->setParameters($fixture);
         $json->callMe();
 
         $result = CallbackCounter::$staticParameters[0][Json::PARAM_DATA];
@@ -118,5 +126,7 @@ class JsonTest extends AbstractTest
         $this->assertContains('asdf', $result[Json::META_PRETTY_PRINT]);
         $this->assertContains('yxcv', $result[Json::META_PRETTY_PRINT]);
         $this->assertEquals($expectation, $result[Json::META_DECODED_JSON]);
+        $this->assertEquals($encodedString, $result[Json::META_CONTENT]);
+        $this->assertFalse($model->hasExtra());
     }
 }

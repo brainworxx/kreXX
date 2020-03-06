@@ -52,6 +52,8 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
  *   - callback
  *   - absolute file path
  *   - json
+ *
+ * To do:
  *   - xml
  *   - base 64
  *   - serialized
@@ -99,6 +101,9 @@ class ScalarString extends AbstractScalar implements ConstInterface
      * @param Model
      *   The model, so far.
      *
+     * @param string $originalData
+     *   The original string, unprocessed and unescaped.
+     *
      * @return Model
      *   The adjusted model.
      */
@@ -111,6 +116,7 @@ class ScalarString extends AbstractScalar implements ConstInterface
             if ($scalarHandler->canHandle($originalData) === true) {
                 $model->injectCallback($scalarHandler)
                     ->addParameter(static::PARAM_DATA, $originalData)
+                    ->addParameter(static::PARAM_MODEL, $model)
                     ->setDomid($this->generateDomId($originalData, $className));
                 return $model;
             }

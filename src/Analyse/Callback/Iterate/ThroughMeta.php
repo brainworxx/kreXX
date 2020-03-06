@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Code\Codegen;
+use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 
 /**
@@ -52,6 +53,18 @@ use Brainworxx\Krexx\Analyse\Model;
  */
 class ThroughMeta extends AbstractCallback
 {
+    /**
+     * These keys are rendered with an extra.
+     *
+     * @var array
+     */
+    protected $keysWithExtra = [
+        ConstInterface::META_COMMENT,
+        ConstInterface::META_DECLARED_IN,
+        ConstInterface::META_SOURCE,
+        ConstInterface::META_PRETTY_PRINT,
+        ConstInterface::META_CONTENT
+    ];
 
     /**
      * Renders the meta data of a class, which is actually the same as the
@@ -106,12 +119,7 @@ class ThroughMeta extends AbstractCallback
             ->setName($key)
             ->setType($key === static::META_PRETTY_PRINT ? $key : static::TYPE_REFLECTION);
 
-        if (
-            $key === static::META_COMMENT ||
-            $key === static::META_DECLARED_IN ||
-            $key === static::META_SOURCE ||
-            $key === static::META_PRETTY_PRINT
-        ) {
+        if (in_array($key, $this->keysWithExtra)) {
             $model->setNormal(static::UNKNOWN_VALUE);
             $model->setHasExtra(true);
         } else {
