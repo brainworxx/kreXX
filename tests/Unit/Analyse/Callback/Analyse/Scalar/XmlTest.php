@@ -130,29 +130,30 @@ class XmlTest extends AbstractTest
             ThroughMeta::class => CallbackCounter::class
         ];
 
-        $string = '<?xml version="1.0" encoding="utf-8"?><node><yxcv qwer="asdf"><![CDATA[content]]></yxcv><yxcv qwer="yxcv" /></node>';
+        $string = '<?xml version="1.0" encoding="utf-8"?><root><node>rogue text<yxcv qwer="asdf"><![CDATA[content]]></yxcv><yxcv qwer="yxcv" /></node></root>';
         $model = new Model(\Krexx::$pool);
         $model->addToJson(Xml::META_MIME_TYPE, 'text/xml;')->setHasExtra(true);
         $xml = new Xml(\Krexx::$pool);
         $xml->canHandle($string, $model);
         $xml->callMe();
-
         $prettyPrint = '&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;node&gt;
-&nbsp;&nbsp;&lt;yxcv qwer=&quot;asdf&quot;&gt;&lt;![CDATA[content]]&gt;&lt;/yxcv&gt;
-&nbsp;&nbsp;&lt;yxcv qwer=&quot;yxcv&quot;/&gt;
-&lt;/node&gt;
+&lt;root&gt;
+&nbsp;&nbsp;&lt;node&gt;rogue text&lt;yxcv qwer=&quot;asdf&quot;&gt;&lt;![CDATA[content]]&gt;&lt;/yxcv&gt;&lt;yxcv qwer=&quot;yxcv&quot;/&gt;&lt;/node&gt;
+&lt;/root&gt;
 ';
         $decoded = [
-            'yxcv' => [
-                [
-                    'value' => 'content',
-                    '@attributes' => ['qwer' => 'asdf']
+            'node' => [
+                'yxcv' => [
+                    [
+                        'value' => 'content',
+                        '@attributes' => ['qwer' => 'asdf']
+                    ],
+                    [
+                        'value' => '',
+                        '@attributes' => ['qwer' => 'yxcv']
+                    ]
                 ],
-                [
-                    'value' => '',
-                    '@attributes' => ['qwer' => 'yxcv']
-                ]
+                'value' => 'rogue text',
             ]
         ];
 

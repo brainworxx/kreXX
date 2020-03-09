@@ -158,6 +158,7 @@ class Xml extends AbstractScalarAnalysis
     protected function simpleXML2Array(SimpleXMLElement $xml): array
     {
         $array = array();
+
         foreach ($xml->children() as $key => $node) {
             $child = $this->assignXmlValues($this->simpleXML2Array($node), $node);
 
@@ -192,9 +193,7 @@ class Xml extends AbstractScalarAnalysis
     protected function assignXmlValues(array $child, SimpleXMLElement $node)
     {
         // Assign the value.
-        if (count($child) == 0) {
-            $child = [static::XML_VALUE => (string)$node];
-        }
+        $child[static::XML_VALUE] = (string)$node;
 
         // Iterate through the attributes.
         foreach ($node->attributes() as $attributeKey => $attributeValue) {
