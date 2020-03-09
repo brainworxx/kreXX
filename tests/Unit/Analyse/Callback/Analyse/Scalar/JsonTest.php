@@ -80,13 +80,13 @@ class JsonTest extends AbstractTest
         $json = new Json(\Krexx::$pool);
 
         $fixture = 'some string';
-        $this->assertFalse($json->canHandle($fixture), 'Plain string.');
+        $this->assertFalse($json->canHandle($fixture, new Model(\Krexx::$pool)), 'Plain string.');
 
         $fixture = '{anotehr string';
-        $this->assertFalse($json->canHandle($fixture), 'Pass first impression.');
+        $this->assertFalse($json->canHandle($fixture, new Model(\Krexx::$pool)), 'Pass first impression.');
 
         $fixture = '{"qwer": "asdf"}';
-        $this->assertTrue($json->canHandle($fixture), 'A real json.');
+        $this->assertTrue($json->canHandle($fixture, new Model(\Krexx::$pool)), 'A real json.');
     }
 
     /**
@@ -113,12 +113,10 @@ class JsonTest extends AbstractTest
         $model = new Model(\Krexx::$pool);
         $model->setHasExtra(true)
             ->setData($encodedString);
-        $fixture = [$json::PARAM_MODEL => $model];
 
         $expectation = new stdClass();
         $expectation->asdf = 'yxcv';
-        $json->canHandle($string);
-        $json->setParameters($fixture);
+        $json->canHandle($string, $model);
         $json->callMe();
 
         $result = CallbackCounter::$staticParameters[0][Json::PARAM_DATA];

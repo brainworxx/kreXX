@@ -37,13 +37,10 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
+use Brainworxx\Krexx\Analyse\Model;
+
 /**
  * Deep analysis for json strings.
- *
- * @uses string data
- *   The only feasible way to test a string is by decoding it, which is done in
- *   the canHandle(). And once we have decoded it, we dump it.
- * @uses Model model
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar
  */
@@ -53,6 +50,13 @@ class Json extends AbstractScalarAnalysis
      * @var \stdClass
      */
     protected $decodedJson;
+
+    /**
+     * The model, so far.
+     *
+     * @var Model
+     */
+    protected $model;
 
     /**
      * {@inheritDoc}
@@ -71,7 +75,7 @@ class Json extends AbstractScalarAnalysis
      * @return bool
      *   Well? Can we handle it?
      */
-    public function canHandle($string): bool
+    public function canHandle($string, Model $model): bool
     {
         // Get a fist impression.
         $first = substr($string, 0, 1);
@@ -82,6 +86,7 @@ class Json extends AbstractScalarAnalysis
         // The only way to test a valid json, is to decode it.
         $this->decodedJson = json_decode($string);
         if (json_last_error() === JSON_ERROR_NONE || $this->decodedJson !== null) {
+            $this->model = $model;
             return true;
         }
 
@@ -102,11 +107,9 @@ class Json extends AbstractScalarAnalysis
             ->encodeString(json_encode($this->decodedJson, JSON_PRETTY_PRINT));
 
         // Move the extra part into a nest, for better readability.
-        /** @var \Brainworxx\Krexx\Analyse\Model $model */
-        $model = $this->parameters[static::PARAM_MODEL];
-        if ($model->hasExtra()) {
-            $model->setHasExtra(false);
-            $meta[static::META_CONTENT] = $model->getData();
+        if ($this->model->hasExtra() === true) {
+            $this->model->setHasExtra(false);
+            $meta[static::META_CONTENT] = $this->model->getData();
         }
 
         return $meta;

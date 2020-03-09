@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
@@ -51,8 +52,9 @@ class CallbackTest extends AbstractTest
     public function testCanHandle()
     {
         $stringCallback = new Callback(\Krexx::$pool);
-        $this->assertTrue($stringCallback->canHandle('strpos'), 'This ia a predefinedphp function.');
-        $this->assertFalse($stringCallback->canHandle('sdfsd dsf sdf '), 'Just a random string.');
+        $model = new Model(\Krexx::$pool);
+        $this->assertTrue($stringCallback->canHandle('strpos', $model), 'This ia a predefinedphp function.');
+        $this->assertFalse($stringCallback->canHandle('sdfsd dsf sdf ', $model), 'Just a random string.');
     }
 
     /**
@@ -69,8 +71,7 @@ class CallbackTest extends AbstractTest
 
         // Prepare the guinea pig.
         $stringCallback = new Callback(\Krexx::$pool);
-        $fixture = [Callback::PARAM_DATA => 'myLittleCallback'];
-        $stringCallback->setParameters($fixture);
+        $stringCallback->canHandle('myLittleCallback', new Model(\Krexx::$pool));
 
         // Test the calling of the events.
         $this->mockEventService(

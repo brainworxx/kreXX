@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Comment\Functions;
+use Brainworxx\Krexx\Analyse\Model;
 use ReflectionFunction;
 use ReflectionException;
 
@@ -47,16 +48,45 @@ use ReflectionException;
  * inheritance. We can extract the needed data directly out of the
  * reflection and dump it via ThroughMeta.
  *
- * @uses string data
- *   The string we are analysing.
- *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar
  */
 class Callback extends AbstractScalarAnalysis
 {
+    /**
+     * The callback we are analysing.
+     *
+     * @var string
+     */
+    protected $callback = '';
+
+    /**
+     * Is always active, because there are no system dependencies.
+     *
+     * @return bool
+     */
     public static function isActive(): bool
     {
         return true;
+    }
+
+    /**
+     * Is this actually a callback? Simple wrapper around is_callable().
+     *
+     * @param string $string
+     *   The string to test.
+     * @param Model $model
+     *   What the variable name says.
+     *
+     * @return bool
+     *   The result, if it's callable.
+     */
+    public function canHandle($string, Model $model): bool
+    {
+        if (is_callable($string)) {
+            $this->callback = $string;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -65,7 +95,7 @@ class Callback extends AbstractScalarAnalysis
     protected function handle(): array
     {
         try {
-            $reflectionFunction = new ReflectionFunction($this->parameters[static::PARAM_DATA]);
+            $reflectionFunction = new ReflectionFunction($this->callback);
         } catch (ReflectionException $e) {
             // Huh, we were unable to retrieve the reflection.
             // Nothing left to do here.
@@ -82,20 +112,6 @@ class Callback extends AbstractScalarAnalysis
         $this->insertParameters($reflectionFunction, $meta);
 
         return $meta;
-    }
-
-    /**
-     * Is this actually a callback? Simple wrapper around is_callable().
-     *
-     * @param string $string
-     *   The string to test.
-     *
-     * @return bool
-     *   The result, if it's callable.
-     */
-    public function canHandle($string): bool
-    {
-        return is_callable($string);
     }
 
     /**

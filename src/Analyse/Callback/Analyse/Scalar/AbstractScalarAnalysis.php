@@ -53,11 +53,13 @@ abstract class AbstractScalarAnalysis extends AbstractCallback
      *
      * @param string|int|bool $string
      *   The scalar type for the deeper analysis.
+     * @param Model $model
+     *   The model so far.
      *
      * @return bool
      *   Got this one get handled?
      */
-    abstract public function canHandle($string): bool;
+    abstract public function canHandle($string, Model $model): bool;
 
     /**
      * Are all perquisites met for this class to do anything?

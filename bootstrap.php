@@ -122,6 +122,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/Callback.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/FilePath.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/Json.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/Xml.php';
 
         include_once KREXX_DIR . 'src/Analyse/Model/ConnectorService.php';
         include_once KREXX_DIR . 'src/Analyse/Model/Callback.php';

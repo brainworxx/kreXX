@@ -126,22 +126,27 @@ class ThroughMeta extends AbstractCallback
             $model->setNormal($meta);
         }
 
+        if ($key === static::META_DECODED_JSON) {
+            // Prepare the json code generation.
+            return $this->pool->routing->analysisHub($model->setMultiLineCodeGen(Codegen::JSON_DECODE));
+        }
+
+        // Sorry, no code generation for you guys.
+        $this->pool->codegenHandler->setAllowCodegen(false);
         if (is_string($meta)) {
             // Render a single data point.
-            return $this->pool->render->renderExpandableChild(
+            $result = $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
                     __FUNCTION__ . $key . static::EVENT_MARKER_END,
                     $model
                 )
             );
+        } else {
+            // Fallback to whatever-rendering.
+            $result = $this->pool->routing->analysisHub($model);
         }
 
-        if ($key === static::META_DECODED_JSON) {
-            // Prepare the json code generation.
-            $model->setMultiLineCodeGen(Codegen::JSON_DECODE);
-        }
-
-        // Fallback to whatever-rendering.
-        return $this->pool->routing->analysisHub($model);
+        $this->pool->codegenHandler->setAllowCodegen(true);
+        return $result;
     }
 }

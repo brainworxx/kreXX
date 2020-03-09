@@ -57,8 +57,8 @@ class ScalarStringTest extends AbstractTest
     public function tearDown()
     {
         ScalarNothing::$canHandle = false;
-        ScalarNothing::$callMeList = [];
         ScalarNothing::$canHandleList = [];
+        ScalarNothing::$count = 0;
         parent::tearDown();
     }
 
@@ -101,11 +101,7 @@ class ScalarStringTest extends AbstractTest
         $this->assertSame($fixture, $this->scalarString->handle($fixture, $string));
         $fixture->renderMe();
 
-        $this->assertEquals(
-            [],
-            ScalarNothing::$callMeList,
-            'Since the handler has denied the handling, we expect an empty array'
-        );
+        $this->assertEquals(0,  ScalarNothing::$count, 'Must not get called.');
         $this->assertEquals(
             [$string],
             ScalarNothing::$canHandleList,
@@ -122,26 +118,22 @@ class ScalarStringTest extends AbstractTest
      */
     public function testHandleNormal()
     {
-        // Prepare the fixture.
+        // Prepare the model.
         $string = 'handle with care';
-        $fixture = new Model(Krexx::$pool);
-        $fixture->setData($string);
+        $model = new Model(Krexx::$pool);
+        $model->setData($string);
 
         ScalarNothing::$canHandle = true;
 
-        $this->assertSame($fixture, $this->scalarString->handle($fixture, $string));
-        $fixture->renderMe();
+        $this->assertSame($model, $this->scalarString->handle($model, $string));
+        $model->renderMe();
 
-        $this->assertStringStartsWith('k0_scalar_', $fixture->getDomid());
-        $this->assertEquals(
-            [$string],
-            ScalarNothing::$callMeList,
-            'Call the actual handle.'
-        );
+        $this->assertStringStartsWith('k0_scalar_', $model->getDomid());
         $this->assertEquals(
             [$string],
             ScalarNothing::$canHandleList,
             'Must get asked.'
         );
+        $this->assertEquals(1, ScalarNothing::$count);
     }
 }

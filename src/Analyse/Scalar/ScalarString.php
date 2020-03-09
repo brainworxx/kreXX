@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Scalar;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Callback;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\FilePath;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Json;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml;
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -52,12 +53,10 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
  *   - callback
  *   - absolute file path
  *   - json
+ *   - xml
  *
  * To do:
- *   - xml
- *   - base 64
  *   - serialized
- *   - zipped
  *
  * @package Brainworxx\Krexx\Analyse\Callback
  */
@@ -81,7 +80,8 @@ class ScalarString extends AbstractScalar implements ConstInterface
         $classList = [
             Callback::class,
             FilePath::class,
-            Json::class
+            Json::class,
+            Xml::class
         ];
 
         $classList = array_merge($classList, SettingsGetter::getAdditionalScalarString());
@@ -98,7 +98,7 @@ class ScalarString extends AbstractScalar implements ConstInterface
     /**
      * Doing special analysis with strings.
      *
-     * @param Model
+     * @param Model $model
      *   The model, so far.
      *
      * @param string $originalData
@@ -113,11 +113,8 @@ class ScalarString extends AbstractScalar implements ConstInterface
             /** @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\AbstractScalarAnalysis $scalarHandler */
             $scalarHandler = $this->pool->createClass($className);
 
-            if ($scalarHandler->canHandle($originalData) === true) {
-                $model->injectCallback($scalarHandler)
-                    ->addParameter(static::PARAM_DATA, $originalData)
-                    ->addParameter(static::PARAM_MODEL, $model)
-                    ->setDomid($this->generateDomId($originalData, $className));
+            if ($scalarHandler->canHandle($originalData, $model) === true) {
+                $model->injectCallback($scalarHandler)->setDomid($this->generateDomId($originalData, $className));
                 return $model;
             }
         }

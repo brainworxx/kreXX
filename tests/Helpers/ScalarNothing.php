@@ -36,12 +36,13 @@
 namespace Brainworxx\Krexx\Tests\Helpers;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\AbstractScalarAnalysis;
+use Brainworxx\Krexx\Analyse\Model;
 
 class ScalarNothing extends AbstractScalarAnalysis
 {
     public static $canHandle = false;
-    public static $callMeList = [];
     public static $canHandleList = [];
+    public static $count = 0;
 
     public static function isActive(): bool
     {
@@ -50,23 +51,23 @@ class ScalarNothing extends AbstractScalarAnalysis
 
     public function callMe(): string
     {
-        static::$callMeList[] = $this->parameters[static::PARAM_DATA];
-
+        ++static::$count;
         return '';
     }
 
     public function handle(): array
     {
-        // Do nothing. This onedoes not get called. At all.
+        // Do nothing. This one does not get called. At all.
         return [];
     }
 
     /**
      *
      * @param bool|int|string $string
+     * @param Model $model
      * @return bool
      */
-    public function canHandle($string): bool
+    public function canHandle($string, Model $model): bool
     {
         static::$canHandleList[] = $string;
         return static::$canHandle;

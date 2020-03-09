@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\FilePath;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
@@ -91,11 +92,11 @@ class FilePathTest extends AbstractTest
     public function testCanHandle()
     {
         $filePath = new FilePath(\Krexx::$pool);
-        $this->assertFalse($filePath->canHandle('just another string'), 'This file does not exist.');
-        $this->assertFalse($filePath->canHandle('0'), 'Nothing in here.');
+        $this->assertFalse($filePath->canHandle('just another string', new Model(\Krexx::$pool)), 'This file does not exist.');
+        $this->assertFalse($filePath->canHandle('0', new Model(\Krexx::$pool)), 'Nothing in here.');
 
         $this->assertTrue(
-            $filePath->canHandle(__FILE__),
+            $filePath->canHandle(__FILE__, new Model(\Krexx::$pool)),
             'This __FILE__ should exist and can therefore get handled.'
         );
     }
@@ -116,7 +117,7 @@ class FilePathTest extends AbstractTest
 
         $fixture = 'whatever';
         $filePath = new FilePath(\Krexx::$pool);
-        $this->assertFalse($filePath->canHandle($fixture), 'Catching an error.');
+        $this->assertFalse($filePath->canHandle($fixture, new Model(\Krexx::$pool)), 'Catching an error.');
     }
 
     /**
@@ -144,11 +145,8 @@ class FilePathTest extends AbstractTest
             [FilePath::class . PluginConfigInterface::START_EVENT, $filePath],
             [FilePath::class . '::callMe' . FilePath::EVENT_MARKER_END, $filePath]
         );
-
-        $fixture = [
-            FilePath::PARAM_DATA => __FILE__
-        ];
-        $filePath->setParameters($fixture)->callMe();
+        $filePath->canHandle(__FILE__, new Model(\Krexx::$pool));
+        $filePath->callMe();
 
         $result = CallbackCounter::$staticParameters[0][FilePath::PARAM_DATA];
         $this->assertEquals(1, CallbackCounter::$counter, 'Called once.');

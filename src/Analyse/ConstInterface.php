@@ -83,7 +83,6 @@ interface ConstInterface
     const PARAM_NOTHING_FOUND = 'nothingFound';
     const PARAM_REFLECTION_METHOD = 'refMethod';
     const PARAM_REFLECTION_PROPERTY = 'refProperty';
-    const PARAM_MODEL = 'model';
 
     const UNKNOWN_VALUE = '. . .';
     const UNKNOWN_DECLARATION = 'unknownDeclaration';
@@ -125,6 +124,7 @@ interface ConstInterface
     const META_IN_CLASS = 'in class: ';
     const META_PRETTY_PRINT = 'Pretty print';
     const META_DECODED_JSON = 'Decoded json';
+    const META_DECODED_XML = 'Decoded xml';
     const META_CONTENT = 'Content';
 
     // Stuff for the skin registration.

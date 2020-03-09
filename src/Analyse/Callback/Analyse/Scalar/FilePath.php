@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use finfo;
 use TypeError;
@@ -45,9 +46,6 @@ use TypeError;
  * Identifying a string as a file path.
  *
  * Adding a finfo analysis and a realpath if it differs from the given path.
- *
- * @uses string data
- *   The string we are analysing.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar
  */
@@ -58,6 +56,19 @@ class FilePath extends AbstractScalarAnalysis
      */
     protected $bufferInfo;
 
+    /**
+     * The path we are analysing.
+     *
+     * @var string
+     */
+    protected $path = '';
+
+    /**
+     * No file path anyalysis without the finfo class.
+     *
+     * @return bool
+     *   Is the finfo class available?
+     */
     public static function isActive(): bool
     {
         return class_exists(finfo::class, false);
@@ -72,22 +83,6 @@ class FilePath extends AbstractScalarAnalysis
     {
         parent::__construct($pool);
         $this->bufferInfo = new finfo(FILEINFO_MIME);
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function handle(): array
-    {
-        $path = $this->parameters[static::PARAM_DATA];
-        $realPath = realpath($path);
-
-        $meta = [];
-        $meta['Real path'] = is_string($realPath) === true ? $realPath : 'n/a';
-        $meta[static::META_MIME_TYPE] = $this->bufferInfo->file($path);
-
-        return $meta;
     }
 
     /**
@@ -98,10 +93,13 @@ class FilePath extends AbstractScalarAnalysis
      * @param string $string
      *   The string to test.
      *
+     * @param Model $model
+     *   The model, so far.
+     *
      * @return bool
      *   The result, if it's callable.
      */
-    public function canHandle($string): bool
+    public function canHandle($string, Model $model): bool
     {
         if (empty($string) || $this->bufferInfo === null) {
             // Early return for the most values.
@@ -121,6 +119,21 @@ class FilePath extends AbstractScalarAnalysis
 
         restore_error_handler();
 
+        $this->path = $string;
         return $isFile;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function handle(): array
+    {
+        $realPath = realpath($this->path);
+
+        $meta = [];
+        $meta['Real path'] = is_string($realPath) === true ? $realPath : 'n/a';
+        $meta[static::META_MIME_TYPE] = $this->bufferInfo->file($this->path);
+
+        return $meta;
     }
 }
