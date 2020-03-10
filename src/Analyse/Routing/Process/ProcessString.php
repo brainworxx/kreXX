@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 use Brainworxx\Krexx\Analyse\Scalar\ScalarString;
+use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Misc\FileinfoDummy;
 use finfo;
@@ -125,7 +126,11 @@ class ProcessString extends AbstractRouting implements ProcessInterface
             $model->setNormal($this->pool->encodingService->encodeString($data));
         }
 
-        return $this->handleStringScalar($model->addToJson(static::META_LENGTH, $length), $originalData);
+        if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_SCALAR) === true) {
+            return $this->handleStringScalar($model, $originalData);
+        }
+
+        return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent($model));
     }
 
     /**
@@ -183,7 +188,7 @@ class ProcessString extends AbstractRouting implements ProcessInterface
             $model->addToJson(static::META_ENCODING, $encoding);
         }
 
-        $model->setType(static::TYPE_STRING . $length);
+        $model->setType(static::TYPE_STRING . $length)->addToJson(static::META_LENGTH, $length);
 
         return $length;
     }

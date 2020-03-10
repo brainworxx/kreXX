@@ -39,10 +39,14 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessString;
 use Brainworxx\Krexx\Analyse\Scalar\ScalarString;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Service\Config\Config;
+use Brainworxx\Krexx\Service\Config\Fallback;
+use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Misc\Encoding;
 use Brainworxx\Krexx\Service\Misc\FileinfoDummy;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use finfo;
 
@@ -251,6 +255,11 @@ class ProcessStringTest extends AbstractTest
      */
     public function testProcessWithScalar()
     {
+        // Activate the scalar analysis.
+        Krexx::$pool->rewrite[Ini::class] = ConfigSupplier::class;
+        ConfigSupplier::$overwriteValues[Fallback::SETTING_ANALYSE_SCALAR] = 'true';
+        new Config(\Krexx::$pool);
+
         $fixture = '{"whatever": "okay"}';
         $renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->render = $renderNothing;
