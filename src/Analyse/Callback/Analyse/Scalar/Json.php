@@ -114,5 +114,4 @@ class Json extends AbstractScalarAnalysis
 
         return $meta;
     }
-
 }

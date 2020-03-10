@@ -136,7 +136,7 @@ class Xml extends AbstractScalarAnalysis
         $meta[static::META_DECODED_XML] = $this->decodedXml;
 
         // The pretty print done by a domparser..
-        $dom = new \DOMDocument("1.0");
+        $dom = new DOMDocument("1.0");
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($this->originalXml);

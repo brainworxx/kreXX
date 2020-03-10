@@ -55,9 +55,6 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
  *   - json
  *   - xml
  *
- * To do:
- *   - serialized
- *
  * @package Brainworxx\Krexx\Analyse\Callback
  */
 class ScalarString extends AbstractScalar implements ConstInterface
