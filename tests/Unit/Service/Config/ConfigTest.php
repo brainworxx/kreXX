@@ -426,11 +426,11 @@ class ConfigTest extends AbstractTest
     }
 
     /**
-     * Testing that reenabling kreXX with cookies does not work.
+     * Testing that re-enabling kreXX with cookies does not work.
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
      */
-    public function testLoadConfigValueReenableWithCoookies()
+    public function testLoadConfigValueReEnableWithCookies()
     {
         $config = new Config(Krexx::$pool);
 
