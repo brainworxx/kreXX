@@ -105,7 +105,7 @@ class Xml extends AbstractScalarAnalysis
 
         if (
             empty($metaStuff[static::META_MIME_TYPE]) === true ||
-            strpos($metaStuff[static::META_MIME_TYPE], 'text/xml;') === false
+            strpos($metaStuff[static::META_MIME_TYPE], 'xml;') === false
         ) {
             // Was not identified as xml before.
             // Early return.
@@ -168,11 +168,11 @@ class Xml extends AbstractScalarAnalysis
         xml_set_character_data_handler($resParser, "tagData");
 
         if (xml_parse($resParser, $strInputXML) === 0) {
+            xml_parser_free($resParser);
             return false;
         }
 
         xml_parser_free($resParser);
-
         return true;
     }
 
