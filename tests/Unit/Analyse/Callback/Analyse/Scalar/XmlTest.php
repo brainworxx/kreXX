@@ -79,14 +79,14 @@ class XmlTest extends AbstractTest
             'function_exists'
         );
         // The first false should prevent thge other tests from getting called.
-        $functionExistsMock->expects($this->exactly(2))
+        $functionExistsMock->expects($this->once())
             ->will($this->returnValue(true));
 
         $classExistsMock = $this->getFunctionMock(
             '\\Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Scalar\\',
             'class_exists'
         );
-        $classExistsMock->expects($this->once())
+        $classExistsMock->expects($this->exactly(2))
             ->will($this->returnValue(true));
 
         $this->assertTrue(Xml::isActive());
@@ -121,8 +121,10 @@ class XmlTest extends AbstractTest
      * Test the actual handling of a XML string.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml::handle
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml::simpleXML2Array
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml::assignXmlValues
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml::parseXml
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml::tagOpen
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml::tagClosed
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar\Xml::tagData
      */
     public function testHandle()
     {
@@ -142,18 +144,33 @@ class XmlTest extends AbstractTest
 &lt;/root&gt;
 ';
         $decoded = [
-            'node' => [
-                'yxcv' => [
+            0 => [
+                'name' => 'ROOT',
+                'attributes' => [],
+                'children' => [
                     [
-                        'value' => 'content',
-                        '@attributes' => ['qwer' => 'asdf']
-                    ],
-                    [
-                        'value' => '',
-                        '@attributes' => ['qwer' => 'yxcv']
+                        'name' => 'NODE',
+                        'attributes' => [],
+                        'children' => [
+                            'rogue text',
+                            [
+                                'name' => 'YXCV',
+                                'attributes' => [
+                                    'QWER' => 'asdf'
+                                ],
+                                'children' => [
+                                    'content'
+                                ],
+                            ],
+                            [
+                                'name' => 'YXCV',
+                                'attributes' => [
+                                    'QWER' => 'yxcv'
+                                ],
+                            ],
+                        ],
                     ]
                 ],
-                'value' => 'rogue text',
             ]
         ];
 

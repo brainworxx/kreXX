@@ -38,7 +38,8 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Model;
-use SimpleXMLElement;
+use DOMDocument;
+use finfo;
 
 /**
  * Doing a deep XML analysis.
@@ -47,8 +48,11 @@ use SimpleXMLElement;
  */
 class Xml extends AbstractScalarAnalysis
 {
+
+    const XML_CHILDREN = 'children';
+
     /**
-     * @var \SimpleXMLElement
+     * @var array|bool
      */
     protected $decodedXml;
 
@@ -67,19 +71,20 @@ class Xml extends AbstractScalarAnalysis
     protected $originalXml = '';
 
     /**
-     * constants for the XML2array parser
+     * Is there currently a node open?
+     *
+     * @var bool
      */
-    const XML_AT_ATTRIBUTE = '@attributes';
-    const XML_VALUE = 'value';
+    protected $tnodeOpen = false;
 
     /**
      * {@inheritDoc}
      */
     public static function isActive(): bool
     {
-        return function_exists('libxml_use_internal_errors') &&
-            function_exists('simplexml_load_string') &&
-            class_exists(\DOMDocument::class, false);
+        return function_exists('xml_parser_create') &&
+            class_exists(DOMDocument::class) &&
+            class_exists(finfo::class);
     }
 
     /**
@@ -108,17 +113,15 @@ class Xml extends AbstractScalarAnalysis
         }
 
         // We try to decode it.
-        $prevXmlErrorHandling = libxml_use_internal_errors(true);
-        $this->decodedXml = simplexml_load_string($string, null, LIBXML_NOCDATA);
-        if ($this->decodedXml === false) {
+        if ($this->parseXml($string) === false) {
             // Unable to decode this one.
             return false;
         }
-        libxml_use_internal_errors($prevXmlErrorHandling);
 
         // Huh, everything went better than expected.
         $this->model = $model;
         $this->originalXml = $string;
+
         return true;
     }
 
@@ -130,15 +133,14 @@ class Xml extends AbstractScalarAnalysis
     protected function handle(): array
     {
         $meta = [];
-        $meta[static::META_DECODED_XML] = $this->simpleXML2Array($this->decodedXml);
+        $meta[static::META_DECODED_XML] = $this->decodedXml;
 
-        // The pretty print is a lillte bit more complex.
+        // The pretty print done by a domparser..
         $dom = new \DOMDocument("1.0");
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($this->originalXml);
-        $meta[static::META_PRETTY_PRINT] = $this->pool->encodingService
-            ->encodeString($dom->saveXML());
+        $meta[static::META_PRETTY_PRINT] = $this->pool->encodingService->encodeString($dom->saveXML());
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
@@ -150,60 +152,80 @@ class Xml extends AbstractScalarAnalysis
     }
 
     /**
-     * Iterate through the simpleXML object and turn it into an array.
+     * Parse a XML string into an array structure.
      *
-     * @param SimpleXMLElement $xml
-     * @return array
+     * @param string $strInputXML
+     *   The string we want to parse.
+     *
+     * @return bool
+     *   Was the XML paring successful?
      */
-    protected function simpleXML2Array(SimpleXMLElement $xml): array
+    protected function parseXml(string $strInputXML): bool
     {
-        $array = array();
+        $resParser = xml_parser_create();
+        xml_set_object($resParser, $this);
+        xml_set_element_handler($resParser, "tagOpen", "tagClosed");
+        xml_set_character_data_handler($resParser, "tagData");
 
-        foreach ($xml->children() as $key => $node) {
-            $child = $this->assignXmlValues($this->simpleXML2Array($node), $node);
-
-            if (!in_array($key, array_keys($array))) {
-                $array[$key] = $child;
-            } elseif (isset($array[$key][0])) {
-                $array[$key][] = $child;
-            } else {
-                // This node is already there.
-                // And since arrays can not have the same key twice,
-                // we use an array to display it all.
-                $array[$key] = [$array[$key]];
-                $array[$key][] = $child;
-            }
+        if (xml_parse($resParser, $strInputXML) === 0) {
+            return false;
         }
 
-        return $array;
+        xml_parser_free($resParser);
+
+        return true;
     }
 
     /**
-     * What the method name says. We assign the attributes and values to the
-     * child array.
+     * Handle the opening of a tag.
      *
-     * @param array $child
-     *   The child array, so far,
-     * @param \SimpleXMLElement $node
-     *   The node we are currently processing.
-     *
-     * @return array|string
-     *   Either an array, or the straight value of a node.
+     * @param resource $parser
+     *   The parser resource.
+     * @param string $name
+     *   The name of the tag we are opening.
+     * @param array $attributes
+     *   The attributes of the tag we are opening.
      */
-    protected function assignXmlValues(array $child, SimpleXMLElement $node)
+    protected function tagOpen($parser, string $name, array $attributes)
     {
-        // Assign the value.
-        $child[static::XML_VALUE] = (string)$node;
+        $this->tnodeOpen = false;
+        $this->decodedXml[] = ["name" => $name, "attributes" => $attributes];
+    }
 
-        // Iterate through the attributes.
-        foreach ($node->attributes() as $attributeKey => $attributeValue) {
-            if (isset($child[static::XML_AT_ATTRIBUTE]) === false) {
-                $child[static::XML_AT_ATTRIBUTE] = [];
-            }
-
-            $child[static::XML_AT_ATTRIBUTE][$attributeKey] = (string)$attributeValue;
+    /**
+     * Retrieve the tag data.
+     *
+     * @param resource $parser
+     *   The parser resource.
+     * @param string $tagData
+     *   The tag data.
+     */
+    protected function tagData($parser, string $tagData)
+    {
+        $count = count($this->decodedXml) - 1;
+        if ($this->tnodeOpen) {
+            $this->decodedXml[$count][static::XML_CHILDREN][] = array_pop(
+                $this->decodedXml[$count][static::XML_CHILDREN]
+            ) . $tagData;
+        } elseif (trim($tagData) !== '') {
+            $this->decodedXml[$count][static::XML_CHILDREN][] = $tagData;
+            $this->tnodeOpen = true;
         }
+    }
 
-        return $child;
+    /**
+     * Handle the closing of a tag.
+     *
+     * @param resource $parser
+     *   The parser resource.
+     * @param string $name
+     *   The name of the tag we are handling.
+     */
+    protected function tagClosed($parser, string $name)
+    {
+        $count = count($this->decodedXml);
+        $this->tnodeOpen = false;
+        $this->decodedXml[$count - 2][static::XML_CHILDREN][] = $this->decodedXml[$count - 1];
+        array_pop($this->decodedXml);
     }
 }
