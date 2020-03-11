@@ -126,6 +126,7 @@ interface ConstInterface
     const META_DECODED_JSON = 'Decoded json';
     const META_DECODED_XML = 'Decoded xml';
     const META_CONTENT = 'Content';
+    const META_TIMESTAMP = 'Timestamp';
 
     // Stuff for the skin registration.
     const SKIN_CLASS = 'class';
