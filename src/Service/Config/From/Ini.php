@@ -96,6 +96,12 @@ class Ini extends Fallback
      *
      * @param string $name
      *
+     * @deprecated
+     *   Since 4.0.0. Will be removed.
+     *
+     * @codeCoverageIgnore
+     *   We do not test deprecated methods.
+     *
      * @return bool
      *   Well? is it editable?
      */
@@ -109,9 +115,6 @@ class Ini extends Fallback
             // Use the fallback.
             return $this->feConfigFallback[$name][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE;
         }
-
-        // Update the settings in the configuration.
-        $this->pool->config->feConfigFallback[$name][static::RENDER] = $filevalue;
 
         return $filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE;
     }
