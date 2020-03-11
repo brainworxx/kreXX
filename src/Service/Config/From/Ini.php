@@ -110,6 +110,9 @@ class Ini extends Fallback
             return $this->feConfigFallback[$name][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE;
         }
 
+        // Update the settings in the configuration.
+        $this->pool->config->feConfigFallback[$name][static::RENDER] = $filevalue;
+
         return $filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE;
     }
 

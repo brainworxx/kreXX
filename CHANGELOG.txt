@@ -19,6 +19,7 @@
 3.2.3 dev
 - Bugfix: Added missing closing li tag to the expandableChild
   template.
+- Bugfix: The fe configuration does not update the render type.
 
 3.2.2
 - Updated to PHP 7.4
