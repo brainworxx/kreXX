@@ -165,13 +165,13 @@ class MessagesTest extends AbstractTest
             ['of the' => ['seven', 'keys']]
         ];
         foreach ($fixture as $arguments) {
-            $key = array_key_first($arguments);
+            $key = array_keys($arguments)[0];
             $this->messagesClass->addMessage($key, $arguments[$key]);
         }
 
         $count = 0;
         foreach ($this->messagesClass->getMessages() as $key => $message) {
-            $this->assertEquals(array_key_first($fixture[$count]), $key);
+            $this->assertEquals(array_keys($fixture[$count])[0], $key);
             $this->assertEquals($key, $message->getKey());
             $this->assertEquals($fixture[$count][$key], $message->getArguments());
             ++$count;
