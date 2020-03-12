@@ -16,6 +16,8 @@
 - Change: Simplified the Model.
 - Change: Do not display the encoding info, if we have a buffer
   info available.
+- Change: Different analysis order, when comming from the $this
+  scope, for better source generation.
 
 3.2.3 dev
 - Bugfix: Added missing closing li tag to the expandableChild
