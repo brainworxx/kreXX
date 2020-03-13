@@ -486,6 +486,8 @@
       color: #00AD00; }
     .kwrapper .kchild .kmethod em, .kfatalwrapper-outer .kchild .kmethod em {
       color: #00AD00; }
+      .kwrapper .kchild .kmethod em.kreturntype, .kfatalwrapper-outer .kchild .kmethod em.kreturntype {
+        color: #919191; }
     .kwrapper .kchild .kclosure::before, .kfatalwrapper-outer .kchild .kclosure::before {
       color: #00AD00; }
     .kwrapper .kchild .kclosure em, .kfatalwrapper-outer .kchild .kclosure em {
