@@ -4,6 +4,7 @@
 - Added better string analysis (json, file path, callback, xml)
 - Added timestamp analysis for large integers.
 - Added throw away messages.
+- Added return type to the method and function analysis.
 - Change: Removed all deprecations.
 - Change: Removed the PHP 5.x fatal error handler.
 - Change: Dropped PHP 5.x support.

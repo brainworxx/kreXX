@@ -99,6 +99,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Comment/Methods.php';
         include_once KREXX_DIR . 'src/Analyse/Comment/Properties.php';
         include_once KREXX_DIR . 'src/Analyse/Comment/Classes.php';
+        include_once KREXX_DIR . 'src/Analyse/Comment/ReturnType.php';
 
         include_once KREXX_DIR . 'src/Analyse/Routing/AbstractRouting.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Routing.php';
