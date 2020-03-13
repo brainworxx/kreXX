@@ -22,6 +22,7 @@
   scope, for better source generation.
 - Change: Different order in the backtrace analysis, for better
   readability.
+- Change: Use compressed css for the SmokyGrey skin.
 
 3.2.3 dev
 - Bugfix: Added missing closing li tag to the expandableChild
