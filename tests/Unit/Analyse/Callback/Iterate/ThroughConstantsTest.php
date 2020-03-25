@@ -100,7 +100,7 @@ class ThroughConstantsTest extends AbstractTest
         foreach ($fixture['data'] as $name => $value) {
             $this->assertEquals($name, $models[$count]->getName());
             $this->assertEquals($value, $models[$count]->getData());
-            $this->assertEquals($fixture[ThroughConstants::PARAM_CLASSNAME] . '::', $models[$count]->getConnectorLeft());
+            $this->assertEquals('\\' . $fixture[ThroughConstants::PARAM_CLASSNAME] . '::', $models[$count]->getConnectorLeft());
             ++$count;
         }
     }
