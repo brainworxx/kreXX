@@ -23,13 +23,13 @@
 - Change: Different order in the backtrace analysis, for better
   readability.
 - Change: Use compressed css for the SmokyGrey skin.
-- Bugfix: Do not mixup and/or combine escaping for keys and/or
-  code generation.
 
 3.2.3 dev
 - Bugfix: Added missing closing li tag to the expandableChild
   template.
 - Bugfix: The fe configuration does not update the render type.
+- Bugfix: Do not mixup and/or combine escaping for keys and/or
+  code generation.
 
 3.2.2
 - Updated to PHP 7.4
