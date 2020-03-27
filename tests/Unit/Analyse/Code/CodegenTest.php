@@ -118,6 +118,7 @@ class CodegenTest extends AbstractTest
      * Test the forbidden code generation.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      */
     public function testGenerateSourceNoGen()
     {
@@ -131,6 +132,7 @@ class CodegenTest extends AbstractTest
      * Test the concatenation of the first run.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
      */
     public function testGenerateSourceFirstRun()
@@ -151,6 +153,7 @@ class CodegenTest extends AbstractTest
      * Test the stop return, in case of constants.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      */
     public function testGenerateSourceMetaConstants()
     {
@@ -166,6 +169,7 @@ class CodegenTest extends AbstractTest
      * Test an empty return value, in case of empty connectors.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      */
     public function testGenerateSourceEmpty()
     {
@@ -186,6 +190,7 @@ class CodegenTest extends AbstractTest
      * Test the concatenation in case of debug methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
      */
     public function testGenerateSourceIsDebug()
@@ -204,6 +209,7 @@ class CodegenTest extends AbstractTest
      * Test the concatenation in case of debug methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
      */
     public function testGenerateSourceIteratorToArray()
@@ -220,6 +226,7 @@ class CodegenTest extends AbstractTest
      * Test the meta json code generation.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      */
     public function testGenerateSourceMetaDecodedJson()
     {
@@ -235,6 +242,7 @@ class CodegenTest extends AbstractTest
      * Test the coegeneration for unaccessible array values.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      */
     public function testGenerateSourceArrayValueAccess()
     {
@@ -259,6 +267,7 @@ class CodegenTest extends AbstractTest
      * Test the concatenation in case of public access.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
      */
     public function testGenerateSourceIsPublic()
@@ -275,6 +284,7 @@ class CodegenTest extends AbstractTest
      * Test the concatenation in case that the model is in the scope.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
      */
     public function testGenerateSourceInScope()
@@ -299,6 +309,7 @@ class CodegenTest extends AbstractTest
      * Test the '. . .' when out of scope.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      */
     public function testGenerateSourceNotInScope()
     {
