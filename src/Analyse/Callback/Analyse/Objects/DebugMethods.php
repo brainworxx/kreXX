@@ -86,18 +86,15 @@ class DebugMethods extends AbstractObjectAnalysis
                 ($result = $this->retrieveValue($data, $funcName)) !== null
             ) {
                 $output .= $this->pool->render->renderExpandableChild(
-                    $this->dispatchEventWithModel(
-                        $funcName,
-                        $this->pool->createClass(Model::class)
-                            ->setName($funcName)
-                            ->setType(static::TYPE_DEBUG_METHOD)
-                            ->setCodeGenType(Codegen::CODEGEN_TYPE_PUBLIC)
-                            ->setNormal(static::UNKNOWN_VALUE)
-                            ->setHelpid($funcName)
-                            ->setConnectorType(Connectors::METHOD)
-                            ->addParameter(static::PARAM_DATA, $result)
-                            ->injectCallback($this->pool->createClass(Debug::class))
-                    )
+                    $this->dispatchEventWithModel($funcName, $this->pool->createClass(Model::class)
+                        ->setName($funcName)
+                        ->setType(static::TYPE_DEBUG_METHOD)
+                        ->setCodeGenType(Codegen::CODEGEN_TYPE_PUBLIC)
+                        ->setNormal(static::UNKNOWN_VALUE)
+                        ->setHelpid($funcName)
+                        ->setConnectorType(Connectors::METHOD)
+                        ->addParameter(static::PARAM_DATA, $result)
+                        ->injectCallback($this->pool->createClass(Debug::class)))
                 );
                 unset($result);
             }

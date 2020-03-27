@@ -153,27 +153,41 @@ class Codegen implements ConstInterface
         }
 
         // Handle the first run.
-        if ($this->firstRun === true) {
+        $type = $model->getCodeGenType();
+        if ($type === static::CODEGEN_TYPE_PUBLIC || $this->firstRun === true) {
             // We handle the first one special, because we need to add the original
             // variable name to the source generation.
             $this->firstRun = false;
+
+            // Public methods, debug methods.
             return $this->concatenation($model);
         }
 
+        if ($type === static::CODEGEN_TYPE_EMPTY) {
+            return '';
+        }
+
+        // Still here?
+        // We go for the more complicated stuff.
+        return $this->generateComplicatedStuff($model);
+    }
+
+    /**
+     * The more obscure stuff for the code generation.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model, which hosts all the data we need.
+     *
+     * @return string
+     *   The generated PHP source.
+     */
+    protected function generateComplicatedStuff(Model $model)
+    {
         // Define a fallback value.
         $result = static::UNKNOWN_VALUE;
 
         // And now for the more serious stuff.
         switch ($model->getCodeGenType()) {
-            case static::CODEGEN_TYPE_PUBLIC:
-                // Public methods, debug methods.
-                $result = $this->concatenation($model);
-                break;
-
-            case static::CODEGEN_TYPE_EMPTY:
-                $result = '';
-                break;
-
             case static::CODEGEN_TYPE_META_CONSTANTS:
                 // Test for constants.
                 // They have no connectors, but are marked as such.
@@ -196,7 +210,6 @@ class Codegen implements ConstInterface
 
             default:
                 if ($this->pool->scope->testModelForCodegen($model) === true) {
-                    // Test for private or protected access.
                     // Test if we are inside the scope. Everything within our scope is reachable.
                     $result = $this->concatenation($model);
                 }

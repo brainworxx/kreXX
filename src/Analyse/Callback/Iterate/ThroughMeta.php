@@ -125,7 +125,7 @@ class ThroughMeta extends AbstractCallback
             $model->setCodeGenType($this->parameters[static::PARAM_CODE_GEN_TYPE]);
         }
 
-        if (in_array($key, $this->keysWithExtra)) {
+        if (in_array($key, $this->keysWithExtra) === true) {
             $model->setNormal(static::UNKNOWN_VALUE)->setHasExtra(true);
         } else {
             $model->setNormal($meta);
@@ -138,13 +138,10 @@ class ThroughMeta extends AbstractCallback
 
         // Sorry, no code generation for you guys.
         $this->pool->codegenHandler->setAllowCodegen(false);
-        if (is_string($meta)) {
+        if (is_string($meta) === true) {
             // Render a single data point.
             $result = $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . $key . static::EVENT_MARKER_END,
-                    $model
-                )
+                $this->dispatchEventWithModel(__FUNCTION__ . $key . static::EVENT_MARKER_END, $model)
             );
         } else {
             // Fallback to whatever-rendering.

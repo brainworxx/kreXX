@@ -136,7 +136,7 @@ class CodegenTest extends AbstractTest
     public function testGenerateSourceFirstRun()
     {
         $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
-        $this->expectConnectorCalls(1, 1);
+        $this->expectConnectorCalls(2, 1);
 
         $this->assertEquals(
             static::CONCATENATED_CONNECTORS,
@@ -279,7 +279,7 @@ class CodegenTest extends AbstractTest
      */
     public function testGenerateSourceInScope()
     {
-        $this->expectConnectorCalls(2, 1);
+        $this->expectConnectorCalls(3, 1);
 
         // Create the scope mock and inject it.
         $scopeMock = $this->createMock(Scope::class);
@@ -302,7 +302,7 @@ class CodegenTest extends AbstractTest
      */
     public function testGenerateSourceNotInScope()
     {
-        $this->expectConnectorCalls(1, 0);
+        $this->expectConnectorCalls(2, 0);
 
         // Create the scope mock and inject it.
         $scopeMock = $this->createMock(Scope::class);
