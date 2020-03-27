@@ -48,6 +48,8 @@ use Brainworxx\Krexx\Analyse\Model;
  * @uses array data
  *   An array of the meta data we need to iterate.
  *   Might contain strings or another array.
+ * @uses string codeGenType
+ *   The code generation constants we want to use for none meta stuff.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  */
@@ -119,6 +121,10 @@ class ThroughMeta extends AbstractCallback
             ->setName($key)
             ->setType($key === static::META_PRETTY_PRINT ? $key : static::TYPE_REFLECTION);
 
+        if (isset($this->parameters[static::PARAM_CODE_GEN_TYPE])) {
+            $model->setCodeGenType($this->parameters[static::PARAM_CODE_GEN_TYPE]);
+        }
+
         if (in_array($key, $this->keysWithExtra)) {
             $model->setNormal(static::UNKNOWN_VALUE)->setHasExtra(true);
         } else {
@@ -127,7 +133,7 @@ class ThroughMeta extends AbstractCallback
 
         if ($key === static::META_DECODED_JSON) {
             // Prepare the json code generation.
-            return $this->pool->routing->analysisHub($model->setMultiLineCodeGen(Codegen::JSON_DECODE));
+            return $this->pool->routing->analysisHub($model);
         }
 
         // Sorry, no code generation for you guys.

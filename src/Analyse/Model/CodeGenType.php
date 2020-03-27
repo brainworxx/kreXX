@@ -37,63 +37,54 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Model;
 
+use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Trait MultiLineCodeGen
- *
- * @deprecated
- *   Since 4.0.0. Will be removed.
- *
- * @codeCoverageIgnore
- *   We will not test deprecated methods.
- *
- * @package Brainworxx\Krexx\Analyse\Model
- */
-trait MultiLineCodeGen
+trait CodeGenType
 {
     /**
-     * Are we dealing with multiline code generation?
+     * The code generation type.
      *
      * @var string
      */
-    protected $multiLineCodeGen = '';
+    protected $codeGenType = '';
 
     /**
-     * Getter for the multiline code generation.
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed.
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
+     * Getter for the code generation type.
      *
      * @return string
+     *   The string, representing the type.
      */
-    public function getMultiLineCodeGen(): string
+    public function getCodeGenType(): string
     {
-        return $this->multiLineCodeGen;
+        if (
+            $this->codeGenType === '' &&
+            $this->getConnectorLeft() === '' &&
+            $this->getConnectorRight() === ''
+        ) {
+            // No connectors, no nothing.
+            // Normal meta stuff.
+            // We will ignore this one.
+            return Codegen::CODEGEN_TYPE_EMPTY;
+        }
+
+        return $this->codeGenType;
     }
 
     /**
-     * Setter for the multiline code generation.
+     * Setter for the code generation type
      *
-     * @deprecated
-     *   Since 4.0.0. Will be removed.
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
-     *
-     * @param string $multiLineCodeGen
-     *   The constant from the Codegen class.
+     * @param string $codeGenType
+     *   The string, representing the type.
      *
      * @return $this
-     *   $this, for chaining.
+     *   For chaining.
      */
-    public function setMultiLineCodeGen(string $multiLineCodeGen): Model
+    public function setCodeGenType(string $codeGenType): Model
     {
-        $this->multiLineCodeGen = $multiLineCodeGen;
-        $this->codeGenType = $multiLineCodeGen;
+        if ($codeGenType !== '') {
+            $this->codeGenType = $codeGenType;
+        }
 
         return $this;
     }

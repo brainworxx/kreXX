@@ -83,6 +83,7 @@ interface ConstInterface
     const PARAM_NOTHING_FOUND = 'nothingFound';
     const PARAM_REFLECTION_METHOD = 'refMethod';
     const PARAM_REFLECTION_PROPERTY = 'refProperty';
+    const PARAM_CODE_GEN_TYPE = 'codeGenType';
 
     const UNKNOWN_VALUE = '. . .';
     const UNKNOWN_DECLARATION = 'unknownDeclaration';

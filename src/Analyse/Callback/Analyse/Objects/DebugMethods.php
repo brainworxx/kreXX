@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Debug;
+use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\Fallback;
@@ -90,6 +91,7 @@ class DebugMethods extends AbstractObjectAnalysis
                         $this->pool->createClass(Model::class)
                             ->setName($funcName)
                             ->setType(static::TYPE_DEBUG_METHOD)
+                            ->setCodeGenType(Codegen::CODEGEN_TYPE_PUBLIC)
                             ->setNormal(static::UNKNOWN_VALUE)
                             ->setHelpid($funcName)
                             ->setConnectorType(Connectors::METHOD)
