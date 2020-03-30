@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Routing;
 
 use Brainworxx\Krexx\Analyse\ConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 
@@ -65,6 +66,24 @@ abstract class AbstractRouting implements ConstInterface
     public function __construct(Pool $pool)
     {
          $this->pool = $pool;
+    }
+
+    /**
+     * Processes the model according to the type of the variable.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *
+     * @deprecated
+     *   Will be removed. Use $this->handle;
+     *
+     * @codeCoverageIgnore
+     *   We will not test methods that are deprecated.
+     *
+     * @return string
+     */
+    public function process(Model $model): string
+    {
+        return $this->handle($model);
     }
 
     /**

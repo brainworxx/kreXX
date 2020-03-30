@@ -51,8 +51,22 @@ use ReflectionFunction;
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessClosure extends AbstractRouting implements ProcessInterface
+class ProcessClosure extends AbstractProcessNoneScalar
 {
+    /**
+     * Is this one a boolean?
+     *
+     * @param Model $model
+     *   The value we are analysing.
+     *
+     * @return bool
+     *   Well, is this a boolean?
+     */
+    public function canHandle(Model $model): bool
+    {
+        return $model->getData() instanceof \Closure;
+    }
+
     /**
      * Analyses a closure.
      *
@@ -62,8 +76,11 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
      * @return string
      *   The generated markup.
      */
-    public function process(Model $model): string
+    protected function handleNoneScalar(Model $model): string
     {
+        // Remember that we've been here before.
+        $this->pool->recursionHandler->addToHive($model->getData());
+
         try {
             $ref = new ReflectionFunction($model->getData());
         } catch (ReflectionException $e) {
@@ -90,8 +107,7 @@ class ProcessClosure extends AbstractRouting implements ProcessInterface
         }
 
         // Adding the return type.
-        $result[static::META_RETURN_TYPE] = $this->pool->createClass(ReturnType::class)
-            ->getComment($ref);
+        $result[static::META_RETURN_TYPE] = $this->pool->createClass(ReturnType::class)->getComment($ref);
 
         return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent(
             $model->setType(static::TYPE_CLOSURE)

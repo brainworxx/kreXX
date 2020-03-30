@@ -47,6 +47,21 @@ use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
  */
 class ProcessInteger extends AbstractRouting implements ProcessInterface
 {
+
+    /**
+     * Is this one an integer?
+     *
+     * @param Model $model
+     *   The value we are analysing.
+     *
+     * @return bool
+     *   Well, is this an integer?
+     */
+    public function canHandle(Model $model): bool
+    {
+        return is_int($model->getData());
+    }
+
     /**
      * Render a dump for a integer value.
      *
@@ -56,7 +71,7 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface
      * @return string
      *   The rendered markup.
      */
-    public function process(Model $model): string
+    public function handle(Model $model): string
     {
         // Detect a timestamp. Everything bigger than 946681200
         // is assumed to be a timestamp.

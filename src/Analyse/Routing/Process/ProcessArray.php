@@ -49,8 +49,22 @@ use Brainworxx\Krexx\Service\Config\Fallback;
  *
  * @package Brainworxx\Krexx\Analyse\Routing\Process
  */
-class ProcessArray extends AbstractRouting implements ProcessInterface
+class ProcessArray extends AbstractProcessNoneScalar
 {
+
+    /**
+     * Is this one an array?
+     *
+     * @param Model $model
+     *   The value we are analysing.
+     *
+     * @return bool
+     *   Well, is this an array?
+     */
+    public function canHandle(Model $model): bool
+    {
+        return is_array($model->getData());
+    }
 
     /**
      * Render a dump for an array.
@@ -61,25 +75,23 @@ class ProcessArray extends AbstractRouting implements ProcessInterface
      * @return string
      *   The rendered markup.
      */
-    public function process(Model $model): string
+    protected function handleNoneScalar(Model $model): string
     {
+        $this->pool->emergencyHandler->upOneNestingLevel();
         $multiline = false;
         $count = count($model->getData());
 
         if ($count > (int) $this->pool->config->getSetting(Fallback::SETTING_ARRAY_COUNT_LIMIT)) {
             // Budget array analysis.
-            $model->injectCallback(
-                $this->pool->createClass(ThroughLargeArray::class)
-            )->setHelpid('simpleArray');
+            $model->injectCallback($this->pool->createClass(ThroughLargeArray::class))
+                ->setHelpid('simpleArray');
         } else {
             // Complete array analysis.
-            $model->injectCallback(
-                $this->pool->createClass(ThroughArray::class)
-            );
+            $model->injectCallback($this->pool->createClass(ThroughArray::class));
         }
 
         // Dumping all Properties.
-        return $this->pool->render->renderExpandableChild(
+        $result = $this->pool->render->renderExpandableChild(
             $this->dispatchProcessEvent(
                 $model->setType(static::TYPE_ARRAY)
                     ->setNormal($count . ' elements')
@@ -87,5 +99,8 @@ class ProcessArray extends AbstractRouting implements ProcessInterface
                     ->addParameter(static::PARAM_MULTILINE, $multiline)
             )
         );
+
+        $this->pool->emergencyHandler->downOneNestingLevel();
+        return $result;
     }
 }

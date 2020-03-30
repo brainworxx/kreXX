@@ -105,6 +105,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Routing/Routing.php';
 
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessInterface.php';
+        include_once KREXX_DIR . 'src/Analyse/Routing/Process/AbstractProcessNoneScalar.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessArray.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessBacktrace.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessBoolean.php';

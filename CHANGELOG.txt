@@ -26,6 +26,7 @@
   readability.
 - Change: Use compressed css for the SmokyGrey skin.
 - Change: Refactored the code generation.
+- Change: Refactored the routing.
 
 3.2.3 dev
 - Bugfix: Added missing closing li tag to the expandableChild
