@@ -136,7 +136,7 @@ class ThroughConstants extends AbstractCallback
      * Adding visibility infos about hte constant we are analysing.
      *
      * @param \ReflectionClassConstant $reflectionConstant
-     *   The reflection of the constat we are analsying.
+     *   The reflection of the constant we are analysing.
      *
      * @return string
      *   The visibility info.

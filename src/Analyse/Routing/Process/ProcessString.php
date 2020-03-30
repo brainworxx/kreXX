@@ -152,6 +152,8 @@ class ProcessString extends AbstractRouting implements ProcessInterface
      *
      * @param \Brainworxx\Krexx\Analyse\Model $model
      *   The model, so far.
+     * @param string $originalData
+     *   The original, unprocessed and unescape string.
      *
      * @return string
      *   The generated DOM.

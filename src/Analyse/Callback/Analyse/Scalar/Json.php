@@ -79,8 +79,10 @@ class Json extends AbstractScalarAnalysis
     /**
      * Test, if this is a json, and if we can decode it.
      *
-     * @param bool|int|string $string
-     *   The possible json.
+     * @param string $string
+     *   The string we want to take a look at.
+     * @param Model $model
+     *   The model, so far.
      *
      * @return bool
      *   Well? Can we handle it?

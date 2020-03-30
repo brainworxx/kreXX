@@ -42,9 +42,9 @@ use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Comment\Functions;
 use Brainworxx\Krexx\Analyse\Comment\ReturnType;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 use ReflectionException;
 use ReflectionFunction;
+use Closure;
 
 /**
  * Processing of closures.
@@ -64,7 +64,7 @@ class ProcessClosure extends AbstractProcessNoneScalar
      */
     public function canHandle(Model $model): bool
     {
-        return $model->getData() instanceof \Closure;
+        return $model->getData() instanceof Closure;
     }
 
     /**

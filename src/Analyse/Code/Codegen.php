@@ -292,7 +292,7 @@ class Codegen implements ConstInterface
     }
 
     /**
-     * Transorm a reflection parameter into a human readable form.
+     * Transform a reflection parameter into a human readable form.
      *
      * @param \ReflectionParameter $reflectionParameter
      *   The reflection parameter we want to wrap.

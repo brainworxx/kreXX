@@ -39,6 +39,8 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use DateTime;
+use Exception;
 
 /**
  * Processing of integers.
@@ -78,10 +80,10 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface
         try {
             $int = $model->getData();
             if ($int > 946681200) {
-                $date = new \DateTime('@' . $int);
+                $date = new DateTime('@' . $int);
                 $model->addToJson(static::META_TIMESTAMP, $date->format('d.M Y H:i:s'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Do nothing.
             // Not sure how this can happen.
         }

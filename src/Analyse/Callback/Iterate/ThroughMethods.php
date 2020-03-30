@@ -47,7 +47,7 @@ use ReflectionClass;
 use ReflectionMethod;
 
 /**
- * Methods analysis methods. :rolleyes:
+ * Methods analysis methods. Pun not intended.
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Iterate
  *
