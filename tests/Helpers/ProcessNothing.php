@@ -46,7 +46,7 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessInterface;
  */
 class ProcessNothing extends AbstractRouting implements ProcessInterface
 {
-    public function canHandle($data): bool
+    public function canHandle(Model $data): bool
     {
         return true;
     }
