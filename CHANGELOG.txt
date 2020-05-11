@@ -1,4 +1,6 @@
-3.2.3 dev
+3.2.4
+
+3.2.3
 - Bugfix: Added missing closing li tag to the expandableChild
   template.
 - Bugfix: The fe configuration does not update the render type.
