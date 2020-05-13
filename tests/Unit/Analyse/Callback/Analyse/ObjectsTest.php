@@ -368,7 +368,7 @@ class ObjectsTest extends AbstractTest
      * @throws \ReflectionException
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::callMe
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::generateDumperList
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::dumpStuff
      */
     public function testCallMeIncomplete()
     {
