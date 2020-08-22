@@ -27,6 +27,7 @@
 - Change: Use compressed css for the SmokyGrey skin.
 - Change: Refactored the code generation.
 - Change: Refactored the routing.
+- Change: "Called from" is always expanded in the smokygrey skin.
 
 3.2.4
 - Bugfix: Analysing of __PHP_Incomplete_Class does not throw
