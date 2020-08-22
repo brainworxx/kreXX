@@ -95,7 +95,7 @@ class FilePath extends AbstractScalarAnalysis implements ViewConstInterface
      */
     public function canHandle($string, Model $model): bool
     {
-        if (empty($string) || $this->bufferInfo === null) {
+        if (empty($string) === true) {
             // Early return for the most values.
             return false;
         }
