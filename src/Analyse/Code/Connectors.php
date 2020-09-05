@@ -72,7 +72,7 @@ class Connectors implements ConnectorsConstInterface
     /**
      * Parameters, in case we are connecting a method or closure.
      *
-     * @var string
+     * @var string|int
      */
     protected $params;
 
@@ -103,10 +103,10 @@ class Connectors implements ConnectorsConstInterface
      * Setter for the $params. It is used in case we are connection a method or
      * closure.
      *
-     * @param string $params
+     * @param string|int $params
      *   The parameters as a sting.
      */
-    public function setParameters(string $params)
+    public function setParameters($params)
     {
         $this->params = $params;
     }
@@ -114,10 +114,10 @@ class Connectors implements ConnectorsConstInterface
     /**
      * Getter for the connection parameters.
      *
-     * @return string
+     * @return string|int
      *   The connection parameters.
      */
-    public function getParameters(): string
+    public function getParameters()
     {
         return $this->params;
     }
