@@ -121,7 +121,9 @@ abstract class AbstractCaller
      *     'file' => 'someFile.php',
      *     'line' => 123,
      *     'varname' => '$myVar',
-     *     'type' => 'Analysis of $myString, string'
+     *     'type' => 'Analysis of $myString, string',
+     *     'date' => '19-09-2020 10:37:04'
+     *     'url' => 'http://some.server.xx/path/'
      *   );
      */
     abstract public function findCaller($headline, $data): array;
