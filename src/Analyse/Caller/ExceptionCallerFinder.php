@@ -55,7 +55,7 @@ class ExceptionCallerFinder extends AbstractCaller implements BacktraceConstInte
      * @return array
      *   The exception, that was thrown.
      */
-    public function findCaller($headline, $exception): array
+    public function findCaller(string $headline, $exception): array
     {
         return [
             static::TRACE_FILE => $exception->getFile(),

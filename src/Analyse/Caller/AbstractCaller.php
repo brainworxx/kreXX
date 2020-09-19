@@ -91,7 +91,7 @@ abstract class AbstractCaller
      * @return $this
      *   Return this for chaining.
      */
-    public function setPattern($pattern): AbstractCaller
+    public function setPattern(string $pattern): AbstractCaller
     {
         $this->pattern = strtolower($pattern);
         return $this;
@@ -126,7 +126,7 @@ abstract class AbstractCaller
      *     'url' => 'http://some.server.xx/path/'
      *   );
      */
-    abstract public function findCaller($headline, $data): array;
+    abstract public function findCaller(string $headline, $data): array;
 
     /**
      * Get the analysis type for the metadata and the page title.
