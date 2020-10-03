@@ -82,6 +82,8 @@ class ThroughGetter extends AbstractCallback implements
 {
     /**
      * The parameter name of the prefix we ara analysing.
+     *
+     * @var string
      */
     const CURRENT_PREFIX = 'currentPrefix';
 
