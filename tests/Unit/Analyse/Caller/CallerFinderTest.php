@@ -298,7 +298,7 @@ class CallerFinderTest extends AbstractTest
             3 => [],
             4 => [
                 BacktraceConstInterface::TRACE_FUNCTION => static::FUNCTION_TO_TRACE,
-                BacktraceConstInterface::TRACE_CLASS => ComplexMethodFixture::class,
+                BacktraceConstInterface::TRACE_CLASS => LoggerCallerFixture::class,
                 BacktraceConstInterface::TRACE_FILE => $classRef->getFileName(),
                 BacktraceConstInterface::TRACE_LINE => 47
             ]
