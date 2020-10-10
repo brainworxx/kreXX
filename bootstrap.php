@@ -256,8 +256,12 @@ call_user_func(function () {
     }
     restore_error_handler();
 
-    // Class shorthand for object analysis.
-    // The alias method does not work in all IDEs.
+    /**
+     * Class shorthand for object analysis.
+     *
+     * The alias method does not work in all IDEs.
+     * So, we extend the namespaced class.
+     */
     class Krexx extends Brainworxx\Krexx\Krexx {}
 
     /**
@@ -273,17 +277,26 @@ call_user_func(function () {
      * @return mixed
      *   Return the original anslysis value.
      */
-    function krexx($data = null)
+    function krexx($data)
     {
-        $allArgs = func_get_args();
-        if (count($allArgs) > 1) {
-            // We got more arguments than we asked for.
-            // Better dump them all.
-            \Brainworxx\Krexx\Krexx::open($allArgs);
-            return $data;
-        }
+        return \Brainworxx\Krexx\Krexx::open($data);
+    }
 
-        \Brainworxx\Krexx\Krexx::open($data);
-        return $data;
+    /**
+     * Alias shorthand function for object analysis logging.
+     *
+     * Register an alias function for object analysis,
+     * so you will not have to type \Krexx::log($data);
+     * all the time.
+     *
+     * @param mixed $data
+     *   The variable we want to analyse.
+     *
+     * @return mixed
+     *   Return the original anslysis value.
+     */
+    function krexxlog($data)
+    {
+        return \Brainworxx\Krexx\Krexx::log($data);
     }
 });
