@@ -29,6 +29,7 @@
 - Change: Refactored the routing.
 - Change: "Called from" is always expanded in the smokygrey skin.
 - Change: The connector constants are now strings.
+- Change: Removed the "local opening function" aka. devHandle.
 - Bugfix: The search does now respects the selected tab.
 - Bugfix: Added missing meta data to a handled exception.
 - Bugfix: Prevent an open <pre> from messing with the output.

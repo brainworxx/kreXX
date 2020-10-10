@@ -146,10 +146,8 @@ class CallerFinderTest extends AbstractTest
             [
                 $krexx,
                 'krexx::open',
-                'krexx::' . Krexx::$pool->config->getDevHandler(),
                 'Krexx',
                 'Krexx::open',
-                'Krexx::' . Krexx::$pool->config->getDevHandler(),
                 'Krexx::log',
                 'krexx::log',
             ],

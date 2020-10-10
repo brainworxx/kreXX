@@ -269,34 +269,21 @@ call_user_func(function () {
      *
      * @param mixed $data
      *   The variable we want to analyse.
-     * @param string $handle
-     *   The developer handle.
      *
      * @return mixed
      *   Return the original anslysis value.
      */
-    function krexx($data = null, string $handle = '')
+    function krexx($data = null)
     {
-        if (empty($handle)) {
-            \Brainworxx\Krexx\Krexx::open($data);
-            return $data;
-        }
-
         $allArgs = func_get_args();
-        if (count($allArgs) > 2) {
+        if (count($allArgs) > 1) {
             // We got more arguments than we asked for.
-            // Better dum them all.
+            // Better dump them all.
             \Brainworxx\Krexx\Krexx::open($allArgs);
             return $data;
         }
 
-        if (is_string($handle)) {
-            \Brainworxx\Krexx\Krexx::$handle($data);
-            return $data;
-        }
-
-        // Still here ?!?
-        \Brainworxx\Krexx\Krexx::open([$data, $handle]);
+        \Brainworxx\Krexx\Krexx::open($data);
         return $data;
     }
 });
