@@ -49,6 +49,7 @@ class ModelTest extends AbstractTest
 {
     const SOME_STRING_TO_PASS_THROUGH = 'some string to pass through';
     const CONNECTOR_SERVICE = 'connectorService';
+    const SET_PARAMETERS = 'setParameters';
 
     /**
      * A fresh instance of the model, redy to use.
@@ -109,7 +110,7 @@ class ModelTest extends AbstractTest
             ->will($this->returnValue(null));
 
         $mockCallback->expects($this->never())
-            ->method('setParameters')
+            ->method(static::SET_PARAMETERS)
             ->will($this->returnValue(null));
 
         $model = new Model(Krexx::$pool);
@@ -138,7 +139,7 @@ class ModelTest extends AbstractTest
             ->will($this->returnValue($htmlResult));
 
         $mockCallback->expects($this->once())
-            ->method('setParameters')
+            ->method(static::SET_PARAMETERS)
             ->will($this->returnValue($mockCallback));
 
         $model = new Model(Krexx::$pool);
@@ -459,7 +460,7 @@ class ModelTest extends AbstractTest
 
         $mockConnector = $this->createMock(Connectors::class);
         $mockConnector->expects($this->once())
-            ->method('setParameters')
+            ->method(static::SET_PARAMETERS)
             ->will($this->returnValue($data))
             ->with($this->equalTo($data));
 
