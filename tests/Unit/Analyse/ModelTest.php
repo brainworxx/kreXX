@@ -142,12 +142,10 @@ class ModelTest extends AbstractTest
             ->method(static::SET_PARAMETERS)
             ->will($this->returnValue($mockCallback));
 
-        $model = new Model(Krexx::$pool);
-
-        $this->assertEquals('', $model->renderMe(), 'No callback, no HTML.');
+        $this->assertEquals('', $this->model->renderMe(), 'No callback, no HTML.');
 
         // Test id the HTML result gates returned and both methods gets called once.
-        $this->assertEquals($htmlResult, $model->injectCallback($mockCallback)->renderMe());
+        $this->assertEquals($htmlResult, $this->model->injectCallback($mockCallback)->renderMe());
     }
 
     /**
@@ -160,17 +158,15 @@ class ModelTest extends AbstractTest
         $parameterOne = new stdClass();
         $parameterTwo = "some value";
 
-        $model = new Model(Krexx::$pool);
-
-        $model->addParameter('parameterOne', $parameterOne);
-        $model->addParameter('parameterTwo', $parameterTwo);
+        $this->model->addParameter('parameterOne', $parameterOne);
+        $this->model->addParameter('parameterTwo', $parameterTwo);
 
         $expectedResult = [
             'parameterOne' => $parameterOne,
             'parameterTwo' => $parameterTwo,
         ];
 
-        $this->assertEquals($expectedResult, $model->getParameters());
+        $this->assertEquals($expectedResult, $this->model->getParameters());
     }
 
     /**
@@ -181,8 +177,6 @@ class ModelTest extends AbstractTest
      */
     public function testSetHelpId()
     {
-        $model = new Model(Krexx::$pool);
-
         // Mock the message class, which will provide the help text.
         $helpText = 'some help text';
         $messageMock = $this->createMock(Messages::class);
@@ -192,10 +186,10 @@ class ModelTest extends AbstractTest
         Krexx::$pool->messages = $messageMock;
 
         // Test the return value for chaining
-        $this->assertEquals($model, $model->setHelpid('some id'));
+        $this->assertEquals($this->model, $this->model->setHelpid('some id'));
 
         // Test if the $helpText got set inside the json.
-        $this->assertEquals(['Help' => $helpText], $model->getJson());
+        $this->assertEquals(['Help' => $helpText], $this->model->getJson());
     }
 
     /**
@@ -205,7 +199,6 @@ class ModelTest extends AbstractTest
      */
     public function testAddToJson()
     {
-        $model = new Model(Krexx::$pool);
         $text = "Look\n at\r me\n\r, I'm\n\r a string";
         $key = 'some key';
         $expected = [
@@ -213,12 +206,12 @@ class ModelTest extends AbstractTest
         ];
 
         // Set the value.
-        $this->assertEquals($model, $model->addToJson($key, $text));
-        $this->assertEquals($expected, $model->getJson());
+        $this->assertEquals($this->model, $this->model->addToJson($key, $text));
+        $this->assertEquals($expected, $this->model->getJson());
 
         //Remove the value. Should be empty now.
-        $this->assertEquals($model, $model->addToJson($key, ''));
-        $this->assertEquals([], $model->getJson());
+        $this->assertEquals($this->model, $this->model->addToJson($key, ''));
+        $this->assertEquals([], $this->model->getJson());
     }
 
     /**
@@ -228,15 +221,14 @@ class ModelTest extends AbstractTest
      */
     public function testGetJson()
     {
-        $model = new Model(Krexx::$pool);
         $jsonData = [
             'some' => 'value',
             'to' => 'check',
         ];
 
         // Set it via reflections.
-        $this->setValueByReflection('json', $jsonData, $model);
-        $this->assertEquals($jsonData, $model->getJson());
+        $this->setValueByReflection('json', $jsonData, $this->model);
+        $this->assertEquals($jsonData, $this->model->getJson());
     }
 
     /**
