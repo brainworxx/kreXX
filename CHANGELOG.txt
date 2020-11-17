@@ -1,5 +1,7 @@
 4.0.1
 - Added a log model to use for a logger implementation.
+- Bugfix: Endless scrolling when clicking too fast through
+  the search.
 
 4.0.0
 - Added process resource analysis.
