@@ -1,5 +1,6 @@
 4.0.1
 - Added a log model to use for a logger implementation.
+- Added .min. support for css files.
 - Bugfix: Endless scrolling when clicking too fast through
   the search.
 
