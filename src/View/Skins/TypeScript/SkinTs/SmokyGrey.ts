@@ -235,7 +235,7 @@ class SmokyGrey extends Hans
 
             // We also need to check if the setting of the new value was successful.
             let lastValue:number = (container[0] as Element).scrollTop;
-            
+
             // Make sure to end the last interval before starting a new one.
             clearInterval(this.jumpToInterval);
             let interval:number = this.jumpToInterval = setInterval(function () {

@@ -35,47 +35,40 @@
 
 declare(strict_types=1);
 
-namespace Brainworxx\Krexx\Analyse;
+namespace Brainworxx\Krexx\Analyse\Model;
 
-use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
-use Brainworxx\Krexx\Analyse\Model\AdditionalType;
-use Brainworxx\Krexx\Analyse\Model\Callback;
-use Brainworxx\Krexx\Analyse\Model\CodeGenType;
-use Brainworxx\Krexx\Analyse\Model\ConnectorService;
-use Brainworxx\Krexx\Analyse\Model\Data;
-use Brainworxx\Krexx\Analyse\Model\DomId;
-use Brainworxx\Krexx\Analyse\Model\HasExtra;
-use Brainworxx\Krexx\Analyse\Model\IsCallback;
-use Brainworxx\Krexx\Analyse\Model\IsMetaConstants;
-use Brainworxx\Krexx\Analyse\Model\IsPublic;
-use Brainworxx\Krexx\Analyse\Model\Json;
-use Brainworxx\Krexx\Analyse\Model\KeyType;
-use Brainworxx\Krexx\Analyse\Model\MultiLineCodeGen;
-use Brainworxx\Krexx\Analyse\Model\Name;
-use Brainworxx\Krexx\Analyse\Model\Normal;
-use Brainworxx\Krexx\View\ViewConstInterface;
+use Brainworxx\Krexx\Analyse\Model;
 
-/**
- * Model for the view rendering
- *
- * @package Brainworxx\Krexx\Analyse
- */
-class Model implements ViewConstInterface, CodegenConstInterface
+trait KeyType
 {
-    use ConnectorService;
-    use Callback;
-    use Json;
-    use Data;
-    use Name;
-    use Normal;
-    use AdditionalType;
-    use DomId;
-    use HasExtra;
-    use CodeGenType;
-    use KeyType;
+    /**
+     * The type of key that is used.
+     *
+     * @var string
+     */
+    protected $keyType = '';
 
-    use MultiLineCodeGen;
-    use IsPublic;
-    use IsMetaConstants;
-    use IsCallback;
+    /**
+     * Getter for the key type.
+     *
+     * @return string
+     */
+    public function getKeyType(): string
+    {
+        return $this->keyType;
+    }
+
+    /**
+     * Setter for the key type.
+     *
+     * @param string $keyType
+     *
+     * @return $this
+     *   For chaining.
+     */
+    public function setKeyType(string $keyType): Model
+    {
+        $this->keyType = $keyType;
+        return $this;
+    }
 }

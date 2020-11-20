@@ -36,6 +36,7 @@
 namespace Brainworxx\Krexx\Tests\Unit\View\Skins\Hans;
 
 use Brainworxx\Krexx\Analyse\Code\Codegen;
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Tests\Unit\View\Skins\AbstractRenderHans;
@@ -72,6 +73,7 @@ class ExpandableChildTest extends AbstractRenderHans
         $this->mockModel(static::RENDER_ME, 'model html');
         $this->mockModel(static::GET_DOMID, 'x12345');
         $this->mockModel(static::GET_HAS_EXTRAS, true);
+        $this->mockModel(static::GET_KEY_TYPE, ProcessConstInterface::TYPE_STRING);
 
         $this->modelMock->expects($this->exactly(2))
             ->method(static::GET_TYPE)
@@ -99,6 +101,7 @@ class ExpandableChildTest extends AbstractRenderHans
         $this->assertContains('some conn', $result);
         $this->assertContains('any conn', $result);
         $this->assertContains('generated source', $result);
+        $this->assertContains(ProcessConstInterface::TYPE_STRING, $result);
         // Stuff from the nest.
         $this->assertContains('model html', $result);
         $this->assertContains('x12345', $result);

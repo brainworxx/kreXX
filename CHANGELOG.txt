@@ -1,6 +1,8 @@
 4.0.1
 - Added a log model to use for a logger implementation.
 - Added .min. support for css files.
+- Added apostrophes around string array keys to the SmokyGrey
+  skin for better readability.
 - Bugfix: Endless scrolling when clicking too fast through
   the search.
 

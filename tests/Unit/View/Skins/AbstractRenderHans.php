@@ -55,6 +55,7 @@ abstract class AbstractRenderHans extends AbstractTest
     const GET_DATA = 'getData';
     const GET_TYPE = 'getType';
     const RENDER_ME = 'renderMe';
+    const GET_KEY_TYPE = 'getKeyType';
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject

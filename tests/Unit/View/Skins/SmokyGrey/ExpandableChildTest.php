@@ -36,6 +36,7 @@
 namespace Brainworxx\Krexx\Tests\Unit\View\Skins\SmokyGrey;
 
 use Brainworxx\Krexx\Analyse\Code\Codegen;
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Tests\Unit\View\Skins\AbstractRenderSmokyGrey;
@@ -61,6 +62,7 @@ class ExpandableChildTest extends AbstractRenderSmokyGrey
         $this->mockModel(static::GET_JSON, ['Voldemort' => 'noNose.']);
         $this->mockModel(static::GET_DOMID, 'passport');
         $this->mockModel(static::RENDER_ME, 'birdnest');
+        $this->mockModel(static::GET_KEY_TYPE, ProcessConstInterface::TYPE_STRING);
 
         $this->modelMock->expects($this->exactly(2))
             ->method(static::GET_TYPE)
@@ -98,5 +100,6 @@ class ExpandableChildTest extends AbstractRenderSmokyGrey
         $this->assertContains('noNose.', $result);
         $this->assertContains('passport', $result);
         $this->assertContains('birdnest', $result);
+        $this->assertContains(ProcessConstInterface::TYPE_STRING, $result);
     }
 }

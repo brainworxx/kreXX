@@ -148,6 +148,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Model/DomId.php';
         include_once KREXX_DIR . 'src/Analyse/Model/HasExtra.php';
         include_once KREXX_DIR . 'src/Analyse/Model/CodeGenType.php';
+        include_once KREXX_DIR . 'src/Analyse/Model/KeyType.php';
         // Deprecated
         include_once KREXX_DIR . 'src/Analyse/Model/MultiLineCodeGen.php';
         include_once KREXX_DIR . 'src/Analyse/Model/IsPublic.php';

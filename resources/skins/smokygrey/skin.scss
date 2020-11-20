@@ -438,6 +438,12 @@ $fontLight: lighter 10px tahoma, verdana;
     position: relative;
     width: 100%;
 
+    .kname.keystring::before,
+    .kname.keystring::after {
+      content: "\27";
+      background: transparent;
+    }
+
     .kel {
       cursor: default;
       display: block;
