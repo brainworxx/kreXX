@@ -15,7 +15,7 @@
 - Added return type to the method and function analysis.
 - Added additional data to the constants analysis for PHP 7.1
   and higher. The scope analysis now respects their visibility.
-- Added logging shothand "krexxlog();".
+- Added logging shorthand "krexxlog();".
 - Change: Removed all deprecations.
 - Change: Removed the PHP 5.x fatal error handler.
 - Change: Dropped PHP 5.x support.
