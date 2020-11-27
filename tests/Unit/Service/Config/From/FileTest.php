@@ -94,24 +94,25 @@ class FileTest extends AbstractTest
             '; Here you can disable kreXX on a global level without uninstalling it.' . PHP_EOL .
             'disabled = "false"' . PHP_EOL .
             ';disabled = "true"' . PHP_EOL;
-        $somePath = 'some path';
+        $somePath = 'some path.';
         $garbageFile = 'garbage file';
         $notExistingFile = 'not existing file';
+        $ini = 'ini';
 
         $fileServiceMock = $this->createMock(File::class);
         $fileServiceMock->expects($this->exactly(3))
             ->method('getFileContents')
             ->withConsecutive(
-                [$somePath, false],
-                [$garbageFile, false],
-                [$notExistingFile, false]
+                [$somePath . $ini, false],
+                [$garbageFile . $ini, false],
+                [$notExistingFile . $ini, false]
             )
             ->will(
                 $this->returnValueMap(
                     [
-                        [$somePath, false, $this->fixture],
-                        [$garbageFile, false, 'Blargh'],
-                        [$notExistingFile, false, '']
+                        [$somePath . $ini, false, $this->fixture],
+                        [$garbageFile . $ini, false, 'Blargh'],
+                        [$notExistingFile . $ini, false, '']
                     ]
                 )
             );
@@ -146,15 +147,16 @@ class FileTest extends AbstractTest
         $setting = ['output' => ['disabled' => false]];
         $this->fixture = json_encode($setting);
         $somePath = 'some path.';
+        $json = 'json';
 
         $fileServiceMock = $this->createMock(File::class);
         $fileServiceMock->expects($this->once())
             ->method('getFileContents')
-            ->with($somePath)
+            ->with($somePath . $json)
             ->will($this->returnValue($this->fixture));
         $fileServiceMock->expects($this->once())
             ->method('fileIsReadable')
-            ->with($somePath . 'json')
+            ->with($somePath . $json)
             ->will($this->returnValue(true));
 
         Krexx::$pool->fileService = $fileServiceMock;

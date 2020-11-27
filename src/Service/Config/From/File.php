@@ -85,12 +85,12 @@ class File extends Fallback
     {
         if ($this->pool->fileService->fileIsReadable($path . 'json') === true) {
             $this->settings = (array)json_decode(
-                $this->pool->fileService->getFileContents($path, false),
+                $this->pool->fileService->getFileContents($path . 'json', false),
                 true
             );
         } else {
             $this->settings = (array)parse_ini_string(
-                $this->pool->fileService->getFileContents($path, false),
+                $this->pool->fileService->getFileContents($path . 'ini', false),
                 true
             );
         }
