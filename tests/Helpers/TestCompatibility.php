@@ -42,7 +42,7 @@ use PHPUnit\Framework\TestCase;
  *
  * Meh, it's better than a reflection based implementation.
  */
-if (version_compare(phpversion(), '7.2', '<')) {
+if (version_compare(phpversion(), '7.1', '<')) {
 
     /**
      * Unit tests 6 and 7
