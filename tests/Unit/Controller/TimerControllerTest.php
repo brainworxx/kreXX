@@ -51,9 +51,9 @@ class TimerControllerTest extends AbstractController
      */
     protected $controller;
 
-    public function setUp()
+    protected function krexxUp()
     {
-        parent::setUp();
+        parent::krexxUp();
 
         // Create a clean timer controller.
         $this->controller = new TimerController(Krexx::$pool);
@@ -62,9 +62,9 @@ class TimerControllerTest extends AbstractController
             ->will($this->returnValue(3000));
     }
 
-    public function tearDown()
+    protected function krexxDown()
     {
-        parent::tearDown();
+        parent::krexxDown();
 
         // Clean up the timekeeping stuff.
         $this->setValueByReflection(static::COUNTER_CACHE, [], $this->controller);

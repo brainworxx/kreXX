@@ -72,9 +72,9 @@ class ThroughMethodsTest extends AbstractTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function krexxUp()
     {
-        parent::setUp();
+        parent::krexxUp();
         $this->throughMethods = new ThroughMethods(Krexx::$pool);
     }
 

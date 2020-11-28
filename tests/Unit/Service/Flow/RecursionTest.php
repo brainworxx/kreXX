@@ -53,9 +53,9 @@ class RecursionTest extends AbstractTest
     /**
      * Create a new recursion handler
      */
-    public function setUp()
+    protected function krexxUp()
     {
-        parent::setUp();
+        parent::krexxUp();
 
         $this->recursion = new Recursion(Krexx::$pool);
     }
