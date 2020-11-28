@@ -309,15 +309,15 @@ class ThroughMethodsTest extends AbstractTest
         $this->assertEquals($connectorLeft, $model->getConnectorLeft());
         $this->assertEquals($connectorRight, $model->getConnectorRight());
         $this->assertEquals($connectorParameter, $model->getConnectorParameters());
-        $this->assertContains(
+        $this->assertStringContainsString(
             $comment,
             $model->getParameters()[$this->throughMethods::PARAM_DATA][ViewConstInterface::META_COMMENT]
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             $declaredInFile,
             $model->getParameters()[$this->throughMethods::PARAM_DATA][ViewConstInterface::META_DECLARED_IN]
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             $declaredInClass,
             $model->getParameters()[$this->throughMethods::PARAM_DATA][ViewConstInterface::META_DECLARED_IN]
         );

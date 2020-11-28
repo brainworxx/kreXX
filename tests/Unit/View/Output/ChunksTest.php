@@ -161,13 +161,13 @@ class ChunksTest extends AbstractTest
             ->with(
                 $this->callback(
                     function ($fileName) use ($fileStamp) {
-                        $this->assertContains($fileStamp, $fileName);
+                        $this->assertStringContainsString($fileStamp, $fileName);
                         return true;
                     }
                 ),
                 $this->callback(
                     function ($contents) use ($fixture) {
-                        $this->assertContains($fixture, $contents);
+                        $this->assertStringContainsString($fixture, $contents);
                         return true;
                     }
                 )
@@ -175,7 +175,7 @@ class ChunksTest extends AbstractTest
 
         Krexx::$pool->fileService = $fileServiceMock;
 
-        $this->assertContains('@@@12345_', $chunks->chunkMe($fixture));
+        $this->assertStringContainsString('@@@12345_', $chunks->chunkMe($fixture));
     }
 
     /**

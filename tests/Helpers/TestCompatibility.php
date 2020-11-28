@@ -43,6 +43,12 @@ use PHPUnit\Framework\TestCase;
  * Meh, it's better than a reflection based implementation.
  */
 if (version_compare(phpversion(), '7.2', '<')) {
+
+    /**
+     * Unit tests 6 and 7
+     *
+     * @package Brainworxx\Krexx\Tests\Helpers
+     */
     abstract class TestCompatibility extends TestCase
     {
         protected function setUp()
@@ -67,15 +73,31 @@ if (version_compare(phpversion(), '7.2', '<')) {
             $this->krexxertPostConditions();
         }
 
+        public function assertStringContainsString(string $needle, string $haystack, string $message = '')
+        {
+            $this->assertContains($needle, $haystack, $message);
+        }
+
+        public function assertStringNotContainsString(string $needle, string $haystack, string $message = '')
+        {
+            $this->assertNotContains($needle, $haystack, $message);
+        }
+
         abstract protected function krexxUp();
         abstract protected function krexxDown();
         abstract protected function krexxertPostConditions();
         abstract protected function krexxertPreConditions();
     }
 } else {
+
+    /**
+     * Unit Tests 8 and 9
+     *
+     * @package Brainworxx\Krexx\Tests\Helpers
+     */
     abstract class TestCompatibility extends TestCase
     {
-         protected function setUp(): void
+        protected function setUp(): void
         {
             $this->krexxUp();
             parent::setUp();

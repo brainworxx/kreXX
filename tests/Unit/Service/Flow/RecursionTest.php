@@ -67,7 +67,7 @@ class RecursionTest extends AbstractTest
      */
     public function testConstruct()
     {
-        $this->assertContains('Krexx', $this->recursion->getMarker());
+        $this->assertStringContainsString('Krexx', $this->recursion->getMarker());
         $this->assertSame($GLOBALS, $this->retrieveValueByReflection('globals', $this->recursion));
         $this->assertTrue($GLOBALS[$this->recursion->getMarker()]);
         $this->assertEquals(

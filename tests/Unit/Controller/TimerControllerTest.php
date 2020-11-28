@@ -96,7 +96,7 @@ class TimerControllerTest extends AbstractController
         // Adding a first entry.
         $this->controller->timerAction($first);
         $this->assertEquals([$first => 1], $this->retrieveValueByReflection(static::COUNTER_CACHE, $this->controller));
-        $this->assertArrayHasKey($first, $this->getObjectAttribute($this->controller, static::TIME_KEEPING));
+        $this->assertArrayHasKey($first, $this->retrieveValueByReflection(static::TIME_KEEPING, $this->controller));
 
         // Adding a second entry.
         $this->controller->timerAction($second);
@@ -104,8 +104,8 @@ class TimerControllerTest extends AbstractController
             [$first => 1, $second => 1],
             $this->retrieveValueByReflection(static::COUNTER_CACHE, $this->controller)
         );
-        $this->assertArrayHasKey($first, $this->getObjectAttribute($this->controller, static::TIME_KEEPING));
-        $this->assertArrayHasKey($second, $this->getObjectAttribute($this->controller, static::TIME_KEEPING));
+        $this->assertArrayHasKey($first, $this->retrieveValueByReflection(static::TIME_KEEPING, $this->controller));
+        $this->assertArrayHasKey($second, $this->retrieveValueByReflection(static::TIME_KEEPING, $this->controller));
 
         // Adding the first entry again.
         $this->controller->timerAction($first);
@@ -113,8 +113,8 @@ class TimerControllerTest extends AbstractController
             [$first => 2, $second => 1],
             $this->retrieveValueByReflection(static::COUNTER_CACHE, $this->controller)
         );
-        $this->assertArrayHasKey('[2]' . $first, $this->getObjectAttribute($this->controller, static::TIME_KEEPING));
-        $this->assertArrayHasKey($second, $this->getObjectAttribute($this->controller, static::TIME_KEEPING));
+        $this->assertArrayHasKey('[2]' . $first, $this->retrieveValueByReflection(static::TIME_KEEPING, $this->controller));
+        $this->assertArrayHasKey($second, $this->retrieveValueByReflection(static::TIME_KEEPING, $this->controller));
     }
 
     /**
