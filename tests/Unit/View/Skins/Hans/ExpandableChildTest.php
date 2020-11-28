@@ -74,6 +74,7 @@ class ExpandableChildTest extends AbstractRenderHans
         $this->mockModel(static::GET_DOMID, 'x12345');
         $this->mockModel(static::GET_HAS_EXTRAS, true);
         $this->mockModel(static::GET_KEY_TYPE, ProcessConstInterface::TYPE_STRING);
+        $this->mockModel(static::GET_DATA, 'eXXtra');
 
         $this->modelMock->expects($this->exactly(2))
             ->method(static::GET_TYPE)

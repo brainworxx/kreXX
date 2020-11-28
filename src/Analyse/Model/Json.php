@@ -72,13 +72,13 @@ trait Json
      *
      * @param string $key
      *   The array key.
-     * @param mixed $value
+     * @param string $value
      *   The value we want to set.
      *
      * @return Model
      *   $this for chaining.
      */
-    public function addToJson(string $key, $value): Model
+    public function addToJson(string $key, string $value): Model
     {
 
         if (empty($value) === true) {
