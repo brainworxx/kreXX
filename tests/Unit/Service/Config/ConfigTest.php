@@ -92,8 +92,8 @@ class ConfigTest extends AbstractTest
     public function testConstructNormal()
     {
         // Setup some fixtures.
-        $chunkPath = 'chunks path';
-        $configPath = 'config path';
+        $chunkPath = 'chunks' . DIRECTORY_SEPARATOR . 'path';
+        $configPath = 'config' . DIRECTORY_SEPARATOR . 'path';
         $logPath = 'log path';
         $evilClassOne = 'some classname';
         $evilClassTwo = 'another classname';
