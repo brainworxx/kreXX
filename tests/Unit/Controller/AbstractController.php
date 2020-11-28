@@ -128,7 +128,7 @@ class AbstractController extends AbstractTest
 
         $configMock = $this->createMock(Config::class);
         $configMock->expects($this->once())
-            ->method('getPathToIniFile')
+            ->method('getPathToConfigFile')
             ->will($this->returnValue($pathToIni));
         $configMock->expects($this->once())
             ->method('getSkinDirectory')

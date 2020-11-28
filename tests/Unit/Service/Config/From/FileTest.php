@@ -36,17 +36,17 @@
 namespace Brainworxx\Krexx\Tests\Unit\Service\Config\From;
 
 use Brainworxx\Krexx\Krexx;
-use Brainworxx\Krexx\Service\Config\From\Ini;
+use Brainworxx\Krexx\Service\Config\From\File as ConfigFromFile;
 use Brainworxx\Krexx\Service\Config\Validation;
 use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 
-class IniTest extends AbstractTest
+class FileTest extends AbstractTest
 {
-    const INI_SETTINGS = 'iniSettings';
+    const SETTINGS = 'settings';
 
     /**
-     * Fixture for injection in the ini class.
+     * Fixture for injection in the configuration class.
      *
      * @var array
      */
@@ -56,12 +56,12 @@ class IniTest extends AbstractTest
     {
         parent::setUp();
         $this->fixture = [
-            Ini::SECTION_FE_EDITING => [
-                Ini::SETTING_SKIN => Ini::RENDER_TYPE_INI_NONE,
-                Ini::SETTING_DETECT_AJAX => Ini::RENDER_TYPE_INI_DISPLAY,
-                Ini::SETTING_NESTING_LEVEL => Ini::RENDER_TYPE_INI_FULL,
-                Ini::SETTING_DEBUG_METHODS => Ini::RENDER_TYPE_INI_FULL,
-                Ini::SETTING_ANALYSE_PRIVATE => 'garbage'
+            ConfigFromFile::SECTION_FE_EDITING => [
+                ConfigFromFile::SETTING_SKIN => ConfigFromFile::RENDER_TYPE_CONFIG_NONE,
+                ConfigFromFile::SETTING_DETECT_AJAX => ConfigFromFile::RENDER_TYPE_CONFIG_DISPLAY,
+                ConfigFromFile::SETTING_NESTING_LEVEL => ConfigFromFile::RENDER_TYPE_CONFIG_FULL,
+                ConfigFromFile::SETTING_DEBUG_METHODS => ConfigFromFile::RENDER_TYPE_CONFIG_FULL,
+                ConfigFromFile::SETTING_ANALYSE_PRIVATE => 'garbage'
             ]
         ];
     }
@@ -69,20 +69,20 @@ class IniTest extends AbstractTest
     /**
      * Testing the setting of the validation class.
      *
-     * @covers \Brainworxx\Krexx\Service\Config\From\Ini::__construct
+     * @covers \Brainworxx\Krexx\Service\Config\From\File::__construct
      */
     public function testConstruct()
     {
-        $ini = new Ini(Krexx::$pool);
-        $this->assertSame(Krexx::$pool->config->validation, $this->retrieveValueByReflection('validation', $ini));
+        $config = new ConfigFromFile(Krexx::$pool);
+        $this->assertSame(Krexx::$pool->config->validation, $this->retrieveValueByReflection('validation', $config));
     }
 
     /**
      * Test the loading of an ini file into the settings.
      *
-     * @covers \Brainworxx\Krexx\Service\Config\From\Ini::loadIniFile
+     * @covers \Brainworxx\Krexx\Service\Config\From\File::loadFile
      */
-    public function testLoadIniFile()
+    public function testLoadFileIni()
     {
         $this->fixture = ';' . PHP_EOL .
             '; kreXX CONFIGURATION FILE' . PHP_EOL .
@@ -94,93 +94,125 @@ class IniTest extends AbstractTest
             '; Here you can disable kreXX on a global level without uninstalling it.' . PHP_EOL .
             'disabled = "false"' . PHP_EOL .
             ';disabled = "true"' . PHP_EOL;
-        $somePath = 'some path';
+        $somePath = 'some path.';
         $garbageFile = 'garbage file';
         $notExistingFile = 'not existing file';
+        $ini = 'ini';
 
         $fileServiceMock = $this->createMock(File::class);
         $fileServiceMock->expects($this->exactly(3))
             ->method('getFileContents')
             ->withConsecutive(
-                [$somePath, false],
-                [$garbageFile, false],
-                [$notExistingFile, false]
+                [$somePath . $ini, false],
+                [$garbageFile . $ini, false],
+                [$notExistingFile . $ini, false]
             )
             ->will(
                 $this->returnValueMap(
                     [
-                        [$somePath, false, $this->fixture],
-                        [$garbageFile, false, 'Blargh'],
-                        [$notExistingFile, false, '']
+                        [$somePath . $ini, false, $this->fixture],
+                        [$garbageFile . $ini, false, 'Blargh'],
+                        [$notExistingFile . $ini, false, '']
                     ]
                 )
             );
 
         Krexx::$pool->fileService = $fileServiceMock;
-        $ini = new Ini(Krexx::$pool);
+        $config = new ConfigFromFile(Krexx::$pool);
 
-        $ini->loadIniFile($somePath);
+        $config->loadFile($somePath);
         $this->assertEquals(
             [
                 'output' => [
                     'disabled' => 'false'
                 ]
             ],
-            $this->retrieveValueByReflection(static::INI_SETTINGS, $ini)
+            $this->retrieveValueByReflection(static::SETTINGS, $config)
         );
 
-        $ini->loadIniFile($garbageFile);
-        $this->assertEquals([], $this->retrieveValueByReflection(static::INI_SETTINGS, $ini));
+        $config->loadFile($garbageFile);
+        $this->assertEquals([], $this->retrieveValueByReflection(static::SETTINGS, $config));
 
-        $ini->loadIniFile($notExistingFile);
-        $this->assertEquals([], $this->retrieveValueByReflection(static::INI_SETTINGS, $ini));
+        $config->loadFile($notExistingFile);
+        $this->assertEquals([], $this->retrieveValueByReflection(static::SETTINGS, $config));
+    }
+
+    /**
+     * Test the loading of an json file into the settings.
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\From\File::loadFile
+     */
+    public function testLoadFileJson()
+    {
+        $setting = ['output' => ['disabled' => false]];
+        $this->fixture = json_encode($setting);
+        $somePath = 'some path.';
+        $json = 'json';
+
+        $fileServiceMock = $this->createMock(File::class);
+        $fileServiceMock->expects($this->once())
+            ->method('getFileContents')
+            ->with($somePath . $json)
+            ->will($this->returnValue($this->fixture));
+        $fileServiceMock->expects($this->once())
+            ->method('fileIsReadable')
+            ->with($somePath . $json)
+            ->will($this->returnValue(true));
+
+        Krexx::$pool->fileService = $fileServiceMock;
+        $config = new ConfigFromFile(Krexx::$pool);
+        $config->loadFile($somePath);
+        $this->assertEquals(
+            $setting,
+            $this->retrieveValueByReflection(static::SETTINGS, $config)
+        );
     }
 
     /**
      * Test the translating from the more human readable into the stuff for
      * the skin "engine".
      *
-     * @covers \Brainworxx\Krexx\Service\Config\From\Ini::getFeConfigFromFile
+     * @covers \Brainworxx\Krexx\Service\Config\From\File::getFeConfigFromFile
      */
     public function testGetFeConfigFromFile()
     {
         // Test without any file data.
-        $ini = new Ini(Krexx::$pool);
-        $this->assertNull($ini->getFeConfigFromFile($ini::SETTING_SKIN));
+        $config = new ConfigFromFile(Krexx::$pool);
+        $this->assertNull($config->getFeConfigFromFile($config::SETTING_SKIN));
 
         // Test with some fixtures.
-        $this->setValueByReflection(static::INI_SETTINGS, $this->fixture, $ini);
+        $this->setValueByReflection(static::SETTINGS, $this->fixture, $config);
         $none = [
-            Ini::RENDER_TYPE => Ini::RENDER_TYPE_NONE,
-            Ini::RENDER_EDITABLE => Ini::VALUE_FALSE
+            ConfigFromFile::RENDER_TYPE => ConfigFromFile::RENDER_TYPE_NONE,
+            ConfigFromFile::RENDER_EDITABLE => ConfigFromFile::VALUE_FALSE
         ];
 
-        $this->assertEquals($none, $ini->getFeConfigFromFile($ini::SETTING_SKIN));
+        $this->assertEquals($none, $config->getFeConfigFromFile($config::SETTING_SKIN));
         $this->assertEquals(
             [
-                Ini::RENDER_TYPE => Ini::RENDER_TYPE_SELECT,
-                Ini::RENDER_EDITABLE => Ini::VALUE_FALSE
+                ConfigFromFile::RENDER_TYPE => ConfigFromFile::RENDER_TYPE_SELECT,
+                ConfigFromFile::RENDER_EDITABLE => ConfigFromFile::VALUE_FALSE
             ],
-            $ini->getFeConfigFromFile($ini::SETTING_DETECT_AJAX)
+            $config->getFeConfigFromFile($config::SETTING_DETECT_AJAX)
         );
         $this->assertEquals(
             [
-                Ini::RENDER_TYPE => Ini::RENDER_TYPE_INPUT,
-                Ini::RENDER_EDITABLE => Ini::VALUE_TRUE
+                ConfigFromFile::RENDER_TYPE => ConfigFromFile::RENDER_TYPE_INPUT,
+                ConfigFromFile::RENDER_EDITABLE => ConfigFromFile::VALUE_TRUE
             ],
-            $ini->getFeConfigFromFile($ini::SETTING_NESTING_LEVEL)
+            $config->getFeConfigFromFile($config::SETTING_NESTING_LEVEL)
         );
         $this->assertNull(
-            $ini->getFeConfigFromFile($ini::SETTING_DEBUG_METHODS),
+            $config->getFeConfigFromFile($config::SETTING_DEBUG_METHODS),
             'Never! We ignore the setting completely.'
         );
-        $this->assertEquals($none, $ini->getFeConfigFromFile($ini::SETTING_ANALYSE_PRIVATE), 'Fallback to do-not-edit');
+        $this->assertEquals($none, $config->getFeConfigFromFile($config::SETTING_ANALYSE_PRIVATE), 'Fallback to do-not-edit');
     }
 
     /**
      * Testing the retrival and validation from the settings array.
      *
-     * @covers \Brainworxx\Krexx\Service\Config\From\Ini::getConfigFromFile
+     * @covers \Brainworxx\Krexx\Service\Config\From\File::getConfigFromFile
      */
     public function testGetConfigFromFile()
     {
@@ -212,11 +244,11 @@ class IniTest extends AbstractTest
                 $wrongSetting => $wrongValue
             ]
         ];
-        $ini = new Ini(Krexx::$pool);
-        $this->setValueByReflection(static::INI_SETTINGS, $this->fixture, $ini);
+        $config = new ConfigFromFile(Krexx::$pool);
+        $this->setValueByReflection(static::SETTINGS, $this->fixture, $config);
 
-        $this->assertNull($ini->getConfigFromFile('some group', 'unknown setting'));
-        $this->assertEquals($whatever, $ini->getConfigFromFile($anotherGroup, $knownSetting));
-        $this->assertNull($ini->getConfigFromFile($groupy, $wrongSetting));
+        $this->assertNull($config->getConfigFromFile('some group', 'unknown setting'));
+        $this->assertEquals($whatever, $config->getConfigFromFile($anotherGroup, $knownSetting));
+        $this->assertNull($config->getConfigFromFile($groupy, $wrongSetting));
     }
 }

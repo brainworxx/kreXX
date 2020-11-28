@@ -171,7 +171,10 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Service/Config/Validation.php';
 
         include_once KREXX_DIR . 'src/Service/Config/From/Cookie.php';
+        include_once KREXX_DIR . 'src/Service/Config/From/File.php';
+        // Deprecated
         include_once KREXX_DIR . 'src/Service/Config/From/Ini.php';
+        //
 
         include_once KREXX_DIR . 'src/Service/Factory/EventHandlerInterface.php';
         include_once KREXX_DIR . 'src/Service/Factory/Event.php';

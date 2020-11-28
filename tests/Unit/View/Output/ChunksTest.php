@@ -38,7 +38,7 @@ namespace Brainworxx\Krexx\Tests\Unit\View\Output;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\Fallback;
-use Brainworxx\Krexx\Service\Config\From\Ini;
+use Brainworxx\Krexx\Service\Config\From\File as ConfigFromFile;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Misc\Encoding;
 use Brainworxx\Krexx\Service\Misc\File;
@@ -394,7 +394,7 @@ class ChunksTest extends AbstractTest
 
         // Test with file output
         ConfigSupplier::$overwriteValues[Fallback::SETTING_DESTINATION] = Fallback::VALUE_FILE;
-        Registration::addRewrite(Ini::class, ConfigSupplier::class);
+        Registration::addRewrite(ConfigFromFile::class, ConfigSupplier::class);
         Krexx::$pool = null;
         Pool::createPool();
         $chunks = new Chunks(Krexx::$pool);
