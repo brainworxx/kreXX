@@ -50,5 +50,31 @@ namespace Brainworxx\Krexx\Service\Config\From;
  */
 class Ini extends File
 {
+    /**
+     * Get the configuration of the frontend config form.
+     *
+     * @param string $name
+     *
+     * @deprecated
+     *   Since 4.0.0. Will be removed.
+     *
+     * @codeCoverageIgnore
+     *   We do not test deprecated methods.
+     *
+     * @return bool
+     *   Well? is it editable?
+     */
+    public function getFeIsEditable(string $name): bool
+    {
+        // Load it from the file.
+        $filevalue = $this->getFeConfigFromFile($name);
 
+        // Do we have a value?
+        if (empty($filevalue) === true) {
+            // Use the fallback.
+            return $this->feConfigFallback[$name][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE;
+        }
+
+        return $filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE;
+    }
 }

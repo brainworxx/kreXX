@@ -251,4 +251,14 @@ class FileTest extends AbstractTest
         $this->assertEquals($whatever, $config->getConfigFromFile($anotherGroup, $knownSetting));
         $this->assertNull($config->getConfigFromFile($groupy, $wrongSetting));
     }
+
+    /**
+     * @covers \Brainworxx\Krexx\Service\Config\From\File::getConfigFileType
+     */
+    public function testGetConfigFileType()
+    {
+        $config = new ConfigFromFile(Krexx::$pool);
+        $config->loadFile('inni');
+        $this->assertEquals('ini', $config->getConfigFileType(), 'Why is dos inni trigger ini? We\'ll never know . . .');
+    }
 }

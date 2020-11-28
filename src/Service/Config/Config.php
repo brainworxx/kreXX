@@ -350,6 +350,16 @@ class Config extends Fallback
     }
 
     /**
+     * Getter for the configuration file type.
+     *
+     * @return string
+     */
+    public function getConfigFileType(): string
+    {
+        return $this->fileConfig->getConfigFileType();
+    }
+
+    /**
      * Create the model with the fe editing settings.
      *
      * @param string $name

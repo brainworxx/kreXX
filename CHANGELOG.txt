@@ -3,6 +3,7 @@
 - Added .min. support for css files.
 - Added apostrophes around string array keys to the SmokyGrey
   skin for better readability.
+- Added support for a JSON configuration file.
 - Bugfix: Endless scrolling when clicking too fast through
   the search.
 

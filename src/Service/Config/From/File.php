@@ -62,6 +62,13 @@ class File extends Fallback
     protected $settings = [];
 
     /**
+     * The config file type we are using. "ini" or "json".
+     *
+     * @var string
+     */
+    protected $configFileType = '';
+
+    /**
      * Inject the pool, create the security handler, load the file.
      *
      * @param Pool $pool
@@ -88,42 +95,26 @@ class File extends Fallback
                 $this->pool->fileService->getFileContents($path . 'json', false),
                 true
             );
+            $this->configFileType = 'json';
         } else {
             $this->settings = (array)parse_ini_string(
                 $this->pool->fileService->getFileContents($path . 'ini', false),
                 true
             );
+            $this->configFileType = 'ini';
         }
 
         return $this;
     }
 
     /**
-     * Get the configuration of the frontend config form.
+     * Getter for the configuration file type.
      *
-     * @param string $name
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @return bool
-     *   Well? is it editable?
+     * @return string
      */
-    public function getFeIsEditable(string $name): bool
+    public function getConfigFileType(): string
     {
-        // Load it from the file.
-        $filevalue = $this->getFeConfigFromFile($name);
-
-        // Do we have a value?
-        if (empty($filevalue) === true) {
-            // Use the fallback.
-            return $this->feConfigFallback[$name][static::RENDER][static::RENDER_EDITABLE] === static::VALUE_TRUE;
-        }
-
-        return $filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE;
+        return $this->configFileType;
     }
 
     /**
