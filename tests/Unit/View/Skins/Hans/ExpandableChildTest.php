@@ -94,17 +94,17 @@ class ExpandableChildTest extends AbstractRenderHans
         Krexx::$pool->chunks = $chunkMock;
 
         $result = $this->renderHans->renderExpandableChild($this->modelMock, true);
-        $this->assertContains('Stringh', $result);
-        $this->assertContains('In-Tee-Ger', $result);
-        $this->assertContains('another name', $result);
-        $this->assertContains('not normal', $result);
-        $this->assertContains('some conn', $result);
-        $this->assertContains('any conn', $result);
-        $this->assertContains('generated source', $result);
-        $this->assertContains(ProcessConstInterface::TYPE_STRING, $result);
+        $this->assertStringContainsString('Stringh', $result);
+        $this->assertStringContainsString('In-Tee-Ger', $result);
+        $this->assertStringContainsString('another name', $result);
+        $this->assertStringContainsString('not normal', $result);
+        $this->assertStringContainsString('some conn', $result);
+        $this->assertStringContainsString('any conn', $result);
+        $this->assertStringContainsString('generated source', $result);
+        $this->assertStringContainsString(ProcessConstInterface::TYPE_STRING, $result);
         // Stuff from the nest.
-        $this->assertContains('model html', $result);
-        $this->assertContains('x12345', $result);
-        $this->assertNotContains('khidden', $result);
+        $this->assertStringContainsString('model html', $result);
+        $this->assertStringContainsString('x12345', $result);
+        $this->assertStringNotContainsString('khidden', $result);
     }
 }

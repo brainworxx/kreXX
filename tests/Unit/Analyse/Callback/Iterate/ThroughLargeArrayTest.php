@@ -65,9 +65,9 @@ class ThroughLargeArrayTest extends AbstractTest
      */
     protected $renderMock;
 
-    public function setUp()
+    protected function krexxUp()
     {
-        parent::setUp();
+        parent::krexxUp();
 
         // Test start event
         $this->throughLargeArray = new ThroughLargeArray(Krexx::$pool);

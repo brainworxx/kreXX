@@ -91,15 +91,15 @@ class ExpandableChildTest extends AbstractRenderSmokyGrey
         Krexx::$pool->codegenHandler = $codegenMock;
 
         $result = $this->renderSmokyGrey->renderExpandableChild($this->modelMock);
-        $this->assertContains('Model name', $result);
-        $this->assertContains('my', $result);
-        $this->assertContains('type', $result);
-        $this->assertContains('Turbo Pasquale', $result);
-        $this->assertContains('I am not', $result);
-        $this->assertContains('he who must not be pampered', $result);
-        $this->assertContains('noNose.', $result);
-        $this->assertContains('passport', $result);
-        $this->assertContains('birdnest', $result);
-        $this->assertContains(ProcessConstInterface::TYPE_STRING, $result);
+        $this->assertStringContainsString('Model name', $result);
+        $this->assertStringContainsString('my', $result);
+        $this->assertStringContainsString('type', $result);
+        $this->assertStringContainsString('Turbo Pasquale', $result);
+        $this->assertStringContainsString('I am not', $result);
+        $this->assertStringContainsString('he who must not be pampered', $result);
+        $this->assertStringContainsString('noNose.', $result);
+        $this->assertStringContainsString('passport', $result);
+        $this->assertStringContainsString('birdnest', $result);
+        $this->assertStringContainsString(ProcessConstInterface::TYPE_STRING, $result);
     }
 }

@@ -57,9 +57,9 @@ class AbstractController extends AbstractTest
      */
     protected $callerFinderResult;
 
-    public function setUp()
+    protected function krexxUp()
     {
-        parent::setUp();
+        parent::krexxUp();
 
         $this->callerFinderResult = [
             BacktraceConstInterface::TRACE_FILE => 'just another path',
