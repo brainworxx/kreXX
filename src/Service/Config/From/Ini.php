@@ -77,4 +77,24 @@ class Ini extends File
 
         return $filevalue[static::RENDER_EDITABLE] === static::VALUE_TRUE;
     }
+
+    /**
+     * Setter for the ini path.
+     *
+     * @param string $path
+     *   The path to the ini file.
+     *
+     * @deprecated
+     *   Since 4.0.1. Will be removed. Use loadFile instead.
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
+     *
+     * @return $this
+     *   Return $this, for chaining.
+     */
+    public function loadIniFile(string $path): Ini
+    {
+        return $this->loadFile($path);
+    }
 }
