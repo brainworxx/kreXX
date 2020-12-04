@@ -36,13 +36,14 @@
 namespace Brainworxx\Krexx\Tests\Helpers;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Version;
 
 /**
  * Compatibility wrapper for unit tests.
  *
  * Meh, it's better than a reflection based implementation.
  */
-if (version_compare(phpversion(), '7.1', '<')) {
+if (version_compare(Version::id(), '7.99', '<')) {
 
     /**
      * Unit tests 6 and 7
