@@ -93,9 +93,7 @@ if (version_compare(Version::id(), '6.99', '<')) {
         abstract protected function krexxertPreConditions();
     }
 
-}
-
-if (version_compare(Version::id(), '6.99', '<')) {
+} elseif (version_compare(Version::id(), '7.99', '<')) {
     /**
      * Unit tests 7
      *
@@ -126,11 +124,8 @@ if (version_compare(Version::id(), '6.99', '<')) {
         }
 
         abstract protected function krexxUp();
-
         abstract protected function krexxDown();
-
         abstract protected function krexxertPostConditions();
-
         abstract protected function krexxertPreConditions();
     }
 } else {
