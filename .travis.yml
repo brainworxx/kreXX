@@ -20,4 +20,5 @@ before_script:
 
 script:
   - "./vendor/bin/phpunit --testsuite=krexxsuit --coverage-clover=build/logs/clover.xml"
-  - "./cc-test-reporter after-build --debug --exit-code $TRAVIS_TEST_RESULT"
+  - "cat build/logs/clover.xml"
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
