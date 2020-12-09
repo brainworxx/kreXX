@@ -19,5 +19,5 @@ before_script:
   - ./cc-test-reporter before-build
 
 script:
-  - "./vendor/bin/phpunit --testsuite=krexxsuit --coverage-text --coverage-clover build/logs/clover.xml"
+  - "./vendor/bin/phpunit --testsuite=krexxsuit --coverage-clover=build/logs/clover.xml"
   - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
