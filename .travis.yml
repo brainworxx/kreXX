@@ -1,24 +1,26 @@
-env:
-  global:
-    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
-
 language: php
+
 php:
   - '7.4'
+    env: COVERAGE="YES"
   - '7.3'
+    env: COVERAGE="NO"
   - '7.2'
+    env: COVERAGE="NO"
   - '7.1'
+    env: COVERAGE="NO"
   - '7.0'
+    env: COVERAGE="NO"
 
 install:
   - composer install
 
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - if [[ "$COVERAGE" != "NO" ]]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 
 script:
-  - "./vendor/bin/phpunit --testsuite=krexxsuit --coverage-clover=build/logs/clover.xml"
-  - "cat build/logs/clover.xml"
-  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+  - if [[ "$COVERAGE" != "NO" ]]; then ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml; else ./vendor/bin/phpunit; fi
+after_script:
+  - if [[ "$COVERAGE" != "NO" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
