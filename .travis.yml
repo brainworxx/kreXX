@@ -23,7 +23,7 @@ install:
 
 before_script:
   - if [ "$COVERAGE" == "YES" ]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
-  - if [ "$COVERAGE" == "YES" ]; thenchmod +x ./cc-test-reporter; fi
+  - if [ "$COVERAGE" == "YES" ]; then chmod +x ./cc-test-reporter; fi
   - if [ "$COVERAGE" == "YES" ]; then ./cc-test-reporter before-build; fi
 
 script:
