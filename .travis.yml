@@ -15,7 +15,7 @@ matrix:
       env: COVERAGE="NO"
     - php: '7.1'
       env: COVERAGE="NO"
-    - php:'7.0'
+    - php: '7.0'
       env: COVERAGE="NO"
 
 install:
