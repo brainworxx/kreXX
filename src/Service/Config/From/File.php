@@ -83,13 +83,17 @@ class File extends Fallback
      */
     public function loadFile(string $path): File
     {
+        // Fallback to empty.
+        $this->settings = [];
+
         if ($this->pool->fileService->fileIsReadable($path) === false) {
             return $this;
         }
 
         $content = $this->pool->fileService->getFileContents($path, false);
-        $this->settings = (array)json_decode($content, true);
-        if ($this->settings === [false]) {
+        $this->settings = json_decode($content, true);
+
+        if (empty($this->settings)) {
             // Fallback to ini.
             $this->settings = (array)parse_ini_string($content, true);
         }

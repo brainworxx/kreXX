@@ -125,14 +125,14 @@ class FileTest extends AbstractTest
         $config = new ConfigFromFile(Krexx::$pool);
 
         $config->loadFile($somePath);
-//        $this->assertEquals(
-//            [
-//                'output' => [
-//                    'disabled' => 'false'
-//                ]
-//            ],
-//            $this->retrieveValueByReflection(static::SETTINGS, $config)
-//        );
+        $this->assertEquals(
+            [
+                'output' => [
+                    'disabled' => 'false'
+                ]
+            ],
+            $this->retrieveValueByReflection(static::SETTINGS, $config)
+        );
 
         $config->loadFile($garbageFile);
         $this->assertEquals([], $this->retrieveValueByReflection(static::SETTINGS, $config));
