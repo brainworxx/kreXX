@@ -79,7 +79,7 @@ class Validation extends Fallback
     const KEY_CONFIG_ERROR_DEBUG_INVALID = 'configErrorDebugInvalid';
 
     /**
-     * Preconfiguration for the logging options.
+     * Preconfiguration which setting will never be editable.
      *
      * @var array
      */
@@ -89,6 +89,13 @@ class Validation extends Fallback
         self::SETTING_DEBUG_METHODS,
         self::SETTING_IP_RANGE,
     ];
+
+    /**
+     * Loaded preconfiguration which setting will never be editable.
+     *
+     * @var array
+     */
+    protected $feDoNotEdit = [];
 
     /**
      * Known Problems with debug functions, which will most likely cause a fatal.
@@ -145,6 +152,9 @@ class Validation extends Fallback
             $this->classBlacklist,
             SettingsGetter::getBlacklistDebugClass()
         );
+
+        // "Load" the settings for the do-not-edit config.
+        $this->feDoNotEdit = static::FE_DO_NOT_EDIT;
     }
 
     /**
@@ -163,9 +173,8 @@ class Validation extends Fallback
     public function evaluateSetting(string $group, string $name, $value): bool
     {
         if ($group === static::SECTION_FE_EDITING) {
-            // Logging options can never be changed in the frontend.
-            // The debug methods will also not be editable.
-            return !in_array($name, static::FE_DO_NOT_EDIT);
+            // These settings can never be changed in the frontend.
+            return !in_array($name, $this->feDoNotEdit);
         }
 
         // We simply call the configured evaluation method.

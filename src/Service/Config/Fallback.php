@@ -407,12 +407,12 @@ abstract class Fallback implements ConfigConstInterface
     protected function returnDestination(): array
     {
         return [
-                // Either 'file' or 'browser'.
-                static::VALUE => static::VALUE_BROWSER,
-                static::RENDER => static::DISPLAY_ONLY_SELECT,
-                static::EVALUATE => static::EVAL_DESTINATION,
-                static::SECTION => static::SECTION_BEHAVIOR,
-            ];
+            // Either 'file' or 'browser'.
+            static::VALUE => static::VALUE_BROWSER,
+            static::RENDER => static::DISPLAY_ONLY_SELECT,
+            static::EVALUATE => static::EVAL_DESTINATION,
+            static::SECTION => static::SECTION_BEHAVIOR,
+        ];
     }
 
     /**
