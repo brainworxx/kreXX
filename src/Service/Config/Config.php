@@ -348,7 +348,6 @@ class Config extends Fallback
     {
         return array_keys($this->skinConfiguration);
     }
-    
 
     /**
      * Create the model with the fe editing settings.

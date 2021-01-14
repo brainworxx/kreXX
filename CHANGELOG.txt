@@ -5,6 +5,7 @@
   skin for better readability.
 - Added support for a JSON configuration file.
 - Added PHP 8.0 support.
+- Allow plugins to register their own settings.
 - Bugfix: Endless scrolling when clicking too fast through
   the search.
 - Bugfix: Exception when using one php statement and a krexx
