@@ -35,6 +35,7 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Service\Plugin;
 
+use Brainworxx\Krexx\Service\Plugin\NewSetting;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Krexx;
@@ -194,11 +195,25 @@ class RegistrationTest extends AbstractRegistration
 
     /**
      * Test the registration of additional string processors.
+     *
+     * @covers \Brainworxx\Krexx\Service\Plugin\Registration::addScalarStringAnalyser
      */
     public function testRegisterAdditionalScalarString()
     {
         Registration::addScalarStringAnalyser(static::class);
         $this->assertEquals([static::class], SettingsGetter::getAdditionalScalarString());
+    }
+
+    /**
+     * Test the adding of new configuration definitions
+     *
+     * @covers \Brainworxx\Krexx\Service\Plugin\Registration::addNewSettings
+     */
+    public function testAddNewSetting()
+    {
+        $setting = new NewSetting();
+        Registration::addNewSettings($setting);
+        $this->assertEquals($setting, SettingsGetter::getNewSettings()[0]);
     }
 
     /**

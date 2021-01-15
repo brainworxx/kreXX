@@ -38,6 +38,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Service\Config;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Config\Validation;
+use Brainworxx\Krexx\Service\Plugin\NewSetting;
 use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use ReflectionType;
@@ -193,6 +194,47 @@ class ValidationTest extends AbstractTest
         $this->assertEquals(
             true,
             $validation->evaluateSetting('some group', Fallback::SETTING_DISABLED, false)
+        );
+    }
+
+    /**
+     * Crete a custom setting, and then evaluate it.
+     */
+    public function testEvaluateSettingCustom()
+    {
+        $settingName = 'editableBoolean';
+        $sectionName = 'someWhere';
+
+        $customSetting = new NewSetting();
+        $customSetting->setName($settingName)
+            ->setValidation($customSetting::EVAL_BOOL)
+            ->setSection($sectionName)
+            ->setRenderType(NewSetting::RENDER_TYPE_SELECT)
+            ->setIsEditable(true)
+            ->setDefaultValue('true')
+            ->setIsFeProtected(false);
+        Registration::addNewSettings($customSetting);
+
+        $anotherSettingName = 'notEditableInput';
+        $customSetting = new NewSetting();
+        $customSetting->setName($anotherSettingName)
+            ->setValidation($customSetting::EVAL_DEBUG_METHODS)
+            ->setSection($sectionName)
+            ->setRenderType(NewSetting::RENDER_TYPE_INPUT)
+            ->setIsEditable(false)
+            ->setDefaultValue('true')
+            ->setIsFeProtected(true);
+        Registration::addNewSettings($customSetting);
+
+        $validation = new Validation(Krexx::$pool);
+
+        $this->assertTrue(
+            $validation->evaluateSetting($sectionName, $settingName, false),
+            'Simple, editable boolean.'
+        );
+        $this->assertFalse(
+            $validation->evaluateSetting($validation::SECTION_FE_EDITING, $anotherSettingName, 'Barf!'),
+            'Test the cookie editing. It is protected and must fail.'
         );
     }
 }
