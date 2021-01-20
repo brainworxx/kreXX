@@ -70,7 +70,7 @@ class NewSetting implements ConfigConstInterface
     /**
      * Method name of the validation class that is used to validate this setting.
      *
-     * @var string
+     * @var string|Closure
      */
     protected $validation = '';
 
@@ -134,6 +134,8 @@ class NewSetting implements ConfigConstInterface
      *   NewSetting::EVAL_SKIN
      *   NewSetting::EVAL_IP_RANGE
      *   NewSetting::EVAL_DEBUG_METHODS
+     *   or
+     *   closure
      *
      * @api
      *
@@ -143,7 +145,7 @@ class NewSetting implements ConfigConstInterface
      * @return $this
      *   $this for chaining.
      */
-    public function setValidation(string $validation): NewSetting
+    public function setValidation($validation): NewSetting
     {
         $this->validation = $validation;
         return $this;

@@ -199,6 +199,8 @@ class ValidationTest extends AbstractTest
 
     /**
      * Crete a custom setting, and then evaluate it.
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\Validation::evaluateSetting
      */
     public function testEvaluateSettingCustom()
     {
@@ -226,6 +228,20 @@ class ValidationTest extends AbstractTest
             ->setIsFeProtected(true);
         Registration::addNewSettings($customSetting);
 
+        $callbackSettingName = 'callbackSetting';
+        $callback = function ($value) {
+            return $value === 'whatever';
+        };
+        $callbackSetting = new NewSetting();
+        $callbackSetting->setName($callbackSettingName)
+            ->setValidation($callback)
+            ->setSection($sectionName)
+            ->setRenderType(NewSetting::RENDER_TYPE_NONE)
+            ->setIsEditable(true)
+            ->setDefaultValue('whatever')
+            ->setIsFeProtected(false);
+        Registration::addNewSettings($callbackSetting);
+
         $validation = new Validation(Krexx::$pool);
 
         $this->assertTrue(
@@ -235,6 +251,14 @@ class ValidationTest extends AbstractTest
         $this->assertFalse(
             $validation->evaluateSetting($validation::SECTION_FE_EDITING, $anotherSettingName, 'Barf!'),
             'Test the cookie editing. It is protected and must fail.'
+        );
+        $this->assertFalse(
+            $validation->evaluateSetting($sectionName, $callbackSettingName, 'nothing to see here.'),
+            'Test the usage of the callback. Wrong value here.'
+        );
+        $this->assertTrue(
+            $validation->evaluateSetting($sectionName, $callbackSettingName, 'whatever'),
+            'Test the usage of the callback. Right'
         );
     }
 }

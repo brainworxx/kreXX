@@ -123,14 +123,14 @@ class Registration implements ConfigConstInterface, PluginConstInterface
     /**
      * List of all additionally registered classes, that can do a string analysis.
      *
-     * @var array
+     * @var string[]
      */
     protected static $additionalScalarString = [];
 
     /**
      * Additional configuration for the plugin.
      *
-     * @var array
+     * @var \Brainworxx\Krexx\Service\Plugin\NewSetting[]
      */
     protected static $newSettings = [];
 

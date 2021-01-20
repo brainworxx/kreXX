@@ -42,6 +42,7 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 use ReflectionGenerator;
 use ReflectionType;
 use Reflector;
+use Closure;
 
 /**
  * Validation stuff for the configuration.
@@ -192,6 +193,10 @@ class Validation extends Fallback
 
         // We simply call the configured evaluation method.
         $callback = $this->feConfigFallback[$name][static::EVALUATE];
+        if ($callback instanceof Closure) {
+            return $callback($value);
+        }
+
         return $this->$callback($value, $name, $group);
     }
 
