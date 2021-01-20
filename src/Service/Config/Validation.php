@@ -42,6 +42,7 @@ use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 use ReflectionGenerator;
 use ReflectionType;
 use Reflector;
+use Closure;
 
 /**
  * Validation stuff for the configuration.
@@ -153,8 +154,21 @@ class Validation extends Fallback
             SettingsGetter::getBlacklistDebugClass()
         );
 
-        // "Load" the settings for the do-not-edit config.
+        // Load the settings for the do-not-edit config.
         $this->feDoNotEdit = static::FE_DO_NOT_EDIT;
+
+        // Adding the new configuration options from the plugins.
+        $pluginConfig = SettingsGetter::getNewSettings();
+        if (empty($pluginConfig) === true) {
+            return;
+        }
+
+        /** @var \Brainworxx\Krexx\Service\Plugin\NewSetting $newSetting */
+        foreach ($pluginConfig as $newSetting) {
+            if ($newSetting->isFeProtected() === true) {
+                $this->feDoNotEdit[] = $newSetting->getName();
+            }
+        }
     }
 
     /**
@@ -179,6 +193,10 @@ class Validation extends Fallback
 
         // We simply call the configured evaluation method.
         $callback = $this->feConfigFallback[$name][static::EVALUATE];
+        if ($callback instanceof Closure) {
+            return $callback($value);
+        }
+
         return $this->$callback($value, $name, $group);
     }
 

@@ -268,8 +268,21 @@ abstract class Fallback implements ConfigConstInterface
      */
     protected function generateConfigFallback()
     {
-        // Not much so far. . .
         $this->configFallback = static::CONFIG_FALLBACK;
+
+        // Adding the new configuration options from the plugins.
+        $pluginConfig = SettingsGetter::getNewSettings();
+        if (empty($pluginConfig) === true) {
+            return;
+        }
+
+        /** @var \Brainworxx\Krexx\Service\Plugin\NewSetting $newSetting */
+        foreach ($pluginConfig as $newSetting) {
+            if (isset($this->configFallback[$newSetting->getSection()]) === false) {
+                $this->configFallback[$newSetting->getSection()] = [];
+            }
+            $this->configFallback[$newSetting->getSection()][] = $newSetting->getName();
+        }
     }
 
     /**
@@ -300,6 +313,17 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_MAX_STEP_NUMBER => $this->returnInput(static::SECTION_PRUNE, 10),
             static::SETTING_ARRAY_COUNT_LIMIT => $this->returnInput(static::SECTION_PRUNE, 300),
         ];
+
+        // Adding the new configuration options from the plugins.
+        $pluginConfig = SettingsGetter::getNewSettings();
+        if (empty($pluginConfig) === true) {
+            return;
+        }
+
+        /** @var \Brainworxx\Krexx\Service\Plugin\NewSetting $newSetting */
+        foreach ($pluginConfig as $newSetting) {
+            $this->feConfigFallback[$newSetting->getName()] = $newSetting->getFeSettings();
+        }
     }
 
     /**

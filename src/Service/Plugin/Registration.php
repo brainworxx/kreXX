@@ -123,9 +123,27 @@ class Registration implements ConfigConstInterface, PluginConstInterface
     /**
      * List of all additionally registered classes, that can do a string analysis.
      *
-     * @var array
+     * @var string[]
      */
     protected static $additionalScalarString = [];
+
+    /**
+     * Additional configuration for the plugin.
+     *
+     * @var \Brainworxx\Krexx\Service\Plugin\NewSetting[]
+     */
+    protected static $newSettings = [];
+
+    /**
+     * Add a new setting that is used by your plugin.
+     *
+     * @param \Brainworxx\Krexx\Service\Plugin\NewSetting $newSetting
+     *   A class instance containing your new setting.
+     */
+    public static function addNewSettings(NewSetting $newSetting)
+    {
+        static::$newSettings[] = $newSetting;
+    }
 
     /**
      * Setter for the path to the configuration file.
@@ -348,6 +366,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
         static::$rewriteList = [];
         static::$additionalSkinList = [];
         static::$additionalScalarString = [];
+        static::$newSettings = [];
 
         // Go through the remaining plugins.
         static::$plugins[$configClass][static::IS_ACTIVE] = false;

@@ -197,4 +197,15 @@ class SettingsGetterTest extends AbstractRegistration
          $this->setValueByReflection(static::ADD_SCALAR_STRING, [static::class], $this->registration);
          $this->assertEquals([static::class], SettingsGetter::getAdditionalScalarString());
     }
+
+    /**
+     * Teting the getting of new registered settings definitions.
+     *
+     * @covers \Brainworxx\Krexx\Service\Plugin\SettingsGetter::getNewSettings
+     */
+    public function testGetNewSettings()
+    {
+        $this->setValueByReflection(static::NEW_SETTINGS, [static::class], $this->registration);
+        $this->assertEquals([static::class], SettingsGetter::getNewSettings());
+    }
 }

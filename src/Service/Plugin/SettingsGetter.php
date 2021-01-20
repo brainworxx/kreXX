@@ -191,8 +191,27 @@ class SettingsGetter extends Registration
         return static::$additionalSkinList;
     }
 
+    /**
+     * Getter for all the registered class names that can do a scalar analysis.
+     *
+     * @internal
+     *
+     * @return array
+     *   List of the class names.
+     */
     public static function getAdditionalScalarString(): array
     {
         return static::$additionalScalarString;
+    }
+
+    /**
+     * Getter for the list of class instances that contain new settings
+     * definitions.
+     *
+     * @return array
+     */
+    public static function getNewSettings(): array
+    {
+        return static::$newSettings;
     }
 }
