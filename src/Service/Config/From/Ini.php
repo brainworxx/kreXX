@@ -41,7 +41,7 @@ namespace Brainworxx\Krexx\Service\Config\From;
  * Class Ini
  *
  * @deprecated
- *   Since 4.0.1. Will be removed. use Brainworxx\Krexx\Service\Config\From\File
+ *   Since 4.1.0. Will be removed. use Brainworxx\Krexx\Service\Config\From\File
  *
  * @codeCoverageIgnore
  *   We will not test deprecated classes.
@@ -85,7 +85,7 @@ class Ini extends File
      *   The path to the ini file.
      *
      * @deprecated
-     *   Since 4.0.1. Will be removed. Use loadFile instead.
+     *   Since 4.1.0. Will be removed. Use loadFile instead.
      *
      * @codeCoverageIgnore
      *   We will not test deprecated methods.

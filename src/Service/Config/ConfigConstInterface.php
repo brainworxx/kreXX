@@ -490,7 +490,7 @@ interface ConfigConstInterface
      * be edited.
      *
      * @deprecated
-     *   Since 4.0.1. Will be removed. Use RENDER_TYPE_CONFIG_FULL instead.
+     *   Since 4.1.0. Will be removed. Use RENDER_TYPE_CONFIG_FULL instead.
      *
      * @var string
      */
@@ -503,7 +503,7 @@ interface ConfigConstInterface
      * kreXX will not accept values for this configuration.
      *
      * @deprecated
-     *   Since 4.0.1. Will be removed. Use RENDER_TYPE_CONFIG_DISPLAY instead.
+     *   Since 4.1.0. Will be removed. Use RENDER_TYPE_CONFIG_DISPLAY instead.
      *
      * @var string
      */
@@ -516,7 +516,7 @@ interface ConfigConstInterface
      * kreXX will not accept values for this configuration.
      *
      * @deprecated
-     *   Since 4.0.1. Will be removed. Use RENDER_TYPE_CONFIG_NONE instead.
+     *   Since 4.1.0. Will be removed. Use RENDER_TYPE_CONFIG_NONE instead.
      *
      * @var string
      */

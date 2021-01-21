@@ -97,7 +97,7 @@ class Config extends Fallback
      * Our ini file configuration handler.
      *
      * @deprecated
-     *   Since 4.0.1. Will be removed. Use $fileConfig instead.
+     *   Since 4.1.0. Will be removed. Use $fileConfig instead.
      *
      * @var Ini
      */
@@ -295,7 +295,7 @@ class Config extends Fallback
      * Get the path to the configuration file.
      *
      * @deprecated
-     *   Since 4.0.1. Will be removed. Use getPathToConfigFile
+     *   Since 4.1.0. Will be removed. Use getPathToConfigFile
      *
      * @codeCoverageIgnore
      *   We will not test deprecated methods.
