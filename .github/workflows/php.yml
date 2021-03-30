@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '8.0', '7.4', '7.3', '7.1', '7.0' ]
 
     steps:
     - uses: actions/checkout@v2
