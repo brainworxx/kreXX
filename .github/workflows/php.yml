@@ -34,7 +34,8 @@ jobs:
 
     - name: Build
       run: composer test
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
+      
+    - name: Test & publish code coverage
+      uses: paambaati/codeclimate-action@v2.7.5
+      env:
+        CC_TEST_REPORTER_ID: f519d520586777e5a05bcc629991c125c2587be3964edd4b9d19d4d3134d90d0
