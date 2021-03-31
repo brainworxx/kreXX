@@ -43,6 +43,6 @@ jobs:
       
     - name: Test & publish code coverage
       uses: paambaati/codeclimate-action@v2.7.5
-      if: ${{ matrix.php-versions == 7.4 }}
+      if: ${{ matrix.php == '7.4' }}
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATEKEY }}
