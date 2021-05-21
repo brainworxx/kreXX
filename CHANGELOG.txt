@@ -1,4 +1,6 @@
 4.1.1
+- Bugfix: Predefined objects do not get their propertys
+  analysed.
 
 4.1.0
 - Added a log model to use for a logger implementation.

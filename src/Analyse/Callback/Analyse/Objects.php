@@ -120,9 +120,8 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
             $stuffToDump[] = ErrorObject::class;
         }
 
-        if ($ref->isUserDefined() === true) {
-            $this->addPropertyDumper($stuffToDump);
-        }
+        // Dumping all the property related stuff.
+        $this->addPropertyDumper($stuffToDump);
 
         // Dumping class meta information.
         $stuffToDump[] = Meta::class;
