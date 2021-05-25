@@ -1,4 +1,6 @@
 3.2.5
+- Bugfix: Predefined objects do not get their properties
+  analysed.
 
 3.2.4
 - Bugfix: Analysing of __PHP_Incomplete_Class does not throw

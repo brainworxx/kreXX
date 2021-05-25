@@ -86,10 +86,7 @@ class Objects extends AbstractCallback
         }
 
         // Dumping getter methods.
-        // We will not dump the getters for internal classes, though.
-        if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_GETTER) === true &&
-            $ref->isUserDefined() === true
-        ) {
+        if ($this->pool->config->getSetting(Fallback::SETTING_ANALYSE_GETTER) === true) {
             $output .= $this->dumpStuff(Getter::class);
         }
 
