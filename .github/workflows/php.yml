@@ -12,19 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ '8.0', '7.4', '7.3', '7.1', '7.0' ]
+        php: [ '7.4', '7.3', '7.1', '7.0' ]
 
     steps:
-
-    - name: Switch PHP Version
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php }}
-
-    - name: Setup PHP with Xdebug
-      uses: shivammathur/setup-php@v2
-      with:
-        coverage: xdebug
+      - name: Setup PHP with Xdebug
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
 
     - uses: actions/checkout@v2
 
