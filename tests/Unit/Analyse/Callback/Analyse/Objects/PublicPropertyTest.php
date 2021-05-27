@@ -82,7 +82,7 @@ class PublicPropertyTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::getReflectionPropertiesData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::handleUndeclaredProperties
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::handleUndeclaredProperties
      *
      * @throws \ReflectionException
      */
@@ -120,7 +120,7 @@ class PublicPropertyTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::getReflectionPropertiesData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::handleUndeclaredProperties
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::handleUndeclaredProperties
      *
      * @throws \ReflectionException
      */
@@ -178,7 +178,7 @@ class PublicPropertyTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::getReflectionPropertiesData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::reflectionSorting
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\AbstractObjectAnalysis::handleUndeclaredProperties
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties::handleUndeclaredProperties
      */
     public function testCallMeDateTime()
     {
