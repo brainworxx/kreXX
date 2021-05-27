@@ -81,6 +81,15 @@ class UndeclaredProperty extends ReflectionProperty
     protected $declaringClass;
 
     /**
+     * Is this value actually reachable?
+     *
+     * The DateTime object has those. Undeclared and not reachable.
+     *
+     * @var bool
+     */
+    protected $isPublic = true;
+
+    /**
      * ReflectionUndeclaredProperty constructor.
      *
      * @param \ReflectionClass $ref
@@ -153,11 +162,25 @@ class UndeclaredProperty extends ReflectionProperty
      * A dynamically declared property is always public.
      *
      * @return bool
-     *   Always true.
+     *   Is it a public property?
      */
     public function isPublic(): bool
     {
-        return true;
+        return $this->isPublic;
+    }
+
+    /**
+     * Setter for the isPublic property.
+     *
+     * @param bool $isPublic
+     *
+     * @return UndeclaredProperty
+     *   Return $this for chaining.
+     */
+    public function setIsPublic(bool $isPublic): UndeclaredProperty
+    {
+        $this->isPublic = $isPublic;
+        return $this;
     }
 
     /**

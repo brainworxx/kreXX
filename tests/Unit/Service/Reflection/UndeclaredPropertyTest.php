@@ -73,7 +73,8 @@ class UndeclaredPropertyTest extends AbstractTest
         $this->assertFalse($undeclaredProperty->isDefault());
         $this->assertFalse($undeclaredProperty->isPrivate());
         $this->assertFalse($undeclaredProperty->isProtected());
-        $this->assertTrue($undeclaredProperty->isPublic());
+        $this->assertTrue($undeclaredProperty->isPublic(), 'Dafault value.');
+        $this->assertFalse($undeclaredProperty->setIsPublic(false)->isPublic(), 'Changed value.');
         $this->assertSame($name, $undeclaredProperty->getName());
         $this->assertEmpty($undeclaredProperty->__toString());
     }
