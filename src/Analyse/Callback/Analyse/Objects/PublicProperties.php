@@ -111,6 +111,12 @@ class PublicProperties extends AbstractObjectAnalysis implements CallbackConstIn
      */
     protected function handleUndeclaredProperties(array &$refProps, $data, array $publicProps, \ReflectionClass $ref)
     {
+        // For every not-declared property, we add a another reflection.
+        // Those are simply added during runtime
+        foreach (array_keys(array_diff_key(get_object_vars($data), $publicProps)) as $key) {
+            $refProps[$key] = new UndeclaredProperty($ref, $key);
+        }
+
         // There is an anomaly with a \DateTime instance.
         // The "public" properties date, timezone and timezone_type may be in
         // there as undeclared properties.
@@ -120,12 +126,6 @@ class PublicProperties extends AbstractObjectAnalysis implements CallbackConstIn
             $refProps['date'] = (new UndeclaredProperty($ref, 'date'))->setIsPublic(false);
             $refProps['timezone'] = (new UndeclaredProperty($ref, 'timezone'))->setIsPublic(false);
             $refProps['timezone_type'] = (new UndeclaredProperty($ref, 'timezone_type'))->setIsPublic(false);
-        }
-
-        // For every not-declared property, we add a another reflection.
-        // Those are simply added during runtime
-        foreach (array_keys(array_diff_key(get_object_vars($data), $publicProps)) as $key) {
-            $refProps[$key] = new UndeclaredProperty($ref, $key);
         }
     }
 }
