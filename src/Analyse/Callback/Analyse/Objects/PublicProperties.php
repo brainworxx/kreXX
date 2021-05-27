@@ -39,6 +39,8 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
+use DateTime;
+use ReflectionClass;
 use ReflectionProperty;
 
 /**
@@ -109,7 +111,7 @@ class PublicProperties extends AbstractObjectAnalysis implements CallbackConstIn
      * @param array $publicProps
      * @param \ReflectionClass $ref
      */
-    protected function handleUndeclaredProperties(array &$refProps, $data, array $publicProps, \ReflectionClass $ref)
+    protected function handleUndeclaredProperties(array &$refProps, $data, array $publicProps, ReflectionClass $ref)
     {
         // For every not-declared property, we add a another reflection.
         // Those are simply added during runtime
@@ -122,7 +124,7 @@ class PublicProperties extends AbstractObjectAnalysis implements CallbackConstIn
         // there as undeclared properties.
         // Since PHP 7.4, those are not available via get_object_vars(), so we
         // have to take care of them manually.
-        if ($data instanceof \DateTime === true) {
+        if ($data instanceof DateTime === true) {
             $refProps['date'] = (new UndeclaredProperty($ref, 'date'))->setIsPublic(false);
             $refProps['timezone'] = (new UndeclaredProperty($ref, 'timezone'))->setIsPublic(false);
             $refProps['timezone_type'] = (new UndeclaredProperty($ref, 'timezone_type'))->setIsPublic(false);
