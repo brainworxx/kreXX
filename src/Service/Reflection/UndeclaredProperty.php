@@ -43,7 +43,7 @@ use ReflectionProperty;
  * The original \ReflectionProperty may throw an error when used with
  * dynamically declared properties.
  *
- * For some reasons, the \ReflectionProperty may claims that this property is
+ * For some reasons, the \ReflectionProperty may claim that this property is
  * not there. We may have run into an interference of private properties in a
  * deeper class, __isset() which tries to dynamically resolve this, and some
  * public dynamically declared property with the same name as the private
