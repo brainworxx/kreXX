@@ -1,3 +1,9 @@
+4.1.2
+- Bugfix: Add additional error handling to the file service
+  to get by with high traffic sites (Please, never debug a
+  productive site. At least make sure that the logger can
+  only get triggered by the dev.).
+
 4.1.1
 - Change: Code cleanup.
 - Bugfix: Predefined objects do not get their properties
