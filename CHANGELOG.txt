@@ -3,6 +3,7 @@
   to get by with high traffic sites (Please, never debug a
   productive site. At least make sure that the logger can
   only get triggered by the dev.).
+- Bugfix: Applied sorting to the list of getter methods.
 
 4.1.1
 - Change: Code cleanup.
