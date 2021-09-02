@@ -8,6 +8,7 @@
 - Bugfix: Applied sorting to the list of getter methods.
 - Bugfix: Make better use of the recursion detection for
   the XML analysis.
+- Bugfix: Fixed a class variable annotation.
 
 4.1.1
 - Change: Code cleanup.
