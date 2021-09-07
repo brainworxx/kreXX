@@ -135,7 +135,7 @@ trait ExpandableChild
      *   The generated source.
      *
      * @return string
-     *   Th rendered HTML.
+     *   The rendered HTML.
      */
     protected function renderSourceButtonWithStop(string $gencode): string
     {

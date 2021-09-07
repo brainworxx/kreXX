@@ -110,7 +110,7 @@ trait ExpandableChild
      *   The model.
      *
      * @return string
-     *   Th rendered HTML.
+     *   The rendered HTML.
      */
     protected function renderSourceButtonSg(string $gencode, Model $model): string
     {

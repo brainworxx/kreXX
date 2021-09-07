@@ -45,7 +45,11 @@ use ReflectionProperty;
  */
 class ReflectionClass extends \ReflectionClass
 {
-
+    /**
+     * static caching, to speed things up.
+     *
+     * @var array
+     */
     protected static $cache = [];
 
     /**

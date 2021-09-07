@@ -71,6 +71,9 @@ trait SingleEditableChild
         '{selected}'
     ];
 
+    /**
+     * @var array
+     */
     private $markerSingleInput = [
         '{id}',
         '{value}',

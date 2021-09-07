@@ -42,7 +42,9 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
  */
 trait FatalHeader
 {
-
+    /**
+     * @var array
+     */
     private $markerFatalHeader = [
         '{cssJs}',
         '{version}',

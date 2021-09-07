@@ -42,6 +42,7 @@ namespace Brainworxx\Krexx\View\Skins\Hans;
  */
 trait BacktraceSourceLine
 {
+
     /**
      * @var array
      */

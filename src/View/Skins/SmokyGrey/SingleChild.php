@@ -50,6 +50,9 @@ use Brainworxx\Krexx\Analyse\Model;
  */
 trait SingleChild
 {
+    /**
+     * @var array
+     */
     private $markerSingleChild = [
         '{language}',
         '{addjson}'
