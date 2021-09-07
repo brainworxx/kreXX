@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Trait SingleChild
+ *
  * @deprecated
  *   Since 4.0.0. Use ExpandableChild in stead.
  *

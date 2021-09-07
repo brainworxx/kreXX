@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Model;
 
 /**
  * Trait IsPublic
+ *
  * @deprecated
  *   Since 4.0.0. Will be removed.
  *
