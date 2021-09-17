@@ -51,7 +51,7 @@ use Brainworxx\Krexx\Analyse\Model;
 trait SingleChild
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $markerSingleChild = [
         '{language}',
@@ -95,7 +95,7 @@ trait SingleChild
      * @codeCoverageIgnore
      *   We are not testing the unit tests.
      *
-     * @return array
+     * @return string[]
      *   The marker array.
      */
     public function getMarkerSingleChild(): array

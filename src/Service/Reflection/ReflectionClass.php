@@ -69,7 +69,7 @@ class ReflectionClass extends \ReflectionClass
     /**
      * ReflectionClass constructor.
      *
-     * @param object $data
+     * @param object|string $data
      *   The class we are currently analysing.
      *
      * @throws \ReflectionException
@@ -215,7 +215,7 @@ class ReflectionClass extends \ReflectionClass
     /**
      * Wrapper around the getParentClass, to make sure we get our ReflectionClass.
      *
-     * @return bool|\ReflectionClass[]
+     * @return bool|\ReflectionClass
      */
     public function getParentClass()
     {
