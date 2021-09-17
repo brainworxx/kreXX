@@ -314,7 +314,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface
         $type = '';
         if ($reflectionParameter->hasType() === true) {
             $reflectionNamedType = $reflectionParameter->getType();
-            if (is_a($reflectionNamedType, '\\ReflectionNamedType')) {
+            if (is_a($reflectionNamedType, ReflectionNamedType::class)) {
                 // PHP 7.1 and later
                 /** @var ReflectionNamedType $reflectionNamedType */
                 $type = $reflectionNamedType->getName() . ' ';
