@@ -39,11 +39,13 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use Brainworxx\Krexx\View\ViewConstInterface;
+use DateTime;
 
 /**
  * Processing of floats.
  */
-class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessConstInterface
+class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessConstInterface, ViewConstInterface
 {
     /**
      * Is this one a float?
@@ -70,6 +72,18 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
      */
     public function handle(Model $model): string
     {
+        // Detect a micro timestamp. Everything bigger than 946681200000
+        // is assumed to be a micro timestamp.
+        $float = $model->getData();
+        if ($float > 946681200) {
+            try {
+                $date = DateTime::createFromFormat('U.u', (string)$float);
+                $model->addToJson(static::META_TIMESTAMP, $date->format('d.M Y H:i:s.u'));
+            } catch (\Throwable $exception) {
+                // Do nothing
+            }
+        }
+
         return $this->pool->render->renderExpandableChild(
             $this->dispatchProcessEvent(
                 $model->setNormal($model->getData())->setType(static::TYPE_FLOAT)
