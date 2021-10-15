@@ -322,6 +322,8 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface
                 $type = $reflectionNamedType->getName() . ' ';
             } else {
                 // PHP 7.0 only.
+                // @deprecated
+                // Will be removes as soon as we drop 7.0 support.
                 /** @var ReflectionType $reflectionNamedType */
                 $type = $reflectionNamedType->__toString() . ' ';
             }
