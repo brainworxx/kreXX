@@ -77,8 +77,10 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
         $float = $model->getData();
         if ($float > 946681200) {
             try {
-                $date = DateTime::createFromFormat('U.u', (string)$float);
-                $model->addToJson(static::META_TIMESTAMP, $date->format('d.M Y H:i:s.u'));
+                $model->addToJson(
+                    static::META_TIMESTAMP,
+                    (DateTime::createFromFormat('U.u', (string)$float))->format('d.M Y H:i:s.u')
+                );
             } catch (\Throwable $exception) {
                 // Do nothing
             }
