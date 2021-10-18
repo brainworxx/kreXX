@@ -140,9 +140,7 @@ class CodegenTest extends AbstractTest
     {
         $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
         $this->expectConnectorCalls(1, 0);
-
-
-        $this->fixture->setType(static::class);
+        $this->fixture->setNormal(static::class);
 
         $this->assertEquals(
             'name',
