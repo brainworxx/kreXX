@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Code;
 
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionException;
 use ReflectionNamedType;
@@ -48,7 +49,7 @@ use ReflectionType;
 /**
  * Code generation methods.
  */
-class Codegen implements CallbackConstInterface, CodegenConstInterface
+class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessConstInterface
 {
 
     /**
@@ -129,9 +130,8 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface
             // it comes directly from the source code itself.
             // And of course, there are no connectors.
             $this->firstRun = false;
-            $name = (string) $model->getName();
-            $model->addToJson(static::CODEGEN_TYPE_HINT, '/** @var ' . $model->getNormal() . ' ' . $name . ' */');
-            return $this->pool->encodingService->encodeString($name);
+            $this->addTypeHint($model);
+            return $this->pool->encodingService->encodeString((string) $model->getName());
         }
         if ($type === static::CODEGEN_TYPE_PUBLIC) {
             // Public methods, debug methods.
@@ -145,6 +145,34 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface
         // Still here?
         // We go for the more complicated stuff.
         return $this->generateComplicatedStuff($model);
+    }
+
+    /**
+     * Adding the typehint to the model, on the first run.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     */
+    protected function addTypeHint(Model $model)
+    {
+        if ($model->getType() === static::TYPE_CLASS) {
+            $type = $model->getNormal();
+        } else {
+            $type = $model->getType();
+        }
+
+        $blackList = ['->', '::', '[', ']', '(', ')'];
+        $name = (string) $model->getName();
+
+        foreach ($blackList as $value) {
+            if (strpos($name, $value) != false) {
+                // We are analysing something like:
+                // $this->getWhatever();
+                // We can not type hint this.
+                return;
+            }
+        }
+
+        $model->addToJson(static::CODEGEN_TYPE_HINT, '/** @var ' . $type . ' ' . $name . ' */');
     }
 
     /**

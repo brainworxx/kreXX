@@ -81,7 +81,7 @@ class CodegenTest extends AbstractTest
         $this->setValueByReflection(static::FIRST_RUN, false, $this->codegenHandler);
 
         $this->fixture = new Model(Krexx::$pool);
-        $this->fixture->setName('name');
+        $this->fixture->setName('name')->setType('class');
 
         // Mock the connector service and inject it into the model.
         $this->connectorMock = $this->createMock(Connectors::class);
@@ -135,6 +135,7 @@ class CodegenTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::addTypeHint
      */
     public function testGenerateSourceFirstRun()
     {
@@ -154,6 +155,52 @@ class CodegenTest extends AbstractTest
         $this->assertArrayHasKey(Codegen::CODEGEN_TYPE_HINT, $json);
         $this->assertEquals(
             '/** @var ' . static::class . ' name */',
+            $json[Codegen::CODEGEN_TYPE_HINT],
+            'Test the typehint'
+        );
+    }
+
+    /**
+     * Test the type hint with a more complitated varname from t he source.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::addTypeHint
+     */
+    public function testGenerateSourceFirstRunNoTypeHint()
+    {
+        $this->fixture->setName('$instance->getValue()');
+        $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
+        $this->expectConnectorCalls(1, 0);
+        $this->fixture->setNormal(static::class);
+
+        $this->codegenHandler->generateSource($this->fixture);
+        $json = $this->fixture->getJson();
+        $this->assertArrayNotHasKey(Codegen::CODEGEN_TYPE_HINT, $json, 'Type hint is not set.');
+    }
+
+    /**
+     * Test the type hint with a more complitated varname from t he source.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::addTypeHint
+     */
+    public function testGenerateSourceFirstRunTypeHintScalar()
+    {
+        $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
+        $this->expectConnectorCalls(1, 0);
+        $this->fixture
+            ->setNormal(static::class)
+            ->setType('array');
+
+        $this->codegenHandler->generateSource($this->fixture);
+        $json = $this->fixture->getJson();
+        $this->assertArrayHasKey(Codegen::CODEGEN_TYPE_HINT, $json);
+        $this->assertEquals(
+            '/** @var array name */',
             $json[Codegen::CODEGEN_TYPE_HINT],
             'Test the typehint'
         );
