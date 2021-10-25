@@ -399,10 +399,11 @@ class ThroughGetter extends AbstractCallback implements
         // Execute our search pattern.
         // Right now, we are trying to get to properties that way.
         // Later on, we may also try to parse deeper for stuff.
+        $result = null;
         foreach ($this->findIt(['return $this->', ';'], $sourcecode) as $propertyName) {
             // Check if this is a property and return the first we find.
             if (($result = $this->retrievePropertyByName($propertyName, $classReflection)) !== null) {
-                return $result;
+                break;
             }
 
             // Check if this is a method and go deeper!
@@ -413,12 +414,13 @@ class ThroughGetter extends AbstractCallback implements
             ) {
                 // We need to be careful not to goo too deep, we might end up
                 // in a loop.
-                return $this->getReflectionProperty($classReflection, $classReflection->getMethod($methodName));
+                $result = $this->getReflectionProperty($classReflection, $classReflection->getMethod($methodName));
+                break;
             }
         }
 
         // Nothing?
-        return null;
+        return $result;
     }
 
     /**
