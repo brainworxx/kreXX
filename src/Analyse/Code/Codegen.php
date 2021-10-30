@@ -122,7 +122,6 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         }
 
         // Handle the first run.
-        $type = $model->getCodeGenType();
         if ($this->firstRun === true) {
             // We handle the first one special, because we need to add the original
             // variable name to the source generation.
@@ -133,18 +132,18 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
             $this->addTypeHint($model);
             return $this->pool->encodingService->encodeString((string) $model->getName());
         }
+
+        $type = $model->getCodeGenType();
+        $result = '';
         if ($type === static::CODEGEN_TYPE_PUBLIC) {
             // Public methods, debug methods.
-            return $this->concatenation($model);
+            $result = $this->concatenation($model);
+        } elseif ($type !== static::CODEGEN_TYPE_EMPTY) {
+            // We go for the more complicated stuff.
+            $result = $this->generateComplicatedStuff($model);
         }
 
-        if ($type === static::CODEGEN_TYPE_EMPTY) {
-            return '';
-        }
-
-        // Still here?
-        // We go for the more complicated stuff.
-        return $this->generateComplicatedStuff($model);
+        return $result;
     }
 
     /**

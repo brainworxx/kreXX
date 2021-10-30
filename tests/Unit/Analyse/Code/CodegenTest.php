@@ -140,7 +140,7 @@ class CodegenTest extends AbstractTest
     public function testGenerateSourceFirstRun()
     {
         $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
-        $this->expectConnectorCalls(1, 0);
+        $this->expectConnectorCalls(0, 0);
         $this->fixture->setNormal(static::class);
 
         $this->assertEquals(
@@ -161,7 +161,7 @@ class CodegenTest extends AbstractTest
     }
 
     /**
-     * Test the type hint with a more complitated varname from t he source.
+     * Test the type hint with a more complicated varname from the source.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
@@ -172,7 +172,7 @@ class CodegenTest extends AbstractTest
     {
         $this->fixture->setName('$instance->getValue()');
         $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
-        $this->expectConnectorCalls(1, 0);
+        $this->expectConnectorCalls(0, 0);
         $this->fixture->setNormal(static::class);
 
         $this->codegenHandler->generateSource($this->fixture);
@@ -191,7 +191,7 @@ class CodegenTest extends AbstractTest
     public function testGenerateSourceFirstRunTypeHintScalar()
     {
         $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
-        $this->expectConnectorCalls(1, 0);
+        $this->expectConnectorCalls(0, 0);
         $this->fixture
             ->setNormal(static::class)
             ->setType('array');
@@ -474,7 +474,7 @@ class CodegenTest extends AbstractTest
 
     /**
      * Test the parameter analysis, with a required parameter.
-     * We use a special DetTime parameter as a fixture.
+     * We use a special DateTime parameter as a fixture.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::parameterToString
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::retrieveParameterType
