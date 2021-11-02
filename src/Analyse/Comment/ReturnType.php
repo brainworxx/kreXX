@@ -90,29 +90,29 @@ class ReturnType extends AbstractComment
 
         // Fallback to the comments parsing.
         $docComment = $reflection->getDocComment();
-        if (empty($docComment) || preg_match('/(?<=@return ).*$/m', $docComment, $matches) === 0) {
-            // No comment.
-            return '';
-        }
-
-        $result = strtok($matches[0] . ' ', ' ');
-        if ($result === '$this' && $reflectionClass !== null) {
-            return $this->pool->encodingService->encodeString('\\' . $reflectionClass->getName());
-        }
-
+        $result = '';
         if (
-            // Inside the whitelist
-            in_array($result, $this->allowedTypes) === true ||
-            // Looks like a class name with namespace.
-            strpos($result, '\\') === 0 ||
-            // Multiple types.
-            strpos($result, '|') !== false
+            empty($docComment) === false
+            && preg_match('/(?<=@return ).*$/m', $docComment, $matches) > 0
         ) {
-            return $this->pool->encodingService->encodeString($result);
+            $resultToken = strtok($matches[0] . ' ', ' ');
+            if (strpos($resultToken, '$this') === 0 && $reflectionClass !== null) {
+                // @return $this
+                // And we know what $this actually is.
+                $result = $this->pool->encodingService->encodeString('\\' . $reflectionClass->getName());
+            } elseif (
+                // Inside the whitelist
+                in_array($resultToken, $this->allowedTypes) === true ||
+                // Looks like a class name with namespace.
+                strpos($resultToken, '\\') === 0 ||
+                // Multiple types.
+                strpos($resultToken, '|') !== false
+            ) {
+                $result = $this->pool->encodingService->encodeString($resultToken);
+            }
         }
 
-        // Nothing of value was found.
-        return '';
+        return $result;
     }
 
     /**

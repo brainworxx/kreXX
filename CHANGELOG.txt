@@ -6,6 +6,8 @@
 - Bugfix: Display info about public properties in predeclared
   classes.
 - Bugfix: Comment inheritance resolving works more reliable.
+- Bugfix: Method return type comment parsing works more
+  reliable.
 
 4.1.2
 - Change: Do not display an empty array, when there are no
