@@ -95,21 +95,40 @@ class ReturnType extends AbstractComment
             empty($docComment) === false
             && preg_match('/(?<=@return ).*$/m', $docComment, $matches) > 0
         ) {
-            $resultToken = strtok($matches[0] . ' ', ' ');
-            if (strpos($resultToken, '$this') === 0 && $reflectionClass !== null) {
-                // @return $this
-                // And we know what $this actually is.
-                $result = $this->pool->encodingService->encodeString('\\' . $reflectionClass->getName());
-            } elseif (
-                // Inside the whitelist
-                in_array($resultToken, $this->allowedTypes) === true ||
-                // Looks like a class name with namespace.
-                strpos($resultToken, '\\') === 0 ||
-                // Multiple types.
-                strpos($resultToken, '|') !== false
-            ) {
-                $result = $this->pool->encodingService->encodeString($resultToken);
-            }
+            $result = $this->retrieveReturnTypeFromComment($matches[0], $reflectionClass);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Retrieve the return type from a comment string.
+     *
+     * @param string $comment
+     *   The comment string.
+     * @param \ReflectionClass|null $reflectionClass
+     *   The reflection, which is used if the return comment is '$this'.
+     *
+     * @return string
+     *   The return type.
+     */
+    protected function retrieveReturnTypeFromComment(string $comment, ReflectionClass $reflectionClass = null): string
+    {
+        $resultToken = strtok($comment . ' ', ' ');
+        $result = '';
+        if (strpos($resultToken, '$this') === 0 && $reflectionClass !== null) {
+            // @return $this
+            // And we know what $this actually is.
+            $result = $this->pool->encodingService->encodeString('\\' . $reflectionClass->getName());
+        } elseif (
+            // Inside the whitelist
+            in_array($resultToken, $this->allowedTypes) === true ||
+            // Looks like a class name with namespace.
+            strpos($resultToken, '\\') === 0 ||
+            // Multiple types.
+            strpos($resultToken, '|') !== false
+        ) {
+            $result = $this->pool->encodingService->encodeString($resultToken);
         }
 
         return $result;
