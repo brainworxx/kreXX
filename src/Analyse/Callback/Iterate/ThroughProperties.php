@@ -187,7 +187,7 @@ class ThroughProperties extends AbstractCallback implements
             $additional .= 'private ';
         }
 
-        if (isset($refProperty->isUnset) === true) {
+        if (empty($refProperty->isUnset) === false) {
             // This one was unset during runtime.
             // We need to tell the dev. Accessing an unset property may trigger
             // a warning.

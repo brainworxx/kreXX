@@ -384,6 +384,6 @@ class ThroughPropertiesTest extends AbstractTest
         $this->assertEquals($name, $model->getName());
         $this->assertEquals($conectorLeft, $model->getConnectorLeft());
         $this->assertEquals($connectorRight, $model->getConnectorRight());
-        $this->assertEquals($additional, $model->getAdditional());
+        $this->assertEquals($additional, $model->getAdditional(), $model->getName());
     }
 }
