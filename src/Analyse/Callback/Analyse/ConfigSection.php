@@ -83,11 +83,13 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
                         ->setNormal($setting->getSource())
                         ->setType($setting->getType())->setDomid($id)
                 );
-            } else {
-                $sectionOutput .= $this->pool->render->renderExpandableChild(
-                    $model->setData($value)->setName($name)->setNormal($value)->setType($setting->getSource())
-                );
+                continue;
             }
+
+            $sectionOutput .= $this->pool->render->renderExpandableChild(
+                $model->setData($value)->setName($name)->setNormal($value)->setType($setting->getSource())
+            );
+
         }
 
         return $sectionOutput;
