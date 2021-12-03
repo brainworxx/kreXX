@@ -70,6 +70,7 @@ class ThroughGetterTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::getReflectionProperty
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::preparePropertyName
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::getReflectionPropertyDeep
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::analyseRegexResult
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyByName
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::convertToSnakeCase
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::findIt
