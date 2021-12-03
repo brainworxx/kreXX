@@ -49,6 +49,7 @@ class ConfigSectionTest extends AbstractTest
      * Testing if the configuration is rendered correctly.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\ConfigSection::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\ConfigSection::generateOutput
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\ConfigSection::prepareValue
      * @covers \Brainworxx\Krexx\Analyse\Callback\AbstractCallback::dispatchStartEvent
      */
