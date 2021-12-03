@@ -141,10 +141,10 @@ class CodegenTest extends AbstractTest
     {
         $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
         $this->expectConnectorCalls(0, 0);
-        $this->fixture->setNormal(static::class);
+        $this->fixture->setNormal(static::class)->setName('$name');
 
         $this->assertEquals(
-            'name',
+            '$name',
             $this->codegenHandler->generateSource($this->fixture)
         );
 
@@ -154,7 +154,7 @@ class CodegenTest extends AbstractTest
         $json = $this->fixture->getJson();
         $this->assertArrayHasKey(Codegen::CODEGEN_TYPE_HINT, $json);
         $this->assertEquals(
-            '/** @var ' . static::class . ' name */',
+            '/** @var ' . static::class . ' $name */',
             $json[Codegen::CODEGEN_TYPE_HINT],
             'Test the typehint'
         );
@@ -181,6 +181,23 @@ class CodegenTest extends AbstractTest
     }
 
     /**
+     * Test an empty run, something like krexx(), without any variable.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateComplicatedStuff
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::addTypeHint
+     */
+    public function testGenerateSourceEmptyFirstRunNoTypeHint()
+    {
+        $this->fixture->setName('');
+        $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
+        $this->codegenHandler->generateSource($this->fixture);
+        $json = $this->fixture->getJson();
+        $this->assertArrayNotHasKey(Codegen::CODEGEN_TYPE_HINT, $json, 'Type hint is not set.');
+    }
+
+    /**
      * Test the type hint with a more complitated varname from t he source.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
@@ -193,6 +210,7 @@ class CodegenTest extends AbstractTest
         $this->setValueByReflection(static::FIRST_RUN, true, $this->codegenHandler);
         $this->expectConnectorCalls(0, 0);
         $this->fixture
+            ->setName('$variable')
             ->setNormal(static::class)
             ->setType('array');
 
@@ -200,7 +218,7 @@ class CodegenTest extends AbstractTest
         $json = $this->fixture->getJson();
         $this->assertArrayHasKey(Codegen::CODEGEN_TYPE_HINT, $json);
         $this->assertEquals(
-            '/** @var array name */',
+            '/** @var array $variable */',
             $json[Codegen::CODEGEN_TYPE_HINT],
             'Test the typehint'
         );

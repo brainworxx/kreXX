@@ -153,6 +153,14 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      */
     protected function addTypeHint(Model $model)
     {
+        if (
+            empty($name = (string) $model->getName()) === true
+            || strpos($name, '$') === false
+        ) {
+            // There is no name, no need for a hint.
+            return;
+        }
+
         if ($model->getType() === static::TYPE_CLASS) {
             $type = $model->getNormal();
         } else {
@@ -160,8 +168,6 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         }
 
         $blackList = ['->', '::', '[', ']', '(', ')'];
-        $name = (string) $model->getName();
-
         foreach ($blackList as $value) {
             if (strpos($name, $value) != false) {
                 // We are analysing something like:
