@@ -200,7 +200,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
                 // Test for constants.
                 // They have no connectors, but are marked as such.
                 // although this is meta stuff, we need to add the stop info here.
-                $result = ';stop;';
+                $result = static::CODEGEN_STOP_BIT;
                 break;
 
             case static::CODEGEN_TYPE_ITERATOR_TO_ARRAY:
