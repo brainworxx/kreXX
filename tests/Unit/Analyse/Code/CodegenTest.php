@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Analyse\Code\Connectors;
 use Brainworxx\Krexx\Analyse\Code\Scope;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Tests\Fixtures\MethodParameterFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Krexx;
 use ReflectionParameter;
@@ -527,6 +528,45 @@ class CodegenTest extends AbstractTest
         $this->assertEquals(
             'DateTimeZone $object',
             $this->codegenHandler->parameterToString($refParamMock)
+        );
+    }
+
+    /**
+     * Test with a bunch of real parameters.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::parameterToString
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::retrieveParameterType
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::translateDefaultValue
+     */
+    public function testDefaultValueTranslation()
+    {
+        $reflection = new \ReflectionClass(MethodParameterFixture::class);
+        $reflectionMethod = $reflection->getMethod('arrayDefault');
+        $reflectionParameter = $reflectionMethod->getParameters()[0];
+        $this->assertEquals(
+            'array $parameter = array()',
+            $this->codegenHandler->parameterToString($reflectionParameter)
+        );
+
+        $reflectionMethod = $reflection->getMethod('trueDefault');
+        $reflectionParameter = $reflectionMethod->getParameters()[0];
+        $this->assertEquals(
+            'bool $parameter = TRUE',
+            $this->codegenHandler->parameterToString($reflectionParameter)
+        );
+
+        $reflectionMethod = $reflection->getMethod('falseDefault');
+        $reflectionParameter = $reflectionMethod->getParameters()[0];
+        $this->assertEquals(
+            'bool $parameter = FALSE',
+            $this->codegenHandler->parameterToString($reflectionParameter)
+        );
+
+        $reflectionMethod = $reflection->getMethod('nullDefault');
+        $reflectionParameter = $reflectionMethod->getParameters()[0];
+        $this->assertEquals(
+            '$parameter = NULL',
+            $this->codegenHandler->parameterToString($reflectionParameter)
         );
     }
 }
