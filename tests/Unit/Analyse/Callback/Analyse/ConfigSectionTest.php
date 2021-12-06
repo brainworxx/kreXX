@@ -74,13 +74,13 @@ class ConfigSectionTest extends AbstractTest
             ->setEditable(true)
             ->setSource($sourceString)
             ->setType(Fallback::RENDER_TYPE_INPUT)
-            ->setValue($valueString);
+            ->setValue(true);
 
         $renderNotEditable->setSection($sectionString)
             ->setEditable(false)
             ->setSource($sourceString)
             ->setType(Fallback::RENDER_TYPE_INPUT)
-            ->setValue($valueString);
+            ->setValue(false);
 
         $data = ['data' =>
             [
