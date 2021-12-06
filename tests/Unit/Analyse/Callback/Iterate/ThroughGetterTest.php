@@ -87,7 +87,7 @@ class ThroughGetterTest extends AbstractTest
         // mockEventService method.
         $throughGetter = new ThroughGetter(Krexx::$pool);
         $eventServiceMock = $this->createMock(Event::class);
-        $eventServiceMock->expects($this->exactly(30))
+        $eventServiceMock->expects($this->exactly(42))
             ->method('dispatch')
             ->withConsecutive(
                 [
@@ -135,6 +135,10 @@ class ThroughGetterTest extends AbstractTest
               new ReflectionMethod($data, 'getMyPropertySeven'),
               new ReflectionMethod($data, 'getMyPropertyEight'),
               new ReflectionMethod($data, 'getMyPropertyNine'),
+              new ReflectionMethod($data, '_getMyPropertyTen'),
+              new ReflectionMethod($data, 'getMyStatic'),
+              new ReflectionMethod($data, 'getNull'),
+              new ReflectionMethod($data, 'getAnotherGetter'),
               new ReflectionMethod($data, 'getLiterallyNoting'),
           ],
           'isGetter' => [],
@@ -157,7 +161,11 @@ class ThroughGetterTest extends AbstractTest
             'six',
             'seven',
             'eight',
-            'nine'
+            'nine',
+            'ten',
+            'eleven',
+            null,
+            'eight'
         ];
         // The last one is missing.
         foreach ($expectations as $key => $result) {
