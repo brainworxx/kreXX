@@ -313,7 +313,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         // Retrieve the type and the name, without calling a possible autoloader.
         $prefix = '';
         if ($reflectionParameter->isPassedByReference() === true) {
-            $prefix = '&' ;
+            $prefix = '&';
         }
 
         $name = $this->retrieveParameterType($reflectionParameter) . $prefix . '$' . $reflectionParameter->getName();
