@@ -43,36 +43,6 @@ namespace Brainworxx\Krexx\Analyse\Code;
 interface CodegenConstInterface
 {
     /**
-     * Constant identifier for the array multiline code generation.
-     *
-     * @var string
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed. Use CODEGEN_TYPE_ITERATOR_TO_ARRAY.
-     */
-    const ITERATOR_TO_ARRAY = 'iteratorToArray';
-
-    /**
-     * Constant identifier for the json multiline code generation.
-     *
-     * @var string
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed. Use CODEGEN_TYPE_JSON_DECODE.
-     */
-    const JSON_DECODE = 'jsonDecode';
-
-    /**
-     * Identifier for inaccessible array multiline code generation.
-     *
-     * @var string
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed. Use CODEGEN_TYPE_ARRAY_VALUES_ACCESS.
-     */
-    const ARRAY_VALUES_ACCESS = 'arrayValuesAccess';
-
-    /**
      * Meta stuff can not be reached in the code. Stops the code generation
      * right in its tracks.
      *

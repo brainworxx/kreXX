@@ -53,16 +53,6 @@ class Messages
     protected $messages = [];
 
     /**
-     * The translatable keys for backend integration.
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed.
-     *
-     * @var array[]
-     */
-    protected $keys = [];
-
-    /**
      * A simple array to hold the values.
      *
      * @var string[]
@@ -104,7 +94,6 @@ class Messages
         // We will only display these messages once.
         if (isset($this->messages[$key]) === false) {
             // Add it to the keys, so the CMS can display it.
-            $this->keys[$key] = ['key' => $key, 'params' => $args];
             $this->messages[$key] = $this->pool->createClass(Message::class)
                 ->setKey($key)
                 ->setArguments($args)
@@ -121,25 +110,7 @@ class Messages
      */
     public function removeKey(string $key)
     {
-        unset($this->keys[$key]);
         unset($this->messages[$key]);
-    }
-
-    /**
-     * Getter for the language key array.
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed. Use $this->>getMessages() instead.
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
-     *
-     * @return array
-     *   The language keys we added beforehand.
-     */
-    public function getKeys(): array
-    {
-        return $this->keys;
     }
 
     /**

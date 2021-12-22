@@ -161,18 +161,6 @@ abstract class AbstractRenderHans extends AbstractTest
                     true,
                     implode('', $this->renderHans->getMarkerCssJs())
                 ],
-                // singleChild.html
-                [
-                    static::PATH_TO_SKIN . $this->renderHans::FILE_SI_CHILD . $fileSuffix,
-                    true,
-                    implode('', $this->renderHans->getMarkerSingleChild())
-                ],
-                // singelChildCallable.html
-                [
-                    static::PATH_TO_SKIN . $this->renderHans::FILE_SI_CHILD_CALL . $fileSuffix,
-                    true,
-                    implode('', $this->renderHans->getMarkerSingleChildCallable())
-                ],
                 // singleChildExtra.html
                 [
                   static::PATH_TO_SKIN . $this->renderHans::FILE_SI_CHILD_EX . $fileSuffix,

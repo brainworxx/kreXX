@@ -140,18 +140,6 @@ interface CallbackConstInterface
     /**
      * Array key for $this->parameters.
      *
-     * Reflection of the method, that we are currently analysing.
-     *
-     * @deprecated since 4.0.0
-     *   Will be removed. Use PARAM_REFLECTION_METHOD instead.
-     *
-     * @var string
-     */
-    const PARAM_REF_METHOD = 'reflectionMethod';
-
-    /**
-     * Array key for $this->parameters.
-     *
      * Contains an array with additional infos.
      *
      * @var string

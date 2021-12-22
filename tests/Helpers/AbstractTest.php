@@ -96,7 +96,7 @@ abstract class AbstractTest extends TestCompatibility
 
         // Reset the messages.
         $messageRef = new \ReflectionClass(Krexx::$pool->messages);
-        $keysRef = $messageRef->getProperty('keys');
+        $keysRef = $messageRef->getProperty('messages');
         $keysRef->setAccessible(true);
         $keysRef->setValue(Krexx::$pool->messages, []);
 

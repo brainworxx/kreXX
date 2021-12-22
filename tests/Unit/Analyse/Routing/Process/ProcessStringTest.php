@@ -126,7 +126,7 @@ class ProcessStringTest extends AbstractTest
             $length
         );
 
-        $this->assertEquals(ProcessConstInterface::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals(ProcessConstInterface::TYPE_STRING, $model->getType());
         $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
         $this->assertEquals(static::ENCODING_PREFIX . $fixture, $model->getNormal());
         $this->assertEquals(false, $model->hasExtra());
@@ -152,7 +152,7 @@ class ProcessStringTest extends AbstractTest
             $length
         );
 
-        $this->assertEquals(ProcessConstInterface::TYPE_STRING .  $length, $model->getType());
+        $this->assertEquals(ProcessConstInterface::TYPE_STRING, $model->getType());
         $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
         $this->assertEquals(static::ENCODING_PREFIX . $fixture, $model->getNormal());
         $this->assertEquals('broken', $model->getJson()[$model::META_ENCODING]);
@@ -181,7 +181,7 @@ class ProcessStringTest extends AbstractTest
             $fileInfo
         );
 
-        $this->assertEquals(ProcessConstInterface::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals(ProcessConstInterface::TYPE_STRING, $model->getType());
         $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
         $this->assertEquals(static::ENCODING_PREFIX . $fixture, $model->getNormal());
         $this->assertEquals($fileInfo, $model->getJson()[$model::META_MIME_TYPE]);
@@ -210,7 +210,7 @@ class ProcessStringTest extends AbstractTest
             $fileInfo
         );
 
-        $this->assertEquals(ProcessConstInterface::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals(ProcessConstInterface::TYPE_STRING, $model->getType());
         $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
         $this->assertEquals(
             static::ENCODING_PREFIX . substr($fixture, 0, 50) .  CallbackConstInterface::UNKNOWN_VALUE,
@@ -241,7 +241,7 @@ class ProcessStringTest extends AbstractTest
             $length
         );
 
-        $this->assertEquals(ProcessConstInterface::TYPE_STRING . $length, $model->getType());
+        $this->assertEquals(ProcessConstInterface::TYPE_STRING, $model->getType());
         $this->assertEquals($length, $model->getJson()[$model::META_LENGTH]);
         $this->assertEquals(
             static::ENCODING_PREFIX . $fixture . CallbackConstInterface::UNKNOWN_VALUE,

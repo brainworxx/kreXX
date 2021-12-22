@@ -482,45 +482,6 @@ interface ConfigConstInterface
     const SKIN_DIRECTORY = 'dir';
 
     /**
-     * Value from the ini file.
-     *
-     * Tells the renderer, that this value will be displayed in the FE and can
-     * be edited.
-     *
-     * @deprecated
-     *   Since 4.1.0. Will be removed. Use RENDER_TYPE_CONFIG_FULL instead.
-     *
-     * @var string
-     */
-    const RENDER_TYPE_INI_FULL = 'full';
-
-    /**
-     * Value from the ini file.
-     *
-     * Tells the renderer, that this value will be displayed in the FE.
-     * kreXX will not accept values for this configuration.
-     *
-     * @deprecated
-     *   Since 4.1.0. Will be removed. Use RENDER_TYPE_CONFIG_DISPLAY instead.
-     *
-     * @var string
-     */
-    const RENDER_TYPE_INI_DISPLAY = 'display';
-
-    /**
-     * Value from the ini file.
-     *
-     * Tells the renderer, that this value will not be displayed in the FE.
-     * kreXX will not accept values for this configuration.
-     *
-     * @deprecated
-     *   Since 4.1.0. Will be removed. Use RENDER_TYPE_CONFIG_NONE instead.
-     *
-     * @var string
-     */
-    const RENDER_TYPE_INI_NONE = 'none';
-
-    /**
      * Name of the chunks' folder.
      *
      * @var string

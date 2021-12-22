@@ -45,12 +45,8 @@ use Brainworxx\Krexx\Analyse\Model\ConnectorService;
 use Brainworxx\Krexx\Analyse\Model\Data;
 use Brainworxx\Krexx\Analyse\Model\DomId;
 use Brainworxx\Krexx\Analyse\Model\HasExtra;
-use Brainworxx\Krexx\Analyse\Model\IsCallback;
-use Brainworxx\Krexx\Analyse\Model\IsMetaConstants;
-use Brainworxx\Krexx\Analyse\Model\IsPublic;
 use Brainworxx\Krexx\Analyse\Model\Json;
 use Brainworxx\Krexx\Analyse\Model\KeyType;
-use Brainworxx\Krexx\Analyse\Model\MultiLineCodeGen;
 use Brainworxx\Krexx\Analyse\Model\Name;
 use Brainworxx\Krexx\Analyse\Model\Normal;
 use Brainworxx\Krexx\View\ViewConstInterface;
@@ -71,9 +67,4 @@ class Model implements ViewConstInterface, CodegenConstInterface
     use HasExtra;
     use CodeGenType;
     use KeyType;
-
-    use MultiLineCodeGen;
-    use IsPublic;
-    use IsMetaConstants;
-    use IsCallback;
 }

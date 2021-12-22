@@ -49,7 +49,7 @@ interface ProcessConstInterface
      *
      * @var string
      */
-    const TYPE_STRING = 'string ';
+    const TYPE_STRING = 'string';
 
     /**
      * Tell the developer: This value is an integer.

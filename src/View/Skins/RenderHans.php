@@ -92,7 +92,6 @@ class RenderHans extends AbstractRender implements
     use Recursion;
     use Search;
     use SingeChildHr;
-    use SingleChild;
     use SingleEditableChild;
 
     /**

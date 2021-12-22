@@ -71,16 +71,6 @@ class Config extends Fallback
     public $validation;
 
     /**
-     * Our ini file configuration handler.
-     *
-     * @deprecated
-     *   Since 4.1.0. Will be removed. Use $fileConfig instead.
-     *
-     * @var Ini
-     */
-    protected $iniConfig;
-
-    /**
      * Our file configuration handler.
      *
      * @var File
@@ -266,23 +256,6 @@ class Config extends Fallback
     public function getLogDir(): string
     {
         return $this->directories[static::LOG_FOLDER];
-    }
-
-    /**
-     * Get the path to the configuration file.
-     *
-     * @deprecated
-     *   Since 4.1.0. Will be removed. Use getPathToConfigFile
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
-     *
-     * @return string
-     *   The absolute path to the Krexx.ini.
-     */
-    public function getPathToIniFile(): string
-    {
-        return $this->getPathToConfigFile();
     }
 
     /**

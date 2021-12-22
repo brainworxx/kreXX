@@ -164,7 +164,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         if ($model->getType() === static::TYPE_CLASS) {
             $type = $model->getNormal();
         } else {
-            $type = $model->getType();
+            $type = gettype($model->getData()) === 'string' ? 'string' : $model->getType();
         }
 
         $blackList = ['->', '::', '[', ']', '(', ')'];
@@ -349,17 +349,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         $type = '';
         if ($reflectionParameter->hasType() === true) {
             $reflectionNamedType = $reflectionParameter->getType();
-            if (is_a($reflectionNamedType, ReflectionNamedType::class)) {
-                // PHP 7.1 and later
-                /** @var ReflectionNamedType $reflectionNamedType */
-                $type = $reflectionNamedType->getName() . ' ';
-            } else {
-                // PHP 7.0 only.
-                // @deprecated
-                // Will be removes as soon as we drop 7.0 support.
-                /** @var ReflectionType $reflectionNamedType */
-                $type = $reflectionNamedType->__toString() . ' ';
-            }
+            $type = $reflectionNamedType->getName() . ' ';
         }
 
         return $type;

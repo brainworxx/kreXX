@@ -101,12 +101,6 @@ abstract class AbstractRenderSmokyGrey extends AbstractTest
                     true,
                     implode('', $this->renderSmokyGrey->getMarkerSourceButton())
                 ],
-                // singleChild.html
-                [
-                    static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_SI_CHILD . $fileSuffix,
-                    true,
-                    implode('', $this->renderSmokyGrey->getMarkerSingleChild())
-                ],
                 // nest.html
                 [
                     static::PATH_TO_SKIN . $this->renderSmokyGrey::FILE_NEST . $fileSuffix,

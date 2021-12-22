@@ -55,25 +55,6 @@ interface RenderInterface
     public function __construct(Pool $pool);
 
     /**
-     * Renders a "single child", containing a single not expandable value.
-     *
-     * Depending on how many characters are in there, it may be toggleable.
-     *
-     * @param Model $model
-     *   The model, which hosts all the data we need.
-     *
-     * @deprecated
-     *   Since 4.0.0. Use renderExpandableChild instead.
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
-     *
-     * @return string
-     *   The generated markup from the template files.
-     */
-    public function renderSingleChild(Model $model): string;
-
-    /**
      * Render a block of a detected recursion.
      *
      * If the recursion is an object, a click should jump to the original

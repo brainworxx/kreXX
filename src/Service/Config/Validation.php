@@ -123,21 +123,6 @@ class Validation extends Fallback
     ];
 
     /**
-     * List of stuff who's fe-editing status can not be changed. Never.
-     *
-     * @deprecated
-     *   Since 4.0.0. Use static::FE_DO_NOT_EDIT
-     *
-     * @var string[]
-     */
-    protected $feConfigNoEdit = [
-        self::SETTING_DESTINATION,
-        self::SETTING_MAX_FILES,
-        self::SETTING_DEBUG_METHODS,
-        self::SETTING_IP_RANGE,
-    ];
-
-    /**
      * Setting the pool and retrieving the debug method blacklist.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool

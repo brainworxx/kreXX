@@ -177,27 +177,4 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
             $stuffToDump[] = Getter::class;
         }
     }
-
-    /**
-     * Dumping stuff is everywhere the same, only the callback class is changing.
-     *
-     * @var string $classname
-     *   The name of the callback class we are using.
-     *
-     * @deprecated
-     *   Since 4.0.0. Will be removed.
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
-     *
-     * @return string
-     *   The generated html markup.
-     */
-    protected function dumpStuff(string $classname): string
-    {
-        return $this->pool
-            ->createClass($classname)
-            ->setParameters($this->parameters)
-            ->callMe();
-    }
 }

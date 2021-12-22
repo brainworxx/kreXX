@@ -131,9 +131,14 @@ class ValidationTest extends AbstractTest
         $validation = new Validation(Krexx::$pool);
 
         // Disallowed frontend editing settings.
-        $disallowedSettings = $this->retrieveValueByReflection('feConfigNoEdit', $validation);
-        foreach ($disallowedSettings as $settingName) {
-            $this->assertFalse($validation->evaluateSetting($validation::SECTION_FE_EDITING, $settingName, static::WHATEVER));
+        foreach ($validation::FE_DO_NOT_EDIT as $settingName) {
+            $this->assertFalse(
+                $validation->evaluateSetting(
+                    $validation::SECTION_FE_EDITING,
+                    $settingName,
+                    static::WHATEVER
+                )
+            );
         }
 
         // Testing each config with a valid value and wist garbage.
