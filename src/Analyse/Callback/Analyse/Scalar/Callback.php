@@ -140,7 +140,7 @@ class Callback extends AbstractScalarAnalysis implements ViewConstInterface
      * @param array $meta
      *   The meta array, so far.
      */
-    protected function insertParameters(ReflectionFunction $reflectionFunction, array &$meta)
+    protected function insertParameters(ReflectionFunction $reflectionFunction, array &$meta): void
     {
         foreach ($reflectionFunction->getParameters() as $key => $reflectionParameter) {
             ++$key;

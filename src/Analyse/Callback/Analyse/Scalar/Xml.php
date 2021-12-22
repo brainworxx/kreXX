@@ -165,7 +165,7 @@ class Xml extends AbstractScalarAnalysis implements ViewConstInterface
      * @param string $strInputXML
      *   The string we want to parse.
      */
-    protected function parseXml(string $strInputXML)
+    protected function parseXml(string $strInputXML): void
     {
         $resParser = xml_parser_create();
         xml_set_object($resParser, $this);
@@ -185,7 +185,7 @@ class Xml extends AbstractScalarAnalysis implements ViewConstInterface
      * @param array $attributes
      *   The attributes of the tag we are opening.
      */
-    protected function tagOpen($parser, string $name, array $attributes)
+    protected function tagOpen($parser, string $name, array $attributes): void
     {
         $this->tnodeOpen = false;
         if (empty($attributes) === true) {
@@ -203,7 +203,7 @@ class Xml extends AbstractScalarAnalysis implements ViewConstInterface
      * @param string $tagData
      *   The tag data.
      */
-    protected function tagData($parser, string $tagData)
+    protected function tagData($parser, string $tagData): void
     {
         $count = count($this->decodedXml) - 1;
         if ($this->tnodeOpen) {
@@ -224,7 +224,7 @@ class Xml extends AbstractScalarAnalysis implements ViewConstInterface
      * @param string $name
      *   The name of the tag we are handling.
      */
-    protected function tagClosed($parser, string $name)
+    protected function tagClosed($parser, string $name): void
     {
         $count = count($this->decodedXml);
         $this->tnodeOpen = false;

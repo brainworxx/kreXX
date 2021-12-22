@@ -45,7 +45,7 @@ class File extends AbstractOutput
     /**
      * Run the cleanup service.
      */
-    protected function destruct()
+    protected function destruct(): void
     {
         parent::destruct();
         $this->cleanupService->cleanupOldLogs();
@@ -54,7 +54,7 @@ class File extends AbstractOutput
     /**
      * Creating the logfile after the analysis.
      */
-    public function finalize()
+    public function finalize(): void
     {
         // Output our chunks.
         // Every output is split into 4 chunk strings (header, messages,

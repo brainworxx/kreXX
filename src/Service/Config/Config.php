@@ -39,7 +39,6 @@ namespace Brainworxx\Krexx\Service\Config;
 
 use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\From\File;
-use Brainworxx\Krexx\Service\Config\From\Ini;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\SettingsGetter;
 use Brainworxx\Krexx\View\Output\CheckOutput;
@@ -144,7 +143,7 @@ class Config extends Fallback
     /**
      * Check if kreXX can be enabled or not.
      */
-    protected function checkEnabledStatus()
+    protected function checkEnabledStatus(): void
     {
         if (
             $this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE &&
@@ -169,7 +168,7 @@ class Config extends Fallback
      * @param bool $value
      *   Whether it is enabled, or not.
      */
-    public function setDisabled(bool $value)
+    public function setDisabled(bool $value): void
     {
         $this->settings[static::SETTING_DISABLED]
             ->setValue($value)

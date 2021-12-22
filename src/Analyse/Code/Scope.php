@@ -93,7 +93,7 @@ class Scope implements CallbackConstInterface, ConfigConstInterface
      * @param string $scope
      *   The scope ('$this' or something else) .
      */
-    public function setScope(string $scope)
+    public function setScope(string $scope): void
     {
         if ($scope !== static::UNKNOWN_VALUE) {
             $this->scope = $scope;

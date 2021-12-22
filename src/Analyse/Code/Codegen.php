@@ -148,7 +148,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      *
      * @param \Brainworxx\Krexx\Analyse\Model $model
      */
-    protected function addTypeHint(Model $model)
+    protected function addTypeHint(Model $model): void
     {
         if (
             empty($name = (string) $model->getName()) === true
@@ -268,7 +268,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      *
      * @param bool $bool
      */
-    public function setAllowCodegen(bool $bool)
+    public function setAllowCodegen(bool $bool): void
     {
         if ($bool === false) {
             $this->allowCodegen = false;

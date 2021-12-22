@@ -49,7 +49,7 @@ class Browser extends AbstractOutput
      * out kreXX output, to guarantee minimal interference with
      * the hosting CMS.
      */
-    public function shutdownCallback()
+    public function shutdownCallback(): void
     {
         // Output our chunks.
         // Every output is split into 4 chunk strings (header, messages,
@@ -64,7 +64,7 @@ class Browser extends AbstractOutput
     /**
      * Register this one in the php shutdown phase.
      */
-    public function finalize()
+    public function finalize(): void
     {
         register_shutdown_function([$this, 'shutdownCallback']);
     }

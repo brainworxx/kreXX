@@ -190,7 +190,7 @@ abstract class Fallback implements ConfigConstInterface
     /**
      * Generate the configuration fallback.
      */
-    protected function generateConfigFallback()
+    protected function generateConfigFallback(): void
     {
         $this->configFallback = static::CONFIG_FALLBACK;
 
@@ -212,7 +212,7 @@ abstract class Fallback implements ConfigConstInterface
     /**
      * Generate the frontend configuration fallback.
      */
-    protected function generateFeConfigFallback()
+    protected function generateFeConfigFallback(): void
     {
         $this->feConfigFallback = [
             static::SETTING_ANALYSE_PROTECTED_METHODS => $this->returnBoolSelectFalse(static::SECTION_METHODS),
@@ -242,7 +242,7 @@ abstract class Fallback implements ConfigConstInterface
     /**
      * Generate the plugin configuration, if available.
      */
-    protected function generatePluginConfig()
+    protected function generatePluginConfig(): void
     {
         // Adding the new configuration options from the plugins.
         $pluginConfig = SettingsGetter::getNewSettings();
@@ -259,7 +259,7 @@ abstract class Fallback implements ConfigConstInterface
     /**
      * Generate the skin configuration.
      */
-    protected function generateSkinConfiguration()
+    protected function generateSkinConfiguration(): void
     {
         $this->skinConfiguration = array_merge(
             [
@@ -438,5 +438,5 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string
      */
-    public $version = '4.1.3';
+    public $version = '5.0.0';
 }

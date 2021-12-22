@@ -48,6 +48,7 @@ use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\View\ViewConstInterface;
 use ReflectionException;
 use ReflectionMethod;
+use ReflectionProperty;
 
 /**
  * Getter method analysis methods.
@@ -255,7 +256,7 @@ class ThroughGetter extends AbstractCallback implements
         ReflectionMethod $reflectionMethod,
         $refProp,
         Model $model
-    ) {
+    ): void {
         $nothingFound = true;
         $value = null;
 
@@ -299,7 +300,7 @@ class ThroughGetter extends AbstractCallback implements
      *   Either the reflection of a possibly associated Property, or null to
      *   indicate that we have found nothing.
      */
-    protected function getReflectionProperty(ReflectionClass $classReflection, ReflectionMethod $reflectionMethod)
+    protected function getReflectionProperty(ReflectionClass $classReflection, ReflectionMethod $reflectionMethod): ?ReflectionProperty
     {
         // We may be facing different writing styles.
         // The property we want from getMyProperty() should be named myProperty,
@@ -383,7 +384,7 @@ class ThroughGetter extends AbstractCallback implements
      *   Either the reflection of a possibly associated Property, or null to
      *   indicate that we have found nothing.
      */
-    protected function getReflectionPropertyDeep(ReflectionClass $classReflection, ReflectionMethod $reflectionMethod)
+    protected function getReflectionPropertyDeep(ReflectionClass $classReflection, ReflectionMethod $reflectionMethod): ?ReflectionProperty
     {
         // Read the sourcecode into a string.
         $sourcecode = $this->pool->fileService->readFile(
@@ -421,7 +422,7 @@ class ThroughGetter extends AbstractCallback implements
      * @return \ReflectionProperty|null
      *   The reflection of the property, or null if we found nothing.
      */
-    protected function analyseRegexResult($propertyName, $classReflection)
+    protected function analyseRegexResult($propertyName, $classReflection): ?ReflectionProperty
     {
         // Check if this is a property and return the first we find.
         $result = $this->retrievePropertyByName($propertyName, $classReflection);
@@ -451,7 +452,7 @@ class ThroughGetter extends AbstractCallback implements
      * @return \ReflectionProperty|null
      *   The reflection property, if found.
      */
-    protected function retrievePropertyByName(string $propertyName, \ReflectionClass $parentClass)
+    protected function retrievePropertyByName(string $propertyName, \ReflectionClass $parentClass): ?ReflectionProperty
     {
         while ($parentClass !== false) {
             // Check if it was declared somewhere deeper in the

@@ -120,7 +120,7 @@ class Recursion
      * @param object $bee
      *   The object we want to track.
      */
-    public function addToHive($bee)
+    public function addToHive($bee): void
     {
         $this->recursionHive->attach($bee);
     }
@@ -192,7 +192,7 @@ class Recursion
      * @param string $domId
      *   The dom id we want to track.
      */
-    public function addToMetaHive(string $domId)
+    public function addToMetaHive(string $domId): void
     {
         $this->metaRecursionHive[$domId] = true;
     }

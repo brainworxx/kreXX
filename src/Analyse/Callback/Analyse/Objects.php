@@ -150,7 +150,7 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
      * @param string[] $stuffToDump
      *   The stuff to dump, so far.
      */
-    protected function addPropertyDumper(array &$stuffToDump)
+    protected function addPropertyDumper(array &$stuffToDump): void
     {
         $isInScope = $this->pool->scope->isInScope();
         $config = $this->pool->config;
