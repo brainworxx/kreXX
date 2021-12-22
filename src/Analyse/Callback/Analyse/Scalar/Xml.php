@@ -52,7 +52,7 @@ class Xml extends AbstractScalarAnalysis implements ViewConstInterface
     /**
      * @var string
      */
-    const XML_CHILDREN = 'children';
+    protected const XML_CHILDREN = 'children';
 
     /**
      * @var array|bool

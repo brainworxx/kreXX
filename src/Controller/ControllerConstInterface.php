@@ -47,12 +47,12 @@ interface ControllerConstInterface
      *
      * @var string
      */
-    const HEADLINE_COOKIE_CONF = 'Cookie Configuration';
+    public const HEADLINE_COOKIE_CONF = 'Cookie Configuration';
 
     /**
      * Headline for the kreXX timer.
      *
      * @var string
      */
-    const HEADLINE_TIMER = 'kreXX timer';
+    public const HEADLINE_TIMER = 'kreXX timer';
 }

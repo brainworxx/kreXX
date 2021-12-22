@@ -42,16 +42,13 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionException;
-use ReflectionNamedType;
 use ReflectionParameter;
-use ReflectionType;
 
 /**
  * Code generation methods.
  */
 class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessConstInterface
 {
-
     /**
      * Here we store all relevant data.
      *

@@ -63,7 +63,7 @@ class Chunks implements ConfigConstInterface
      *
      * @var string
      */
-    const STRING_DELIMITER = '@@@';
+    protected const STRING_DELIMITER = '@@@';
 
     /**
      * Here we store all relevant data.

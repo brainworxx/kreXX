@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
 use Brainworxx\Krexx\View\ViewConstInterface;
 use DateTime;
+use Throwable;
 
 /**
  * Processing of floats.
@@ -81,7 +82,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
                     static::META_TIMESTAMP,
                     (DateTime::createFromFormat('U.u', (string)$float))->format('d.M Y H:i:s.u')
                 );
-            } catch (\Throwable $exception) {
+            } catch (Throwable $exception) {
                 // Do nothing
             }
         }

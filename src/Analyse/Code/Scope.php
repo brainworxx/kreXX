@@ -56,7 +56,7 @@ class Scope implements CallbackConstInterface, ConfigConstInterface
      *
      * @var string
      */
-    const THIS_SCOPE = '$this';
+    protected const THIS_SCOPE = '$this';
 
     /**
      * Here we store all relevant data.

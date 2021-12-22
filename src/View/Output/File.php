@@ -42,7 +42,6 @@ namespace Brainworxx\Krexx\View\Output;
  */
 class File extends AbstractOutput
 {
-
     /**
      * Run the cleanup service.
      */

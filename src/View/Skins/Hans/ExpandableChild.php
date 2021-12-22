@@ -90,7 +90,6 @@ trait ExpandableChild
         }
 
         // Generating our code.
-        /** @var \Brainworxx\Krexx\Analyse\Code\Codegen $codegenHandler */
         $codegenHandler = $this->pool->codegenHandler;
         $generateSource = $codegenHandler->generateSource($model);
         return str_replace(

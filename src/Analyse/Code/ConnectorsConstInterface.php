@@ -50,7 +50,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_NOTHING = 'NOTHING';
+    public const CONNECTOR_NOTHING = 'NOTHING';
 
     /**
      * connectorLeft = '->'
@@ -60,7 +60,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_METHOD = 'METHOD';
+    public const CONNECTOR_METHOD = 'METHOD';
 
     /**
      * connectorLeft = '::'
@@ -70,7 +70,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_STATIC_METHOD = 'STATIC_METHOD';
+    public const CONNECTOR_STATIC_METHOD = 'STATIC_METHOD';
 
     /**
      * connectorLeft = '['
@@ -78,7 +78,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_NORMAL_ARRAY = 'NORMAL_ARRAY';
+    public const CONNECTOR_NORMAL_ARRAY = 'NORMAL_ARRAY';
 
     /**
      * connectorLeft = '[\''
@@ -86,7 +86,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_ASSOCIATIVE_ARRAY = 'ASSOCIATIVE_ARRAY';
+    public const CONNECTOR_ASSOCIATIVE_ARRAY = 'ASSOCIATIVE_ARRAY';
 
     /**
      * connectorLeft = '::'
@@ -94,7 +94,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_CONSTANT = 'CONSTANT';
+    public const CONNECTOR_CONSTANT = 'CONSTANT';
 
     /**
      * connectorLeft = '->'
@@ -102,7 +102,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_NORMAL_PROPERTY = 'NORMAL_PROPERTY';
+    public const CONNECTOR_NORMAL_PROPERTY = 'NORMAL_PROPERTY';
 
     /**
      * connectorLeft = '::'
@@ -110,7 +110,7 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_STATIC_PROPERTY = 'STATIC_PROPERTY';
+    public const CONNECTOR_STATIC_PROPERTY = 'STATIC_PROPERTY';
 
     /**
      * connectorLeft = '->{\''
@@ -118,5 +118,5 @@ interface ConnectorsConstInterface
      *
      * @var string
      */
-    const CONNECTOR_SPECIAL_CHARS_PROP = 'SPECIAL_CHARS_PROP';
+    public const CONNECTOR_SPECIAL_CHARS_PROP = 'SPECIAL_CHARS_PROP';
 }

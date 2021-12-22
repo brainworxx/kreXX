@@ -45,154 +45,154 @@ interface ViewConstInterface
     /**
      * @var string
      */
-    const META_DECLARED_IN = 'Declared in';
+    public const META_DECLARED_IN = 'Declared in';
 
     /**
      * @var string
      */
-    const META_COMMENT = 'Comment';
+    public const META_COMMENT = 'Comment';
 
     /**
      * @var string
      */
-    const META_SOURCE = 'Source';
+    public const META_SOURCE = 'Source';
 
     /**
      * @var string
      */
-    const META_NAMESPACE = 'Namespace';
+    public const META_NAMESPACE = 'Namespace';
 
     /**
      * @var string
      */
-    const META_PARAM_NO = 'Parameter #';
+    public const META_PARAM_NO = 'Parameter #';
 
     /**
      * @var string
      */
-    const META_HELP = 'Help';
+    public const META_HELP = 'Help';
 
     /**
      * @var string
      */
-    const META_LENGTH = 'Length';
+    public const META_LENGTH = 'Length';
 
     /**
      * @var string
      */
-    const META_METHOD_COMMENT = 'Method comment';
+    public const META_METHOD_COMMENT = 'Method comment';
 
     /**
      * @var string
      */
-    const META_HINT = 'Hint';
+    public const META_HINT = 'Hint';
 
     /**
      * @var string
      */
-    const META_ENCODING = 'Encoding';
+    public const META_ENCODING = 'Encoding';
 
     /**
      * @var string
      */
-    const META_MIME_TYPE = 'Mimetype';
+    public const META_MIME_TYPE = 'Mimetype';
 
     /**
      * @var string
      */
-    const META_METHODS = 'Methods';
+    public const META_METHODS = 'Methods';
 
     /**
      * @var string
      */
-    const META_CLASS_DATA = 'Meta class data';
+    public const META_CLASS_DATA = 'Meta class data';
 
     /**
      * @var string
      */
-    const META_CLASS_NAME = 'Classname';
+    public const META_CLASS_NAME = 'Classname';
 
     /**
      * @var string
      */
-    const META_INTERFACES = 'Interfaces';
+    public const META_INTERFACES = 'Interfaces';
 
     /**
      * @var string
      */
-    const META_TRAITS = 'Traits';
+    public const META_TRAITS = 'Traits';
 
     /**
      * @var string
      */
-    const META_INHERITED_CLASS = 'Inherited class';
+    public const META_INHERITED_CLASS = 'Inherited class';
 
     /**
      * @var string
      */
-    const META_PREDECLARED = 'n/a, is predeclared';
+    public const META_PREDECLARED = 'n/a, is predeclared';
 
     /**
      * @var string
      */
-    const META_UNDECLARED = 'undeclared';
+    public const META_UNDECLARED = 'undeclared';
 
     /**
      * @var string
      */
-    const META_IN_TRAIT =  'in trait: ';
+    public const META_IN_TRAIT =  'in trait: ';
 
     /**
      * @var string
      */
-    const META_IN_LINE = 'in line: ';
+    public const META_IN_LINE = 'in line: ';
 
     /**
      * @var string
      */
-    const META_IN_CLASS = 'in class: ';
+    public const META_IN_CLASS = 'in class: ';
 
     /**
      * @var string
      */
-    const META_PRETTY_PRINT = 'Pretty print';
+    public const META_PRETTY_PRINT = 'Pretty print';
 
     /**
      * @var string
      */
-    const META_DECODED_JSON = 'Decoded json';
+    public const META_DECODED_JSON = 'Decoded json';
 
     /**
      * @var string
      */
-    const META_DECODED_XML = 'Decoded xml';
+    public const META_DECODED_XML = 'Decoded xml';
 
     /**
      * @var string
      */
-    const META_CONTENT = 'Content';
+    public const META_CONTENT = 'Content';
 
     /**
      * @var string
      */
-    const META_TIMESTAMP = 'Timestamp';
+    public const META_TIMESTAMP = 'Timestamp';
 
     /**
      * @var string
      */
-    const META_RETURN_TYPE = 'Return type';
-
-    /**
-     * Css class name.
-     *
-     * @var string
-     */
-    const STYLE_HIDDEN = 'khidden';
+    public const META_RETURN_TYPE = 'Return type';
 
     /**
      * Css class name.
      *
      * @var string
      */
-    const STYLE_ACTIVE = 'kactive';
+    public const STYLE_HIDDEN = 'khidden';
+
+    /**
+     * Css class name.
+     *
+     * @var string
+     */
+    public const STYLE_ACTIVE = 'kactive';
 }

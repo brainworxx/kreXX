@@ -42,7 +42,6 @@ namespace Brainworxx\Krexx\View\Output;
  */
 class Browser extends AbstractOutput
 {
-
     /**
      * The shutdown callback.
      *

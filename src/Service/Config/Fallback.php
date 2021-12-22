@@ -54,7 +54,7 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var array[]
      */
-    const CONFIG_FALLBACK = [
+    protected const CONFIG_FALLBACK = [
         self::SECTION_OUTPUT => [
             self::SETTING_DISABLED,
             self::SETTING_IP_RANGE,
@@ -95,7 +95,7 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string[]
      */
-    const EDITABLE_SELECT = [
+    protected const EDITABLE_SELECT = [
         self::RENDER_TYPE => self::RENDER_TYPE_SELECT,
         self::RENDER_EDITABLE => self::VALUE_TRUE,
     ];
@@ -105,7 +105,7 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string[]
      */
-    const DISPLAY_ONLY_INPUT = [
+    protected const DISPLAY_ONLY_INPUT = [
         self::RENDER_TYPE => self::RENDER_TYPE_INPUT,
         self::RENDER_EDITABLE => self::VALUE_FALSE,
     ];
@@ -115,7 +115,7 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string[]
      */
-    const EDITABLE_INPUT = [
+    protected const EDITABLE_INPUT = [
         self::RENDER_TYPE => self::RENDER_TYPE_INPUT,
         self::RENDER_EDITABLE => self::VALUE_TRUE,
     ];
@@ -125,7 +125,7 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string[]
      */
-    const DISPLAY_ONLY_SELECT = [
+    protected const DISPLAY_ONLY_SELECT = [
         self::RENDER_TYPE => self::RENDER_TYPE_SELECT,
         self::RENDER_EDITABLE => self::VALUE_FALSE,
     ];
@@ -135,7 +135,7 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string[]
      */
-    const DISPLAY_NOTHING = [
+    protected const DISPLAY_NOTHING = [
         self::RENDER_TYPE => self::RENDER_TYPE_NONE,
         self::RENDER_EDITABLE => self::VALUE_FALSE,
     ];

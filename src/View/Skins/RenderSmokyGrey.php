@@ -68,5 +68,5 @@ class RenderSmokyGrey extends RenderHans implements ControllerConstInterface
      *
      * @var string
      */
-    const DATA_ATTRIBUTE_JSON = 'addjson';
+    protected const DATA_ATTRIBUTE_JSON = 'addjson';
 }

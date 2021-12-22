@@ -78,7 +78,7 @@ abstract class AbstractTest extends TestCompatibility
      */
     protected function krexxUp()
     {
-        $_SERVER[CheckOutput::REMOTE_ADDRESS] = '1.2.3.4';
+        $_SERVER['REMOTE_ADDR'] = '1.2.3.4';
         $this->mockPhpSapiNameStandard();
         Pool::createPool();
     }
