@@ -59,7 +59,6 @@ class ThroughProperties extends AbstractCallback implements
     CodegenConstInterface,
     ConnectorsConstInterface
 {
-
     /**
      * Renders the properties of a class.
      *
@@ -70,6 +69,7 @@ class ThroughProperties extends AbstractCallback implements
     {
         $output = $this->dispatchStartEvent();
         $pool = $this->pool;
+        $messages = $pool->messages;
 
         // I need to preprocess them, since I do not want to render a
         // reflection property.
@@ -85,20 +85,17 @@ class ThroughProperties extends AbstractCallback implements
             // Stitch together our model.
             $value = $ref->retrieveValue($refProperty);
             $output .= $pool->routing->analysisHub(
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . static::EVENT_MARKER_END,
-                    $pool->createClass(Model::class)
-                        ->setData($value)
-                        ->setName($this->retrievePropertyName($refProperty))
-                        ->addToJson(
-                            $pool->messages->getHelp('metaComment'),
-                            $pool->createClass(Properties::class)->getComment($refProperty)
-                        )
-                        ->addToJson($pool->messages->getHelp('metaDeclaredIn'), $this->retrieveDeclarationPlace($refProperty))
-                        ->setAdditional($this->getAdditionalData($refProperty, $ref))
-                        ->setConnectorType($this->retrieveConnector($refProperty))
-                        ->setCodeGenType($refProperty->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '')
-                )
+                $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $pool->createClass(Model::class)
+                    ->setData($value)
+                    ->setName($this->retrievePropertyName($refProperty))
+                    ->addToJson(
+                        $messages->getHelp('metaComment'),
+                        $pool->createClass(Properties::class)->getComment($refProperty)
+                    )
+                    ->addToJson($messages->getHelp('metaDeclaredIn'), $this->retrieveDeclarationPlace($refProperty))
+                    ->setAdditional($this->getAdditionalData($refProperty, $ref))
+                    ->setConnectorType($this->retrieveConnector($refProperty))
+                    ->setCodeGenType($refProperty->isPublic() ? static::CODEGEN_TYPE_PUBLIC : ''))
             );
         }
 
@@ -112,7 +109,7 @@ class ThroughProperties extends AbstractCallback implements
      *   Reflection of the property we are analysing.
      *
      * @return string
-     *   The connector type.
+     *   The connector-type.
      */
     protected function retrieveConnector(ReflectionProperty $refProperty): string
     {
