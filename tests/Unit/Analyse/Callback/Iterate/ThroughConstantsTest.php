@@ -89,7 +89,6 @@ class ThroughConstantsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::canDump
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::dumpPhpSevenZero
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::retrieveAdditionalData
      */
     public function testCallMe()
@@ -123,7 +122,6 @@ class ThroughConstantsTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::canDump
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::dumpPhpSevenZero
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants::retrieveAdditionalData
      */
     public function testCallMe71InScope()

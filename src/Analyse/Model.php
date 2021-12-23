@@ -49,12 +49,11 @@ use Brainworxx\Krexx\Analyse\Model\Json;
 use Brainworxx\Krexx\Analyse\Model\KeyType;
 use Brainworxx\Krexx\Analyse\Model\Name;
 use Brainworxx\Krexx\Analyse\Model\Normal;
-use Brainworxx\Krexx\View\ViewConstInterface;
 
 /**
  * Model for the view rendering
  */
-class Model implements ViewConstInterface, CodegenConstInterface
+class Model implements CodegenConstInterface
 {
     use ConnectorService;
     use Callback;

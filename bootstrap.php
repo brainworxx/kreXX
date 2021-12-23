@@ -59,7 +59,6 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Callback/CallbackConstInterface.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessConstInterface.php';
         include_once KREXX_DIR . 'src/Analyse/Caller/BacktraceConstInterface.php';
-        include_once KREXX_DIR . 'src/View/ViewConstInterface.php';
         include_once KREXX_DIR . 'src/Controller/ControllerConstInterface.php';
         include_once KREXX_DIR . 'src/Service/Config/ConfigConstInterface.php';
         include_once KREXX_DIR . 'src/Analyse/Code/CodegenConstInterface.php';

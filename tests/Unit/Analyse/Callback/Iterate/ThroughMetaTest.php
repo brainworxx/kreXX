@@ -95,7 +95,7 @@ class ThroughMetaTest extends AbstractTest
     public function testCallMeComment()
     {
         $this->handleNoneReflections(
-            $this->throughMeta::META_COMMENT,
+            'Comment',
             'Look at me, I\'m a comment!'
         );
     }
@@ -111,7 +111,7 @@ class ThroughMetaTest extends AbstractTest
         $this->mockEventService([$this->startEvent, $this->throughMeta]);
         $fixture = [
             $this->throughMeta::PARAM_DATA => [
-                $this->throughMeta::META_DECODED_JSON => json_decode('{"Friday": "the 13\'th"}')
+                'Decoded json' => json_decode('{"Friday": "the 13\'th"}')
             ],
             $this->throughMeta::PARAM_CODE_GEN_TYPE => Codegen::CODEGEN_TYPE_JSON_DECODE
         ];
@@ -133,7 +133,7 @@ class ThroughMetaTest extends AbstractTest
     public function testCallMeDeclaredIn()
     {
         $this->handleNoneReflections(
-            $this->throughMeta::META_DECLARED_IN,
+            'Declared in',
             'Some file with a line number.'
         );
     }
@@ -155,7 +155,7 @@ class ThroughMetaTest extends AbstractTest
         $source .= 'die();';
 
         $this->handleNoneReflections(
-            $this->throughMeta::META_SOURCE,
+            'Source',
             $source
         );
     }
@@ -200,7 +200,7 @@ class ThroughMetaTest extends AbstractTest
      */
     public function testCallMeInterfaces()
     {
-        $this->handleReflections($this->throughMeta::META_INTERFACES);
+        $this->handleReflections('Interfaces');
     }
 
     /**
@@ -212,7 +212,7 @@ class ThroughMetaTest extends AbstractTest
      */
     public function testCallMeTraits()
     {
-        $this->handleReflections($this->throughMeta::META_TRAITS);
+        $this->handleReflections('Traits');
     }
 
     /**
@@ -222,7 +222,7 @@ class ThroughMetaTest extends AbstractTest
      */
     public function testCallMeInherited()
     {
-        $this->handleReflections($this->throughMeta::META_INHERITED_CLASS);
+        $this->handleReflections('Inherited class');
     }
 
     /**

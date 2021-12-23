@@ -40,7 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\View\ViewConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Displaying the meta stuff from the class analysis.
@@ -51,20 +51,28 @@ use Brainworxx\Krexx\View\ViewConstInterface;
  * @uses string codeGenType
  *   The code generation constants we want to use for none meta stuff.
  */
-class ThroughMeta extends AbstractCallback implements ViewConstInterface, CallbackConstInterface
+class ThroughMeta extends AbstractCallback implements CallbackConstInterface
 {
+    public function __construct(Pool $pool)
+    {
+        parent::__construct($pool);
+
+        $messages = $pool->messages;
+        $this->keysWithExtra = [
+            $messages->getHelp('metaComment'),
+            $messages->getHelp('metaDeclaredIn'),
+            $messages->getHelp('metaSource'),
+            $messages->getHelp('metaPrettyPrint'),
+            $messages->getHelp('metaContent')
+        ];
+    }
+
     /**
      * These keys are rendered with an extra.
      *
      * @var string[]
      */
-    protected $keysWithExtra = [
-        ViewConstInterface::META_COMMENT,
-        ViewConstInterface::META_DECLARED_IN,
-        ViewConstInterface::META_SOURCE,
-        ViewConstInterface::META_PRETTY_PRINT,
-        ViewConstInterface::META_CONTENT
-    ];
+    protected $keysWithExtra = [];
 
     /**
      * Renders the metadata of a class, which is actually the same as the
@@ -76,7 +84,12 @@ class ThroughMeta extends AbstractCallback implements ViewConstInterface, Callba
     public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
-        $reflectionStuff = [static::META_INHERITED_CLASS, static::META_INTERFACES, static::META_TRAITS];
+        $messages = $this->pool->messages;
+        $reflectionStuff = [
+            $messages->getHelp('metaInheritedClass'),
+            $messages->getHelp('metaInterfaces'),
+            $messages->getHelp('metaTraits')
+        ];
 
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
             if (in_array($key, $reflectionStuff)) {
@@ -113,11 +126,12 @@ class ThroughMeta extends AbstractCallback implements ViewConstInterface, Callba
      */
     protected function handleNoneReflections(string $key, $meta): string
     {
+        $messages = $this->pool->messages;
         /** @var Model $model */
         $model = $this->pool->createClass(Model::class)
             ->setData($meta)
             ->setName($key)
-            ->setType($key === static::META_PRETTY_PRINT ? $key : static::TYPE_REFLECTION);
+            ->setType($key === $messages->getHelp('metaPrettyPrint') ? $key : static::TYPE_REFLECTION);
 
         if (isset($this->parameters[static::PARAM_CODE_GEN_TYPE])) {
             $model->setCodeGenType($this->parameters[static::PARAM_CODE_GEN_TYPE]);
@@ -129,7 +143,7 @@ class ThroughMeta extends AbstractCallback implements ViewConstInterface, Callba
             $model->setNormal($meta);
         }
 
-        if ($key === static::META_DECODED_JSON) {
+        if ($key === $messages->getHelp('metaDecodedJson')) {
             // Prepare the json code generation.
             return $this->pool->routing->analysisHub($model);
         }

@@ -38,7 +38,6 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar;
 
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\View\ViewConstInterface;
 use DOMDocument;
 use finfo;
 
@@ -47,7 +46,7 @@ use finfo;
  *
  * @package Brainworxx\Krexx\Analyse\Callback\Analyse\Scalar
  */
-class Xml extends AbstractScalarAnalysis implements ViewConstInterface
+class Xml extends AbstractScalarAnalysis
 {
     /**
      * @var string
@@ -106,10 +105,10 @@ class Xml extends AbstractScalarAnalysis implements ViewConstInterface
     {
         // Get a first impression, we check the mime type of the model.
         $metaStuff = $model->getJson();
-
+        $mimeType = $this->pool->messages->getHelp('metaMimeType');
         if (
-            empty($metaStuff[static::META_MIME_TYPE]) === true ||
-            strpos($metaStuff[static::META_MIME_TYPE], 'xml;') === false
+            empty($metaStuff[$mimeType]) === true ||
+            strpos($metaStuff[$mimeType], 'xml;') === false
         ) {
             // Was not identified as xml before.
             // Early return.
@@ -138,22 +137,23 @@ class Xml extends AbstractScalarAnalysis implements ViewConstInterface
         $this->parseXml($this->originalXml);
         restore_error_handler();
 
+        $messages = $this->pool->messages;
         if (empty($this->decodedXml) === false) {
-            $meta[static::META_DECODED_XML] = $this->decodedXml;
+            $meta[$messages->getHelp('metaDecodedXml')] = $this->decodedXml;
             // The pretty print done by a dom parser.
             $dom = new DOMDocument("1.0");
             $dom->preserveWhiteSpace = false;
             $dom->formatOutput = true;
             $dom->loadXML($this->originalXml);
-            $meta[static::META_PRETTY_PRINT] = $this->pool->encodingService->encodeString($dom->saveXML());
+            $meta[$messages->getHelp('metaPrettyPrint')] = $this->pool->encodingService->encodeString($dom->saveXML());
         } else {
-            $meta[static::META_DECODED_XML] = 'Unable to decode the XML structure!';
+            $meta[$messages->getHelp('metaDecodedXml')] = $this->pool->messages->getHelp('metaNoXml');
         }
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
             $this->model->setHasExtra(false);
-            $meta[static::META_CONTENT] = $this->model->getData();
+            $meta[$messages->getHelp('metaContent')] = $this->model->getData();
         }
 
         return $meta;

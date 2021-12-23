@@ -45,7 +45,6 @@ use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
-use Brainworxx\Krexx\View\ViewConstInterface;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -75,7 +74,6 @@ use ReflectionProperty;
  */
 class ThroughGetter extends AbstractCallback implements
     CallbackConstInterface,
-    ViewConstInterface,
     CodegenConstInterface,
     ConnectorsConstInterface
 {
@@ -175,7 +173,7 @@ class ThroughGetter extends AbstractCallback implements
             $model = $this->pool->createClass(Model::class)
                 ->setName($reflectionMethod->getName())
                 ->setCodeGenType(static::CODEGEN_TYPE_PUBLIC)
-                ->addToJson(static::META_METHOD_COMMENT, $comments);
+                ->addToJson($this->pool->messages->getHelp('metaMethodComment'), $comments);
 
             // We need to decide if we are handling static getters.
             if ($reflectionMethod->isStatic() === true) {
@@ -268,7 +266,10 @@ class ThroughGetter extends AbstractCallback implements
             if ($value === null) {
                 // A NULL value might mean that the values does not
                 // exist, until the getter computes it.
-                $model->addToJson(static::META_HINT, $this->pool->messages->getHelp('getterNull'));
+                $model->addToJson(
+                    $this->pool->messages->getHelp('metaHint'),
+                    $this->pool->messages->getHelp('getterNull')
+                );
             }
         }
 

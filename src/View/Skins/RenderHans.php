@@ -61,14 +61,12 @@ use Brainworxx\Krexx\View\Skins\Hans\Recursion;
 use Brainworxx\Krexx\View\Skins\Hans\Search;
 use Brainworxx\Krexx\View\Skins\Hans\SingeChildHr;
 use Brainworxx\Krexx\View\Skins\Hans\SingleEditableChild;
-use Brainworxx\Krexx\View\ViewConstInterface;
 
 /**
  * Individual render class for the Hans skin.
  */
 class RenderHans extends AbstractRender implements
     RenderInterface,
-    ViewConstInterface,
     BacktraceConstInterface,
     PluginConstInterface,
     ConfigConstInterface,
