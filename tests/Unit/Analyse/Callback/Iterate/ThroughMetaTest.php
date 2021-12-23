@@ -87,6 +87,21 @@ class ThroughMetaTest extends AbstractTest
     }
 
     /**
+     * Test the initializing of the workflow.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::__constuct
+     */
+    public function testConstruct()
+    {
+        $keysWithExtra = $this->retrieveValueByReflection('keysWithExtra', $this->throughMeta);
+        $stuffToProcess = $this->retrieveValueByReflection('stuffToProcess', $this->throughMeta);
+
+        // We simply assuethat there is some kind of workfow in there.
+        $this->assertNotEmpty($keysWithExtra);
+        $this->assertNotEmpty($stuffToProcess);
+    }
+
+    /**
      * Test with a comment string.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
