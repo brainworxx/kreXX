@@ -53,11 +53,29 @@ use Brainworxx\Krexx\Service\Factory\Pool;
  */
 class ThroughMeta extends AbstractCallback implements CallbackConstInterface
 {
+    /**
+     * These keys are rendered with an extra.
+     *
+     * @var string[]
+     */
+    protected $keysWithExtra = [];
+
+    /**
+     * @var array
+     */
+    protected $stuffToProcess = [];
+
+    /**
+     * Inject the pool and init the workflow.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
 
         $messages = $pool->messages;
+
         $this->keysWithExtra = [
             $messages->getHelp('metaComment'),
             $messages->getHelp('metaDeclaredIn'),
@@ -65,14 +83,13 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
             $messages->getHelp('metaPrettyPrint'),
             $messages->getHelp('metaContent')
         ];
-    }
 
-    /**
-     * These keys are rendered with an extra.
-     *
-     * @var string[]
-     */
-    protected $keysWithExtra = [];
+        $this->stuffToProcess = [
+            $messages->getHelp('metaInheritedClass'),
+            $messages->getHelp('metaInterfaces'),
+            $messages->getHelp('metaTraits')
+        ];
+    }
 
     /**
      * Renders the metadata of a class, which is actually the same as the
@@ -84,15 +101,9 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
     public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
-        $messages = $this->pool->messages;
-        $reflectionStuff = [
-            $messages->getHelp('metaInheritedClass'),
-            $messages->getHelp('metaInterfaces'),
-            $messages->getHelp('metaTraits')
-        ];
 
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
-            if (in_array($key, $reflectionStuff)) {
+            if (in_array($key, $this->stuffToProcess)) {
                 $output .= $this->pool->render->renderExpandableChild(
                     $this->dispatchEventWithModel(
                         $key,
