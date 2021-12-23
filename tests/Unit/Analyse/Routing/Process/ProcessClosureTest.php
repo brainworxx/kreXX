@@ -51,6 +51,7 @@ class ProcessClosureTest extends AbstractTest
      * Test the processing of a closure.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessClosure::handleNoneScalar
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessClosure::retrieveMetaData
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\AbstractProcessNoneScalar::handle
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessClosure::retrieveParameterList
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessClosure::retrieveSourceCode

@@ -90,17 +90,43 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
             return '';
         }
 
+        $result = $this->retrieveMetaData($ref);
+        return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent(
+            $model->setType(static::TYPE_CLOSURE)
+                ->setNormal(static::UNKNOWN_VALUE)
+                ->setConnectorParameters($this->retrieveParameterList($ref, $result))
+                ->setDomid($this->generateDomIdFromObject($model->getData()))
+                ->setConnectorType(static::CONNECTOR_METHOD)
+                ->addParameter(static::PARAM_DATA, $result)
+                ->injectCallback($this->pool->createClass(ThroughMeta::class))
+        ));
+    }
+
+    /**
+     * Retrieve the metadata.
+     *
+     * @param \ReflectionFunction $ref
+     *   The reflection of the function we are analysing.
+     *
+     * @return array
+     *   The metadata.
+     */
+    protected function retrieveMetaData(ReflectionFunction $ref): array
+    {
         $result = [];
         $messages = $this->pool->messages;
 
         // Adding comments from the file.
-        $result[$messages->getHelp('metaComment')] = $this->pool->createClass(Functions::class)->getComment($ref);
+        $result[$messages->getHelp('metaComment')] = $this->pool
+            ->createClass(Functions::class)
+            ->getComment($ref);
 
         // Adding the sourcecode
         $result[$messages->getHelp('metaSource')] = $this->retrieveSourceCode($ref);
 
         // Adding the place where it was declared.
-        $result[$messages->getHelp('metaDeclaredIn')] = $this->pool->fileService->filterFilePath($ref->getFileName()) . "\n";
+        $result[$messages->getHelp('metaDeclaredIn')] =
+            $this->pool->fileService->filterFilePath($ref->getFileName()) . "\n";
         $result[$messages->getHelp('metaDeclaredIn')] .= 'in line ' . $ref->getStartLine();
 
         // Adding the namespace, but only if we have one.
@@ -112,15 +138,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
         // Adding the return type.
         $result[$messages->getHelp('metaReturnType')] = $this->pool->createClass(ReturnType::class)->getComment($ref);
 
-        return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent(
-            $model->setType(static::TYPE_CLOSURE)
-                ->setNormal(static::UNKNOWN_VALUE)
-                ->setConnectorParameters($this->retrieveParameterList($ref, $result))
-                ->setDomid($this->generateDomIdFromObject($model->getData()))
-                ->setConnectorType(static::CONNECTOR_METHOD)
-                ->addParameter(static::PARAM_DATA, $result)
-                ->injectCallback($this->pool->createClass(ThroughMeta::class))
-        ));
+        return $result;
     }
 
     /**
