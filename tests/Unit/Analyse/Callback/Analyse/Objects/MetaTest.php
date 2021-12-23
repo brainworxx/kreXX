@@ -131,6 +131,7 @@ class MetaTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::generateDomIdFromClassname
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::analyseMeta
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::generateMetaData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::generateName
      */
     public function testCallMe()
@@ -206,6 +207,7 @@ class MetaTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::callMe
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::generateDomIdFromClassname
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::analyseMeta
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::generateMetaData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta::generateName
      */
     public function testCallMeOthers()

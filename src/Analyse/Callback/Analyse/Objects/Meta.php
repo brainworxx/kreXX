@@ -119,7 +119,31 @@ class Meta extends AbstractObjectAnalysis implements CallbackConstInterface
     protected function analyseMeta(string $domId, ReflectionClass $ref, string $name): string
     {
         $this->pool->recursionHandler->addToMetaHive($domId);
+
+        return $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
+            static::EVENT_MARKER_ANALYSES_END,
+            $this->pool->createClass(Model::class)
+                ->setName($name)
+                ->setDomid($domId)
+                ->setType(static::TYPE_INTERNALS)
+                ->addParameter(static::PARAM_DATA, $this->generateMetaData($ref))
+                ->injectCallback($this->pool->createClass(ThroughMeta::class))
+        ));
+    }
+
+    /**
+     * Generate the metadata.
+     *
+     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref
+     *   The reflection class, the main source of information.
+     *
+     * @return array
+     *   The generated metadata.
+     */
+    protected function generateMetaData(ReflectionClass $ref): array
+    {
         $messages = $this->pool->messages;
+
         // Get the naming on the way.
         $data = [
             $messages->getHelp('metaClassName') => $this->generateName($ref),
@@ -146,15 +170,7 @@ class Meta extends AbstractObjectAnalysis implements CallbackConstInterface
             $data[$messages->getHelp('metaInheritedClass')] = [$previousClass->getName() => $previousClass];
         }
 
-        return $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
-            static::EVENT_MARKER_ANALYSES_END,
-            $this->pool->createClass(Model::class)
-                ->setName($name)
-                ->setDomid($domId)
-                ->setType(static::TYPE_INTERNALS)
-                ->addParameter(static::PARAM_DATA, $data)
-                ->injectCallback($this->pool->createClass(ThroughMeta::class))
-        ));
+        return $data;
     }
 
     /**
