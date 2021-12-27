@@ -80,5 +80,5 @@ interface PluginConfigInterface
     /**
      * Registers all Overwrites
      */
-    public function exec();
+    public function exec(): void;
 }

@@ -5,13 +5,14 @@
 - Change: Defined visibility for all constants.
 - Change: Added missing PHP 7.1 return type to methods.
 - Change: Moved the ViewConstInterface to the translations.
-- Updated to PHP 8.1
+
 
 4.1.3
 - Added microtime analysis to the float routing.
 - Added microtime analysis to the string scalar analysis.
 - Added type hint to the additional data for the first
   element.
+- Updated to PHP 8.1
 - Change: Code cleanup.
 - Bugfix: Display info about public properties in predeclared
   classes.
