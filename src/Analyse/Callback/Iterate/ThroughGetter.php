@@ -82,7 +82,7 @@ class ThroughGetter extends AbstractCallback implements
      *
      * @var string
      */
-    protected const CURRENT_PREFIX = 'currentPrefix';
+    public const CURRENT_PREFIX = 'currentPrefix';
 
     /**
      * Stuff we need to escape in a regex.
