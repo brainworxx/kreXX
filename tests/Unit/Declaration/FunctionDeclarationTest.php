@@ -52,7 +52,7 @@ class FunctionDeclarationTest extends AbstractTest
         $fixtureA = new \ReflectionFunction('myLittleCallback');
         $result = $functionDeclaration->retrieveDeclaration($fixtureA);
         $this->assertStringContainsString(
-            '\tests\Fixtures\Callback.php',
+            DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'Callback.php',
             $result,
             'The actual declaration place in the fixtures.'
         );

@@ -68,7 +68,7 @@ class PropertyDeclarationTest extends AbstractTest
         $reflectionClass = new \ReflectionClass(ComplexPropertiesFixture::class);
         $fixture = $reflectionClass->getProperty('publicStringProperty');
         $result = $propertyDeclaration->retrieveDeclaration($fixture);
-        $this->assertStringContainsString('\tests\Fixtures\ComplexPropertiesFixture.php', $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR .'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'ComplexPropertiesFixture.php', $result);
 
         // Going into a deep dive via traits.
         $fixture = $reflectionClass->getProperty('traitProperty');
@@ -79,6 +79,6 @@ class PropertyDeclarationTest extends AbstractTest
         $reflectionClass = new \ReflectionClass(TraitUsingClass::class);
         $fixture = $reflectionClass->getProperty('traitProperty');
         $result = $propertyDeclaration->retrieveDeclaration($fixture);
-        $this->assertStringContainsString('\tests\Fixtures\TraitFixture.php', $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR .'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR. 'TraitFixture.php', $result);
     }
 }

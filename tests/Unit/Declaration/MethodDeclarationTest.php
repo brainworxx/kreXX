@@ -61,11 +61,11 @@ class MethodDeclarationTest extends AbstractTest
         $reflectionClass = new \ReflectionClass(ComplexMethodFixture::class);
         $fixture = $reflectionClass->getMethod('finalMethod');
         $result = $methodDeclaration->retrieveDeclaration($fixture);
-        $this->assertStringContainsString('\tests\Fixtures\ComplexMethodFixture.php', $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'ComplexMethodFixture.php', $result);
 
         // Doing fancy stuff with traits within traits.
         $fixture = $reflectionClass->getMethod('traitFunction');
         $result = $methodDeclaration->retrieveDeclaration($fixture);
-        $this->assertStringContainsString('\tests\Fixtures\TraitFixture.php', $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR . 'TraitFixture.php', $result);
     }
 }
