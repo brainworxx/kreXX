@@ -62,7 +62,6 @@ class ThroughMethods extends AbstractCallback implements
     CodegenConstInterface,
     ConnectorsConstInterface
 {
-
     /**
      * Analysis class for method comments.
      *

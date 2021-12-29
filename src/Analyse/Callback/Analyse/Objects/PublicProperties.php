@@ -53,7 +53,6 @@ use ReflectionProperty;
  */
 class PublicProperties extends AbstractObjectAnalysis implements CallbackConstInterface
 {
-
     /**
      * Dump all public properties.
      *

@@ -39,7 +39,6 @@ namespace Brainworxx\Krexx\Analyse\Declaration;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Reflector;
-use ReflectionClass;
 
 /**
  * Base class for the retrieval of a declaration place
@@ -71,7 +70,7 @@ abstract class AbstractDeclaration
      *   The reflection of the method, function or property we want to retrieve.
      *
      * @return string
-     *   The human readable declaration place
+     *   The human-readable declaration place
      */
     abstract public function retrieveDeclaration(Reflector $reflection): string;
 }

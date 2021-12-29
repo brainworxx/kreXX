@@ -38,7 +38,6 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Declaration;
 
 use Reflector;
-use ReflectionClass;
 
 class FunctionDeclaration extends AbstractDeclaration
 {

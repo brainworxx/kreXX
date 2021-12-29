@@ -91,7 +91,7 @@ interface CallbackConstInterface
      * Array key for $this->parameters.
      *
      * Parameter for the array analysis. Historical name, where we were planing
-     * for multiline code analysis. Now holds the info, if we do complicated
+     * for multiline code analysis. Now holds the info, if we do complicate
      * stuff to reach this value.
      *
      * @var string

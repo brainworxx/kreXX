@@ -50,7 +50,6 @@ use ReflectionProperty;
  */
 class ProtectedProperties extends AbstractObjectAnalysis implements CallbackConstInterface
 {
-
     /**
      * Dump all protected properties.
      *
