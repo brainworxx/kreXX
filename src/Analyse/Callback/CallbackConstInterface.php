@@ -289,8 +289,10 @@ interface CallbackConstInterface
 
     /**
      * Translation marker for a literal in the frontend.
-     *
      * The declaration place of this method or property could not be resolved.
+     *
+     * @deprecated since 5.0.0
+     *   We do not use constants for translations anymore.
      *
      * @var string
      */
