@@ -1,5 +1,6 @@
 5.0.0
 - Added immediately browser output to the output choices.
+- Added default value analysis to the additional info.
 - Change: Removed deprecated code.
 - Change: Drop PHP 7.0 support
 - Change: Streamlined the type display of strings

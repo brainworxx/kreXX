@@ -61,6 +61,11 @@ class ThroughProperties extends AbstractCallback implements
     ConnectorsConstInterface
 {
     /**
+     * @var mixed[]
+     */
+    protected $defaultProperties;
+
+    /**
      * Renders the properties of a class.
      *
      * @return string
@@ -76,8 +81,10 @@ class ThroughProperties extends AbstractCallback implements
         // reflection property.
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
-        /** @var PropertyDeclaration $propertyRetrieval */
-        $propertyRetrieval = $this->pool->createClass(PropertyDeclaration::class);
+        /** @var PropertyDeclaration $propertyRet */
+        $propertyRet = $this->pool->createClass(PropertyDeclaration::class);
+
+        $this->defaultProperties = $ref->getDefaultProperties();
 
         foreach ($this->parameters[static::PARAM_DATA] as $refProperty) {
             // Check memory and runtime.
@@ -95,7 +102,8 @@ class ThroughProperties extends AbstractCallback implements
                         $messages->getHelp('metaComment'),
                         $pool->createClass(Properties::class)->getComment($refProperty)
                     )
-                    ->addToJson($messages->getHelp('metaDeclaredIn'), $propertyRetrieval->retrieveDeclaration($refProperty))
+                    ->addToJson($messages->getHelp('metaDeclaredIn'), $propertyRet->retrieveDeclaration($refProperty))
+                    ->addToJson($messages->getHelp('metaDefaultValue'), $this->retrieveDefaultValue($refProperty->getName()))
                     ->setAdditional($this->getAdditionalData($refProperty, $ref))
                     ->setConnectorType($this->retrieveConnector($refProperty))
                     ->setCodeGenType($refProperty->isPublic() ? static::CODEGEN_TYPE_PUBLIC : ''))
@@ -103,6 +111,30 @@ class ThroughProperties extends AbstractCallback implements
         }
 
         return $output;
+    }
+
+    /**
+     * @param string $propertyName
+     *
+     * @return string
+     */
+    protected function retrieveDefaultValue(string $propertyName): string
+    {
+        $default = $this->defaultProperties[$propertyName] ?? null;
+        if ($default === null) {
+            return '';
+        }
+
+        $result = '';
+        if (is_string($default)) {
+            $result = '\'' . $default . '\'';
+        } elseif (is_int($default)) {
+            $result = (string)$default;
+        } elseif (is_array($default)) {
+            $result = var_export($default, true);
+        }
+
+        return nl2br($this->pool->encodingService->encodeString($result));
     }
 
     /**
