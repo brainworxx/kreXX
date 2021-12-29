@@ -66,6 +66,11 @@ class ThroughProperties extends AbstractCallback implements
     protected $defaultProperties;
 
     /**
+     * @var PropertyDeclaration
+     */
+    protected $propertyDeclaration;
+
+    /**
      * Renders the properties of a class.
      *
      * @return string
@@ -74,43 +79,69 @@ class ThroughProperties extends AbstractCallback implements
     public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
-        $pool = $this->pool;
-        $messages = $pool->messages;
 
         // I need to preprocess them, since I do not want to render a
         // reflection property.
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
-        /** @var PropertyDeclaration $propertyRet */
-        $propertyRet = $this->pool->createClass(PropertyDeclaration::class);
-
+        $this->propertyDeclaration = $this->pool->createClass(PropertyDeclaration::class);
         $this->defaultProperties = $ref->getDefaultProperties();
 
         foreach ($this->parameters[static::PARAM_DATA] as $refProperty) {
             // Check memory and runtime.
-            if ($pool->emergencyHandler->checkEmergencyBreak() === true) {
+            if ($this->pool->emergencyHandler->checkEmergencyBreak() === true) {
                 return '';
             }
 
-            // Stitch together our model.
-            $value = $ref->retrieveValue($refProperty);
-            $output .= $pool->routing->analysisHub(
-                $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $pool->createClass(Model::class)
-                    ->setData($value)
-                    ->setName($this->retrievePropertyName($refProperty))
-                    ->addToJson(
-                        $messages->getHelp('metaComment'),
-                        $pool->createClass(Properties::class)->getComment($refProperty)
-                    )
-                    ->addToJson($messages->getHelp('metaDeclaredIn'), $propertyRet->retrieveDeclaration($refProperty))
-                    ->addToJson($messages->getHelp('metaDefaultValue'), $this->retrieveDefaultValue($refProperty->getName()))
-                    ->setAdditional($this->getAdditionalData($refProperty, $ref))
-                    ->setConnectorType($this->retrieveConnector($refProperty))
-                    ->setCodeGenType($refProperty->isPublic() ? static::CODEGEN_TYPE_PUBLIC : ''))
+            $output .= $this->pool->routing->analysisHub(
+                $this->dispatchEventWithModel(
+                    __FUNCTION__ . static::EVENT_MARKER_END,
+                    $this->prepareModel($ref->retrieveValue($refProperty), $refProperty)
+                )
             );
         }
 
         return $output;
+    }
+
+    /**
+     * Prepare the model.
+     *
+     * @param mixed $value
+     *   The retrieved value
+     * @param \ReflectionProperty $refProperty
+     *   The reflection of the property we are analysing.
+     *
+     * @return \Brainworxx\Krexx\Analyse\Model
+     *   The prepared model.
+     */
+    protected function prepareModel($value, ReflectionProperty $refProperty): Model
+    {
+        $messages = $this->pool->messages;
+
+        return $this->pool->createClass(Model::class)
+            ->setData($value)
+            ->setName($this->retrievePropertyName($refProperty))
+            ->addToJson(
+                $messages->getHelp('metaComment'),
+                $this->pool->createClass(Properties::class)->getComment($refProperty)
+            )
+            ->addToJson(
+                $messages->getHelp('metaDeclaredIn'),
+                $this->propertyDeclaration->retrieveDeclaration($refProperty)
+            )
+            ->addToJson(
+                $messages->getHelp('metaDefaultValue'),
+                $this->retrieveDefaultValue($refProperty->getName())
+            )
+            ->setAdditional(
+                $this->getAdditionalData(
+                    $refProperty,
+                    $this->parameters[static::PARAM_REF]
+                )
+            )
+            ->setConnectorType($this->retrieveConnector($refProperty))
+            ->setCodeGenType($refProperty->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '');
     }
 
     /**

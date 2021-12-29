@@ -92,6 +92,7 @@ class ThroughPropertiesTest extends AbstractTest
      * Testing an analysis without any methods to look at.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::prepareModel
      */
     public function testCallMeEmpty()
     {
@@ -116,6 +117,7 @@ class ThroughPropertiesTest extends AbstractTest
      * Normal testrun for the property analysis.
      *
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::prepareModel
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveConnector
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrievePropertyName
      * @covers \Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration::retrieveDeclaration
