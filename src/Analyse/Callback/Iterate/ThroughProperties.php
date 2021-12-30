@@ -145,6 +145,8 @@ class ThroughProperties extends AbstractCallback implements
      */
     protected function retrieveDefaultValue(ReflectionProperty $property): string
     {
+        $default = null;
+
         try {
             // The 8.0 way of getting the default value.
             // There is also a PHP 8.0 bug that may cause an
@@ -162,10 +164,6 @@ class ThroughProperties extends AbstractCallback implements
                 $defaultProperties = $property->getDeclaringClass()->getDefaultProperties();
                 $default = $defaultProperties[$property->getName()] ?? null;
             }
-        }
-
-        if (isset($default) === false) {
-            return '';
         }
 
         $result = '';
