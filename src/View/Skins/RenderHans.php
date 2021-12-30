@@ -66,7 +66,6 @@ use Brainworxx\Krexx\View\Skins\Hans\SingleEditableChild;
  * Individual render class for the Hans skin.
  */
 class RenderHans extends AbstractRender implements
-    RenderInterface,
     BacktraceConstInterface,
     PluginConstInterface,
     ConfigConstInterface,

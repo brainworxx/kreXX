@@ -46,6 +46,7 @@ use Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration;
 use Brainworxx\Krexx\Analyse\Model;
 use ReflectionClass;
 use ReflectionProperty;
+use Throwable;
 
 /**
  * Class properties' analysis methods.
@@ -153,7 +154,7 @@ class ThroughProperties extends AbstractCallback implements
             // "Internal error: Failed to retrieve the reflection object"
             // That is not even a Reflection exception, it's an "Error".
             $default = $property->getDefaultValue();
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             // Fallback to the 7.x way.
             // The values of static properties are stored in the default
             // properties of the class reflection.
