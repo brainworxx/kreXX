@@ -132,7 +132,7 @@ class ThroughProperties extends AbstractCallback implements
             )
             ->addToJson(
                 $messages->getHelp('metaDefaultValue'),
-                $this->retrieveDefaultValue($refProperty->getName())
+                $this->retrieveDefaultValue($refProperty)
             )
             ->setAdditional(
                 $this->getAdditionalData(
@@ -145,14 +145,29 @@ class ThroughProperties extends AbstractCallback implements
     }
 
     /**
-     * @param string $propertyName
+     * @param ReflectionProperty $property
      *
      * @return string
      */
-    protected function retrieveDefaultValue(string $propertyName): string
+    protected function retrieveDefaultValue(ReflectionProperty $property): string
     {
-        $default = $this->defaultProperties[$propertyName] ?? null;
-        if ($default === null) {
+        try {
+            // The 8.0 way of getting the default value.
+            // There is also a PHP 8.0 bug that may cause an
+            // "Internal error: Failed to retrieve the reflection object"
+            // That is not even a Reflection exception, it's an "Error".
+            $default = $property->getDefaultValue();
+        } catch (\Throwable $exception) {
+            // Fallback to the 7.x way.
+            // The values of static properties are stored in the default
+            // properties of the class reflection.
+            // And we do not want these here.
+            if ($property->isStatic() === false) {
+                $default = $this->defaultProperties[$property->getName()] ?? null;
+            }
+        }
+
+        if (isset($default) === false) {
             return '';
         }
 

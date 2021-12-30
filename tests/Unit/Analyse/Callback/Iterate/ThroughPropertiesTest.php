@@ -302,7 +302,8 @@ class ThroughPropertiesTest extends AbstractTest
             static::MY_PROPERTY,
             [
                 static::JSON_COMMENT_KEY => 'My private Property<br /><br />&#64;var string',
-                static::JSON_DECLARED_KEY => $complexDeclarationStringInheritance
+                static::JSON_DECLARED_KEY => $complexDeclarationStringInheritance,
+                static::JSON_DEFAULT_VALUE => '&#039;my property&#039;'
             ],
             '->',
             '',
