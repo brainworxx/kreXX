@@ -61,11 +61,6 @@ class ThroughProperties extends AbstractCallback implements
     ConnectorsConstInterface
 {
     /**
-     * @var mixed[]
-     */
-    protected $defaultProperties;
-
-    /**
      * @var PropertyDeclaration
      */
     protected $propertyDeclaration;
@@ -85,7 +80,6 @@ class ThroughProperties extends AbstractCallback implements
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         $this->propertyDeclaration = $this->pool->createClass(PropertyDeclaration::class);
-        $this->defaultProperties = $ref->getDefaultProperties();
 
         foreach ($this->parameters[static::PARAM_DATA] as $refProperty) {
             // Check memory and runtime.
@@ -163,7 +157,10 @@ class ThroughProperties extends AbstractCallback implements
             // properties of the class reflection.
             // And we do not want these here.
             if ($property->isStatic() === false) {
-                $default = $this->defaultProperties[$property->getName()] ?? null;
+                // We also need to get the class that actually declared this
+                // value. The default values can only be found in there.
+                $defaultProperties = $property->getDeclaringClass()->getDefaultProperties();
+                $default = $defaultProperties[$property->getName()] ?? null;
             }
         }
 
