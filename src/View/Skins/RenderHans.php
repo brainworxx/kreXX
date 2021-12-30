@@ -102,21 +102,7 @@ class RenderHans extends AbstractRender implements
      *
      * @var string
      */
-    protected const FILE_SI_CHILD = 'singleChild';
-
-    /**
-     * Template file name.
-     *
-     * @var string
-     */
     protected const FILE_SI_CHILD_EX = 'singleChildExtra';
-
-    /**
-     * Template file name.
-     *
-     * @var string
-     */
-    protected const FILE_SI_CHILD_CALL = 'singleChildCallable';
 
     /**
      * Template file name.
