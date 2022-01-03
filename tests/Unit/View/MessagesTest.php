@@ -142,9 +142,7 @@ class MessagesTest extends AbstractTest
      */
     public function testGetHelp()
     {
-        $helpArray = [
-            'doctor' => 'Some %s string.'
-        ];
+        $helpArray = ['text' =>['doctor' => 'Some %s string.']];
         $this->setValueByReflection('helpArray', $helpArray, $this->messagesClass);
 
         $this->assertEquals('', $this->messagesClass->getHelp('unknown key'));
@@ -197,8 +195,33 @@ class MessagesTest extends AbstractTest
 
         $this->messagesClass->readHelpTexts();
         $this->assertEquals(
-            ['someKey' => 'a string'],
+            ['text' => ['someKey' => 'a string']],
             $this->retrieveValueByReflection('helpArray', $this->messagesClass)
         );
+    }
+
+    /**
+     * Test the assignment of the language key.
+     *
+     * @covers \Brainworxx\Krexx\View\Messages::setLanguageKey
+     * @covers \Brainworxx\Krexx\View\Messages::readHelpTexts
+     * @covers \Brainworxx\Krexx\View\Messages::getHelp
+     */
+    public function testSetLanguageKey()
+    {
+        $iniContents = '[anykey]' . "\n" .
+            'someKey = "a string"';
+
+        $this->messagesClass->setLanguageKey('anykey');
+        $fileServiceMock = $this->createMock(File::class);
+        $fileServiceMock->expects($this->once())
+            ->method('getFileContents')
+            ->with(KREXX_DIR . 'resources/language/Help.ini')
+            ->will($this->returnValue($iniContents));
+        Krexx::$pool->fileService = $fileServiceMock;
+
+        $this->messagesClass->readHelpTexts();
+
+        $this->assertEquals('a string', $this->messagesClass->getHelp('someKey'), 'Test the usage of the language key above.');
     }
 }

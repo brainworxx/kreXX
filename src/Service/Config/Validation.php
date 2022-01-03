@@ -102,7 +102,7 @@ class Validation extends Fallback
      * @see \Brainworxx\Krexx\Service\Config\Config::isAllowedDebugCall()
      * @see \Brainworxx\Krexx\Service\Plugin\Registration::addMethodToDebugBlacklist()
      *
-     * @var array[]
+     * @var string[]
      */
     protected $methodBlacklist = [];
 
@@ -113,7 +113,7 @@ class Validation extends Fallback
      * @see \Brainworxx\Krexx\Service\Config\Security->isAllowedDebugCall()
      * @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects->pollAllConfiguredDebugMethods()
      *
-     * @var string[]
+     * @var string[][]
      */
     protected $classBlacklist = [
         // Fun with reflection classes. Not really.
@@ -171,6 +171,11 @@ class Validation extends Fallback
         if ($group === static::SECTION_FE_EDITING) {
             // These settings can never be changed in the frontend.
             return !in_array($name, $this->feDoNotEdit);
+        }
+
+        if (empty($this->feConfigFallback[$name][static::EVALUATE])) {
+            // No evaluation method was specified.
+            return true;
         }
 
         // We simply call the configured evaluation method.

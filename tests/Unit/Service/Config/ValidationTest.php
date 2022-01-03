@@ -188,6 +188,10 @@ class ValidationTest extends AbstractTest
 
         // Nice, huh?
         foreach ($settingList as $name => $setting) {
+            if (isset($setting[$validation::EVALUATE]) === false) {
+                // We skip the one without any evaluation method.
+                continue;
+            }
             foreach ($testData[$setting[$validation::EVALUATE]] as $value => $expected) {
                 $this->assertEquals(
                     $expected,

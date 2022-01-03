@@ -134,6 +134,9 @@ class ConfigTest extends AbstractTest
 
         // kreXX should not be disabled.
         $this->assertEquals(false, $config->getSetting($config::SETTING_DISABLED));
+
+        // Test the selected language. Should be the fallback,
+        $this->assertEquals('text', $config->getSetting($config::SETTING_LANGUAGE_KEY));
     }
 
     /**

@@ -65,6 +65,7 @@ abstract class Fallback implements ConfigConstInterface
             self::SETTING_DESTINATION,
             self::SETTING_MAX_FILES,
             self::SETTING_USE_SCOPE_ANALYSIS,
+            self::SETTING_LANGUAGE_KEY,
         ],
         self::SECTION_PRUNE => [
             self::SETTING_MAX_STEP_NUMBER,
@@ -150,7 +151,7 @@ abstract class Fallback implements ConfigConstInterface
     /**
      * Values, rendering settings and the actual fallback value.
      *
-     * @var string[][]
+     * @var string[][]|\Closure[][]
      */
     public $feConfigFallback = [];
 
@@ -235,6 +236,7 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_USE_SCOPE_ANALYSIS => $this->returnBoolSelectTrue(static::SECTION_BEHAVIOR),
             static::SETTING_MAX_STEP_NUMBER => $this->returnInput(static::SECTION_PRUNE, 10),
             static::SETTING_ARRAY_COUNT_LIMIT => $this->returnInput(static::SECTION_PRUNE, 300),
+            static::SETTING_LANGUAGE_KEY => $this->renterTextInput(static::SECTION_BEHAVIOR, 'text'),
         ];
     }
 
@@ -313,7 +315,7 @@ abstract class Fallback implements ConfigConstInterface
     }
 
     /**
-     * The render settings for a simple input field.
+     * The render settings for a simple integer input field.
      *
      * @param string $section
      *   The section, where it belongs to
@@ -329,6 +331,27 @@ abstract class Fallback implements ConfigConstInterface
             static::VALUE => $value,
             static::RENDER => static::EDITABLE_INPUT,
             static::EVALUATE => static::EVAL_INT,
+            static::SECTION => $section,
+        ];
+    }
+
+    /**
+     * The render settings for a simple string input field,
+     * that we do not evaluate.
+     *
+     * @param string $section
+     *   The section, where it belongs to
+     * @param string $value
+     *   The prefilled value.
+     *
+     * @return array
+     *   The settings.
+     */
+    protected function renterTextInput(string $section, string $value): array
+    {
+        return [
+            static::VALUE => $value,
+            static::RENDER => static::EDITABLE_INPUT,
             static::SECTION => $section,
         ];
     }

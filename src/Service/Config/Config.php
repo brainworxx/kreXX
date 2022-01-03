@@ -136,6 +136,7 @@ class Config extends Fallback
         // or ajax mode and have no file output.
         $this->checkOutput = $pool->createClass(CheckOutput::class);
         $this->debugFuncList = explode(',', $this->getSetting(static::SETTING_DEBUG_METHODS));
+        $this->pool->messages->setLanguageKey($this->getSetting(static::SETTING_LANGUAGE_KEY));
 
         $this->checkEnabledStatus();
     }

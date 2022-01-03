@@ -90,7 +90,7 @@ class SettingsGetter extends Registration
     /**
      * Getter for the blacklisted debug methods.
      *
-     * @return array[]
+     * @return string[]
      *   The debug methods.
      */
     public static function getBlacklistDebugMethods(): array

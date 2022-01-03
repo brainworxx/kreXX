@@ -317,6 +317,13 @@ interface ConfigConstInterface
     public const SETTING_USE_SCOPE_ANALYSIS = 'useScopeAnalysis';
 
     /**
+     * The language keys for the language file.
+     *
+     * @var string
+     */
+    public const SETTING_LANGUAGE_KEY = 'languageKey';
+
+    /**
      * Array key. Holds the value of analyseProtected.
      *
      * @var string
