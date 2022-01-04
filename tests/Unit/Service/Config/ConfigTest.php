@@ -456,12 +456,15 @@ class ConfigTest extends AbstractTest
         $config = new Config(Krexx::$pool);
         $config->settings[$config::SETTING_SKIN]->setValue($skinName);
 
+         $expectations = [
+             $config::SKIN_SMOKY_GREY => $config::SKIN_SMOKY_GREY,
+             $config::SKIN_HANS => $config::SKIN_HANS,
+             $skinName => $skinName
+        ];
+
         $this->assertEquals($skinRenderClass, $config->getSkinClass());
         $this->assertEquals($skinDirectory, $config->getSkinDirectory());
-        $this->assertEquals(
-            [$config::SKIN_SMOKY_GREY, $config::SKIN_HANS, $skinName],
-            $config->getSkinList()
-        );
+        $this->assertEquals($expectations, $config->getSkinList());
     }
 
     /**
@@ -476,5 +479,20 @@ class ConfigTest extends AbstractTest
         $config = new Config(Krexx::$pool);
         $config->setPathToConfigFile($fixture);
         $this->assertEquals($fixture, $config->getPathToConfigFile());
+    }
+
+    /**
+     * Test the retrieval of the language list
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\Config::getLanguageList
+     */
+    public function testGetLanguageList()
+    {
+        $expectations = [
+            'text' => 'English',
+            'de' => 'Deutsch'
+        ];
+        $config = new Config(Krexx::$pool);
+        $this->assertEquals($expectations, $config->getLanguageList());
     }
 }

@@ -236,7 +236,7 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_USE_SCOPE_ANALYSIS => $this->returnBoolSelectTrue(static::SECTION_BEHAVIOR),
             static::SETTING_MAX_STEP_NUMBER => $this->returnInput(static::SECTION_PRUNE, 10),
             static::SETTING_ARRAY_COUNT_LIMIT => $this->returnInput(static::SECTION_PRUNE, 300),
-            static::SETTING_LANGUAGE_KEY => $this->renterTextInput(static::SECTION_BEHAVIOR, 'text'),
+            static::SETTING_LANGUAGE_KEY => $this->returnLanguages(),
         ];
     }
 
@@ -347,12 +347,12 @@ abstract class Fallback implements ConfigConstInterface
      * @return array
      *   The settings.
      */
-    protected function renterTextInput(string $section, string $value): array
+    protected function returnLanguages(): array
     {
         return [
-            static::VALUE => $value,
-            static::RENDER => static::EDITABLE_INPUT,
-            static::SECTION => $section,
+            static::VALUE => 'text',
+            static::RENDER => static::EDITABLE_SELECT,
+            static::SECTION => static::SECTION_BEHAVIOR,
         ];
     }
 

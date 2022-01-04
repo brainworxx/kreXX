@@ -303,11 +303,22 @@ class Config extends Fallback
     /**
      * Simply return a list of all skins as their configuration keys.
      *
-     * @return string[][]
+     * @return string[]
      */
     public function getSkinList(): array
     {
-        return array_keys($this->skinConfiguration);
+        $keys = array_keys($this->skinConfiguration);
+        return array_combine($keys, $keys);
+    }
+
+    /**
+     * Return the list of available languages.
+     *
+     * @return string[]
+     */
+    public function getLanguageList(): array
+    {
+        return ['text' => 'English', 'de' => 'Deutsch'];
     }
 
     /**
