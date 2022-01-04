@@ -1,5 +1,3 @@
-<?php
-
 /**
  * kreXX: Krumo eXXtended
  *
@@ -33,62 +31,48 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-declare(strict_types=1);
-
-namespace Brainworxx\Krexx\View\Skins\Hans;
-
-/**
- * Renderer the embedded JavaScript and CSS.
- */
-trait CssJs
+class Translations
 {
     /**
-     * @var string[]
+     * Data storage for the translations
      */
-    private $markerCssJs = [
-        '{css}',
-        '{js}',
-        '{tsEnterText}',
-        '{tsTooSmall}',
-        '{tsPleaseReload}',
-        '{tsConfigReset}',
-        '{tsNoDataAvailable}',
-        '{tsAdditionalData}',
-    ];
+    protected translations:Object = {};
 
     /**
-     * {@inheritdoc}
+     * Set the translations
+     *
+     * @param {string} selector
+     * @param {Kdt} kdt
      */
-    public function renderCssJs(string $css, string $javascript): string
+    constructor(selector:string, kdt:Kdt)
     {
-        $messages = $this->pool->messages;
-        return str_replace(
-            $this->markerCssJs,
-            [
-                $css,
-                $javascript,
-                $messages->getHelp('tsEnterText'),
-                $messages->getHelp('tsTooSmall'),
-                $messages->getHelp('tsPleaseReload'),
-                $messages->getHelp('tsConfigReset'),
-                $messages->getHelp('tsNoDataAvailable'),
-                $messages->getHelp('tsAdditionalData')
-            ],
-            $this->getTemplateFileContent(static::FILE_CSSJS)
-        );
+        let dataElements = document.querySelectorAll(selector);
+        let data:string;
+        let json:Object;
+
+        // Load the translations from the elements.
+        for (let i = 0; i < dataElements.length; i++) {
+            data = kdt.getDataset(dataElements[i], 'translations');
+            json = kdt.parseJson(data);
+            if (json !== false) {
+                this.translations = {...this.translations, ...json};
+            }
+        }
     }
 
     /**
-     * Getter of the css js for unit tests.
+     * Translate the key.
      *
-     * @codeCoverageIgnore
-     *   We are not testing the unit tests.
-     *
-     * @return string[]
-     *   The marker array.
+     * @param {string} key
      */
-    public function getMarkerCssJs(): array
+    public translate(key:string): string
     {
-        return $this->markerCssJs;
+        if (typeof this.translations[key] === 'undefined') {
+            // At least return the key.
+            return key;
+        }
+
+        // Return the translation.
+        return this.translations[key];
     }
 }

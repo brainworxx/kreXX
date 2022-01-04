@@ -39,6 +39,19 @@ class Kdt
     protected jumpTo:Function;
 
     /**
+     * Our translations class.
+     */
+    public translations:Translations;
+
+    /**
+     * Init the translations.
+     */
+    constructor()
+    {
+        this.translations = new Translations('.krdata-structure.krtrans', this);
+    }
+
+    /**
      * Set the currently used jump to callback.
      *
      * @param {Function} jumpTo
@@ -325,7 +338,7 @@ class Kdt
 
         document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
         // Feedback about update.
-        alert(valueName + ' --> ' + newValue + '\n\nPlease reload the page to use the new local settings.');
+        alert(valueName + ' --> ' + newValue + '\n\n' + this.translations.translate('tsPleaseReload'));
     };
 
     /**
@@ -344,7 +357,7 @@ class Kdt
         let expires:string = 'expires=' + date.toUTCString();
 
         document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
-        alert('All local configuration have been reset.\n\nPlease reload the page to use the these settings.');
+        alert(this.translations.translate('tsConfigReset') + '\n\n' + this.translations.translate('tsPleaseReload'));
     }
 
     /**
