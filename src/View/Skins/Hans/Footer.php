@@ -50,6 +50,7 @@ trait Footer
     private $markerFooter = [
         '{configInfo}',
         '{caller}',
+        '{pluginList}',
         '{plugins}',
     ];
 
@@ -84,6 +85,7 @@ trait Footer
             [
                 $this->renderExpandableChild($model, $configOnly),
                 $callerString,
+                $this->pool->messages->getHelp('pluginList'),
                 $this->renderPluginList(),
             ],
             $this->getTemplateFileContent(static::FILE_FOOTER)
