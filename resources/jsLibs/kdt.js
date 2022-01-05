@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -13,17 +24,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var Draxx = (function () {
     function Draxx(selector, handle, callbackUp, callbackDrag) {
         var _this = this;
@@ -189,6 +189,13 @@ var Kdt = (function () {
             document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
             document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
             alert(valueName + ' --> ' + newValue + '\n\n' + _this.translations.translate('tsPleaseReload'));
+        };
+        this.resetSetting = function (event, element) {
+            var date = new Date();
+            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+            var expires = 'expires=' + date.toUTCString();
+            document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
+            alert(_this.translations.translate('tsConfigReset') + '\n\n' + _this.translations.translate('tsPleaseReload'));
         };
         this.collapse = function (event, element) {
             event.stop = true;
@@ -375,13 +382,6 @@ var Kdt = (function () {
         }
         return result;
     };
-    Kdt.prototype.resetSetting = function (event, element) {
-        var date = new Date();
-        date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-        var expires = 'expires=' + date.toUTCString();
-        document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
-        alert(this.translations.translate('tsConfigReset') + '\n\n' + this.translations.translate('tsPleaseReload'));
-    };
     Kdt.prototype.parseJson = function (string) {
         try {
             return JSON.parse(string);
@@ -398,8 +398,29 @@ var Kdt = (function () {
             }
         }
     };
-    ;
     return Kdt;
+}());
+var Translations = (function () {
+    function Translations(selector, kdt) {
+        this.translations = {};
+        var dataElements = document.querySelectorAll(selector);
+        var data;
+        var json;
+        for (var i = 0; i < dataElements.length; i++) {
+            data = kdt.getDataset(dataElements[i], 'translations');
+            json = kdt.parseJson(data);
+            if (json !== false) {
+                this.translations = __assign(__assign({}, this.translations), json);
+            }
+        }
+    }
+    Translations.prototype.translate = function (key) {
+        if (typeof this.translations[key] === 'undefined') {
+            return key;
+        }
+        return this.translations[key];
+    };
+    return Translations;
 }());
 var Search = (function () {
     function Search(eventHandler, jumpTo) {
@@ -902,25 +923,3 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
-var Translations = (function () {
-    function Translations(selector, kdt) {
-        this.translations = {};
-        var dataElements = document.querySelectorAll(selector);
-        var data;
-        var json;
-        for (var i = 0; i < dataElements.length; i++) {
-            data = kdt.getDataset(dataElements[i], 'translations');
-            json = kdt.parseJson(data);
-            if (json !== false) {
-                this.translations = __assign(__assign({}, this.translations), json);
-            }
-        }
-    }
-    Translations.prototype.translate = function (key) {
-        if (typeof this.translations[key] === 'undefined') {
-            return key;
-        }
-        return this.translations[key];
-    };
-    return Translations;
-}());

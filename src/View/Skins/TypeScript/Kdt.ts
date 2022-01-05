@@ -349,7 +349,7 @@ class Kdt
      * @param {Node} element
      *   The element that was clicked.
      */
-    public resetSetting(event:Event, element:Node): void
+    public resetSetting = (event:Event, element:Node): void =>
     {
         // We do not delete the cookie, we simply remove all settings in it.
         let date:Date = new Date();
@@ -396,7 +396,7 @@ class Kdt
                 document.querySelector('body').appendChild(elements[i]);
             }
         }
-    };
+    }
 
     /**
      * Collapses elements for a breadcrumb
