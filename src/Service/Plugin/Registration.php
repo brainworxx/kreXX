@@ -385,6 +385,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
         static::$additionalSkinList = [];
         static::$additionalScalarString = [];
         static::$newSettings = [];
+        static::$additionalLanguages = [];
 
         // Go through the remaining plugins.
         static::$plugins[$configClass][static::IS_ACTIVE] = false;
