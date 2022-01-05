@@ -120,6 +120,7 @@ class ValidationTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Service\Config\Validation::evalIpRange
      * @covers \Brainworxx\Krexx\Service\Config\Validation::evalMaxRuntime
      * @covers \Brainworxx\Krexx\Service\Config\Validation::evalSkin
+     * @covers \Brainworxx\Krexx\Service\Config\Validation::evalLanguage
      */
     public function testEvaluateSetting()
     {
@@ -183,6 +184,11 @@ class ValidationTest extends AbstractTest
                 'seven' => false,
                 '42' => true,
                 '99999' => false
+            ],
+            Fallback::EVAL_LANG => [
+                'text' => true,
+                'de' => true,
+                'fr' => false
             ]
         ];
 

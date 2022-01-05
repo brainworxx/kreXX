@@ -78,6 +78,13 @@ class Validation extends Fallback
     protected const KEY_CONFIG_ERROR_DEBUG_INVALID = 'configErrorDebugInvalid';
 
     /**
+     * Part of a key for the messaging system.
+     *
+     * @var string
+     */
+    protected const KEY_CONFIG_ERROR_LANGUAGE_INVALID = 'configErrorLangInvalid';
+
+    /**
      * Pre-configuration which setting will never be editable.
      *
      * @var string[]
@@ -113,7 +120,7 @@ class Validation extends Fallback
      * @see \Brainworxx\Krexx\Service\Config\Security->isAllowedDebugCall()
      * @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects->pollAllConfiguredDebugMethods()
      *
-     * @var string[][]
+     * @var string[]
      */
     protected $classBlacklist = [
         // Fun with reflection classes. Not really.
@@ -373,6 +380,31 @@ class Validation extends Fallback
                 );
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * Eval if the selected language is available.
+     *
+     * @param string $value
+     *   The language key.
+     * @param string $name
+     *   The name of the value we are checking, needed for the feedback text.
+     * @param string $group
+     *   The name of the group that we are evaluating, needed for the feedback
+     *   text.
+     *
+     * @return bool
+     *   Whether it does evaluate or not.
+     */
+    protected function evalLanguage($value, string $name, string $group): bool
+    {
+        if (isset($this->pool->config->getLanguageList()[$value]) === false) {
+            $this->pool->messages
+                ->addMessage(static::KEY_CONFIG_ERROR_LANGUAGE_INVALID, [$group, $name, $value]);
+            return false;
         }
 
         return true;

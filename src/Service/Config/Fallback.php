@@ -352,6 +352,7 @@ abstract class Fallback implements ConfigConstInterface
         return [
             static::VALUE => 'text',
             static::RENDER => static::EDITABLE_SELECT,
+             static::EVALUATE => static::EVAL_LANG,
             static::SECTION => static::SECTION_BEHAVIOR,
         ];
     }

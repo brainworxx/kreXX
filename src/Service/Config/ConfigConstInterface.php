@@ -149,6 +149,15 @@ interface ConfigConstInterface
     public const EVAL_DEBUG_METHODS = 'evalDebugMethods';
 
     /**
+     * Method name used to evaluate the configured language
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    public const EVAL_LANG = 'evalLanguage';
+
+    /**
      * Array key. Contains the config of the output section.
      *
      * @var string
