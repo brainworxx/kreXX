@@ -126,21 +126,21 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string
      */
-    protected const CHUNKS_FOLDER = 'chunks';
+    public const CHUNKS_FOLDER = 'chunks';
 
     /**
      * Name of the log folder.
      *
      * @var string
      */
-    protected const LOG_FOLDER = 'log';
+    public const LOG_FOLDER = 'log';
 
     /**
      * Name of the config folder.
      *
      * @var string
      */
-    protected const CONFIG_FOLDER = 'config';
+    public const CONFIG_FOLDER = 'config';
 
     /**
      * Name of the smokygrey skin.
