@@ -188,4 +188,14 @@ class SettingsGetter extends Registration
     {
         return static::$newSettings;
     }
+
+    /**
+     * Getter for the additional languages.
+     *
+     * @return string[][]
+     */
+    public static function getAdditionalLanguages(): array
+    {
+        return self::$additionalLanguages;
+    }
 }
