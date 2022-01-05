@@ -50,6 +50,113 @@ use Brainworxx\Krexx\View\Skins\RenderSmokyGrey;
 abstract class Fallback implements ConfigConstInterface
 {
     /**
+     * Method name used to evaluate a boolean.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_BOOL = 'evalBool';
+
+    /**
+     * Method name used to evaluate an integer.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_INT = 'evalInt';
+
+    /**
+     * Method name used to evaluate the maximum runtime.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_MAX_RUNTIME = 'evalMaxRuntime';
+
+    /**
+     * Method name used to evaluate the output destination.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_DESTINATION = 'evalDestination';
+
+    /**
+     * Method name used to evaluate the skin name.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_SKIN = 'evalSkin';
+
+    /**
+     * Method name used to evaluate the allowed ip range.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_IP_RANGE = 'evalIpRange';
+
+    /**
+     * Method name used to evaluate the debug methods.
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_DEBUG_METHODS = 'evalDebugMethods';
+
+    /**
+     * Method name used to evaluate the configured language
+     *
+     * @see \Brainworxx\Krexx\Service\Config\Validation
+     *
+     * @var string
+     */
+    protected const EVAL_LANG = 'evalLanguage';
+
+    /**
+     * Name of the chunks' folder.
+     *
+     * @var string
+     */
+    protected const CHUNKS_FOLDER = 'chunks';
+
+    /**
+     * Name of the log folder.
+     *
+     * @var string
+     */
+    protected const LOG_FOLDER = 'log';
+
+    /**
+     * Name of the config folder.
+     *
+     * @var string
+     */
+    protected const CONFIG_FOLDER = 'config';
+
+    /**
+     * Name of the smokygrey skin.
+     *
+     * @var string
+     */
+    protected const SKIN_SMOKY_GREY = 'smokygrey';
+
+    /**
+     * Name of the hans skin.
+     *
+     * @var string
+     */
+    protected const SKIN_HANS = 'hans';
+
+    /**
      * The fallback configuration.
      *
      * @var string[][]

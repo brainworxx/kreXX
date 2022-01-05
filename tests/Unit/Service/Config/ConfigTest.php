@@ -457,8 +457,8 @@ class ConfigTest extends AbstractTest
         $config->settings[$config::SETTING_SKIN]->setValue($skinName);
 
          $expectations = [
-             $config::SKIN_SMOKY_GREY => $config::SKIN_SMOKY_GREY,
-             $config::SKIN_HANS => $config::SKIN_HANS,
+             'smokygrey' => 'smokygrey',
+             'hans' => 'hans',
              $skinName => $skinName
         ];
 
