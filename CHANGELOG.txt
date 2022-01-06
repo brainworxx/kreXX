@@ -16,7 +16,7 @@
 - Change: Remove the inherited constants from the kreXX
   main class.
 - Change: String and array analysis now cache their settings.
-- Change: The ScalarString class gets instanciated only once
+- Change: The ScalarString class gets instantiated only once
   per run.
 - Change: Removed the scope analysis setting.
 
