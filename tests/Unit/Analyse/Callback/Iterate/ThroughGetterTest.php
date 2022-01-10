@@ -74,7 +74,6 @@ class ThroughGetterTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyByName
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::convertToSnakeCase
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::findIt
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::regexEscaping
      *
      * @throws \ReflectionException
      */
