@@ -147,11 +147,11 @@ class Traversable extends AbstractObjectAnalysis implements CallbackConstInterfa
         // a special callback.
         if (count($result) > (int) $this->pool->config->getSetting(static::SETTING_ARRAY_COUNT_LIMIT)) {
             $model->injectCallback($this->pool->createClass(ThroughLargeArray::class))
-                ->setNormal($messages->getHelp('traversableInfo'))
+                ->setNormal($messages->getHelp('simplifiedTraversableInfo'))
                 ->setHelpid('simpleArray');
         } else {
             $model->injectCallback($this->pool->createClass(ThroughArray::class))
-                ->setNormal($messages->getHelp('simplifiedTraversableInfo'));
+                ->setNormal($messages->getHelp('traversableInfo'));
         }
 
         $analysisResult = $this->pool->render->renderExpandableChild(
