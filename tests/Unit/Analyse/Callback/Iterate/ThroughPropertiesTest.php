@@ -438,7 +438,7 @@ class ThroughPropertiesTest extends AbstractTest
             static::READ_ONLY_STRING,
             [
                 static::JSON_COMMENT_KEY => 'An uninitialized, readonly variable.<br /><br />&#64;var string',
-                static::JSON_DECLARED_KEY => '...\tests\Fixtures\ReadOnlyFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\ReadOnlyFixture'
+                static::JSON_DECLARED_KEY => 'ReadOnlyFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\ReadOnlyFixture'
             ],
             '->',
             '',
