@@ -258,6 +258,46 @@ class ThroughProperties extends AbstractCallback implements
             $additional = 'private ';
         }
 
+        // Retrieve the value status of the property.
+        $additional .= $this->retrieveValueStatus($refProperty);
+
+        // Test if the property is inherited or not by testing the
+        // declaring class
+        if ($refProperty->getDeclaringClass()->getName() !== $ref->getName()) {
+            // This one got inherited fom a lower level.
+            $additional .= 'inherited ';
+        }
+
+        // Add the info, if this is static.
+        if ($refProperty->isStatic() === true) {
+            $additional .= 'static ';
+        }
+
+        if (isset($refProperty->isUndeclared) === true) {
+            // The property 'isUndeclared' is not a part of the reflectionProperty.
+            // @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
+            $additional .= 'dynamic ';
+        }
+
+        return $additional;
+    }
+
+    /**
+     * Retrieve the value status of a property:
+     *   - readonly
+     *   - uninitialized (not yet with a value)
+     *   - unset (not with a value anymore)
+     *
+     * @param \ReflectionProperty $refProperty
+     *   The reflection of the property we are analysing.
+     *
+     * @return string
+     *   The human-readable result string.
+     */
+    protected function retrieveValueStatus(ReflectionProperty $refProperty): string
+    {
+        $additional = '';
+
         // There are readonly properties since PHP 8.1 available.
         // In a rather buggy state. When the property is not readonly, this may
         // trigger an
@@ -283,24 +323,6 @@ class ThroughProperties extends AbstractCallback implements
                 // a warning.
                 $additional .= 'unset ';
             }
-        }
-
-        // Test if the property is inherited or not by testing the
-        // declaring class
-        if ($refProperty->getDeclaringClass()->getName() !== $ref->getName()) {
-            // This one got inherited fom a lower level.
-            $additional .= 'inherited ';
-        }
-
-        // Add the info, if this is static.
-        if ($refProperty->isStatic() === true) {
-            $additional .= 'static ';
-        }
-
-        if (isset($refProperty->isUndeclared) === true) {
-            // The property 'isUndeclared' is not a part of the reflectionProperty.
-            // @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
-            $additional .= 'dynamic ';
         }
 
         return $additional;
