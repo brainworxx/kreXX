@@ -410,7 +410,7 @@ class ThroughPropertiesTest extends AbstractTest
         // Test the events.
         $this->mockEventService(
             [$this->startEvent, $this->throughProperties],
-            [$this->endEvent, $this->throughProperties],
+            [$this->endEvent, $this->throughProperties]
         );
 
         $subject = new ReadOnlyFixture();
