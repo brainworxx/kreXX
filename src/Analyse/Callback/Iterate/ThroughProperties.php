@@ -247,24 +247,42 @@ class ThroughProperties extends AbstractCallback implements
      */
     protected function getAdditionalData(ReflectionProperty $refProperty, ReflectionClass $ref): string
     {
+        $additional = 'public ';
+
         // Now that we have the key and the value, we can analyse it.
         // Stitch together our additional info about the data:
         // public access, protected access, private access, static declaration.
-        $additional = '';
-
         if ($refProperty->isProtected() === true) {
-            $additional .= 'protected ';
-        } elseif ($refProperty->isPublic() === true) {
-            $additional .= 'public ';
+            $additional = 'protected ';
         } elseif ($refProperty->isPrivate() === true) {
-            $additional .= 'private ';
+            $additional = 'private ';
+        }
+
+        // There are readonly properties since PHP 8.1 available.
+        // In a rather buggy state. When the property is not readonly, this may
+        // trigger an
+        // "Error : Internal error: Failed to retrieve the reflection object".
+        try {
+            if ($refProperty->isReadOnly() === true) {
+                $additional .= 'readonly ';
+            }
+        } catch (Throwable $exception) {
+            // Do nothing.
+            // We ignore this one.
         }
 
         if (empty($refProperty->isUnset) === false) {
-            // This one was unset during runtime.
-            // We need to tell the dev. Accessing an unset property may trigger
-            // a warning.
-            $additional .= 'unset ';
+            if (method_exists($refProperty, 'hasType') === true && $refProperty->hasType() === true) {
+                // Types properties where introduced in 7.4.
+                // This one was either unset, or never received a value in the
+                // first place. Either way, it's status is uninitialized.
+                $additional .= 'uninitialized ';
+            } else {
+                // This one was unset during runtime.
+                // We need to tell the dev. Accessing an unset property may trigger
+                // a warning.
+                $additional .= 'unset ';
+            }
         }
 
         // Test if the property is inherited or not by testing the
@@ -282,7 +300,7 @@ class ThroughProperties extends AbstractCallback implements
         if (isset($refProperty->isUndeclared) === true) {
             // The property 'isUndeclared' is not a part of the reflectionProperty.
             // @see \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects
-            $additional .= 'dynamic property ';
+            $additional .= 'dynamic ';
         }
 
         return $additional;
