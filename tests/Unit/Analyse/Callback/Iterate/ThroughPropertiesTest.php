@@ -126,7 +126,7 @@ class ThroughPropertiesTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration::retrieveDeclaringClassFromTraits
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::getAdditionalData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveDefaultValue
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::getAdditionalData
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveValueStatus
      *
      * @throws \ReflectionException
      */
@@ -401,7 +401,7 @@ class ThroughPropertiesTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration::retrieveDeclaringClassFromTraits
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::getAdditionalData
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveDefaultValue
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::getAdditionalData
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveValueStatus
      */
     public function testCallMePhpEight()
     {
