@@ -2,6 +2,7 @@
 - Added immediately browser output to the output choices.
 - Added default value analysis to the additional info.
 - Added German localisation.
+- Added serialized string pretty print.
 - Change: Removed deprecated code.
 - Change: Drop PHP 7.0 support
 - Change: Streamlined the type display of strings
@@ -19,7 +20,7 @@
 - Change: The ScalarString class gets instantiated only once
   per run.
 - Change: Removed the scope analysis setting.
-- Added serialized string pretty print.
+- Change: Change: Lots of deprecations.
 
 4.1.4
 - Added support for readonly properties
