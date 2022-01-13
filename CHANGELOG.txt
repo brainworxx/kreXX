@@ -3,6 +3,7 @@
 - Added default value analysis to the additional info.
 - Added German localisation.
 - Added serialized string pretty print.
+- Added static cache to the filepath scalar analysis.
 - Change: Removed deprecated code.
 - Change: Drop PHP 7.0 support
 - Change: Streamlined the type display of strings
