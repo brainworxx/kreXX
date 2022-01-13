@@ -100,6 +100,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
             return true;
         }
 
+        unset($this->decodedJson);
         return false;
     }
 
@@ -123,6 +124,9 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
             $this->model->setHasExtra(false);
             $meta[$messages->getHelp('metaContent')] = $this->model->getData();
         }
+
+        unset($this->decodedJson);
+        unset($this->model);
 
         return $meta;
     }
