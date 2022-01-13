@@ -19,6 +19,7 @@
 - Change: The ScalarString class gets instantiated only once
   per run.
 - Change: Removed the scope analysis setting.
+- Added serialized string pretty print.
 
 4.1.4
 - Added support for readonly properties
