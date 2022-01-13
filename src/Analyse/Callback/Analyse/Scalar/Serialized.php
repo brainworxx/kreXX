@@ -48,6 +48,13 @@ class Serialized extends AbstractScalarAnalysis
     protected $originalString;
 
     /**
+     * The model, so far.
+     *
+     * @var Model
+     */
+    protected $model;
+
+    /**
      * Works only when hte multibyte extension is installed.
      *
      * @return bool
@@ -85,6 +92,7 @@ class Serialized extends AbstractScalarAnalysis
         // Everything else is not really pretty print worthy.
         if (in_array(substr($string, 0, 2), ['o:', 'O:','a:', 'C:'], true) === true) {
             $this->originalString = $string;
+            $this->model = $model;
             return true;
         }
 
@@ -98,14 +106,20 @@ class Serialized extends AbstractScalarAnalysis
      */
     protected function handle(): array
     {
+        $messages = $this->pool->messages;
         $meta = [];
         $result = $this->pool->createClass(FormatSerialize::class)
             ->prettyPrint($this->originalString);
 
         if ($result !== null) {
-            $meta[$this->pool->messages->getHelp('metaPrettyPrint')] = $this->pool
+            $meta[$messages->getHelp('metaPrettyPrint')] = $this->pool
                 ->encodingService->encodeString($result);
+            $this->model->setHasExtra(false);
+            $meta[$messages->getHelp('metaContent')] = $this->model->getData();
         }
+
+        unset($this->model);
+        $this->originalString = '';
 
         return $meta;
     }
