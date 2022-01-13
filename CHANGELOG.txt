@@ -20,7 +20,8 @@
 - Change: The ScalarString class gets instantiated only once
   per run.
 - Change: Removed the scope analysis setting.
-- Change: Change: Lots of deprecations.
+- Change: Lots of deprecations.
+- Change: Removed the XML decoder.
 
 4.1.4
 - Added support for readonly properties
