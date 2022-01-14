@@ -168,10 +168,6 @@ abstract class AbstractRender implements RenderInterface
      */
     protected function generateDataAttribute(string $name, string $data): string
     {
-        if (empty($data) === true) {
-            return '';
-        }
-
         return ' data-' . $name . '="' . str_replace('"', '&#34;', $data) . '" ';
     }
 
