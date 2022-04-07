@@ -127,6 +127,10 @@ class ReflectionClass extends \ReflectionClass
             $result = array_values($this->objectArray)[
                 array_search($propName, array_keys($this->objectArray))
             ];
+        } elseif ($refProperty instanceof HiddenProperty) {
+            // We need to access the value directly.
+            $isUnset = false;
+            $result = $this->data->$propName;
         }
 
         $refProperty->isUnset = $isUnset;

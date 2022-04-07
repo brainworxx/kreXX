@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Service\Reflection\HiddenProperty;
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
 use DateTime;
 use ReflectionClass;
@@ -128,6 +129,17 @@ class PublicProperties extends AbstractObjectAnalysis
             $refProps['date'] = (new UndeclaredProperty($ref, 'date'))->setIsPublic(false);
             $refProps['timezone'] = (new UndeclaredProperty($ref, 'timezone'))->setIsPublic(false);
             $refProps['timezone_type'] = (new UndeclaredProperty($ref, 'timezone_type'))->setIsPublic(false);
+        }
+
+        // Test for hidden properties
+        foreach (HiddenProperty::HIDDEN_LIST as $className => $propertyNames) {
+            if ($data instanceof $className === true) {
+                foreach ($propertyNames as $propertyName) {
+                    if (isset($refProps[$propertyName]) === false && property_exists($data, $propertyName)) {
+                        $refProps[$propertyName] = new HiddenProperty($ref, $propertyName);
+                    }
+                }
+            }
         }
     }
 }
