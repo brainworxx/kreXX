@@ -52,7 +52,7 @@ use \DOMNotation;
 use \DOMProcessingInstruction;
 use \DOMText;
 use \DOMXPath;
-use ReflectionType;
+use DateTime;
 
 /**
  * Due to a PHP bug, the properties from all ext-dom classes are hidden from
@@ -67,7 +67,7 @@ class HiddenProperty extends UndeclaredProperty
     /**
      * Class and property list of possible hidden properties.
      *
-     * @var \string[][]
+     * @var array
      */
     public const HIDDEN_LIST = [
         DOMDocument::class => [
@@ -183,6 +183,11 @@ class HiddenProperty extends UndeclaredProperty
         ],
         DOMXPath::class => [
             'document',
+        ],
+        DateTime::class => [
+            'date',
+            'timezone',
+            'timezone_type'
         ]
     ];
 
@@ -192,6 +197,18 @@ class HiddenProperty extends UndeclaredProperty
      * @var bool
      */
     public $isUndeclared = false;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __construct(\ReflectionClass $ref, $name)
+    {
+        parent::__construct($ref, $name);
+
+        if ($ref->getName() === DateTime::class) {
+            $this->isPublic = false;
+        }
+    }
 
     /**
      * Actually, there is a good chance that these values are typed.

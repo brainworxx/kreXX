@@ -88,7 +88,7 @@ class UndeclaredProperty extends ReflectionProperty
     protected $isPublic = true;
 
     /**
-     * ReflectionUndeclaredProperty constructor.
+     * Setting the necessary properties constructor.
      *
      * @param \ReflectionClass $ref
      *   The instance of the class with the property.
