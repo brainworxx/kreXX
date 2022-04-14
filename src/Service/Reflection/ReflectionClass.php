@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Service\Reflection;
 
 use ReflectionException;
 use ReflectionProperty;
+use Throwable;
 
 /**
  * Added a better possibility to retrieve the object values.
@@ -129,8 +130,20 @@ class ReflectionClass extends \ReflectionClass
             ];
         } elseif ($refProperty instanceof HiddenProperty) {
             // We need to access the value directly.
+            // But first we must make sure that the hosting cms does not do
+            // something stupid. Accessing this value directly it probably
+            // a bad idea, but the only way to get the value.
             $isUnset = false;
-            $result = $this->data->$propName;
+            set_error_handler(function (){
+                // Do nothing.
+            });
+            try {
+                $result = $this->data->$propName;
+            } catch (Throwable $exception) {
+                // Do nothing.
+                // Looks like somebody did not like me accessing it directly.
+            }
+            restore_error_handler();
         }
 
         $refProperty->isUnset = $isUnset;
