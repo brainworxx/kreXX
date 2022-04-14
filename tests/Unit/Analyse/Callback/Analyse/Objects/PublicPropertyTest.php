@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
+use Brainworxx\Krexx\Service\Reflection\HiddenProperty;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
@@ -193,9 +194,9 @@ class PublicPropertyTest extends AbstractTest
 
         $params = CallbackCounter::$staticParameters[0];
         $expectations = [
-            (new UndeclaredProperty($fixture['ref'], 'date'))->setIsPublic(false),
-            (new UndeclaredProperty($fixture['ref'], 'timezone'))->setIsPublic(false),
-            (new UndeclaredProperty($fixture['ref'], 'timezone_type'))->setIsPublic(false),
+            (new HiddenProperty($fixture['ref'], 'date'))->setIsPublic(false),
+            (new HiddenProperty($fixture['ref'], 'timezone'))->setIsPublic(false),
+            (new HiddenProperty($fixture['ref'], 'timezone_type'))->setIsPublic(false),
         ];
 
         $this->assertEquals($expectations, $params['data']);
