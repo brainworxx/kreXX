@@ -37,21 +37,21 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Service\Reflection;
 
-use \DOMDocument;
-use \DOMAttr;
-use \DOMCdataSection;
-use \DOMCharacterData;
-use \DOMDocumentType;
-use \DOMElement;
-use \DOMEntity;
-use \DOMException;
-use \DOMNamedNodeMap;
-use \DOMNode;
-use \DOMNodeList;
-use \DOMNotation;
-use \DOMProcessingInstruction;
-use \DOMText;
-use \DOMXPath;
+use DOMDocument;
+use DOMAttr;
+use DOMCdataSection;
+use DOMCharacterData;
+use DOMDocumentType;
+use DOMElement;
+use DOMEntity;
+use DOMException;
+use DOMNamedNodeMap;
+use DOMNode;
+use DOMNodeList;
+use DOMNotation;
+use DOMProcessingInstruction;
+use DOMText;
+use DOMXPath;
 use DateTime;
 
 /**
