@@ -193,10 +193,17 @@ class PublicPropertyTest extends AbstractTest
             ->callMe();
 
         $params = CallbackCounter::$staticParameters[0];
+
+        if (version_compare('7.4', phpversion(), '<')) {
+            $propertyType = HiddenProperty::class;
+        } else {
+            $propertyType = UndeclaredProperty::class;
+        }
+
         $expectations = [
-            (new HiddenProperty($fixture['ref'], 'date'))->setIsPublic(false),
-            (new HiddenProperty($fixture['ref'], 'timezone'))->setIsPublic(false),
-            (new HiddenProperty($fixture['ref'], 'timezone_type'))->setIsPublic(false),
+            (new $propertyType($fixture['ref'], 'date'))->setIsPublic(false),
+            (new $propertyType($fixture['ref'], 'timezone'))->setIsPublic(false),
+            (new $propertyType($fixture['ref'], 'timezone_type'))->setIsPublic(false),
         ];
 
         $this->assertEquals($expectations, $params['data']);
