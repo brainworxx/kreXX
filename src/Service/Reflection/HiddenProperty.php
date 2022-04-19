@@ -207,6 +207,7 @@ class HiddenProperty extends UndeclaredProperty
 
         if ($ref->getName() === DateTime::class) {
             $this->isPublic = false;
+            $this->isProtected = true;
         }
     }
 

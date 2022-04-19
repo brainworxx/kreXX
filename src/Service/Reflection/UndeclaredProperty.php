@@ -88,6 +88,13 @@ class UndeclaredProperty extends ReflectionProperty
     protected $isPublic = true;
 
     /**
+     * Is this property protected? Probably not.
+     *
+     * @var bool
+     */
+    protected $isProtected = false;
+
+    /**
      * Setting the necessary properties constructor.
      *
      * @param \ReflectionClass $ref
@@ -153,7 +160,7 @@ class UndeclaredProperty extends ReflectionProperty
      */
     public function isProtected(): bool
     {
-        return false;
+        return $this->isProtected;
     }
 
     /**
