@@ -35,6 +35,7 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Service\Reflection;
 
+use Brainworxx\Krexx\Service\Reflection\HiddenProperty;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
@@ -104,6 +105,7 @@ class ReflectionClassTest extends AbstractTest
         $fixture->notSoSpecial = $normal;
         unset($fixture->value2);
         $notSoSpecial = 'notSoSpecial';
+        $verySpecial = 'verySpecial';
 
         $reflection = new ReflectionClass($fixture);
         $expectations = [
@@ -115,7 +117,8 @@ class ReflectionClassTest extends AbstractTest
             'value5' => 'dont\'t look at me!',
             'static' => 'static stuff',
             50 => 'special',
-            $notSoSpecial => $normal
+            $notSoSpecial => $normal,
+            $verySpecial => null,
         ];
 
         foreach ($expectations as $name => $expectation) {
@@ -126,7 +129,11 @@ class ReflectionClassTest extends AbstractTest
                 // This one is dynamically declared.
                 $refProperty = new UndeclaredProperty($reflection, 50);
             } elseif ($name === $notSoSpecial) {
-                $refProperty = new UndeclaredProperty($reflection, $notSoSpecial);
+                $refProperty = new UndeclaredProperty(
+                    $reflection, $notSoSpecial
+                );
+            } elseif ($name === $verySpecial) {
+                $refProperty = new HiddenProperty($reflection, $verySpecial);
             } else {
                 $refProperty = $reflection->getProperty($name);
             }
