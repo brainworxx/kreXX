@@ -97,19 +97,22 @@ class ReflectionClass extends \ReflectionClass
     public function retrieveValue(ReflectionProperty $refProperty)
     {
         $propName = $refProperty->getName();
-        $classedPropName = "\0" . $refProperty->getDeclaringClass()->getName() . "\0" . $propName;
+        $lookup = [
+            // Protected properties
+            "\0*\0" . $propName,
+            // Inherited properties
+            "\0" . $refProperty->getDeclaringClass()->getName() . "\0" . $propName,
+            // Public properties.
+            $propName
+        ];
 
-        if (array_key_exists("\0*\0" . $propName, $this->objectArray) === true) {
-            // Protected or a private.
-            return $this->objectArray["\0*\0" . $propName];
-        } elseif (array_key_exists($classedPropName, $this->objectArray) === true) {
-            // If we are facing multiple declarations, the declaring class name
-            // is set in front of the key.
-            return $this->objectArray[$classedPropName];
-        } elseif (array_key_exists($propName, $this->objectArray) === true) {
-            // Must be a public. Those are rare.
-            return $this->objectArray[$propName];
-        } elseif ($refProperty->isStatic() === true) {
+        foreach ($lookup as $arrayKey) {
+            if (array_key_exists($arrayKey, $this->objectArray) === true) {
+                return $this->objectArray[$arrayKey];
+            }
+        }
+
+        if ($refProperty->isStatic() === true) {
             // Static values are not inside the value array.
             $refProperty->setAccessible(true);
             return $refProperty->getValue($this->data);
@@ -122,9 +125,9 @@ class ReflectionClass extends \ReflectionClass
      * Retriever the value by more esoteric means.
      *
      * And by this I mean taking care of two PHP bugs:
-     *   - unreachable properties with integer names
-     *   - hidden public properties of the ext-dom objects
-     *   - hidden protected properties of the \DateTime object
+     *   - Properties with integer names
+     *   - Hidden public properties of the ext-dom objects
+     *   - Hidden protected properties of the \DateTime object
      *
      * @param \ReflectionProperty $refProperty
      *   The reflection of the property that we are accessing.
@@ -143,7 +146,9 @@ class ReflectionClass extends \ReflectionClass
             return array_values($this->objectArray)[
                 array_search($propName, array_keys($this->objectArray))
             ];
-        } elseif ($refProperty instanceof HiddenProperty) {
+        }
+
+        if ($refProperty instanceof HiddenProperty) {
             // We need to access the value directly.
             // But first we must make sure that the hosting cms does not do
             // something stupid. Accessing this value directly it probably
