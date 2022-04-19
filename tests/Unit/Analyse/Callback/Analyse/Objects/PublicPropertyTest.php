@@ -196,14 +196,16 @@ class PublicPropertyTest extends AbstractTest
 
         if (version_compare('7.4', phpversion(), '<')) {
             $propertyType = HiddenProperty::class;
+            $isPublic = false;
         } else {
             $propertyType = UndeclaredProperty::class;
+            $isPublic = true;
         }
 
         $expectations = [
-            (new $propertyType($fixture['ref'], 'date'))->setIsPublic(false),
-            (new $propertyType($fixture['ref'], 'timezone'))->setIsPublic(false),
-            (new $propertyType($fixture['ref'], 'timezone_type'))->setIsPublic(false),
+            (new $propertyType($fixture['ref'], 'date'))->setIsPublic($isPublic),
+            (new $propertyType($fixture['ref'], 'timezone'))->setIsPublic($isPublic),
+            (new $propertyType($fixture['ref'], 'timezone_type'))->setIsPublic($isPublic),
         ];
 
         $this->assertEquals($expectations, $params['data']);
