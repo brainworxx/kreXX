@@ -311,7 +311,7 @@ class ThroughProperties extends AbstractCallback implements
             // We ignore this one.
         }
 
-        if (empty($refProperty->isUnset) === true) {
+        if (isset($refProperty->isUnset) === false) {
             return $additional;
         }
 

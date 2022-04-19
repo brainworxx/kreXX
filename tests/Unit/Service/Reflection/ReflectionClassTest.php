@@ -94,6 +94,7 @@ class ReflectionClassTest extends AbstractTest
      * Here we retrieve the values from objects.
      *
      * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::retrieveValue
+     * @covers \Brainworxx\Krexx\Service\Reflection\ReflectionClass::retrieveEsotericValue
      *
      * @throws \ReflectionException
      */

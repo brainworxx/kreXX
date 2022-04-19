@@ -98,33 +98,50 @@ class ReflectionClass extends \ReflectionClass
     {
         $propName = $refProperty->getName();
         $classedPropName = "\0" . $refProperty->getDeclaringClass()->getName() . "\0" . $propName;
-        $result = null;
-        $isUnset = true;
+
         if (array_key_exists("\0*\0" . $propName, $this->objectArray) === true) {
             // Protected or a private
-            $isUnset = false;
-            $result = $this->objectArray["\0*\0" . $propName];
+            return $this->objectArray["\0*\0" . $propName];
         } elseif (array_key_exists($classedPropName, $this->objectArray) === true) {
             // If we are facing multiple declarations, the declaring class name
             // is set in front of the key.
-            $isUnset = false;
-            $result = $this->objectArray[$classedPropName];
+            return $this->objectArray[$classedPropName];
         } elseif (array_key_exists($propName, $this->objectArray) === true) {
             // Must be a public. Those are rare.
-            $isUnset = false;
-            $result = $this->objectArray[$propName];
+            return $this->objectArray[$propName];
         } elseif ($refProperty->isStatic() === true) {
             // Static values are not inside the value array.
             $refProperty->setAccessible(true);
-            $isUnset = false;
-            $result = $refProperty->getValue($this->data);
-        } elseif ($refProperty instanceof UndeclaredProperty && is_int($refProperty->propertyName)) {
+            return $refProperty->getValue($this->data);
+        }
+
+        return $this->retrieveEsotericValue($refProperty, $propName);
+    }
+
+    /**
+     * Retriever the value by more esoteric means.
+     *
+     * And by this I mean taking care of two PHP bugs:
+     *   - unreachable properties with integer names
+     *   - hidden public properties of the ext-dom objects
+     *   - hidden protected properties of the \DateTime object
+     *
+     * @param \ReflectionProperty $refProperty
+     *   The reflection of the property that we are accessing.
+     * @param string|int $propName
+     *   The property name.
+     *
+     * @return mixed
+     */
+    protected function retrieveEsotericValue(ReflectionProperty $refProperty, $propName)
+    {
+        $result  = null;
+        if ($refProperty instanceof UndeclaredProperty && is_int($propName)) {
             // We are facing a numeric property name (yes, that is possible).
             // To be honest, this one of the most bizarre things I've encountered so
             // far. Depending on your PHP version, that value may not be accessible
             // via normal means from the array we have got here. And no, we are not
             // accessing the object directly.
-            $isUnset = false;
             $result = array_values($this->objectArray)[
                 array_search($propName, array_keys($this->objectArray))
             ];
@@ -133,8 +150,7 @@ class ReflectionClass extends \ReflectionClass
             // But first we must make sure that the hosting cms does not do
             // something stupid. Accessing this value directly it probably
             // a bad idea, but the only way to get the value.
-            $isUnset = false;
-            set_error_handler(function (){
+            set_error_handler(function () {
                 // Do nothing.
             });
             try {
@@ -146,7 +162,7 @@ class ReflectionClass extends \ReflectionClass
             restore_error_handler();
         }
 
-        $refProperty->isUnset = $isUnset;
+        $refProperty->isUnset = true;
         return $result;
     }
 
