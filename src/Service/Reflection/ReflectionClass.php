@@ -100,7 +100,7 @@ class ReflectionClass extends \ReflectionClass
         $classedPropName = "\0" . $refProperty->getDeclaringClass()->getName() . "\0" . $propName;
 
         if (array_key_exists("\0*\0" . $propName, $this->objectArray) === true) {
-            // Protected or a private
+            // Protected or a private.
             return $this->objectArray["\0*\0" . $propName];
         } elseif (array_key_exists($classedPropName, $this->objectArray) === true) {
             // If we are facing multiple declarations, the declaring class name
@@ -115,7 +115,7 @@ class ReflectionClass extends \ReflectionClass
             return $refProperty->getValue($this->data);
         }
 
-        return $this->retrieveEsotericValue($refProperty, $propName);
+        return $this->retrieveEsotericValue($refProperty);
     }
 
     /**
@@ -128,21 +128,19 @@ class ReflectionClass extends \ReflectionClass
      *
      * @param \ReflectionProperty $refProperty
      *   The reflection of the property that we are accessing.
-     * @param string|int $propName
-     *   The property name.
      *
      * @return mixed
      */
-    protected function retrieveEsotericValue(ReflectionProperty $refProperty, $propName)
+    protected function retrieveEsotericValue(ReflectionProperty $refProperty)
     {
-        $result  = null;
-        if ($refProperty instanceof UndeclaredProperty && is_int($propName)) {
+        $propName = $refProperty->getName();
+        if ($refProperty instanceof UndeclaredProperty && is_numeric($propName)) {
             // We are facing a numeric property name (yes, that is possible).
             // To be honest, this one of the most bizarre things I've encountered so
             // far. Depending on your PHP version, that value may not be accessible
             // via normal means from the array we have got here. And no, we are not
             // accessing the object directly.
-            $result = array_values($this->objectArray)[
+            return array_values($this->objectArray)[
                 array_search($propName, array_keys($this->objectArray))
             ];
         } elseif ($refProperty instanceof HiddenProperty) {
@@ -154,7 +152,7 @@ class ReflectionClass extends \ReflectionClass
                 // Do nothing.
             });
             try {
-                $result = $this->data->$propName;
+                return $this->data->$propName;
             } catch (Throwable $exception) {
                 // Do nothing.
                 // Looks like somebody did not like me accessing it directly.
@@ -163,7 +161,7 @@ class ReflectionClass extends \ReflectionClass
         }
 
         $refProperty->isUnset = true;
-        return $result;
+        return null;
     }
 
     /**
