@@ -142,11 +142,11 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         $model = $this->pool->createClass(Model::class)->setData($meta)->setName($key)
             ->setType($key === $messages->getHelp('metaPrettyPrint') ? $key : static::TYPE_REFLECTION);
 
-        if (isset($this->parameters[static::PARAM_CODE_GEN_TYPE]) === true) {
+        if (isset($this->parameters[static::PARAM_CODE_GEN_TYPE])) {
             $model->setCodeGenType($this->parameters[static::PARAM_CODE_GEN_TYPE]);
         }
 
-        if (in_array($key, $this->keysWithExtra) === true) {
+        if (in_array($key, $this->keysWithExtra)) {
             $model->setNormal(static::UNKNOWN_VALUE)->setHasExtra(true);
         } else {
             $model->setNormal($meta);
@@ -159,7 +159,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
 
         // Sorry, no code generation for you guys.
         $this->pool->codegenHandler->setAllowCodegen(false);
-        if (is_string($meta) === true) {
+        if (is_string($meta)) {
             // Render a single data point.
             $result = $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(__FUNCTION__ . $key . static::EVENT_MARKER_END, $model)

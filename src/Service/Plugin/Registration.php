@@ -370,7 +370,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
      */
     public static function deactivatePlugin(string $configClass): void
     {
-        if (empty(static::$plugins[$configClass][static::IS_ACTIVE]) === true) {
+        if (empty(static::$plugins[$configClass][static::IS_ACTIVE])) {
             // We will not purge everything for an already deactivated plugin.
             return;
         }
@@ -390,7 +390,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
         // Go through the remaining plugins.
         static::$plugins[$configClass][static::IS_ACTIVE] = false;
         foreach (static::$plugins as $pluginName => $plugin) {
-            if ($plugin[static::IS_ACTIVE] === true) {
+            if ($plugin[static::IS_ACTIVE]) {
                 call_user_func([static::$plugins[$pluginName][static::CONFIG_CLASS], 'exec']);
             }
         }
