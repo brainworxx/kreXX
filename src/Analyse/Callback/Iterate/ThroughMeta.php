@@ -103,7 +103,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         $output = $this->dispatchStartEvent();
 
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
-            if (in_array($key, $this->stuffToProcess)) {
+            if (in_array($key, $this->stuffToProcess, true)) {
                 $output .= $this->pool->render->renderExpandableChild(
                     $this->dispatchEventWithModel(
                         $key,
@@ -146,7 +146,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
             $model->setCodeGenType($this->parameters[static::PARAM_CODE_GEN_TYPE]);
         }
 
-        if (in_array($key, $this->keysWithExtra)) {
+        if (in_array($key, $this->keysWithExtra, true)) {
             $model->setNormal(static::UNKNOWN_VALUE)->setHasExtra(true);
         } else {
             $model->setNormal($meta);

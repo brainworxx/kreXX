@@ -121,7 +121,7 @@ class ReturnType extends AbstractComment
             $result = $this->pool->encodingService->encodeString('\\' . $reflectionClass->getName());
         } elseif (
             // Inside the whitelist
-            in_array($resultToken, $this->allowedTypes) ||
+            in_array($resultToken, $this->allowedTypes, true) ||
             // Looks like a class name with namespace.
             strpos($resultToken, '\\') === 0 ||
             // Multiple types.
@@ -154,7 +154,7 @@ class ReturnType extends AbstractComment
 
         $nullable = $returnType->allowsNull() ? '?' : '';
         $result = $returnType->getName();
-        if (in_array($result, $this->allowedTypes) === false && strpos($result, '\\') !== 0) {
+        if (in_array($result, $this->allowedTypes, true) === false && strpos($result, '\\') !== 0) {
             // Must be e un-namespaced class name.
             $result = '\\' . $result;
         }
