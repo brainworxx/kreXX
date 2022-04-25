@@ -113,7 +113,7 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
      * @param \Brainworxx\Krexx\Service\Config\Model $setting
      *   The setting model.
      *
-     * @return bool|int|string|null
+     * @return int|string|null
      *   The prepared value.
      */
     protected function prepareValue(SettingModel $setting)

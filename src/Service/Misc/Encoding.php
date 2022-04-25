@@ -261,7 +261,7 @@ class Encoding
      * @codeCoverageIgnore
      *   We will not test simple wrappers
      *
-     * @return string|false
+     * @return string|bool
      *   The result.
      */
     public function mbDetectEncoding(string $string, string $encodinglist = 'auto', bool $strict = false)
@@ -407,6 +407,6 @@ class Encoding
         return $cache[$propName] = (bool) preg_match(
             "/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/",
             (string)$propName
-            ) && !(bool) preg_match("/[\xEF\xBB\xBF]$/", $propName);
+        ) && !(bool) preg_match("/[\xEF\xBB\xBF]$/", $propName);
     }
 }

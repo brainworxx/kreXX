@@ -161,7 +161,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         $type = $model->getType() === static::TYPE_CLASS ? $model->getNormal() : $model->getType();
         $blackList = ['->', '::', '[', ']', '(', ')'];
         foreach ($blackList as $value) {
-            if (strpos($name, $value) != false) {
+            if (strpos($name, $value) !== false) {
                 // We are analysing something like:
                 // $this->getWhatever();
                 // We can not type hint this.
