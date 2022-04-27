@@ -36,6 +36,7 @@
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Comment;
 
 use Brainworxx\Krexx\Analyse\Comment\ReturnType;
+use Brainworxx\Krexx\Tests\Fixtures\MethodUnionParameterFixture;
 use Brainworxx\Krexx\Tests\Fixtures\ReturnTypeFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Krexx;
@@ -51,6 +52,7 @@ class ReturnTypesTest extends AbstractTest
      * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::getComment
      * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::retrieveReturnTypeFromComment
      * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::retrieveTypeByReflection
+     * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::formatReturnTypes
      * @throws \ReflectionException
      */
     public function testGetComment()
@@ -88,5 +90,13 @@ class ReturnTypesTest extends AbstractTest
 
         $refFunction = new ReflectionFunction('returnString');
         $this->assertEquals('bool', $returnType->getComment($refFunction));
+
+        // Doing PHP 8+ specific tests.
+        if (version_compare(phpversion(), '8.0.0', '>=')) {
+            $fixture = new MethodUnionParameterFixture();
+            $refClass = new ReflectionClass($fixture);
+            $refMethod = $refClass->getMethod('unionParameter');
+            $this->assertEquals('array|int|bool ', $returnType->getComment($refMethod));
+        }
     }
 }

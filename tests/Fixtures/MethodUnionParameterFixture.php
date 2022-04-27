@@ -41,7 +41,7 @@ class MethodUnionParameterFixture
      * @param array|int|bool $parameter
      * @return void
      */
-    public function unionParameter(array|int|bool $parameter)
+    public function unionParameter(array|int|bool $parameter): array|int|bool
     {
         // Do nothing.
     }
