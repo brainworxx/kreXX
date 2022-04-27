@@ -374,21 +374,23 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      */
     protected function retrieveParameterType(ReflectionParameter $reflectionParameter): string
     {
+        if (!$reflectionParameter->hasType()) {
+            return '';
+        }
+
         $type = '';
-        if ($reflectionParameter->hasType() === true) {
-            $reflectionNamedType = $reflectionParameter->getType();
+        $reflectionNamedType = $reflectionParameter->getType();
 
-            if ($reflectionNamedType instanceof ReflectionNamedType) {
-                /** @var ReflectionNamedType $reflectionNamedType */
-                $type = $reflectionNamedType->getName() . ' ';
-            }
+        if ($reflectionNamedType instanceof ReflectionNamedType) {
+            /** @var ReflectionNamedType $reflectionNamedType */
+            $type = $reflectionNamedType->getName() . ' ';
+        }
 
-            if ($reflectionNamedType instanceof ReflectionUnionType) {
-                foreach ($reflectionNamedType->getTypes() as $namedType) {
-                    $type .= $namedType->getName() . '|';
-                }
-                $type = trim($type, '|') . ' ';
+        if ($reflectionNamedType instanceof ReflectionUnionType) {
+            foreach ($reflectionNamedType->getTypes() as $namedType) {
+                $type .= $namedType->getName() . '|';
             }
+            $type = trim($type, '|') . ' ';
         }
 
         return $type;
