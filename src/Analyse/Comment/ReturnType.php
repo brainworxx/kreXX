@@ -38,8 +38,6 @@ namespace Brainworxx\Krexx\Analyse\Comment;
 use Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration;
 use ReflectionClass;
 use Reflector;
-use ReflectionNamedType;
-use ReflectionUnionType;
 
 /**
  * Retrieve the return type of methods / functions.
@@ -87,7 +85,7 @@ class ReturnType extends AbstractComment
     {
         // Get a first impression by the reflection.
         $result = $this->pool->createClass(MethodDeclaration::class)
-            ->retrieveNamedType($reflection->getReturnType());
+            ->retrieveReturnType($reflection);
         if ($result !== '') {
             return $this->pool->encodingService->encodeString($result);
         }

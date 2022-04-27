@@ -97,30 +97,25 @@ abstract class AbstractDeclaration
     /**
      * Simply ask the reflection type for its type.
      *
-     * @param ReflectionType|null $refMethod
+     * @param ReflectionType $namedType
      *   The reflection of the method we are analysing
      *
      * @return string
      *   The return type if possible, an empty string if not.
      */
-    public function retrieveNamedType(?ReflectionType $returnType): string
+    protected function retrieveNamedType(ReflectionType $namedType): string
     {
         $result = '';
-        if ($returnType === null) {
-            // Nothing found, early return.
-            return $result;
-        }
-
-        $nullable = $returnType->allowsNull() ? '?' : '';
+        $nullable = $namedType->allowsNull() ? '?' : '';
 
         // Handling the normal types.
-        if ($returnType instanceof ReflectionNamedType) {
-            $result = $this->formatNamedType($returnType);
+        if ($namedType instanceof ReflectionNamedType) {
+            $result = $this->formatNamedType($namedType);
         }
 
         // Union types have several types in them.
-        if ($returnType instanceof ReflectionUnionType) {
-            foreach ($returnType->getTypes() as $namedType) {
+        if ($namedType instanceof ReflectionUnionType) {
+            foreach ($namedType->getTypes() as $namedType) {
                 $result .=  $this->formatNamedType($namedType) . '|';
             }
             $result = trim($result, '|') . ' ';

@@ -37,12 +37,9 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Declaration;
 
-use Brainworxx\Krexx\Analyse\Comment\ReturnType;
 use ReflectionClass;
 use ReflectionMethod;
 use Reflector;
-use ReflectionNamedType;
-use ReflectionUnionType;
 
 class MethodDeclaration extends AbstractDeclaration
 {
@@ -87,6 +84,25 @@ class MethodDeclaration extends AbstractDeclaration
 
         return $filename . "\n" . $secondLine . $messages->getHelp('metaInLine') .
             $reflection->getStartLine();
+    }
+
+    /**
+     * Retrieve the return type by the reflection.
+     *
+     * @param \Reflector $reflection
+     * @return string
+     */
+    public function retrieveReturnType(Reflector $reflection): string
+    {
+        $namedType = $reflection->getReturnType();
+        if ($namedType === null) {
+            // It is not typed.
+            return '';
+        }
+
+        $nullable = $namedType->allowsNull() ? '?' : '';
+
+        return $nullable . $this->retrieveNamedType($namedType);
     }
 
     /**

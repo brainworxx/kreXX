@@ -36,11 +36,7 @@
 namespace Brainworxx\Krexx\Tests\Unit\Declaration;
 
 use Brainworxx\Krexx\Analyse\Declaration\FunctionDeclaration;
-use Brainworxx\Krexx\Tests\Fixtures\ReturnTypeFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
-use Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration;
-use Brainworxx\Krexx\Tests\Fixtures\MethodUnionParameterFixture;
-use ReflectionClass;
 
 class AbstractDeclarationTest extends AbstractTest
 {
@@ -53,28 +49,5 @@ class AbstractDeclarationTest extends AbstractTest
     {
         $functionDeclaration = new FunctionDeclaration(\Krexx::$pool);
         $this->assertEquals(\Krexx::$pool, $this->retrieveValueByReflection('pool', $functionDeclaration));
-    }
-
-    /**
-     * Testing the retrieval of the return type by reflections.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Declaration\AbstractDeclaration::retrieveNamedType
-     * @covers \Brainworxx\Krexx\Analyse\Declaration\AbstractDeclaration::formatNamedType
-     */
-    public function testRetrieveReturnType()
-    {
-        $fixture = new ReturnTypeFixture();
-        $returnType = new MethodDeclaration(\Krexx::$pool);
-        $refClass = new ReflectionClass($fixture);
-        $refMethod = $refClass->getMethod('returnBool');
-        $this->assertEquals('bool', $returnType->retrieveNamedType($refMethod->getReturnType()));
-
-        // Doing PHP 8+ specific tests.
-        if (version_compare(phpversion(), '8.0.0', '>=')) {
-            $fixture = new MethodUnionParameterFixture();
-            $refClass = new ReflectionClass($fixture);
-            $refMethod = $refClass->getMethod('unionParameter');
-            $this->assertEquals('array|int|bool ', $returnType->retrieveNamedType($refMethod->getReturnType()));
-        }
     }
 }
