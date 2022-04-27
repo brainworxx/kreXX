@@ -43,29 +43,9 @@ use ReflectionMethod;
 use Reflector;
 use ReflectionNamedType;
 use ReflectionUnionType;
-use ReflectionType;
 
 class MethodDeclaration extends AbstractDeclaration
 {
-    /**
-     * The allowed types from the comment.
-     *
-     * Because, there may be a lot of BS in the comment.
-     *
-     * @var string[]
-     */
-    protected const ALLOWED_TYPES = [
-        'int',
-        'string',
-        'mixed',
-        'void',
-        'resource',
-        'bool',
-        'array',
-        'null',
-        'float',
-    ];
-
     /**
      * Get the declaration place of this method.
      *
@@ -107,61 +87,6 @@ class MethodDeclaration extends AbstractDeclaration
 
         return $filename . "\n" . $secondLine . $messages->getHelp('metaInLine') .
             $reflection->getStartLine();
-    }
-
-    /**
-     * Simply ask the reflection method for it's return value.
-     *
-     * @param ReflectionType|null $refMethod
-     *   The reflection of the method we are analysing
-     *
-     * @return string
-     *   The return type if possible, an empty string if not.
-     */
-    public function retrieveReturnType(?ReflectionType $returnType): string
-    {
-        $result = '';
-        if ($returnType === null) {
-            // Nothing found, early return.
-            return $result;
-        }
-
-        $nullable = $returnType->allowsNull() ? '?' : '';
-
-        // Handling the normal types.
-        if ($returnType instanceof ReflectionNamedType) {
-            $result = $this->formatReturnTypes($returnType);
-        }
-
-        // Union types have several types in them.
-        if ($returnType instanceof ReflectionUnionType) {
-            foreach ($returnType->getTypes() as $namedType) {
-                $result .=  $this->formatReturnTypes($namedType) . '|';
-            }
-            $result = trim($result, '|') . ' ';
-        }
-
-        return $nullable . $result;
-    }
-
-    /**
-     * Format the names type.
-     *
-     * @param ReflectionNamedType $namedType
-     *   The names type.
-     *
-     * @return string
-     *   The formatted name of the type
-     */
-    protected function formatReturnTypes(ReflectionNamedType $namedType): string
-    {
-        $result = $namedType->getName();
-        if (!in_array($result, static::ALLOWED_TYPES, true) && strpos($result, '\\') !== 0) {
-            // Must be e un-namespaced class name.
-            $result = '\\' . $result;
-        }
-
-        return $result;
     }
 
     /**

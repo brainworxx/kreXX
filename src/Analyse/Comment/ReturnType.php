@@ -87,7 +87,7 @@ class ReturnType extends AbstractComment
     {
         // Get a first impression by the reflection.
         $result = $this->pool->createClass(MethodDeclaration::class)
-            ->retrieveReturnType($reflection->getReturnType());
+            ->retrieveNamedType($reflection->getReturnType());
         if ($result !== '') {
             return $this->pool->encodingService->encodeString($result);
         }
@@ -155,6 +155,6 @@ class ReturnType extends AbstractComment
     protected function retrieveTypeByReflection(Reflector $refMethod): string
     {
         return $this->pool->createClass(MethodDeclaration::class)
-            ->retrieveReturnType($refMethod);
+            ->retrieveNamedType($refMethod);
     }
 }

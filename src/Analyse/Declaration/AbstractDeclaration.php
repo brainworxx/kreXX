@@ -39,12 +39,32 @@ namespace Brainworxx\Krexx\Analyse\Declaration;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Reflector;
+use ReflectionNamedType;
+use ReflectionType;
+use ReflectionUnionType;
 
 /**
  * Base class for the retrieval of a declaration place
  */
 abstract class AbstractDeclaration
 {
+    /**
+     * We will not root-namespace these.
+     *
+     * @var string[]
+     */
+    protected const ALLOWED_TYPES = [
+        'int',
+        'string',
+        'mixed',
+        'void',
+        'resource',
+        'bool',
+        'array',
+        'null',
+        'float',
+    ];
+
     /**
      * Here we store all relevant data.
      *
@@ -73,4 +93,59 @@ abstract class AbstractDeclaration
      *   The human-readable declaration place
      */
     abstract public function retrieveDeclaration(Reflector $reflection): string;
+
+    /**
+     * Simply ask the reflection type for its type.
+     *
+     * @param ReflectionType|null $refMethod
+     *   The reflection of the method we are analysing
+     *
+     * @return string
+     *   The return type if possible, an empty string if not.
+     */
+    public function retrieveNamedType(?ReflectionType $returnType): string
+    {
+        $result = '';
+        if ($returnType === null) {
+            // Nothing found, early return.
+            return $result;
+        }
+
+        $nullable = $returnType->allowsNull() ? '?' : '';
+
+        // Handling the normal types.
+        if ($returnType instanceof ReflectionNamedType) {
+            $result = $this->formatNamedType($returnType);
+        }
+
+        // Union types have several types in them.
+        if ($returnType instanceof ReflectionUnionType) {
+            foreach ($returnType->getTypes() as $namedType) {
+                $result .=  $this->formatNamedType($namedType) . '|';
+            }
+            $result = trim($result, '|') . ' ';
+        }
+
+        return $nullable . $result;
+    }
+
+    /**
+     * Format the names type.
+     *
+     * @param ReflectionNamedType $namedType
+     *   The names type.
+     *
+     * @return string
+     *   The formatted name of the type
+     */
+    protected function formatNamedType(ReflectionNamedType $namedType): string
+    {
+        $result = $namedType->getName();
+        if (!in_array($result, static::ALLOWED_TYPES, true) && strpos($result, '\\') !== 0) {
+            // Must be e un-namespaced class name.
+            $result = '\\' . $result;
+        }
+
+        return $result;
+    }
 }
