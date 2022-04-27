@@ -43,6 +43,8 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionException;
 use ReflectionParameter;
+use ReflectionNamedType;
+use ReflectionUnionType;
 
 /**
  * Code generation methods.
@@ -342,8 +344,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
             $prefix = '&';
         }
 
-        $typedParameter = $reflectionParameter->hasType() ? $reflectionParameter->getType()->getName() . ' ' : '';
-        $name = $typedParameter . $prefix . '$' . $reflectionParameter->getName();
+        $name = $this->retrieveParameterType($reflectionParameter) . $prefix . '$' . $reflectionParameter->getName();
 
         // Retrieve the default value, if available.
         if ($reflectionParameter->isDefaultValueAvailable()) {
@@ -368,17 +369,29 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      * @param \ReflectionParameter $reflectionParameter
      *   The reflection parameter, what the variable name says.
      *
-     * @deprecated since 5.0.0
-     *   Will be removed.
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
      * @return string
      *   The parameter type, if available.
      */
     protected function retrieveParameterType(ReflectionParameter $reflectionParameter): string
     {
-        return $reflectionParameter->hasType() ? $reflectionParameter->getType()->getName() . ' ' : '';
+        $type = '';
+        if ($reflectionParameter->hasType() === true) {
+            $reflectionNamedType = $reflectionParameter->getType();
+
+            if ($reflectionNamedType instanceof ReflectionNamedType) {
+                /** @var ReflectionNamedType $reflectionNamedType */
+                $type = $reflectionNamedType->getName() . ' ';
+            }
+
+            if ($reflectionNamedType instanceof ReflectionUnionType) {
+                foreach ($reflectionNamedType->getTypes() as $namedType) {
+                    $type .= $namedType->getName() . '|';
+                }
+                $type = trim($type, '|') . ' ';
+            }
+        }
+
+        return $type;
     }
 
     /**
