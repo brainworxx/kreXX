@@ -129,6 +129,10 @@ class ThroughProperties extends AbstractCallback implements
                 $messages->getHelp('metaDefaultValue'),
                 $this->retrieveDefaultValue($refProperty)
             )
+            ->addToJson(
+                $messages->getHelp('metaTypedValue'),
+                $this->propertyDeclaration->retrieveNamedPropertyType($refProperty)
+            )
             ->setAdditional(
                 $this->getAdditionalData(
                     $refProperty,
@@ -326,7 +330,6 @@ class ThroughProperties extends AbstractCallback implements
             // a warning.
             $additional .= 'unset ';
         }
-
 
         return $additional;
     }

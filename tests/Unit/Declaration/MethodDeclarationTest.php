@@ -39,7 +39,7 @@ use Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Fixtures\ReturnTypeFixture;
-use Brainworxx\Krexx\Tests\Fixtures\MethodUnionParameterFixture;
+use Brainworxx\Krexx\Tests\Fixtures\UnionTypeFixture;
 use ReflectionClass;
 
 class MethodDeclarationTest extends AbstractTest
@@ -77,7 +77,7 @@ class MethodDeclarationTest extends AbstractTest
     /**
      * Testing the retrieval of the return type by reflections.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Declaration\AbstractDeclaration::retrieveReturnType
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration::retrieveReturnType
      * @covers \Brainworxx\Krexx\Analyse\Declaration\AbstractDeclaration::retrieveNamedType
      * @covers \Brainworxx\Krexx\Analyse\Declaration\AbstractDeclaration::formatNamedType
      */
@@ -91,7 +91,7 @@ class MethodDeclarationTest extends AbstractTest
 
         // Doing PHP 8+ specific tests.
         if (version_compare(phpversion(), '8.0.0', '>=')) {
-            $fixture = new MethodUnionParameterFixture();
+            $fixture = new UnionTypeFixture();
             $refClass = new ReflectionClass($fixture);
             $refMethod = $refClass->getMethod('unionParameter');
             $this->assertEquals('array|int|bool ', $returnType->retrieveReturnType($refMethod));

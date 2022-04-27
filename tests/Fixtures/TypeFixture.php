@@ -35,14 +35,26 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
-class MethodUnionParameterFixture
+class TypeFixture
 {
     /**
-     * @param array|int|bool $parameter
-     * @return void
+     * Simply typed property.
+     *
+     * @var string
      */
-    public function unionParameter(array|int|bool $parameter): array|int|bool
-    {
-        // Do nothing.
-    }
+    protected string $simplyTyped;
+
+    /**
+     * An uninitialized typed property.
+     *
+     * @var \Reflection
+     */
+    public \Reflection $reflection;
+
+    /**
+     * What the class name says.
+     *
+     * @var \Does\Not\Exist
+     */
+    private \Does\Not\Exist $nothing;
 }
