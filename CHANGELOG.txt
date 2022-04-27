@@ -24,6 +24,8 @@
 - Change: Removed the scope analysis setting.
 - Change: Lots of deprecations.
 - Change: Removed the XML decoder.
+- Change: Moved the return type retrieval by reflection to the
+  more appropriate MethodDeclaration class.
 
 4.1.4
 - Added support for readonly properties

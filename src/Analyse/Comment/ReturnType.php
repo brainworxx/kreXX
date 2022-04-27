@@ -35,6 +35,7 @@
 
 namespace Brainworxx\Krexx\Analyse\Comment;
 
+use Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration;
 use ReflectionClass;
 use Reflector;
 use ReflectionNamedType;
@@ -85,7 +86,8 @@ class ReturnType extends AbstractComment
     public function getComment(Reflector $reflection, ReflectionClass $reflectionClass = null): string
     {
         // Get a first impression by the reflection.
-        $result = $this->retrieveTypeByReflection($reflection);
+        $result = $this->pool->createClass(MethodDeclaration::class)
+            ->retrieveReturnType($reflection->getReturnType());
         if ($result !== '') {
             return $this->pool->encodingService->encodeString($result);
         }
@@ -141,53 +143,18 @@ class ReturnType extends AbstractComment
      * @param \Reflector $refMethod
      *   The reflection of the method we are analysing
      *
+     * @deprecated since 5.0.0
+     *   Was moved to the MethodDeclaration class.
+     *
+     * @codeCoverageIgnore
+     *   We do not test depracated methods.
+     *
      * @return string
      *   The return type if possible, an empty string if not.
      */
     protected function retrieveTypeByReflection(Reflector $refMethod): string
     {
-        $result = '';
-        $returnType = $refMethod->getReturnType();
-        if ($returnType === null) {
-            // Nothing found, early return.
-            return $result;
-        }
-
-        $nullable = $returnType->allowsNull() ? '?' : '';
-
-        // Handling the normal types.
-        if ($returnType instanceof ReflectionNamedType) {
-            $result = $this->formatReturnTypes($returnType);
-        }
-
-        // Union types have several types in them.
-        if ($returnType instanceof ReflectionUnionType) {
-            foreach ($returnType->getTypes() as $namedType) {
-                $result .=  $this->formatReturnTypes($namedType) . '|';
-            }
-            $result = trim($result, '|') . ' ';
-        }
-
-        return $nullable . $result;
-    }
-
-    /**
-     * Format the names type.
-     *
-     * @param ReflectionNamedType $namedType
-     *   The names type.
-     *
-     * @return string
-     *   The formatted name of the type
-     */
-    protected function formatReturnTypes(ReflectionNamedType $namedType): string
-    {
-        $result = $namedType->getName();
-        if (!in_array($result, static::ALLOWED_TYPES, true) && strpos($result, '\\') !== 0) {
-            // Must be e un-namespaced class name.
-            $result = '\\' . $result;
-        }
-
-        return $result;
+        return $this->pool->createClass(MethodDeclaration::class)
+            ->retrieveReturnType($refMethod);
     }
 }

@@ -51,7 +51,6 @@ class ReturnTypesTest extends AbstractTest
      * @see \Brainworxx\Krexx\Tests\Fixtures\ReturnTypeFixture
      * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::getComment
      * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::retrieveReturnTypeFromComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::retrieveTypeByReflection
      * @covers \Brainworxx\Krexx\Analyse\Comment\ReturnType::formatReturnTypes
      * @throws \ReflectionException
      */
@@ -63,9 +62,6 @@ class ReturnTypesTest extends AbstractTest
 
         $refMethod = $refClass->getMethod('returnSelf');
         $this->assertEquals('\\' . ReturnTypeFixture::class, $returnType->getComment($refMethod, $refClass));
-
-        $refMethod = $refClass->getMethod('returnBool');
-        $this->assertEquals('bool', $returnType->getComment($refMethod, $refClass));
 
         $refMethod = $refClass->getMethod('returnThis');
         $this->assertEquals('\\' . ReturnTypeFixture::class, $returnType->getComment($refMethod, $refClass));
@@ -90,13 +86,5 @@ class ReturnTypesTest extends AbstractTest
 
         $refFunction = new ReflectionFunction('returnString');
         $this->assertEquals('bool', $returnType->getComment($refFunction));
-
-        // Doing PHP 8+ specific tests.
-        if (version_compare(phpversion(), '8.0.0', '>=')) {
-            $fixture = new MethodUnionParameterFixture();
-            $refClass = new ReflectionClass($fixture);
-            $refMethod = $refClass->getMethod('unionParameter');
-            $this->assertEquals('array|int|bool ', $returnType->getComment($refMethod));
-        }
     }
 }
