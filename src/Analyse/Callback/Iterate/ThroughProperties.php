@@ -134,10 +134,7 @@ class ThroughProperties extends AbstractCallback implements
                 $this->propertyDeclaration->retrieveNamedPropertyType($refProperty)
             )
             ->setAdditional(
-                $this->getAdditionalData(
-                    $refProperty,
-                    $this->parameters[static::PARAM_REF]
-                )
+                $this->getAdditionalData($refProperty, $this->parameters[static::PARAM_REF])
             )
             ->setConnectorType($this->retrieveConnector($refProperty))
             ->setCodeGenType($refProperty->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '');
