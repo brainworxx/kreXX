@@ -106,22 +106,19 @@ abstract class AbstractDeclaration
     protected function retrieveNamedType(ReflectionType $namedType): string
     {
         $result = '';
-        $nullable = $namedType->allowsNull() ? '?' : '';
 
         // Handling the normal types.
         if ($namedType instanceof ReflectionNamedType) {
             $result = $this->formatNamedType($namedType);
-        }
-
-        // Union types have several types in them.
-        if ($namedType instanceof ReflectionUnionType) {
+        } elseif ($namedType instanceof ReflectionUnionType) {
+            // Union types have several types in them.
             foreach ($namedType->getTypes() as $namedType) {
                 $result .=  $this->formatNamedType($namedType) . '|';
             }
             $result = trim($result, '|');
         }
 
-        return $nullable . $result;
+        return $namedType->allowsNull() ? '?' : '' . $result;
     }
 
     /**
