@@ -466,7 +466,7 @@ class CodegenTest extends AbstractTest
         $reflectionParameter = $reflectionFunction->getParameters()[0];
 
         $this->assertEquals(
-            'DateTimeZone $object',
+            '\DateTimeZone $object',
             $this->codegenHandler->parameterToString($reflectionParameter)
         );
     }

@@ -37,6 +37,9 @@ namespace Brainworxx\Krexx\Tests\Unit\Declaration;
 
 use Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
+use Brainworxx\Krexx\Tests\Fixtures\LoggerCallerFixture;
+use Brainworxx\Krexx\Tests\Fixtures\MethodParameterFixture;
+use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Tests\Fixtures\ReturnTypeFixture;
 use Brainworxx\Krexx\Tests\Fixtures\UnionTypeFixture;
@@ -94,7 +97,62 @@ class MethodDeclarationTest extends AbstractTest
             $fixture = new UnionTypeFixture();
             $refClass = new ReflectionClass($fixture);
             $refMethod = $refClass->getMethod('unionParameter');
-            $this->assertEquals('array|int|bool ', $returnType->retrieveReturnType($refMethod));
+            $this->assertEquals('array|int|bool', $returnType->retrieveReturnType($refMethod));
+        }
+    }
+
+    /**
+     * Testing the retrieval of a declared parameter type.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration::retrieveParameterType
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\AbstractDeclaration::retrieveNamedType
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\AbstractDeclaration::formatNamedType
+     */
+    public function testRetrieveParameterType()
+    {
+        $methodDeclaration = new MethodDeclaration(\Krexx::$pool);
+
+        // No deklaration
+        $classReflection = new \ReflectionClass(MethodParameterFixture::class);
+        $methodReflection = $classReflection->getMethod('nullDefault');
+        $parameterReflection = $methodReflection->getParameters()[0];
+        $this->assertEquals('', $methodDeclaration->retrieveParameterType($parameterReflection));
+
+        // Simple type
+        $methodReflection = $classReflection->getMethod('falseDefault');
+        $parameterReflection = $methodReflection->getParameters()[0];
+        $this->assertEquals('bool ', $methodDeclaration->retrieveParameterType($parameterReflection));
+
+        // Namespaced class
+        $classReflection = new \ReflectionClass(MethodsFixture::class);
+        $methodReflection = $classReflection->getMethod('classMethod');
+        $parameterReflection = $methodReflection->getParameters()[0];
+        $this->assertEquals(
+            '\\' . LoggerCallerFixture::class . ' ',
+            $methodDeclaration->retrieveParameterType($parameterReflection),
+            'The prefixed class name.'
+        );
+
+        // Namespaced unknown class
+        $methodReflection = $classReflection->getMethod('troublesomeMethod');
+        $parameterReflection = $methodReflection->getParameters()[0];
+        $this->assertEquals(
+            '\\someNotExistingClass ',
+            $methodDeclaration->retrieveParameterType($parameterReflection),
+            'The prefixed class name, that does not exist.'
+        );
+
+        // Union type
+        // Doing PHP 8+ specific tests.
+        if (version_compare(phpversion(), '8.0.0', '>=')) {
+            $classReflection = new \ReflectionClass(UnionTypeFixture::class);
+            $methodReflection = $classReflection->getMethod('unionParameter');
+            $parameterReflection = $methodReflection->getParameters()[0];
+            $this->assertEquals(
+                'array|int|bool ',
+                $methodDeclaration->retrieveParameterType($parameterReflection),
+                'The not prefixes type list with the | symbol.'
+            );
         }
     }
 }

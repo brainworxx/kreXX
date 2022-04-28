@@ -118,7 +118,7 @@ abstract class AbstractDeclaration
             foreach ($namedType->getTypes() as $namedType) {
                 $result .=  $this->formatNamedType($namedType) . '|';
             }
-            $result = trim($result, '|') . ' ';
+            $result = trim($result, '|');
         }
 
         return $nullable . $result;

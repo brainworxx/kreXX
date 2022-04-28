@@ -77,4 +77,9 @@ class MethodsFixture implements EmptyInterfaceFixture
     {
         return $parameter->stuff . $this->privateMethod();
     }
+
+    public function classMethod(LoggerCallerFixture $loggerCallerFixture): LoggerCallerFixture
+    {
+        return $loggerCallerFixture;
+    }
 }
