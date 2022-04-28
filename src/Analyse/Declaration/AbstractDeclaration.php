@@ -112,13 +112,13 @@ abstract class AbstractDeclaration
             $result = $this->formatNamedType($namedType);
         } elseif ($namedType instanceof ReflectionUnionType) {
             // Union types have several types in them.
-            foreach ($namedType->getTypes() as $namedType) {
-                $result .=  $this->formatNamedType($namedType) . '|';
+            foreach ($namedType->getTypes() as $singleNamedType) {
+                $result .=  $this->formatNamedType($singleNamedType) . '|';
             }
             $result = trim($result, '|');
         }
 
-        return $namedType->allowsNull() ? '?' : '' . $result;
+        return ($namedType->allowsNull() ? '?' : '') . $result;
     }
 
     /**

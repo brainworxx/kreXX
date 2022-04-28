@@ -44,8 +44,6 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionException;
 use ReflectionParameter;
-use ReflectionNamedType;
-use ReflectionUnionType;
 
 /**
  * Code generation methods.

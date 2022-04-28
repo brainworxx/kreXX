@@ -83,7 +83,7 @@ class PropertyDeclaration extends AbstractDeclaration
     /**
      * Retrieve the named property type, if possible.
      *
-     * @param \ReflectionProperty $reflectionProperty
+     * @param \ReflectionProperty $refProperty
      * @return string
      */
     public function retrieveNamedPropertyType(ReflectionProperty $refProperty): string
