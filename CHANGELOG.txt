@@ -37,6 +37,8 @@
   analysis.
 - Bugfix: Unnecessary uri encoding in the smoky grey skin prevents
   the display of certain additional info values.
+- Bugfix: Prevent an overfow in the additional info of the smoky
+  grey skin.
 
 4.1.3
 - Added microtime analysis to the float routing.
