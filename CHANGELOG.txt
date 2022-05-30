@@ -29,6 +29,7 @@
   more appropriate AbstractDeclaration class.
 - Change: Moved the parameter analysis to the declaration
   analysis classes.
+- Change: Empty configuration sections are not rendered anymore.
 
 4.1.5
 - Bugfix: Unnecessary uri encoding in the smoky grey skin prevents
