@@ -105,9 +105,7 @@ class ProcessBacktrace extends AbstractCallback implements
                     ->setName($step)
                     ->setType(static::TYPE_STACK_FRAME)
                     ->addParameter(static::PARAM_DATA, $backtrace[$step - 1])
-                    ->injectCallback(
-                        $this->pool->createClass(BacktraceStep::class)
-                    )
+                    ->injectCallback($this->pool->createClass(BacktraceStep::class))
             );
         }
 
