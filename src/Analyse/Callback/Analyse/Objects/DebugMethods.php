@@ -119,7 +119,7 @@ class DebugMethods extends AbstractObjectAnalysis implements
         $result = null;
         // Add a try to prevent the hosting CMS from doing something stupid.
         set_error_handler(
-            function () {
+            function (): void {
                 // Do nothing.
             }
         );
