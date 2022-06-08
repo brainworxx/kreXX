@@ -118,9 +118,6 @@ class Serialized extends AbstractScalarAnalysis
             $meta[$messages->getHelp('metaContent')] = $this->model->getData();
         }
 
-        unset($this->model);
-        $this->originalString = '';
-
         return $meta;
     }
 }

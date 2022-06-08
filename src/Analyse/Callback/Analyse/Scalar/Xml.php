@@ -165,10 +165,7 @@ class Xml extends AbstractScalarAnalysis
             $meta[$messages->getHelp('metaContent')] = $this->model->getData();
         }
 
-
-        $this->originalXml = '';
         $this->hasErrors = false;
-        unset($this->model);
 
         return $meta;
     }

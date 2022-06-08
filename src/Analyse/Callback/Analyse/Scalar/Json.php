@@ -100,7 +100,6 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
             return true;
         }
 
-        unset($this->decodedJson);
         return false;
     }
 
