@@ -75,6 +75,9 @@ class Xml extends AbstractScalarAnalysis
     /**
      * Is there currently a node open?
      *
+     * @deprecated since 5.0.0
+     *   Will be removed.
+     *
      * @var bool
      */
     protected $tnodeOpen = false;
