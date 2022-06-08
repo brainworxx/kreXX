@@ -66,13 +66,6 @@ class Xml extends AbstractScalarAnalysis
     protected $model;
 
     /**
-     * The original, un-pretty-print XML string.
-     *
-     * @var string
-     */
-    protected $originalXml = '';
-
-    /**
      * Is there currently a node open?
      *
      * @deprecated since 5.0.0
@@ -126,7 +119,7 @@ class Xml extends AbstractScalarAnalysis
         }
 
         $this->model = $model;
-        $this->originalXml = $string;
+        $this->handledValue = $string;
         $this->hasErrors = false;
 
         return true;
@@ -151,7 +144,7 @@ class Xml extends AbstractScalarAnalysis
                 $this->hasErrors = true;
             }
         );
-        $dom->loadXML($this->originalXml);
+        $dom->loadXML($this->handledValue);
         restore_error_handler();
 
         if ($this->hasErrors) {
