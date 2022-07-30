@@ -162,7 +162,7 @@ class FilePath extends AbstractScalarAnalysis
 
         if ($string !== $realPath) {
             // We only add the realpath, if it differs from the string
-            $result[static::REAL_PATH] = $realPath;
+            $result[static::REAL_PATH] = $this->pool->fileService->filterFilePath($realPath);
         }
         $result[static::MIME_TYPE] = $this->bufferInfo->file($string);
 
