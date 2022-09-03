@@ -1,3 +1,5 @@
+4.1.7
+
 4.1.6
 - Bugfix: Added the missing path filter to the real path resolver.
 - Bugfix: Use strict encoding detection for strings for more
