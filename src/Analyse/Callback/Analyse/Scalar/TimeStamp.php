@@ -42,6 +42,9 @@ use Brainworxx\Krexx\Analyse\Scalar\String\TimeStamp as TimeStampString;
 /**
  * @deprecated
  *   Since 5.0.0. Will be removed. Use the class that we extend here.
+ *
+ * @codeCoverageIgnore
+ *   We are not testing the unit tests.
  */
 class TimeStamp extends TimeStampString
 {

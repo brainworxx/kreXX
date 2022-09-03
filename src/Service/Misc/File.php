@@ -187,7 +187,7 @@ class File
      * @param string $filePath
      *   The path to the file we want to read.
      *
-     * @return \SplFixedArray
+     * @return \SplFixedArray <string>
      *   The file in a \SplFixedArray.
      */
     protected function getFileContentsArray(string $filePath): SplFixedArray

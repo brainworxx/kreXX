@@ -42,6 +42,9 @@ use Brainworxx\Krexx\Analyse\Scalar\String\Serialized as SerializedString;
 /**
  * @deprecated
  *   Since 5.0.0. Will be removed. Use the class that we extend here.
+ *
+ * @codeCoverageIgnore
+ *   We are not testing the unit tests.
  */
 class Serialized extends SerializedString
 {

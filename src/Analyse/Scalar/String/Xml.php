@@ -54,6 +54,9 @@ class Xml extends AbstractScalarAnalysis
     protected const XML_CHILDREN = 'children';
 
     /**
+     * @deprecated since 5.0.0
+     *   Will be removed
+     *
      * @var array|bool
      */
     protected $decodedXml;

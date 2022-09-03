@@ -284,7 +284,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
 
     /**
      * Set, if we are allowed to generate code to reach the stuff inside
-     * of the analysis.
+     * the analysis.
      *
      * @param bool $bool
      */

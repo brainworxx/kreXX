@@ -89,7 +89,7 @@ class Callback extends AbstractScalarAnalysis
     {
         try {
             $reflectionFunction = new ReflectionFunction($this->handledValue);
-        } catch (ReflectionException|TypeError $e) {
+        } catch (ReflectionException | TypeError $e) {
             // Huh, we were unable to retrieve the reflection.
             // Nothing left to do here.
             return [];
