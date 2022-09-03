@@ -122,6 +122,14 @@ class FilePathTest extends AbstractTest
             $result,
             'No real path available, because it is the same as the __FILE__'
         );
+
+        // We do this a second time, to test the internal caching.
+        $model = new Model(Krexx::$pool);
+        $filePath->canHandle(__FILE__, $model);
+        $this->assertEquals($mimeInfo,
+            $result['Mimetype file'],
+            'Mime info was added, but the mock above was only called once.'
+        );
     }
 
     /**

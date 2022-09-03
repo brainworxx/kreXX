@@ -55,7 +55,7 @@ class TimeStampTest extends AbstractTest
     /**
      * Test the handling of time stamps that got cast into a string.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\TimeStamp::handle
+     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\TimeStamp::canHandle
      */
     public function testCanHandle()
     {
