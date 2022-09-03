@@ -187,11 +187,7 @@ class Encoding
         $replace = ['&#64;', '&#123;', '&nbsp;&nbsp;'];
 
         // There are several places here, that may throw a warning.
-        set_error_handler(
-            function () {
-                // Do nothing.
-            }
-        );
+        set_error_handler($this->pool->retrieveErrorCallback());
 
         $result = str_replace($search, $replace, htmlentities($data, ENT_QUOTES));
 
