@@ -144,9 +144,7 @@ class FilePath extends AbstractScalarAnalysis
     {
         $result = [];
 
-        set_error_handler(function (): void {
-            // Do nothing.
-        });
+        set_error_handler($this->pool->retrieveErrorCallback());
 
         try {
             $isFile = is_file($string);

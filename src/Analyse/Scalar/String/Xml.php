@@ -142,11 +142,7 @@ class Xml extends AbstractScalarAnalysis
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
 
-        set_error_handler(
-            function (): void {
-                $this->hasErrors = true;
-            }
-        );
+        set_error_handler($this->pool->retrieveErrorCallback());
         $dom->loadXML($this->handledValue);
         restore_error_handler();
 
