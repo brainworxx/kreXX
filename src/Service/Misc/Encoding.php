@@ -401,6 +401,6 @@ class Encoding
         // The first regex detects all allowed characters.
         // For some reason, they also allow BOM characters.
         return $cache[$propName] = (bool) preg_match("/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/", (string)$propName) &&
-            !(bool) preg_match("/[\xEF\xBB\xBF]$/", $propName);
+            !(bool) preg_match("/\xEF\xBB\xBF/", $propName);
     }
 }
