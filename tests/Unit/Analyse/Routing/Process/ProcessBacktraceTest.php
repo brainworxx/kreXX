@@ -163,6 +163,13 @@ class ProcessBacktraceTest extends AbstractTest
         $renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->render = $renderNothing;
 
+        // Prepare the "docroot".
+        $this->setValueByReflection(
+            'docRoot',
+            trim(KREXX_DIR, DIRECTORY_SEPARATOR),
+            Krexx::$pool->fileService
+        );
+
         $processBacktrace = new ProcessBacktrace(Krexx::$pool);
         $processBacktrace->handle();
 
