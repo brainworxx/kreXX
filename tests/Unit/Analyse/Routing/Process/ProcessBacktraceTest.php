@@ -102,18 +102,18 @@ class ProcessBacktraceTest extends AbstractTest
 
         // Create an array and name it a backtrace
         $fixture = [
-            'Step 1',
-            'Step 2',
-            'Step 3',
-            'Step 4',
-            'Step 5',
-            'Step 6',
-            'Step 7',
-            'Step 8',
-            'Step 9',
-            'Step 10',
-            'Step 11',
-            'Step 12',
+            ['Step 1'],
+            ['Step 2'],
+            ['Step 3'],
+            ['Step 4'],
+            ['Step 5'],
+            ['Step 6'],
+            ['Step 7'],
+            ['Step 8'],
+            ['Step 9'],
+            ['Step 10'],
+            ['Step 11'],
+            ['Step 12'],
         ];
         $parameters = [ProcessBacktrace::PARAM_DATA => $fixture];
 
@@ -153,6 +153,7 @@ class ProcessBacktraceTest extends AbstractTest
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace::handle
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace::getBacktrace
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace::filterFilePath
      */
     public function testProcessEmpty()
     {
@@ -179,7 +180,7 @@ class ProcessBacktraceTest extends AbstractTest
             $model = $renderNothing->model['renderExpandableChild'][$i];
 
             if ($i === 2) {
-                $someFile = KREXX_DIR . 'src' . DIRECTORY_SEPARATOR . 'whatever';
+                $someFile = '...' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'whatever';
             }
 
             $this->assertEquals(

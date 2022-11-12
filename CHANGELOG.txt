@@ -40,7 +40,6 @@
 - Change: Moved the scalar analysis to a more appropriate
   namespace.
 
-
 4.1.7
 - Bugfix: Removed a faulty 'use' doc comment.
 - Bugfix: Use the correct method signature for the error handler
@@ -50,6 +49,8 @@
   cms thinks that calling 'DOMContentLoaded' more than once is a
   good idea.
 - Bugfix: Prevent a type hint for none variables.
+- Bugfix: Add the missing file path filter to the backtrace
+  analysis.
 
 4.1.6
 - Bugfix: Added the missing path filter to the real path resolver.
