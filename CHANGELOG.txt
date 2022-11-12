@@ -7,6 +7,8 @@
   cms thinks that calling 'DOMContentLoaded' more than once is a
   good idea.
 - Bugfix: Prevent a type hint for none variables.
+- Bugfix: Add the missing file path filter to the backtrace
+  analysis.
 
 4.1.6
 - Bugfix: Added the missing path filter to the real path resolver.
