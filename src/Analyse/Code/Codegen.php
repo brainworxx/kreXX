@@ -160,14 +160,14 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     {
         if (
             empty($name = (string) $model->getName())
-            || strpos($name, '$') === false
+            || strpos($name, '$') !== 0
         ) {
             // There is no name, no need for a hint.
             return;
         }
 
         $type = $model->getType() === static::TYPE_CLASS ? $model->getNormal() : $model->getType();
-        foreach (['->', '::', '[', ']', '(', ')'] as $value) {
+        foreach (['->', '::', '[', ']', '(', ')', '.'] as $value) {
             if (strpos($name, $value) !== false) {
                 // We are analysing something like:
                 // $this->getWhatever();
