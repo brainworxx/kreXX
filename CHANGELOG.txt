@@ -10,7 +10,7 @@
   analysis events, so event listeners can actually do something
   useful.
 - Change: Removed deprecated code.
-- Change: Drop PHP 7.0 support
+- Change: Drop PHP 7.1 support
 - Change: Streamlined the type display of strings
 - Change: Defined visibility for all constants.
 - Change: Added missing PHP 7.1 return type to methods.

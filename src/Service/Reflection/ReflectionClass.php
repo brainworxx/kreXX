@@ -174,7 +174,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @return object
      */
-    public function getData()
+    public function getData(): object
     {
         return $this->data;
     }

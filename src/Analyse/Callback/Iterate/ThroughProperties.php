@@ -162,6 +162,8 @@ class ThroughProperties extends AbstractCallback implements
             // The values of static properties are stored in the default
             // properties of the class reflection.
             // And we do not want these here.
+            // @deprecated
+            //   Will be removed as soon als we drop php 8.0 support.
             if (!$property->isStatic()) {
                 // We also need to get the class that actually declared this
                 // value. The default values can only be found in there.
