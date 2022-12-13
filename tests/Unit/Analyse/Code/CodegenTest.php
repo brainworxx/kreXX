@@ -511,6 +511,32 @@ class CodegenTest extends AbstractTest
     }
 
     /**
+     * Test the parameter analysis, with a special default value.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::parameterToString
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::retrieveParameterType
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::translateDefaultValue
+     */
+    public function testParameterToStringWithQuotationMarks()
+    {
+        $refParamMock = $this->createMock(ReflectionParameter::class);
+        $refParamMock->expects($this->once())
+            ->method('getName')
+            ->will($this->returnValue('greg'));
+        $refParamMock->expects($this->once())
+            ->method('isDefaultValueAvailable')
+            ->will($this->returnValue(true));
+        $refParamMock->expects($this->once())
+            ->method('getDefaultValue')
+            ->will($this->returnValue("some 'string'"));
+
+        $this->assertEquals(
+            '$greg = &#039;some \&#039;string\&#039;&#039;',
+            $this->codegenHandler->parameterToString($refParamMock)
+        );
+    }
+
+    /**
      * Test with a bunch of real parameters.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::parameterToString

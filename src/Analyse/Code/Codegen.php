@@ -397,7 +397,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     protected function translateDefaultValue($default)
     {
         if (is_string($default)) {
-            $default = '\'' . $default . '\'';
+            $default = '\'' . str_replace('\'', '\\\'', $default) . '\'';
         } elseif (is_array($default)) {
             $default = 'array()';
         } elseif ($default ===  true) {
