@@ -1,5 +1,6 @@
 4.1.8
 - Added support for PHP 8.2.
+- Bugfix: Added missing double escaping to the code generation.
 
 4.1.7
 - Bugfix: Removed a faulty 'use' doc comment.

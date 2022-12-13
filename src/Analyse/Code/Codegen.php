@@ -144,7 +144,9 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
             $result = $this->generateComplicatedStuff($model);
         }
 
-        return $result;
+        // I'm not really sure if it is possible to create element names that
+        // we need to escape.
+        return $this->pool->encodingService->encodeString($result);
     }
 
     /**
