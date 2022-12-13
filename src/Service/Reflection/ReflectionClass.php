@@ -204,7 +204,6 @@ class ReflectionClass extends \ReflectionClass
      * @return ReflectionClass[]
      *   Array with the interfaces.
      */
-
     public function getInterfaces(): array
     {
         // Compare the names with the ones from the parent.

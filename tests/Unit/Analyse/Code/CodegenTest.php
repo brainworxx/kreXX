@@ -43,8 +43,9 @@ use Brainworxx\Krexx\Tests\Fixtures\MethodParameterFixture;
 use Brainworxx\Krexx\Tests\Fixtures\UnionTypeFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
 use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
+use Brainworxx\Krexx\Analyse\Code\ConnectorsConstInterface;
 use ReflectionParameter;
-use ReflectionType;
 
 class CodegenTest extends AbstractTest
 {
@@ -415,6 +416,30 @@ class CodegenTest extends AbstractTest
         Krexx::$pool->scope = $scopeMock;
 
         $this->assertEquals('. . .', $this->codegenHandler->generateSource($this->fixture));
+    }
+
+    /**
+     * Test the special handling of special chars in the parameters.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::generateSource
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::translateDefaultValue
+     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::concatenation
+     */
+    public function testGenerateSourceWithEscaping()
+    {
+        $fixture = new Model(\Krexx::$pool);
+
+        $fixture->setName('Greg')
+            ->setConnectorParameters("<>''")
+            ->setConnectorType(ConnectorsConstInterface::CONNECTOR_METHOD)
+            ->setCodeGenType(CodegenConstInterface::CODEGEN_TYPE_PUBLIC);
+        $this->setValueByReflection('firstRun', false, $this->codegenHandler);
+
+
+        $this->assertEquals(
+            '-&gt;Greg(&lt;&gt;&#039;&#039;)',
+            $this->codegenHandler->generateSource($fixture)
+        );
     }
 
     /**
