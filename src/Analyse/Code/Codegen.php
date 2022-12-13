@@ -355,12 +355,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
 
         // Retrieve the default value, if available.
         if ($reflectionParameter->isDefaultValueAvailable()) {
-            try {
-                $default = $reflectionParameter->getDefaultValue();
-            } catch (ReflectionException $e) {
-                $default = null;
-            }
-
+            $default = $reflectionParameter->getDefaultValue();
             $name .= ' = ' . $this->translateDefaultValue($default);
         }
 

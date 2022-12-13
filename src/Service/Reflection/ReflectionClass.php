@@ -40,7 +40,8 @@ namespace Brainworxx\Krexx\Service\Reflection;
 use ReflectionException;
 use ReflectionProperty;
 use Throwable;
-use SplObjectStorage;;
+use SplObjectStorage;
+use Krexx;
 
 /**
  * Added a better possibility to retrieve the object values.
@@ -158,7 +159,7 @@ class ReflectionClass extends \ReflectionClass
             // But first we must make sure that the hosting cms does not do
             // something stupid. Accessing this value directly it probably
             // a bad idea, but the only way to get the value.
-            set_error_handler(\Krexx::$pool->retrieveErrorCallback());
+            set_error_handler(Krexx::$pool->retrieveErrorCallback());
             try {
                 $result = $this->data->$propName;
                 restore_error_handler();

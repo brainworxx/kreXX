@@ -257,9 +257,9 @@ class ThroughProperties extends AbstractCallback implements
     /**
      * Adding declaration keywords to our data in the additional field.
      *
-     * @param \ReflectionProperty $refProperty
+     * @param ReflectionProperty $refProperty
      *   A reflection of the property we ara analysing.
-     * @param \ReflectionClass $ref
+     * @param ReflectionClass $ref
      *   A reflection of the class we are analysing.
      *
      * @return string
