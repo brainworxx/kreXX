@@ -263,7 +263,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     {
         // We simply add the connectors for public access.
         return $model->getConnectorLeft() .
-            $this->pool->encodingService->encodeStringForCodeGeneration($model->getName()) .
+            $model->getName() .
             $model->getConnectorRight();
     }
 
