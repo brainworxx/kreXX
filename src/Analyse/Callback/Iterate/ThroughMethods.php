@@ -246,11 +246,11 @@ class ThroughMethods extends AbstractCallback implements
         ReflectionClass $reflectionClass
     ): string {
         if ($reflectionMethod->isPublic()) {
-            $result = ' public';
+            $result = 'public';
         } elseif ($reflectionMethod->isProtected()) {
-            $result = ' protected';
+            $result = 'protected';
         } else {
-            $result = ' private';
+            $result = 'private';
         }
 
         if ($declaringClass->getName() !== $reflectionClass->getName()) {
@@ -265,6 +265,6 @@ class ThroughMethods extends AbstractCallback implements
             $result .= ' final';
         }
 
-        return ltrim($result);
+        return $result;
     }
 }
