@@ -60,21 +60,21 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
      */
     public function canHandle(Model $model): bool
     {
-        // Resource?
-        // The is_resource can not identify closed stream resource types.
-        // And the get_resource_type() throws a warning, in case this is not a
-        // resource.
-        set_error_handler($this->pool->retrieveErrorCallback());
+        $possibleResource = $model->getData();
+        $isObject = is_object($possibleResource);
 
-        try {
-            $result = $model->getData() instanceof CurlHandle ||
-                get_resource_type($model->getData()) !== null;
-        } catch (Throwable $exception) {
-            $result = false;
-        }
-
-        restore_error_handler();
-        return $result;
+        return
+            (
+                // First impression.
+                is_resource($possibleResource)
+                || (
+                    // A ressource is never one of these.
+                    !is_scalar($possibleResource)
+                    && !is_array($possibleResource)
+                    && !$isObject
+                    && $possibleResource !== null
+                )
+            );
     }
 
     /**
@@ -96,7 +96,6 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
                 $meta = stream_get_meta_data($resource);
                 break;
 
-            case CurlHandle::class:
             case 'resource (curl)':
                 // No need to check for a curl installation, because we are
                 // facing a curl instance right here.

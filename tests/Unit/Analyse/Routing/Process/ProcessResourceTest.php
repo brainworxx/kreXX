@@ -175,37 +175,6 @@ class ProcessResourceTest extends AbstractTest
     }
 
     /**
-     * Test the PHP 8 version of the cUrl resource
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::handle
-     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::retrieveTypeString
-     * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
-     */
-    public function testCurlHandle()
-    {
-        if (!class_exists(CurlHandle::class)) {
-            $this->markTestSkipped('Wrong PHP version');
-        }
-
-        $this->mockEmergencyHandler();
-        $resource = 'Look at me, I\'m a cUrl handle!';
-        $isObjectMock = $this->getFunctionMock(static::PROCESS_NAMESPACE, 'is_object');
-        $isObjectMock->expects($this->once())
-            ->will($this->returnValue(true));
-        $getClassMock = $this->getFunctionMock(static::PROCESS_NAMESPACE, 'get_class');
-        $getClassMock->expects($this->once())
-            ->will($this->returnValue(CurlHandle::class));
-        $metaResults = [
-            'RP', 'meta', 'is', 'evil'
-        ];
-        $getCurlInfo = $this->getFunctionMock(static::PROCESS_NAMESPACE, static::CURL_GETINFO);
-        $getCurlInfo->expects($this->once())
-            ->will($this->returnValue($metaResults));
-
-        $this->runTheTest($resource, 1, CurlHandle::class, null, $metaResults);
-    }
-
-    /**
      * Running the test is pretty much the same every way here.
      *
      * @param $resource
@@ -261,27 +230,10 @@ class ProcessResourceTest extends AbstractTest
         $processor = new ProcessResource(Krexx::$pool);
         $model = new Model(Krexx::$pool);
         $fixture = new stdClass();
-        $getResourceType = $this->getFunctionMock(static::PROCESS_NAMESPACE, static::GET_RESOURCE_TYPE);
+        $getResourceType = $this->getFunctionMock(static::PROCESS_NAMESPACE, 'is_resource');
         $getResourceType->expects($this->once())
-            ->will($this->returnValue('whatever'));
+            ->will($this->returnValue(true));
 
         $this->assertTrue($processor->canHandle($model->setData($fixture)));
-    }
-
-    /**
-     * Test the check if we can handle a fatal during the first impression.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::canHandle
-     */
-    public function testCanHandleFatal()
-    {
-        $this->mockEmergencyHandler();
-        $getResourceTypeMock = $this->getFunctionMock(static::PROCESS_NAMESPACE, static::GET_RESOURCE_TYPE);
-        $getResourceTypeMock->expects($this->once())
-            ->will($this->throwException(new \Exception('')));
-
-        $processor = new ProcessResource(Krexx::$pool);
-        $model = new Model(Krexx::$pool);
-        $this->assertFalse($processor->canHandle($model->setData('I will cause a fatal!')));
     }
 }
