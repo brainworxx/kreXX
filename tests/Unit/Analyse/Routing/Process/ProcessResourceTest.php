@@ -57,6 +57,7 @@ class ProcessResourceTest extends AbstractTest
      * Testing the processing of a stream resource.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::retrieveTypeString
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
      */
     public function testProcessStream()
@@ -81,6 +82,7 @@ class ProcessResourceTest extends AbstractTest
      * Testing the processing of a curl resource.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::retrieveTypeString
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
      */
     public function testProcessCurl()
@@ -105,6 +107,7 @@ class ProcessResourceTest extends AbstractTest
      * Testing the processing of a not yet implemented resource type analysis.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::retrieveTypeString
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::renderUnknownOrClosed
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchNamedEvent
      */
@@ -127,6 +130,7 @@ class ProcessResourceTest extends AbstractTest
      * Testing the processing of a not yet implemented resource type analysis.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::retrieveTypeString
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::renderUnknownOrClosed
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchNamedEvent
      */
@@ -149,6 +153,7 @@ class ProcessResourceTest extends AbstractTest
      * Test the processing of a shell resource.
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::retrieveTypeString
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
      */
     public function testProcessShell()
@@ -173,6 +178,7 @@ class ProcessResourceTest extends AbstractTest
      * Test the PHP 8 version of the cUrl resource
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::retrieveTypeString
      * @covers \Brainworxx\Krexx\Analyse\Routing\AbstractRouting::dispatchProcessEvent
      */
     public function testCurlHandle()

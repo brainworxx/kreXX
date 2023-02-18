@@ -89,23 +89,21 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     public function handle(Model $model): string
     {
         $resource = $model->getData();
-        $type = is_object($resource) ? get_class($resource) : get_resource_type($resource);
-        $typeString = 'resource (' . $type . ')';
+        $typeString = $this->retrieveTypeString($resource);
 
-        switch ($type) {
-            case 'stream':
+        switch ($typeString) {
+            case 'resource (stream)':
                 $meta = stream_get_meta_data($resource);
                 break;
 
             case CurlHandle::class:
-                $typeString = $type;
-            case 'curl':
+            case 'resource (curl)':
                 // No need to check for a curl installation, because we are
                 // facing a curl instance right here.
                 $meta = curl_getinfo($resource);
                 break;
 
-            case 'process':
+            case 'resource (process)':
                 $meta = proc_get_status($resource);
                 break;
 
@@ -122,6 +120,24 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
                     ->injectCallback($this->pool->createClass(ThroughResource::class))
             )
         );
+    }
+
+    /**
+     * Retrieve the ressource type string.
+     *
+     * @param resource|object $resource
+     *   The ressource
+     *
+     * @return string
+     *   The type string.
+     */
+    protected function retrieveTypeString($resource): string
+    {
+        if (is_object($resource)) {
+            return get_class($resource);
+        }
+
+        return 'resource (' . get_resource_type($resource) . ')';
     }
 
     /**
