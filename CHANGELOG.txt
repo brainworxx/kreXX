@@ -41,6 +41,9 @@
   namespace.
 - Change: Split the variable name cleanup into its own class.
 
+4.1.9
+- Added Support for the PHP 8 cUrl handle class.
+
 4.1.8
 - Added support for PHP 8.2.
 - Bugfix: Added missing double escaping to the code generation.
