@@ -267,4 +267,21 @@ class ProcessResourceTest extends AbstractTest
 
         $this->assertTrue($processor->canHandle($model->setData($fixture)));
     }
+
+    /**
+     * Test the check if we can handle a fatal during the first impression.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessResource::canHandle
+     */
+    public function testCanHandleFatal()
+    {
+        $this->mockEmergencyHandler();
+        $getResourceTypeMock = $this->getFunctionMock(static::PROCESS_NAMESPACE, static::GET_RESOURCE_TYPE);
+        $getResourceTypeMock->expects($this->once())
+            ->will($this->throwException(new \Exception('')));
+
+        $processor = new ProcessResource(Krexx::$pool);
+        $model = new Model(Krexx::$pool);
+        $this->assertFalse($processor->canHandle($model->setData('I will cause a fatal!')));
+    }
 }
