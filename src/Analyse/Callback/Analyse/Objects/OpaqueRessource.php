@@ -61,7 +61,6 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
                                 ->injectCallback($this->pool->createClass(ThroughMeta::class))
                         )
                     );
-                    break;
                 }
             }
         } catch (Throwable $throwable) {
