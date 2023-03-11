@@ -110,6 +110,9 @@ abstract class AbstractRender implements RenderInterface
      * @deprecated
      *   Since 5.0.0. Access the file cache directly.
      *
+     * @codeCoverageIgnore
+     *   We do not test deprecated methods.
+     *
      * @return string
      *   The template file, without whitespaces.
      */
