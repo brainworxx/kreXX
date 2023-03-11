@@ -43,6 +43,8 @@
 - Change: Moved the Opaque Ressource Class analysis into its own
   class.
 - Change: The max count of analysed backtrace steps is set to 15.
+- Change: Removed the reflection cache.
+- Change: Refactored the template file loading.
 
 4.1.9
 - Added Support for the PHP 8 cUrl handle class.
