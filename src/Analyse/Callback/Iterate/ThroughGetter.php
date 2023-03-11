@@ -284,14 +284,11 @@ class ThroughGetter extends AbstractCallback implements
         $value = $reflectionClass->retrieveValue($refProp);
         // If we are handling a getter, we retrieve the value itself
         // If we are handling an is'er of has'er, we return a boolean.
-        if (
-            $this->parameters[static::CURRENT_PREFIX] !== 'get'
-            && !is_bool($value)
-        ) {
+        if ($this->parameters[static::CURRENT_PREFIX] !== 'get' && !is_bool($value)) {
             $value = $value !== null;
         }
-
         $model->setData($value);
+
         if ($value === null) {
             // A NULL value might mean that the values does not
             // exist, until the getter computes it.
