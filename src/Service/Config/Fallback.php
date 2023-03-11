@@ -339,7 +339,7 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_ANALYSE_GETTER => $this->returnBoolSelectTrue(static::SECTION_METHODS),
             static::SETTING_MEMORY_LEFT => $this->returnInput(static::SECTION_EMERGENCY, 64),
             static::SETTING_MAX_RUNTIME => $this->returnMaxRuntime(),
-            static::SETTING_MAX_STEP_NUMBER => $this->returnInput(static::SECTION_PRUNE, 10),
+            static::SETTING_MAX_STEP_NUMBER => $this->returnInput(static::SECTION_PRUNE, 15),
             static::SETTING_ARRAY_COUNT_LIMIT => $this->returnInput(static::SECTION_PRUNE, 300),
             static::SETTING_LANGUAGE_KEY => $this->returnLanguages(),
         ];
