@@ -99,7 +99,7 @@ class Getter extends AbstractObjectAnalysis
             $this->dispatchEventWithModel(
                 static::EVENT_MARKER_ANALYSES_END,
                 $this->pool->createClass(Model::class)
-                    ->setName('Getter')
+                    ->setName($this->pool->messages->getHelp('getter'))
                     ->setType(static::TYPE_INTERNALS)
                     ->setHelpid('getterHelpInfo')
                     ->addParameter(static::PARAM_REF, $ref)
