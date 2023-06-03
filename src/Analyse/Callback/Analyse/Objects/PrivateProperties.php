@@ -87,7 +87,7 @@ class PrivateProperties extends AbstractObjectAnalysis
             $this->getReflectionPropertiesData(
                 $refProps,
                 $ref,
-                'Private properties'
+                $this->pool->messages->getHelp('privateProperties')
             );
     }
 }
