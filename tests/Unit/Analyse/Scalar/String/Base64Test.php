@@ -43,7 +43,7 @@ class Base64Test extends AbstractTest
     /**
      * Test the handling of the json.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Json::handle
+     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Base64::handle
      */
     public function testHandle()
     {
