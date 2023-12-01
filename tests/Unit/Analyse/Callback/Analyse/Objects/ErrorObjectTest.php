@@ -51,9 +51,9 @@ class ErrorObjectTest extends AbstractTest
      */
     protected $errorObject;
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->errorObject = new ErrorObject(Krexx::$pool);
         Krexx::$pool->rewrite = [
             ProcessBacktrace::class => CallbackCounter::class

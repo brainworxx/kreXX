@@ -66,9 +66,9 @@ class GetterTest extends AbstractTest
      */
     protected $getter;
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         $this->getter = new Getter(Krexx::$pool);
         // Prevent getting deeper into the rabbit hole.

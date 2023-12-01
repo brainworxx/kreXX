@@ -52,9 +52,9 @@ class FileTest extends AbstractTest
      */
     protected $fixture = [];
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->fixture = [
             ConfigFromFile::SECTION_FE_EDITING => [
                 ConfigFromFile::SETTING_SKIN => ConfigFromFile::RENDER_TYPE_CONFIG_NONE,

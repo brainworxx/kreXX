@@ -72,9 +72,9 @@ class RoutingTest extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         $this->routing = new Routing(Krexx::$pool);
         $this->mockEmergencyHandler();

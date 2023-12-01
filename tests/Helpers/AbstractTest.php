@@ -49,34 +49,17 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Controller\AbstractController;
 use Brainworxx\Krexx\Krexx;
 use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\TestCase;
 use ReflectionException;
 
-abstract class AbstractTest extends TestCompatibility
+abstract class AbstractTest extends TestCase
 {
     use PHPMock;
 
     /**
-     * Performs assertions shared by all tests of a test case.
-     *
-     * This method is called between test and tearDown().
-     */
-    protected function krexxertPostConditions()
-    {
-    }
-
-    /**
-     * Performs assertions shared by all tests of a test case.
-     *
-     * This method is called between setUp() and test.
-     */
-    protected function krexxertPreConditions()
-    {
-    }
-
-    /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
         $_SERVER['REMOTE_ADDR'] = '1.2.3.4';
         $this->mockPhpSapiNameStandard();
@@ -86,7 +69,7 @@ abstract class AbstractTest extends TestCompatibility
     /**
      * @throws \ReflectionException
      */
-    protected function krexxDown()
+    protected function tearDown(): void
     {
         // Reset the kreXX count.
         $emergencyRef = new \ReflectionClass(Krexx::$pool->emergencyHandler);

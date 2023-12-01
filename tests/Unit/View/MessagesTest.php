@@ -57,9 +57,9 @@ class MessagesTest extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         $this->messagesClass = new Messages(Krexx::$pool);
     }
@@ -67,9 +67,9 @@ class MessagesTest extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxDown()
+    protected function tearDown(): void
     {
-        parent::krexxDown();
+        parent::tearDown();
 
         $this->setValueByReflection('additionalLanguages', [], Registration::class);
     }

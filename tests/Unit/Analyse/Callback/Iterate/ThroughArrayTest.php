@@ -49,9 +49,9 @@ class ThroughArrayTest extends AbstractTest
     /**
      * Injecting the routing nothing class.
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         Krexx::$pool->routing = new RoutingNothing(Krexx::$pool);
     }
 

@@ -62,11 +62,11 @@ class FileTest extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->file = new File(Krexx::$pool);
-        // Make sure we have a doc root, independent from everything.
+        // Make sure we have a doc root, independent of everything.
         $this->setValueByReflection(static::DOC_ROOT, 'doc ruth', $this->file);
         // Reset the writable cache in the file service.
         $this->setValueByReflection(static::IS_READABLE_CACHE, [], $this->file);

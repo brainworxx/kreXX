@@ -68,14 +68,14 @@ class ConfigTest extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
         Pool::createPool();
     }
 
-    protected function krexxDown()
+    protected function tearDown(): void
     {
-        parent::krexxDown();
+        parent::tearDown();
         unset($_SERVER['HTTP_X_REQUESTED_WITH']);
         unset($_SERVER['REMOTE_ADDR']);
     }

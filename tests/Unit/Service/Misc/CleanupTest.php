@@ -63,15 +63,15 @@ class CleanupTest extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->cleanup = new Cleanup(Krexx::$pool);
     }
 
-    protected function krexxDown()
+    protected function tearDown(): void
     {
-        parent::krexxDown();
+        parent::tearDown();
         $this->setValueByReflection(static::CHUNKS_DONE, false, $this->cleanup);
     }
 

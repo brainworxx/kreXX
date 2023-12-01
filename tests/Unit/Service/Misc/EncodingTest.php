@@ -46,9 +46,9 @@ class EncodingTest extends AbstractTest
      */
     protected $encoding;
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->encoding = new Encoding(Krexx::$pool);
     }
 

@@ -74,9 +74,9 @@ class CodegenTest extends AbstractTest
      */
     protected $connectorMock;
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         $this->codegenHandler = new Codegen(Krexx::$pool);
         $this->codegenHandler->setCodegenAllowed(true);

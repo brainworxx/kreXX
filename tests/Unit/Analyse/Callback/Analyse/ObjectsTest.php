@@ -73,12 +73,12 @@ class ObjectsTest extends AbstractTest
      */
     protected $objects;
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
         $this->fixture[CallbackConstInterface::PARAM_DATA] = new SimpleFixture();
         $this->fixture[CallbackConstInterface::PARAM_NAME] = 'some string';
 
-        parent::krexxUp();
+        parent::setUp();
 
         // Prevent the class from going deeper!
         Krexx::$pool->rewrite = [

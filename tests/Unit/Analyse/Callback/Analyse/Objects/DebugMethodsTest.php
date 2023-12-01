@@ -58,9 +58,9 @@ class DebugMethodsTest extends AbstractTest
      *
      * @throws \ReflectionException
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         Krexx::$pool->rewrite = [
             Debug::class => CallbackCounter::class,
@@ -84,7 +84,7 @@ class DebugMethodsTest extends AbstractTest
     /**
      * Test if the no-go debug methods got called.
      */
-    protected function krexxertPostConditions()
+    protected function assertPostConditions(): void
     {
         // The magical __Call and the parameterized method must never be called.
         /** @var DebugMethodFixture $data */
@@ -92,7 +92,7 @@ class DebugMethodsTest extends AbstractTest
         $this->assertEquals([], $data->callMagicMethod);
         $this->assertEquals(false, $data->callWithParameter);
 
-        parent::krexxertPostConditions();
+        parent::assertPostConditions();
     }
 
     /**

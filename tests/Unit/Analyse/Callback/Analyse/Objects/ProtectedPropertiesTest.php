@@ -58,9 +58,9 @@ class ProtectedPropertiesTest extends AbstractTest
      *
      * {@inheritdoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         // Create in instance of the class to test
         $this->protectedProperties = new ProtectedProperties(Krexx::$pool);

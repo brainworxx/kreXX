@@ -75,9 +75,9 @@ class ThroughPropertiesTest extends AbstractTest
     /**
      * {@inheritdoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->throughProperties = new ThroughProperties(Krexx::$pool);
     }
 

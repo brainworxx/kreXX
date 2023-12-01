@@ -64,9 +64,9 @@ class ModelTest extends AbstractTest
      * {@inheritdoc}
      *
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->model = new Model(Krexx::$pool);
     }
 

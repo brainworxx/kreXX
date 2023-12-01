@@ -51,9 +51,9 @@ class BrowserImmediatelyTest extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         $this->browserImmediately = new BrowserImmediately(Krexx::$pool);
     }

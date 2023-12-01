@@ -45,9 +45,9 @@ use ReflectionClass;
 
 class ConstantsTest extends AbstractTest
 {
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         Krexx::$pool->rewrite = [
             ThroughConstants::class => CallbackCounter::class,

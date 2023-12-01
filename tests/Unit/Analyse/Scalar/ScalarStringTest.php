@@ -54,17 +54,17 @@ class ScalarStringTest extends AbstractTest
      *
      * @throws \ReflectionException
      */
-    protected function krexxDown()
+    protected function tearDown(): void
     {
         ScalarNothing::$canHandle = false;
         ScalarNothing::$canHandleList = [];
         ScalarNothing::$count = 0;
-        parent::krexxDown();
+        parent::tearDown();
     }
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         $this->scalarString = new ScalarString(Krexx::$pool);
         // Inject the scalar helper, to track the processing.

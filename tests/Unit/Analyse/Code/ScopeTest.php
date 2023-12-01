@@ -53,9 +53,9 @@ class ScopeTest extends AbstractTest
      */
     protected $scope;
 
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
 
         $this->scope = new Scope(Krexx::$pool);
     }
