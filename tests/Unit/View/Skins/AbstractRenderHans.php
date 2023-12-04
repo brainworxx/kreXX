@@ -74,9 +74,9 @@ abstract class AbstractRenderHans extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->mockTemplate();
         $this->renderHans = new RenderHans(Krexx::$pool);
         $this->mockEmergencyHandler();

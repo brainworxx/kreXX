@@ -73,9 +73,9 @@ abstract class AbstractRenderSmokyGrey extends AbstractTest
     /**
      * {@inheritDoc}
      */
-    protected function krexxUp()
+    protected function setUp(): void
     {
-        parent::krexxUp();
+        parent::setUp();
         $this->mockTemplate();
         $this->renderSmokyGrey = new RenderSmokyGrey(Krexx::$pool);
     }
