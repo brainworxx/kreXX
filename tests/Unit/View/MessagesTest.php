@@ -38,12 +38,12 @@ namespace Brainworxx\Krexx\Tests\Unit\View;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Service\Plugin\Registration;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\View\Message;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Skins\RenderHans;
 
-class MessagesTest extends AbstractTest
+class MessagesTest extends AbstractHelper
 {
 
     const KEY_VARIABLE_NAME = 'messages';

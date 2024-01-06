@@ -35,14 +35,14 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Logging;
 
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 
 /**
  * Test for the logger model.
  *
  * @package Brainworxx\Krexx\Tests\Unit\Logging
  */
-class ModelTest extends AbstractTest
+class ModelTest extends AbstractHelper
 {
     /**
      * @var \Brainworxx\Krexx\Logging\Model

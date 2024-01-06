@@ -41,12 +41,12 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use ArrayObject;
 
-class TraversableTest extends AbstractTest
+class TraversableTest extends AbstractHelper
 {
     const CHECK_NESTING = 'checkNesting';
 

@@ -38,15 +38,14 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
 use Brainworxx\Krexx\Analyse\Code\Codegen;
-use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Service\Factory\Event;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 use Brainworxx\Krexx\Krexx;
 use stdClass;
 
-class ThroughLargeArrayTest extends AbstractTest
+class ThroughLargeArrayTest extends AbstractHelper
 {
     const RENDER_EXPANDABLE_CHILD = 'renderExpandableChild';
 
@@ -74,12 +73,7 @@ class ThroughLargeArrayTest extends AbstractTest
         $eventServiceMock = $this->createMock(Event::class);
         $eventServiceMock->expects($this->exactly(1))
             ->method('dispatch')
-            ->withConsecutive(
-                [
-                    'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray::callMe::start',
-                    $this->throughLargeArray
-                ]
-            )
+            ->with(...$this->withConsecutive(['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray::callMe::start', $this->throughLargeArray]))
             ->will($this->returnValue(''));
         Krexx::$pool->eventService = $eventServiceMock;
 

@@ -42,11 +42,10 @@ use Brainworxx\Krexx\Service\Config\From\File;
 use Brainworxx\Krexx\Service\Config\Validation;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Plugin\Registration;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
-use Brainworxx\Krexx\View\Output\CheckOutput;
 
-class ConfigTest extends AbstractTest
+class ConfigTest extends AbstractHelper
 {
 
     const NOT_CLI = 'not cli';

@@ -37,13 +37,13 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Constants;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\View\Skins\RenderHans;
 use ReflectionClass;
 
-class ConstantsTest extends AbstractTest
+class ConstantsTest extends AbstractHelper
 {
     protected function setUp(): void
     {

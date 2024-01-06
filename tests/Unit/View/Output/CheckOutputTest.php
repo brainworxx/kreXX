@@ -37,10 +37,10 @@ namespace Brainworxx\Krexx\Tests\Unit\View\Output;
 
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\View\Output\CheckOutput;
 
-class CheckOutputTest extends AbstractTest
+class CheckOutputTest extends AbstractHelper
 {
     const HTTP_X_REQUESTED_WITH = 'HTTP_X_REQUESTED_WITH';
     const OUTPUT_NAMESPACE = '\\Brainworxx\\Krexx\\View\\Output\\';

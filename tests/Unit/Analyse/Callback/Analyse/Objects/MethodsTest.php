@@ -41,12 +41,12 @@ use Brainworxx\Krexx\Service\Config\Fallback;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use ReflectionMethod;
 
-class MethodsTest extends AbstractTest
+class MethodsTest extends AbstractHelper
 {
 
     const PRIVATE_METHOD = 'privateMethod';

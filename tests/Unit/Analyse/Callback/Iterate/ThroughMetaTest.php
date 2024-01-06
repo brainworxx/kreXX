@@ -40,12 +40,12 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMetaReflections;
 use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 
-class ThroughMetaTest extends AbstractTest
+class ThroughMetaTest extends AbstractHelper
 {
     const RENDER_EXPANDABLE_CHILD = 'renderExpandableChild';
 

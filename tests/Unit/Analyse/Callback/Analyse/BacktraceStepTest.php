@@ -39,11 +39,11 @@ use Brainworxx\Krexx\Analyse\Callback\Analyse\BacktraceStep;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessArray;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessObject;
 use Brainworxx\Krexx\Service\Plugin\Registration;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\ProcessNothing;
 use Brainworxx\Krexx\Krexx;
 
-class BacktraceStepTest extends AbstractTest
+class BacktraceStepTest extends AbstractHelper
 {
     /**
      * Getting some test data and preventing deeper processing.

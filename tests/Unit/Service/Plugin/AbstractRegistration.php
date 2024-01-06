@@ -36,9 +36,9 @@
 namespace Brainworxx\Krexx\Tests\Unit\Service\Plugin;
 
 use Brainworxx\Krexx\Service\Plugin\Registration;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 
-class AbstractRegistration extends AbstractTest
+class AbstractRegistration extends AbstractHelper
 {
     const PLUGINS = 'plugins';
     const CHUNK_FOLDER = 'chunkFolder';

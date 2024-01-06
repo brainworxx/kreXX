@@ -37,11 +37,11 @@ namespace Brainworxx\Krexx\Tests\Unit\Service\Flow;
 
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Flow\Recursion;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use SplObjectStorage;
 use StdClass;
 
-class RecursionTest extends AbstractTest
+class RecursionTest extends AbstractHelper
 {
 
     const RECURSION_HIVE = 'recursionHive';

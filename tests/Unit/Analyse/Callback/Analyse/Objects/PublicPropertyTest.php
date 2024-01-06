@@ -43,13 +43,13 @@ use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Fixtures\PublicFixture;
 use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use ReflectionProperty;
 use DateTime;
 
-class PublicPropertyTest extends AbstractTest
+class PublicPropertyTest extends AbstractHelper
 {
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties

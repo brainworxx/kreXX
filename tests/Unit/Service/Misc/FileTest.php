@@ -40,11 +40,11 @@ use Brainworxx\Krexx\Service\Misc\Encoding;
 use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
 use Brainworxx\Krexx\Tests\Fixtures\TraversableFixture;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\View\Skins\RenderHans;
 use ReflectionClass;
 
-class FileTest extends AbstractTest
+class FileTest extends AbstractHelper
 {
     const DOC_ROOT = 'docRoot';
     const IS_READABLE_CACHE = 'isReadableCache';
@@ -103,7 +103,7 @@ class FileTest extends AbstractTest
         $renderMock = $this->createMock(RenderHans::class);
         $renderMock->expects($this->exactly(11))
             ->method('renderBacktraceSourceLine')
-            ->withConsecutive(
+            ->with(...$this->withConsecutive(
                 [$source, 43, $returnValue],
                 [$source, 44, $returnValue],
                 [$source, 45, $returnValue],
@@ -115,15 +115,14 @@ class FileTest extends AbstractTest
                 [$source, 51, $returnValue],
                 [$source, 52, $returnValue],
                 [$source, 53, $returnValue]
-            )
-            ->will($this->returnValue(''));
+            ))->will($this->returnValue(''));
         Krexx::$pool->render = $renderMock;
 
         // Mock the string encoder.
         $encoderMock = $this->createMock(Encoding::class);
         $encoderMock->expects($this->exactly(11))
             ->method('encodeString')
-            ->withConsecutive(
+            ->with(...$this->withConsecutive(
                 ['class SimpleFixture' . "\n", true],
                 ['{' . "\n", true],
                 ['    /**' . "\n", true],
@@ -135,7 +134,7 @@ class FileTest extends AbstractTest
                 ["\n", true],
                 ['    /**' . "\n", true],
                 ['     * Value 2' . "\n", true]
-            )->will($this->returnValue($returnValue));
+            ))->will($this->returnValue($returnValue));
         Krexx::$pool->encodingService = $encoderMock;
 
         $simpleReflection = new ReflectionClass(SimpleFixture::class);

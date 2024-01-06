@@ -39,10 +39,10 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Scalar\ScalarString;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Plugin\Registration;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\ScalarNothing;
 
-class ScalarStringTest extends AbstractTest
+class ScalarStringTest extends AbstractHelper
 {
     /**
      * @var ScalarString

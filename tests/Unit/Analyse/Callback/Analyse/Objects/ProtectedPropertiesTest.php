@@ -41,12 +41,12 @@ use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Fixtures\ProtectedFixture;
 use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use ReflectionProperty;
 
-class ProtectedPropertiesTest extends AbstractTest
+class ProtectedPropertiesTest extends AbstractHelper
 {
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ProtectedProperties

@@ -41,12 +41,12 @@ use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\DebugMethodFixture;
 use Brainworxx\Krexx\Tests\Fixtures\GetterFixture;
 use Brainworxx\Krexx\Tests\Fixtures\SimpleFixture;
-use Brainworxx\Krexx\Tests\Helpers\AbstractTest;
+use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use ReflectionMethod;
 
-class GetterTest extends AbstractTest
+class GetterTest extends AbstractHelper
 {
     const TEST_STRING = 'some name';
 
