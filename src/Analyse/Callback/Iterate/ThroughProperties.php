@@ -250,7 +250,6 @@ class ThroughProperties extends AbstractCallback implements
             $propName = $this->pool->encodingService->encodeString($propName);
         }
 
-        // And  encode it, just in case.
         return $propName;
     }
 

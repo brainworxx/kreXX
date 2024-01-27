@@ -180,12 +180,11 @@ class Encoding
             // The { are needed in the marker of the skin.
             $search = ['@', '{', '  '];
         }
-        $replace = ['&#64;', '&#123;', '&nbsp;&nbsp;'];
 
         // There are several places here, that may throw a warning.
         set_error_handler($this->pool->retrieveErrorCallback());
 
-        $result = str_replace($search, $replace, htmlentities($data, ENT_QUOTES));
+        $result = str_replace($search, ['&#64;', '&#123;', '&nbsp;&nbsp;'], htmlentities($data, ENT_QUOTES));
 
         // Check if encoding was successful.
         // 99.99% of the time, the encoding works.
