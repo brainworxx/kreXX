@@ -59,6 +59,28 @@ abstract class AbstractFactory
     public $rewrite = [];
 
     /**
+     * @var Closure
+     */
+    protected $errorCallback;
+
+    /**
+     * Set the error callback.
+     */
+    public function __construct()
+    {
+        $this->errorCallback = function (
+            int $errno,
+            string $errstr,
+            string $errfile = null,
+            int $errline = null,
+            array $errcontext = null
+        ): bool {
+            // Do nothing.
+            return true;
+        };
+    }
+
+    /**
      * Create objects and returns them. Singletons are handled by the pool.
      *
      * @param string $classname
@@ -113,16 +135,7 @@ abstract class AbstractFactory
      */
     public function retrieveErrorCallback(): Closure
     {
-        return function (
-            int $errno,
-            string $errstr,
-            string $errfile = null,
-            int $errline = null,
-            array $errcontext = null
-        ): bool {
-            // Do nothing.
-            return true;
-        };
+        return $this->errorCallback;
     }
 
     /**

@@ -168,6 +168,8 @@ class Pool extends AbstractFactory
      */
     public function __construct(array $rewrite = [])
     {
+        parent::__construct();
+
         $this->rewrite = $rewrite;
 
         // Initializes the file service.
