@@ -2,6 +2,8 @@
 - Change: Removed deprecated code.
 - Bugfix: The event 'Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\DebugMethods::callMe::start'
   was called too late.
+- Bugfix: Make use of the internal error callback in the string
+  encoding class.
 
 5.0.1
 - Change: Updated the unit tests to 10.5
