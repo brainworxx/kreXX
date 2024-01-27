@@ -145,7 +145,7 @@ class ReturnType extends AbstractComment
      *   Was moved to the MethodDeclaration class.
      *
      * @codeCoverageIgnore
-     *   We do not test depracated methods.
+     *   We do not test deprecated methods.
      *
      * @return string
      *   The return type if possible, an empty string if not.
