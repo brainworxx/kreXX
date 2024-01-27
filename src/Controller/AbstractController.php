@@ -72,6 +72,9 @@ abstract class AbstractController implements ConfigConstInterface
     /**
      * Have we already send the CSS and JS, depending on the destination?
      *
+     * The only reason for this to be a class variable is, that we need it for
+     * the unit tests.
+     *
      * @var bool[]
      */
     protected static $jsCssSend = [];

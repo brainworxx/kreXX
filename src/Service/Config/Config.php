@@ -58,6 +58,9 @@ class Config extends Fallback
     /**
      * List of all configured debug methods.
      *
+     * @deprecated Since 5.0.2
+     *   Will be removed.
+     *
      * @var string[]
      */
     public $debugFuncList = [];
