@@ -66,7 +66,12 @@ class ReturnType extends AbstractComment
         'null',
         'float',
         'double',
-        'number'
+        'number',
+        'true',
+        'false',
+        'never',
+        'static',
+        'iterable'
     ];
 
     /**
@@ -123,11 +128,11 @@ class ReturnType extends AbstractComment
             $result = $this->pool->encodingService->encodeString('\\' . $reflectionClass->getName());
         } elseif (
             // Inside the whitelist
-            in_array($resultToken, static::ALLOWED_TYPES, true) ||
+            in_array($resultToken, static::ALLOWED_TYPES, true)
             // Looks like a class name with namespace.
-            strpos($resultToken, '\\') === 0 ||
+            || strpos($resultToken, '\\') === 0
             // Multiple types.
-            strpos($resultToken, '|') !== false
+            || strpos($resultToken, '|') !== false
         ) {
             $result = $this->pool->encodingService->encodeString($resultToken);
         }

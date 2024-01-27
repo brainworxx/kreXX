@@ -6,6 +6,8 @@
 - Bugfix: Make use of the internal error callback in the string
   encoding class.
 - Bugfix: Add the missing "Line no." to the translation.
+- Bugfix: Added missing return types to the return type whitelist
+  in the ReturnType comment analysis.
 
 5.0.1
 - Change: Updated the unit tests to 10.5
