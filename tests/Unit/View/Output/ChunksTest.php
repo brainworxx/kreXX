@@ -143,7 +143,6 @@ class ChunksTest extends AbstractHelper
      * Test the adding of a large chunk string.
      *
      * @covers \Brainworxx\Krexx\View\Output\Chunks::chunkMe
-     * @covers \Brainworxx\Krexx\View\Output\Chunks::genKey
      */
     public function testChunkMeLarge()
     {

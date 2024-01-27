@@ -157,9 +157,11 @@ class Chunks implements ConfigConstInterface
      */
     public function chunkMe(string $string): string
     {
+        static $counter = 0;
+
         if ($this->chunkAllowed && strlen($string) > 10000) {
             // Get the key.
-            $key = $this->genKey();
+            $key = $this->fileStamp . '_' . ++$counter;
             // Detect the encoding in the chunk.
             $this->detectEncoding($string);
             // Write the key to the chunks' folder.
@@ -174,6 +176,12 @@ class Chunks implements ConfigConstInterface
 
     /**
      * Generates the chunk key.
+     *
+     * @deprecated Since 5.0.2
+     *   Well be removed It is now handled inside the chunkMe().
+     *
+     * @codeCoverageIgnore
+     *   We will not test deprecated methods.
      *
      * @return string
      *   The generated key.
