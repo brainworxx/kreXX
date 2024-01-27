@@ -75,6 +75,11 @@ class ThroughMethods extends AbstractCallback implements
     protected $methodDeclaration;
 
     /**
+     * @var \Brainworxx\Krexx\Analyse\Comment\ReturnType
+     */
+    protected $returnType;
+
+    /**
      * Inject the pool and get the comment analysis online.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
@@ -85,6 +90,7 @@ class ThroughMethods extends AbstractCallback implements
 
         $this->commentAnalysis = $this->pool->createClass(Methods::class);
         $this->methodDeclaration = $this->pool->createClass(MethodDeclaration::class);
+        $this->returnType = $this->pool->createClass(ReturnType::class);
     }
 
     /**
@@ -158,9 +164,7 @@ class ThroughMethods extends AbstractCallback implements
             ->retrieveDeclaration($refMethod);
 
         // Get the return type.
-        /** @var ReturnType $returnType */
-        $returnType = $this->pool->createClass(ReturnType::class);
-        $methodData[$messages->getHelp('metaReturnType')] = $returnType->getComment($refMethod, $refClass);
+        $methodData[$messages->getHelp('metaReturnType')] = $this->returnType->getComment($refMethod, $refClass);
 
         return $methodData;
     }

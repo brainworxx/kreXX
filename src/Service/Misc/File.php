@@ -232,9 +232,8 @@ class File
 
         // Get the file contents.
         $filePath = $this->realpath($filePath);
-        $size = filesize($filePath);
         $file = fopen($filePath, 'r');
-        $result = fread($file, $size);
+        $result = fread($file, filesize($filePath));
         fclose($file);
         return $result;
     }

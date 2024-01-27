@@ -51,6 +51,13 @@ use UnitEnum;
 class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessConstInterface
 {
     /**
+     * The whitelist to decide if we are displaying type hints.
+     *
+     * @var string[]
+     */
+    protected const TYPE_HINT_WHITE_LIST = ['->', '::', '[', ']', '(', ')', '.'];
+
+    /**
      * Here we store all relevant data.
      *
      * @var Pool
@@ -169,7 +176,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         }
 
         $type = $model->getType() === static::TYPE_CLASS ? $model->getNormal() : $model->getType();
-        foreach (['->', '::', '[', ']', '(', ')', '.'] as $value) {
+        foreach (static::TYPE_HINT_WHITE_LIST as $value) {
             if (strpos($name, $value) !== false) {
                 // We are analysing something like:
                 // $this->getWhatever();

@@ -72,6 +72,11 @@ class ReflectionClass extends \ReflectionClass
      */
     protected $data;
 
+    /**
+     * Storage for unset properties.
+     *
+     * @var \SplObjectStorage
+     */
     protected $unsetPropertyStorage;
 
     /**

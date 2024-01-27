@@ -73,8 +73,7 @@ class ThroughArray extends AbstractCallback implements
             static::CODEGEN_TYPE_ITERATOR_TO_ARRAY : static::CODEGEN_TYPE_PUBLIC;
 
         $recursionMarker = $this->pool->recursionHandler->getMarker();
-        $array =& $this->parameters[static::PARAM_DATA];
-
+        $array = $this->parameters[static::PARAM_DATA];
         // Iterate through.
         foreach ($array as $key => &$value) {
             // We will not output our recursion marker.
