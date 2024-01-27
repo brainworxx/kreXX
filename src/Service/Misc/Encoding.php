@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Service\Misc;
 
+use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
@@ -377,6 +378,11 @@ class Encoding
      * AFAIK this is only possible for dynamically declared properties
      * or some magical stuff from __get()
      *
+     * @deprecated Since 5.0.2
+     *   Use ThroughProperties->isPropertyNameNormal() instead.
+     * @codeCoverageIgnore
+     *   We do not test deprecated methods.
+     *
      * @see https://stackoverflow.com/questions/29019484/validate-a-php-variable
      * @author AbraCadaver
      *
@@ -387,17 +393,7 @@ class Encoding
      */
     public function isPropertyNameNormal($propName): bool
     {
-        static $cache = [];
-
-        if (isset($cache[$propName])) {
-            return $cache[$propName];
-        }
-
-        // The first regex detects all allowed characters.
-        // For some reason, they also allow BOM characters.
-        return $cache[$propName] = (bool) preg_match(
-            "/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/",
-            (string)$propName
-        ) && !(bool) preg_match("/\xEF\xBB\xBF/", $propName);
+        return $this->pool->createClass(ThroughProperties::class)
+            ->isPropertyNameNormal($propName);
     }
 }
