@@ -8,6 +8,8 @@
 - Bugfix: Add the missing "Line no." to the translation.
 - Bugfix: Added missing return types to the return type whitelist
   in the ReturnType comment analysis.
+- Bugfix: Added missing types to the blacklist of none namespaces
+  declaration types.
 
 5.0.1
 - Change: Updated the unit tests to 10.5

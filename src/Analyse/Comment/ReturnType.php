@@ -51,7 +51,7 @@ class ReturnType extends AbstractComment
      *
      * @var string[]
      */
-    protected const ALLOWED_TYPES = [
+    public const ALLOWED_TYPES = [
         'int',
         'integer',
         'string',
