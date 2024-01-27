@@ -62,7 +62,7 @@ class ScalarString extends AbstractScalar
     /**
      * The list of analysis classes, that we use.
      *
-     * @var string[]
+     * @var \Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis[]
      */
     protected $classList = [];
 
@@ -87,7 +87,7 @@ class ScalarString extends AbstractScalar
 
         foreach ($classList as $className) {
             if ($className::isActive()) {
-                $this->classList[] = $className;
+                $this->classList[$className] = $pool->createClass($className);
             }
         }
 
@@ -108,12 +108,10 @@ class ScalarString extends AbstractScalar
      */
     public function handle(Model $model, string $originalData): Model
     {
-        foreach ($this->classList as $className) {
-            /** @var \Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis $scalarHandler */
-            $scalarHandler = $this->pool->createClass($className);
-
-            if ($scalarHandler->canHandle($originalData, $model)) {
-                return $model->injectCallback($scalarHandler)
+        /** @var \Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis $analyser */
+        foreach ($this->classList as $className => $analyser) {
+            if ($analyser->canHandle($originalData, $model)) {
+                return $model->injectCallback($analyser)
                     ->setDomid($this->generateDomId($originalData, $className));
             }
         }

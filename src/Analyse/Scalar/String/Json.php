@@ -125,8 +125,6 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
             $meta[$messages->getHelp('metaContent')] = $this->model->getData();
         }
 
-        unset($this->decodedJson, $this->model);
-
         return $meta;
     }
 }

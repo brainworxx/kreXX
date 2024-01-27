@@ -114,8 +114,6 @@ class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
             $meta[$messages->getHelp('metaContent')] = $this->model->getData();
         }
 
-        unset($this->decodedString, $this->model);
-
         return $meta;
     }
 }
