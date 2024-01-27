@@ -512,7 +512,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Testing the property name analysis.
      *
-     * @covers \Brainworxx\Krexx\Service\Misc\Encoding::isPropertyNameNormal
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::isPropertyNameNormal
      */
     public function testIsPropertyNameNormal()
     {
