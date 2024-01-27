@@ -4,6 +4,7 @@
   was called too late.
 - Bugfix: Make use of the internal error callback in the string
   encoding class.
+- Bugfix: Add the missing "Line no." to the translation.
 
 5.0.1
 - Change: Updated the unit tests to 10.5
