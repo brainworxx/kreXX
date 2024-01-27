@@ -122,27 +122,6 @@ abstract class Fallback implements ConfigConstInterface
     protected const EVAL_LANG = 'evalLanguage';
 
     /**
-     * Name of the chunks' folder.
-     *
-     * @var string
-     */
-    public const CHUNKS_FOLDER = 'chunks';
-
-    /**
-     * Name of the log folder.
-     *
-     * @var string
-     */
-    public const LOG_FOLDER = 'log';
-
-    /**
-     * Name of the config folder.
-     *
-     * @var string
-     */
-    public const CONFIG_FOLDER = 'config';
-
-    /**
      * Name of the smokygrey skin.
      *
      * @var string

@@ -416,4 +416,25 @@ interface ConfigConstInterface
      * @var string
      */
     public const SKIN_DIRECTORY = 'dir';
+
+    /**
+     * Name of the chunks' folder.
+     *
+     * @var string
+     */
+    public const CHUNKS_FOLDER = 'chunks';
+
+    /**
+     * Name of the log folder.
+     *
+     * @var string
+     */
+    public const LOG_FOLDER = 'log';
+
+    /**
+     * Name of the config folder.
+     *
+     * @var string
+     */
+    public const CONFIG_FOLDER = 'config';
 }
