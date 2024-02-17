@@ -198,7 +198,7 @@ class SettingsGetterTest extends AbstractRegistration
     }
 
     /**
-     * Teting the getting of new registered settings definitions.
+     * Testing the getting of new registered settings definitions.
      *
      * @covers \Brainworxx\Krexx\Service\Plugin\SettingsGetter::getNewSettings
      */
@@ -206,5 +206,27 @@ class SettingsGetterTest extends AbstractRegistration
     {
         $this->setValueByReflection(static::NEW_SETTINGS, [static::class], $this->registration);
         $this->assertEquals([static::class], SettingsGetter::getNewSettings());
+    }
+
+    /**
+     * Testing the getting of additional languages.
+     *
+     * @covers \Brainworxx\Krexx\Service\Plugin\SettingsGetter::getAdditionalLanguages
+     */
+    public function testGetAdditionalLanguages()
+    {
+        $this->setValueByReflection(static::ADDITIONAL_LANGUAGES, [1, 2, 3], $this->registration);
+        $this->assertEquals([1, 2, 3], SettingsGetter::getAdditionalLanguages());
+    }
+
+    /**
+     * Testing the getting of additional languages.
+     *
+     * @covers \Brainworxx\Krexx\Service\Plugin\SettingsGetter::getNewFallbackValues
+     */
+    public function testGetNewFallbackValues()
+    {
+        $this->setValueByReflection(static::NEW_FALLBACK_VALUES, [1, 2, 3], $this->registration);
+        $this->assertEquals([1, 2, 3], SettingsGetter::getNewFallbackValues());
     }
 }

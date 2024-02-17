@@ -43,6 +43,16 @@ namespace Brainworxx\Krexx\Service\Plugin;
 class SettingsGetter extends Registration
 {
     /**
+     * Getter for the new standard fallback value for settings.
+     *
+     * @return array
+     */
+    public static function getNewFallbackValues(): array
+    {
+        return self::$newFallbackValues;
+    }
+
+    /**
      * Getter for the configured configuration file
      *
      * @return string
