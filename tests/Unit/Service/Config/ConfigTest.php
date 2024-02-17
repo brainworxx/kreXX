@@ -314,7 +314,7 @@ class ConfigTest extends AbstractHelper
         $someMethods = static::FALSE_STRING;
 
         $iniMock = $this->createMock(File::class);
-        $iniMock->expects($this->once())
+        $iniMock->expects($this->exactly(2))
             ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_METHODS, $config::SETTING_ANALYSE_GETTER)
             ->will($this->returnValue($someMethods));
@@ -382,25 +382,26 @@ class ConfigTest extends AbstractHelper
         $someMethods = 'some methods';
 
         $iniMock = $this->createMock(File::class);
-        $iniMock->expects($this->once())
+        $iniMock->expects($this->exactly(2))
             ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_METHODS, $config::SETTING_DEBUG_METHODS)
             ->will($this->returnValue($someMethods));
 
         $cookieMock = $this->createMock(Cookie::class);
-        $cookieMock->expects($this->never())
-            ->method(static::GET_CONFIG_FROM_COOKIES);
+        $cookieMock->expects($this->exactly(1))
+            ->method(static::GET_CONFIG_FROM_COOKIES)
+            ->will($this->returnValue('read mail, real fast'));
 
         // Inject them.
         $this->setValueByReflection(static::FILE_CONFIG, $iniMock, $config);
         $this->setValueByReflection(static::COOKIE_CONFIG, $cookieMock, $config);
 
-        $this->assertSame($config, $config->loadConfigValue($config::SETTING_DEBUG_METHODS));
+        $this->assertSame($config, $config->loadConfigValue($config::SETTING_DEBUG_METHODS), 'Do we return $this?');
         $model = $config->settings[$config::SETTING_DEBUG_METHODS];
-        $this->assertEquals(static::KREXX_CONFIG_SETTINGS, $model->getSource());
-        $this->assertEquals($someMethods, $model->getValue());
-        $this->assertEquals($config::SECTION_METHODS, $model->getSection());
-        $this->assertEquals($config::RENDER_TYPE_INPUT, $model->getType());
+        $this->assertEquals(static::KREXX_CONFIG_SETTINGS, $model->getSource(), 'Correct source for the setting?');
+        $this->assertEquals($someMethods, $model->getValue(), 'Correct values from the file?');
+        $this->assertEquals($config::SECTION_METHODS, $model->getSection(), 'Correct section?');
+        $this->assertEquals($config::RENDER_TYPE_INPUT, $model->getType(), 'Correct render type?');
     }
 
     /**
@@ -414,7 +415,7 @@ class ConfigTest extends AbstractHelper
         $config = new Config(Krexx::$pool);
 
         $iniMock = $this->createMock(File::class);
-        $iniMock->expects($this->once())
+        $iniMock->expects($this->exactly(2))
             ->method(static::GET_CONFIG_FROM_FILE)
             ->with($config::SECTION_OUTPUT, $config::SETTING_DISABLED)
             ->will($this->returnValue('true'));
@@ -435,6 +436,20 @@ class ConfigTest extends AbstractHelper
         $this->assertEquals(true, $model->getValue(), 'It is still disabled!');
         $this->assertEquals($config::SECTION_OUTPUT, $model->getSection());
         $this->assertEquals($config::RENDER_TYPE_SELECT, $model->getType());
+    }
+
+    /**
+     * Testing the overwriting of factory settings.
+     *
+     * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
+     */
+    public function testLoadConfigValueWithPluginOverwrite()
+    {
+        $config = new Config(Krexx::$pool);
+        Registration::addNewFallbackValue($config::SETTING_SKIN, 'noskin');
+        $model = $config->loadConfigValue($config::SETTING_SKIN)
+            ->settings[$config::SETTING_SKIN];
+        $this->assertEquals('noskin', $model->getValue());
     }
 
     /**

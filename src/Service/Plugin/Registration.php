@@ -140,6 +140,26 @@ class Registration implements ConfigConstInterface, PluginConstInterface
     protected static $additionalLanguages = [];
 
     /**
+     * New fallback values for the settings.
+     *
+     * @var array
+     */
+    protected static $newFallbackValues = [];
+
+    /**
+     * Add a new fallback standard value for a setting
+     *
+     * @param string $name
+     *   Name of the setting.
+     * @param string|int|null $value
+     *   The new value.
+     */
+    public static function addNewFallbackValue(string $name, $value): void
+    {
+        static::$newFallbackValues[$name] = $value;
+    }
+
+    /**
      * Add a new setting that is used by your plugin.
      *
      * @param \Brainworxx\Krexx\Service\Plugin\NewSetting $newSetting
@@ -393,6 +413,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
         static::$additionalScalarString = [];
         static::$newSettings = [];
         static::$additionalLanguages = [];
+        static::$newFallbackValues = [];
 
         // Go through the remaining plugins.
         static::$plugins[$configClass][static::IS_ACTIVE] = false;
