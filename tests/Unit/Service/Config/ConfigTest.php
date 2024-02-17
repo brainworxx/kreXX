@@ -269,6 +269,7 @@ class ConfigTest extends AbstractHelper
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
      * @covers \Brainworxx\Krexx\Service\Config\Config::prepareModelWithFeSettings
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isCookieValueAllowed
      */
     public function testLoadConfigValueFromFallback()
     {
@@ -307,6 +308,7 @@ class ConfigTest extends AbstractHelper
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
      * @covers \Brainworxx\Krexx\Service\Config\Config::prepareModelWithFeSettings
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isCookieValueAllowed
      */
     public function testLoadConfigValueFromIni()
     {
@@ -342,6 +344,7 @@ class ConfigTest extends AbstractHelper
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
      * @covers \Brainworxx\Krexx\Service\Config\Config::prepareModelWithFeSettings
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isCookieValueAllowed
      */
     public function testLoadConfigValueFromCookies()
     {
@@ -375,6 +378,7 @@ class ConfigTest extends AbstractHelper
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
      * @covers \Brainworxx\Krexx\Service\Config\Config::prepareModelWithFeSettings
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isCookieValueAllowed
      */
     public function testLoadConfigValueUneditable()
     {
@@ -409,6 +413,7 @@ class ConfigTest extends AbstractHelper
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
      * @covers \Brainworxx\Krexx\Service\Config\Config::prepareModelWithFeSettings
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isCookieValueAllowed
      */
     public function testLoadConfigValueReEnableWithCookies()
     {
@@ -442,6 +447,7 @@ class ConfigTest extends AbstractHelper
      * Testing the overwriting of factory settings.
      *
      * @covers \Brainworxx\Krexx\Service\Config\Config::loadConfigValue
+     * @covers \Brainworxx\Krexx\Service\Config\Config::isCookieValueAllowed
      */
     public function testLoadConfigValueWithPluginOverwrite()
     {
