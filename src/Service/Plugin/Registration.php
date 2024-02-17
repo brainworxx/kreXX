@@ -404,16 +404,9 @@ class Registration implements ConfigConstInterface, PluginConstInterface
 
         // Purge all settings in the underlying registration class.
         static::$logFolder = static::$chunkFolder = static::$configFile = '';
-        static::$blacklistDebugMethods = [];
-        static::$blacklistDebugClass = [];
-        static::$additionalHelpFiles = [];
-        static::$eventList = [];
-        static::$rewriteList = [];
-        static::$additionalSkinList = [];
-        static::$additionalScalarString = [];
-        static::$newSettings = [];
-        static::$additionalLanguages = [];
-        static::$newFallbackValues = [];
+        static::$blacklistDebugMethods = static::$blacklistDebugClass = static::$additionalHelpFiles =
+        static::$eventList = static::$rewriteList = static::$additionalSkinList = static::$additionalScalarString =
+        static::$newSettings = static::$additionalLanguages = static::$newFallbackValues = [];
 
         // Go through the remaining plugins.
         static::$plugins[$configClass][static::IS_ACTIVE] = false;
