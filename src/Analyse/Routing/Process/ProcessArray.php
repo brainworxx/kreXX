@@ -58,7 +58,7 @@ class ProcessArray extends AbstractProcessNoneScalar implements
      *
      * @var int
      */
-    protected $arrayCountLimit = 0;
+    protected int $arrayCountLimit = 0;
 
     /**
      * {@inheritDoc}

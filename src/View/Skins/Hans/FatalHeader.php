@@ -45,7 +45,7 @@ trait FatalHeader
     /**
      * @var string[]
      */
-    private $markerFatalHeader = [
+    private array $markerFatalHeader = [
         '{cssJs}',
         '{version}',
         '{search}',

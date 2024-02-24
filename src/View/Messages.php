@@ -50,28 +50,28 @@ class Messages
      *
      * @var Message[]
      */
-    protected $messages = [];
+    protected array $messages = [];
 
     /**
      * A simple array to hold the values.
      *
      * @var string[]
      */
-    protected $helpArray = [];
+    protected array $helpArray = [];
 
     /**
      * Here we store all relevant data.
      *
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * The language key where the texts are stored.
      *
      * @var string
      */
-    protected $languageKey = 'en';
+    protected string $languageKey = 'en';
 
     /**
      * Injects the pool and reads the language file.
@@ -199,10 +199,7 @@ class Messages
     {
         $helpArray = [];
 
-        $fileList = array_merge(
-            [KREXX_DIR . 'resources/language/Help.ini'],
-            SettingsGetter::getAdditionalHelpFiles()
-        );
+        $fileList = [KREXX_DIR . 'resources/language/Help.ini', ...SettingsGetter::getAdditionalHelpFiles()];
 
         foreach ($fileList as $filename) {
             $helpArray = array_replace_recursive(

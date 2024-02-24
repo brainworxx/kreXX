@@ -48,14 +48,14 @@ class FormatSerialize
      *
      * @var string
      */
-    protected $string;
+    protected string $string;
 
     /**
      * The current offset for parsing.
      *
      * @var int
      */
-    protected $offset = 0;
+    protected int $offset = 0;
 
     /**
      * Pretty print this serializes string.

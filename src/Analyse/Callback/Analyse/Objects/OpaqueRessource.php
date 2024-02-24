@@ -23,7 +23,7 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
      *
      * @var string[]
      */
-    protected $analysesCallbacks  = [
+    protected array $analysesCallbacks  = [
         CurlHandle::class => 'curl_getinfo',
         OpenSSLCertificate::class => 'openssl_x509_parse',
         AddressInfo::class => 'socket_addrinfo_explain'

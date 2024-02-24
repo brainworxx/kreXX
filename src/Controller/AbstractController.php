@@ -60,14 +60,14 @@ abstract class AbstractController implements ConfigConstInterface
      *
      * @var bool
      */
-    public static $analysisInProgress = false;
+    public static bool $analysisInProgress = false;
 
     /**
      * Sends the output to the browser during shutdown phase.
      *
      * @var AbstractOutput
      */
-    protected $outputService;
+    protected AbstractOutput $outputService;
 
     /**
      * Have we already send the CSS and JS, depending on the destination?
@@ -77,28 +77,28 @@ abstract class AbstractController implements ConfigConstInterface
      *
      * @var bool[]
      */
-    protected static $jsCssSend = [];
+    protected static array $jsCssSend = [];
 
     /**
      * Our pool where we keep all relevant classes.
      *
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * Finds our caller.
      *
      * @var AbstractCaller
      */
-    protected $callerFinder;
+    protected AbstractCaller $callerFinder;
 
     /**
      * The configured output destination.
      *
      * @var string
      */
-    protected $destination;
+    protected string $destination;
 
     /**
      * Injects the pool.

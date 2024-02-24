@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use Brainworxx\Krexx\Analyse\Scalar\AbstractScalar;
 use Brainworxx\Krexx\Analyse\Scalar\ScalarString;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -67,21 +68,21 @@ class ProcessString extends AbstractRouting implements
      *
      * @var \Brainworxx\Krexx\Analyse\Scalar\AbstractScalar;
      */
-    protected $scalarString;
+    protected AbstractScalar $scalarString;
 
     /**
      * Length threshold, where we do a buffer-info analysis.
      *
      * @var int
      */
-    protected $bufferInfoThreshold = 20;
+    protected int $bufferInfoThreshold = 20;
 
     /**
-     * Caching og the setting SETTING_ANALYSE_SCALAR
+     * Caching of the setting SETTING_ANALYSE_SCALAR
      *
      * @var bool
      */
-    protected $analyseScalar;
+    protected bool $analyseScalar;
 
     /**
      * Inject the pool and initialize the buffer-info class.

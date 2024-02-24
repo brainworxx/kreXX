@@ -45,7 +45,7 @@ trait FatalMain
     /**
      * @var string[]
      */
-    private $markerFatalMain = [
+    private array $markerFatalMain = [
         '{search}',
         '{KrexxId}',
         '{plugins}',

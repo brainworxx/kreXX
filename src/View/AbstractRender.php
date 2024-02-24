@@ -64,7 +64,7 @@ abstract class AbstractRender implements RenderInterface
      *
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * The name of the current skin.
@@ -74,14 +74,14 @@ abstract class AbstractRender implements RenderInterface
      *
      * @var string
      */
-    protected $skinPath;
+    protected string $skinPath;
 
     /**
      * Caching the content fo the template files.
      *
      * @var string[]
      */
-    protected $fileCache = [];
+    protected array $fileCache = [];
 
     /**
      * Inject the pool and inject $this into the concrete render object of the

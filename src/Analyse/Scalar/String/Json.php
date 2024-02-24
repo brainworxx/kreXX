@@ -50,7 +50,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
      *
      * @var string
      */
-    protected $codeGenType = self::CODEGEN_TYPE_JSON_DECODE;
+    protected string $codeGenType = self::CODEGEN_TYPE_JSON_DECODE;
 
     /**
      * What the variable name says.
@@ -64,7 +64,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
      *
      * @var Model
      */
-    protected $model;
+    protected Model $model;
 
     /**
      * {@inheritDoc}

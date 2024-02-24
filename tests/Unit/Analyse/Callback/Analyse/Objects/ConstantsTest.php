@@ -112,10 +112,6 @@ class ConstantsTest extends AbstractHelper
             ->method('getConstants')
             ->will($this->returnValue($returnConstants));
 
-        $reflectionMock->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('some classname'));
-
         $fixture = [
             'ref' => $reflectionMock
         ];

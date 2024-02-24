@@ -49,7 +49,7 @@ class Registry
      *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * Add itself to the pool.

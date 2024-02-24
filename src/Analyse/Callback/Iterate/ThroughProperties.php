@@ -64,7 +64,7 @@ class ThroughProperties extends AbstractCallback implements
     /**
      * @var PropertyDeclaration
      */
-    protected $propertyDeclaration;
+    protected PropertyDeclaration $propertyDeclaration;
 
     /**
      * Renders the properties of a class.

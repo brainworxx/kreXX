@@ -261,8 +261,8 @@ class ChunksTest extends AbstractHelper
         $chunk3File = $chunkDir . '1236' . $fileEnding;
         $logFileName = $logDir . $fileStamp . '.Krexx.html';
         $metaFileName = $logFileName . '.json';
-        $metaData = new StdClass();
-        $metaData->whatever = 'some data';
+        $metaData = [];
+        $metaData['whatever'] = 'some data';
 
         // Simulate the actual files.
         $fileServiceMock = $this->createMock(File::class);

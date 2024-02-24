@@ -47,7 +47,7 @@ trait ExpandableChild
     /**
      * @var string[]
      */
-    private $markerExpandableChild = [
+    private array $markerExpandableChild = [
         '{name}',
         '{type}',
         '{ktype}',

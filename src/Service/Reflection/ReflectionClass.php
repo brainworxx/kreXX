@@ -56,19 +56,19 @@ class ReflectionClass extends \ReflectionClass
      *
      * @var array
      */
-    protected static $cache = [];
+    protected static array $cache = [];
 
     /**
      * The object, cast into an array.
      *
      * @var array
      */
-    protected $objectArray = [];
+    protected array $objectArray = [];
 
     /**
      * The object we are currently analysing.
      *
-     * @var object
+     * @var object|string
      */
     protected $data;
 
@@ -77,7 +77,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @var \SplObjectStorage
      */
-    protected $unsetPropertyStorage;
+    protected SplObjectStorage $unsetPropertyStorage;
 
     /**
      * ReflectionClass constructor.

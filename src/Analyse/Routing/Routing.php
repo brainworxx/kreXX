@@ -61,7 +61,7 @@ class Routing extends AbstractRouting
     /**
      * @var ProcessInterface[]
      */
-    protected $processors = [];
+    protected array $processors = [];
 
     /**
      * Inject the pool and create all the routing classes.

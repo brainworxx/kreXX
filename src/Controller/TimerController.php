@@ -49,14 +49,14 @@ class TimerController extends AbstractController
      *
      * @var float[]
      */
-    protected static $timekeeping = [];
+    protected static array $timekeeping = [];
 
     /**
      * More timekeeping stuff.
      *
      * @var int[]
      */
-    protected static $counterCache = [];
+    protected static array $counterCache = [];
 
     /**
      * We simply set the pool. We will not register any shutdown stuff.

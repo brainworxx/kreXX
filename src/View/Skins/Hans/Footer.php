@@ -47,7 +47,7 @@ trait Footer
     /**
      * @var string[]
      */
-    private $markerFooter = [
+    private array $markerFooter = [
         '{configInfo}',
         '{caller}',
         '{pluginList}',
@@ -57,7 +57,7 @@ trait Footer
     /**
      * @var string[]
      */
-    private $markerCaller = [
+    private array $markerCaller = [
         '{calledFromTxt}',
         '{calledFromLine}',
         '{calledFromAt}',

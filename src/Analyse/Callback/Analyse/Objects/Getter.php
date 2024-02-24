@@ -59,21 +59,21 @@ class Getter extends AbstractObjectAnalysis
      *
      * @var string[]
      */
-    protected $normalGetter = [];
+    protected array $normalGetter = [];
 
     /**
      * List of hte boolean getter method, that start with 'is'.
      *
      * @var string[]
      */
-    protected $isGetter = [];
+    protected array $isGetter = [];
 
     /**
      * List of hte boolean getter method, that start with 'has'.
      *
      * @var string[]
      */
-    protected $hasGetter = [];
+    protected array $hasGetter = [];
 
     /**
      * Dump the possible result of all getter methods
@@ -154,10 +154,10 @@ class Getter extends AbstractObjectAnalysis
 
         if ($this->pool->scope->isInScope()) {
             // Looks like we also need the protected and private methods.
-            $methodList = array_merge(
-                $methodList,
-                $ref->getMethods(ReflectionMethod::IS_PRIVATE | ReflectionMethod::IS_PROTECTED)
-            );
+            $methodList = [
+                ...$methodList,
+                ...$ref->getMethods(ReflectionMethod::IS_PRIVATE | ReflectionMethod::IS_PROTECTED)
+            ];
         }
 
         if (empty($methodList)) {

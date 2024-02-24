@@ -532,13 +532,13 @@ class KrexxTest extends AbstractHelper
     public function testRegisterExceptionHandler()
     {
         // Mock an already existing controller.
-        $stdClass = new stdClass();
-        $this->setValueByReflection('exceptionController', $stdClass, ExceptionController::class);
+        $controllerMock = $this->createMock(ExceptionController::class);
+        $this->setValueByReflection('exceptionController', $controllerMock, ExceptionController::class);
 
         $setExceptionHandlerMock = $this
             ->getFunctionMock(static::CONTROLLER_NAMESPACE, 'set_exception_handler');
         $setExceptionHandlerMock->expects($this->once())
-            ->with([$stdClass, 'exceptionAction']);
+            ->with([$controllerMock, 'exceptionAction']);
 
         Krexx::registerExceptionHandler();
     }

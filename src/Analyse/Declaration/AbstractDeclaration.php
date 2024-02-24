@@ -74,7 +74,7 @@ abstract class AbstractDeclaration
      *
      * @var \Brainworxx\Krexx\Service\Factory\Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * Injects the pool.

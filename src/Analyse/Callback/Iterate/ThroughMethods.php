@@ -67,17 +67,17 @@ class ThroughMethods extends AbstractCallback implements
      *
      * @var \Brainworxx\Krexx\Analyse\Comment\Methods
      */
-    protected $commentAnalysis;
+    protected Methods $commentAnalysis;
 
     /**
      * @var \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration
      */
-    protected $methodDeclaration;
+    protected MethodDeclaration $methodDeclaration;
 
     /**
      * @var \Brainworxx\Krexx\Analyse\Comment\ReturnType
      */
-    protected $returnType;
+    protected ReturnType $returnType;
 
     /**
      * Inject the pool and get the comment analysis online.

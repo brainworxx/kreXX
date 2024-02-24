@@ -73,7 +73,6 @@ class Constants extends AbstractObjectAnalysis implements CodegenConstInterface
         }
 
         // We've got some values, we will dump them.
-        $classname = '\\' . $ref->getName();
         return $output . $this->pool->render->renderExpandableChild(
             $this->dispatchEventWithModel(
                 static::EVENT_MARKER_ANALYSES_END,

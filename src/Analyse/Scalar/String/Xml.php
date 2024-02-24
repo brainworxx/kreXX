@@ -66,7 +66,7 @@ class Xml extends AbstractScalarAnalysis
      *
      * @var Model
      */
-    protected $model;
+    protected Model $model;
 
     /**
      * Is there currently a node open?
@@ -76,14 +76,14 @@ class Xml extends AbstractScalarAnalysis
      *
      * @var bool
      */
-    protected $tnodeOpen = false;
+    protected bool $tnodeOpen = false;
 
     /**
      * Was the decoding of the XML successful?
      *
      * @var bool
      */
-    protected $hasErrors = false;
+    protected bool $hasErrors = false;
 
     /**
      * {@inheritDoc}

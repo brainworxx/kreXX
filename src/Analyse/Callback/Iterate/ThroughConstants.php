@@ -58,7 +58,7 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
      *
      * @var bool
      */
-    protected $isInScope = false;
+    protected bool $isInScope = false;
 
     /**
      * Simply iterate though object constants.

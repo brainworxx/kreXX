@@ -54,28 +54,28 @@ class Model implements ConfigConstInterface
      *
      * @var string
      */
-    protected $section;
+    protected string $section;
 
     /**
      * The type of this setting.
      *
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * Whether his setting is editable
      *
      * @var bool
      */
-    protected $editable;
+    protected bool $editable;
 
     /**
      * Source of this setting.
      *
      * @var string
      */
-    protected $source;
+    protected string $source;
 
     /**
      * Setter for the editable value.

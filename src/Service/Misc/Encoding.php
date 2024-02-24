@@ -50,7 +50,7 @@ class Encoding
      *
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * Injects the pool.

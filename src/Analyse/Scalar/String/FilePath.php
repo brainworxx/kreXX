@@ -52,7 +52,7 @@ class FilePath extends AbstractScalarAnalysis
     /**
      * @var \finfo
      */
-    protected $bufferInfo;
+    protected finfo $bufferInfo;
 
     /**
      * @var string

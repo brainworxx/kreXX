@@ -62,21 +62,21 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      *
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * Retrieves the declared method parameters from the declaration.
      *
      * @var \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration
      */
-    protected $methodDeclaration;
+    protected MethodDeclaration $methodDeclaration;
 
     /**
      * Is the code generation allowed? We only allow it during a normal analysis.
      *
      * @var bool
      */
-    protected $codegenAllowed = false;
+    protected bool $codegenAllowed = false;
 
     /**
      * We treat the first run of the code generation different, because then we
@@ -84,7 +84,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      *
      * @var bool
      */
-    protected $firstRun = true;
+    protected bool $firstRun = true;
 
     /**
      * Here we count haw often the code generation was disabled.
@@ -98,7 +98,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      *
      * @var int
      */
-    protected $disableCount = 0;
+    protected int $disableCount = 0;
 
     /**
      * Initializes the code generation.

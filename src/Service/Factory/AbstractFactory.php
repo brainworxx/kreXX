@@ -56,12 +56,12 @@ abstract class AbstractFactory
      *
      * @var string[]
      */
-    public $rewrite = [];
+    public array $rewrite = [];
 
     /**
      * @var Closure
      */
-    protected $errorCallback;
+    protected Closure $errorCallback;
 
     /**
      * Set the error callback.
@@ -143,7 +143,7 @@ abstract class AbstractFactory
      */
     public static function createPool(): void
     {
-        if (Krexx::$pool !== null) {
+        if (isset(Krexx::$pool)) {
             // The pool is there, do nothing.
             return;
         }

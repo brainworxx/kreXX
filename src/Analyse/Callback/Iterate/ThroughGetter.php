@@ -92,7 +92,7 @@ class ThroughGetter extends AbstractCallback implements
      *
      * @var string[]
      */
-    protected $regexEscapeFind = ['.', '/', '(', ')', '<', '>', '$'];
+    protected array $regexEscapeFind = ['.', '/', '(', ')', '<', '>', '$'];
 
     /**
      * Stuff the escaped regex stuff.
@@ -102,21 +102,21 @@ class ThroughGetter extends AbstractCallback implements
      *
      * @var string[]
      */
-    protected $regexEscapeReplace = ['\.', '\/', '\(', '\)', '\<', '\>', '\$'];
+    protected array $regexEscapeReplace = ['\.', '\/', '\(', '\)', '\<', '\>', '\$'];
 
     /**
      * Here we memorize how deep we are inside the current deep analysis.
      *
      * @var int
      */
-    protected $deep = 0;
+    protected int $deep = 0;
 
     /**
      * Class for the comment analysis.
      *
      * @var \Brainworxx\Krexx\Analyse\Comment\Methods
      */
-    protected $commentAnalysis;
+    protected Methods $commentAnalysis;
 
     /**
      * Injects the pool and initializes the comment analysis.

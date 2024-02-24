@@ -51,7 +51,7 @@ class ExceptionController extends AbstractController
      *
      * @var ExceptionController
      */
-    protected static $exceptionController;
+    protected static ExceptionController $exceptionController;
 
     /**
      * Analysing the error object and generating the output.

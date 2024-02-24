@@ -63,7 +63,7 @@ class UndeclaredProperty extends ReflectionProperty
      *
      * @var bool
      */
-    public $isUndeclared = true;
+    public bool $isUndeclared = true;
 
     /**
      * The name of the property.
@@ -77,7 +77,7 @@ class UndeclaredProperty extends ReflectionProperty
      *
      * @var \ReflectionClass
      */
-    protected $declaringClass;
+    protected ReflectionClass $declaringClass;
 
     /**
      * Is this value actually reachable?
@@ -86,14 +86,14 @@ class UndeclaredProperty extends ReflectionProperty
      *
      * @var bool
      */
-    protected $isPublic = true;
+    protected bool $isPublic = true;
 
     /**
      * Is this property protected? Probably not.
      *
      * @var bool
      */
-    protected $isProtected = false;
+    protected bool $isProtected = false;
 
     /**
      * Setting the necessary property's constructor.

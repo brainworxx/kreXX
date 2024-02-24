@@ -48,6 +48,7 @@ use Brainworxx\Krexx\Service\Misc\File;
 use Brainworxx\Krexx\Service\Misc\Registry;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Output\Chunks;
+use Brainworxx\Krexx\View\RenderInterface;
 
 /**
  * Here we store all classes that we need.
@@ -61,21 +62,21 @@ class Pool extends AbstractFactory
      *
      * @var Recursion
      */
-    public $recursionHandler;
+    public Recursion $recursionHandler;
 
     /**
      * Generates code, if the variable can be reached.
      *
      * @var Codegen
      */
-    public $codegenHandler;
+    public Codegen $codegenHandler;
 
     /**
      * Our emergency break handler.
      *
      * @var Emergency
      */
-    public $emergencyHandler;
+    public Emergency $emergencyHandler;
 
     /**
      * The instance of the render class from the skin.
@@ -84,70 +85,70 @@ class Pool extends AbstractFactory
      *
      * @var \Brainworxx\Krexx\View\RenderInterface
      */
-    public $render;
+    public RenderInterface $render;
 
     /**
      * The configuration class.
      *
      * @var Config
      */
-    public $config;
+    public Config $config;
 
     /**
      * The messages handler.
      *
      * @var Messages
      */
-    public $messages;
+    public Messages $messages;
 
     /**
      * The chunks handler
      *
      * @var Chunks
      */
-    public $chunks;
+    public Chunks $chunks;
 
     /**
      * Scope analysis class.
      *
      * @var Scope
      */
-    public $scope;
+    public Scope $scope;
 
     /**
      * Our registry.
      *
      * @var Registry
      */
-    public $registry;
+    public Registry $registry;
 
     /**
      * The routing of our analysis.
      *
      * @var Routing
      */
-    public $routing;
+    public Routing $routing;
 
     /**
      * Our file handling is done in the file service.
      *
      * @var File
      */
-    public $fileService;
+    public File $fileService;
 
     /**
      * Sting encoding happens here.
      *
      * @var Encoding
      */
-    public $encodingService;
+    public Encoding $encodingService;
 
     /**
      * The event handler handles events.
      *
      * @var Event
      */
-    public $eventService;
+    public Event $eventService;
 
     /**
      * The current id of our PHP process.
@@ -158,7 +159,7 @@ class Pool extends AbstractFactory
      *
      * @var int
      */
-    protected $processId;
+    protected int $processId;
 
     /**
      * Initializes all needed classes.

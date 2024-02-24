@@ -64,7 +64,7 @@ class ScalarString extends AbstractScalar
      *
      * @var \Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis[]
      */
-    protected $classList = [];
+    protected array $classList = [];
 
     /**
      * Get the additional analysis classes from the plugins.
@@ -83,7 +83,7 @@ class ScalarString extends AbstractScalar
             Base64::class
         ];
 
-        $classList = array_merge($classList, SettingsGetter::getAdditionalScalarString());
+        $classList = [...$classList, ...SettingsGetter::getAdditionalScalarString()];
 
         foreach ($classList as $className) {
             if ($className::isActive()) {
@@ -108,7 +108,6 @@ class ScalarString extends AbstractScalar
      */
     public function handle(Model $model, string $originalData): Model
     {
-        /** @var \Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis $analyser */
         foreach ($this->classList as $className => $analyser) {
             if ($analyser->canHandle($originalData, $model)) {
                 return $model->injectCallback($analyser)

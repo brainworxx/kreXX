@@ -50,19 +50,19 @@ class File
      *
      * @var bool[]
      */
-    protected static $isReadableCache = [];
+    protected static array $isReadableCache = [];
 
     /**
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * The current docroot.
      *
      * @var string
      */
-    protected $docRoot;
+    protected string $docRoot;
 
     /**
      * Injects the pool.

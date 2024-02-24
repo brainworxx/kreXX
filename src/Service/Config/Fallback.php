@@ -231,28 +231,28 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string[][]
      */
-    public $configFallback = [];
+    public array $configFallback = [];
 
     /**
      * Values, rendering settings and the actual fallback value.
      *
      * @var string[][]|\Closure[][]
      */
-    public $feConfigFallback = [];
+    public array $feConfigFallback = [];
 
     /**
      * The skin configuration.
      *
      * @var string[][]
      */
-    protected $skinConfiguration = [];
+    protected array $skinConfiguration = [];
 
     /**
      * Here we store all relevant data.
      *
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * Injects the pool and initialize the fallback configuration, get the skins.
@@ -539,5 +539,5 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @var string
      */
-    public $version = '6.0.0';
+    public string $version = '6.0.0';
 }

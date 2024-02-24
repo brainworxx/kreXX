@@ -70,7 +70,7 @@ class Chunks implements ConfigConstInterface
      *
      * @var Pool
      */
-    protected $pool;
+    protected Pool $pool;
 
     /**
      * Here we store the metadata from the call.
@@ -80,7 +80,7 @@ class Chunks implements ConfigConstInterface
      *
      * @var string[]
      */
-    protected $metadata = [];
+    protected array $metadata = [];
 
     /**
      * Is the chunks' folder write protected?
@@ -90,42 +90,42 @@ class Chunks implements ConfigConstInterface
      *
      * @var bool
      */
-    protected $chunkAllowed = true;
+    protected bool $chunkAllowed = true;
 
     /**
      * Is the log folder write protected?
      *
      * @var bool
      */
-    protected $loggingAllowed = true;
+    protected bool $loggingAllowed = true;
 
     /**
      * The logfolder.
      *
      * @var string
      */
-    protected $logDir;
+    protected string $logDir;
 
     /**
      * The folder for the output chunks.
      *
      * @var string
      */
-    protected $chunkDir;
+    protected string $chunkDir;
 
     /**
      * Microtime stamp for chunk operations.
      *
      * @var string
      */
-    protected $fileStamp;
+    protected string $fileStamp;
 
     /**
      * Here we save the encoding we are currently using.
      *
      * @var string
      */
-    protected $officialEncoding = 'utf8';
+    protected string $officialEncoding = 'utf8';
 
     /**
      * Injects the pool.
@@ -443,6 +443,10 @@ class Chunks implements ConfigConstInterface
      */
     public function __destruct()
     {
+        if (!isset($this->chunkDir)) {
+            return;
+        }
+
         // Get a list of all chunk files from the run.
         $chunkList = glob($this->chunkDir . $this->fileStamp . '_*');
         if (empty($chunkList)) {

@@ -84,8 +84,9 @@ class RecursionTest extends AbstractHelper
     public function testDestruct()
     {
         $marker = $this->recursion->getMarker();
-        unset($this->recursion);
-        $this->assertTrue(isset($GLOBALS[$marker]));
+        $this->recursion->__destruct();
+        $this->assertFalse(isset($GLOBALS[$marker]));
+        $this->setValueByReflection('recursionMarker', $marker, $this->recursion);
     }
 
     /**

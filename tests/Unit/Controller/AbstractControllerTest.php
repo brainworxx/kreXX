@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
+use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use Brainworxx\Krexx\View\Output\Browser;
 use Brainworxx\Krexx\View\Output\BrowserImmediately;
@@ -56,22 +57,10 @@ class AbstractControllerTest extends AbstractHelper
      */
     public function testConstruct()
     {
-        // Mock the settings.
-        $configMock = $this->createMock(Config::class);
-        $configMock->expects($this->any())
-            ->method('getSetting')
-            ->will($this->returnValue(ConfigConstInterface::VALUE_FILE));
-        $browserMock = $this->createMock(Config::class);
-        $browserMock->expects($this->any())
-            ->method('getSetting')
-            ->will($this->returnValue(ConfigConstInterface::VALUE_BROWSER));
-        $immediateMock = $this->createMock(Config::class);
-        $immediateMock->expects($this->any())
-            ->method('getSetting')
-            ->will($this->returnValue(ConfigConstInterface::VALUE_BROWSER_IMMEDIATELY));
-
         // Test the file output
-        Krexx::$pool->config = $configMock;
+        ConfigSupplier::$overwriteValues[ConfigConstInterface::SETTING_DESTINATION] = ConfigConstInterface::VALUE_FILE;
+        Krexx::$pool->rewrite[\Brainworxx\Krexx\Service\Config\From\File::class] = ConfigSupplier::class;
+        new Config(\Krexx::$pool);
         $oldRecursionHandler = Krexx::$pool->recursionHandler;
         $dumpController = new DumpController(Krexx::$pool);
         $this->assertNotSame($oldRecursionHandler, Krexx::$pool->recursionHandler, 'Test the resetting of the pool');
@@ -79,13 +68,15 @@ class AbstractControllerTest extends AbstractHelper
         $this->assertInstanceOf(File::class, $this->retrieveValueByReflection('outputService', $dumpController));
 
         // Test the browser output
-        Krexx::$pool->config = $browserMock;
+        ConfigSupplier::$overwriteValues[ConfigConstInterface::SETTING_DESTINATION] = ConfigConstInterface::VALUE_BROWSER;
+        new Config(\Krexx::$pool);
         $dumpController = new DumpController(Krexx::$pool);
         $this->assertEquals(Krexx::$pool, $this->retrieveValueByReflection('pool', $dumpController));
         $this->assertInstanceOf(Browser::class, $this->retrieveValueByReflection('outputService', $dumpController));
 
         // Test the immediate output.
-        Krexx::$pool->config = $immediateMock;
+        ConfigSupplier::$overwriteValues[ConfigConstInterface::SETTING_DESTINATION] = ConfigConstInterface::VALUE_BROWSER_IMMEDIATELY;
+        new Config(\Krexx::$pool);
         $dumpController = new DumpController(Krexx::$pool);
         $this->assertEquals(Krexx::$pool, $this->retrieveValueByReflection('pool', $dumpController));
         $this->assertInstanceOf(BrowserImmediately::class, $this->retrieveValueByReflection('outputService', $dumpController));
@@ -98,7 +89,6 @@ class AbstractControllerTest extends AbstractHelper
      */
     public function testOutputCssAndJsWithoutMinFiles()
     {
-        $skinDirectory = Krexx::$pool->config->getSkinDirectory();
         $fileMock = $this->createMock(FileService::class);
         $fileMock->expects($this->any())
             ->method('fileIsReadable')

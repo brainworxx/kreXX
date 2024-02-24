@@ -58,12 +58,12 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
      *
      * @var string[]
      */
-    protected $keysWithExtra = [];
+    protected array $keysWithExtra = [];
 
     /**
      * @var string[]
      */
-    protected $stuffToProcess = [];
+    protected array $stuffToProcess = [];
 
     /**
      * Inject the pool and init the workflow.

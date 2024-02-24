@@ -58,9 +58,9 @@ class Krexx
     /**
      * Our pool where we keep all relevant classes.
      *
-     * @var Pool
+     * @var Pool|null
      */
-    public static $pool;
+    public static ?Pool $pool = null;
 
     /**
      * Takes a "moment".

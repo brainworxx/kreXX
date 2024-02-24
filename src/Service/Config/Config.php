@@ -53,7 +53,7 @@ class Config extends Fallback
      *
      * @var Model[]
      */
-    public $settings = [];
+    public array $settings = [];
 
     /**
      * List of all configured debug methods.
@@ -63,47 +63,47 @@ class Config extends Fallback
      *
      * @var string[]
      */
-    public $debugFuncList = [];
+    public array $debugFuncList = [];
 
     /**
      * Validating configuration settings.
      *
      * @var Validation
      */
-    public $validation;
+    public Validation $validation;
 
     /**
      * Our file configuration handler.
      *
      * @var File
      */
-    protected $fileConfig;
+    protected File $fileConfig;
 
     /**
      * Our cookie configuration handler.
      *
      * @var Cookie
      */
-    protected $cookieConfig;
+    protected Cookie $cookieConfig;
 
     /**
      * Here we store the paths to our files and directories.
      *
      * @var string[]
      */
-    protected $directories = [];
+    protected array $directories = [];
 
     /**
      * @var CheckOutput
      */
-    protected $checkOutput;
+    protected CheckOutput $checkOutput;
 
     /**
      * Has kreXX been disabled via php call \Krexx::disable()?
      *
      * @var bool
      */
-    public static $disabledByPhp = false;
+    public static bool $disabledByPhp = false;
 
     /**
      * Inject the pool and load the configuration.

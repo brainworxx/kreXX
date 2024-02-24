@@ -54,6 +54,7 @@ use Brainworxx\Krexx\View\AbstractRender;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Output\Chunks;
 use Brainworxx\Krexx\View\Skins\RenderHans;
+use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
 class PoolTest extends AbstractHelper
@@ -159,16 +160,16 @@ class PoolTest extends AbstractHelper
      */
     public function testReset()
     {
-        Krexx::$pool->recursionHandler = new stdClass();
-        Krexx::$pool->codegenHandler = new stdClass();
-        Krexx::$pool->scope = new stdClass();
-        Krexx::$pool->routing = new stdClass();
+        Krexx::$pool->recursionHandler = $this->createMock(Recursion::class);
+        Krexx::$pool->codegenHandler = $this->createMock(Codegen::class);
+        Krexx::$pool->scope = $this->createMock(Scope::class);
+        Krexx::$pool->routing = $this->createMock(Routing::class);
         Krexx::$pool->reset();
 
-        $this->assertNotInstanceOf(stdClass::class, Krexx::$pool->recursionHandler);
-        $this->assertNotInstanceOf(stdClass::class, Krexx::$pool->codegenHandler);
-        $this->assertNotInstanceOf(stdClass::class, Krexx::$pool->scope);
-        $this->assertNotInstanceOf(stdClass::class, Krexx::$pool->routing);
+        $this->assertNotInstanceOf(MockObject::class, Krexx::$pool->recursionHandler);
+        $this->assertNotInstanceOf(MockObject::class, Krexx::$pool->codegenHandler);
+        $this->assertNotInstanceOf(MockObject::class, Krexx::$pool->scope);
+        $this->assertNotInstanceOf(MockObject::class, Krexx::$pool->routing);
     }
 
     /**
@@ -182,9 +183,9 @@ class PoolTest extends AbstractHelper
         $getmypidMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Service\\Factory', 'getmypid');
         $getmypidMock->expects($this->exactly(2))
             ->will($this->returnValue(12345));
-        Krexx::$pool->chunks = new stdClass();
+        Krexx::$pool->chunks = $this->createMock(Chunks::class);
 
         Krexx::$pool->reset();
-        $this->assertNotInstanceOf(stdClass::class, Krexx::$pool->chunks);
+        $this->assertNotInstanceOf(MockObject::class, Krexx::$pool->chunks);
     }
 }

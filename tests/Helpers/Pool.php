@@ -33,52 +33,8 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-declare(strict_types=1);
+namespace Brainworxx\Krexx\Tests\Helpers;
 
-namespace Brainworxx\Krexx\View\Skins\SmokyGrey;
-
-use Brainworxx\Krexx\Analyse\Model;
-
-/**
- * Renders a button.
- */
-trait Button
+class Pool extends \Brainworxx\Krexx\Service\Factory\Pool
 {
-    /**
-     * @var string[]
-     */
-    private array $markerSingleButton = [
-        '{addjson}',
-        '{class}',
-    ];
-
-    /**
-     * {@inheritDoc}
-     */
-    public function renderButton(Model $model): string
-    {
-        // Prepare the json. Not much do display for form elements.
-        return str_replace(
-            $this->markerSingleButton,
-            [
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
-                $model->getName()
-            ],
-            parent::renderButton($model)
-        );
-    }
-
-    /**
-     * Getter of the button for unit tests.
-     *
-     * @codeCoverageIgnore
-     *   We are not testing the unit tests.
-     *
-     * @return string[]
-     *   The marker array.
-     */
-    public function getMarkerSingleButton(): array
-    {
-        return $this->markerSingleButton;
-    }
 }

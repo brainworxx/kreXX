@@ -79,8 +79,15 @@ class TimerControllerTest extends AbstractController
     public function testConstruct()
     {
         $this->assertEquals(Krexx::$pool, $this->retrieveValueByReflection('pool', $this->controller));
+
+        $exception = false;
         // The __construct from the abstract controller must not be called.
-        $this->assertEquals(null, $this->retrieveValueByReflection('callerFinder', $this->controller));
+        try {
+            $this->assertEquals(null, $this->retrieveValueByReflection('callerFinder', $this->controller));
+        } catch (\Throwable $exception) {
+            $exception = true;
+        }
+        $this->assertTrue($exception, 'The __construct from the abstract controller must not be called.');
     }
 
     /**
