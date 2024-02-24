@@ -530,7 +530,6 @@ class CodegenTest extends AbstractHelper
      * Test the parameter analysis, with a special default value.
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::parameterToString
-     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::retrieveParameterType
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::translateDefaultValue
      */
     public function testParameterToStringWithQuotationMarks()
@@ -557,7 +556,6 @@ class CodegenTest extends AbstractHelper
      *
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::parameterToString
      * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::translateDefaultValue
-     * @covers \Brainworxx\Krexx\Analyse\Code\Codegen::retrieveParameterType
      */
     public function testDefaultValueTranslation()
     {
