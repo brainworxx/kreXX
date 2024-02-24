@@ -159,6 +159,6 @@ class SingleEditableChildTest extends AbstractRenderHans
             ->will($this->returnValue(Fallback::RENDER_TYPE_SELECT));
 
         $result = $this->renderHans->renderSingleEditableChild($this->modelMock);
-        $this->assertStringContainsString('EnglishtextDeutschde', $result);
+        $this->assertStringContainsString('EnglishenDeutschde', $result);
     }
 }

@@ -195,7 +195,7 @@ class ValidationTest extends AbstractHelper
                 '99999' => false
             ],
             'evalLanguage' => [
-                'text' => true,
+                'en' => true,
                 'de' => true,
                 'fr' => false
             ]

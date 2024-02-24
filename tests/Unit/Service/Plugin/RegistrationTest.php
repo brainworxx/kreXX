@@ -240,7 +240,7 @@ class RegistrationTest extends AbstractRegistration
 
         // Test the French is available in the config.
         $expectation = [
-            'text' => 'English',
+            'en' => 'English',
             'de' => 'Deutsch',
             'fr' => 'français'
         ];

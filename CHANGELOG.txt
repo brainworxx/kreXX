@@ -1,5 +1,6 @@
 6.0.0
 - Change: The scalar analysis classes are now reused.
+- Change: Renamed the language fallback key from 'text' to 'en'.
 
 5.0.2
 - Added the possibility for plugins to overwrite the factory

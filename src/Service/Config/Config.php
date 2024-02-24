@@ -347,7 +347,7 @@ class Config extends Fallback
     public function getLanguageList(): array
     {
         return array_merge(
-            ['text' => 'English', 'de' => 'Deutsch'],
+            ['en' => 'English', 'de' => 'Deutsch'],
             SettingsGetter::getAdditionalLanguages()
         );
     }

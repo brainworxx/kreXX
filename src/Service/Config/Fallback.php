@@ -429,7 +429,7 @@ abstract class Fallback implements ConfigConstInterface
     protected function returnLanguages(): array
     {
         return [
-            static::VALUE => 'text',
+            static::VALUE => 'en',
             static::RENDER => static::EDITABLE_SELECT,
              static::EVALUATE => static::EVAL_LANG,
             static::SECTION => static::SECTION_BEHAVIOR,

@@ -135,7 +135,7 @@ class ConfigTest extends AbstractHelper
         $this->assertEquals(false, $config->getSetting($config::SETTING_DISABLED));
 
         // Test the selected language. Should be the fallback,
-        $this->assertEquals('text', $config->getSetting($config::SETTING_LANGUAGE_KEY));
+        $this->assertEquals('en', $config->getSetting($config::SETTING_LANGUAGE_KEY));
     }
 
     /**
@@ -509,7 +509,7 @@ class ConfigTest extends AbstractHelper
     public function testGetLanguageList()
     {
         $expectations = [
-            'text' => 'English',
+            'en' => 'English',
             'de' => 'Deutsch'
         ];
         $config = new Config(Krexx::$pool);

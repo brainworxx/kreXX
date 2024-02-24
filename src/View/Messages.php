@@ -71,7 +71,7 @@ class Messages
      *
      * @var string
      */
-    protected $languageKey = 'text';
+    protected $languageKey = 'en';
 
     /**
      * Injects the pool and reads the language file.
@@ -211,6 +211,6 @@ class Messages
             );
         }
 
-        $this->helpArray = array_merge($helpArray['text'], $helpArray[$this->languageKey] ?? []);
+        $this->helpArray = array_merge($helpArray['en'], $helpArray[$this->languageKey] ?? []);
     }
 }

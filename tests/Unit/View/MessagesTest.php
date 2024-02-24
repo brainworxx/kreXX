@@ -194,7 +194,7 @@ class MessagesTest extends AbstractHelper
      */
     public function testReadHelpTexts()
     {
-        $iniContents = '[text]' . "\n" .
+        $iniContents = '[en]' . "\n" .
             'someKey = "a string"';
 
         $fileServiceMock = $this->createMock(File::class);
