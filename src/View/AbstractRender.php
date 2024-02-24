@@ -67,16 +67,6 @@ abstract class AbstractRender implements RenderInterface
     protected Pool $pool;
 
     /**
-     * The name of the current skin.
-     *
-     * @deprecated
-     *   Since 5.0.0. Will be removed
-     *
-     * @var string
-     */
-    protected string $skinPath;
-
-    /**
      * Caching the content fo the template files.
      *
      * @var string[]
@@ -96,37 +86,9 @@ abstract class AbstractRender implements RenderInterface
         $this->pool->render = $this;
 
         // Prepare the template file cache.
-        foreach (glob(($this->skinPath = $this->pool->config->getSkinDirectory()) . '*.html') as $filePath) {
+        foreach (glob(($this->pool->config->getSkinDirectory()) . '*.html') as $filePath) {
             $this->fileCache[basename($filePath, '.html')] = $pool->fileService->getFileContents($filePath);
         }
-    }
-
-    /**
-     * Loads a template file from the skin folder.
-     *
-     * @param string $what
-     *   Filename in the skin folder without the ".html" at the end.
-     *
-     * @deprecated
-     *   Since 5.0.0. Access the file cache directly.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @return string
-     *   The template file, without whitespaces.
-     */
-    protected function getTemplateFileContent(string $what): string
-    {
-        if (isset($this->fileCache[$what])) {
-            return $this->fileCache[$what];
-        }
-
-        return $this->fileCache[$what] = preg_replace(
-            '/\s+/',
-            ' ',
-            $this->pool->fileService->getFileContents($this->skinPath . $what . '.html')
-        );
     }
 
     /**

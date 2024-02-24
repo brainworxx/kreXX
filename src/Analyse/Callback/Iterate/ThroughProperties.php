@@ -350,26 +350,6 @@ class ThroughProperties extends AbstractCallback implements
     }
 
     /**
-     * Retrieve the declaration place of a property.
-     *
-     * @param \ReflectionProperty $refProperty
-     *   A reflection of the property we are analysing.
-     *
-     * @deprecated since 5.0.0
-     *   Will be removed. Use PropertyDeclaration instead.
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @return string
-     *   Human-readable string, where the property was declared.
-     */
-    protected function retrieveDeclarationPlace(ReflectionProperty $refProperty): string
-    {
-        return $this->pool->createClass(PropertyDeclaration::class)
-            ->retrieveDeclaration($refProperty);
-    }
-
-    /**
      * Check for special chars in properties.
      *
      * AFAIK this is only possible for dynamically declared properties

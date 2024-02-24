@@ -211,27 +211,6 @@ class ThroughMethods extends AbstractCallback implements
     }
 
     /**
-     * Get the declaration place of this method.
-     *
-     * @param \ReflectionMethod $reflectionMethod
-     *   Reflection of the method we are analysing.
-     * @param \ReflectionClass $declaringClass
-     *   Reflection of the class we are analysing
-     *
-     * @deprecated since 5.0.0
-     *   Will be removed. Use the MethodDeclaration instead.
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @return string
-     *   The analysis result.
-     */
-    protected function getDeclarationPlace(ReflectionMethod $reflectionMethod, ReflectionClass $declaringClass): string
-    {
-        return $this->methodDeclaration->retrieveDeclaration($reflectionMethod);
-    }
-
-    /**
      * Getting the declaring keywords (and other stuff).
      *
      * @param \ReflectionMethod $reflectionMethod

@@ -175,24 +175,6 @@ class Chunks implements ConfigConstInterface
     }
 
     /**
-     * Generates the chunk key.
-     *
-     * @deprecated Since 5.0.2
-     *   Well be removed It is now handled inside the chunkMe().
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
-     *
-     * @return string
-     *   The generated key.
-     */
-    protected function genKey(): string
-    {
-        static $counter = 0;
-        return $this->fileStamp . '_' . ++$counter;
-    }
-
-    /**
      * Gets the original data from the string.
      *
      * Reads the data from a file in the chunks' folder.
@@ -306,26 +288,6 @@ class Chunks implements ConfigConstInterface
     }
 
     /**
-     * Setter for the $useChunks.
-     *
-     * When the chunks' folder is not writable, we will not use chunks.
-     * This will increase the memory usage significantly!
-     *
-     * @deprecated
-     *   Since 5.0.0. Use setChunkAllowed() instead.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     * @param bool $bool
-     *   Are we using chunks?
-     */
-    public function setChunksAreAllowed(bool $bool): void
-    {
-        $this->setChunkAllowed($bool);
-    }
-
-    /**
      * Setter for the $chunkAllowed.
      *
      * When the chunks' folder is not writable, we will not use chunks.
@@ -337,23 +299,6 @@ class Chunks implements ConfigConstInterface
     public function setChunkAllowed(bool $bool): void
     {
         $this->chunkAllowed = $bool;
-    }
-
-    /**
-     * Getter for the useChunks value.
-     *
-     * @deprecated
-     *   Since 5.0.0. Use isChunkAllowed() instead.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     * @return bool
-     *   Are we using chunks?
-     */
-    public function getChunksAreAllowed(): bool
-    {
-        return $this->isChunkAllowed();
     }
 
     /**
@@ -371,47 +316,12 @@ class Chunks implements ConfigConstInterface
      * Setter for the $useLogging. Here we determine, if the logfolder
      * is accessible.
      *
-     * @deprecated
-     *   Since 5.0.0. Use setLoggingAllowed() instead.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     * @param bool $bool
-     *   Is the log folder accessible?
-     */
-    public function setLoggingIsAllowed(bool $bool): void
-    {
-        $this->setLoggingAllowed($bool);
-    }
-
-    /**
-     * Setter for the $useLogging. Here we determine, if the logfolder
-     * is accessible.
-     *
      * @param bool $bool
      *   Is the log folder accessible?
      */
     public function setLoggingAllowed(bool $bool): void
     {
         $this->loggingAllowed = $bool;
-    }
-
-    /**
-     * Getter for the useLogging.
-     *
-     * @deprecated
-     *   Since 5.0.0. Use isLoggingAllowed instead.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     * @return bool
-     *   Is the log folder accessible?
-     */
-    public function getLoggingIsAllowed(): bool
-    {
-        return $this->isLoggingAllowed();
     }
 
     /**

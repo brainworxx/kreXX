@@ -85,26 +85,6 @@ class ThroughGetter extends AbstractCallback implements
     public const CURRENT_PREFIX = 'currentPrefix';
 
     /**
-     * Stuff we need to escape in a regex.
-     *
-     * @deprecated
-     *   Since 5.0.0. Will be removed.
-     *
-     * @var string[]
-     */
-    protected array $regexEscapeFind = ['.', '/', '(', ')', '<', '>', '$'];
-
-    /**
-     * Stuff the escaped regex stuff.
-     *
-     * @deprecated
-     *   Since 5.0.0. Will be removed.
-     *
-     * @var string[]
-     */
-    protected array $regexEscapeReplace = ['\.', '\/', '\(', '\)', '\<', '\>', '\$'];
-
-    /**
      * Here we memorize how deep we are inside the current deep analysis.
      *
      * @var int
@@ -540,29 +520,5 @@ class ThroughGetter extends AbstractCallback implements
 
         // Return the file name as well as stuff from the path.
         return $findings[0];
-    }
-
-    /**
-     * Escapes a string for regex usage.
-     *
-     * @param string $string
-     *   The string we want to escape.
-     *
-     * @deprecated
-     *   Since 5.0.0. Will be removed. Use preg_quote().
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @return string
-     *   The escaped string.
-     */
-    protected function regexEscaping(string $string): string
-    {
-        return str_replace(
-            $this->regexEscapeFind,
-            $this->regexEscapeReplace,
-            $string
-        );
     }
 }

@@ -229,9 +229,6 @@ class FormatSerialize
                 // Null handling.
                 $result .= $this->assert(';');
                 break;
-            case 'o':
-                // The 'o' was removed in PHP 7.4
-                // @deprecated.
             case 'O':
                 // Object handling.
                 $result .= $this->parseString() . $this->parseArrayOrObject($string);

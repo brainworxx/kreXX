@@ -117,26 +117,6 @@ class Callback extends AbstractScalarAnalysis
     }
 
     /**
-     * Retrieve the declaration place, if possible.
-     *
-     * @param \ReflectionFunction $reflectionFunction
-     *   The reflection function.
-     *
-     * @deprecated Since 5.0.0
-     *   Will be removed use the FunctionDeclaration class instead.
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @return string
-     *   The declaration place.
-     */
-    protected function retrieveDeclarationPlace(ReflectionFunction $reflectionFunction): string
-    {
-        return $this->pool->createClass(FunctionDeclaration::class)
-            ->retrieveDeclaration($reflectionFunction);
-    }
-
-    /**
      * We insert the parameters into the meta array.
      *
      * @param \ReflectionFunction $reflectionFunction

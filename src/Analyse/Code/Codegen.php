@@ -280,22 +280,6 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     }
 
     /**
-     * Gets set, as soon as we have a scope to come from.
-     *
-     * @deprecated
-     *   Since 5.0.0. Use setCodegenAllowed() instead.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     * @param bool $bool
-     */
-    public function setAllowCodegen(bool $bool): void
-    {
-        $this->setCodegenAllowed($bool);
-    }
-
-    /**
      * Set, if we are allowed to generate code to reach the stuff inside
      * the analysis.
      *
@@ -318,22 +302,6 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         if ($this->disableCount < 0) {
             $this->disableCount = 0;
         }
-    }
-
-    /**
-     * Getter for the allowance of the code generation.
-     *
-     * @deprecated
-     *   Since 5.0.0. Use isCodegenAllowed() instead.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     * @return bool
-     */
-    public function getAllowCodegen(): bool
-    {
-        return $this->isCodegenAllowed();
     }
 
     /**
@@ -374,28 +342,6 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
 
         // Escape it, just in case.
         return $this->pool->encodingService->encodeString($name);
-    }
-
-    /**
-     * Retrieve the parameter type.
-     *
-     * Depending on the available PHP version, we need to take different measures.
-     *
-     * @param \ReflectionParameter $reflectionParameter
-     *   The reflection parameter, what the variable name says.
-     *
-     * @deprecated since 5.0.0
-     *   Will be removed. Use $this->methodDeclaration->retrieveParameterType().
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated code.
-     *
-     * @return string
-     *   The parameter type, if available.
-     */
-    protected function retrieveParameterType(ReflectionParameter $reflectionParameter): string
-    {
-        return $this->methodDeclaration->retrieveParameterType($reflectionParameter);
     }
 
     /**

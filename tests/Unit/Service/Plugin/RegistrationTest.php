@@ -257,12 +257,6 @@ class RegistrationTest extends AbstractRegistration
     {
         $pluginMock = $this->createMock(PluginConfigInterface::class);
         $pluginMock->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('Mocked Plugin'));
-        $pluginMock->expects($this->once())
-            ->method('getVersion')
-            ->will($this->returnValue('v0.0.0'));
-        $pluginMock->expects($this->once())
             ->method('exec');
 
         /** @var PluginConfigInterface $pluginMock */
@@ -282,8 +276,6 @@ class RegistrationTest extends AbstractRegistration
             get_class($pluginMock) => [
                 Registration::CONFIG_CLASS => $pluginMock,
                 Registration::IS_ACTIVE => false,
-                Registration::PLUGIN_NAME => 'Mocked Plugin',
-                Registration::PLUGIN_VERSION => 'v0.0.0'
             ]
         ];
         $this->assertEquals($expectation, SettingsGetter::getPlugins());

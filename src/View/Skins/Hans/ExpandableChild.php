@@ -113,30 +113,6 @@ trait ExpandableChild
     }
 
     /**
-     * Return 'kopened', if expanded.
-     *
-     * @param bool $isExpanded
-     *   Well? Is it?
-     *
-     * @deprecated since 5.0.0
-     *   Will be removed.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @return string
-     *   The css class name.
-     */
-    protected function retrieveOpenedClass(bool $isExpanded): string
-    {
-        if ($isExpanded) {
-            return 'kopened';
-        }
-
-        return '';
-    }
-
-    /**
      * Render the source button.
      *
      * @param string $gencode

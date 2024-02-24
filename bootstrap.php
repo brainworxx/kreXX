@@ -59,9 +59,6 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Callback/CallbackConstInterface.php';
         include_once KREXX_DIR . 'src/Analyse/Routing/Process/ProcessConstInterface.php';
         include_once KREXX_DIR . 'src/Analyse/Caller/BacktraceConstInterface.php';
-        // deprecated
-        include_once KREXX_DIR . 'src/Controller/ControllerConstInterface.php';
-        // deprecated
         include_once KREXX_DIR . 'src/Service/Config/ConfigConstInterface.php';
         include_once KREXX_DIR . 'src/Analyse/Code/CodegenConstInterface.php';
         include_once KREXX_DIR . 'src/Analyse/Code/ConnectorsConstInterface.php';
@@ -145,15 +142,6 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Scalar/String/TimeStamp.php';
         include_once KREXX_DIR . 'src/Analyse/Scalar/String/Serialized.php';
         include_once KREXX_DIR . 'src/Analyse/Scalar/String/Base64.php';
-        // @deprecated
-        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/AbstractScalarAnalysis.php';
-        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/Callback.php';
-        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/FilePath.php';
-        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/Json.php';
-        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/Xml.php';
-        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/TimeStamp.php';
-        include_once KREXX_DIR . 'src/Analyse/Callback/Analyse/Scalar/Serialized.php';
-        // @deprecated
 
         include_once KREXX_DIR . 'src/Analyse/Model/ConnectorService.php';
         include_once KREXX_DIR . 'src/Analyse/Model/Callback.php';
@@ -165,7 +153,6 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Model/DomId.php';
         include_once KREXX_DIR . 'src/Analyse/Model/HasExtra.php';
         include_once KREXX_DIR . 'src/Analyse/Model/CodeGenType.php';
-        include_once KREXX_DIR . 'src/Analyse/Model/KeyType.php';
         include_once KREXX_DIR . 'src/Analyse/Model.php';
 
         include_once KREXX_DIR . 'src/Controller/AbstractController.php';

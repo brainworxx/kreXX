@@ -246,16 +246,6 @@ interface ConfigConstInterface
     public const SETTING_MEMORY_LEFT = 'memoryLeft';
 
     /**
-     * Array key. Holds the value of useScopeAnalysis.
-     *
-     * @deprecated since 5.0.0 Will be removed
-     *   The setting for the scope analysis was removed.
-     *
-     * @var string
-     */
-    public const SETTING_USE_SCOPE_ANALYSIS = 'useScopeAnalysis';
-
-    /**
      * The language keys for the language file.
      *
      * @var string

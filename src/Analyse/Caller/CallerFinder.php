@@ -196,29 +196,4 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
 
         return static::UNKNOWN_VALUE;
     }
-
-    /**
-     * What the method name says.
-     *
-     * When used inline, may have some trailing ')' at the end.
-     * Things may get really confusing, if we have a string with '(' somewhere
-     * in there. Hence, we need to actually count them, and try to identify any
-     * string.
-     *
-     * @deprecated
-     *   Since 5.0.0. Will be removed. Use the CleanUpVarName class instead.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated methods.
-     *
-     * @param string $name
-     *   The variable name, before the cleanup.
-     *
-     * @return string
-     *   The variable name, after the cleanup.
-     */
-    protected function cleanupVarName(string $name): string
-    {
-        return $this->pool->createClass(CleanUpVarName::class)->cleanup($name);
-    }
 }

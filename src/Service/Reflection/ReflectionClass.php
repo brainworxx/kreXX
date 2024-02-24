@@ -49,16 +49,6 @@ use Krexx;
 class ReflectionClass extends \ReflectionClass
 {
     /**
-     * static caching, to speed things up.
-     *
-     * @deprecated
-     *   Since 5.0.0. Will be removed.
-     *
-     * @var array
-     */
-    protected static array $cache = [];
-
-    /**
      * The object, cast into an array.
      *
      * @var array

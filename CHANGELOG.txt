@@ -2,6 +2,7 @@
 - Change: The scalar analysis classes are now reused.
 - Change: Renamed the language fallback key from 'text' to 'en'.
 - Change: Dropped PHP 7.2 and 7.3 support.
+- Change: Removed deprecated code.
 
 5.0.2
 - Added the possibility for plugins to overwrite the factory

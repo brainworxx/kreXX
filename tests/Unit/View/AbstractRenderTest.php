@@ -60,6 +60,5 @@ class AbstractRenderTest extends AbstractHelper
 
         $this->assertSame(Krexx::$pool->render, $render);
         $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $render));
-        $this->assertEquals($skinDirectory, $this->retrieveValueByReflection('skinPath', $render));
     }
 }

@@ -56,16 +56,6 @@ class Config extends Fallback
     public array $settings = [];
 
     /**
-     * List of all configured debug methods.
-     *
-     * @deprecated Since 5.0.2
-     *   Will be removed.
-     *
-     * @var string[]
-     */
-    public array $debugFuncList = [];
-
-    /**
      * Validating configuration settings.
      *
      * @var Validation
@@ -138,7 +128,6 @@ class Config extends Fallback
         // We may need to change the disabling again, in case we are in cli
         // or ajax mode and have no file output.
         $this->checkOutput = $pool->createClass(CheckOutput::class);
-        $this->debugFuncList = explode(',', $this->getSetting(static::SETTING_DEBUG_METHODS));
         $this->pool->messages->setLanguageKey($this->getSetting(static::SETTING_LANGUAGE_KEY));
 
         $this->checkEnabledStatus();
