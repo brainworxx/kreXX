@@ -128,9 +128,6 @@ class XmlTest extends AbstractHelper
      * Test the actual handling of a XML string.
      *
      * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::handle
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::tagOpen
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::tagClosed
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::tagData
      */
     public function testHandle()
     {
