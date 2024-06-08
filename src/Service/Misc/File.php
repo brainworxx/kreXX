@@ -234,6 +234,11 @@ class File
         set_error_handler($this->pool->retrieveErrorCallback());
         $filePath = $this->realpath($filePath);
         $file = fopen($filePath, 'r');
+        if ($file === false) {
+            // File opening just failed!
+            $this->pool->messages->addMessage('fileserviceAccess', [$this->filterFilePath($filePath)], true);
+            return '';
+        }
         $result = fread($file, filesize($filePath));
         fclose($file);
         restore_error_handler();
