@@ -231,10 +231,13 @@ class File
         }
 
         // Get the file contents.
+        set_error_handler($this->pool->retrieveErrorCallback());
         $filePath = $this->realpath($filePath);
         $file = fopen($filePath, 'r');
         $result = fread($file, filesize($filePath));
         fclose($file);
+        restore_error_handler();
+
         return $result;
     }
 

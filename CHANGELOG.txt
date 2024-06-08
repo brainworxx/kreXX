@@ -5,6 +5,7 @@
 - Change: Removed deprecated code.
 
 5.0.3
+- Bugfix: Possible warning in file reader.
 
 5.0.2
 - Added the possibility for plugins to overwrite the factory
