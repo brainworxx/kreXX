@@ -4,6 +4,8 @@
 - Change: Dropped PHP 7.2 and 7.3 support.
 - Change: Removed deprecated code.
 
+5.0.3
+
 5.0.2
 - Added the possibility for plugins to overwrite the factory
   settings.
