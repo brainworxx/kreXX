@@ -4,6 +4,10 @@
 - Change: Dropped PHP 7.2 and 7.3 support.
 - Change: Removed deprecated code.
 
+5.0.4
+- Change: Made implicitly nullable parameter declarations explicitly nullable.
+- Bugfix: Catch a Throwable in the ProcessInteger.
+
 5.0.3
 - Bugfix: Possible warning in file reader.
 - Bugfix: Possible fatals in the file reader.
