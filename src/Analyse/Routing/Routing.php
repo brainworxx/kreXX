@@ -107,7 +107,7 @@ class Routing extends AbstractRouting
 
         foreach ($this->processors as $processor) {
             if ($processor->canHandle($model)) {
-                return $processor->handle($model);
+                return $processor->handle();
             }
         }
 

@@ -182,8 +182,9 @@ class ProcessResourceTest extends AbstractHelper
                 [ProcessResource::class . '::renderUnknownOrClosed', null, $model]
             );
         }
-
-        $processor->handle($model);
+        $processor->canHandle($model);
+        $this->setValueByReflection('model', $model, $processor);
+        $processor->handle();
 
         $this->assertEquals(ProcessConstInterface::TYPE_RESOURCE, $model->getType());
         $this->assertEquals($normalExpectation, $model->getNormal());

@@ -76,7 +76,8 @@ class AbstractProcessNoneScalarTest extends AbstractHelper
 
         // Run the test.
         $objectProcessor = new ProcessObject(Krexx::$pool);
-        $objectProcessor->handle($model);
+        $objectProcessor->canHandle($model);
+        $objectProcessor->handle();
 
         // Check the model.
         $this->assertEquals(
@@ -115,7 +116,8 @@ class AbstractProcessNoneScalarTest extends AbstractHelper
 
         // Run the test.
         $objectProcessor = new ProcessObject(Krexx::$pool);
-        $objectProcessor->handle($model);
+        $objectProcessor->canHandle($model);
+        $objectProcessor->handle();
 
         $this->assertEquals('\\' . stdClass::class, $model->getNormal());
         $this->assertEquals(
@@ -147,7 +149,8 @@ class AbstractProcessNoneScalarTest extends AbstractHelper
 
         // Run the test.
         $arrayProcessor = new ProcessArray(Krexx::$pool);
-        $arrayProcessor->handle($model);
+        $arrayProcessor->canHandle($model);
+        $arrayProcessor->handle();
 
         $this->assertEquals('$GLOBALS', $model->getNormal());
     }

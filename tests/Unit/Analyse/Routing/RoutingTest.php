@@ -84,7 +84,6 @@ class RoutingTest extends AbstractHelper
             if ($className === $allowedRoute) {
                 $mock->expects($this->once())
                     ->method('handle')
-                    ->with($model)
                     ->will($this->returnValue(static::ROUTING_MOCK_RETURN_VALUE));
                 $mock->expects($this->once())
                     ->method('canHandle')

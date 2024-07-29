@@ -94,7 +94,8 @@ class ProcessClosureTest extends AbstractHelper
         $this->mockEventService(
             [ProcessClosure::class . PluginConfigInterface::START_PROCESS, null, $model]
         );
-        $processClosure->handle($model);
+        $processClosure->canHandle($model);
+        $processClosure->handle();
 
         // Run the tests, model.
         $this->assertEquals(ProcessClosure::TYPE_CLOSURE, $model->getType());

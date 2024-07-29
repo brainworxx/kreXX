@@ -180,20 +180,18 @@ class BacktraceStep extends AbstractCallback implements
     protected function outputProcessor(string $name, string $type, string $eventName, string $processorName): string
     {
         $stepData = $this->parameters[static::PARAM_DATA];
-        if (isset($stepData[$type])) {
-            return $this->pool
-                ->createClass($processorName)
-                ->handle(
-                    $this->dispatchEventWithModel(
-                        $eventName . static::EVENT_MARKER_END,
-                        $this->pool->createClass(Model::class)
-                            ->setData($stepData[$type])
-                            ->setName($name)
-                    )
-                );
+        if (!isset($stepData[$type])) {
+            return '';
         }
 
-        return '';
+        $processor = $this->pool->createClass($processorName);
+        $model = $this->dispatchEventWithModel(
+            $eventName . static::EVENT_MARKER_END,
+            $this->pool->createClass(Model::class)->setData($stepData[$type])->setName($name)
+        );
+
+        $processor->canHandle($model);
+        return $processor->handle();
     }
 
     /**

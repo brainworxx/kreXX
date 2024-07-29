@@ -280,12 +280,14 @@ class ProcessStringTest extends AbstractHelper
         // Normal.
         $model = new Model(Krexx::$pool);
         $model->setData($fixture);
-        $this->processString->handle($model);
+        $this->processString->canHandle($model);
+        $this->processString->handle();
 
         // And with a recursion.
         $model = new Model(Krexx::$pool);
         $model->setData($fixture);
-        $this->processString->handle($model);
+        $this->processString->canHandle($model);
+        $this->processString->handle();
 
         $this->assertCount(
             1,
@@ -366,7 +368,8 @@ class ProcessStringTest extends AbstractHelper
         $this->mockEventService(
             [ProcessString::class . PluginConfigInterface::START_PROCESS, null, $model]
         );
-        $this->processString->handle($model);
+        $this->processString->canHandle($model);
+        $this->processString->handle();
 
         return $model;
     }

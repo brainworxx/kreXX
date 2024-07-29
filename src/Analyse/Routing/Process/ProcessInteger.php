@@ -48,6 +48,13 @@ use Throwable;
 class ProcessInteger extends AbstractRouting implements ProcessInterface, ProcessConstInterface
 {
     /**
+     * The model we are currently working on.
+     *
+     * @var Model
+     */
+    protected Model $model;
+
+    /**
      * Is this one an integer?
      *
      * @param Model $model
@@ -58,6 +65,7 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface, Proces
      */
     public function canHandle(Model $model): bool
     {
+        $this->model = $model;
         return is_int($model->getData());
     }
 
@@ -70,14 +78,14 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface, Proces
      * @return string
      *   The rendered markup.
      */
-    public function handle(Model $model): string
+    public function handle(): string
     {
         // Detect a timestamp. Everything bigger than 946681200
         // is assumed to be a timestamp.
         try {
-            $int = $model->getData();
+            $int = $this->model->getData();
             if ($int > 946681200) {
-                $model->addToJson(
+                $this->model->addToJson(
                     $this->pool->messages->getHelp('metaTimestamp'),
                     (new DateTime('@' . $int))->format('d.M Y H:i:s')
                 );
@@ -89,7 +97,7 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface, Proces
 
         return $this->pool->render->renderExpandableChild(
             $this->dispatchProcessEvent(
-                $model->setNormal($model->getData())->setType(static::TYPE_INTEGER)
+                $this->model->setNormal($this->model->getData())->setType(static::TYPE_INTEGER)
             )
         );
     }

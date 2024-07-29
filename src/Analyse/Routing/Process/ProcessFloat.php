@@ -48,6 +48,13 @@ use Throwable;
 class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessConstInterface
 {
     /**
+     * The model we are currently working on.
+     *
+     * @var Model
+     */
+    protected Model $model;
+
+    /**
      * Is this one a float?
      *
      * @param Model $model
@@ -58,6 +65,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
      */
     public function canHandle(Model $model): bool
     {
+        $this->model = $model;
         return is_float($model->getData());
     }
 
@@ -70,14 +78,14 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
      * @return string
      *   The rendered markup.
      */
-    public function handle(Model $model): string
+    public function handle(): string
     {
         // Detect a micro timestamp. Everything bigger than 946681200000
         // is assumed to be a micro timestamp.
-        $float = $model->getData();
+        $float = $this->model->getData();
         if ($float > 946681200) {
             try {
-                $model->addToJson(
+                $this->model->addToJson(
                     $this->pool->messages->getHelp('metaTimestamp'),
                     (DateTime::createFromFormat('U.u', (string)$float))->format('d.M Y H:i:s.u')
                 );
@@ -88,7 +96,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
 
         return $this->pool->render->renderExpandableChild(
             $this->dispatchProcessEvent(
-                $model->setNormal($model->getData())->setType(static::TYPE_FLOAT)
+                $this->model->setNormal($this->model->getData())->setType(static::TYPE_FLOAT)
             )
         );
     }

@@ -48,6 +48,13 @@ use Brainworxx\Krexx\Analyse\Model;
 class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstInterface, ProcessConstInterface
 {
     /**
+     * The model we are currently working on.
+     *
+     * @var Model
+     */
+    protected Model $model;
+
+    /**
      * Is this one an object?
      *
      * @param Model $model
@@ -58,32 +65,30 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
      */
     public function canHandle(Model $model): bool
     {
+        $this->model = $model;
         return is_object($model->getData());
     }
 
     /**
      * Render a dump for an object.
      *
-     * @param Model $model
-     *   The object we want to analyse.
-     *
      * @return string
      *   The generated markup.
      */
-    protected function handleNoneScalar(Model $model): string
+    protected function handleNoneScalar(): string
     {
         $this->pool->emergencyHandler->upOneNestingLevel();
 
         // Remember that we've been here before.
-        $this->pool->recursionHandler->addToHive($model->getData());
+        $this->pool->recursionHandler->addToHive($this->model->getData());
 
-        $object = $model->getData();
+        $object = $this->model->getData();
         // Output data from the class.
         $result = $this->pool->render->renderExpandableChild(
             $this->dispatchProcessEvent(
-                $model->setType(static::TYPE_CLASS)
+                $this->model->setType(static::TYPE_CLASS)
                     ->addParameter(static::PARAM_DATA, $object)
-                    ->addParameter(static::PARAM_NAME, $model->getName())
+                    ->addParameter(static::PARAM_NAME, $this->model->getName())
                     ->setNormal('\\' . get_class($object))
                     ->setDomid($this->generateDomIdFromObject($object))
                     ->injectCallback($this->pool->createClass(Objects::class))

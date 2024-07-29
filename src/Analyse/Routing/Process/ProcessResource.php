@@ -49,6 +49,13 @@ use CurlHandle;
 class ProcessResource extends AbstractRouting implements ProcessInterface, CallbackConstInterface, ProcessConstInterface
 {
     /**
+     * The model we are currently working on.
+     *
+     * @var Model
+     */
+    protected Model $model;
+
+    /**
      * Is this one a resource?
      *
      * @param Model $model
@@ -59,21 +66,19 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
      */
     public function canHandle(Model $model): bool
     {
+        $this->model = $model;
         return is_resource($model->getData());
     }
 
     /**
      * Analyses a resource.
      *
-     * @param Model $model
-     *   The data we are analysing.
-     *
      * @return string
      *   The rendered markup.
      */
-    public function handle(Model $model): string
+    public function handle(): string
     {
-        $resource = $model->getData();
+        $resource = $this->model->getData();
         $typeString = $this->retrieveTypeString($resource);
         $transRes = $this->pool->messages->getHelp('resource');
 
@@ -93,13 +98,13 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
                 break;
 
             default:
-                return $this->renderUnknownOrClosed($model, $resource, $typeString);
+                return $this->renderUnknownOrClosed($this->model, $resource, $typeString);
         }
 
         // Output metadata from the class.
         return $this->pool->render->renderExpandableChild(
             $this->dispatchProcessEvent(
-                $model->setType(static::TYPE_RESOURCE)
+                $this->model->setType(static::TYPE_RESOURCE)
                     ->addParameter(static::PARAM_DATA, $meta)
                     ->setNormal($typeString)
                     ->injectCallback($this->pool->createClass(ThroughResource::class))

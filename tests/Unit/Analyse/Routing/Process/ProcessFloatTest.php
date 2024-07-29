@@ -60,7 +60,8 @@ class ProcessFloatTest extends AbstractHelper
         $this->mockEventService(
             [ProcessFloat::class . PluginConfigInterface::START_PROCESS, null, $model]
         );
-        $processor->handle($model);
+        $processor->canHandle($model);
+        $processor->handle();
 
         $this->assertEquals($fixture, $model->getData());
         $this->assertEquals($fixture, $model->getNormal());
@@ -78,8 +79,8 @@ class ProcessFloatTest extends AbstractHelper
         $model = new Model(Krexx::$pool);
         $model->setData($fixture);
         $processor = new ProcessFloat(Krexx::$pool);
-
-        $processor->handle($model);
+        $processor->canHandle($model);
+        $processor->handle();
 
         $result = $model->getJson();
         $this->assertArrayHasKey('Timestamp', $result);
