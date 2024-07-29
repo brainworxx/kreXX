@@ -6,6 +6,7 @@
 - Change: Use json_validate() if available to determine if a
   string is a json string.
 - Change: Simplified the routing process.
+- Change: Removed some literals.
 
 5.0.4
 - Change: Made implicitly nullable parameter declarations

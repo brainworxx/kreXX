@@ -137,4 +137,11 @@ interface BacktraceConstInterface
      * @var string
      */
     public const TRACE_LEVEL = 'level';
+
+    /**
+     * The time format pattern.
+     *
+     * @var string
+     */
+    public const TIME_FORMAT = 'd-m-Y H:i:s';
 }
