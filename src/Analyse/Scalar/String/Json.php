@@ -93,7 +93,15 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
             return false;
         }
 
+        if (function_exists('json_validate') && json_validate($string)) {
+            // Doing it the PHP 8.3 way.
+            $this->model = $model;
+            $this->handledValue = $string;
+            return true;
+        }
+
         // The only way to test a valid json, is to decode it.
+        // @deprecated This will be removed in PHP 8.3.
         $this->decodedJson = json_decode($string);
         if (json_last_error() === JSON_ERROR_NONE || $this->decodedJson !== null) {
             $this->model = $model;
@@ -112,6 +120,12 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
      */
     protected function handle(): array
     {
+        if (empty($this->decodedJson)) {
+            // We will not decode it again, if we already have a result.
+            // The "if" will be removed in PHP 8.3.
+            $this->decodedJson = json_decode($this->handledValue);
+        }
+
         $messages = $this->pool->messages;
         $meta = [
             $messages->getHelp('metaDecodedJson') => $this->decodedJson,

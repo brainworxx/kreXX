@@ -3,9 +3,12 @@
 - Change: Renamed the language fallback key from 'text' to 'en'.
 - Change: Dropped PHP 7.2 and 7.3 support.
 - Change: Removed deprecated code.
+- Change: Use json_validate() if available to determine if a
+  string is a json string.
 
 5.0.4
-- Change: Made implicitly nullable parameter declarations explicitly nullable.
+- Change: Made implicitly nullable parameter declarations
+  explicitly nullable.
 - Bugfix: Catch a Throwable in the ProcessInteger.
 - Bugfix: Better Base64 detection.
 
