@@ -118,6 +118,9 @@ class Pool extends AbstractFactory
     /**
      * Our registry.
      *
+     * @deprecated since 3.0.0
+     *   Will be removed.
+     *
      * @var Registry
      */
     public Registry $registry;
