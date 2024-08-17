@@ -88,9 +88,9 @@ abstract class AbstractCallback
      * @return $this
      *   Return $this, for chaining.
      */
-    public function setParameters(array &$parameters): AbstractCallback
+    public function setParameters(array $parameters): AbstractCallback
     {
-        $this->parameters = &$parameters;
+        $this->parameters = $parameters;
         return $this;
     }
 

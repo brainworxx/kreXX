@@ -8,6 +8,7 @@
 - Change: Simplified the routing process.
 - Change: Removed some literals.
 - Change: Some deprecations.
+- Change: Only use byRef when absolutely necessary.
 
 5.0.4
 - Change: Made implicitly nullable parameter declarations

@@ -75,7 +75,7 @@ class ProcessBacktrace extends AbstractCallback implements
      * @return string
      *   The rendered backtrace.
      */
-    public function handle(?array &$backtrace = []): string
+    public function handle(?array $backtrace = []): string
     {
         if (empty($backtrace)) {
             $backtrace = $this->getBacktrace();

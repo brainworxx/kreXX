@@ -183,7 +183,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
      * @return string
      *   Parameter list in a human-readable form.
      */
-    protected function retrieveParameterList(ReflectionFunction $ref, array &$result): string
+    protected function retrieveParameterList(ReflectionFunction $ref, array $result): string
     {
         $paramList = '';
         foreach ($ref->getParameters() as $key => $reflectionParameter) {

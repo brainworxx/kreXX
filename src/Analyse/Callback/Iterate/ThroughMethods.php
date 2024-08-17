@@ -194,7 +194,7 @@ class ThroughMethods extends AbstractCallback implements
      * @return string
      *   The human-readable parameter list.
      */
-    protected function retrieveParameters(ReflectionMethod $reflectionMethod, array &$methodData): string
+    protected function retrieveParameters(ReflectionMethod $reflectionMethod, array $methodData): string
     {
         $paramList = '';
         foreach ($reflectionMethod->getParameters() as $key => $reflectionParameter) {

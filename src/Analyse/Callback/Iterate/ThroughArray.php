@@ -110,7 +110,7 @@ class ThroughArray extends AbstractCallback implements
      * @return \Brainworxx\Krexx\Analyse\Model
      *   The prepared model.
      */
-    protected function prepareModel(array $array, $key, &$value, string $multilineCodeGen): Model
+    protected function prepareModel(array $array, $key, $value, string $multilineCodeGen): Model
     {
         /** @var Model $model */
         $model = $this->pool
