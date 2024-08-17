@@ -71,9 +71,9 @@ abstract class AbstractFactory
         $this->errorCallback = function (
             int $errno,
             string $errstr,
-            string $errfile = null,
-            int $errline = null,
-            array $errcontext = null
+            ?string $errfile = null,
+            ?int $errline = null,
+            ?array $errcontext = null
         ): bool {
             // Do nothing.
             return true;
