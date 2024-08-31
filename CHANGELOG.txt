@@ -10,6 +10,9 @@
 - Change: Some deprecations.
 - Change: Only use byRef when absolutely necessary.
 
+5.0.5
+- Added formatting for float values for better readability.
+
 5.0.4
 - Change: Made implicitly nullable parameter declarations
   explicitly nullable.

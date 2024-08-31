@@ -71,6 +71,7 @@ class ProcessFloatTest extends AbstractHelper
      * Testing the float value processing, with a micro time
      *
      * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessFloat::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessFloat::formatFloat
      */
     public function testProcessWithMicrotime()
     {
@@ -100,5 +101,42 @@ class ProcessFloatTest extends AbstractHelper
         $this->assertTrue($processor->canHandle($model->setData($fixture)));
         $fixture = 'abc';
         $this->assertFalse($processor->canHandle($model->setData($fixture)));
+    }
+
+    /**
+     *
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessFloat::handle
+     * @covers \Brainworxx\Krexx\Analyse\Routing\Process\ProcessFloat::formatFloat
+     */
+    public function testProcessFormat()
+    {
+        // Test the low value.
+        $processor = new ProcessFloat(Krexx::$pool);
+        $model = new Model(Krexx::$pool);
+        $fixture = 5.123456789E-10;
+        $model->setData($fixture);
+        $this->assertTrue($processor->canHandle($model));
+        $processor->handle();
+        $this->assertEquals('0.000000000512345679', $model->getNormal());
+        $this->assertEquals(['Unformatted float value' => '5.123456789E-10'], $model->getJson());
+
+        // Test the mid-level value.
+        $model = new Model(Krexx::$pool);
+        $fixture = 5.123456789E+10;
+        $model->setData($fixture);
+        $this->assertTrue($processor->canHandle($model));
+        $processor->handle();
+        $this->assertEquals('51234567890', $model->getNormal());
+        $this->assertEquals([], $model->getJson());
+
+        // Test the high value.
+        $model = new Model(Krexx::$pool);
+        $fixture = 5.123456789E+40;
+        $model->setData($fixture);
+        $this->assertTrue($processor->canHandle($model));
+        $processor->handle();
+        $this->assertEquals('5.123456789E+40', $model->getNormal());
+        $this->assertEquals([], $model->getJson());
     }
 }
