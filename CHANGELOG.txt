@@ -1,3 +1,5 @@
+5.0.5
+
 5.0.4
 - Change: Made implicitly nullable parameter declarations explicitly nullable.
 - Bugfix: Catch a Throwable in the ProcessInteger.
