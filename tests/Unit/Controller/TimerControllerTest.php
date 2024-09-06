@@ -39,7 +39,6 @@ use Brainworxx\Krexx\Controller\DumpController;
 use Brainworxx\Krexx\Controller\TimerController;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Factory\Pool;
-use Brainworxx\Krexx\Service\Misc\Encoding;
 
 class TimerControllerTest extends AbstractController
 {

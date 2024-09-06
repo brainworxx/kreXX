@@ -243,7 +243,7 @@ class FileTest extends AbstractHelper
         $this->assertCount(
             1,
             Krexx::$pool->messages->getMessages(),
-            'We get a message that says thata reding the file failed.'
+            'We get a message that says that reading the file failed.'
         );
     }
 

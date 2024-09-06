@@ -102,6 +102,9 @@ class Recursion
      *
      * @deprecated
      *   Will be removed as soon as we drop PHP 8.0 support.
+     * @codeCoverageIgnore
+     *   We do not test deprecated code.
+     *
      */
     public function __destruct()
     {

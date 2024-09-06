@@ -112,7 +112,7 @@ class AbstractControllerTest extends AbstractHelper
         $this->setValueByReflection('outputService', $outputServiceMock, $editSettingscontroller);
         $editSettingscontroller->editSettingsAction();
 
-        // Lets do this a second time, and make sure that we do not send the
+        // Let's do this a second time, and make sure that we do not send the
         // css/js a second time.
         $fileMock = $this->createMock(FileService::class);
         $fileMock->expects($this->any())
