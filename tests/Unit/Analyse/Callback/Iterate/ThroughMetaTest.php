@@ -35,12 +35,14 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Iterate;
 
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMetaReflections;
 use Brainworxx\Krexx\Analyse\Code\Codegen;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
+use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\Tests\Helpers\RenderNothing;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
@@ -95,10 +97,12 @@ class ThroughMetaTest extends AbstractHelper
     {
         $keysWithExtra = $this->retrieveValueByReflection('keysWithExtra', $this->throughMeta);
         $stuffToProcess = $this->retrieveValueByReflection('stuffToProcess', $this->throughMeta);
+        $simpleAnalysisRouting = $this->retrieveValueByReflection('stuffToProcess', $this->throughMeta);
 
         // We simply assuethat there is some kind of workfow in there.
         $this->assertNotEmpty($keysWithExtra);
         $this->assertNotEmpty($stuffToProcess);
+        $this->assertNotEmpty($simpleAnalysisRouting);
     }
 
     /**
@@ -114,6 +118,31 @@ class ThroughMetaTest extends AbstractHelper
             'Comment',
             'Look at me, I\'m a comment!'
         );
+    }
+
+    /**
+     * Test with a classname in a string
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::handleNoneReflections
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta::prepareModel
+     */
+    public function testCallMeClassName()
+    {
+        \Krexx::$pool->rewrite[Meta::class] = CallbackCounter::class;
+        $ref = new ReflectionClass(static::class);
+        $fixture = [
+            $this->throughMeta::PARAM_DATA => [
+                'Reflection' => $ref
+            ]
+        ];
+        $expected = [[$this->throughMeta::PARAM_REF => $ref]];
+
+        $this->throughMeta->setParameters($fixture)->callMe();
+
+        $this->assertSame(1, CallbackCounter::$counter);
+        $params = CallbackCounter::$staticParameters;
+        $this->assertSame($expected, $params);
     }
 
     /**

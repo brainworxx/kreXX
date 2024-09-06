@@ -62,10 +62,17 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
     protected array $keysWithExtra = [];
 
     /**
+     * Normal meta rendering without extra.
+     *
      * @var string[]
      */
     protected array $stuffToProcess = [];
 
+    /**
+     * We pass these to the routing.
+     *
+     * @var array
+     */
     protected array $simpleAnalysisRouting = [];
 
     /**
