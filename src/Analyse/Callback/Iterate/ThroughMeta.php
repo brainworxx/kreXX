@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
+use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -65,6 +66,8 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
      */
     protected array $stuffToProcess = [];
 
+    protected array $simpleAnalysisRouting = [];
+
     /**
      * Inject the pool and init the workflow.
      *
@@ -87,7 +90,12 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         $this->stuffToProcess = [
             $messages->getHelp('metaInheritedClass'),
             $messages->getHelp('metaInterfaces'),
-            $messages->getHelp('metaTraits')
+            $messages->getHelp('metaTraits'),
+        ];
+
+        $this->simpleAnalysisRouting = [
+            $messages->getHelp('metaDecodedJson'),
+            $messages->getHelp('metaDecodedBase64'),
         ];
     }
 
@@ -171,12 +179,16 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
     {
         $key = $model->getName();
 
-        if (
-            $key === $this->pool->messages->getHelp('metaDecodedJson')
-            || $key === $this->pool->messages->getHelp('metaDecodedBase64')
-        ) {
-            // Prepare the json code generation.
+        if (in_array($key, $this->simpleAnalysisRouting, true)) {
+            // Prepare the json/ base64 code generation.
             return $this->pool->routing->analysisHub($model);
+        }
+
+        if ($key === $this->pool->messages->getHelp('metaReflection')) {
+            /** @var ThroughMeta $throughMeta */
+            return  $this->pool->createClass(Meta::class)
+                ->setParameters([static::PARAM_REF => $model->getNormal()])
+                ->callMe();
         }
 
         // Sorry, no code generation for you guys.

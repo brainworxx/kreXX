@@ -142,6 +142,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Scalar/String/TimeStamp.php';
         include_once KREXX_DIR . 'src/Analyse/Scalar/String/Serialized.php';
         include_once KREXX_DIR . 'src/Analyse/Scalar/String/Base64.php';
+        include_once KREXX_DIR . 'src/Analyse/Scalar/String/ClassName.php';
 
         include_once KREXX_DIR . 'src/Analyse/Model/ConnectorService.php';
         include_once KREXX_DIR . 'src/Analyse/Model/Callback.php';
