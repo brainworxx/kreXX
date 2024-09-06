@@ -9,6 +9,7 @@
 - Change: Removed some literals.
 - Change: Some deprecations.
 - Change: Only use byRef when absolutely necessary.
+- Added class meta analysis for classnemaes in strings.
 
 5.0.5
 - Added formatting for float values for better readability.
