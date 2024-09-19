@@ -52,6 +52,9 @@ interface BacktraceConstInterface
     /**
      * Contains the original, unfilterd path to the TRACE_FILE.
      *
+     * @deprecated
+     *   Since 6.0.0, will be removed.
+     *
      * @var string
      */
     public const TRACE_ORG_FILE = 'originalFile';

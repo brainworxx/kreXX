@@ -146,7 +146,7 @@ class Meta extends AbstractObjectAnalysis
             $messages->getHelp('metaComment') => $this->pool->createClass(Classes::class)->getComment($ref),
             $messages->getHelp('metaDeclaredIn') => $ref->isInternal() ?
                 $messages->getHelp('metaPredeclared') :
-                $this->pool->fileService->filterFilePath($ref->getFileName()) . ' ' .
+                $ref->getFileName() . ' ' .
                 $messages->getHelp('metaInLine') . $ref->getStartLine()
         ];
 

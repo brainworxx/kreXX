@@ -145,7 +145,7 @@ class BacktraceStep extends AbstractCallback implements
             $lineNo = $stepData[static::TRACE_LINE] - 1;
             $source = trim(
                 $this->pool->fileService->readSourcecode(
-                    $stepData[static::TRACE_ORG_FILE] ?? '',
+                    $stepData[static::TRACE_FILE] ?? '',
                     $lineNo,
                     $lineNo - 5,
                     $lineNo + 5

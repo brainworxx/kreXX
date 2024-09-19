@@ -219,7 +219,7 @@ class Pool extends AbstractFactory
         if (!$this->fileService->isDirectoryWritable($chunkFolder)) {
             $this->messages->addMessage(
                 'chunksNotWritable',
-                [$this->fileService->filterFilePath($chunkFolder)]
+                [$chunkFolder]
             );
             // We can work without chunks, but this will require much more memory!
             $this->chunks->setChunkAllowed(false);
@@ -231,7 +231,7 @@ class Pool extends AbstractFactory
         if (!$this->fileService->isDirectoryWritable($logFolder)) {
             $this->messages->addMessage(
                 'logNotWritable',
-                [$this->fileService->filterFilePath($logFolder)]
+                [$logFolder]
             );
             // Tell the chunk output that we have no write access in the logging
             // folder.

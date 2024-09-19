@@ -147,10 +147,6 @@ abstract class AbstractController extends AbstractHelper
                     [$pathToSkin . $skinCss, true]
                 ]
             ));
-        $fileServiceMock->expects($this->once())
-            ->method('filterFilePath')
-            ->with($pathToIni)
-            ->will($this->returnValue('filtered path'));
         $fileServiceMock->expects($this->exactly(3))
             ->method('getFileContents')
             ->with(...$this->withConsecutive(

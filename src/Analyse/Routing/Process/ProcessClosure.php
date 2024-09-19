@@ -135,8 +135,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
         $result[$messages->getHelp('metaSource')] = $this->retrieveSourceCode($ref);
 
         // Adding the place where it was declared.
-        $result[$messages->getHelp('metaDeclaredIn')] =
-            $this->pool->fileService->filterFilePath($ref->getFileName()) . "\n";
+        $result[$messages->getHelp('metaDeclaredIn')] = $ref->getFileName() . "\n";
         $result[$messages->getHelp('metaDeclaredIn')] .= 'in line ' . $ref->getStartLine();
 
         // Adding the namespace, but only if we have one.

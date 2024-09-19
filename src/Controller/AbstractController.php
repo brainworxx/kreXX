@@ -159,7 +159,7 @@ abstract class AbstractController implements ConfigConstInterface
             $caller,
             $this->pool->createClass(Model::class)
                 ->setName($path)
-                ->setType($this->pool->fileService->filterFilePath($pathToConfig))
+                ->setType($pathToConfig)
                 ->setHelpid('currentSettings')
                 ->injectCallback(
                     $this->pool->createClass(ThroughConfig::class)

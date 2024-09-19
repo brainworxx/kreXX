@@ -96,9 +96,6 @@ class AbstractControllerTest extends AbstractHelper
         $fileMock->expects($this->any())
             ->method('getFileContents')
             ->will($this->returnValue('some content'));
-        $fileMock->expects($this->any())
-            ->method('filterFilePath')
-            ->will($this->returnValue('some filter path'));
         Krexx::$pool->fileService = $fileMock;
 
         $outputServiceMock = $this->createMock(Browser::class);
@@ -120,9 +117,6 @@ class AbstractControllerTest extends AbstractHelper
             ->will($this->returnValue(false));
         $fileMock->expects($this->never())
             ->method('getFileContents');
-        $fileMock->expects($this->any())
-            ->method('filterFilePath')
-            ->will($this->returnValue('some filter path'));
         Krexx::$pool->fileService = $fileMock;
 
         $editSettingscontroller->editSettingsAction();

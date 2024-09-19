@@ -111,7 +111,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
         // We will not keep the whole backtrace im memory. We only return what we
         // actually need.
         return [
-            static::TRACE_FILE => $this->pool->fileService->filterFilePath($caller[static::TRACE_FILE]),
+            static::TRACE_FILE => $caller[static::TRACE_FILE],
             static::TRACE_LINE => (int)$caller[static::TRACE_LINE],
             static::TRACE_VARNAME => $varname,
             static::TRACE_TYPE => $this->getType($headline, $varname, $data),

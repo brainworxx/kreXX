@@ -217,7 +217,6 @@ class FileTest extends AbstractHelper
      * Test the direct reading of a file into a string.
      *
      * @covers \Brainworxx\Krexx\Service\Misc\File::getFileContents
-     * @covers \Brainworxx\Krexx\Service\Misc\File::filterFilePath
      */
     public function testGetFileContents()
     {
@@ -376,28 +375,6 @@ class FileTest extends AbstractHelper
         $message = Krexx::$pool->messages->getMessages()['fileserviceDelete'];
         $this->assertEquals('fileserviceDelete', $message->getKey());
         $this->assertEquals([$payload], $message->getArguments());
-    }
-
-    /**
-     * Test the filepath filter
-     *
-     * @covers \Brainworxx\Krexx\Service\Misc\File::filterFilePath
-     */
-    public function testFilterFilePath()
-    {
-        // Set the stage.
-        $docRoot = 'somewhere on the server';
-        $filename = static::FILE_NAME;
-        $payload = $docRoot . DIRECTORY_SEPARATOR . $filename;
-        $fileService = new File(Krexx::$pool);
-        $this->setValueByReflection(static::DOC_ROOT, $docRoot, $fileService);
-
-        // Run the test
-        $this->assertEquals('...' . DIRECTORY_SEPARATOR . $filename, $fileService->filterFilePath($payload));
-
-        // And now without a identifiable docroot.
-        $this->setValueByReflection(static::DOC_ROOT, false, $fileService);
-        $this->assertEquals($payload, $fileService->filterFilePath($payload));
     }
 
     /**
