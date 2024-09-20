@@ -1,4 +1,4 @@
-.. image:: https://github.com/brainworxx/kreXX/actions/workflows/php.yml/badge.svg?branch=master
+.. image:: https://github.com/brainworxx/kreXX/actions/workflows/php.yml/badge.svg?branch=main
    :target: https://github.com/brainworxx/kreXX/actions/workflows/php.yml
 .. image:: https://api.codeclimate.com/v1/badges/c9d414a09928ede869c7/maintainability
    :target: https://codeclimate.com/github/brainworxx/kreXX/maintainability
