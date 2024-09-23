@@ -12,6 +12,9 @@
 - Change: We do not filter the file path anymore.
 - Added class meta analysis for class names in strings.
 
+5.0.6
+- Bugfix: Removed some self:: references.
+
 5.0.5
 - Added formatting for float values for better readability.
 - Added an event to the output of the inline js and css.
