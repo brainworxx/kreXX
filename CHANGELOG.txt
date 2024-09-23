@@ -11,6 +11,7 @@
 - Change: Only use byRef when absolutely necessary.
 - Change: We do not filter the file path anymore.
 - Added class meta analysis for class names in strings.
+- Added a hint to the 'unknown' getter analysis result.
 
 5.0.6
 - Bugfix: Removed some self:: references.

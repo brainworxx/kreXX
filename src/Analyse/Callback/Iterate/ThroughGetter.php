@@ -215,22 +215,22 @@ class ThroughGetter extends AbstractCallback implements
         $this->dispatchEventWithModel(__FUNCTION__ . '::resolving', $model);
 
         if ($this->parameters[static::PARAM_ADDITIONAL][static::PARAM_NOTHING_FOUND]) {
+            $messages = $this->pool->messages;
             // Found nothing  :-(
             // We literally have no info. We need to tell the user.
             // We render this right away, without any routing.
             return $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
                     __FUNCTION__ . static::EVENT_MARKER_END,
-                    $model->setType(static::TYPE_UNKNOWN)->setNormal(static::TYPE_UNKNOWN)
+                    $model->setType(static::TYPE_UNKNOWN)
+                        ->setNormal($messages->getHelp('getterValueUnknown'))
+                        ->addToJson($messages->getHelp('metaHint'), $messages->getHelp('getterUnknown'))
                 )
             );
         }
 
         return $this->pool->routing->analysisHub(
-            $this->dispatchEventWithModel(
-                __FUNCTION__ . static::EVENT_MARKER_END,
-                $model
-            )
+            $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $model)
         );
     }
 
