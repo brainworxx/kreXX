@@ -102,7 +102,7 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
                     static::TRACE_BACKTRACE,
                     $this->pool->createClass(Model::class)
                         ->setName($this->pool->messages->getHelp('backTrace'))
-                        ->setType(static::TYPE_INTERNALS)
+                        ->setType($this->pool->messages->getHelp('classInternals'))
                         ->addParameter(static::PARAM_DATA, $trace)
                         ->injectCallback(
                             $this->pool->createClass(ProcessBacktrace::class)

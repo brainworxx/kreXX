@@ -95,11 +95,11 @@ class ThroughLargeArrayTest extends AbstractHelper
         // Test the types of the model
         $this->assertEquals('', $this->routingMock->model[0]->getType());
         $this->assertEquals(
-            CallbackConstInterface::TYPE_SIMPLE_ARRAY,
+            'Simplified array analysis',
             $this->renderMock->model[static::RENDER_EXPANDABLE_CHILD][0]->getType()
         );
         $this->assertEquals(
-            CallbackConstInterface::TYPE_SIMPLE_CLASS,
+            'Simplified class analysis',
             $this->renderMock->model[static::RENDER_EXPANDABLE_CHILD][1]->getType()
         );
 

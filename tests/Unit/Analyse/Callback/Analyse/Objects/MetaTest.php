@@ -122,7 +122,7 @@ class MetaTest extends AbstractHelper
         $this->assertEquals($expectedDomId, $model->getDomid());
         $this->assertEquals($metaName, $model->getName());
         $this->assertEquals($metaName, $model->getNormal());
-        $this->assertEquals($meta::TYPE_INTERNALS, $model->getType());
+        $this->assertEquals(Krexx::$pool->messages->getHelp('classInternals'), $model->getType());
     }
 
     /**
@@ -177,7 +177,7 @@ class MetaTest extends AbstractHelper
         $model = $renderNothing->model['renderExpandableChild'][0];
         $this->assertEquals($expectedDomId, $model->getDomid());
         $this->assertEquals('Meta class data', $model->getName());
-        $this->assertEquals($meta::TYPE_INTERNALS, $model->getType());
+        $this->assertEquals(Krexx::$pool->messages->getHelp('classInternals'), $model->getType());
 
         // Retrieve the parameters and test them.
         $data = $model->getParameters()[$meta::PARAM_DATA];

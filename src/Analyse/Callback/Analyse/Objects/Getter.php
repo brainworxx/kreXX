@@ -100,7 +100,7 @@ class Getter extends AbstractObjectAnalysis
                 static::EVENT_MARKER_ANALYSES_END,
                 $this->pool->createClass(Model::class)
                     ->setName($this->pool->messages->getHelp('getter'))
-                    ->setType(static::TYPE_INTERNALS)
+                    ->setType($this->pool->messages->getHelp('classInternals'))
                     ->setHelpid('getterHelpInfo')
                     ->addParameter(static::PARAM_REF, $ref)
                     ->addParameter(static::PARAM_NORMAL_GETTER, $this->normalGetter)

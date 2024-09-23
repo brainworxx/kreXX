@@ -124,7 +124,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
                         $key,
                         $this->pool->createClass(Model::class)
                             ->setName($key)
-                            ->setType(static::TYPE_INTERNALS)
+                            ->setType($this->pool->messages->getHelp('classInternals'))
                             ->addParameter(static::PARAM_DATA, $metaData)
                             ->injectCallback(
                                 $this->pool->createClass(ThroughMetaReflections::class)

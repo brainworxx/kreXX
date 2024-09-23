@@ -289,7 +289,7 @@ class CodegenTest extends AbstractHelper
     {
         $this->expectConnectorCalls(1, 1);
         $this->fixture
-            ->setType($this->codegenHandler::TYPE_DEBUG_METHOD)
+            ->setType('Debug method')
             ->setCodeGenType(Codegen::CODEGEN_TYPE_PUBLIC);
         $this->assertEquals(
             static::CONCATENATED_CONNECTORS,

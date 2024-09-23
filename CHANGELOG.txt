@@ -10,6 +10,7 @@
 - Change: Some deprecations.
 - Change: Only use byRef when absolutely necessary.
 - Change: We do not filter the file path anymore.
+- Change: Moved some frontend literals to the translations.
 - Added class meta analysis for class names in strings.
 - Added a hint to the 'unknown' getter analysis result.
 

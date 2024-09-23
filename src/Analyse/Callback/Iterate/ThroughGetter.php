@@ -222,7 +222,7 @@ class ThroughGetter extends AbstractCallback implements
             return $this->pool->render->renderExpandableChild(
                 $this->dispatchEventWithModel(
                     __FUNCTION__ . static::EVENT_MARKER_END,
-                    $model->setType(static::TYPE_UNKNOWN)
+                    $model->setType($messages->getHelp('getterValueUnknown'))
                         ->setNormal($messages->getHelp('getterValueUnknown'))
                         ->addToJson($messages->getHelp('metaHint'), $messages->getHelp('getterUnknown'))
                 )

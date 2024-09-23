@@ -200,12 +200,18 @@ interface CallbackConstInterface
     /**
      * Frontend literal.
      *
+     * @deprecated
+     *   Since 6.0.0. Will be removed.
+     *
      * @var string
      */
     public const TYPE_INTERNALS = 'class internals';
 
     /**
      * Frontend literal.
+     *
+     * @deprecated
+     *   Since 6.0.0. Will be removed.
      *
      * @var string
      */
@@ -228,6 +234,9 @@ interface CallbackConstInterface
     /**
      * Frontend literal.
      *
+     * @deprecated
+     *   Since 6.0.0. Will be removed.
+     *
      * @var string
      */
     public const TYPE_UNKNOWN = 'unknown';
@@ -235,12 +244,18 @@ interface CallbackConstInterface
     /**
      * Frontend literal.
      *
+     * @deprecated
+     *   Since 6.0.0. Will be removed.
+     *
      * @var string
      */
     public const TYPE_SIMPLE_CLASS = 'simplified class analysis';
 
     /**
      * Frontend literal.
+     *
+     * @deprecated
+     *   Since 6.0.0. Will be removed.
      *
      * @var string
      */

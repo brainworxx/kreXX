@@ -327,7 +327,7 @@ class ThroughMetaTest extends AbstractHelper
         /** @var \Brainworxx\Krexx\Analyse\Model $model */
         $model = $this->renderNothing->model[static::RENDER_EXPANDABLE_CHILD][0];
         $this->assertEquals($key, $model->getName());
-        $this->assertEquals($this->throughMeta::TYPE_INTERNALS, $model->getType());
+        $this->assertEquals(Krexx::$pool->messages->getHelp('classInternals'), $model->getType());
         $parameters = $model->getParameters();
         $this->assertEquals($payload, $parameters[$this->throughMeta::PARAM_DATA]);
     }

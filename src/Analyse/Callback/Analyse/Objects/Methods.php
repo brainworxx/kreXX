@@ -87,7 +87,7 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
                             ->setDomid($domId)
                             ->setNormal($metaMethods)
                             ->setName($metaMethods)
-                            ->setType(static::TYPE_INTERNALS)
+                            ->setType($this->pool->messages->getHelp('classInternals'))
                     )
                 );
         }
@@ -136,7 +136,7 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
                 static::EVENT_MARKER_ANALYSES_END,
                 $this->pool->createClass(Model::class)
                     ->setName($this->pool->messages->getHelp('metaMethods'))
-                    ->setType(static::TYPE_INTERNALS)
+                    ->setType($this->pool->messages->getHelp('classInternals'))
                     ->addParameter(static::PARAM_DATA, $methods)
                     ->addParameter(static::PARAM_REF, $ref)
                     ->setDomId($domId)

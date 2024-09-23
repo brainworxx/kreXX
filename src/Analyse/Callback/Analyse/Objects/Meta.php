@@ -91,7 +91,7 @@ class Meta extends AbstractObjectAnalysis
                             ->setDomid($domId)
                             ->setNormal($name)
                             ->setName($name)
-                            ->setType(static::TYPE_INTERNALS)
+                            ->setType($this->pool->messages->getHelp('classInternals'))
                     )
                 );
         }
@@ -121,7 +121,7 @@ class Meta extends AbstractObjectAnalysis
             $this->pool->createClass(Model::class)
                 ->setName($name)
                 ->setDomid($domId)
-                ->setType(static::TYPE_INTERNALS)
+                ->setType($this->pool->messages->getHelp('classInternals'))
                 ->addParameter(static::PARAM_DATA, $this->generateMetaData($ref))
                 ->injectCallback($this->pool->createClass(ThroughMeta::class))
         ));
