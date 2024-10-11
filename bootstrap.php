@@ -246,7 +246,7 @@ call_user_func(function () {
     // When it does something stupid, krexxLoader will handle the rest.
     set_error_handler($krexxLoader);
     try {
-        if (class_exists(\Brainworxx\Krexx\Krexx::class) === false) {
+        if (!class_exists(\Brainworxx\Krexx\Krexx::class)) {
             $krexxLoader();
         }
     } catch (\Throwable $e) {
