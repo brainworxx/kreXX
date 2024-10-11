@@ -90,6 +90,7 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughArray.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughConfig.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughConstants.php';
+        include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/AbstractThroughGetter.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughGetter.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughLargeArray.php';
         include_once KREXX_DIR . 'src/Analyse/Callback/Iterate/ThroughMethods.php';
