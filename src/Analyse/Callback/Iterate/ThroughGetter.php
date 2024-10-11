@@ -202,19 +202,19 @@ class ThroughGetter extends AbstractCallback implements
      */
     protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model): string
     {
-        try {
-            $refProp = $this->getReflectionProperty($reflectionMethod);
-        } catch (ReflectionException $e) {
-            // We ignore this one.
-            return '';
-        }
-
         $this->parameters[static::PARAM_ADDITIONAL] = [
             static::PARAM_NOTHING_FOUND => true,
             static::PARAM_VALUE => null,
             static::PARAM_REFLECTION_PROPERTY => null,
             static::PARAM_REFLECTION_METHOD => $reflectionMethod
         ];
+
+        try {
+            $refProp = $this->getReflectionProperty($reflectionMethod);
+        } catch (ReflectionException $e) {
+            // We ignore this one.
+            return '';
+        }
 
         if ($refProp !== null) {
             $this->prepareResult($refProp, $model);
@@ -274,19 +274,21 @@ class ThroughGetter extends AbstractCallback implements
             return;
         }
 
+        // We take the first one that we get.
+        // There may others in there, but when the developer uses static
+        // caching, this is where the value should be.
         $parts = explode('[', $results[0]);
-        if (empty($parts) || count($parts) !== 2) {
+        if (count($parts) !== 2) {
             return;
         }
 
-        $containerName = $parts[0];
-        $key = trim($parts[1], '\'"');
-
         // There may (or may not) be gibberish in there, but it does not matter.
+        $containerName = $parts[0];
         if (!$reflectionClass->hasProperty($containerName)) {
             return;
         }
 
+        $key = trim($parts[1], '\'"');
         $container = $reflectionClass->retrieveValue($reflectionClass->getProperty($containerName));
         if (!isset($container[$key])) {
             return;
@@ -298,7 +300,6 @@ class ThroughGetter extends AbstractCallback implements
         // We also add the stuff, that we were able to do so far.
         $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_NOTHING_FOUND] = false;
         $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_VALUE] = $container[$key];
-        $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_REFLECTION_PROPERTY] = null;
     }
 
     /**
