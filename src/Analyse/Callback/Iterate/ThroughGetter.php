@@ -190,6 +190,26 @@ class ThroughGetter extends AbstractCallback implements
     }
 
     /**
+     * Reset the parameters for every getter.
+     *
+     * We do this for the eventsystem, so a listener can gete additional data
+     * from the current analysis process. Or the listener can inject stuff
+     * here.
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     * @return void
+     */
+    protected function resetParameters(ReflectionMethod $reflectionMethod)
+    {
+        $this->parameters[static::PARAM_ADDITIONAL] = [
+            static::PARAM_NOTHING_FOUND => true,
+            static::PARAM_VALUE => null,
+            static::PARAM_REFLECTION_PROPERTY => null,
+            static::PARAM_REFLECTION_METHOD => $reflectionMethod
+        ];
+    }
+
+    /**
      * Try to get a possible return value and render the result.
      *
      * @param \ReflectionMethod $reflectionMethod
@@ -202,13 +222,7 @@ class ThroughGetter extends AbstractCallback implements
      */
     protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model): string
     {
-        $this->parameters[static::PARAM_ADDITIONAL] = [
-            static::PARAM_NOTHING_FOUND => true,
-            static::PARAM_VALUE => null,
-            static::PARAM_REFLECTION_PROPERTY => null,
-            static::PARAM_REFLECTION_METHOD => $reflectionMethod
-        ];
-
+        $this->resetParameters($reflectionMethod);
         try {
             $refProp = $this->getReflectionProperty($reflectionMethod);
         } catch (ReflectionException $e) {
@@ -256,8 +270,6 @@ class ThroughGetter extends AbstractCallback implements
             // There is no code for internal methods.
             return;
         }
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
-        $reflectionClass = $this->parameters[static::PARAM_REF];
 
         // Read the sourcecode into a string.
         $sourcecode = $this->pool->fileService->readFile(
@@ -282,24 +294,43 @@ class ThroughGetter extends AbstractCallback implements
             return;
         }
 
+        $result = $this->extractContainerKeyNames($parts);
+        if ($result !== null) {
+            $model->setData($result);
+            // Give the plugins the opportunity to do something with the value, or
+            // try to resolve it, if nothing was found.
+            // We also add the stuff, that we were able to do so far.
+            $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_NOTHING_FOUND] = false;
+            $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_VALUE] = $result;
+        }
+    }
+
+    /**
+     * Extract the value from the parsed source code.
+     *
+     * @param array $parts
+     *   The parsed source code, organised in parts.
+     * @return mixed|null
+     *   The extracted value. Null means that we were unable to find anything
+     *   with certainty.
+     */
+    protected function extractContainerKeyNames(array $parts)
+    {
         // There may (or may not) be gibberish in there, but it does not matter.
         $containerName = $parts[0];
+        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
+        $reflectionClass = $this->parameters[static::PARAM_REF];
         if (!$reflectionClass->hasProperty($containerName)) {
-            return;
+            return null;
         }
 
         $key = trim($parts[1], '\'"');
         $container = $reflectionClass->retrieveValue($reflectionClass->getProperty($containerName));
         if (!isset($container[$key])) {
-            return;
+            return null;
         }
-        $model->setData($container[$key]);
 
-        // Give the plugins the opportunity to do something with the value, or
-        // try to resolve it, if nothing was found.
-        // We also add the stuff, that we were able to do so far.
-        $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_NOTHING_FOUND] = false;
-        $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_VALUE] = $container[$key];
+        return $container[$key];
     }
 
     /**
