@@ -37,13 +37,13 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Iterate;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
-use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\DeepGetterFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\View\Skins\RenderHans;
+use Brainworxx\Krexx\Tests\Fixtures\ContainerFixture;
 use ReflectionMethod;
 
 class ThroughGetterTest extends AbstractHelper
@@ -80,88 +80,81 @@ class ThroughGetterTest extends AbstractHelper
     public function testCallMe()
     {
         $this->mockEmergencyHandler();
-
         // Test the events.
         // Some events are called multiple times, so we can not rely on the
         // mockEventService method.
         $throughGetter = new ThroughGetter(Krexx::$pool);
-        $eventServiceMock = $this->createMock(Event::class);
-        $eventServiceMock->expects($this->exactly(52))
-            ->method('dispatch')
-            ->with(...$this->withConsecutive(
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::callMe::start', $throughGetter],
-                 // getMyPropertyOne
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertyTwo
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertyThree
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertyFour
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertyFive
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertySix
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertySeven
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertyEight
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyPropertyNine
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // _getMyPropertyTen
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getMyStatic
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getNull
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getAnotherGetter
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // getLiterallyNoting
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // isMyPropertyTwelve
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // hasMyPropertyThirteen
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
-                // hasMyPropertyOne
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
-                ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter]
-
-            ))->will($this->returnValue(''));
-        Krexx::$pool->eventService = $eventServiceMock;
-
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::callMe::start', $throughGetter],
+            // getMyPropertyOne
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyTwo
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyThree
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyFour
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyFive
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertySix
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertySeven
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyEight
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyNine
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // _getMyPropertyTen
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyStatic
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getNull
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getAnotherGetter
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getLiterallyNoting
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // isMyPropertyTwelve
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // hasMyPropertyThirteen
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // hasMyPropertyOne
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter]
+        );
 
         // Prevent the further routing.
         Krexx::$pool->routing = new RoutingNothing(Krexx::$pool);
@@ -177,31 +170,31 @@ class ThroughGetterTest extends AbstractHelper
         $data = new DeepGetterFixture();
         $ref = new ReflectionClass($data);
         $fixture = [
-          'normalGetter' => [
-              new ReflectionMethod($data, 'getMyPropertyOne'),
-              new ReflectionMethod($data, 'getMyPropertyTwo'),
-              new ReflectionMethod($data, 'getMyPropertyThree'),
-              new ReflectionMethod($data, 'getMyPropertyFour'),
-              new ReflectionMethod($data, 'getMyPropertyFive'),
-              new ReflectionMethod($data, 'getMyPropertySix'),
-              new ReflectionMethod($data, 'getMyPropertySeven'),
-              new ReflectionMethod($data, 'getMyPropertyEight'),
-              new ReflectionMethod($data, 'getMyPropertyNine'),
-              new ReflectionMethod($data, '_getMyPropertyTen'),
-              new ReflectionMethod($data, 'getMyStatic'),
-              new ReflectionMethod($data, 'getNull'),
-              new ReflectionMethod($data, 'getAnotherGetter'),
-              new ReflectionMethod($data, 'getLiterallyNoting'),
-          ],
-          'isGetter' => [
-              new ReflectionMethod($data, 'isMyPropertyTwelve'),
-          ],
-          'hasGetter' => [
-              new ReflectionMethod($data, 'hasMyPropertyThirteen'),
-              new ReflectionMethod($data, 'hasMyPropertyOne'),
-          ],
-          'ref' => $ref,
-          'data' => $data
+            'normalGetter' => [
+                new ReflectionMethod($data, 'getMyPropertyOne'),
+                new ReflectionMethod($data, 'getMyPropertyTwo'),
+                new ReflectionMethod($data, 'getMyPropertyThree'),
+                new ReflectionMethod($data, 'getMyPropertyFour'),
+                new ReflectionMethod($data, 'getMyPropertyFive'),
+                new ReflectionMethod($data, 'getMyPropertySix'),
+                new ReflectionMethod($data, 'getMyPropertySeven'),
+                new ReflectionMethod($data, 'getMyPropertyEight'),
+                new ReflectionMethod($data, 'getMyPropertyNine'),
+                new ReflectionMethod($data, '_getMyPropertyTen'),
+                new ReflectionMethod($data, 'getMyStatic'),
+                new ReflectionMethod($data, 'getNull'),
+                new ReflectionMethod($data, 'getAnotherGetter'),
+                new ReflectionMethod($data, 'getLiterallyNoting'),
+            ],
+            'isGetter' => [
+                new ReflectionMethod($data, 'isMyPropertyTwelve'),
+            ],
+            'hasGetter' => [
+                new ReflectionMethod($data, 'hasMyPropertyThirteen'),
+                new ReflectionMethod($data, 'hasMyPropertyOne'),
+            ],
+            'ref' => $ref,
+            'data' => $data
         ];
 
         // Run the test.
@@ -244,6 +237,111 @@ class ThroughGetterTest extends AbstractHelper
             15 => true
         ];
         // The last one is missing.
+        foreach ($expectations as $key => $result) {
+            $this->assertEquals($result, $models[$key]->getData(), 'Count: ' . $key);
+        }
+    }
+
+    /**
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::goThroughMethodList
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyValue
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::getReflectionProperty
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrieveContainerValue
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::findIt
+     */
+    public function testCallMeContainer()
+    {
+        $this->mockEmergencyHandler();
+
+        // Test the events.
+        // Some events are called multiple times, so we can not rely on the
+        // mockEventService method.
+        $throughGetter = new ThroughGetter(Krexx::$pool);
+        $throughGetter = new ThroughGetter(Krexx::$pool);
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::callMe::start', $throughGetter],
+            // getValue
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getSomething
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getStatic
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getWrongContainer
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getBadFormatting
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getAnError
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getSomethingElse
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getBadComments
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+        );
+
+        // Prevent the further routing.
+        Krexx::$pool->routing = new RoutingNothing(Krexx::$pool);
+
+        // Mock the render object.
+        $renderMock = $this->createMock(RenderHans::class);
+        $renderMock->expects($this->exactly(6))
+            ->method('renderExpandableChild')
+            ->will($this->returnValue(''));
+        Krexx::$pool->render = $renderMock;
+
+        // Create a fixture.
+        $data = new ContainerFixture();
+        $ref = new ReflectionClass($data);
+        $fixture = [
+            'normalGetter' => [
+                new ReflectionMethod($data, 'getValue'),
+                new ReflectionMethod($data, 'getSomething'),
+                new ReflectionMethod($data, 'getStatic'),
+                new ReflectionMethod($data, 'getWrongContainer'),
+                new ReflectionMethod($data, 'getBadFormatting'),
+                new ReflectionMethod($data, 'getAnError'),
+                new ReflectionMethod($data, 'getSomethingElse'),
+                new ReflectionMethod($data, 'getBadComments'),
+            ],
+            'ref' => $ref,
+            'data' => $data
+        ];
+
+        // Run the test.
+        $throughGetter->setParameters($fixture)->callMe();
+
+        // Get the models from RoutingNothing and assert their values.
+        $models = Krexx::$pool->routing->model;
+        $this->assertCount(2, $models);
+        $expectations = [
+            // getValue
+            0 => 1,
+            // getSomething
+            1 => 'more stuff',
+            // getStatic is missing
+            // getAnError is missing
+            // getWrongContainer is missing
+            // getSomethingElse is missing
+            // getBadComments is missing
+            // both would not have any value, at all.
+        ];
+
         foreach ($expectations as $key => $result) {
             $this->assertEquals($result, $models[$key]->getData(), 'Count: ' . $key);
         }

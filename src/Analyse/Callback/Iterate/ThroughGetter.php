@@ -202,16 +202,26 @@ class ThroughGetter extends AbstractCallback implements
      */
     protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model): string
     {
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
-        $reflectionClass = $this->parameters[static::PARAM_REF];
         try {
-            $refProp = $this->getReflectionProperty($reflectionClass, $reflectionMethod);
+            $refProp = $this->getReflectionProperty($reflectionMethod);
         } catch (ReflectionException $e) {
             // We ignore this one.
             return '';
         }
 
-        $this->prepareResult($reflectionClass, $reflectionMethod, $refProp, $model);
+        $this->parameters[static::PARAM_ADDITIONAL] = [
+            static::PARAM_NOTHING_FOUND => true,
+            static::PARAM_VALUE => null,
+            static::PARAM_REFLECTION_PROPERTY => null,
+            static::PARAM_REFLECTION_METHOD => $reflectionMethod
+        ];
+
+        if ($refProp !== null) {
+            $this->prepareResult($refProp, $model);
+        } else {
+            $this->retrieveContainerValue($reflectionMethod, $model);
+        }
+
         $this->dispatchEventWithModel(__FUNCTION__ . '::resolving', $model);
 
         if ($this->parameters[static::PARAM_ADDITIONAL][static::PARAM_NOTHING_FOUND]) {
@@ -219,14 +229,12 @@ class ThroughGetter extends AbstractCallback implements
             // Found nothing  :-(
             // We literally have no info. We need to tell the user.
             // We render this right away, without any routing.
-            return $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(
-                    __FUNCTION__ . static::EVENT_MARKER_END,
-                    $model->setType($messages->getHelp('getterValueUnknown'))
-                        ->setNormal($messages->getHelp('getterValueUnknown'))
-                        ->addToJson($messages->getHelp('metaHint'), $messages->getHelp('getterUnknown'))
-                )
-            );
+            return $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
+                __FUNCTION__ . static::EVENT_MARKER_END,
+                $model->setType($messages->getHelp('getterValueUnknown'))
+                    ->setNormal($messages->getHelp('getterValueUnknown'))
+                    ->addToJson($messages->getHelp('metaHint'), $messages->getHelp('getterUnknown'))
+            ));
         }
 
         return $this->pool->routing->analysisHub(
@@ -235,33 +243,76 @@ class ThroughGetter extends AbstractCallback implements
     }
 
     /**
+     * Doing a deep dive with using regex to parse for possible results.
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     *   The reflection method to analyse.
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model so far.
+     */
+    protected function retrieveContainerValue(ReflectionMethod $reflectionMethod, Model $model): void
+    {
+        if ($reflectionMethod->isInternal()) {
+            // There is no code for internal methods.
+            return;
+        }
+        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
+        $reflectionClass = $this->parameters[static::PARAM_REF];
+
+        // Read the sourcecode into a string.
+        $sourcecode = $this->pool->fileService->readFile(
+            $reflectionMethod->getFileName(),
+            $reflectionMethod->getStartLine(),
+            $reflectionMethod->getEndLine()
+        );
+
+        // Identify the container.
+        // We are looking for something like this:
+        // $this->$container['key'];
+        $results = $this->findIt(['return $this->', '];'], $sourcecode);
+        if (empty($results)) {
+            return;
+        }
+
+        $parts = explode('[', $results[0]);
+        if (empty($parts) || count($parts) !== 2) {
+            return;
+        }
+
+        $containerName = $parts[0];
+        $key = trim($parts[1], '\'"');
+
+        // There may (or may not) be gibberish in there, but it does not matter.
+        if (!$reflectionClass->hasProperty($containerName)) {
+            return;
+        }
+
+        $container = $reflectionClass->retrieveValue($reflectionClass->getProperty($containerName));
+        if (!isset($container[$key])) {
+            return;
+        }
+        $model->setData($container[$key]);
+
+        // Give the plugins the opportunity to do something with the value, or
+        // try to resolve it, if nothing was found.
+        // We also add the stuff, that we were able to do so far.
+        $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_NOTHING_FOUND] = false;
+        $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_VALUE] = $container[$key];
+        $this->parameters[static::PARAM_ADDITIONAL][static::PARAM_REFLECTION_PROPERTY] = null;
+    }
+
+    /**
      * Prepare the retrieved result for output.
      *
-     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass
-     *   The reflection class of the object we are analysing.
-     * @param \ReflectionMethod $reflectionMethod
-     *   The reflection of the getter where we want to retrieve the return value
-     * @param \ReflectionProperty|null $refProp
+     * @param \ReflectionProperty $refProp
      *   The reflection of the property that it may return.
      * @param \Brainworxx\Krexx\Analyse\Model $model
      *   The model so far.
      */
-    protected function prepareResult(
-        ReflectionClass $reflectionClass,
-        ReflectionMethod $reflectionMethod,
-        ?ReflectionProperty $refProp,
-        Model $model
-    ): void {
-        $this->parameters[static::PARAM_ADDITIONAL] = [
-            static::PARAM_NOTHING_FOUND => true,
-            static::PARAM_VALUE => null,
-            static::PARAM_REFLECTION_PROPERTY => null,
-            static::PARAM_REFLECTION_METHOD => $reflectionMethod
-        ];
-
-        if ($refProp === null) {
-            return;
-        }
+    protected function prepareResult(ReflectionProperty $refProp, Model $model): void
+    {
+        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
+        $reflectionClass = $this->parameters[static::PARAM_REF];
 
         // We've got ourselves a possible result.
         $value = $reflectionClass->retrieveValue($refProp);
@@ -294,8 +345,6 @@ class ThroughGetter extends AbstractCallback implements
      *
      * We try to guess the corresponding property in the class.
      *
-     * @param ReflectionClass $classReflection
-     *   The reflection class oof the object we are analysing.
      * @param \ReflectionMethod $reflectionMethod
      *   The reflection ot the method of which we want to coax the result from
      *   the class or sourcecode.
@@ -307,9 +356,9 @@ class ThroughGetter extends AbstractCallback implements
      *   indicate that we have found nothing.
      */
     protected function getReflectionProperty(
-        ReflectionClass $classReflection,
         ReflectionMethod $reflectionMethod
     ): ?ReflectionProperty {
+        $reflectionClass = $this->parameters[static::PARAM_REF];
         // We may be facing different writing styles.
         // The property we want from getMyProperty() should be named myProperty,
         // but we can not rely on this.
@@ -337,14 +386,14 @@ class ThroughGetter extends AbstractCallback implements
         ];
 
         foreach ($names as $name) {
-            if ($classReflection->hasProperty($name)) {
-                return $classReflection->getProperty($name);
+            if ($reflectionClass->hasProperty($name)) {
+                return $reflectionClass->getProperty($name);
             }
         }
 
         // Time to do some deep stuff. We parse the sourcecode via regex!
         return $reflectionMethod->isInternal() ? null :
-            $this->getReflectionPropertyDeep($classReflection, $reflectionMethod);
+            $this->getReflectionPropertyDeep($reflectionClass, $reflectionMethod);
     }
 
     /**
@@ -445,7 +494,7 @@ class ThroughGetter extends AbstractCallback implements
         if ($classReflection->hasMethod($methodName) && ++$this->deep < 3) {
             // We need to be careful not to goo too deep, we might end up
             // in a loop.
-            return $this->getReflectionProperty($classReflection, $classReflection->getMethod($methodName));
+            return $this->getReflectionProperty($classReflection->getMethod($methodName));
         }
 
         return null;
