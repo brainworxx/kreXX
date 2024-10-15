@@ -17,6 +17,7 @@
 
 5.0.6
 - Bugfix: Removed some self:: references.
+- Bugfix: Better looking exclamation mark for the SmokyGrey skin.
 
 5.0.5
 - Added formatting for float values for better readability.
