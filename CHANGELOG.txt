@@ -2,6 +2,7 @@
 - Added class meta analysis for class names in strings.
 - Added a hint to the 'unknown' getter analysis result.
 - Added container handling to the getter analysis.
+- Added a unit of measurement to the benchmarking.
 - Change: The scalar analysis classes are now reused.
 - Change: Renamed the language fallback key from 'text' to 'en'.
 - Change: Dropped PHP 7.2 and 7.3 support.

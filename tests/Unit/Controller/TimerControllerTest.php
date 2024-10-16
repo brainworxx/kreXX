@@ -139,7 +139,7 @@ class TimerControllerTest extends AbstractController
                     $this->assertEquals('kreXX timer', $headline);
                     $this->assertEquals(
                         [
-                            'Total time' => 2000000.0,
+                            'Total time' => '2000000ms',
                             'first->second' => '50%',
                             'second->End' => '50%'
                         ],
