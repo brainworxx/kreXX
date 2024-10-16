@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\DeepGetterFixture;
 use Brainworxx\Krexx\Tests\Fixtures\GetterFixture;
 
-class ByMethodNameTest extends AbstractGetterTest
+class ByMethodNameTest extends AbstractGetter
 {
     public function setUp(): void
     {

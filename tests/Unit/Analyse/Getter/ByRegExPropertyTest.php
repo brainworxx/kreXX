@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Tests\Fixtures\GetterFixture;
 use Brainworxx\Krexx\Krexx;
 use Exception;
 
-class ByRegExPropertyTest extends AbstractGetterTest
+class ByRegExPropertyTest extends AbstractGetter
 {
     public function setUp(): void
     {
