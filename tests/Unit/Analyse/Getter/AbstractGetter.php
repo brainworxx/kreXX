@@ -7,7 +7,7 @@ use Brainworxx\Krexx\Analyse\Getter\GetterInterface;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 
-abstract class AbstractGetterTest extends AbstractHelper
+class AbstractGetter extends AbstractHelper
 {
     protected GetterInterface $testSubject;
 
