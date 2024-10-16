@@ -33,22 +33,45 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\Unit\Analyse\Comment;
+declare(strict_types=1);
 
-use Brainworxx\Krexx\Analyse\Comment\Methods;
-use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
-use Brainworxx\Krexx\Krexx;
+namespace Brainworxx\Krexx\Analyse\Getter;
 
-class AbstractCommentTest extends AbstractHelper
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use ReflectionMethod;
+use ReflectionProperty;
+
+interface GetterInterface
 {
     /**
-     * Testing the setting of the pool.
+     * We retrieve the possible return value of the gatter, without calling it.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::__construct
+     * @param \ReflectionMethod $reflectionMethod
+     *   The reflection of the getter we are analysing.
+     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass
+     *   The reflection of the class we are analysing.
+     * @return mixed
+     *   We retrieve the value.
      */
-    public function testConstruct()
-    {
-        $methodTest = new Methods(Krexx::$pool);
-        $this->assertEquals(Krexx::$pool, $this->retrieveValueByReflection('pool', $methodTest));
-    }
+    public function retrieveIt(
+        ReflectionMethod $reflectionMethod,
+        ReflectionClass $reflectionClass,
+        string $currentPrefix
+    );
+
+    /**
+     * Have we actually found something?
+     *
+     * A null value is also a value after all.
+     *
+     * @return bool
+     */
+    public function foundSomething(): bool;
+
+    /**
+     * Get the used reflection property, if available.
+     *
+     * @return \ReflectionProperty|null
+     */
+    public function getReflectionProperty(): ?ReflectionProperty;
 }
