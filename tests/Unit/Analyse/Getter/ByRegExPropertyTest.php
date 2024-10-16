@@ -35,30 +35,35 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Getter;
 
-use Brainworxx\Krexx\Analyse\Getter\ByMethodName;
-use Brainworxx\Krexx\Krexx;
+use Brainworxx\Krexx\Analyse\Getter\ByRegExProperty;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\DeepGetterFixture;
 use Brainworxx\Krexx\Tests\Fixtures\GetterFixture;
+use Brainworxx\Krexx\Krexx;
+use Exception;
 
-class ByMethodNameTest extends AbstractGetterTest
+class ByRegExPropertyTest extends AbstractGetterTest
 {
     public function setUp(): void
     {
         parent::setUp();
-        $this->testSubject = new ByMethodName(Krexx::$pool);
+        $this->testSubject = new ByRegExProperty(Krexx::$pool);
+    }
+    /**
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::__construct
+     */
+    public function testConstruct()
+    {
+        $byRegExProperty = new ByRegExProperty(Krexx::$pool);
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $byRegExProperty));
     }
 
     /**
-     * Test the retrieval of the possible getter by the method name, simple.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::retrieveIt
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::retrieveReflectionProperty
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::prepareResult
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::preparePropertyName
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::convertToSnakeCase
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::foundSomething
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::getReflectionProperty
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrieveIt
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrieveReflectionProperty
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::findIt
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::analyseRegexResult
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrievePropertyByName
      */
     public function testRetrieveItSimple()
     {
@@ -76,9 +81,9 @@ class ByMethodNameTest extends AbstractGetterTest
                 // The simple ByMethodName analysis should not be able to tackle this one.
                 'reflection' => $classReflection->getMethod('isGood'),
                 'prefix' => 'is',
-                'expectation' => null,
-                'propertyName' => null,
-                'hasResult' => false
+                'expectation' => true,
+                'propertyName' => 'isGood',
+                'hasResult' => true
             ],
             [
                 'reflection' => $classReflection->getMethod('hasValue'),
@@ -101,15 +106,36 @@ class ByMethodNameTest extends AbstractGetterTest
     }
 
     /**
+     * Test that we do not handle internal classes or methods.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrieveIt
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::extractContainerKeyNames
+     */
+    public function testRetrieveItInternal()
+    {
+        $instance = new Exception();
+        $classReflection = new ReflectionClass($instance);
+        $fixture = [
+            [
+                'reflection' => $classReflection->getMethod('getCode'),
+                'prefix' => 'get',
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
+            ]
+        ];
+
+        $this->validateResults($fixture, $classReflection);
+    }
+
+    /**
      * Test the retrieval of the possible getter by the method name and by, deep
      *
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::retrieveIt
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::retrieveReflectionProperty
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::prepareResult
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::preparePropertyName
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::convertToSnakeCase
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::foundSomething
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::getReflectionProperty
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrieveIt
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrieveReflectionProperty
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::findIt
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::analyseRegexResult
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrievePropertyByName
      */
     public function testRetrieveItDeep()
     {
@@ -175,9 +201,9 @@ class ByMethodNameTest extends AbstractGetterTest
             [
                 'reflection' => $classReflection->getMethod('getMyPropertyNine'),
                 'prefix' => 'get',
-                'expectation' => null,
-                'propertyName' => null,
-                'hasResult' => false
+                'expectation' => 'nine',
+                'propertyName' => 'somethingDifferent',
+                'hasResult' => true
             ],
             [
                 'reflection' => $classReflection->getMethod('_getMyPropertyTen'),
@@ -189,9 +215,9 @@ class ByMethodNameTest extends AbstractGetterTest
             [
                 'reflection' => $classReflection->getMethod('getMyStatic'),
                 'prefix' => 'get',
-                'expectation' => 'eleven',
-                'propertyName' => 'myStatic',
-                'hasResult' => true
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
             ],
             [
                 'reflection' => $classReflection->getMethod('getNull'),
@@ -203,9 +229,9 @@ class ByMethodNameTest extends AbstractGetterTest
             [
                 'reflection' => $classReflection->getMethod('getAnotherGetter'),
                 'prefix' => 'get',
-                'expectation' => null,
-                'propertyName' => null,
-                'hasResult' => false
+                'expectation' => 'eight',
+                'propertyName' => '_my_property_eight',
+                'hasResult' => true
             ],
             [
                 'reflection' => $classReflection->getMethod('getLiterallyNoting'),
@@ -231,9 +257,9 @@ class ByMethodNameTest extends AbstractGetterTest
             [
                 'reflection' => $classReflection->getMethod('hasMyPropertyOne'),
                 'prefix' => 'has',
-                'expectation' => true,
-                'propertyName' => 'myPropertyOne',
-                'hasResult' => true
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
             ]
         ];
         $this->validateResults($fixture, $classReflection);
