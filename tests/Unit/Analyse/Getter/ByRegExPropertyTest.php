@@ -109,7 +109,11 @@ class ByRegExPropertyTest extends AbstractGetterTest
      * Test that we do not handle internal classes or methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrieveIt
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::extractContainerKeyNames
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrieveReflectionProperty
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::findIt
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::analyseRegexResult
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExProperty::retrievePropertyByName
+     *
      */
     public function testRetrieveItInternal()
     {
