@@ -15,6 +15,7 @@
 - Change: Only use byRef when absolutely necessary.
 - Change: We do not filter the file path anymore.
 - Change: Moved some frontend literals to the translations.
+- Change: Split the getter analysis into several smaller classes.
 
 5.0.6
 - Bugfix: Removed some self:: references.

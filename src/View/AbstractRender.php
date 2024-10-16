@@ -162,6 +162,6 @@ abstract class AbstractRender implements RenderInterface
             $typeClasses .= 'k' . $typeClass . ' ';
         }
 
-        return $typeClasses;
+        return strtolower($typeClasses);
     }
 }

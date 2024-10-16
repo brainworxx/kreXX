@@ -33,22 +33,11 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Brainworxx\Krexx\Tests\Unit\Analyse\Comment;
+namespace Brainworxx\Krexx\Tests\Unit\Analyse\Getter;
 
-use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
-use Brainworxx\Krexx\Krexx;
 
-class AbstractCommentTest extends AbstractHelper
+class ByMethodNameTest extends AbstractHelper
 {
-    /**
-     * Testing the setting of the pool.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::__construct
-     */
-    public function testConstruct()
-    {
-        $methodTest = new Methods(Krexx::$pool);
-        $this->assertEquals(Krexx::$pool, $this->retrieveValueByReflection('pool', $methodTest));
-    }
+
 }

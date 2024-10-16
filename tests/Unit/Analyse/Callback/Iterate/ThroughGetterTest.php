@@ -51,7 +51,7 @@ class ThroughGetterTest extends AbstractHelper
     /**
      * Test the creation of the comment analysis.
      *
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\AbstractThroughGetter::__construct
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::__construct
      */
     public function testConstruct()
     {
@@ -67,15 +67,6 @@ class ThroughGetterTest extends AbstractHelper
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::goThroughMethodList
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyValue
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::resetParameters
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::extractContainerKeyNames
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::prepareResult
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::getReflectionProperty
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::preparePropertyName
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::getReflectionPropertyDeep
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::analyseRegexResult
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\AbstractThroughGetter::retrievePropertyByName
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\AbstractThroughGetter::convertToSnakeCase
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\AbstractThroughGetter::findIt
      *
      * @throws \ReflectionException
      */
@@ -249,10 +240,6 @@ class ThroughGetterTest extends AbstractHelper
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::goThroughMethodList
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyValue
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::resetParameters
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::extractContainerKeyNames
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::getReflectionProperty
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrieveContainerValue
-     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\AbstractThroughGetter::findIt
      */
     public function testCallMeContainer()
     {
