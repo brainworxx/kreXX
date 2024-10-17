@@ -67,6 +67,8 @@ class ThroughGetterTest extends AbstractHelper
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::goThroughMethodList
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyValue
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::resetParameters
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::prepareModel
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::prepareParameters
      *
      * @throws \ReflectionException
      */
@@ -240,6 +242,8 @@ class ThroughGetterTest extends AbstractHelper
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::goThroughMethodList
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyValue
      * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::resetParameters
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::prepareModel
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::prepareParameters
      */
     public function testCallMeContainer()
     {
