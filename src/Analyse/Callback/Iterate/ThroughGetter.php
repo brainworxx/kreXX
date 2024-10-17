@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Getter\ByMethodName;
 use Brainworxx\Krexx\Analyse\Getter\ByRegExContainer;
 use Brainworxx\Krexx\Analyse\Getter\ByRegExProperty;
+use Brainworxx\Krexx\Analyse\Getter\GetterInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use ReflectionMethod;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
@@ -219,22 +220,8 @@ class ThroughGetter extends AbstractCallback implements
         foreach ($this->getterAnalyser as $analyser) {
             $value = $analyser->retrieveIt($reflectionMethod, $reflectionClass, $currentPrefix);
             if ($analyser->foundSomething()) {
-                $model->setData($value);
-                $this->parameters[static::PARAM_ADDITIONAL] = [
-                    static::PARAM_NOTHING_FOUND => false,
-                    static::PARAM_VALUE => $value,
-                    static::PARAM_REFLECTION_PROPERTY => $analyser->getReflectionProperty(),
-                    static::PARAM_REFLECTION_METHOD => $reflectionMethod
-                ];
-
-                if ($value === null) {
-                    // A NULL value might mean that the values does not
-                    // exist, until the getter computes it.
-                    $model->addToJson(
-                        $this->pool->messages->getHelp('metaHint'),
-                        $this->pool->messages->getHelp('getterNull')
-                    );
-                }
+                $this->prepareParameters($value, $analyser, $reflectionMethod);
+                $this->prepareModel($model, $value);
                 break;
             }
         }
@@ -257,6 +244,45 @@ class ThroughGetter extends AbstractCallback implements
         return $this->pool->routing->analysisHub(
             $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $model)
         );
+    }
+
+    /**
+     * Prepare the model with the retrieved value.
+     *
+     * @param \Brainworxx\Krexx\Analyse\Model $model
+     *   The model, so far.
+     * @param mixed $value
+     *   The retrieved possible value. Can be anything.
+     */
+    protected function prepareModel(Model $model, $value): void
+    {
+        $model->setData($value);
+        if ($value === null) {
+            // A NULL value might mean that the values does not
+            // exist, until the getter computes it.
+            $model->addToJson(
+                $this->pool->messages->getHelp('metaHint'),
+                $this->pool->messages->getHelp('getterNull')
+            );
+        }
+    }
+
+    /**
+     * @param mixed $value
+     *   The possible value that we retrieved.
+     * @param \Brainworxx\Krexx\Analyse\Getter\GetterInterface $analyser
+     *   The analyser that we used.
+     * @param \ReflectionMethod $reflectionMethod
+     *   Reflection of the method that we are analysing.
+     */
+    protected function prepareParameters($value, GetterInterface $analyser, ReflectionMethod $reflectionMethod): void
+    {
+        $this->parameters[static::PARAM_ADDITIONAL] = [
+            static::PARAM_NOTHING_FOUND => false,
+            static::PARAM_VALUE => $value,
+            static::PARAM_REFLECTION_PROPERTY => $analyser->getReflectionProperty(),
+            static::PARAM_REFLECTION_METHOD => $reflectionMethod
+        ];
     }
 
     /**
