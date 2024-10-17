@@ -127,19 +127,23 @@ class ByRegExProperty extends ByMethodName
     }
 
     /**
-     * Searching for stuff via regex.
-     * Yay, dynamic regex stuff for fun and profit!
+     * Searching for stuff via regex. Type casting inside the code will be ignored.
      *
      * @param string[] $searchArray
      *   The search definition.
      * @param string $haystack
-     *   The haystack, obviously.
+     *   The haystack, obviously. Aka "the code".
      *
      * @return string[]|int[]
      *   The findings.
      */
     protected function findIt(array $searchArray, string $haystack): array
     {
+        // Some people cast their stuff before returning it.
+        // Remove it from the code before passing it to the regex.
+        $haystack = str_replace(['(int)', '(string)', '(float)', '(bool)'], '', $haystack);
+        $haystack = str_replace('  ', ' ', $haystack);
+
         $findings = [];
         preg_match_all(
             str_replace(

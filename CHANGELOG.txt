@@ -18,6 +18,7 @@
 - Change: Split the getter analysis into several smaller classes.
 
 5.0.6
+- Added the handling of type casting to the regex getter analysis.
 - Bugfix: Removed some self:: references.
 - Bugfix: Better looking exclamation mark for the SmokyGrey skin.
 
