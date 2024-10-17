@@ -52,13 +52,13 @@ class FatalHeaderTest extends AbstractRenderHans
         $recursionMock = $this->createMock(Recursion::class);
         $recursionMock->expects($this->exactly(2))
             ->method('getMarker')
-            ->will($this->returnValue('Marky Mark'));
+            ->willReturn('Marky Mark');
         Krexx::$pool->recursionHandler = $recursionMock;
 
         $chunkMock = $this->createMock(Chunks::class);
         $chunkMock->expects($this->once())
             ->method('getOfficialEncoding')
-            ->will($this->returnValue('Ute Efacht'));
+            ->willReturn('Ute Efacht');
         Krexx::$pool->chunks = $chunkMock;
 
         $cssJs = 'some content';

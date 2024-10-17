@@ -44,9 +44,9 @@ use Brainworxx\Krexx\Krexx;
 
 class ThroughConstantsTest extends AbstractHelper
 {
-    const SKIPPED_REASON = 'Skipped due to wrong PHP version.';
-    const PUBLIC_CONSTANT = 'Public constant ';
-    const STATIC_COLON_COLON = 'static::';
+    public const  SKIPPED_REASON = 'Skipped due to wrong PHP version.';
+    public const  PUBLIC_CONSTANT = 'Public constant ';
+    public const  STATIC_COLON_COLON = 'static::';
 
     /**
      * Run the test with the provided class name.

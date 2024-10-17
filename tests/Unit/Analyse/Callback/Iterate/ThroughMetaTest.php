@@ -49,7 +49,7 @@ use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 
 class ThroughMetaTest extends AbstractHelper
 {
-    const RENDER_EXPANDABLE_CHILD = 'renderExpandableChild';
+    public const  RENDER_EXPANDABLE_CHILD = 'renderExpandableChild';
 
     /**
      * @var string

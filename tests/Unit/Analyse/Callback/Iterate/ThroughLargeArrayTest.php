@@ -47,7 +47,7 @@ use stdClass;
 
 class ThroughLargeArrayTest extends AbstractHelper
 {
-    const RENDER_EXPANDABLE_CHILD = 'renderExpandableChild';
+    public const  RENDER_EXPANDABLE_CHILD = 'renderExpandableChild';
 
     /**
      * @var ThroughLargeArray
@@ -74,7 +74,7 @@ class ThroughLargeArrayTest extends AbstractHelper
         $eventServiceMock->expects($this->exactly(1))
             ->method('dispatch')
             ->with(...$this->withConsecutive(['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughLargeArray::callMe::start', $this->throughLargeArray]))
-            ->will($this->returnValue(''));
+            ->willReturn('');
         Krexx::$pool->eventService = $eventServiceMock;
 
         // Mock the routing class.

@@ -92,16 +92,16 @@ class AbstractControllerTest extends AbstractHelper
         $fileMock = $this->createMock(FileService::class);
         $fileMock->expects($this->any())
             ->method('fileIsReadable')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $fileMock->expects($this->any())
             ->method('getFileContents')
-            ->will($this->returnValue('some content'));
+            ->willReturn('some content');
         Krexx::$pool->fileService = $fileMock;
 
         $outputServiceMock = $this->createMock(Browser::class);
         $outputServiceMock->expects($this->any())
             ->method('addChunkString')
-            ->will($this->returnValue($outputServiceMock));
+            ->willReturn($outputServiceMock);
 
         Krexx::$pool->render = new RenderNothing(Krexx::$pool);
 
@@ -114,7 +114,7 @@ class AbstractControllerTest extends AbstractHelper
         $fileMock = $this->createMock(FileService::class);
         $fileMock->expects($this->any())
             ->method('fileIsReadable')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $fileMock->expects($this->never())
             ->method('getFileContents');
         Krexx::$pool->fileService = $fileMock;

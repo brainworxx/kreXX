@@ -80,7 +80,7 @@ class ProcessClosureTest extends AbstractHelper
         $fileserviceMock = $this->createMock(Fileservice::class);
         $fileserviceMock->expects($this->once())
             ->method('readSourcecode')
-            ->will($this->returnValue($containingCode));
+            ->willReturn($containingCode);
         $renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->fileService = $fileserviceMock;
         Krexx::$pool->render = $renderNothing;

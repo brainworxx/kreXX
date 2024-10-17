@@ -53,7 +53,7 @@ class ProcessBacktraceTest extends AbstractHelper
         $someFile = 'some file';
         $debugBacktrace = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Routing\\Process\\', 'debug_backtrace');
         $debugBacktrace->expects($this->any())
-            ->will($this->returnValue(
+            ->willReturn(
                 [
                     [
                         BacktraceConstInterface::TRACE_FILE => KREXX_DIR . 'src' . DIRECTORY_SEPARATOR . 'blargh',
@@ -72,7 +72,7 @@ class ProcessBacktraceTest extends AbstractHelper
                         $data => 'Step 4',
                     ],
                 ]
-            ));
+            );
     }
 
     /**

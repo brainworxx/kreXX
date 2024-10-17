@@ -64,7 +64,7 @@ class AbstractProcessNoneScalarTest extends AbstractHelper
         $emergencyHandlerMock = $this->createMock(Emergency::class);
         $emergencyHandlerMock->expects($this->once())
             ->method('checkNesting')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         Krexx::$pool->emergencyHandler = $emergencyHandlerMock;
         $renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->render = $renderNothing;
@@ -104,7 +104,7 @@ class AbstractProcessNoneScalarTest extends AbstractHelper
         $recursionMock = $this->createMock(Recursion::class);
         $recursionMock->expects($this->once())
             ->method('isInHive')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         Krexx::$pool->recursionHandler = $recursionMock;
         $renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->render = $renderNothing;
@@ -137,7 +137,7 @@ class AbstractProcessNoneScalarTest extends AbstractHelper
         $recursionMock = $this->createMock(Recursion::class);
         $recursionMock->expects($this->once())
             ->method('isInHive')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         Krexx::$pool->recursionHandler = $recursionMock;
         $renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->render = $renderNothing;

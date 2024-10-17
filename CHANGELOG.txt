@@ -17,6 +17,7 @@
 - Change: We do not filter the file path anymore.
 - Change: Moved some frontend literals to the translations.
 - Change: Split the getter analysis into several smaller classes.
+- Change: Removed deprecations from the unit tests.
 
 5.0.6
 - Added the handling of type casting to the regex getter analysis.

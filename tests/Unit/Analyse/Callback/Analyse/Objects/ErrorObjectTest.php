@@ -99,14 +99,14 @@ class ErrorObjectTest extends AbstractHelper
             ));
         $codegenMock->expects($this->exactly(2))
             ->method('generateSource')
-            ->will($this->returnValue(''));
+            ->willReturn('');
         Krexx::$pool->codegenHandler = $codegenMock;
 
         $fileServiceMock = $this->createMock(File::class);
         $fileServiceMock->expects($this->once())
             ->method('readSourcecode')
             ->with($file, ($line - 1), ($line - 6), ($line + 4))
-            ->will($this->returnValue($code));
+            ->willReturn($code);
         Krexx::$pool->fileService = $fileServiceMock;
 
         $messageMock = $this->createMock(Messages::class);
@@ -121,7 +121,7 @@ class ErrorObjectTest extends AbstractHelper
 
         Krexx::$pool->emergencyHandler->expects($this->once())
             ->method('getNestingLevel')
-            ->will($this->returnValue(1));
+            ->willReturn(1);
 
         $fixture = [
             $this->errorObject::PARAM_DATA => $exception
@@ -153,7 +153,7 @@ class ErrorObjectTest extends AbstractHelper
 
         Krexx::$pool->emergencyHandler->expects($this->once())
             ->method('getNestingLevel')
-            ->will($this->returnValue(2));
+            ->willReturn(2);
 
         $fixture = [
             $this->errorObject::PARAM_DATA => $exception

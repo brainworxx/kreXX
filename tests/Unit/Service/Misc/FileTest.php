@@ -46,13 +46,13 @@ use ReflectionClass;
 
 class FileTest extends AbstractHelper
 {
-    const DOC_ROOT = 'docRoot';
-    const IS_READABLE_CACHE = 'isReadableCache';
-    const FILE_NAME = 'some file';
-    const MISC_NAMESPACE = '\\Brainworxx\\Krexx\\Service\\Misc\\';
-    const CHMOD = 'chmod';
-    const UNLINK = 'unlink';
-    const IS_FILE = 'is_file';
+    public const  DOC_ROOT = 'docRoot';
+    public const  IS_READABLE_CACHE = 'isReadableCache';
+    public const  FILE_NAME = 'some file';
+    public const  MISC_NAMESPACE = '\\Brainworxx\\Krexx\\Service\\Misc\\';
+    public const  CHMOD = 'chmod';
+    public const  UNLINK = 'unlink';
+    public const  IS_FILE = 'is_file';
 
     /**
      * @var \Brainworxx\Krexx\Service\Misc\File
@@ -115,7 +115,7 @@ class FileTest extends AbstractHelper
                 [$source, 51, $returnValue],
                 [$source, 52, $returnValue],
                 [$source, 53, $returnValue]
-            ))->will($this->returnValue(''));
+            ))->willReturn('');
         Krexx::$pool->render = $renderMock;
 
         // Mock the string encoder.
@@ -134,7 +134,7 @@ class FileTest extends AbstractHelper
                 ["\n", true],
                 ['    /**' . "\n", true],
                 ['     * Value 2' . "\n", true]
-            ))->will($this->returnValue($returnValue));
+            ))->willReturn($returnValue);
         Krexx::$pool->encodingService = $encoderMock;
 
         $simpleReflection = new ReflectionClass(SimpleFixture::class);
@@ -234,7 +234,7 @@ class FileTest extends AbstractHelper
     {
         $fOpenMock = $this->getFunctionMock(static::MISC_NAMESPACE, 'fopen');
         $fOpenMock->expects($this->once())
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $this->setValueByReflection(static::IS_READABLE_CACHE, ['someFile' => true], $this->file);
         $result = $this->file->getFileContents('someFile', false);
@@ -256,7 +256,7 @@ class FileTest extends AbstractHelper
         // We will not really write a file here.
         $filePutContents = $this->getFunctionMock(static::MISC_NAMESPACE, 'file_put_contents');
         $filePutContents->expects($this->once())
-            ->will($this->returnValue(42));
+            ->willReturn(42);
 
         $path = 'some file.html';
         $this->file->putFileContents($path, 'some text');
@@ -278,7 +278,7 @@ class FileTest extends AbstractHelper
         $unlink = $this->getFunctionMock(static::MISC_NAMESPACE, static::UNLINK);
         $unlink->expects($this->once())
             ->with($payload)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         // Execute the test.
         $fileService = new File(Krexx::$pool);
@@ -328,14 +328,14 @@ class FileTest extends AbstractHelper
         $unlink = $this->getFunctionMock(static::MISC_NAMESPACE, static::UNLINK);
         $unlink->expects($this->once())
             ->with($payload)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $chmod = $this->getFunctionMock(static::MISC_NAMESPACE, static::CHMOD);
         $chmod->expects($this->once())
             ->with($payload);
 
         $isFile = $this->getFunctionMock(static::MISC_NAMESPACE, static::IS_FILE);
         $isFile->expects($this->once())
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         // Execute the test.
         $fileService = new File(Krexx::$pool);
@@ -354,7 +354,7 @@ class FileTest extends AbstractHelper
     {
         $isFile = $this->getFunctionMock(static::MISC_NAMESPACE, static::IS_FILE);
         $isFile->expects($this->once())
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $payload = 'unregistered_file.txt';
         $chmod = $this->getFunctionMock(static::MISC_NAMESPACE, static::CHMOD);
@@ -402,12 +402,12 @@ class FileTest extends AbstractHelper
     {
         $isFile = $this->getFunctionMock(static::MISC_NAMESPACE, static::IS_FILE);
         $isFile->expects($this->once())
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $filename = static::FILE_NAME;
         $isReadable = $this->getFunctionMock(static::MISC_NAMESPACE, 'is_readable');
         $isReadable->expects($this->once())
             ->with($filename)
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $fileService = new File(Krexx::$pool);
 
@@ -440,7 +440,7 @@ class FileTest extends AbstractHelper
         $filemtime = $this->getFunctionMock(static::MISC_NAMESPACE, 'filemtime');
         $filemtime->expects($this->once())
             ->with($filename)
-            ->will($this->returnValue(42));
+            ->willReturn(42);
 
         $this->assertEquals(42, $fileService->filetime($filename));
     }
@@ -456,7 +456,7 @@ class FileTest extends AbstractHelper
         $filePath = 'I am not here';
         $time = $this->getFunctionMock(static::MISC_NAMESPACE, 'time');
         $time->expects($this->once())
-            ->will($this->returnValue(41));
+            ->willReturn(41);
 
         $this->assertEquals(41, $fileService->filetime($filePath));
     }

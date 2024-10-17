@@ -158,7 +158,7 @@ class ThroughGetterTest extends AbstractHelper
         $renderMock = $this->createMock(RenderHans::class);
         $renderMock->expects($this->once())
             ->method('renderExpandableChild')
-            ->will($this->returnValue(''));
+            ->willReturn('');
         Krexx::$pool->render = $renderMock;
 
         // Create a fixture.
@@ -297,7 +297,7 @@ class ThroughGetterTest extends AbstractHelper
         $renderMock = $this->createMock(RenderHans::class);
         $renderMock->expects($this->exactly(6))
             ->method('renderExpandableChild')
-            ->will($this->returnValue(''));
+            ->willReturn('');
         Krexx::$pool->render = $renderMock;
 
         // Create a fixture.

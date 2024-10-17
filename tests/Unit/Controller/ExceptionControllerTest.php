@@ -66,7 +66,7 @@ class ExceptionControllerTest extends AbstractController
         $this->callerFinderResult[BacktraceConstInterface::TRACE_URL] = 'n/a';
         $timeMock = $this->getFunctionMock('\\Brainworxx\\Krexx\\Analyse\\Caller', 'time');
         $timeMock->expects($this->once())
-            ->will($this->returnValue(1111));
+            ->willReturn(1111);
 
         // One can not simply mock an exception.
         // But we can adjust its values.
@@ -88,7 +88,7 @@ class ExceptionControllerTest extends AbstractController
         $backtraceMock->expects($this->once())
             ->method('handle')
             ->with(['some backtrace'])
-            ->will($this->returnValue('HTML code'));
+            ->willReturn('HTML code');
 
         $poolMock->expects($this->exactly(5))
             ->method('createClass')
@@ -98,14 +98,14 @@ class ExceptionControllerTest extends AbstractController
                 [Model::class],
                 [ThroughConfig::class],
                 [Model::class]
-            ))->will($this->returnValueMap(
+            ))->willReturnMap(
                 [
                     [ProcessBacktrace::class, $backtraceMock],
                     [ExceptionCallerFinder::class, new ExceptionCallerFinder(Krexx::$pool)],
                     [ThroughConfig::class, new CallbackNothing(Krexx::$pool)],
                     [Model::class, new Model(Krexx::$pool)]
                 ]
-            ));
+            );
 
         $exceptionController->exceptionAction($fixture);
     }
@@ -169,7 +169,7 @@ class ExceptionControllerTest extends AbstractController
         $emergencyMock = $this->createMock(Emergency::class);
         $emergencyMock->expects($this->once())
             ->method('checkEmergencyBreak')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
         $poolMock->emergencyHandler = $emergencyMock;
 
         $renderNothing = new RenderNothing(Krexx::$pool);

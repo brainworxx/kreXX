@@ -43,8 +43,8 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 class TimerControllerTest extends AbstractController
 {
 
-    const COUNTER_CACHE = 'counterCache';
-    const TIME_KEEPING = 'timekeeping';
+    public const  COUNTER_CACHE = 'counterCache';
+    public const  TIME_KEEPING = 'timekeeping';
     /**
      * @var TimerController
      */
@@ -58,7 +58,7 @@ class TimerControllerTest extends AbstractController
         $this->controller = new TimerController(Krexx::$pool);
         $microtime = $this->getFunctionMock('\\Brainworxx\\Krexx\\Controller\\', 'microtime');
         $microtime->expects($this->any())
-            ->will($this->returnValue(3000));
+            ->willReturn(3000);
     }
 
     protected function krexxDown()
@@ -153,7 +153,7 @@ class TimerControllerTest extends AbstractController
         $poolMock->expects($this->once())
             ->method('createClass')
             ->with(DumpController::class)
-            ->will($this->returnValue($dumpMock));
+            ->willReturn($dumpMock);
         $poolMock->messages = \Krexx::$pool->messages;
 
         $this->setValueByReflection('pool', $poolMock, $this->controller);

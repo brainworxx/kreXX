@@ -53,7 +53,7 @@ class FatalMainTest extends AbstractRenderHans
         $this->fileServiceMock->expects($this->once())
             ->method('readSourcecode')
             ->with($inFile, $line - 1, $line - 6, $line + 4)
-            ->will($this->returnValue('faulty code line'));
+            ->willReturn('faulty code line');
 
         $result = $this->renderHans->renderFatalMain($errorString, $inFile, $line);
         $this->assertStringContainsString($errorString, $result);

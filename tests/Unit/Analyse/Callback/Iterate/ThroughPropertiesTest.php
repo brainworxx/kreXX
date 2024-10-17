@@ -50,22 +50,22 @@ use ReflectionProperty;
 
 class ThroughPropertiesTest extends AbstractHelper
 {
-    const PUBLIC_STRING_PROPERTY = 'publicStringProperty';
-    const PUBLIC_INT_PROPERTY = 'publicIntProperty';
-    const PUBLIC_FLOAT_PROPERTY = 'publicFloatProperty';
-    const UNSET_PROPERTY = 'unsetProperty';
-    const PROTECTED_PROPERTY = 'protectedProperty';
-    const MY_PROPERTY = 'myProperty';
-    const LONG_STRING = 'longString';
-    const PUBLIC_STATIC = 'publicStatic';
-    const INHERITED_PUBLIC = 'inheritedPublic';
-    const INHERITED_NULL = 'inheritedNull';
-    const TRAIT_PROPERTY = 'traitProperty';
-    const JSON_COMMENT_KEY = 'Comment';
-    const JSON_DECLARED_KEY = 'Declared in';
-    const JSON_DEFAULT_VALUE = 'Default value';
-    const PUBLIC_ARRAY_DEFAULT = 'array';
-    const READ_ONLY_STRING = 'readOnyString';
+    public const  PUBLIC_STRING_PROPERTY = 'publicStringProperty';
+    public const  PUBLIC_INT_PROPERTY = 'publicIntProperty';
+    public const  PUBLIC_FLOAT_PROPERTY = 'publicFloatProperty';
+    public const  UNSET_PROPERTY = 'unsetProperty';
+    public const  PROTECTED_PROPERTY = 'protectedProperty';
+    public const  MY_PROPERTY = 'myProperty';
+    public const  LONG_STRING = 'longString';
+    public const  PUBLIC_STATIC = 'publicStatic';
+    public const  INHERITED_PUBLIC = 'inheritedPublic';
+    public const  INHERITED_NULL = 'inheritedNull';
+    public const  TRAIT_PROPERTY = 'traitProperty';
+    public const  JSON_COMMENT_KEY = 'Comment';
+    public const  JSON_DECLARED_KEY = 'Declared in';
+    public const  JSON_DEFAULT_VALUE = 'Default value';
+    public const  PUBLIC_ARRAY_DEFAULT = 'array';
+    public const  READ_ONLY_STRING = 'readOnyString';
 
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties
