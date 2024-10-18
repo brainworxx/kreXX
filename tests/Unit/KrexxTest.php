@@ -36,7 +36,6 @@
 namespace Brainworxx\Krexx\Tests\Unit;
 
 use Brainworxx\Krexx\Controller\AbstractController;
-use Brainworxx\Krexx\Controller\ExceptionController;
 use Brainworxx\Krexx\Controller\TimerController;
 use Brainworxx\Krexx\Service\Config\Config;
 use Brainworxx\Krexx\Service\Config\Fallback;
@@ -505,70 +504,5 @@ class KrexxTest extends AbstractHelper
         $config = new Config(Krexx::$pool);
         // Run the test
         $this->assertTrue($config::$disabledByPhp);
-    }
-
-    /**
-     * Test the registering of the exception handler, when kreXX is disabled.
-     *
-     * @covers \Brainworxx\Krexx\Krexx::registerExceptionHandler
-     */
-    public function testRegisterExceptionHandlerDisabled()
-    {
-        Config::$disabledByPhp = true;
-
-        $setExceptionHandlerMock = $this
-            ->getFunctionMock(static::CONTROLLER_NAMESPACE, 'set_exception_handler');
-        $setExceptionHandlerMock->expects($this->never());
-
-        Krexx::registerExceptionHandler();
-    }
-
-    /**
-     * Test the registering of the exception handler, when kreXX is enabled..
-     *
-     * @covers \Brainworxx\Krexx\Krexx::registerExceptionHandler
-     */
-    public function testRegisterExceptionHandler()
-    {
-        // Mock an already existing controller.
-        $controllerMock = $this->createMock(ExceptionController::class);
-        $this->setValueByReflection('exceptionController', $controllerMock, ExceptionController::class);
-
-        $setExceptionHandlerMock = $this
-            ->getFunctionMock(static::CONTROLLER_NAMESPACE, 'set_exception_handler');
-        $setExceptionHandlerMock->expects($this->once())
-            ->with([$controllerMock, 'exceptionAction']);
-
-        Krexx::registerExceptionHandler();
-    }
-
-    /**
-     * Test the registering of the exception handler, when kreXX is disabled.
-     *
-     * @covers \Brainworxx\Krexx\Krexx::unregisterExceptionHandler
-     */
-    public function testUnRegisterExceptionHandlerDisabled()
-    {
-        Config::$disabledByPhp = true;
-
-        $restoreExceptionHandlerMock = $this
-            ->getFunctionMock(static::CONTROLLER_NAMESPACE, 'restore_exception_handler');
-        $restoreExceptionHandlerMock->expects($this->never());
-
-        Krexx::unregisterExceptionHandler();
-    }
-
-     /**
-     * Test the registering of the exception handler, when kreXX is enabled.
-     *
-     * @covers \Brainworxx\Krexx\Krexx::unregisterExceptionHandler
-     */
-    public function testUnRegisterExceptionHandler()
-    {
-        $restoreExceptionHandlerMock = $this
-            ->getFunctionMock(static::CONTROLLER_NAMESPACE, 'restore_exception_handler');
-        $restoreExceptionHandlerMock->expects($this->once());
-
-        Krexx::unregisterExceptionHandler();
     }
 }

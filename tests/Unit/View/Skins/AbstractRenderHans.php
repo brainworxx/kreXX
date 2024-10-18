@@ -215,13 +215,23 @@ abstract class AbstractRenderHans extends AbstractHelper
                     true,
                     implode('', $hans->getMarkerSingleButton())
                 ],
-                // fatalMain.html
+                // fatalMain.html /**
+                /** @deprecated
+                  *   Since 6.0.0
+                  *   Will be removed.
+                  *   Has anybody used this one since PHP 7.0 anyway?
+                 **/
                 [
                     $pathToSkin . 'fatalMain' . $fileSuffix,
                     true,
                     implode('', $hans->getMarkerFatalMain())
                 ],
                 // fatalHeader.html
+                /** @deprecated
+                  *   Since 6.0.0
+                  *   Will be removed.
+                  *   Has anybody used this one since PHP 7.0 anyway?
+                 **/
                 [
                     $pathToSkin . 'fatalHeader' . $fileSuffix,
                     true,

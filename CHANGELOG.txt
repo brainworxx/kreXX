@@ -19,6 +19,7 @@
 - Change: Moved some frontend literals to the translations.
 - Change: Split the getter analysis into several smaller classes.
 - Change: Removed deprecations from the unit tests.
+- Change: Deprecated the exception handler.
 
 5.0.6
 - Added the handling of type casting to the regex getter analysis.
