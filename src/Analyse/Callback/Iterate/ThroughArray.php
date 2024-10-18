@@ -78,7 +78,7 @@ class ThroughArray extends AbstractCallback implements
 
         $array = $this->parameters[static::PARAM_DATA];
         // Iterate through.
-        foreach ($array as $key => &$value) {
+        foreach ($array as $key => $value) {
             // We will not output our recursion marker.
             // Meh, the only reason for the recursion marker
             // in arrays is because of the $GLOBAL array, which

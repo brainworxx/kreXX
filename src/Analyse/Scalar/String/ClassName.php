@@ -96,6 +96,7 @@ class ClassName extends AbstractScalarAnalysis
     protected function handle(): array
     {
         $messages = $this->pool->messages;
+        $meta = [];
         try {
             $meta = [$messages->getHelp('metaReflection') => new ReflectionClass($this->handledValue)];
         } catch (ReflectionException $e) {

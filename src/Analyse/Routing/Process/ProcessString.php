@@ -133,9 +133,6 @@ class ProcessString extends AbstractRouting implements
     /**
      * Render a dump for a string value.
      *
-     * @param Model $model
-     *   The data we are analysing.
-     *
      * @return string
      *   The rendered markup.
      */
@@ -172,8 +169,6 @@ class ProcessString extends AbstractRouting implements
     /**
      * Inject the scalar analysis callback and handle possible recursions.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
-     *   The model, so far.
      * @param string $originalData
      *   The original, unprocessed and unescape string.
      *
@@ -197,8 +192,6 @@ class ProcessString extends AbstractRouting implements
      *
      * @param string $data
      *   The string of which we want ot know the length and encoding.
-     * @param \Brainworxx\Krexx\Analyse\Model $model
-     *   The model so far.
      *
      * @return int
      *   the length of the string.

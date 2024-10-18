@@ -37,7 +37,6 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Service\Misc;
 
-use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
 use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**

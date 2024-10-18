@@ -293,7 +293,7 @@ class Emergency implements ConfigConstInterface
     }
 
     /**
-     * Finds out, if krexx was called too often, to prevent large output.
+     * Finds out, if kreXX was called too often, to prevent large output.
      *
      * @return bool
      *   Whether kreXX was called too often or not.

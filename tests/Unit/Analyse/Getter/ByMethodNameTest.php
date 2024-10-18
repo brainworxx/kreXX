@@ -57,7 +57,7 @@ class ByMethodNameTest extends AbstractGetter
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::prepareResult
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::preparePropertyName
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::convertToSnakeCase
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::foundSomething
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::hasResult
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::getReflectionProperty
      */
     public function testRetrieveItSimple()
@@ -108,7 +108,7 @@ class ByMethodNameTest extends AbstractGetter
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::prepareResult
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::preparePropertyName
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::convertToSnakeCase
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::foundSomething
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::hasResult
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByMethodName::getReflectionProperty
      */
     public function testRetrieveItDeep()

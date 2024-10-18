@@ -48,7 +48,7 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 class CallerFinder extends AbstractCaller implements BacktraceConstInterface, CallbackConstInterface
 {
     /**
-     * Pattern used to find the krexx call in the backtrace.
+     * Pattern used to find the kreXX call in the backtrace.
      *
      * Can be overwritten by extending classes.
      *
@@ -57,7 +57,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
     protected const CLASS_PATTERN = Krexx::class;
 
     /**
-     * Pattern used to find the krexx call in the backtrace.
+     * Pattern used to find the kreXX call in the backtrace.
      *
      * Can be overwritten by extending classes.
      *
@@ -96,7 +96,6 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
     {
         $backtrace = array_reverse(debug_backtrace(0, 5));
 
-        $caller = [];
         // Going from the first call of the first line, up through the first debug call.
         foreach ($backtrace as $caller) {
             if ($this->identifyCaller($caller)) {

@@ -373,7 +373,7 @@ class Chunks implements ConfigConstInterface
      * Simple wrapper around mb_detect_encoding.
      *
      * We also try to track the encoding we need to add to the output, so
-     * people can use unicode function names.
+     * people can use Unicode function names.
      *
      * @see \Brainworxx\Krexx\Analyse\Routing\Process\ProcessString
      *

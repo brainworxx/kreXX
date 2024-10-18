@@ -66,7 +66,7 @@ trait ExpandableChild
     /**
      * @var string[]
      */
-    private $markerNest = [
+    private array $markerNest = [
         '{style}',
         '{mainfunction}',
         '{domId}',
@@ -76,7 +76,7 @@ trait ExpandableChild
     /**
      * @var string
      */
-    private $markerSingleChildExtra = '{data}';
+    private string $markerSingleChildExtra = '{data}';
 
     /**
      * {@inheritdoc}

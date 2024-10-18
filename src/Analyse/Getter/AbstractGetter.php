@@ -92,9 +92,11 @@ abstract class AbstractGetter
     );
 
     /**
-     * {@inheritDoc}
+     * What the method says. Have we found something?
+     *
+     * @return bool
      */
-    public function foundSomething(): bool
+    public function hasResult(): bool
     {
         return $this->foundSomething;
     }

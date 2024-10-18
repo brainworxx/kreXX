@@ -72,9 +72,6 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
     /**
      * Render a dump for a float value.
      *
-     * @param Model $model
-     *   The data we are analysing.
-     *
      * @return string
      *   The rendered markup.
      */

@@ -72,9 +72,6 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface, Proces
     /**
      * Render a dump for an integer value.
      *
-     * @param Model $model
-     *   The data we are analysing.
-     *
      * @return string
      *   The rendered markup.
      */

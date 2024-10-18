@@ -41,7 +41,6 @@ use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResource;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
-use CurlHandle;
 
 /**
  * Processing of resources.
@@ -98,7 +97,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
                 break;
 
             default:
-                return $this->renderUnknownOrClosed($this->model, $resource, $typeString);
+                return $this->renderUnknownOrClosed($this->model, $resource);
         }
 
         // Output metadata from the class.
@@ -143,7 +142,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
      * @return string
      *   The rendered HTML.
      */
-    protected function renderUnknownOrClosed(Model $model, $resource, string $typeString): string
+    protected function renderUnknownOrClosed(Model $model, $resource): string
     {
         return $this->pool->render->renderExpandableChild(
             $this->dispatchNamedEvent(

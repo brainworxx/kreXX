@@ -73,9 +73,6 @@ class ProcessOther extends AbstractRouting implements ProcessInterface
     /**
      * Render a 'dump' for another type.
      *
-     * @param Model $model
-     *   The model with the data for the output.
-     *
      * @return string
      *   The rendered markup.
      */

@@ -50,7 +50,7 @@ interface BacktraceConstInterface
     public const TRACE_FILE = 'file';
 
     /**
-     * Contains the original, unfilterd path to the TRACE_FILE.
+     * Contains the original, unfiltered path to the TRACE_FILE.
      *
      * @deprecated
      *   Since 6.0.0, will be removed.

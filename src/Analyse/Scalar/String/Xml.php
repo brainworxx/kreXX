@@ -49,11 +49,6 @@ use finfo;
 class Xml extends AbstractScalarAnalysis
 {
     /**
-     * @var string
-     */
-    protected const XML_CHILDREN = 'children';
-
-    /**
      * The model, so far.
      *
      * @var Model

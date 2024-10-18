@@ -5,7 +5,6 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Getter;
 use Brainworxx\Krexx\Analyse\Getter\ByRegExContainer;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
-use PhpParser\Node\Expr\Instanceof_;
 
 class AbstractGetter extends AbstractHelper
 {
@@ -28,7 +27,7 @@ class AbstractGetter extends AbstractHelper
             $message = 'Check the result: ' . $items['reflection']->getName();
             $this->assertEquals($items['expectation'], $result, $message);
             if ($items['hasResult']) {
-                $this->assertTrue($this->testSubject->foundSomething(), $message);
+                $this->assertTrue($this->testSubject->hasResult(), $message);
                 if (!($this->testSubject instanceof ByRegExContainer)) {
                     // There is no reflection in the ByRegExContainer.
                     // And no, it is not "allergic" to garlic or sunlight.
@@ -39,7 +38,7 @@ class AbstractGetter extends AbstractHelper
                     );
                 }
             } else {
-                $this->assertFalse($this->testSubject->foundSomething(), $message);
+                $this->assertFalse($this->testSubject->hasResult(), $message);
                 $this->assertNull($this->testSubject->getReflectionProperty(), $message);
             }
         }

@@ -222,7 +222,7 @@ class ThroughGetter extends AbstractCallback implements
         $currentPrefix = $this->parameters[static::CURRENT_PREFIX];
         foreach ($this->getterAnalyser as $analyser) {
             $value = $analyser->retrieveIt($reflectionMethod, $reflectionClass, $currentPrefix);
-            if ($analyser->foundSomething()) {
+            if ($analyser->hasResult()) {
                 $this->prepareParameters($value, $analyser, $reflectionMethod);
                 $this->prepareModel($model, $value);
                 break;

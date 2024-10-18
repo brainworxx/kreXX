@@ -37,7 +37,6 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Getter;
 
-use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -128,7 +127,7 @@ class ByRegExProperty extends ByMethodName
      */
     protected function analyseRegexResult(
         string $propertyName,
-        ReflectionClass &$reflectionClass,
+        ReflectionClass $reflectionClass,
         string $currentPrefix
     ): ?ReflectionProperty {
         // Check if this is a property and return the first we find.

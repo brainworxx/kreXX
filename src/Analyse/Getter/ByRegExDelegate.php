@@ -123,7 +123,7 @@ class ByRegExDelegate extends ByRegExContainer
             $reflectionMethod = $delegateReflection->getMethod($parts[1]);
             foreach ($this->getterAnalyser as $analyser) {
                 $value = $analyser->retrieveIt($reflectionMethod, $delegateReflection, $this->currentPrefix);
-                if ($analyser->foundSomething()) {
+                if ($analyser->hasResult()) {
                     $this->foundSomething = true;
                     return $value;
                 }
@@ -135,7 +135,7 @@ class ByRegExDelegate extends ByRegExContainer
     }
 
     /**
-     * Retieve the reflection of the object that is getting called.
+     * Retrieve the reflection of the object that is getting called.
      *
      * @param array $parts
      *   The parts from the regex scanner.

@@ -49,9 +49,6 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
     /**
      * Generate the output of the none scalar analysis.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
-     *   The model, filled with the suff we are analysing.
-     *
      * @return string
      *   The generated DOM
      */
@@ -68,14 +65,11 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
         }
 
         // Render the none scalar stuff.
-        return $this->handleNoneScalar($this->model);
+        return $this->handleNoneScalar();
     }
 
     /**
      * doing the none scalar stuff.
-     *
-     * @param Model $model
-     *   The model, so far.
      *
      * @return string
      *   The generated DOM.

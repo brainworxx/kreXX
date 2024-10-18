@@ -510,7 +510,7 @@ abstract class Fallback implements ConfigConstInterface
     {
         return [
             // IP range for calling kreXX.
-            // kreXX is disabled for everyone who dies not fit into this range.
+            // kreXX is disabled for everyone who does not fit into this range.
             static::VALUE => '*',
             static::RENDER => static::DISPLAY_NOTHING,
             static::EVALUATE => static::EVAL_IP_RANGE,

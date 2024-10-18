@@ -80,9 +80,6 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
     /**
      * Analyses a closure.
      *
-     * @param Model $model
-     *   The closure we want to analyse.
-     *
      * @return string
      *   The generated markup.
      */
