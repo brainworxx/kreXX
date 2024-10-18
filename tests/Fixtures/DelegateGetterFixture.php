@@ -149,4 +149,37 @@ class DelegateGetterFixture
     {
         return $this->deepGetterFixture->getMyPropertyNine();
     }
+
+    /**
+     * @return null
+     */
+    public function getNull()
+    {
+        return null;
+    }
+
+    public function getAnError()
+    {
+        return $this->deepGetterFixture->getMyPropertyNine()->error();
+    }
+
+    public function getAnotherError()
+    {
+        return $this->stuff->error();
+    }
+
+    public function getLiterallyNoting()
+    {
+        return $this->deepGetterFixture->getLiterallyNoting();
+    }
+
+    public function getSomethingFromFalse()
+    {
+        return $this->false->barf();
+    }
+
+    public function getWrongMethod()
+    {
+        return $this->deepGetterFixture->foo();
+    }
 }

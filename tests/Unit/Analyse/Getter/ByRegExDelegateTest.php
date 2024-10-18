@@ -49,10 +49,21 @@ class ByRegExDelegateTest extends AbstractGetter
     }
 
     /**
+     * Test the initialization of the getter analysers
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExDelegate::__construct
+     */
+    public function testConstruct()
+    {
+        $this->assertNotEmpty($this->retrieveValueByReflection('getterAnalyser', $this->testSubject));
+    }
+
+    /**
      * The class to test should not be able to retrieve any of these.
      *
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExDelegate::retrieveIt
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExDelegate::extractValue
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExDelegate::retrieveReflectionClass
      */
     public function testRetrieveIt()
     {
@@ -67,7 +78,6 @@ class ByRegExDelegateTest extends AbstractGetter
                 'hasResult' => true
             ],
             [
-                // The simple ByMethodName analysis should not be able to tackle this one.
                 'reflection' => $classReflection->getMethod('getMyPropertyTwo'),
                 'prefix' => 'get',
                 'expectation' => 'two',
@@ -82,7 +92,6 @@ class ByRegExDelegateTest extends AbstractGetter
                 'hasResult' => true
             ],
             [
-                 // There is no result whatsoever.
                 'reflection' => $classReflection->getMethod('getMyPropertyFour'),
                 'prefix' => 'get',
                 'expectation' => 'four',
@@ -90,7 +99,6 @@ class ByRegExDelegateTest extends AbstractGetter
                 'hasResult' => true
             ],
             [
-                 // There is no result whatsoever.
                 'reflection' => $classReflection->getMethod('getMyPropertyFive'),
                 'prefix' => 'get',
                 'expectation' => 'five',
@@ -98,7 +106,6 @@ class ByRegExDelegateTest extends AbstractGetter
                 'hasResult' => true
             ],
             [
-                 // There is no result whatsoever.
                 'reflection' => $classReflection->getMethod('getMyPropertySix'),
                 'prefix' => 'get',
                 'expectation' => 'six',
@@ -106,7 +113,6 @@ class ByRegExDelegateTest extends AbstractGetter
                 'hasResult' => true
             ],
             [
-                 // There is no result whatsoever.
                 'reflection' => $classReflection->getMethod('getMyPropertySeven'),
                 'prefix' => 'get',
                 'expectation' => 'seven',
@@ -114,7 +120,6 @@ class ByRegExDelegateTest extends AbstractGetter
                 'hasResult' => true
             ],
             [
-                 // There is no result whatsoever.
                 'reflection' => $classReflection->getMethod('getMyPropertyEight'),
                 'prefix' => 'get',
                 'expectation' => 'eight',
@@ -122,12 +127,55 @@ class ByRegExDelegateTest extends AbstractGetter
                 'hasResult' => true
             ],
             [
-                 // There is no result whatsoever.
                 'reflection' => $classReflection->getMethod('getMyPropertyNine'),
                 'prefix' => 'get',
                 'expectation' => 'nine',
                 'propertyName' => null,
                 'hasResult' => true
+            ],
+
+            // Adding stuff that should not yield any results.
+            [
+                'reflection' => $classReflection->getMethod('getNull'),
+                'prefix' => 'get',
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
+            ],
+            [
+                'reflection' => $classReflection->getMethod('getAnError'),
+                'prefix' => 'get',
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
+            ],
+            [
+                'reflection' => $classReflection->getMethod('getAnotherError'),
+                'prefix' => 'get',
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
+            ],
+            [
+                'reflection' => $classReflection->getMethod('getLiterallyNoting'),
+                'prefix' => 'get',
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
+            ],
+            [
+                'reflection' => $classReflection->getMethod('getSomethingFromFalse'),
+                'prefix' => 'get',
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
+            ],
+            [
+                'reflection' => $classReflection->getMethod('getWrongMethod'),
+                'prefix' => 'get',
+                'expectation' => null,
+                'propertyName' => null,
+                'hasResult' => false
             ],
         ];
 

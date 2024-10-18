@@ -397,6 +397,30 @@ class ThroughGetterTest extends AbstractHelper
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getNull
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getAnError
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getAnotherError
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getLiterallyNoting
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getSomethingFromFalse
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getWrongMethod
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
         );
 
         // Prevent the further routing.
@@ -404,8 +428,8 @@ class ThroughGetterTest extends AbstractHelper
 
         // Mock the render object.
         $renderMock = $this->createMock(RenderHans::class);
-        // Everyone got a result.
-        $renderMock->expects($this->never())
+        // The last six ones are not supposed to yield a result.
+        $renderMock->expects($this->exactly(6))
             ->method('renderExpandableChild')
             ->willReturn('');
         Krexx::$pool->render = $renderMock;
@@ -424,6 +448,13 @@ class ThroughGetterTest extends AbstractHelper
                 new ReflectionMethod($data, 'getMyPropertySeven'),
                 new ReflectionMethod($data, 'getMyPropertyEight'),
                 new ReflectionMethod($data, 'getMyPropertyNine'),
+                // The evil stuff starts here:
+                new ReflectionMethod($data, 'getNull'),
+                new ReflectionMethod($data, 'getAnError'),
+                new ReflectionMethod($data, 'getAnotherError'),
+                new ReflectionMethod($data, 'getLiterallyNoting'),
+                new ReflectionMethod($data, 'getSomethingFromFalse'),
+                new ReflectionMethod($data, 'getWrongMethod'),
             ],
             'ref' => $ref,
             'data' => $data

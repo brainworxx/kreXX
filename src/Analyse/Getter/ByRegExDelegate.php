@@ -39,7 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Getter;
 
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
-use ReflectionProperty;
+use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -111,19 +111,54 @@ class ByRegExDelegate extends ByRegExContainer
      *
      * {@inheritDoc}
      */
-    protected function extractValue(
-        array $parts,
-        ReflectionClass $reflectionClass
-    ) {
-        // The propertyName now may look like this:
-        // myObject->getStuff()
-        if (empty($parts) || count($parts) !== 2) {
-            // This is not the code I am looking for.
-            return null;
+    protected function extractValue(array $parts, ReflectionClass $reflectionClass)
+    {
+        try {
+            $delegateReflection = $this->retrieveReflectionClass($parts, $reflectionClass);
+            if ($delegateReflection === null) {
+                return null;
+            }
+
+            // Now, let's ask the others.
+            $reflectionMethod = $delegateReflection->getMethod($parts[1]);
+            foreach ($this->getterAnalyser as $analyser) {
+                $value = $analyser->retrieveIt($reflectionMethod, $delegateReflection, $this->currentPrefix);
+                if ($analyser->foundSomething()) {
+                    $this->foundSomething = true;
+                    return $value;
+                }
+            }
+        } catch (ReflectionException $exception) {
         }
 
-        if (!$reflectionClass->hasProperty($parts[0])) {
-            // Not an object.
+        return null;
+    }
+
+    /**
+     * Retieve the reflection of the object that is getting called.
+     *
+     * @param array $parts
+     *   The parts from the regex scanner.
+     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass
+     *   The reflection of the class that we are analysing
+     *
+     * @throws \ReflectionException
+     *
+     * @return \Brainworxx\Krexx\Service\Reflection\ReflectionClass|null
+     *   Reflection of the class that is getting called inside the class that we
+     *   are analysing.
+     */
+    protected function retrieveReflectionClass(
+        array $parts,
+        ReflectionClass $reflectionClass
+    ): ?ReflectionClass {
+        // The propertyName now may look like this:
+        // myObject->getStuff()
+        if (
+            count($parts) !== 2
+            || !$reflectionClass->hasProperty($parts[0])
+        ) {
+            // This is not the code I am looking for.
             return null;
         }
 
@@ -132,21 +167,11 @@ class ByRegExDelegate extends ByRegExContainer
             return null;
         }
 
-        $reflectionClass = new ReflectionClass($object);
-        if (!$reflectionClass->hasMethod($parts[1])) {
+        $delegateReflection = new ReflectionClass($object);
+        if (!$delegateReflection->hasMethod($parts[1])) {
             return null;
         }
 
-        // Now, let's ask the others.
-        $reflectionMethod = $reflectionClass->getMethod($parts[1]);
-        foreach ($this->getterAnalyser as $analyser) {
-            $value = $analyser->retrieveIt($reflectionMethod, $reflectionClass, $this->currentPrefix);
-            if ($analyser->foundSomething()) {
-                $this->foundSomething = true;
-                return $value;
-            }
-        }
-
-        return null;
+        return $delegateReflection;
     }
 }
