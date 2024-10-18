@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Tests\Fixtures\AttributesFixture;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
 use Brainworxx\Krexx\Tests\Fixtures\MethodsFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
@@ -137,6 +138,7 @@ class ThroughMethodsTest extends AbstractHelper
             [$this->endEvent, $this->throughMethods],
             [$this->endEvent, $this->throughMethods],
             [$this->endEvent, $this->throughMethods],
+            [$this->endEvent, $this->throughMethods],
             [$this->endEvent, $this->throughMethods]
         );
 
@@ -151,7 +153,8 @@ class ThroughMethodsTest extends AbstractHelper
                 new ReflectionMethod(ComplexMethodFixture::class, 'troublesomeMethod'),
                 new ReflectionMethod(ComplexMethodFixture::class, 'finalMethod'),
                 new ReflectionMethod(ComplexMethodFixture::class, 'parameterizedMethod'),
-                new ReflectionMethod(ComplexMethodFixture::class, 'traitFunction')
+                new ReflectionMethod(ComplexMethodFixture::class, 'traitFunction'),
+                new ReflectionMethod(AttributesFixture::class, 'testGetAttributes'),
             ]
         ];
 
@@ -184,7 +187,8 @@ class ThroughMethodsTest extends AbstractHelper
             '',
             'Some comment.',
             $methodFixtureFile,
-            $methodFixtureClass
+            $methodFixtureClass,
+            [],
         );
 
         // protectedMethod
@@ -197,7 +201,8 @@ class ThroughMethodsTest extends AbstractHelper
             '',
             'More comments',
             $methodFixtureFile,
-            $methodFixtureClass
+            $methodFixtureClass,
+            [],
         );
 
         // privateMethod
@@ -211,7 +216,8 @@ class ThroughMethodsTest extends AbstractHelper
             '',
             'Private function',
             $complexMethodFixtureFile,
-            $complexMethodFixtureClass
+            $complexMethodFixtureClass,
+            [],
         );
 
         // privateMethod
@@ -225,7 +231,8 @@ class ThroughMethodsTest extends AbstractHelper
             '',
             'Private method. Duh.',
             $methodFixtureFile,
-            $methodFixtureClass
+            $methodFixtureClass,
+            [],
         );
 
         // troublesomeMethod
@@ -238,7 +245,8 @@ class ThroughMethodsTest extends AbstractHelper
             '\someNotExistingClass $parameter',
             'Asking politely for trouble here',
             $methodFixtureFile,
-            $methodFixtureClass
+            $methodFixtureClass,
+            [],
         );
 
         // finalMethod
@@ -251,7 +259,8 @@ class ThroughMethodsTest extends AbstractHelper
             '',
             'Final function',
             $complexMethodFixtureFile,
-            $complexMethodFixtureClass
+            $complexMethodFixtureClass,
+            [],
         );
 
         // parameterizedMethod
@@ -264,7 +273,8 @@ class ThroughMethodsTest extends AbstractHelper
             '$parameter',
             '&#64;param $parameter',
             $complexMethodFixtureFile,
-            $complexMethodFixtureClass
+            $complexMethodFixtureClass,
+            [],
         );
 
         // traitFunction
@@ -277,7 +287,27 @@ class ThroughMethodsTest extends AbstractHelper
             '',
             'Do something.',
             'TraitFixture.php',
-            'Brainworxx\\Krexx\\Tests\\Fixtures\\TraitFixture'
+            'Brainworxx\\Krexx\\Tests\\Fixtures\\TraitFixture',
+            [],
+        );
+
+        // testGetAttributes
+        if (method_exists(\ReflectionClass::class, 'getAttributes')) {
+            $attributes = ['Brainworxx\Krexx\Tests\Fixtures\AttributesFixture' => ['stuff', 'bob']];
+        } else {
+            $attributes = [];
+        }
+        $this->assertModelValues(
+            $models[8],
+            $fixture[$this->throughMethods::PARAM_DATA][8]->name,
+            'Public Inherited method',
+            '->',
+            '()',
+            '',
+            '',
+            'AttributesFixture.php',
+            AttributesFixture::class,
+            $attributes
         );
     }
 
@@ -301,7 +331,8 @@ class ThroughMethodsTest extends AbstractHelper
         string $connectorParameter,
         string $comment,
         string $declaredInFile,
-        string $declaredInClass
+        string $declaredInClass,
+        array $attributes
     ) {
         $this->assertEquals($name, $model->getName());
         $this->assertEquals($type, $model->getType());
@@ -312,6 +343,11 @@ class ThroughMethodsTest extends AbstractHelper
             $comment,
             $model->getParameters()[$this->throughMethods::PARAM_DATA]['Comment']
         );
+        $this->assertSame(
+            $attributes,
+            $model->getParameters()[$this->throughMethods::PARAM_DATA]['Attributes']
+        );
+
         $this->assertStringContainsString(
             $declaredInFile,
             $model->getParameters()[$this->throughMethods::PARAM_DATA]['Declared in']

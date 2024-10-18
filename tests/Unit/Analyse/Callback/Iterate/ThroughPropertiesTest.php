@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
+use Brainworxx\Krexx\Tests\Fixtures\AttributesFixture;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesFixture;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesInheritanceFixture;
 use Brainworxx\Krexx\Tests\Fixtures\PublicFixture;
@@ -50,22 +51,24 @@ use ReflectionProperty;
 
 class ThroughPropertiesTest extends AbstractHelper
 {
-    public const  PUBLIC_STRING_PROPERTY = 'publicStringProperty';
-    public const  PUBLIC_INT_PROPERTY = 'publicIntProperty';
-    public const  PUBLIC_FLOAT_PROPERTY = 'publicFloatProperty';
-    public const  UNSET_PROPERTY = 'unsetProperty';
-    public const  PROTECTED_PROPERTY = 'protectedProperty';
-    public const  MY_PROPERTY = 'myProperty';
-    public const  LONG_STRING = 'longString';
-    public const  PUBLIC_STATIC = 'publicStatic';
-    public const  INHERITED_PUBLIC = 'inheritedPublic';
-    public const  INHERITED_NULL = 'inheritedNull';
-    public const  TRAIT_PROPERTY = 'traitProperty';
-    public const  JSON_COMMENT_KEY = 'Comment';
-    public const  JSON_DECLARED_KEY = 'Declared in';
-    public const  JSON_DEFAULT_VALUE = 'Default value';
-    public const  PUBLIC_ARRAY_DEFAULT = 'array';
-    public const  READ_ONLY_STRING = 'readOnyString';
+    public const PUBLIC_STRING_PROPERTY = 'publicStringProperty';
+    public const PUBLIC_INT_PROPERTY = 'publicIntProperty';
+    public const PUBLIC_FLOAT_PROPERTY = 'publicFloatProperty';
+    public const UNSET_PROPERTY = 'unsetProperty';
+    public const PROTECTED_PROPERTY = 'protectedProperty';
+    public const MY_PROPERTY = 'myProperty';
+    public const LONG_STRING = 'longString';
+    public const PUBLIC_STATIC = 'publicStatic';
+    public const INHERITED_PUBLIC = 'inheritedPublic';
+    public const INHERITED_NULL = 'inheritedNull';
+    public const TRAIT_PROPERTY = 'traitProperty';
+    public const JSON_COMMENT_KEY = 'Comment';
+    public const JSON_DECLARED_KEY = 'Declared in';
+    public const JSON_DEFAULT_VALUE = 'Default value';
+    public const ATTRIBUTES_KEY = 'Attributes';
+    public const PUBLIC_ARRAY_DEFAULT = 'array';
+    public const READ_ONLY_STRING = 'readOnyString';
+    public const PROPERTY = 'property';
 
     /**
      * @var \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties
@@ -150,6 +153,7 @@ class ThroughPropertiesTest extends AbstractHelper
             [$this->endEvent, $this->throughProperties],
             [$this->endEvent, $this->throughProperties],
             [$this->endEvent, $this->throughProperties],
+            [$this->endEvent, $this->throughProperties],
             [$this->endEvent, $this->throughProperties]
         );
 
@@ -174,6 +178,7 @@ class ThroughPropertiesTest extends AbstractHelper
                 new UndeclaredProperty(new ReflectionClass($subject), $undeclaredProp),
                 new ReflectionProperty(ComplexPropertiesFixture::class, static::PUBLIC_ARRAY_DEFAULT),
                 new ReflectionProperty(ComplexPropertiesFixture::class, static::PUBLIC_FLOAT_PROPERTY),
+                new ReflectionProperty(AttributesFixture::class, static::PROPERTY),
             ]
         ];
 
@@ -406,6 +411,27 @@ class ThroughPropertiesTest extends AbstractHelper
             '->',
             '',
             'Public '
+        );
+
+        // Looking at the attributes.
+        if (method_exists(ReflectionClass::class, 'getAttributes')) {
+            $json = [
+                static::JSON_DECLARED_KEY => AttributesFixture::class,
+                static::ATTRIBUTES_KEY => 'Brainworxx\Krexx\Tests\Fixtures\Property()<br>'
+            ];
+        } else {
+            $json = [
+                static::JSON_DECLARED_KEY => AttributesFixture::class,
+            ];
+        }
+        $this->assertModelValues(
+            $models[14],
+            null,
+            static::PROPERTY,
+            $json,
+            '->',
+            '',
+            'Public Unset Inherited '
         );
     }
 

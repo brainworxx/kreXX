@@ -39,9 +39,20 @@ use Brainworxx\Krexx\Analyse\Attributes\Attributes;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\AttributesFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
+use Krexx;
+use Exception;
 
 class AttributesTest extends AbstractHelper
 {
+    /**
+     * @covers \Brainworxx\Krexx\Analyse\Attributes\Attributes::__construct
+     */
+    public function testConstruct()
+    {
+        $attributes = new Attributes(Krexx::$pool);
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $attributes));
+    }
+
     /**
      * @covers \Brainworxx\Krexx\Analyse\Attributes\Attributes::getAttributes
      */
@@ -50,7 +61,7 @@ class AttributesTest extends AbstractHelper
         $fixture = new AttributesFixture();
         $reflectionClass = new ReflectionClass($fixture);
         $reflectionMethod = $reflectionClass->getMethod('testGetAttributes');
-        $attributes = new Attributes();
+        $attributes = new Attributes(\Krexx::$pool);
 
         $resultClass = $attributes->getAttributes($reflectionClass);
         $resultMethod = $attributes->getAttributes($reflectionMethod);
@@ -66,6 +77,40 @@ class AttributesTest extends AbstractHelper
         } else {
             $this->assertEmpty($resultClass);
             $this->assertEmpty($resultMethod);
+        }
+    }
+
+    /**
+     * @covers \Brainworxx\Krexx\Analyse\Attributes\Attributes::getFlatAttributes
+     * @covers \Brainworxx\Krexx\Analyse\Attributes\Attributes::generateParameterList
+     */
+    public function testGetFlatAttributes()
+    {
+        $attributes = new Attributes(\Krexx::$pool);
+
+        $fixture = new AttributesFixture();
+        $reflectionClass = new ReflectionClass($fixture);
+        $reflectionMethod = $reflectionClass->getMethod('testGetAttributes');
+        $attributeResult = $attributes->getFlatAttributes($reflectionMethod);
+
+        $reflectionProperty = $reflectionClass->getProperty('property');
+        $propertyResult = $attributes->getFlatAttributes($reflectionProperty);
+
+        $fixture = new Exception();
+        $reflectionClass = new ReflectionClass($fixture);
+        $exceptionResult = $attributes->getFlatAttributes($reflectionClass);
+
+        if (method_exists(ReflectionClass::class, 'getAttributes')) {
+            $this->assertEquals(
+                'Brainworxx\Krexx\Tests\Fixtures\AttributesFixture(stuff, bob)<br>',
+                $attributeResult
+            );
+            $this->assertEmpty($exceptionResult, 'There are no properties.');
+            $this->assertEquals('Brainworxx\Krexx\Tests\Fixtures\Property()<br>', $propertyResult);
+        } else {
+            $this->assertEmpty($attributeResult, 'Wrong PHP Version ?!?');
+            $this->assertEmpty($exceptionResult, 'Wrong PHP Version ?!?');
+            $this->assertEmpty($propertyResult, 'Wrong PHP Version ?!?');
         }
     }
 }

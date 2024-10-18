@@ -40,6 +40,9 @@ use Brainworxx\Krexx\Analyse\Attributes\Attributes;
 #[\Attribute] #[Attributes('foo', 'bar', 5)]
 class AttributesFixture
 {
+    #[Property]
+    public $property;
+
     #[AttributesFixture('stuff', 'bob')]
     public function testGetAttributes()
     {

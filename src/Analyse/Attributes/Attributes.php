@@ -37,27 +37,96 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Attributes;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Reflector;
+use Throwable;
 
 class Attributes
 {
+    /**
+     * This is the pool.
+     *
+     * @var \Brainworxx\Krexx\Service\Factory\Pool
+     */
+    protected Pool $pool;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(Pool $pool)
+    {
+        $this->pool = $pool;
+    }
+
     /**
      * Retrieve the attributes from a reflection.
      *
      * Should be used in conjunction with the meta iterator.
      *
-     * @param Reflector $reflectionClass
+     * @param Reflector $reflection
      * @return array
      */
-    public function getAttributes(Reflector $reflectionClass): array
+    public function getAttributes(Reflector $reflection): array
     {
         $result = [];
-        if (method_exists($reflectionClass, 'getAttributes')) {
-            foreach ($reflectionClass->getAttributes() as $reflectionAttribute) {
+        try {
+            foreach ($reflection->getAttributes() as $reflectionAttribute) {
                 $result[$reflectionAttribute->getName()] = $reflectionAttribute->getArguments();
             }
+        } catch (Throwable $exception) {
         }
 
         return $result;
+    }
+
+    /**
+     * Flat variant of the attribute list
+     *
+     * @param \Reflector $reflection
+     * @return string
+     */
+    public function getFlatAttributes(Reflector $reflection): string
+    {
+        $attributes = $this->getAttributes($reflection);
+        if (empty($attributes)) {
+            return '';
+        }
+
+        $result = '';
+        $encoder = $this->pool->encodingService;
+        foreach ($attributes as $attributeName => $parameterList) {
+            $result .= $encoder->encodeString($attributeName);
+            $result .= $this->generateParameterList($parameterList);
+
+            $result .= '<br>';
+        }
+
+        return $result;
+    }
+
+    /**
+     * Flatten the parameter list.
+     *
+     * @param array $parameterList
+     *   The parameter list.
+     *
+     * @return string
+     *   The flattened parameterlist.
+     */
+    protected function generateParameterList(array $parameterList): string
+    {
+        if (empty($parameterList)) {
+            return '()';
+        }
+
+        $encoder = $this->pool->encodingService;
+        $result = ' (';
+        foreach ($parameterList as $parameter) {
+            $result .= $encoder->encodeString($parameter) . ', ';
+        }
+
+        return trim($result, ', ') . ')';
     }
 }
