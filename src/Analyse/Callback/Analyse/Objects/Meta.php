@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Analyse\Attributes\Attributes;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Comment\Classes;
 use Brainworxx\Krexx\Analyse\Model;
@@ -139,15 +140,19 @@ class Meta extends AbstractObjectAnalysis
     protected function generateMetaData(ReflectionClass $ref): array
     {
         $messages = $this->pool->messages;
-
         // Get the naming on the way.
         $data = [
             $messages->getHelp('metaClassName') => $this->generateName($ref),
-            $messages->getHelp('metaComment') => $this->pool->createClass(Classes::class)->getComment($ref),
+            $messages->getHelp('metaComment') => $this->pool
+                ->createClass(Classes::class)
+                ->getComment($ref),
             $messages->getHelp('metaDeclaredIn') => $ref->isInternal() ?
                 $messages->getHelp('metaPredeclared') :
                 $ref->getFileName() . ' ' .
-                $messages->getHelp('metaInLine') . $ref->getStartLine()
+                $messages->getHelp('metaInLine') . $ref->getStartLine(),
+            $messages->getHelp('metaAttributes') => $this->pool
+                ->createClass(Attributes::class)
+                ->getAttributes($ref),
         ];
 
         // Now to collect the inheritance stuff.
