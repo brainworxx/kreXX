@@ -37,12 +37,44 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Getter;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-interface GetterInterface
+abstract class AbstractGetter
 {
+     /**
+     * Have we found anything?
+     *
+     * @var bool
+     */
+    protected bool $foundSomething = false;
+
+    /**
+     * Reflection of the property that we are looking at, if available.
+     *
+     * @var \ReflectionProperty|null
+     */
+    protected ?ReflectionProperty $reflectionProperty = null;
+
+    /**
+     * This is the pool.
+     *
+     * @var \Brainworxx\Krexx\Service\Factory\Pool
+     */
+    protected Pool $pool;
+
+    /**
+     * Inject the pool,
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(Pool $pool)
+    {
+        $this->pool = $pool;
+    }
+
     /**
      * We retrieve the possible return value of the gatter, without calling it.
      *
@@ -53,25 +85,58 @@ interface GetterInterface
      * @return mixed
      *   We retrieve the value.
      */
-    public function retrieveIt(
+    abstract public function retrieveIt(
         ReflectionMethod $reflectionMethod,
         ReflectionClass $reflectionClass,
         string $currentPrefix
     );
 
     /**
-     * Have we actually found something?
-     *
-     * A null value is also a value after all.
-     *
-     * @return bool
+     * {@inheritDoc}
      */
-    public function foundSomething(): bool;
+    public function foundSomething(): bool
+    {
+        return $this->foundSomething;
+    }
 
     /**
-     * Get the used reflection property, if available.
-     *
      * @return \ReflectionProperty|null
      */
-    public function getReflectionProperty(): ?ReflectionProperty;
+    public function getReflectionProperty(): ?ReflectionProperty
+    {
+        return $this->reflectionProperty;
+    }
+
+    /**
+     * Searching for stuff via regex. Type casting inside the code will be ignored.
+     *
+     * @param string[] $searchArray
+     *   The search definition.
+     * @param string $haystack
+     *   The haystack, obviously. Aka "the code".
+     *
+     * @return string[]|int[]
+     *   The findings.
+     */
+    protected function findIt(array $searchArray, string $haystack): array
+    {
+        // Some people cast their stuff before returning it.
+        // Remove it from the code before passing it to the regex.
+        $haystack = str_replace(['(int)', '(string)', '(float)', '(bool)'], '', $haystack);
+        $haystack = str_replace('  ', ' ', $haystack);
+
+        $findings = [];
+        preg_match_all(
+            str_replace(
+                ['###0###', '###1###'],
+                [preg_quote($searchArray[0]), preg_quote($searchArray[1])],
+                '/(?<=###0###).*?(?=###1###)/'
+            ),
+            $haystack,
+            $findings
+        );
+
+        // Return the file name as well as stuff from the path.
+        return $findings[0];
+    }
 }

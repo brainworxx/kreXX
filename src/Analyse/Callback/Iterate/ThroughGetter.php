@@ -37,10 +37,11 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
+use Brainworxx\Krexx\Analyse\Getter\AbstractGetter;
 use Brainworxx\Krexx\Analyse\Getter\ByMethodName;
 use Brainworxx\Krexx\Analyse\Getter\ByRegExContainer;
+use Brainworxx\Krexx\Analyse\Getter\ByRegExDelegate;
 use Brainworxx\Krexx\Analyse\Getter\ByRegExProperty;
-use Brainworxx\Krexx\Analyse\Getter\GetterInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use ReflectionMethod;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
@@ -95,9 +96,9 @@ class ThroughGetter extends AbstractCallback implements
     /**
      * These analysers will take a look at the getter.
      *
-     * @var \Brainworxx\Krexx\Analyse\Getter\GetterInterface[]
+     * @var \Brainworxx\Krexx\Analyse\Getter\AbstractGetter[]
      */
-    protected array $getterAnalyser = [];
+    protected array $getterAnalyser;
 
     /**
      * Class for the comment analysis.
@@ -115,6 +116,12 @@ class ThroughGetter extends AbstractCallback implements
     {
         parent::__construct($pool);
         $this->commentAnalysis = $this->pool->createClass(Methods::class);
+        $this->getterAnalyser = [
+            $this->pool->createClass(ByMethodName::class),
+            $this->pool->createClass(ByRegExProperty::class),
+            $this->pool->createClass(ByRegExContainer::class),
+            $this->pool->createClass(ByRegExDelegate::class)
+        ];
     }
 
     /**
@@ -126,10 +133,6 @@ class ThroughGetter extends AbstractCallback implements
     public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
-
-        $this->getterAnalyser[] = $this->pool->createClass(ByMethodName::class);
-        $this->getterAnalyser[] = $this->pool->createClass(ByRegExProperty::class);
-        $this->getterAnalyser[] = $this->pool->createClass(ByRegExContainer::class);
 
         if (!empty($this->parameters[static::PARAM_NORMAL_GETTER])) {
             $this->parameters[static::CURRENT_PREFIX] = 'get';
@@ -270,12 +273,12 @@ class ThroughGetter extends AbstractCallback implements
     /**
      * @param mixed $value
      *   The possible value that we retrieved.
-     * @param \Brainworxx\Krexx\Analyse\Getter\GetterInterface $analyser
+     * @param \Brainworxx\Krexx\Analyse\Getter\AbstractGetter $analyser
      *   The analyser that we used.
      * @param \ReflectionMethod $reflectionMethod
      *   Reflection of the method that we are analysing.
      */
-    protected function prepareParameters($value, GetterInterface $analyser, ReflectionMethod $reflectionMethod): void
+    protected function prepareParameters($value, AbstractGetter $analyser, ReflectionMethod $reflectionMethod): void
     {
         $this->parameters[static::PARAM_ADDITIONAL] = [
             static::PARAM_NOTHING_FOUND => false,

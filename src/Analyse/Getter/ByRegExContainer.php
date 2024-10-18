@@ -40,8 +40,34 @@ namespace Brainworxx\Krexx\Analyse\Getter;
 use ReflectionMethod;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 
-class ByRegExContainer extends ByRegExProperty
+/**
+ * Scanning the source code by regex for a possible value in an array that the
+ * getter may return.
+ */
+class ByRegExContainer extends AbstractGetter
 {
+    /**
+     * We try to parse something like:
+     * return $this->container['value'];
+     *
+     * The expectation is this:
+     * container['value'
+     *
+     * @var array|string[]
+     */
+    protected array $firstPattern = ['return $this->', '];'];
+
+    /**
+     * We split the result from the firstPattern by this one.
+     *
+     * container['value'
+     * will split into
+     * container and 'value'
+     *
+     * @var string
+     */
+    protected string $secondPattern = '[';
+
     /**
      * {@inheritDoc}
      */
@@ -65,8 +91,8 @@ class ByRegExContainer extends ByRegExProperty
 
         // Identify the container.
         // We are looking for something like this:
-        // $this->$container['key'];
-        $results = $this->findIt(['return $this->', '];'], $sourcecode);
+        // $this->container['key'];
+        $results = $this->findIt($this->firstPattern, $sourcecode);
         if (empty($results)) {
             return null;
         }
@@ -74,12 +100,12 @@ class ByRegExContainer extends ByRegExProperty
         // We take the first one that we get.
         // There may others in there, but when the developer uses static
         // caching, this is where the value should be.
-        $parts = explode('[', $results[0]);
+        $parts = explode($this->secondPattern, $results[0]);
         if (count($parts) !== 2) {
             return null;
         }
 
-        return $this->extractContainerKeyNames($parts, $reflectionClass);
+        return $this->extractValue($parts, $reflectionClass);
     }
 
     /**
@@ -91,7 +117,7 @@ class ByRegExContainer extends ByRegExProperty
      *   The extracted value. Null means that we were unable to find anything
      *   with certainty.
      */
-    protected function extractContainerKeyNames(array $parts, ReflectionClass $reflectionClass)
+    protected function extractValue(array $parts, ReflectionClass $reflectionClass)
     {
         // There may (or may not) be gibberish in there, but it does not matter.
         $containerName = $parts[0];

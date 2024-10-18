@@ -39,6 +39,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter;
 use Brainworxx\Krexx\Analyse\Comment\Methods;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\DeepGetterFixture;
+use Brainworxx\Krexx\Tests\Fixtures\DelegateGetterFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 use Brainworxx\Krexx\Krexx;
@@ -156,6 +157,7 @@ class ThroughGetterTest extends AbstractHelper
 
         // Mock the render object.
         $renderMock = $this->createMock(RenderHans::class);
+        // We only have one without result.
         $renderMock->expects($this->once())
             ->method('renderExpandableChild')
             ->willReturn('');
@@ -253,7 +255,6 @@ class ThroughGetterTest extends AbstractHelper
         // Some events are called multiple times, so we can not rely on the
         // mockEventService method.
         $throughGetter = new ThroughGetter(Krexx::$pool);
-        $throughGetter = new ThroughGetter(Krexx::$pool);
         $this->mockEventService(
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::callMe::start', $throughGetter],
             // getValue
@@ -295,6 +296,7 @@ class ThroughGetterTest extends AbstractHelper
 
         // Mock the render object.
         $renderMock = $this->createMock(RenderHans::class);
+        // Six are without result.
         $renderMock->expects($this->exactly(6))
             ->method('renderExpandableChild')
             ->willReturn('');
@@ -336,6 +338,104 @@ class ThroughGetterTest extends AbstractHelper
             // getBadComments is missing
             // both would not have any value, at all.
         ];
+
+        foreach ($expectations as $key => $result) {
+            $this->assertEquals($result, $models[$key]->getData(), 'Count: ' . $key);
+        }
+    }
+
+    /**
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::goThroughMethodList
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::retrievePropertyValue
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::resetParameters
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::prepareModel
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughGetter::prepareParameters
+     */
+    public function testCallMeDelegate()
+    {
+        $this->mockEmergencyHandler();
+        // Test the events.
+        // Some events are called multiple times, so we can not rely on the
+        // mockEventService method.
+        $throughGetter = new ThroughGetter(Krexx::$pool);
+        $this->mockEventService(
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::callMe::start', $throughGetter],
+            // getMyPropertyOne
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyTwo
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyThree
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyFour
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyFive
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertySix
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertySeven
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyEight
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+            // getMyPropertyNine
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::goThroughMethodList::end', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::resolving', $throughGetter],
+            ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughGetter::retrievePropertyValue::end', $throughGetter],
+        );
+
+        // Prevent the further routing.
+        Krexx::$pool->routing = new RoutingNothing(Krexx::$pool);
+
+        // Mock the render object.
+        $renderMock = $this->createMock(RenderHans::class);
+        // Everyone got a result.
+        $renderMock->expects($this->never())
+            ->method('renderExpandableChild')
+            ->willReturn('');
+        Krexx::$pool->render = $renderMock;
+
+        // Create a fixture.
+        $data = new DelegateGetterFixture();
+        $ref = new ReflectionClass($data);
+        $fixture = [
+            'normalGetter' => [
+                new ReflectionMethod($data, 'getMyPropertyOne'),
+                new ReflectionMethod($data, 'getMyPropertyTwo'),
+                new ReflectionMethod($data, 'getMyPropertyThree'),
+                new ReflectionMethod($data, 'getMyPropertyFour'),
+                new ReflectionMethod($data, 'getMyPropertyFive'),
+                new ReflectionMethod($data, 'getMyPropertySix'),
+                new ReflectionMethod($data, 'getMyPropertySeven'),
+                new ReflectionMethod($data, 'getMyPropertyEight'),
+                new ReflectionMethod($data, 'getMyPropertyNine'),
+            ],
+            'ref' => $ref,
+            'data' => $data
+        ];
+
+        // Run the test.
+        $throughGetter->setParameters($fixture)->callMe();
+
+        // Get the models from RoutingNothing and assert their values.
+        $models = Krexx::$pool->routing->model;
+        $this->assertCount(9, $models);
+        $expectations = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',];
 
         foreach ($expectations as $key => $result) {
             $this->assertEquals($result, $models[$key]->getData(), 'Count: ' . $key);

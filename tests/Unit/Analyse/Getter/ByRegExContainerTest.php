@@ -54,7 +54,7 @@ class ByRegExContainerTest extends AbstractGetter
      * The class to test should not be able to retrieve any of these.
      *
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::retrieveIt
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::extractContainerKeyNames
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::extractValue
      */
     public function testRetrieveItSimple()
     {
@@ -100,7 +100,7 @@ class ByRegExContainerTest extends AbstractGetter
      * Test that we do not handle internal classes or methods.
      *
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::retrieveIt
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::extractContainerKeyNames
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::extractValue
      */
     public function testRetrieveItInternal()
     {
@@ -123,7 +123,7 @@ class ByRegExContainerTest extends AbstractGetter
      * Retrieving the value fom a value-container.
      *
      * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::retrieveIt
-     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::extractContainerKeyNames
+     * @covers \Brainworxx\Krexx\Analyse\Getter\ByRegExContainer::extractValue
      */
     public function testRetrieveItContainer()
     {

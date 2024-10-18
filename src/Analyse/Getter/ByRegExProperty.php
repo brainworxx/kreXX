@@ -42,6 +42,10 @@ use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+/**
+ * Scanning the source code by regex for a possible property that the getter
+ * may return.
+ */
 class ByRegExProperty extends ByMethodName
 {
     /**
@@ -50,23 +54,6 @@ class ByRegExProperty extends ByMethodName
      * @var int
      */
     protected int $deep = 0;
-
-    /**
-     * This is the pool.
-     *
-     * @var \Brainworxx\Krexx\Service\Factory\Pool
-     */
-    protected Pool $pool;
-
-    /**
-     * Inject the pool,
-     *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
-     */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-    }
 
     /**
      * {@inheritDoc}
@@ -114,8 +101,8 @@ class ByRegExProperty extends ByMethodName
         );
 
         // Execute our search pattern.
-        // Right now, we are trying to get to properties that way.
-        // Later on, we may also try to parse deeper for stuff.
+        // We are looking for something like;
+        // return->myProperty;
         $result = null;
         foreach ($this->findIt(['return $this->', ';'], $sourcecode) as $propertyName) {
             // Check if this is a property and return the last we find.
@@ -127,68 +114,35 @@ class ByRegExProperty extends ByMethodName
     }
 
     /**
-     * Searching for stuff via regex. Type casting inside the code will be ignored.
-     *
-     * @param string[] $searchArray
-     *   The search definition.
-     * @param string $haystack
-     *   The haystack, obviously. Aka "the code".
-     *
-     * @return string[]|int[]
-     *   The findings.
-     */
-    protected function findIt(array $searchArray, string $haystack): array
-    {
-        // Some people cast their stuff before returning it.
-        // Remove it from the code before passing it to the regex.
-        $haystack = str_replace(['(int)', '(string)', '(float)', '(bool)'], '', $haystack);
-        $haystack = str_replace('  ', ' ', $haystack);
-
-        $findings = [];
-        preg_match_all(
-            str_replace(
-                ['###0###', '###1###'],
-                [preg_quote($searchArray[0]), preg_quote($searchArray[1])],
-                '/(?<=###0###).*?(?=###1###)/'
-            ),
-            $haystack,
-            $findings
-        );
-
-        // Return the file name as well as stuff from the path.
-        return $findings[0];
-    }
-
-    /**
      * Analyse tone of the regex findings.
      *
      * @param string $propertyName
      *   The name of the property.
-     * @param ReflectionClass $classReflection
+     * @param ReflectionClass $reflectionClass
      *   The current class reflection
-     *
-     * @throws \ReflectionException
      *
      * @return \ReflectionProperty|null
      *   The reflection of the property, or null if we found nothing.
+     *@throws \ReflectionException
+     *
      */
     protected function analyseRegexResult(
         string $propertyName,
-        ReflectionClass $classReflection,
+        ReflectionClass &$reflectionClass,
         string $currentPrefix
     ): ?ReflectionProperty {
         // Check if this is a property and return the first we find.
-        $result = $this->retrievePropertyByName($propertyName, $classReflection);
+        $result = $this->retrievePropertyByName($propertyName, $reflectionClass);
         if ($result !== null) {
             return $result;
         }
 
         // Check if this is a method and go deeper!
         $methodName = rtrim($propertyName, '()');
-        if ($classReflection->hasMethod($methodName) && ++$this->deep < 3) {
+        if ($reflectionClass->hasMethod($methodName) && ++$this->deep < 3) {
             return $this->retrieveReflectionProperty(
-                $classReflection->getMethod($methodName),
-                $classReflection,
+                $reflectionClass->getMethod($methodName),
+                $reflectionClass,
                 $currentPrefix
             );
         }

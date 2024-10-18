@@ -41,7 +41,7 @@ use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-class ByMethodName implements GetterInterface
+class ByMethodName extends AbstractGetter
 {
     /**
      * Have we found anything?
@@ -202,21 +202,5 @@ class ByMethodName implements GetterInterface
     protected function convertToSnakeCase(string $string): string
     {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function foundSomething(): bool
-    {
-        return $this->foundSomething;
-    }
-
-    /**
-     * @return \ReflectionProperty|null
-     */
-    public function getReflectionProperty(): ?ReflectionProperty
-    {
-        return $this->reflectionProperty;
     }
 }

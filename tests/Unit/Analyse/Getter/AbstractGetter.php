@@ -3,13 +3,13 @@
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Getter;
 
 use Brainworxx\Krexx\Analyse\Getter\ByRegExContainer;
-use Brainworxx\Krexx\Analyse\Getter\GetterInterface;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
+use PhpParser\Node\Expr\Instanceof_;
 
 class AbstractGetter extends AbstractHelper
 {
-    protected GetterInterface $testSubject;
+    protected \Brainworxx\Krexx\Analyse\Getter\AbstractGetter $testSubject;
 
     /**
      * @param array $fixture
@@ -28,8 +28,8 @@ class AbstractGetter extends AbstractHelper
             $message = 'Check the result: ' . $items['reflection']->getName();
             $this->assertEquals($items['expectation'], $result, $message);
             if ($items['hasResult']) {
-                $this->assertTrue($this->testSubject->foundSomething());
-                if (get_class($this->testSubject) !== ByRegExContainer::class) {
+                $this->assertTrue($this->testSubject->foundSomething(), $message);
+                if (!($this->testSubject instanceof ByRegExContainer)) {
                     // There is no reflection in the ByRegExContainer.
                     // And no, it is not "allergic" to garlic or sunlight.
                     $this->assertEquals(
