@@ -138,7 +138,6 @@ class ThroughMethodsTest extends AbstractHelper
             [$this->endEvent, $this->throughMethods],
             [$this->endEvent, $this->throughMethods],
             [$this->endEvent, $this->throughMethods],
-            [$this->endEvent, $this->throughMethods],
             [$this->endEvent, $this->throughMethods]
         );
 
@@ -153,8 +152,7 @@ class ThroughMethodsTest extends AbstractHelper
                 new ReflectionMethod(ComplexMethodFixture::class, 'troublesomeMethod'),
                 new ReflectionMethod(ComplexMethodFixture::class, 'finalMethod'),
                 new ReflectionMethod(ComplexMethodFixture::class, 'parameterizedMethod'),
-                new ReflectionMethod(ComplexMethodFixture::class, 'traitFunction'),
-                new ReflectionMethod(AttributesFixture::class, 'testGetAttributes'),
+                new ReflectionMethod(ComplexMethodFixture::class, 'traitFunction')
             ]
         ];
 
@@ -290,6 +288,37 @@ class ThroughMethodsTest extends AbstractHelper
             'Brainworxx\\Krexx\\Tests\\Fixtures\\TraitFixture',
             [],
         );
+    }
+
+    public function testCallMeAttributes()
+    {
+        // Test the event calling.
+        $this->mockEventService(
+            [$this->startEvent, $this->throughMethods],
+            [$this->endEvent, $this->throughMethods]
+        );
+
+        // Create the empty fixture
+        $fixture = [
+            $this->throughMethods::PARAM_REF => new ReflectionClass(AttributesFixture::class),
+            $this->throughMethods::PARAM_DATA => [
+                new ReflectionMethod(AttributesFixture::class, 'testGetAttributes'),
+            ]
+        ];
+
+        // Inject the render nothing.
+        $renderNothing = new RenderNothing(Krexx::$pool);
+        Krexx::$pool->render = $renderNothing;
+        // Overwrite the callback.
+        Krexx::$pool->rewrite[ThroughMeta::class] = CallbackNothing::class;
+
+        // Run the test.
+        $this->throughMethods
+            ->setParameters($fixture)
+            ->callMe();
+
+        // Check the result
+        $models = $renderNothing->model['renderExpandableChild'];
 
         // testGetAttributes
         if (method_exists(\ReflectionClass::class, 'getAttributes')) {
@@ -298,9 +327,9 @@ class ThroughMethodsTest extends AbstractHelper
             $attributes = [];
         }
         $this->assertModelValues(
-            $models[8],
-            $fixture[$this->throughMethods::PARAM_DATA][8]->name,
-            'Public Inherited method',
+            $models[0],
+            $fixture[$this->throughMethods::PARAM_DATA][0]->name,
+            'Public method',
             '->',
             '()',
             '',
