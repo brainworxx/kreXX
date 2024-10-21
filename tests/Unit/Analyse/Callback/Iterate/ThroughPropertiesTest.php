@@ -153,7 +153,6 @@ class ThroughPropertiesTest extends AbstractHelper
             [$this->endEvent, $this->throughProperties],
             [$this->endEvent, $this->throughProperties],
             [$this->endEvent, $this->throughProperties],
-            [$this->endEvent, $this->throughProperties],
             [$this->endEvent, $this->throughProperties]
         );
 
@@ -177,8 +176,7 @@ class ThroughPropertiesTest extends AbstractHelper
                 new ReflectionProperty(ComplexPropertiesFixture::class, static::TRAIT_PROPERTY),
                 new UndeclaredProperty(new ReflectionClass($subject), $undeclaredProp),
                 new ReflectionProperty(ComplexPropertiesFixture::class, static::PUBLIC_ARRAY_DEFAULT),
-                new ReflectionProperty(ComplexPropertiesFixture::class, static::PUBLIC_FLOAT_PROPERTY),
-                new ReflectionProperty(AttributesFixture::class, static::PROPERTY),
+                new ReflectionProperty(ComplexPropertiesFixture::class, static::PUBLIC_FLOAT_PROPERTY)
             ]
         ];
 
@@ -412,6 +410,50 @@ class ThroughPropertiesTest extends AbstractHelper
             '',
             'Public '
         );
+    }
+
+    /**
+     * Normal test run for the property analysis.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::prepareModel
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveConnector
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrievePropertyName
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration::retrieveDeclaration
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration::retrieveDeclaringClassFromTraits
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::getAdditionalData
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveDefaultValue
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::formatDefaultValue
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties::retrieveValueStatus
+     */
+    public function testCallMeAttributes()
+    {
+        // Test the events.
+        $this->mockEventService(
+            [$this->startEvent, $this->throughProperties],
+            [$this->endEvent, $this->throughProperties]
+        );
+
+        // Create a fixture.
+        $subject = new AttributesFixture();
+        $fixture = [
+            $this->throughProperties::PARAM_REF => new ReflectionClass($subject),
+            $this->throughProperties::PARAM_DATA => [
+                new ReflectionProperty(AttributesFixture::class, static::PROPERTY),
+            ]
+        ];
+
+        // Inject the nothing-router.
+        $routeNothing = new RoutingNothing(Krexx::$pool);
+        Krexx::$pool->routing = $routeNothing;
+        $this->mockEmergencyHandler();
+
+        // Run the test
+        $this->throughProperties
+            ->setParameters($fixture)
+            ->callMe();
+        // Retrieve the result models and assert them.
+        $models = $routeNothing->model;
 
         // Looking at the attributes.
         if (method_exists(ReflectionClass::class, 'getAttributes')) {
@@ -425,13 +467,13 @@ class ThroughPropertiesTest extends AbstractHelper
             ];
         }
         $this->assertModelValues(
-            $models[14],
+            $models[0],
             null,
             static::PROPERTY,
             $json,
             '->',
             '',
-            'Public Unset Inherited '
+            'Public '
         );
     }
 
