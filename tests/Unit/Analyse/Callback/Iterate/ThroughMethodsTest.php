@@ -290,6 +290,17 @@ class ThroughMethodsTest extends AbstractHelper
         );
     }
 
+    /**
+     * Test the attributes fixture
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::callMe
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::retrieveConnectorType
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::retrieveParameters
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration::retrieveDeclaration
+     * @covers \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration::retrieveDeclaringReflection
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::getDeclarationKeywords
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods::retrieveMethodData
+     */
     public function testCallMeAttributes()
     {
         // Test the event calling.
