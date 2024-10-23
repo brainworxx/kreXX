@@ -110,10 +110,13 @@ class ThroughConstantsTest extends AbstractHelper
         $this->assertEquals('\\' . ConstantsFixture71::class . '::', $models[1]->getConnectorLeft());
         $this->assertEquals([], $models[0]->getJson());
         $this->assertEquals([], $models[1]->getJson());
-        $this->assertEquals(
-            ['Attributes' => 'Brainworxx\\Krexx\\Tests\\Fixtures\\stuff(lorem)<br>Brainworxx\\Krexx\\Tests\\Fixtures\\more(ipsum)'],
-            $models[2]->getJson()
-        );
+        $ref = new ReflectionClass(ConstantsFixture71::class);
+        if (method_exists($ref, 'getAttributes')) {
+            $this->assertEquals(
+                ['Attributes' => 'Brainworxx\\Krexx\\Tests\\Fixtures\\stuff(lorem)<br>Brainworxx\\Krexx\\Tests\\Fixtures\\more(ipsum)'],
+                $models[2]->getJson()
+            );
+        }
     }
 
     /**
@@ -153,8 +156,12 @@ class ThroughConstantsTest extends AbstractHelper
         $this->assertEquals([], $models[1]->getJson());
         $this->assertEquals([], $models[2]->getJson());
         $this->assertEquals([], $models[3]->getJson());
-        $this->assertEquals(
-            ['Attributes' => 'Brainworxx\\Krexx\\Tests\\Fixtures\\stuff(lorem)<br>Brainworxx\\Krexx\\Tests\\Fixtures\\more(ipsum)'],
-            $models[4]->getJson());
+        $ref = new ReflectionClass(ConstantsFixture71::class);
+        if (method_exists($ref, 'getAttributes')) {
+            $this->assertEquals(
+                ['Attributes' => 'Brainworxx\\Krexx\\Tests\\Fixtures\\stuff(lorem)<br>Brainworxx\\Krexx\\Tests\\Fixtures\\more(ipsum)'],
+                $models[4]->getJson()
+            );
+        }
     }
 }
