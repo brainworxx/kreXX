@@ -55,6 +55,7 @@ class AttributesTest extends AbstractHelper
 
     /**
      * @covers \Brainworxx\Krexx\Analyse\Attributes\Attributes::getFlatAttributes
+     * @covers \Brainworxx\Krexx\Analyse\Attributes\Attributes::getAttributes
      * @covers \Brainworxx\Krexx\Analyse\Attributes\Attributes::generateParameterList
      */
     public function testGetFlatAttributes()

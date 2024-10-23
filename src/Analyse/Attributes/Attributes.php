@@ -128,7 +128,6 @@ class Attributes
             } else {
                 $result .= $parameter . ', ';
             }
-
         }
 
         return trim($result, ', ') . ')';

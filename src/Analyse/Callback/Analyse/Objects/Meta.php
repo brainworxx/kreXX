@@ -143,17 +143,13 @@ class Meta extends AbstractObjectAnalysis
         // Get the naming on the way.
         $data = [
             $messages->getHelp('metaClassName') => $this->generateName($ref),
-            $messages->getHelp('metaComment') => $this->pool
-                ->createClass(Classes::class)
-                ->getComment($ref),
+            $messages->getHelp('metaComment') => $this->pool->createClass(Classes::class)->getComment($ref),
             $messages->getHelp('metaDeclaredIn') => $ref->isInternal() ?
                 $messages->getHelp('metaPredeclared') :
                 $ref->getFileName() . ' ' .
                 $messages->getHelp('metaInLine') . $ref->getStartLine(),
         ];
-        $attributes = $this->pool
-            ->createClass(Attributes::class)
-            ->getFlatAttributes($ref);
+        $attributes = $this->pool->createClass(Attributes::class)->getFlatAttributes($ref);
         if (!empty($attributes)) {
             $data[$messages->getHelp('metaAttributes')] = $attributes;
         }
