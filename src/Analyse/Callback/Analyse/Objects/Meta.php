@@ -150,10 +150,13 @@ class Meta extends AbstractObjectAnalysis
                 $messages->getHelp('metaPredeclared') :
                 $ref->getFileName() . ' ' .
                 $messages->getHelp('metaInLine') . $ref->getStartLine(),
-            $messages->getHelp('metaAttributes') => $this->pool
-                ->createClass(Attributes::class)
-                ->getAttributes($ref),
         ];
+        $attributes = $this->pool
+            ->createClass(Attributes::class)
+            ->getFlatAttributes($ref);
+        if (!empty($attributes)) {
+            $data[$messages->getHelp('metaAttributes')] = $attributes;
+        }
 
         // Now to collect the inheritance stuff.
         // Each of them will get analysed by the ThroughMeta callback.

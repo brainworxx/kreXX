@@ -68,7 +68,7 @@ class Attributes
      * @param Reflector $reflection
      * @return array
      */
-    public function getAttributes(Reflector $reflection): array
+    protected function getAttributes(Reflector $reflection): array
     {
         $result = [];
         try {
@@ -99,11 +99,10 @@ class Attributes
         foreach ($attributes as $attributeName => $parameterList) {
             $result .= $encoder->encodeString($attributeName);
             $result .= $this->generateParameterList($parameterList);
-
             $result .= '<br>';
         }
 
-        return $result;
+        return trim($result, '<br>');
     }
 
     /**
@@ -124,7 +123,12 @@ class Attributes
         $encoder = $this->pool->encodingService;
         $result = ' (';
         foreach ($parameterList as $parameter) {
-            $result .= $encoder->encodeString($parameter) . ', ';
+            if (is_string($parameter)) {
+                $result .= $encoder->encodeString($parameter) . ', ';
+            } else {
+                $result .= $parameter . ', ';
+            }
+
         }
 
         return trim($result, ', ') . ')';

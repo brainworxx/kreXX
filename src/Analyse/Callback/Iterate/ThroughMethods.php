@@ -172,7 +172,7 @@ class ThroughMethods extends AbstractCallback implements
             // Get the return type.
             $messages->getHelp('metaReturnType') => $this->returnType->getComment($refMethod, $refClass),
             // Get the method attributes.
-            $messages->getHelp('metaAttributes') => $this->attributes->getAttributes($refMethod),
+            $messages->getHelp('metaAttributes') => $this->attributes->getFlatAttributes($refMethod),
         ];
 
         return $methodData;

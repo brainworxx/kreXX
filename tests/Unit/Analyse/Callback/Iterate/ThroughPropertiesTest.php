@@ -459,7 +459,7 @@ class ThroughPropertiesTest extends AbstractHelper
         if (method_exists(ReflectionClass::class, 'getAttributes')) {
             $json = [
                 static::JSON_DECLARED_KEY => AttributesFixture::class,
-                static::ATTRIBUTES_KEY => 'Brainworxx\Krexx\Tests\Fixtures\Property()<br>'
+                static::ATTRIBUTES_KEY => 'Brainworxx\Krexx\Tests\Fixtures\Property()'
             ];
         } else {
             $json = [
