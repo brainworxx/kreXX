@@ -5,6 +5,7 @@
 - Added a unit of measurement to the benchmarking.
 - Added better readability to the exception analysis.
 - Added delegate handling to the getter analysis.
+- Added attribute handling to the meta analysis.
 - Change: The scalar analysis classes are now reused.
 - Change: Renamed the language fallback key from 'text' to 'en'.
 - Change: Dropped PHP 7.2 and 7.3 support.
@@ -25,6 +26,8 @@
 - Added the handling of type casting to the regex getter analysis.
 - Bugfix: Removed some self:: references.
 - Bugfix: Better looking exclamation mark for the SmokyGrey skin.
+- Bugfix: The dragging of the kreXX output window may not work under
+  certain circumstances.
 
 5.0.5
 - Added formatting for float values for better readability.

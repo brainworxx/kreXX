@@ -35,30 +35,16 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
-/**
- * Constants analysis fixture for php 7.1 plus.
- *
- * @package Brainworxx\Krexx\Tests\Fixtures
- */
-class ConstantsFixture71
+use Brainworxx\Krexx\Analyse\Attributes\Attributes;
+
+#[\Attribute] #[Attributes('foo', 'bar', 5)]
+class AttributesFixture
 {
-    public const CONST_1 = 'some value';
-    public const CONST_2 = 'more values';
-    protected const CONST_3 = 'string';
-    private const CONST_4 = 21;
+    #[Property]
+    public $property;
 
-    #[stuff('lorem'), more('ipsum')]
-    public const CONST_5 = 'Attributes!';
-
-    /**
-     * I'm supposed to do something with the CONST_4, to avoid a bad rating in
-     * the TER-Sonarcube.
-     *
-     * @return int
-     *   THe fourth const of the code-pocalypse.
-     */
-    protected function whatever(): int
+    #[AttributesFixture('stuff', 'bob')]
+    public function testGetAttributes()
     {
-        return static::CONST_4;
     }
 }

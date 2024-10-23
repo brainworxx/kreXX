@@ -91,7 +91,8 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
             $messages->getHelp('metaDeclaredIn'),
             $messages->getHelp('metaSource'),
             $messages->getHelp('metaPrettyPrint'),
-            $messages->getHelp('metaContent')
+            $messages->getHelp('metaContent'),
+            $messages->getHelp('metaAttributes'),
         ];
 
         $this->stuffToProcess = [
