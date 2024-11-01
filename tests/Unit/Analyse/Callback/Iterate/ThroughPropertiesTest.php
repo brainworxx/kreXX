@@ -452,6 +452,9 @@ class ThroughPropertiesTest extends AbstractHelper
         $refPropertyMock->expects($this->any())
             ->method('getDeclaringClass')
             ->willReturn(new \ReflectionClass(PublicFixture::class));
+        $refPropertyMock->expects($this->any())
+            ->method('getDocComment')
+            ->willReturn('');
 
 
         $subject = new ComplexPropertiesFixture();
