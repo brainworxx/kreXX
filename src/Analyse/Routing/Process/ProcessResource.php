@@ -136,8 +136,6 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
      *   The model, so far.
      * @param resource $resource
      *   The resource, that we are analysing.
-     * @param string $typeString
-     *   Deprecated since 5.0.0. Will be removed.
      *
      * @return string
      *   The rendered HTML.

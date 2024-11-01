@@ -48,7 +48,7 @@ class Functions extends AbstractComment
     /**
      * Get the prettified comment from a function.
      *
-     * @param \Reflector $reflection
+     * @param \ReflectionFunction $reflection
      *   The reflection of the function with the comment.
      * @param \ReflectionClass|null $reflectionClass
      *   Nothing, null. We do not have a hosting class.
