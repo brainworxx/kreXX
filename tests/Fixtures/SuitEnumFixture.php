@@ -35,43 +35,10 @@
 
 namespace Brainworxx\Krexx\Tests\Fixtures;
 
-class MethodParameterFixture
+enum SuitEnumFixture
 {
-    /**
-     * @param array $parameter
-     */
-    public function arrayDefault(array $parameter = [])
-    {
-        // Do nothing.
-    }
-
-    /**
-     * @param bool $parameter
-     */
-    public function trueDefault(bool $parameter = true)
-    {
-        // Do nothing.
-    }
-
-    /**
-     * @param bool $parameter
-     */
-    public function falseDefault(bool $parameter = false)
-    {
-        // Do nothing.
-    }
-
-    /**
-     * @param $parameter
-     */
-    public function nullDefault($parameter = null)
-    {
-        // Do nothing.
-    }
-
-
-    public function byRef(string &$reference = '')
-    {
-        // Do nothing.
-    }
+    case Hearts;
+    case Diamonds;
+    case Clubs;
+    case Spades;
 }
