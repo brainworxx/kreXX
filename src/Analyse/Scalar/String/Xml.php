@@ -39,7 +39,6 @@ namespace Brainworxx\Krexx\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Model;
 use DOMDocument;
-use finfo;
 
 /**
  * Doing a deep XML analysis.
@@ -58,19 +57,16 @@ class Xml extends AbstractScalarAnalysis
     /**
      * Was the decoding of the XML successful?
      *
-     * @var bool
+     * @var string
      */
-    protected bool $hasErrors = false;
+    protected string $error = '';
 
     /**
      * {@inheritDoc}
      */
     public static function isActive(): bool
     {
-        return function_exists('xml_parser_create') &&
-            class_exists(DOMDocument::class) &&
-            class_exists(finfo::class) &&
-            function_exists('xml_parser_create');
+        return class_exists(DOMDocument::class);
     }
 
     /**
@@ -100,7 +96,7 @@ class Xml extends AbstractScalarAnalysis
 
         $this->model = $model;
         $this->handledValue = $string;
-        $this->hasErrors = false;
+        $this->error = '';
 
         return true;
     }
@@ -119,23 +115,45 @@ class Xml extends AbstractScalarAnalysis
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
 
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler([$this, 'errorCallback']);
         $dom->loadXML($this->handledValue);
         restore_error_handler();
 
-        if ($this->hasErrors) {
-            $meta[$messages->getHelp('metaDecodedXml')] = $this->pool->messages->getHelp('metaNoXml');
+        if ($this->error) {
+            $this->model->addToJson($messages->getHelp('xmlError'), $this->error);
         } else {
             $meta[$messages->getHelp('metaPrettyPrint')] = $this->pool
                 ->encodingService
                 ->encodeString($dom->saveXML());
+
             // Move the extra part into a nest, for better readability.
             $this->model->setHasExtra(false);
-            $meta[$messages->getHelp('metaContent')] = $this->model->getData();
+            $meta[$messages->getHelp('metaContent')] = $this->pool
+                ->encodingService
+                ->encodeString($this->handledValue);
         }
 
-        $this->hasErrors = false;
-
         return $meta;
+    }
+
+    /**
+     * Error callback in case something is wrong when decoding the XML.
+     *
+     * @param int $errno
+     * @param string $errstr
+     * @param string|null $errfile
+     * @param int|null $errline
+     * @param array|null $errcontext
+     * @return bool
+     */
+    protected function errorCallback(
+        int $errno,
+        string $errstr,
+        ?string $errfile = null,
+        ?int $errline = null,
+        ?array $errcontext = null
+    ): bool {
+        $this->error = $this->pool->encodingService->encodeString($errstr);
+        return true;
     }
 }

@@ -56,19 +56,9 @@ class XmlTest extends AbstractHelper
      */
     public function testIsActiveNot()
     {
-        $functionExistsMock = $this->getFunctionMock(
-            static::SCALAR_NAMESPACE,
-            'function_exists'
-        );
-        // The first false should prevent thge other tests from getting called.
-        $functionExistsMock->expects($this->once())
+        $classExistsMock = $this->getFunctionMock(static::SCALAR_NAMESPACE, 'class_exists');
+        $classExistsMock->expects($this->exactly(1))
             ->willReturn(false);
-
-        $classExistsMock = $this->getFunctionMock(
-            static::SCALAR_NAMESPACE,
-            'class_exists'
-        );
-        $classExistsMock->expects($this->never());
 
         $this->assertFalse(Xml::isActive());
     }
@@ -80,19 +70,11 @@ class XmlTest extends AbstractHelper
      */
     public function testIsActive()
     {
-        $functionExistsMock = $this->getFunctionMock(
-            static::SCALAR_NAMESPACE,
-            'function_exists'
-        );
-        // The first false should prevent thge other tests from getting called.
-        $functionExistsMock->expects($this->exactly(2))
-            ->willReturn(true);
-
         $classExistsMock = $this->getFunctionMock(
             static::SCALAR_NAMESPACE,
             'class_exists'
         );
-        $classExistsMock->expects($this->exactly(2))
+        $classExistsMock->expects($this->exactly(1))
             ->willReturn(true);
 
         $this->assertTrue(Xml::isActive());
@@ -125,15 +107,13 @@ class XmlTest extends AbstractHelper
     }
 
     /**
-     * Test the actual handling of a XML string.
+     * Test the actual handling of an XML string.
      *
      * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::handle
      */
     public function testHandle()
     {
-        Krexx::$pool->rewrite = [
-            ThroughMeta::class => CallbackCounter::class
-        ];
+        Krexx::$pool->rewrite = [ThroughMeta::class => CallbackCounter::class];
 
         $string = '<?xml version="1.0" encoding="utf-8"?><root><node>rogue text<yxcv qwer="asdf"><![CDATA[content]]></yxcv><yxcv qwer="yxcv" /></node></root>';
         $model = new Model(Krexx::$pool);
@@ -150,5 +130,26 @@ class XmlTest extends AbstractHelper
         $this->assertEquals(1, CallbackCounter::$counter);
         $result = CallbackCounter::$staticParameters[0][XML::PARAM_DATA];
         $this->assertEquals($prettyPrint, $result['Pretty print']);
+    }
+
+    /**
+     * Test with a broken XML structure.
+     *
+     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::handle
+     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::errorCallback
+     */
+    public function testHandleBrokenXml()
+    {
+        Krexx::$pool->rewrite = [ThroughMeta::class => CallbackCounter::class];
+
+        $string = '<?xml version="1.0" encoding="utf-8"?><root><node>rogue text<yxcv qwer="asdf"><![CDATA[content]]></yxcv><yxcv qwer="yxcv" /></root>';
+        $model = new Model(Krexx::$pool);
+        $model->addToJson('Mimetype string', static::TEXT_XML);
+        $xml = new Xml(Krexx::$pool);
+        $xml->canHandle($string, $model);
+        $xml->callMe();
+
+        $this->assertEmpty(CallbackCounter::$staticParameters);
+        $this->assertNotEmpty($model->getJson()['XML Error:']);
     }
 }
