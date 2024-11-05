@@ -1,4 +1,5 @@
 5.0.7
+- Bugfix: The XML analysis does not recognise a broken XML string.
 
 5.0.6
 - Added the handling of type casting to the regex getter analysis.
