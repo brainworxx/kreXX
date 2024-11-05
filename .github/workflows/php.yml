@@ -32,9 +32,3 @@ jobs:
 
     - name: Build
       run: composer test
-
-    - name: Test & publish code coverage
-      uses: paambaati/codeclimate-action@v6.0.0
-      if: ${{ matrix.php == '8.3' }}
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATEKEY }}
