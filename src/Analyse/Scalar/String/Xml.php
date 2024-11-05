@@ -146,7 +146,7 @@ class Xml extends AbstractScalarAnalysis
      * @param array|null $errcontext
      * @return bool
      */
-    protected function errorCallback(
+    public function errorCallback(
         int $errno,
         string $errstr,
         ?string $errfile = null,
