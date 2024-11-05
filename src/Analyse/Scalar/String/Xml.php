@@ -146,13 +146,8 @@ class Xml extends AbstractScalarAnalysis
      * @param array|null $errcontext
      * @return bool
      */
-    public function errorCallback(
-        int $errno,
-        string $errstr,
-        ?string $errfile = null,
-        ?int $errline = null,
-        ?array $errcontext = null
-    ): bool {
+    public function errorCallback(int $errno, string $errstr): bool
+    {
         $this->error = $this->pool->encodingService->encodeString($errstr);
         return true;
     }
