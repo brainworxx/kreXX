@@ -84,8 +84,9 @@ class XmlTest extends AbstractHelper
      * Test the handling of strings.
      *
      * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::canHandle
+     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::errorCallback
      */
-    public function testcanHandle()
+    public function testCanHandle()
     {
         $string = 'lacking the xml finfo info';
         $model = new Model(Krexx::$pool);
@@ -96,7 +97,7 @@ class XmlTest extends AbstractHelper
         $model = new Model(Krexx::$pool);
         $model->addToJson('Mimetype string', static::TEXT_XML);
         $xml = new Xml(Krexx::$pool);
-        $this->assertTrue($xml->canHandle($string, $model), $string);
+        $this->assertFalse($xml->canHandle($string, $model), $string);
 
         $string = '<?xml version="1.0" encoding="utf-8"?><node><yxcv qwer="asdf" /></node>';
         $model = new Model(Krexx::$pool);
@@ -136,20 +137,14 @@ class XmlTest extends AbstractHelper
      * Test with a broken XML structure.
      *
      * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::handle
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Xml::errorCallback
      */
     public function testHandleBrokenXml()
     {
-        Krexx::$pool->rewrite = [ThroughMeta::class => CallbackCounter::class];
-
         $string = '<?xml version="1.0" encoding="utf-8"?><root><node>rogue text<yxcv qwer="asdf"><![CDATA[content]]></yxcv><yxcv qwer="yxcv" /></root>';
         $model = new Model(Krexx::$pool);
         $model->addToJson('Mimetype string', static::TEXT_XML);
         $xml = new Xml(Krexx::$pool);
-        $xml->canHandle($string, $model);
-        $xml->callMe();
-
-        $this->assertEmpty(CallbackCounter::$staticParameters);
+        $this->assertFalse($xml->canHandle($string, $model), 'We do not handle a broken XML structure.');
         $this->assertNotEmpty($model->getJson()['XML Error:']);
     }
 }

@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use DOMDocument;
 
 /**
@@ -57,9 +58,41 @@ class Xml extends AbstractScalarAnalysis
     /**
      * Was the decoding of the XML successful?
      *
+     * @deprecated
+     *   Since 6.0.0. Will be removed.
+     *
+     * @var bool
+     */
+    protected $hasErrors = false;
+
+    /**
+     * Was the decoding of the XML successful?
+     *
      * @var string
      */
     protected string $error = '';
+
+    /**
+     * The "xml" parser.
+     *
+     * @var \DOMDocument
+     */
+    protected DOMDocument $DOMDocument;
+
+    /**
+     * Inject the pool, initialize the parser.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(Pool $pool)
+    {
+        parent::__construct($pool);
+
+        $this->DOMDocument = new DOMDocument("1.0");
+        // The pretty print done by a dom parser.
+        $this->DOMDocument->preserveWhiteSpace = false;
+        $this->DOMDocument->formatOutput = true;
+    }
 
     /**
      * {@inheritDoc}
@@ -93,10 +126,21 @@ class Xml extends AbstractScalarAnalysis
             // Early return.
             return false;
         }
+        $this->error = '';
+        $this->hasErrors = false;
+
+        // Load the document.
+        set_error_handler([$this, 'errorCallback']);
+        $this->DOMDocument->loadXML($string);
+        restore_error_handler();
+
+        if (!empty($this->error)) {
+            $model->addToJson($this->pool->messages->getHelp('xmlError'), $this->error);
+            return false;
+        }
 
         $this->model = $model;
         $this->handledValue = $string;
-        $this->error = '';
 
         return true;
     }
@@ -110,28 +154,16 @@ class Xml extends AbstractScalarAnalysis
     {
         $meta = [];
         $messages = $this->pool->messages;
-        // The pretty print done by a dom parser.
-        $dom = new DOMDocument("1.0");
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput = true;
 
-        set_error_handler([$this, 'errorCallback']);
-        $dom->loadXML($this->handledValue);
-        restore_error_handler();
+        $meta[$messages->getHelp('metaPrettyPrint')] = $this->pool
+            ->encodingService
+            ->encodeString($this->DOMDocument->saveXML());
 
-        if ($this->error) {
-            $this->model->addToJson($messages->getHelp('xmlError'), $this->error);
-        } else {
-            $meta[$messages->getHelp('metaPrettyPrint')] = $this->pool
-                ->encodingService
-                ->encodeString($dom->saveXML());
-
-            // Move the extra part into a nest, for better readability.
-            $this->model->setHasExtra(false);
-            $meta[$messages->getHelp('metaContent')] = $this->pool
-                ->encodingService
-                ->encodeString($this->handledValue);
-        }
+        // Move the extra part into a nest, for better readability.
+        $this->model->setHasExtra(false);
+        $meta[$messages->getHelp('metaContent')] = $this->pool
+            ->encodingService
+            ->encodeString($this->handledValue);
 
         return $meta;
     }
@@ -141,14 +173,13 @@ class Xml extends AbstractScalarAnalysis
      *
      * @param int $errno
      * @param string $errstr
-     * @param string|null $errfile
-     * @param int|null $errline
-     * @param array|null $errcontext
+     *
      * @return bool
      */
     public function errorCallback(int $errno, string $errstr): bool
     {
         $this->error = $this->pool->encodingService->encodeString($errstr);
+        $this->hasErrors = true;
         return true;
     }
 }
