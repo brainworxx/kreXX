@@ -121,7 +121,7 @@ class ProcessClosureTest extends AbstractHelper
         if (version_compare(phpversion(), '8.4.0', '<=')) {
             $this->assertEquals(__NAMESPACE__, $parameters['Namespace']);
         } else {
-            $this->assertNull($parameters['Namespace']);
+            $this->assertArrayNotHasKey('Namespace', $parameters);
         }
 
         $this->assertEquals($parameter, $parameters['Parameter #1']);
