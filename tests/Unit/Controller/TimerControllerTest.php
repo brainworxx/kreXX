@@ -61,10 +61,9 @@ class TimerControllerTest extends AbstractController
             ->willReturn(3000);
     }
 
-    protected function krexxDown()
+    protected function tearDown(): void
     {
-        parent::krexxDown();
-
+        parent::tearDown();
         // Clean up the timekeeping stuff.
         $this->setValueByReflection(static::COUNTER_CACHE, [], $this->controller);
         $this->setValueByReflection(static::TIME_KEEPING, [], $this->controller);
@@ -134,7 +133,7 @@ class TimerControllerTest extends AbstractController
         $dumpMock = $this->createMock(DumpController::class);
         $dumpMock->expects($this->once())
             ->method('dumpAction')
-            ->will($this->returnCallback(
+            ->willReturnCallback(
                 function ($bench, $headline) {
                     $this->assertEquals('kreXX timer', $headline);
                     $this->assertEquals(
@@ -147,7 +146,7 @@ class TimerControllerTest extends AbstractController
                     );
                     return new DumpController(new Pool());
                 }
-            ));
+            );
 
         $poolMock = $this->createMock(Pool::class);
         $poolMock->expects($this->once())

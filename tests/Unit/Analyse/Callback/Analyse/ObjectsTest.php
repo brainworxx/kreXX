@@ -208,7 +208,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the meta stuff is analysed.
      *
-     * @throws \ReflectionException
+     * @covers \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects::setParameters
      */
     public function testCallMeMeta()
     {

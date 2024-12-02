@@ -33,7 +33,7 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-namespace Unit\Analyse\Scalar\String;
+namespace Brainworxx\Krexx\Tests\Unit\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;

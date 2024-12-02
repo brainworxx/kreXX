@@ -130,10 +130,12 @@ class AbstractFactoryTest extends AbstractHelper
      * Test the retrieval of the error callback, as well as running it.
      *
      * @covers \Brainworxx\Krexx\Service\Factory\AbstractFactory::retrieveErrorCallback
+     * @covers \Brainworxx\Krexx\Service\Factory\AbstractFactory::__construct
      */
     public function testRetrieveErrorCallback()
     {
-        $callback = Krexx::$pool->retrieveErrorCallback();
+        $pool = new Pool();
+        $callback = $pool->retrieveErrorCallback();
         $this->assertTrue($callback(1234, 'Barf!'), 'Must do nothing, and return TRUE');
     }
 }

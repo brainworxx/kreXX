@@ -99,9 +99,9 @@ class CallerFinderTest extends AbstractHelper
         $poolMock->messages = Krexx::$pool->messages;
         $poolMock->expects($this->any())
             ->method('createClass')
-            ->will($this->returnCallback(function ($classname) {
+            ->willReturnCallback(function ($classname) {
                 return Krexx::$pool->createClass($classname);
-            }));
+            });
 
         // Create our test subject.
         $this->callerFinder = new CallerFinder($poolMock);

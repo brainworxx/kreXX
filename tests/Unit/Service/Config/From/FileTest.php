@@ -108,17 +108,15 @@ class FileTest extends AbstractHelper
 
         $fileServiceMock->expects($this->any())
             ->method('fileIsReadable')
-            ->will(
-                $this->returnValueMap(
-                    [
-                        [$somePathIni, true],
-                        [$somePathJson, false],
-                        [$garbageFileIni, false],
-                        [$garbageFileJson, false],
-                        [$notExistingFileIni, false],
-                        [$notExistingFileJson, false]
-                    ]
-                )
+            ->willReturnMap(
+                [
+                    [$somePathIni, true],
+                    [$somePathJson, false],
+                    [$garbageFileIni, false],
+                    [$garbageFileJson, false],
+                    [$notExistingFileIni, false],
+                    [$notExistingFileJson, false]
+                ]
             );
 
         Krexx::$pool->fileService = $fileServiceMock;

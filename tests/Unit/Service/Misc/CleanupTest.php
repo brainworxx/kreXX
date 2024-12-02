@@ -67,11 +67,6 @@ class CleanupTest extends AbstractHelper
     {
         parent::setUp();
         $this->cleanup = new Cleanup(Krexx::$pool);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
         $this->setValueByReflection(static::CHUNKS_DONE, false, $this->cleanup);
     }
 
@@ -176,14 +171,12 @@ class CleanupTest extends AbstractHelper
                 [$file1],
                 [$file2],
                 [$file3]
-            ))->will(
-                $this->returnValueMap(
-                    [
-                        [$file1, 999],
-                        [$file2, 123],
-                        [$file3, 789]
-                    ]
-                )
+            ))->willReturnMap(
+                [
+                    [$file1, 999],
+                    [$file2, 123],
+                    [$file3, 789]
+                ]
             );
 
         // Test the deleting of the two oldest files (2 and 3).
@@ -264,14 +257,12 @@ class CleanupTest extends AbstractHelper
                 [$file1],
                 [$file2],
                 [$file3]
-            ))->will(
-                $this->returnValueMap(
-                    [
-                        [$file1, 999999],
-                        [$file2, 100],
-                        [$file3, 200]
-                    ]
-                )
+            ))->willReturnMap(
+                [
+                    [$file1, 999999],
+                    [$file2, 100],
+                    [$file3, 200]
+                ]
             );
 
         // Test the deleting of the two oldest files 2 and 3, while 1 is too new.

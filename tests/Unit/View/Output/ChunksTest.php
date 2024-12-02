@@ -206,14 +206,12 @@ class ChunksTest extends AbstractHelper
                 [$chunk1File],
                 [$chunk2File],
                 [$chunk3File]
-            ))->will(
-                $this->returnValueMap(
-                    [
-                        [$chunk1File, true, $chunk1Content],
-                        [$chunk2File, true, $chunk2Content],
-                        [$chunk3File, true, $chunk3Content],
-                    ]
-                )
+            ))->willReturnMap(
+                [
+                    [$chunk1File, true, $chunk1Content],
+                    [$chunk2File, true, $chunk2Content],
+                    [$chunk3File, true, $chunk3Content],
+                ]
             );
         $fileServiceMock->expects($this->exactly(3))
             ->method(static::DELETE_FILE)
@@ -272,14 +270,12 @@ class ChunksTest extends AbstractHelper
                 [$chunk1File],
                 [$chunk2File],
                 [$chunk3File]
-            ))->will(
-                $this->returnValueMap(
-                    [
-                        [$chunk1File, true, $chunk1Content],
-                        [$chunk2File, true, $chunk2Content],
-                        [$chunk3File, true, $chunk3Content],
-                    ]
-                )
+            ))->willReturnMap(
+                [
+                    [$chunk1File, true, $chunk1Content],
+                    [$chunk2File, true, $chunk2Content],
+                    [$chunk3File, true, $chunk3Content],
+                ]
             );
         $fileServiceMock->expects($this->exactly(4))
             ->method(static::DELETE_FILE)

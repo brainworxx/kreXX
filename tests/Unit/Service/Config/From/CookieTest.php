@@ -118,13 +118,11 @@ class CookieTest extends AbstractHelper
             ->with(...$this->withConsecutive(
                 [$someGroup, static::SETTING_01, static::VALUE_01],
                 [$someGroup, static::SETTING_02, static::VALUE_02]
-            ))->will(
-                $this->returnValueMap(
-                    [
-                        [$someGroup, static::SETTING_01, static::VALUE_01, true],
-                        [$someGroup, static::SETTING_02, static::VALUE_02, false]
-                    ]
-                )
+            ))->willReturnMap(
+                [
+                    [$someGroup, static::SETTING_01, static::VALUE_01, true],
+                    [$someGroup, static::SETTING_02, static::VALUE_02, false]
+                ]
             );
 
         $cookies = new Cookie(Krexx::$pool);

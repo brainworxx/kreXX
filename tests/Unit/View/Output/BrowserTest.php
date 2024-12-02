@@ -94,6 +94,8 @@ class BrowserTest extends AbstractHelper
 
     /**
      * Test the registration of this class in the php shutdown phase.
+     *
+     * @covers \Brainworxx\Krexx\View\Output\Browser::finalize
      */
     public function testFinalize()
     {
