@@ -46,7 +46,7 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversMethod(Config::class, 'getLanguageLi')]
+#[CoversMethod(Config::class, 'getLanguageList')]
 #[CoversMethod(Config::class, 'setPathToConfigFile')]
 #[CoversMethod(Config::class, 'getPathToConfigFile')]
 #[CoversMethod(Config::class, 'getSkinClass')]

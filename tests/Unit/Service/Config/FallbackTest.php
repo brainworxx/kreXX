@@ -59,6 +59,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Fallback::class, 'generateSkinConfiguration')]
 #[CoversMethod(Fallback::class, 'generateConfigFallback')]
 #[CoversMethod(Fallback::class, 'generatePluginConfig')]
+#[CoversMethod(Fallback::class, 'returnLanguages')]
 class FallbackTest extends AbstractHelper
 {
     /**

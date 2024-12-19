@@ -48,6 +48,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Scope::class, 'setScope')]
 #[CoversMethod(Scope::class, 'getScope')]
 #[CoversMethod(Scope::class, 'testModelForCodegen')]
+#[CoversMethod(Scope::class, 'isInScope')]
 class ScopeTest extends AbstractHelper
 {
     public const  SCOPE_ATTRIBUTE_NAME = 'scope';
@@ -157,6 +158,24 @@ class ScopeTest extends AbstractHelper
         $this->setNestingLevel(1);
         $model->setData($string);
         $this->assertTrue($this->scope->testModelForCodegen($model));
+    }
+
+    /**
+     * Testing the Scope "analysis".
+     */
+    public function testIsInScope()
+    {
+        $this->setNestingLevel(1);
+
+        $this->scope->setScope('$this');
+        $this->assertTrue($this->scope->isInScope());
+
+        $this->scope->setScope('$that');
+        $this->assertFalse($this->scope->isInScope());
+
+        $this->setNestingLevel(5);
+        $this->scope->setScope('$this');
+        $this->assertFalse($this->scope->isInScope());
     }
 
     /**

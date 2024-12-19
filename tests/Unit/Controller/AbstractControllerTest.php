@@ -48,6 +48,7 @@ use Brainworxx\Krexx\View\Output\BrowserImmediately;
 use Brainworxx\Krexx\View\Output\File;
 use Brainworxx\Krexx\Service\Misc\File as FileService;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use Brainworxx\Krexx\Controller\AbstractController;
 
 #[CoversMethod(AbstractController::class, '__construct')]
 #[CoversMethod(AbstractController::class, 'outputCssAndJs')]
