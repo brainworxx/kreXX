@@ -40,10 +40,12 @@ use Brainworxx\Krexx\Service\Config\From\Cookie;
 use Brainworxx\Krexx\Service\Config\Validation;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Cookie::class, 'getConfigFromCookies')]
+#[CoversMethod(Cookie::class, '__construct')]
 class CookieTest extends AbstractHelper
 {
-
     public const  SETTING_01 = 'setting01';
     public const  SETTING_02 = 'setting02';
     public const  VALUE_01 = 'value 1';
@@ -70,8 +72,6 @@ class CookieTest extends AbstractHelper
     /**
      * Testing the assigning of the validation class and the reading of mocked
      * values.
-     *
-     * @covers \Brainworxx\Krexx\Service\Config\From\Cookie::__construct
      */
     public function testConstruct()
     {
@@ -105,8 +105,6 @@ class CookieTest extends AbstractHelper
 
     /**
      * What the method name says.
-     *
-     * @covers \Brainworxx\Krexx\Service\Config\From\Cookie::getConfigFromCookies
      */
     public function testGetConfigFromCookies()
     {

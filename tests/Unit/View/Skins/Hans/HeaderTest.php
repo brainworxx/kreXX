@@ -41,15 +41,17 @@ use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Tests\Unit\View\Skins\AbstractRenderHans;
 use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Output\Chunks;
+use Brainworxx\Krexx\View\Skins\Hans\Header;
+use Brainworxx\Krexx\View\Skins\Hans\Search;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Header::class, 'renderHeader')]
+#[CoversMethod(Search::class, 'renderSearch')]
+#[CoversMethod(Messages::class, 'renderMessages')]
 class HeaderTest extends AbstractRenderHans
 {
     /**
      * Test the rendering of the kreXX header.
-     *
-     * @covers \Brainworxx\Krexx\View\Skins\Hans\Header::renderHeader
-     * @covers \Brainworxx\Krexx\View\Skins\Hans\Search::renderSearch
-     * @covers \Brainworxx\Krexx\View\Skins\Hans\Messages::renderMessages
      */
     public function testRenderHeader()
     {

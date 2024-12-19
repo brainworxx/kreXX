@@ -41,19 +41,22 @@ use Brainworxx\Krexx\Analyse\Caller\CallerFinder;
 use Brainworxx\Krexx\Analyse\Code\Scope;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Routing;
+use Brainworxx\Krexx\Controller\BacktraceController;
 use Brainworxx\Krexx\Controller\DumpController;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Factory\Event;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\View\Output\Browser;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(DumpController::class, 'dumpAction')]
+#[CoversMethod(BacktraceController::class, 'outputFooter')]
+#[CoversMethod(BacktraceController::class, 'outputCssAndJs')]
 class DumpControllerTest extends AbstractController
 {
     /**
      * Testing of the dump action, with too many calls before.
-     *
-     * @covers \Brainworxx\Krexx\Controller\DumpController::dumpAction
      */
     public function testBacktraceActionWithMaxCall()
     {
@@ -76,10 +79,6 @@ class DumpControllerTest extends AbstractController
 
     /**
      * Testing a simple dump action.
-     *
-     * @covers \Brainworxx\Krexx\Controller\DumpController::dumpAction
-     * @covers \Brainworxx\Krexx\Controller\BacktraceController::outputFooter
-     * @covers \Brainworxx\Krexx\Controller\BacktraceController::outputCssAndJs
      */
     public function testDumpAction()
     {

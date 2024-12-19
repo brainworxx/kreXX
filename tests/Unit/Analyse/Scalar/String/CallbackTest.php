@@ -36,19 +36,24 @@
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
+use Brainworxx\Krexx\Analyse\Declaration\FunctionDeclaration;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Scalar\String\Callback;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Krexx;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Callback::class, 'canHandle')]
+#[CoversMethod(Callback::class, 'callMe')]
+#[CoversMethod(Callback::class, 'handle')]
+#[CoversMethod(FunctionDeclaration::class, 'retrieveDeclaration')]
+#[CoversMethod(Callback::class, 'insertParameters')]
 class CallbackTest extends AbstractHelper
 {
     /**
      * Test if the callback analyser can identify a callback.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Callback::canHandle
      */
     public function testCanHandle()
     {
@@ -61,11 +66,6 @@ class CallbackTest extends AbstractHelper
 
     /**
      * Test the analysis of a callback.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Callback::callMe
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Callback::handle
-     * @covers \Brainworxx\Krexx\Analyse\Declaration\FunctionDeclaration::retrieveDeclaration
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Callback::insertParameters
      */
     public function testCallMeNormal()
     {
@@ -103,9 +103,6 @@ class CallbackTest extends AbstractHelper
 
     /**
      * Test the error handling in the callMe.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Callback::callMe
-     * @covers \Brainworxx\Krexx\Analyse\Scalar\String\Callback::handle
      */
     public function testCallMeError()
     {

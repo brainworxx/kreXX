@@ -47,13 +47,14 @@ use Brainworxx\Krexx\View\Output\Browser;
 use Brainworxx\Krexx\View\Output\BrowserImmediately;
 use Brainworxx\Krexx\View\Output\File;
 use Brainworxx\Krexx\Service\Misc\File as FileService;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(AbstractController::class, '__construct')]
+#[CoversMethod(AbstractController::class, 'outputCssAndJs')]
 class AbstractControllerTest extends AbstractHelper
 {
     /**
      * Testing the construction phase of the controller
-     *
-     * @covers \Brainworxx\Krexx\Controller\AbstractController::__construct
      */
     public function testConstruct()
     {
@@ -84,8 +85,6 @@ class AbstractControllerTest extends AbstractHelper
 
     /**
      * We simply test the outputCssAndJs, with loading the un-minified files.
-     *
-     * @covers \Brainworxx\Krexx\Controller\AbstractController::outputCssAndJs
      */
     public function testOutputCssAndJsWithoutMinFiles()
     {

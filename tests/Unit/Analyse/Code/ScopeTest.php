@@ -42,7 +42,12 @@ use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Krexx;
 use stdClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Scope::class, '__construct')]
+#[CoversMethod(Scope::class, 'setScope')]
+#[CoversMethod(Scope::class, 'getScope')]
+#[CoversMethod(Scope::class, 'testModelForCodegen')]
 class ScopeTest extends AbstractHelper
 {
     public const  SCOPE_ATTRIBUTE_NAME = 'scope';
@@ -62,8 +67,6 @@ class ScopeTest extends AbstractHelper
 
     /**
      * Testing the pool handling.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Code\Scope::__construct
      */
     public function testConstruct()
     {
@@ -73,8 +76,6 @@ class ScopeTest extends AbstractHelper
 
     /**
      * Test the setting of the scope
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Code\Scope::setScope
      */
     public function testSetScope()
     {
@@ -98,8 +99,6 @@ class ScopeTest extends AbstractHelper
 
     /**
      * Test the scope getting
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Code\Scope::getScope
      */
     public function testGetScope()
     {
@@ -114,8 +113,6 @@ class ScopeTest extends AbstractHelper
      * We test the tests of the test of the tests.
      * Are there unit tests for unit test?
      * Is this the ultimate test for our not-so-young hero?
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Code\Scope::testModelForCodegen
      */
     public function testTestModelForCodegen()
     {

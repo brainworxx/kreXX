@@ -39,10 +39,14 @@ use Brainworxx\Krexx\Controller\DumpController;
 use Brainworxx\Krexx\Controller\TimerController;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Factory\Pool;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(TimerController::class, 'timerEndAction')]
+#[CoversMethod(TimerController::class, 'miniBenchTo')]
+#[CoversMethod(TimerController::class, 'timerAction')]
+#[CoversMethod(TimerController::class, '__construct')]
 class TimerControllerTest extends AbstractController
 {
-
     public const  COUNTER_CACHE = 'counterCache';
     public const  TIME_KEEPING = 'timekeeping';
     /**
@@ -71,8 +75,6 @@ class TimerControllerTest extends AbstractController
 
     /**
      * Testing the setting of the pool
-     *
-     * @covers \Brainworxx\Krexx\Controller\TimerController::__construct
      */
     public function testConstruct()
     {
@@ -90,8 +92,6 @@ class TimerControllerTest extends AbstractController
 
     /**
      * Testing the timer action.
-     *
-     * @covers \Brainworxx\Krexx\Controller\TimerController::timerAction
      */
     public function testTimerAction()
     {
@@ -124,9 +124,6 @@ class TimerControllerTest extends AbstractController
 
     /**
      * Testing the output of the timer.
-     *
-     * @covers \Brainworxx\Krexx\Controller\TimerController::timerEndAction
-     * @covers \Brainworxx\Krexx\Controller\TimerController::miniBenchTo
      */
     public function testTimerEndAction()
     {

@@ -46,7 +46,11 @@ use Brainworxx\Krexx\Service\Plugin\Registration;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\ConfigSupplier;
 use Brainworxx\Krexx\View\Output\Chunks;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Cleanup::class, 'cleanupOldChunks')]
+#[CoversMethod(Cleanup::class, 'cleanupOldLogs')]
+#[CoversMethod(Cleanup::class, '__construct')]
 class CleanupTest extends AbstractHelper
 {
     public const  CHUNKS_DONE = 'chunksDone';
@@ -72,8 +76,6 @@ class CleanupTest extends AbstractHelper
 
     /**
      * Test the setting of the pool
-     *
-     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::__construct
      */
     public function testConstruct()
     {
@@ -82,8 +84,6 @@ class CleanupTest extends AbstractHelper
 
     /**
      * Test the cleanup of log folders, when logging is not allowed.
-     *
-     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::cleanupOldLogs
      */
     public function testCleanupOldLogsNoLogging()
     {
@@ -102,8 +102,6 @@ class CleanupTest extends AbstractHelper
 
     /**
      * Test the cleanup of the log folder, when it is empty.
-     *
-     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::cleanupOldLogs
      */
     public function testCleanupOldLogsNoLogs()
     {
@@ -135,8 +133,6 @@ class CleanupTest extends AbstractHelper
 
     /**
      * Test the cleanup of old logfiles, with mocked up files.
-     *
-     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::cleanupOldLogs
      */
     public function testCleanupOldLogsNormal()
     {
@@ -199,8 +195,6 @@ class CleanupTest extends AbstractHelper
 
     /**
      * Test the cleanup of old chunks, when we have no write access.
-     *
-     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::cleanupOldChunks
      */
     public function testCleanupOldChunksNoWriteAccess()
     {
@@ -220,8 +214,6 @@ class CleanupTest extends AbstractHelper
 
     /**
      * Test the cleanup of old chunks, when we have no write access.
-     *
-     * @covers \Brainworxx\Krexx\Service\Misc\Cleanup::cleanupOldChunks
      */
     public function testCleanupOldChunksNormal()
     {

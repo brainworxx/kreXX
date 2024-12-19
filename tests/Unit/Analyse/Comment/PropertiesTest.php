@@ -35,19 +35,20 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Comment;
 
+use Brainworxx\Krexx\Analyse\Comment\AbstractComment;
 use Brainworxx\Krexx\Analyse\Comment\Properties;
 use Brainworxx\Krexx\Tests\Fixtures\PrivateFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Krexx;
 use ReflectionProperty;
+use PHPUnit\Framework\Attributes\CoversMethod;
 
+#[CoversMethod(Properties::class, 'getComment')]
+#[CoversMethod(AbstractComment::class, 'prettifyComment')]
 class PropertiesTest extends AbstractHelper
 {
     /**
      * Testing the comment retrieval for properties.
-     *
-     * @covers \Brainworxx\Krexx\Analyse\Comment\Properties::getComment
-     * @covers \Brainworxx\Krexx\Analyse\Comment\AbstractComment::prettifyComment
      */
     public function testGetComment()
     {
