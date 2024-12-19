@@ -310,6 +310,17 @@ class KrexxTest extends AbstractHelper
     }
 
     /**
+     * Test the edit settings, normally.
+     */
+    public function testEditSettings()
+    {
+        $this->mockDebugBacktraceStandard();
+        Krexx::editSettings();
+        // The counter should be at 1.
+        $this->assertEquals(1, $this->retrieveValueByReflection(static::KREXX_COUNT, Krexx::$pool->emergencyHandler));
+    }
+
+    /**
      * Test if we can get an output when disabled.
      */
     public function testEditSettingsDisabled()

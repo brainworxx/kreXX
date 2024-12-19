@@ -38,9 +38,10 @@ namespace Brainworxx\Krexx\Tests\Unit\Service\Config\From;
 use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Config\From\File as ConfigFromFile;
 use Brainworxx\Krexx\Service\Config\Validation;
-use Brainworxx\Krexx\Service\Misc\File;
+use Brainworxx\Krexx\Service\Config\From\File;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use PHPUnit\Framework\Attributes\CoversMethod;
+use Brainworxx\Krexx\Service\Misc\File as FileService;
 
 #[CoversMethod(File::class, 'getConfigFromFile')]
 #[CoversMethod(File::class, 'getFeConfigFromFile')]
@@ -101,7 +102,7 @@ class FileTest extends AbstractHelper
         $garbageFileJson = 'garbage file.json';
         $notExistingFileIni = 'not existing file.ini';
         $notExistingFileJson = 'not existing file.json';
-        $fileServiceMock = $this->createMock(File::class);
+        $fileServiceMock = $this->createMock(FileService::class);
         $fileServiceMock->expects($this->exactly(1))
             ->method('getFileContents')
             ->with($somePathIni, false)
@@ -150,7 +151,7 @@ class FileTest extends AbstractHelper
         $somePathIni = 'some path.ini';
         $somePathJson = 'some path.json';
 
-        $fileServiceMock = $this->createMock(File::class);
+        $fileServiceMock = $this->createMock(FileService::class);
         $fileServiceMock->expects($this->exactly(2))
             ->method('fileIsReadable')
             ->with(...$this->withConsecutive([$somePathIni], [$somePathJson]))

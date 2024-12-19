@@ -52,6 +52,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(AbstractDeclaration::class, 'formatNamedType')]
 #[CoversMethod(MethodDeclaration::class, 'retrieveDeclaration')]
 #[CoversMethod(MethodDeclaration::class, 'retrieveDeclaringReflection')]
+#[CoversMethod(MethodDeclaration::class, 'retrieveParameterType')]
 class MethodDeclarationTest extends AbstractHelper
 {
     /**
@@ -91,6 +92,10 @@ class MethodDeclarationTest extends AbstractHelper
         $refClass = new ReflectionClass($fixture);
         $refMethod = $refClass->getMethod('returnBool');
         $this->assertEquals('bool', $returnType->retrieveReturnType($refMethod));
+
+        // Doing a not typed.
+        $refMethod = $refClass->getMethod('returnThis');
+        $this->assertEquals('', $returnType->retrieveReturnType($refMethod));
 
         // Doing PHP 8+ specific tests.
         if (version_compare(phpversion(), '8.0.0', '>=')) {

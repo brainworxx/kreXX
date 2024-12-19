@@ -37,6 +37,8 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Comment;
 
 use Brainworxx\Krexx\Analyse\Comment\AbstractComment;
 use Brainworxx\Krexx\Analyse\Comment\Properties;
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
+use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
 use Brainworxx\Krexx\Tests\Fixtures\PrivateFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Krexx;
@@ -59,5 +61,9 @@ class PropertiesTest extends AbstractHelper
             'A private that overwrites a property from the SimpleFixture',
             $propertiesComment->getComment($reflectionProperty)
         );
+
+        $reflectionClass = new ReflectionClass(PrivateFixture::class);
+        $reflectionProperty = new UndeclaredProperty($reflectionClass, 'value5');
+        $this->assertEquals('', $propertiesComment->getComment($reflectionProperty));
     }
 }

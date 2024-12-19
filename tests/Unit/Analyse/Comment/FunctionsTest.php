@@ -46,7 +46,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(AbstractComment::class, 'prettifyComment')]
 class FunctionsTest extends AbstractHelper
 {
-
     /**
      * Test the getting of a comment from a closure.
      */
@@ -61,7 +60,13 @@ class FunctionsTest extends AbstractHelper
         };
         $functionComment = new Functions(Krexx::$pool);
         $reflection = new ReflectionFunction($fixture);
-
         $this->assertEquals('Do something.', $functionComment->getComment($reflection));
+
+        $fixture = function () {
+            // Doing something else.
+            return 2;
+        };
+        $reflection = new ReflectionFunction($fixture);
+        $this->assertEquals('', $functionComment->getComment($reflection));
     }
 }

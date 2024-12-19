@@ -49,6 +49,7 @@ use stdClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(ProcessObject::class, 'handleNoneScalar')]
+#[CoversMethod(ProcessObject::class, 'canHandle')]
 #[CoversMethod(AbstractProcessNoneScalar::class, 'handle')]
 #[CoversMethod(AbstractRouting::class, 'dispatchProcessEvent')]
 #[CoversMethod(AbstractRouting::class, 'generateDomIdFromObject')]

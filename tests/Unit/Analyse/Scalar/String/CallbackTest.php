@@ -48,6 +48,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Callback::class, 'canHandle')]
 #[CoversMethod(Callback::class, 'callMe')]
 #[CoversMethod(Callback::class, 'handle')]
+#[CoversMethod(Callback::class, 'isActive')]
 #[CoversMethod(FunctionDeclaration::class, 'retrieveDeclaration')]
 #[CoversMethod(Callback::class, 'insertParameters')]
 class CallbackTest extends AbstractHelper
@@ -114,5 +115,13 @@ class CallbackTest extends AbstractHelper
         $this->mockEventService([Callback::class . PluginConfigInterface::START_EVENT, $stringCallback]);
 
         $stringCallback->callMe();
+    }
+
+    /**
+     * It is always active.
+     */
+    public function testIsActive()
+    {
+        $this->assertTrue(Callback::isActive());
     }
 }

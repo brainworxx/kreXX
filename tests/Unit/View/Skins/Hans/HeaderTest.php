@@ -39,9 +39,10 @@ use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Tests\Unit\View\Skins\AbstractRenderHans;
-use Brainworxx\Krexx\View\Messages;
 use Brainworxx\Krexx\View\Output\Chunks;
 use Brainworxx\Krexx\View\Skins\Hans\Header;
+use Brainworxx\Krexx\View\Skins\Hans\Messages;
+use Brainworxx\Krexx\View\Messages as ViewMessages;
 use Brainworxx\Krexx\View\Skins\Hans\Search;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
@@ -68,7 +69,7 @@ class HeaderTest extends AbstractRenderHans
             ->willReturn('recursion Marker');
         Krexx::$pool->recursionHandler = $recursionMock;
 
-        $messageMock = $this->createMock(Messages::class);
+        $messageMock = $this->createMock(ViewMessages::class);
         $messageMock->expects($this->once())
             ->method('outputMessages')
             ->willReturn('mess ages');
