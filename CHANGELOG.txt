@@ -23,6 +23,8 @@
 - Change: Split the getter analysis into several smaller classes.
 - Change: Removed deprecations from the unit tests.
 - Change: Deprecated the exception handler.
+- Change: Only do a meta analysis of namespaced classnames to
+  avoid needless overhead.
 - Change: Updated to UnitTest 11.4
 
 5.0.7
