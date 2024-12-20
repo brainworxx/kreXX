@@ -4,7 +4,6 @@
          bootstrap="tests/Scripts/Bootstrap.php"
          cacheDirectory=".phpunit.cache"
          shortenArraysForExportThreshold="10"
-         requireCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
          failOnWarning="true">
