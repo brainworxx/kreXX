@@ -92,6 +92,9 @@ class AttributesTest extends AbstractHelper
      */
     public function testGetFlatAttributesWithErrors()
     {
+        if (version_compare(phpversion(), '8.0.0', '<=')) {
+            $this->markTestSkipped('Wrong PHP version.');
+        }
         $attributes = new Attributes(\Krexx::$pool);
         $reflectorMock = $this->createMock(\ReflectionClass::class);
         $reflectorMock->expects($this->once())
