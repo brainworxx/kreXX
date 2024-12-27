@@ -44,8 +44,8 @@ $serviceMisc = '\\Brainworxx\\Krexx\\Service\\Misc\\';
 $viewOutput = '\\Brainworxx\\Krexx\\View\\Output\\';
 $view = '\\Brainworxx\\Krexx\\View\\';
 $callbackScalar = '\\Brainworxx\\Krexx\\Analyse\\Scalar\\String\\';
-$caller = '\\Brainworxx\\Krexx\\Analyse\\Caller';
-$factory = '\\Brainworxx\\Krexx\\Service\\Factory';
+$caller = '\\Brainworxx\\Krexx\\Analyse\\Caller\\';
+$factory = '\\Brainworxx\\Krexx\\Service\\Factory\\';
 
 AbstractHelper::defineFunctionMock($analyseRoutingProcess, 'class_exists');
 AbstractHelper::defineFunctionMock($analyseRoutingProcess, 'is_object');
