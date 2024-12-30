@@ -24,6 +24,12 @@
 - Change: Removed deprecations from the unit tests.
 - Change: Deprecated the exception handler.
 - Change: Updated to UnitTest 11.4
+- Change: Use the encoding service to encode comments.
+- Change: Introduced a static cache to the string mimetype analysis.
+
+5.0.8
+- Bugfix: The serialized string analysis was not thorough enough
+  to detect all possible candidates.
 
 5.0.7
 - Bugfix: The XML analysis does not recognise a broken XML string.
@@ -271,10 +277,8 @@
 - Change: "Called from" is always expanded in the smokygrey skin.
 - Change: The connector constants are now strings.
 - Change: Removed the "local opening function" aka. devHandle.
-- Change: Use the encoding service to encode comments.
-- Change: Introduced a static cache to the string mimetype analysis.
-- Bugfix: The search does now respect the selected tab.
-- Bugfix: Added missing metadata to a handled exception.
+- Bugfix: The search does now respects the selected tab.
+- Bugfix: Added missing meta data to a handled exception.
 - Bugfix: Prevent an open <pre> from messing with the output.
 
 3.2.4
