@@ -212,7 +212,11 @@ class ProcessString extends AbstractRouting implements
         // Long string or with broken encoding.
         if ($length > $this->bufferInfoThreshold) {
             // Let's see, what the buffer-info can do with it.
-            $this->model->addToJson($messages->getHelp('metaMimeTypeString'), $this->bufferInfo->buffer($data));
+            static $bufferCache = [];
+            if (!isset($bufferCache[$data])) {
+                $bufferCache[$data] = $this->bufferInfo->buffer($data);
+            }
+            $this->model->addToJson($messages->getHelp('metaMimeTypeString'), $bufferCache[$data]);
         } elseif ($encoding === false) {
             // Short string with broken encoding.
             $this->model->addToJson($messages->getHelp('metaEncoding'), 'broken');

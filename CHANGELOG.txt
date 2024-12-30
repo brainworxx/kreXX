@@ -272,6 +272,7 @@
 - Change: The connector constants are now strings.
 - Change: Removed the "local opening function" aka. devHandle.
 - Change: Use the encoding service to encode comments.
+- Change: Introduced a static cache to the string mimetype analysis.
 - Bugfix: The search does now respect the selected tab.
 - Bugfix: Added missing metadata to a handled exception.
 - Bugfix: Prevent an open <pre> from messing with the output.
