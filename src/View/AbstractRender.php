@@ -106,25 +106,12 @@ abstract class AbstractRender implements RenderInterface
             return '';
         }
 
-        return json_encode(
-            str_replace(
-                [
-                    '"',
-                    "'",
-                    '&quot;',
-                    '&lt;',
-                    '&gt;',
-                ],
-                [
-                    "\\u0027",
-                    "\\u0022",
-                    "\\u0027",
-                    "\\u276E",
-                    "\\u02C3",
-                ],
-                $array
-            )
-        );
+        $encodingService = $this->pool->encodingService;
+        foreach ($array as &$entry) {
+            $entry = $encodingService->encodeString($entry);
+        }
+
+        return json_encode($array);
     }
 
     /**
