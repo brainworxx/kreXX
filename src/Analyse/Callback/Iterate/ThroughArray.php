@@ -98,6 +98,7 @@ class ThroughArray extends AbstractCallback implements
      * Create the model and set the values that we have.
      *
      * @param array $array
+     *   Deprecated since 6.0.0. This parameter will be removed.
      *   The array we are analysing.
      * @param int|string $key
      *   A current key.
