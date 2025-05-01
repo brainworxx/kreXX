@@ -166,7 +166,7 @@ class Messages
             $result = "\n\n" . $this->getHelp('shellFeedbackHeadline') . "\n";
             $result .= "==============\n";
             foreach ($this->messages as $message) {
-                $result .= $message->getText() . "\n";
+                $result .= strip_tags($message->getText()) . "\n";
             }
 
             echo $result . "\n\n";
