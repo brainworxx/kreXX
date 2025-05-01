@@ -163,7 +163,7 @@ class Messages
             !defined('KREXX_TEST_IN_PROGRESS')
         ) {
             // Output the messages on the shell.
-            $result = "\n\nkreXX messages\n";
+            $result = "\n\n" . $this->getHelp('shellFeedbackHeadline') . "\n";
             $result .= "==============\n";
             foreach ($this->messages as $message) {
                 $result .= $message->getText() . "\n";
