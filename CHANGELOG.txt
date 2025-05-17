@@ -1,3 +1,5 @@
+5.0.10
+
 5.0.9
 - Bugfix: Add the missing "kreXX Messages" to the translation.
 - Bugfix: Remove HTML tags from the shell output.
