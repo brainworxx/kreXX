@@ -27,6 +27,11 @@
 - Change: Use the encoding service to encode comments.
 - Change: Introduced a static cache to the string mimetype analysis.
 
+5.0.10
+- Bugfix: Remove all Unicode chars from the generated CSS for the
+  smokygrey skin, because the TYPO3 asset collector does not
+  support them anymore.
+
 5.0.9
 - Bugfix: Add the missing "kreXX Messages" to the translation.
 - Bugfix: Remove HTML tags from the shell output.
