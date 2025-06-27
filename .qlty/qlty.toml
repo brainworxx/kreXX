@@ -1,10 +1,7 @@
 config_version = "0"
 
 exclude_patterns = [
-    "**/Private/krexx/resources/**",
-    "**/Private/Layouts/**",
-    "**/Private/Partials/**",
-    "**/Private/Templates/**",
+    "**/resources/**"
 ]
 
 test_patterns = [
