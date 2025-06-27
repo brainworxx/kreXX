@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions: read-all
+
 jobs:
   build:
 
@@ -45,7 +47,8 @@ jobs:
       run: composer test-coverage
 
     - name: publish code coverage
-      uses: paambaati/codeclimate-action@v9.0.0
+      uses: qltysh/qlty-action/coverage@v1
       if: ${{ matrix.env.coverage == 'yes' }}
-      env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATEKEY }}
+      with:
+        token: ${{secrets.QLTY_COVERAGE_TOKEN}}
+        files: clover.xml
