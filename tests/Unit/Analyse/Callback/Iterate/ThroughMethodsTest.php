@@ -300,7 +300,7 @@ class ThroughMethodsTest extends AbstractHelper
         string $connectorParameter,
         string $comment,
         string $declaredInFile,
-        string $declaredInClass,
+        string $declaredInClass
     ) {
         $this->assertEquals($name, $model->getName());
         $this->assertEquals($type, $model->getType());
