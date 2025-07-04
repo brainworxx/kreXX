@@ -82,6 +82,11 @@ class ByRegExDelegate extends ByRegExContainer
      */
     protected string $currentPrefix;
 
+    /**
+     * We are going deep into the object structure.
+     *
+     * @var int
+     */
     protected int $deep = 0;
 
     public function __construct(Pool $pool)
