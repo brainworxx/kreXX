@@ -37,6 +37,11 @@ namespace Brainworxx\Krexx\Tests\Fixtures;
 
 class EnumFixture
 {
+    /**
+     * @var SuitEnumFixture
+     */
+    public $enumValue = SuitEnumFixture::Hearts;
+
     public function useEnums(SuitEnumFixture $cardDeck = SuitEnumFixture::Hearts)
     {
     }

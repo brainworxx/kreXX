@@ -1,4 +1,5 @@
 6.1.0
+- Added support for Emun default values.
 
 6.0.0
 - Added class meta analysis for class names in strings.
@@ -28,7 +29,7 @@
 - Change: Use the encoding service to encode comments.
 - Change: Introduced a static cache to the string mimetype analysis.
 - Change: Use an SVG in both skins for the kreXX logo.
-- Change: Both skins have the child nodes aligned for better 
+- Change: Both skins have the child nodes aligned for better
   readability.
 
 5.0.12

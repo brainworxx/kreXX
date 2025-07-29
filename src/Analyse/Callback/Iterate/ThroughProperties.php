@@ -47,6 +47,7 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionProperty;
 use Throwable;
+use UnitEnum;
 
 /**
  * Class properties' analysis methods.
@@ -186,7 +187,7 @@ class ThroughProperties extends AbstractCallback implements
         $result = '';
         if (is_string($default)) {
             $result = '\'' . $default . '\'';
-        } elseif (is_array($default)) {
+        } elseif (is_array($default) || $default instanceof UnitEnum) {
             $result = var_export($default, true);
         }
 
