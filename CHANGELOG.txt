@@ -1,5 +1,6 @@
 6.1.0
 - Added support for Emun default values.
+- Added flattened attribute analysis.
 - Change: Moved the comment retrieval class in the properties
   iterator to the class variables.
 

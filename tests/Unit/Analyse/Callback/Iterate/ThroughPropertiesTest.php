@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
+use Brainworxx\Krexx\Tests\Fixtures\AttributeFixture;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesFixture;
 use Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesInheritanceFixture;
 use Brainworxx\Krexx\Tests\Fixtures\EnumFixture;
@@ -558,6 +559,51 @@ class ThroughPropertiesTest extends AbstractHelper
                 static::JSON_COMMENT_KEY => '&#64;var SuitEnumFixture',
                 static::JSON_DECLARED_KEY => 'EnumFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\EnumFixture',
                 'Default value' => var_export(SuitEnumFixture::Hearts, true),
+            ],
+            '->',
+            '',
+            'Public '
+        );
+    }
+
+    public function testCallMeAttribute()
+    {
+        if (version_compare(phpversion(), '8.0.99', '<')) {
+            $this->markTestSkipped('Wrong PHP Version');
+        }
+
+        // Test the events.
+        $this->mockEventService(
+            [$this->startEvent, $this->throughProperties],
+            [$this->endEvent, $this->throughProperties]
+        );
+
+        $subject = new AttributeFixture();
+        $fixture = [
+            $this->throughProperties::PARAM_REF => new ReflectionClass($subject),
+            $this->throughProperties::PARAM_DATA => [
+                new ReflectionProperty(AttributeFixture::class, 'foo'),
+            ]
+        ];
+
+        // Inject the nothing-router.
+        $routeNothing = new RoutingNothing(Krexx::$pool);
+        Krexx::$pool->routing = $routeNothing;
+        $this->mockEmergencyHandler();
+
+        $this->throughProperties
+            ->setParameters($fixture)
+            ->callMe();
+        $model = $routeNothing->model[0];
+
+        $this->assertModelValues(
+            $model,
+            'bar',
+            'foo',
+            [
+                static::JSON_DECLARED_KEY => 'AttributeFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\AttributeFixture',
+                'Attributes' => "#[Brainworxx\Krexx\Tests\Fixtures\Phobject\Attributes\Stuff(<br />    'foo',<br />    'bar',<br />)]",
+                'Typed as' => 'string'
             ],
             '->',
             '',
