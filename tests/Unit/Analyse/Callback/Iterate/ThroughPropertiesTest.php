@@ -557,7 +557,7 @@ class ThroughPropertiesTest extends AbstractHelper
             [
                 static::JSON_COMMENT_KEY => '&#64;var SuitEnumFixture',
                 static::JSON_DECLARED_KEY => 'EnumFixture.php<br />in class: Brainworxx\Krexx\Tests\Fixtures\EnumFixture',
-                'Default value' => '\Brainworxx\Krexx\Tests\Fixtures\SuitEnumFixture::Hearts',
+                'Default value' => var_export(SuitEnumFixture::Hearts, true),
             ],
             '->',
             '',
