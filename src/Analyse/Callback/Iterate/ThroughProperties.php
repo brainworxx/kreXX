@@ -68,6 +68,11 @@ class ThroughProperties extends AbstractCallback implements
     protected PropertyDeclaration $propertyDeclaration;
 
     /**
+     * @var Properties
+     */
+    protected Properties $propertyComment;
+
+    /**
      * Renders the properties of a class.
      *
      * @return string
@@ -82,6 +87,7 @@ class ThroughProperties extends AbstractCallback implements
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         $this->propertyDeclaration = $this->pool->createClass(PropertyDeclaration::class);
+        $this->propertyComment = $this->pool->createClass(Properties::class);
 
         foreach ($this->parameters[static::PARAM_DATA] as $refProperty) {
             // Check memory and runtime.
@@ -114,13 +120,12 @@ class ThroughProperties extends AbstractCallback implements
     protected function prepareModel($value, ReflectionProperty $refProperty): Model
     {
         $messages = $this->pool->messages;
-
         return $this->pool->createClass(Model::class)
             ->setData($value)
             ->setName($this->retrievePropertyName($refProperty))
             ->addToJson(
                 $messages->getHelp('metaComment'),
-                $this->pool->createClass(Properties::class)->getComment($refProperty)
+                $this->propertyComment->getComment($refProperty)
             )
             ->addToJson(
                 $messages->getHelp('metaDeclaredIn'),
