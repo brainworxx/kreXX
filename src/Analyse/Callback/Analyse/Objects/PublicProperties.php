@@ -131,7 +131,7 @@ class PublicProperties extends AbstractObjectAnalysis
         $missingProperties = [];
         foreach (HiddenProperty::HIDDEN_LIST as $className => $propertyNames) {
             if ($data instanceof $className) {
-                $missingProperties = array_diff($propertyNames, array_keys($refProps));
+                $missingProperties = $propertyNames;
                 break;
             }
         }

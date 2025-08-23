@@ -184,7 +184,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @return mixed[]
      */
-    public function getObjectVars()
+    public function getObjectVars(): array
     {
         return array_filter($this->objectArray, function ($key) {
             return strpos((string)$key, "\0") === false;
@@ -192,7 +192,7 @@ class ReflectionClass extends \ReflectionClass
     }
 
     /**
-     * Was this propery unset?
+     * Was this property unset?
      *
      * The info is only available if you retrieve the value beforehand.
      *
