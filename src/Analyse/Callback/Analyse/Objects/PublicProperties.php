@@ -114,7 +114,7 @@ class PublicProperties extends AbstractObjectAnalysis
         ReflectionClass $ref
     ): void {
         try {
-            $undeclaredVars = get_object_vars($data);
+            $undeclaredVars = $ref->getObjectVars();
         } catch (\Throwable $e) {
             // If we cannot get the object vars, we simply skip this step.
             // This happens when the property access is triggering a

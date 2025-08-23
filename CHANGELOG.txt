@@ -1,4 +1,6 @@
 6.0.2
+- Bugfix: Do not trigger PropertyHooks, LazyProxies und LazyGhosts
+  when analysing properties.
 
 6.0.1
 - Added support for Emun default values.

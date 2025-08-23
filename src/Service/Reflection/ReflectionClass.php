@@ -179,6 +179,19 @@ class ReflectionClass extends \ReflectionClass
     }
 
     /**
+     * The original get_object_vars() is problematic, because it
+     * may fire PropertyHooks, LazyProxies or LazyGhosts.
+     *
+     * @return mixed[]
+     */
+    public function getObjectVars()
+    {
+        return array_filter($this->objectArray, function ($key) {
+            return strpos((string)$key, "\0") === false;
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
+    /**
      * Was this propery unset?
      *
      * The info is only available if you retrieve the value beforehand.
