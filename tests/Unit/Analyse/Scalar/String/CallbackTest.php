@@ -117,6 +117,24 @@ class CallbackTest extends AbstractHelper
         $stringCallback->callMe();
     }
 
+    public function testCallMeInternal()
+    {
+        $this->mockEmergencyHandler();
+
+        // Prepare the guinea pig.
+        $stringCallback = new Callback(Krexx::$pool);
+        $stringCallback->canHandle('echo', new Model(Krexx::$pool));
+
+        Krexx::$pool->rewrite = [
+            ThroughMeta::class => CallbackCounter::class
+        ];
+
+        $stringCallback->callMe();
+        $result = CallbackCounter::$staticParameters[0][Callback::PARAM_DATA];
+        $this->assertEquals(0, CallbackCounter::$counter, 'We do not handle interal functions.');
+        $this->assertEmpty($result);
+    }
+
     /**
      * It is always active.
      */
