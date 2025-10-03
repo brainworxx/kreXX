@@ -1,3 +1,5 @@
+6.0.3
+
 6.0.2
 - Added support for the \GdImage analysis.
 - Bugfix: Do not trigger PropertyHooks, LazyProxies und LazyGhosts
