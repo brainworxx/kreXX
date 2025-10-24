@@ -130,9 +130,11 @@ class CallbackTest extends AbstractHelper
         ];
 
         $stringCallback->callMe();
-        $result = CallbackCounter::$staticParameters[0][Callback::PARAM_DATA];
         $this->assertEquals(0, CallbackCounter::$counter, 'We do not handle interal functions.');
-        $this->assertEmpty($result);
+        $this->assertTrue(
+            empty(CallbackCounter::$staticParameters[0][Callback::PARAM_DATA]),
+            'No result for internal functions.'
+        );
     }
 
     /**
