@@ -1,3 +1,5 @@
+.6.0.4
+
 6.0.3
 - Change: Deprecated the Smokey Grey recursion special handling.
   Not sure why it was there in the first place.
