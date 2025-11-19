@@ -93,7 +93,7 @@ class ReflectionClass extends \ReflectionClass
     {
         if (static::$mustSetAccessible === null) {
             // Determine, if we must set the properties accessible.
-            static::$mustSetAccessible = version_compare(phpversion(), '8.1.0', '<=');
+            static::$mustSetAccessible = version_compare(phpversion(), '8.1.0', '<');
         }
         // Retrieve the class variables.
         $this->objectArray = (array) $data;
@@ -133,9 +133,11 @@ class ReflectionClass extends \ReflectionClass
         }
 
         try {
+            // Static values are not inside the value array.
             if ($refProperty->isStatic()) {
-                // Static values are not inside the value array.
-                static::$mustSetAccessible ?? $refProperty->setAccessible(true);
+                if (static::$mustSetAccessible) {
+                    $refProperty->setAccessible(true);
+                }
                 return $refProperty->getValue($this->data);
             }
         } catch (Throwable $throwable) {
