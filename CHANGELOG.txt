@@ -1,3 +1,5 @@
+6.0.5
+
 6.0.4
 - Updated to PHP 8.5.
 - Bugfix: Added the missing 'Type hint' to the translation.
