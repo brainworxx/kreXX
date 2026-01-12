@@ -339,6 +339,6 @@ class CallerFinderTest extends AbstractHelper
         // Run the test
         $result = $this->callerFinder->findCaller('', $this->subjectVar);
         $this->assertEquals(47, $result[BacktraceConstInterface::TRACE_LINE]);
-        $this->assertEquals('some value', $result[BacktraceConstInterface::TRACE_VARNAME]);
+        $this->assertEquals('&#039;some value&#039;', $result[BacktraceConstInterface::TRACE_VARNAME]);
     }
 }

@@ -188,7 +188,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
                     ->encodingService
                     ->encodeString(
                         $this->pool->createClass(CleanUpVarName::class)
-                            ->cleanup(trim($name[1], " \t\n\r\0\x0B'\""))
+                            ->cleanup(trim($name[1], " \t\n\r\0\x0B"))
                     );
             }
         }
