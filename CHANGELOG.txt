@@ -1,5 +1,7 @@
 6.0.5
 - Bugfix: Do not trim quotes from the caller finder result.
+- Bugfix: Do not add strings to the recursion hive that were not
+  analysed because they were internal callables.
 
 6.0.4
 - Updated to PHP 8.5.
