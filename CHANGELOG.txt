@@ -4,6 +4,8 @@
   analysed because they were internal callables.
 - Bugfix: Do not add the internal array of an ArrayObject to the
   list of public undeclared properties.
+- Bugfix: Prevent a fatal when analysing a class with broken
+  attributes.
 
 6.0.4
 - Updated to PHP 8.5.
