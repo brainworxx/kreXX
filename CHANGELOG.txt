@@ -1,3 +1,5 @@
+6.0.7
+
 6.0.6
 - Bugfix: Prevent hints from overwriting themselves.
 - Bugfix: Prevent a fatal when trying to analyse a class with
