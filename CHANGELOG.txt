@@ -1,3 +1,5 @@
+7.0.0
+
 6.0.7
 - Bugfix: Render a trailing linebreak in the extra info correctly.
 
