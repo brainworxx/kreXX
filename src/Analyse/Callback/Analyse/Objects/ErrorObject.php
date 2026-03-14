@@ -65,18 +65,18 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
         $lineNo = $data->getLine() - 1;
         $source = trim($this->pool->fileService->readSourcecode($data->getFile(), $lineNo, $lineNo - 5, $lineNo + 5));
         if (empty($source)) {
-            $source = $this->pool->messages->getHelp('noSourceAvailable');
+            $source = $this->pool->messages->getHelp(key: 'noSourceAvailable');
         }
 
         return $output . $this->pool->render->renderExpandableChild(
-            $this->dispatchEventWithModel(
-                'source',
-                $this->pool->createClass(Model::class)
+            model: $this->dispatchEventWithModel(
+                name: 'source',
+                model: $this->pool->createClass(classname: Model::class)
                     ->setData($source)
-                    ->setName($this->pool->messages->getHelp('sourceCode'))
-                    ->setNormal(static::UNKNOWN_VALUE)
+                    ->setName(name: $this->pool->messages->getHelp(key: 'sourceCode'))
+                    ->setNormal(normal: static::UNKNOWN_VALUE)
                     ->setHasExtra(true)
-                    ->setType(static::TYPE_PHP)
+                    ->setType(type: static::TYPE_PHP)
             )
         );
     }
@@ -118,14 +118,14 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
         if (is_array($trace)) {
             $this->pool->codegenHandler->setCodegenAllowed(false);
             $output .= $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(
-                    static::TRACE_BACKTRACE,
-                    $this->pool->createClass(Model::class)
-                        ->setName($this->pool->messages->getHelp('backTrace'))
-                        ->setType($this->pool->messages->getHelp('classInternals'))
-                        ->addParameter(static::PARAM_DATA, $trace)
+                model: $this->dispatchEventWithModel(
+                    name: static::TRACE_BACKTRACE,
+                    model: $this->pool->createClass(classname: Model::class)
+                        ->setName(name: $this->pool->messages->getHelp(key: 'backTrace'))
+                        ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
+                        ->addParameter(name: static::PARAM_DATA, value: $trace)
                         ->injectCallback(
-                            $this->pool->createClass(ProcessBacktrace::class)
+                            object: $this->pool->createClass(classname: ProcessBacktrace::class)
                         )
                 )
             );

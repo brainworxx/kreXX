@@ -118,10 +118,10 @@ class Messages
         // We will only display these messages once.
         if (!isset($this->messages[$key])) {
             // Add it to the keys, so the CMS can display it.
-            $this->messages[$key] = $this->pool->createClass(Message::class)
+            $this->messages[$key] = $this->pool->createClass(classname: Message::class)
                 ->setKey($key)
                 ->setArguments($args)
-                ->setText($this->getHelp($key, $args))
+                ->setText($this->getHelp(key: $key, args: $args))
                 ->setIsThrowAway($isThrowAway);
         }
     }
@@ -163,7 +163,7 @@ class Messages
             !defined('KREXX_TEST_IN_PROGRESS')
         ) {
             // Output the messages on the shell.
-             $result = "\n\n" . $this->getHelp('shellFeedbackHeadline') . "\n";
+             $result = "\n\n" . $this->getHelp(key: 'shellFeedbackHeadline') . "\n";
             $result .= "==============\n";
             foreach ($this->messages as $message) {
                 $result .= strip_tags($message->getText()) . "\n";

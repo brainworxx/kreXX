@@ -62,31 +62,31 @@ class MethodDeclaration extends AbstractDeclaration
         $reflectionClass = $reflection->getDeclaringClass();
 
         if ($reflectionClass->isInternal()) {
-            return $messages->getHelp('metaPredeclared');
+            return $messages->getHelp(key: 'metaPredeclared');
         }
 
         $filename = (string)$reflection->getFileName();
         if (empty($filename)) {
             // Not sure, if this is possible.
-            return $this->pool->messages->getHelp('unknownDeclaration');
+            return $this->pool->messages->getHelp(key: 'unknownDeclaration');
         }
 
         // If the filename of the $declaringClass and the $reflectionMethod differ,
         // we are facing a trait here.
-        $secondLine = $messages->getHelp('metaInClass') . $reflection->class . "\n";
+        $secondLine = $messages->getHelp(key: 'metaInClass') . $reflection->class . "\n";
         if ($reflection->getFileName() !== $reflectionClass->getFileName()) {
             // There is no real clean way to get the name of the trait that we
             // are looking at.
-            $traitName = $this->pool->messages->getHelp('canNotResolveTrait');
+            $traitName = $this->pool->messages->getHelp(key: 'canNotResolveTrait');
             $trait = $this->retrieveDeclaringReflection($reflection, $reflectionClass);
             if ($trait !== null) {
                 $traitName = $trait->getName();
             }
 
-            $secondLine = $messages->getHelp('metaInTrait') . $traitName . "\n";
+            $secondLine = $messages->getHelp(key: 'metaInTrait') . $traitName . "\n";
         }
 
-        return $filename . "\n" . $secondLine . $messages->getHelp('metaInLine') .
+        return $filename . "\n" . $secondLine . $messages->getHelp(key: 'metaInLine') .
             $reflection->getStartLine();
     }
 

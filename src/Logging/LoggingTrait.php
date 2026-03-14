@@ -54,7 +54,7 @@ trait LoggingTrait
     {
         Pool::createPool();
 
-        $source = Krexx::$pool->messages->getHelp('forcedLogging');
+        $source = Krexx::$pool->messages->getHelp(key: 'forcedLogging');
         // Output destination: file
         Krexx::$pool->config
             ->settings[ConfigConstInterface::SETTING_DESTINATION]
@@ -79,6 +79,6 @@ trait LoggingTrait
     {
         // Reset everything afterwards.
         Krexx::$pool->config = Krexx::$pool
-            ->createClass(Config::class);
+            ->createClass(classname: Config::class);
     }
 }

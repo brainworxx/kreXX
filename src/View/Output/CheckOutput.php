@@ -138,7 +138,7 @@ class CheckOutput
     {
         $server = $this->pool->getServer();
         $remote = isset($server[static::REMOTE_ADDRESS]) ? (string) $server[static::REMOTE_ADDRESS] : null;
-        $ipList = array_map('trim', explode(',', $whitelist));
+        $ipList = array_map('trim', explode(separator: ',', string: $whitelist));
         if (
             // There is no IP on the shell.
             $this->isCli()

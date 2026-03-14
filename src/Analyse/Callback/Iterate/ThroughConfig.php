@@ -61,10 +61,10 @@ class ThroughConfig extends AbstractCallback implements CallbackConstInterface, 
     {
         return $this->dispatchStartEvent() . $this->renderAllSections() .
             $this->pool->render->renderButton(
-                $this->pool->createClass(Model::class)
-                    ->setName('kresetbutton')
-                    ->setNormal($this->pool->messages->getHelp('resetCookiesReadable'))
-                    ->setHelpid('kresetbutton')
+                $this->pool->createClass(classname: Model::class)
+                    ->setName(name: 'kresetbutton')
+                    ->setNormal(normal: $this->pool->messages->getHelp(key: 'resetCookiesReadable'))
+                    ->setHelpid(helpId: 'kresetbutton')
             );
     }
 
@@ -88,13 +88,13 @@ class ThroughConfig extends AbstractCallback implements CallbackConstInterface, 
             // Render a whole section.
             if ($this->hasSomethingToRender($sectionData)) {
                 $configOutput .= $this->pool->render->renderExpandableChild(
-                    $this->pool->createClass(Model::class)
-                        ->setName($this->pool->messages->getHelp($sectionName . 'Readable'))
-                        ->setType(static::TYPE_CONFIG)
-                        ->setNormal(static::UNKNOWN_VALUE)
-                        ->addParameter(static::PARAM_DATA, $sectionData)
+                    model: $this->pool->createClass(classname: Model::class)
+                        ->setName(name: $this->pool->messages->getHelp(key: $sectionName . 'Readable'))
+                        ->setType(type: static::TYPE_CONFIG)
+                        ->setNormal(normal: static::UNKNOWN_VALUE)
+                        ->addParameter(name: static::PARAM_DATA, value: $sectionData)
                         ->injectCallback(
-                            $this->pool->createClass(ConfigSection::class)
+                            object: $this->pool->createClass(classname: ConfigSection::class)
                         )
                 );
             }

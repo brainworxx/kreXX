@@ -78,8 +78,8 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     public function handle(): string
     {
         $resource = $this->model->getData();
-        $typeString = $this->pool->messages->getHelp('resource') . ' (' . get_resource_type($resource) . ')';
-        $transRes = $this->pool->messages->getHelp('resource');
+        $typeString = $this->pool->messages->getHelp(key: 'resource') . ' (' . get_resource_type($resource) . ')';
+        $transRes = $this->pool->messages->getHelp(key: 'resource');
 
         switch ($typeString) {
             case $transRes . ' (stream)':
@@ -102,11 +102,11 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
 
         // Output metadata from the class.
         return $this->pool->render->renderExpandableChild(
-            $this->dispatchProcessEvent(
-                $this->model->setType(static::TYPE_RESOURCE)
-                    ->addParameter(static::PARAM_DATA, $meta)
-                    ->setNormal($typeString)
-                    ->injectCallback($this->pool->createClass(ThroughResource::class))
+            model: $this->dispatchProcessEvent(
+                $this->model->setType(type: static::TYPE_RESOURCE)
+                    ->addParameter(name: static::PARAM_DATA, value: $meta)
+                    ->setNormal(normal: $typeString)
+                    ->injectCallback(object: $this->pool->createClass(classname: ThroughResource::class))
             )
         );
     }
@@ -125,10 +125,10 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     protected function renderUnknownOrClosed(Model $model, $resource): string
     {
         return $this->pool->render->renderExpandableChild(
-            $this->dispatchNamedEvent(
+            model: $this->dispatchNamedEvent(
                 __FUNCTION__,
-                $model->setNormal(gettype($resource))
-                    ->setType(static::TYPE_RESOURCE)
+                $model->setNormal(normal: gettype($resource))
+                    ->setType(type: static::TYPE_RESOURCE)
             )
         );
     }

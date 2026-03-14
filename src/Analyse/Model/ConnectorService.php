@@ -68,7 +68,7 @@ trait ConnectorService
     public function __construct(Pool $pool)
     {
         $this->connectorService = $pool->createClass(
-            Connectors::class
+            classname: Connectors::class
         );
         $this->pool = $pool;
     }
@@ -135,7 +135,7 @@ trait ConnectorService
      */
     public function setConnectorType(string $type): Model
     {
-        $this->connectorService->setType($type);
+        $this->connectorService->setType(type: $type);
         return $this;
     }
 

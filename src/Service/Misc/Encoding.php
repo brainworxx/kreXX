@@ -172,7 +172,7 @@ class Encoding
         if (strlen($data) > 3072000) {
             // This is a very large string.
             // We would run out of memory, if we try to encode it.
-            return $this->pool->messages->getHelp('stringTooLargeNormal');
+            return $this->pool->messages->getHelp(key: 'stringTooLargeNormal');
         }
 
         // Initialize the encoding configuration.
@@ -188,7 +188,7 @@ class Encoding
         }
 
         // There are several places here, that may throw a warning.
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler(callback: $this->pool->retrieveErrorCallback());
 
         $result = str_replace($search, ['&#64;', '&#123;', '&nbsp;&nbsp;'], htmlentities($data, ENT_QUOTES));
 
@@ -224,7 +224,7 @@ class Encoding
     protected function encodeCompletely(string &$data, bool $code): string
     {
         if (strlen($data) > 102400) {
-            return $this->pool->messages->getHelp('stringTooLarge');
+            return $this->pool->messages->getHelp(key: 'stringTooLarge');
         }
 
         $encoding = mb_detect_encoding($data, 'auto', true);

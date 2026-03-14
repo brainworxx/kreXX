@@ -97,9 +97,9 @@ class ByRegExDelegate extends ByRegExContainer
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
-        $this->getterAnalyser[] = $this->pool->createClass(ByMethodName::class);
-        $this->getterAnalyser[] = $this->pool->createClass(ByRegExProperty::class);
-        $this->getterAnalyser[] = $this->pool->createClass(ByRegExContainer::class);
+        $this->getterAnalyser[] = $this->pool->createClass(classname: ByMethodName::class);
+        $this->getterAnalyser[] = $this->pool->createClass(classname: ByRegExProperty::class);
+        $this->getterAnalyser[] = $this->pool->createClass(classname: ByRegExContainer::class);
         $this->getterAnalyser[] = $this;
     }
 
@@ -145,7 +145,7 @@ class ByRegExDelegate extends ByRegExContainer
             }
 
             // Now, let's ask the others.
-            $reflectionMethod = $delegateReflection->getMethod($parts[1]);
+            $reflectionMethod = $delegateReflection->getMethod(name: $parts[1]);
             foreach ($this->getterAnalyser as $analyser) {
                 $value = $analyser->retrieveIt($reflectionMethod, $delegateReflection, $this->currentPrefix);
                 if ($analyser->hasResult()) {

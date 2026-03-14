@@ -92,14 +92,14 @@ class Serialized extends AbstractScalarAnalysis
     {
         $messages = $this->pool->messages;
         $meta = [];
-        $result = $this->pool->createClass(FormatSerialize::class)
+        $result = $this->pool->createClass(classname: FormatSerialize::class)
             ->prettyPrint($this->handledValue);
 
         if ($result !== null) {
-            $meta[$messages->getHelp('metaPrettyPrint')] = $this->pool
+            $meta[$messages->getHelp(key: 'metaPrettyPrint')] = $this->pool
                 ->encodingService->encodeString($result);
             $this->model->setHasExtra(false);
-            $meta[$messages->getHelp('metaContent')] = $this->model->getData();
+            $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }
 
         return $meta;

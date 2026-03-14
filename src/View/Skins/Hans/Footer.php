@@ -83,9 +83,9 @@ trait Footer
         return str_replace(
             $this->markerFooter,
             [
-                $this->renderExpandableChild($model, $configOnly),
+                $this->renderExpandableChild(model: $model, isExpanded: $configOnly),
                 $callerString,
-                $this->pool->messages->getHelp('pluginList'),
+                $this->pool->messages->getHelp(key: 'pluginList'),
                 $this->renderPluginList(),
             ],
             $this->fileCache[static::FILE_FOOTER]
@@ -107,10 +107,10 @@ trait Footer
         return str_replace(
             $this->markerCaller,
             [
-                $messages->getHelp('calledFromTxt'),
-                $messages->getHelp('calledFromLine'),
-                $messages->getHelp('calledFromAt'),
-                $messages->getHelp('calledFromUrl'),
+                $messages->getHelp(key: 'calledFromTxt'),
+                $messages->getHelp(key: 'calledFromLine'),
+                $messages->getHelp(key: 'calledFromAt'),
+                $messages->getHelp(key: 'calledFromUrl'),
                 $caller[static::TRACE_FILE],
                 $caller[static::TRACE_LINE],
                 $caller[static::TRACE_DATE],

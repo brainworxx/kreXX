@@ -75,7 +75,7 @@ class ProcessArray extends AbstractProcessNoneScalar implements
         parent::__construct($pool);
 
         $this->arrayCountLimit = (int) $this->pool->config
-            ->getSetting(static::SETTING_ARRAY_COUNT_LIMIT);
+            ->getSetting(name: static::SETTING_ARRAY_COUNT_LIMIT);
     }
 
     /**
@@ -106,20 +106,20 @@ class ProcessArray extends AbstractProcessNoneScalar implements
 
         if ($count > $this->arrayCountLimit) {
             // Budget array analysis.
-            $this->model->injectCallback($this->pool->createClass(ThroughLargeArray::class))
-                ->setHelpid('simpleArray');
+            $this->model->injectCallback(object: $this->pool->createClass(classname: ThroughLargeArray::class))
+                ->setHelpid(helpId: 'simpleArray');
         } else {
             // Complete array analysis.
-            $this->model->injectCallback($this->pool->createClass(ThroughArray::class));
+            $this->model->injectCallback(object: $this->pool->createClass(classname: ThroughArray::class));
         }
 
         // Dumping all Properties.
         $result = $this->pool->render->renderExpandableChild(
-            $this->dispatchProcessEvent(
-                $this->model->setType(static::TYPE_ARRAY)
-                    ->setNormal($count . $this->pool->messages->getHelp('countElements'))
-                    ->addParameter(static::PARAM_DATA, $this->model->getData())
-                    ->addParameter(static::PARAM_MULTILINE, false)
+            model: $this->dispatchProcessEvent(
+                $this->model->setType(type: static::TYPE_ARRAY)
+                    ->setNormal(normal: $count . $this->pool->messages->getHelp(key: 'countElements'))
+                    ->addParameter(name: static::PARAM_DATA, value: $this->model->getData())
+                    ->addParameter(name: static::PARAM_MULTILINE, value: false)
             )
         );
 

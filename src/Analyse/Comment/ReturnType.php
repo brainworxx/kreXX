@@ -90,7 +90,7 @@ class ReturnType extends AbstractComment
     public function getComment(Reflector $reflection, ?ReflectionClass $reflectionClass = null): string
     {
         // Get a first impression by the reflection.
-        $result = $this->pool->createClass(MethodDeclaration::class)
+        $result = $this->pool->createClass(classname: MethodDeclaration::class)
             ->retrieveReturnType($reflection);
         if ($result !== '') {
             return $this->pool->encodingService->encodeString($result);

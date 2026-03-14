@@ -74,7 +74,7 @@ class TimeStamp extends AbstractScalarAnalysis
         }
 
         // Might be a regular time stamp, get a second impression.
-        $metaTimestamp = $this->pool->messages->getHelp('metaTimestamp');
+        $metaTimestamp = $this->pool->messages->getHelp(key: 'metaTimestamp');
         if ((string)$float === $string && strpos($string, '.') === false) {
             $model->addToJson(
                 $metaTimestamp,

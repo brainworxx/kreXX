@@ -145,7 +145,7 @@ abstract class AbstractRender implements RenderInterface
     {
         $typeClasses = $model->isExpandable() ? 'kexpand ' : ' ';
 
-        foreach (explode(' ', $model->getType()) as $typeClass) {
+        foreach (explode(separator: ' ', string: $model->getType()) as $typeClass) {
             $typeClasses .= 'k' . $typeClass . ' ';
         }
 

@@ -72,23 +72,23 @@ class BacktraceStep extends AbstractCallback implements
         // file, line, function, object, type, args, sourcecode.
         $messages = $this->pool->messages;
         return $this->dispatchStartEvent() .
-            $this->outputSingleChild($messages->getHelp('file'), static::TRACE_FILE, 'fileToOutput') .
+            $this->outputSingleChild($messages->getHelp(key: 'file'), static::TRACE_FILE, 'fileToOutput') .
             $this->lineToOutput() .
             $this->outputProcessor(
-                $messages->getHelp('callingObject'),
+                $messages->getHelp(key: 'callingObject'),
                 static::TRACE_OBJECT,
                 'objectToOutput',
                 ProcessObject::class
             ) . $this->outputSingleChild(
-                $messages->getHelp('callType'),
+                $messages->getHelp(key: 'callType'),
                 static::TRACE_TYPE,
                 'typeToOutput'
             ) . $this->outputSingleChild(
-                $messages->getHelp('lastCalledFunction'),
+                $messages->getHelp(key: 'lastCalledFunction'),
                 static::TRACE_FUNCTION,
                 'functionToOutput'
             ) . $this->outputProcessor(
-                $messages->getHelp('argumentsFromTheCall'),
+                $messages->getHelp(key: 'argumentsFromTheCall'),
                 static::TRACE_ARGS,
                 'argsToOutput',
                 ProcessArray::class
@@ -103,16 +103,16 @@ class BacktraceStep extends AbstractCallback implements
      */
     protected function lineToOutput(): string
     {
-        $model = $this->pool->createClass(Model::class)
-            ->setName($this->pool->messages->getHelp('sourceCode'))
-            ->setNormal(static::UNKNOWN_VALUE)
+        $model = $this->pool->createClass(classname: Model::class)
+            ->setName(name: $this->pool->messages->getHelp(key: 'sourceCode'))
+            ->setNormal(normal: static::UNKNOWN_VALUE)
             ->setHasExtra(true)
-            ->setType(static::TYPE_PHP);
+            ->setType(type: static::TYPE_PHP);
 
         return $this->retrieveSource($model) . $this->pool->render->renderExpandableChild(
-            $this->dispatchEventWithModel(
-                __FUNCTION__ . static::EVENT_MARKER_END,
-                $model
+            model: $this->dispatchEventWithModel(
+                name: __FUNCTION__ . static::EVENT_MARKER_END,
+                model: $model
             )
         );
     }
@@ -134,11 +134,11 @@ class BacktraceStep extends AbstractCallback implements
         if (isset($stepData[static::TRACE_LINE])) {
             // Adding the line info to the output
             $output = $this->pool->render->renderExpandableChild(
-                $this->pool->createClass(Model::class)
+                model: $this->pool->createClass(classname: Model::class)
                     ->setData($stepData[static::TRACE_LINE])
-                    ->setName($this->pool->messages->getHelp('lineNumber'))
-                    ->setNormal($stepData[static::TRACE_LINE])
-                    ->setType(static::TYPE_INTEGER)
+                    ->setName(name: $this->pool->messages->getHelp(key: 'lineNumber'))
+                    ->setNormal(normal: $stepData[static::TRACE_LINE])
+                    ->setType(type: static::TYPE_INTEGER)
             );
 
             // Trying the read the sourcecode where it was called.
@@ -155,7 +155,7 @@ class BacktraceStep extends AbstractCallback implements
 
         // Check if we could load the code.
         if (empty($source)) {
-            $source = $this->pool->messages->getHelp('noSourceAvailable');
+            $source = $this->pool->messages->getHelp(key: 'noSourceAvailable');
         }
         $model->setData($source);
 
@@ -184,10 +184,10 @@ class BacktraceStep extends AbstractCallback implements
             return '';
         }
 
-        $processor = $this->pool->createClass($processorName);
+        $processor = $this->pool->createClass(classname: $processorName);
         $model = $this->dispatchEventWithModel(
-            $eventName . static::EVENT_MARKER_END,
-            $this->pool->createClass(Model::class)->setData($stepData[$type])->setName($name)
+            name: $eventName . static::EVENT_MARKER_END,
+            model: $this->pool->createClass(classname: Model::class)->setData($stepData[$type])->setName(name: $name)
         );
 
         $processor->canHandle($model);
@@ -212,13 +212,13 @@ class BacktraceStep extends AbstractCallback implements
         $stepData = $this->parameters[static::PARAM_DATA];
         if (isset($stepData[$type])) {
             return $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(
-                    $eventName . static::EVENT_MARKER_END,
-                    $this->pool->createClass(Model::class)
+                model: $this->dispatchEventWithModel(
+                    name: $eventName . static::EVENT_MARKER_END,
+                    model: $this->pool->createClass(classname: Model::class)
                         ->setData($stepData[$type])
-                        ->setName($name)
-                        ->setNormal($stepData[$type])
-                        ->setType(static::TYPE_STRING)
+                        ->setName(name: $name)
+                        ->setNormal(normal: $stepData[$type])
+                        ->setType(type: static::TYPE_STRING)
                 )
             );
         }

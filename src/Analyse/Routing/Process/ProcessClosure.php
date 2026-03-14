@@ -99,13 +99,13 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
 
         $result = $this->retrieveMetaData($ref);
         return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent(
-            $this->model->setType(static::TYPE_CLOSURE)
-                ->setNormal(static::UNKNOWN_VALUE)
+            model: $this->model->setType(type: static::TYPE_CLOSURE)
+                ->setNormal(normal: static::UNKNOWN_VALUE)
                 ->setConnectorParameters($this->retrieveParameterList($ref, $result))
                 ->setDomid($this->generateDomIdFromObject($data))
-                ->setConnectorType(static::CONNECTOR_METHOD)
-                ->addParameter(static::PARAM_DATA, $result)
-                ->injectCallback($this->pool->createClass(ThroughMeta::class))
+                ->setConnectorType(type: static::CONNECTOR_METHOD)
+                ->addParameter(name: static::PARAM_DATA, value: $result)
+                ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
         ));
     }
 
@@ -124,25 +124,26 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
         $messages = $this->pool->messages;
 
         // Adding comments from the file.
-        $result[$messages->getHelp('metaComment')] = $this->pool
-            ->createClass(Functions::class)
+        $result[$messages->getHelp(key: 'metaComment')] = $this->pool
+            ->createClass(classname: Functions::class)
             ->getComment($ref);
 
         // Adding the sourcecode
-        $result[$messages->getHelp('metaSource')] = $this->retrieveSourceCode($ref);
+        $result[$messages->getHelp(key: 'metaSource')] = $this->retrieveSourceCode($ref);
 
         // Adding the place where it was declared.
-        $result[$messages->getHelp('metaDeclaredIn')] = $ref->getFileName() . "\n";
-        $result[$messages->getHelp('metaDeclaredIn')] .= 'in line ' . $ref->getStartLine();
+        $result[$messages->getHelp(key: 'metaDeclaredIn')] = $ref->getFileName() . "\n";
+        $result[$messages->getHelp(key: 'metaDeclaredIn')] .= 'in line ' . $ref->getStartLine();
 
         // Adding the namespace, but only if we have one.
         $namespace = $ref->getNamespaceName();
         if (empty(!$namespace)) {
-            $result[$messages->getHelp('metaNamespace')] = $namespace;
+            $result[$messages->getHelp(key: 'metaNamespace')] = $namespace;
         }
 
         // Adding the return type.
-        $result[$messages->getHelp('metaReturnType')] = $this->pool->createClass(ReturnType::class)->getComment($ref);
+        $result[$messages->getHelp(key: 'metaReturnType')] = $this->pool->createClass(classname: ReturnType::class)
+            ->getComment($ref);
 
         return $result;
     }
@@ -183,7 +184,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
     {
         $paramList = '';
         foreach ($ref->getParameters() as $key => $reflectionParameter) {
-            $paramList .=  $result[$this->pool->messages->getHelp('metaParamNo') . ++$key] = $this->pool
+            $paramList .=  $result[$this->pool->messages->getHelp(key: 'metaParamNo') . ++$key] = $this->pool
                 ->codegenHandler
                 ->parameterToString($reflectionParameter);
             // We add a comma to the parameter list, to separate them for a

@@ -121,11 +121,11 @@ class FilePath extends AbstractScalarAnalysis
 
         $messages = $this->pool->messages;
         if (!empty($cache[$string][static::REAL_PATH])) {
-            $model->addToJson($messages->getHelp('realPath'), $cache[$string][static::REAL_PATH]);
+            $model->addToJson($messages->getHelp(key: 'realPath'), $cache[$string][static::REAL_PATH]);
         }
 
         if (!empty($cache[$string][static::MIME_TYPE])) {
-            $model->addToJson($messages->getHelp('metaMimeTypeFile'), $cache[$string][static::MIME_TYPE]);
+            $model->addToJson($messages->getHelp(key: 'metaMimeTypeFile'), $cache[$string][static::MIME_TYPE]);
         }
 
         return false;
@@ -139,7 +139,7 @@ class FilePath extends AbstractScalarAnalysis
     {
         $result = [];
 
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler(callback: $this->pool->retrieveErrorCallback());
         try {
             $isFile = is_file($string);
         } catch (TypeError $exception) {

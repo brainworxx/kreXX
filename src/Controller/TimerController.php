@@ -102,11 +102,11 @@ class TimerController extends AbstractController
      */
     public function timerEndAction(): TimerController
     {
-        $this->timerAction($this->pool->messages->getHelp('end'));
+        $this->timerAction($this->pool->messages->getHelp(key: 'end'));
         // And we are done. Feedback to the user.
         $miniBench = $this->miniBenchTo(static::$timekeeping);
-        $this->pool->createClass(DumpController::class)
-            ->dumpAction($miniBench, $this->pool->messages->getHelp('headlineTimer'), 'timer');
+        $this->pool->createClass(classname: DumpController::class)
+            ->dumpAction($miniBench, $this->pool->messages->getHelp(key: 'headlineTimer'), 'timer');
         // Reset the timer vars.
         static::$timekeeping = [];
         static::$counterCache = [];
@@ -131,7 +131,7 @@ class TimerController extends AbstractController
         // Get the very first key.
         $momentName = key($timeKeeping);
         $totalTime = round((end($timeKeeping) - $timeKeeping[$momentName]) * 1000, 4);
-        $result[$this->pool->messages->getHelp('metaTotalTime')] = $totalTime . 'ms';
+        $result[$this->pool->messages->getHelp(key: 'metaTotalTime')] = $totalTime . 'ms';
         $prevMomentName = $momentName;
         $prevMomentStart = $timeKeeping[$momentName];
 

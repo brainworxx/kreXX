@@ -60,7 +60,7 @@ class EditSettingsController extends AbstractController
         $this->pool->emergencyHandler->setDisable(true);
 
         // Find caller.
-        $headLine = $this->pool->messages->getHelp('headlineCookieConf');
+        $headLine = $this->pool->messages->getHelp(key: 'headlineCookieConf');
         $caller = $this->callerFinder->findCaller($headLine, []);
         $this->pool->chunks->addMetadata($caller);
 

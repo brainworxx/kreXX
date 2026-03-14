@@ -64,7 +64,7 @@ trait Json
      */
     public function setHelpid(string $helpId): Model
     {
-        $this->addToJson($this->pool->messages->getHelp('metaHelp'), $this->pool->messages->getHelp($helpId));
+        $this->addToJson($this->pool->messages->getHelp(key: 'metaHelp'), $this->pool->messages->getHelp($helpId));
         return $this;
     }
 
@@ -97,7 +97,7 @@ trait Json
 
     public function addJsonHint(string $hint): Model
     {
-        $key = $this->pool->messages->getHelp('metaHint');
+        $key = $this->pool->messages->getHelp(key: 'metaHint');
         $hint = trim(str_replace(["\r", "\n"], ['', ''], $hint));
         if (isset($this->json[$key])) {
             $hint = $this->json[$key] . '<br>' . $hint;

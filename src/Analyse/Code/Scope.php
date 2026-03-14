@@ -145,7 +145,7 @@ class Scope implements CallbackConstInterface
         }
 
         $messages = $this->pool->messages;
-        $privateInherited = $messages->getHelp('private') . ' ' . $messages->getHelp('inherited');
+        $privateInherited = $messages->getHelp(key: 'private') . ' ' . $messages->getHelp(key: 'inherited');
         if (strpos($model->getType(), $privateInherited) !== false) {
             // Inherited private properties or methods are not accessible from the
             // $this scope. We need to make sure that we do not generate any code

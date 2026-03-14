@@ -100,10 +100,10 @@ class ThroughMethods extends AbstractCallback implements
     {
         parent::__construct($pool);
 
-        $this->commentAnalysis = $pool->createClass(Methods::class);
-        $this->methodDeclaration = $pool->createClass(MethodDeclaration::class);
-        $this->returnType = $pool->createClass(ReturnType::class);
-        $this->attributes = $pool->createClass(Attributes::class);
+        $this->commentAnalysis = $pool->createClass(classname: Methods::class);
+        $this->methodDeclaration = $pool->createClass(classname: MethodDeclaration::class);
+        $this->returnType = $pool->createClass(classname: ReturnType::class);
+        $this->attributes = $pool->createClass(classname: Attributes::class);
     }
 
     /**
@@ -129,19 +129,22 @@ class ThroughMethods extends AbstractCallback implements
             $this->parameters[static::PARAM_REFLECTION_METHOD] = $refMethod;
 
             // Render it!
-            $result .= $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
-                __FUNCTION__ . static::EVENT_MARKER_END,
-                $this->pool->createClass(Model::class)
-                    ->setName($refMethod->name)
+            $result .= $this->pool->render->renderExpandableChild(model: $this->dispatchEventWithModel(
+                name: __FUNCTION__ . static::EVENT_MARKER_END,
+                model: $this->pool->createClass(classname: Model::class)
+                    ->setName(name: $refMethod->name)
                     // Remove the ',' after the last char.
                     ->setConnectorParameters(rtrim($this->retrieveParameters($refMethod, $methodData), ', '))
-                    ->setType(
-                        $this->getDeclarationKeywords($refMethod, $declaringClass, $refClass) . static::TYPE_METHOD
-                    )->setConnectorType($this->retrieveConnectorType($refMethod))
-                    ->addParameter(static::PARAM_DATA, $methodData)
-                    ->setCodeGenType($refMethod->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '')
-                    ->setReturnType($methodData[$this->pool->messages->getHelp('metaReturnType')])
-                    ->injectCallback($this->pool->createClass(ThroughMeta::class))
+                    ->setType(type: $this->getDeclarationKeywords(
+                        $refMethod,
+                        $declaringClass,
+                        $refClass
+                    ) . static::TYPE_METHOD)
+                    ->setConnectorType(type: $this->retrieveConnectorType($refMethod))
+                    ->addParameter(name: static::PARAM_DATA, value: $methodData)
+                    ->setCodeGenType(codeGenType: $refMethod->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '')
+                    ->setReturnType($methodData[$this->pool->messages->getHelp(key: 'metaReturnType')])
+                    ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
             ));
         }
 
@@ -166,13 +169,13 @@ class ThroughMethods extends AbstractCallback implements
         $messages = $this->pool->messages;
         return [
             // Get the comment from the class, it's parents, interfaces or traits.
-            $messages->getHelp('metaComment') => $this->commentAnalysis->getComment($refMethod, $refClass),
+            $messages->getHelp(key: 'metaComment') => $this->commentAnalysis->getComment($refMethod, $refClass),
             // Get the method attributes.
-            $messages->getHelp('metaAttributes') => $this->attributes->getAttributes($refMethod),
+            $messages->getHelp(key: 'metaAttributes') => $this->attributes->getAttributes($refMethod),
             // Get declaration place.
-            $messages->getHelp('metaDeclaredIn') => $this->methodDeclaration->retrieveDeclaration($refMethod),
+            $messages->getHelp(key: 'metaDeclaredIn') => $this->methodDeclaration->retrieveDeclaration($refMethod),
             // Get the return type.
-            $messages->getHelp('metaReturnType') => $this->returnType->getComment($refMethod, $refClass),
+            $messages->getHelp(key: 'metaReturnType') => $this->returnType->getComment($refMethod, $refClass),
         ];
     }
 
@@ -206,7 +209,7 @@ class ThroughMethods extends AbstractCallback implements
         $paramList = '';
         foreach ($reflectionMethod->getParameters() as $key => $reflectionParameter) {
             ++$key;
-            $paramList .= $methodData[$this->pool->messages->getHelp('metaParamNo') . $key] = $this->pool
+            $paramList .= $methodData[$this->pool->messages->getHelp(key: 'metaParamNo') . $key] = $this->pool
                 ->codegenHandler
                 ->parameterToString($reflectionParameter);
             // We add a comma to the parameter list, to separate them for a
@@ -237,17 +240,17 @@ class ThroughMethods extends AbstractCallback implements
     ): string {
         $messages = $this->pool->messages;
         if ($reflectionMethod->isPublic()) {
-            $result = $messages->getHelp('public');
+            $result = $messages->getHelp(key: 'public');
         } elseif ($reflectionMethod->isProtected()) {
-            $result = $messages->getHelp('protected');
+            $result = $messages->getHelp(key: 'protected');
         } else {
-            $result = $messages->getHelp('private');
+            $result = $messages->getHelp(key: 'private');
         }
 
         $result .= $declaringClass->getName() === $reflectionClass->getName() ? '' :
-            ' ' . $messages->getHelp('inherited');
-        $result .= $reflectionMethod->isStatic() ? ' ' . $messages->getHelp('static') : '';
-        $result .= $reflectionMethod->isFinal() ? ' ' . $messages->getHelp('final') : '';
+            ' ' . $messages->getHelp(key: 'inherited');
+        $result .= $reflectionMethod->isStatic() ? ' ' . $messages->getHelp(key: 'static') : '';
+        $result .= $reflectionMethod->isFinal() ? ' ' . $messages->getHelp(key: 'final') : '';
 
         return $result;
     }

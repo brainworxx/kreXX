@@ -109,22 +109,22 @@ abstract class AbstractController implements ConfigConstInterface
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->callerFinder = $pool->createClass(CallerFinder::class);
+        $this->callerFinder = $pool->createClass(classname: CallerFinder::class);
 
         // Register our output service.
         // Depending on the setting, we use another class here.
         // We get a new output service for every krexx call, because the hosting
         // cms may do their stuff in the shutdown functions as well.
-        $this->destination = $pool->config->getSetting(static::SETTING_DESTINATION);
+        $this->destination = $pool->config->getSetting(name: static::SETTING_DESTINATION);
         switch ($this->destination) {
             case static::VALUE_BROWSER:
-                $this->outputService = $pool->createClass(Browser::class);
+                $this->outputService = $pool->createClass(classname: Browser::class);
                 break;
             case static::VALUE_FILE:
-                $this->outputService = $pool->createClass(File::class);
+                $this->outputService = $pool->createClass(classname: File::class);
                 break;
             default:
-                $this->outputService = $pool->createClass(BrowserImmediately::class);
+                $this->outputService = $pool->createClass(classname: BrowserImmediately::class);
         }
 
         $this->pool->reset();
@@ -148,21 +148,21 @@ abstract class AbstractController implements ConfigConstInterface
         // as well as its path.
         $pathToConfig = $this->pool->config->getPathToConfigFile();
         if ($this->pool->fileService->fileIsReadable($pathToConfig)) {
-            $path = $this->pool->messages->getHelp('currentConfig');
+            $path = $this->pool->messages->getHelp(key: 'currentConfig');
         } else {
             // Project settings are not accessible
             // tell the user, that we are using fallback settings.
-            $path = $this->pool->messages->getHelp('configFileNotFound');
+            $path = $this->pool->messages->getHelp(key: 'configFileNotFound');
         }
 
         return $this->pool->render->renderFooter(
             $caller,
-            $this->pool->createClass(Model::class)
-                ->setName($path)
-                ->setType($pathToConfig)
-                ->setHelpid('currentSettings')
+            $this->pool->createClass(classname: Model::class)
+                ->setName(name: $path)
+                ->setType(type: $pathToConfig)
+                ->setHelpid(helpId: 'currentSettings')
                 ->injectCallback(
-                    $this->pool->createClass(ThroughConfig::class)
+                    object: $this->pool->createClass(classname: ThroughConfig::class)
                 ),
             $isExpanded
         );
@@ -202,8 +202,8 @@ abstract class AbstractController implements ConfigConstInterface
         }
 
         /** @var Model $model */
-        $model = $this->pool->createClass(Model::class);
-        $model->setData($jsCode)->setNormal($css);
+        $model = $this->pool->createClass(classname: Model::class);
+        $model->setData($jsCode)->setNormal(normal: $css);
         $this->pool->eventService->dispatch(static::class . '::outputCssAndJs', null, $model);
         return $this->pool->render->renderCssJs($model->getNormal(), $model->getData());
     }

@@ -121,7 +121,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     {
         $this->pool = $pool;
         $pool->codegenHandler = $this;
-        $this->methodDeclaration = $pool->createClass(MethodDeclaration::class);
+        $this->methodDeclaration = $pool->createClass(classname: MethodDeclaration::class);
     }
 
     /**
@@ -197,7 +197,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         }
 
         $model->addToJson(
-            $this->pool->messages->getHelp('metaTypeHint'),
+            $this->pool->messages->getHelp(key: 'metaTypeHint'),
             '/** @var ' . $type . ' ' . $name . ' */'
         );
     }

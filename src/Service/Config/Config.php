@@ -111,12 +111,12 @@ class Config extends Fallback
             static::CONFIG_FOLDER => SettingsGetter::getConfigFile(),
         ];
 
-        $this->validation = $pool->createClass(Validation::class);
+        $this->validation = $pool->createClass(classname: Validation::class);
         $pool->config = $this;
 
-        $this->fileConfig = $pool->createClass(File::class)
+        $this->fileConfig = $pool->createClass(classname: File::class)
             ->loadFile($this->getPathToConfigFile());
-        $this->cookieConfig = $pool->createClass(Cookie::class);
+        $this->cookieConfig = $pool->createClass(classname: Cookie::class);
 
         // Loading the settings.
         foreach ($this->configFallback as $settings) {
@@ -127,8 +127,8 @@ class Config extends Fallback
 
         // We may need to change the disabling again, in case we are in cli
         // or ajax mode and have no file output.
-        $this->checkOutput = $pool->createClass(CheckOutput::class);
-        $this->pool->messages->setLanguageKey($this->getSetting(static::SETTING_LANGUAGE_KEY));
+        $this->checkOutput = $pool->createClass(classname: CheckOutput::class);
+        $this->pool->messages->setLanguageKey($this->getSetting(name: static::SETTING_LANGUAGE_KEY));
 
         $this->checkEnabledStatus();
     }
@@ -139,7 +139,7 @@ class Config extends Fallback
     protected function checkEnabledStatus(): void
     {
         if (
-            $this->getSetting(static::SETTING_DESTINATION) !==  static::VALUE_FILE &&
+            $this->getSetting(name: static::SETTING_DESTINATION) !==  static::VALUE_FILE &&
             ($this->checkOutput->isAjax() || $this->checkOutput->isCli())
         ) {
             // No kreXX for you. At least until you start forced logging.
@@ -148,7 +148,7 @@ class Config extends Fallback
 
         // Now that our settings are in place, we need to check the
         // ip to decide if we need to deactivate kreXX.
-        if (!$this->checkOutput->isAllowedIp($this->getSetting(static::SETTING_IP_RANGE))) {
+        if (!$this->checkOutput->isAllowedIp($this->getSetting(name: static::SETTING_IP_RANGE))) {
             // No kreXX for you! At all.
             $this->setDisabled(true);
             static::$disabledByPhp = true;
@@ -165,7 +165,7 @@ class Config extends Fallback
     {
         $this->settings[static::SETTING_DISABLED]
             ->setValue($value)
-            ->setSource($this->pool->messages->getHelp('internalFlow'));
+            ->setSource($this->pool->messages->getHelp(key: 'internalFlow'));
     }
 
     /**
@@ -228,27 +228,27 @@ class Config extends Fallback
         $cookieSetting = $this->cookieConfig->getConfigFromCookies($section, $name);
         if ($this->isCookieValueAllowed($model, $name, $cookieSetting)) {
             $model->setValue($cookieSetting)
-                ->setSource($this->pool->messages->getHelp('localCookieSettings'));
+                ->setSource($this->pool->messages->getHelp(key: 'localCookieSettings'));
             return $this;
         }
 
         // Do we have a value in the configuration file?
         if ($this->fileConfig->getConfigFromFile($section, $name) !== null) {
             $model->setValue($this->fileConfig->getConfigFromFile($section, $name))
-                ->setSource($this->pool->messages->getHelp('configFileSettings'));
+                ->setSource($this->pool->messages->getHelp(key: 'configFileSettings'));
             return $this;
         }
 
         // Plugin overwrites
         if (isset(SettingsGetter::getNewFallbackValues()[$name])) {
             $model->setValue(SettingsGetter::getNewFallbackValues()[$name])
-                ->setSource($this->pool->messages->getHelp('pluginOverwriteSetting'));
+                ->setSource($this->pool->messages->getHelp(key: 'pluginOverwriteSetting'));
             return $this;
         }
 
         // Fallback the factory settings.
         $model->setValue($this->feConfigFallback[$name][static::VALUE])
-            ->setSource($this->pool->messages->getHelp('factorySetting'));
+            ->setSource($this->pool->messages->getHelp(key: 'factorySetting'));
 
         return $this;
     }
@@ -304,7 +304,7 @@ class Config extends Fallback
      */
     public function getSkinClass(): string
     {
-        return $this->skinConfiguration[$this->getSetting(static::SETTING_SKIN)][static::SKIN_CLASS];
+        return $this->skinConfiguration[$this->getSetting(name: static::SETTING_SKIN)][static::SKIN_CLASS];
     }
 
      /**
@@ -314,7 +314,7 @@ class Config extends Fallback
      */
     public function getSkinDirectory(): string
     {
-        return $this->skinConfiguration[$this->getSetting(static::SETTING_SKIN)][static::SKIN_DIRECTORY];
+        return $this->skinConfiguration[$this->getSetting(name: static::SETTING_SKIN)][static::SKIN_DIRECTORY];
     }
 
     /**
@@ -355,9 +355,9 @@ class Config extends Fallback
         $fileFeSettings = $this->fileConfig->getFeConfigFromFile($name) ??
             $this->feConfigFallback[$name][static::RENDER];
 
-        return $this->pool->createClass(Model::class)
+        return $this->pool->createClass(classname: Model::class)
             ->setSection($this->feConfigFallback[$name][static::SECTION])
             ->setEditable($fileFeSettings[static::RENDER_EDITABLE] === static::VALUE_TRUE)
-            ->setType($fileFeSettings[static::RENDER_TYPE]);
+            ->setType(type: $fileFeSettings[static::RENDER_TYPE]);
     }
 }

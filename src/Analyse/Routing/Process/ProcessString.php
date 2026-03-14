@@ -105,13 +105,13 @@ class ProcessString extends AbstractRouting implements
             $this->bufferInfo = new finfo(FILEINFO_MIME);
         } else {
             // Use a "polyfill" dummy, tell the dev that we have a problem.
-            $this->bufferInfo = $pool->createClass(FileinfoDummy::class);
+            $this->bufferInfo = $pool->createClass(classname: FileinfoDummy::class);
             $pool->messages->addMessage('fileinfoNotInstalled');
         }
 
-        $this->analyseScalar = $this->pool->config->getSetting(static::SETTING_ANALYSE_SCALAR);
+        $this->analyseScalar = $this->pool->config->getSetting(name: static::SETTING_ANALYSE_SCALAR);
         if ($this->analyseScalar) {
-            $this->scalarString = $pool->createClass(ScalarString::class);
+            $this->scalarString = $pool->createClass(classname: ScalarString::class);
         }
     }
 
@@ -153,17 +153,17 @@ class ProcessString extends AbstractRouting implements
             $data = $this->pool->encodingService->encodeString($data);
 
             $this->model->setHasExtra(true)
-                ->setNormal($cut)
+                ->setNormal(normal: $cut)
                 ->setData($data);
         } else {
-            $this->model->setNormal($this->pool->encodingService->encodeString($data));
+            $this->model->setNormal(normal: $this->pool->encodingService->encodeString($data));
         }
 
         if ($this->analyseScalar) {
             return $this->handleStringScalar($originalData);
         }
 
-        return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent($this->model));
+        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent($this->model));
     }
 
     /**
@@ -184,7 +184,7 @@ class ProcessString extends AbstractRouting implements
         }
 
         $this->pool->recursionHandler->addToMetaHive($domId);
-        return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent($this->model));
+        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent($this->model));
     }
 
     /**
@@ -216,16 +216,17 @@ class ProcessString extends AbstractRouting implements
             if (!isset($bufferCache[$data])) {
                 $bufferCache[$data] = $this->bufferInfo->buffer($data);
             }
-            $this->model->addToJson($messages->getHelp('metaMimeTypeString'), $bufferCache[$data]);
+            $this->model->addToJson($messages->getHelp(key: 'metaMimeTypeString'), $bufferCache[$data]);
         } elseif ($encoding === false) {
             // Short string with broken encoding.
-            $this->model->addToJson($messages->getHelp('metaEncoding'), 'broken');
+            $this->model->addToJson($messages->getHelp(key: 'metaEncoding'), 'broken');
         } else {
             // Short string with normal encoding.
-            $this->model->addToJson($messages->getHelp('metaEncoding'), $encoding);
+            $this->model->addToJson($messages->getHelp(key: 'metaEncoding'), $encoding);
         }
 
-        $this->model->setType(static::TYPE_STRING)->addToJson($messages->getHelp('metaLength'), (string)$length);
+        $this->model->setType(type: static::TYPE_STRING)
+            ->addToJson($messages->getHelp(key: 'metaLength'), (string)$length);
 
         return $length;
     }

@@ -223,7 +223,7 @@ class File
         }
 
         // Get the file contents.
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler(callback: $this->pool->retrieveErrorCallback());
         $filePath = $this->realpath($filePath);
         $file = fopen($filePath, 'r');
         if ($file === false) {
@@ -267,7 +267,7 @@ class File
     {
         $realpath = $this->realpath($filePath);
 
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler(callback: $this->pool->retrieveErrorCallback());
 
         // Fast-forward for the current chunk files.
         if (isset(static::$isReadableCache[$realpath])) {
@@ -325,7 +325,7 @@ class File
         $filePath = $this->realpath($filePath);
 
         if ($this->fileIsReadable($filePath)) {
-            set_error_handler($this->pool->retrieveErrorCallback());
+            set_error_handler(callback: $this->pool->retrieveErrorCallback());
             $result = filemtime($filePath);
             restore_error_handler();
         }
@@ -373,7 +373,7 @@ class File
     public function isDirectoryWritable(string $path): bool
     {
         $filename = 'test';
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler(callback: $this->pool->retrieveErrorCallback());
         $result = (bool)file_put_contents($path . $filename, 'x') && unlink($path . $filename);
         restore_error_handler();
 

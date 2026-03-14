@@ -68,9 +68,9 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
 
-        $doProtected = $this->pool->config->getSetting(static::SETTING_ANALYSE_PROTECTED_METHODS) ||
+        $doProtected = $this->pool->config->getSetting(name: static::SETTING_ANALYSE_PROTECTED_METHODS) ||
             $this->pool->scope->isInScope();
-        $doPrivate = $this->pool->config->getSetting(static::SETTING_ANALYSE_PRIVATE_METHODS) ||
+        $doPrivate = $this->pool->config->getSetting(name: static::SETTING_ANALYSE_PRIVATE_METHODS) ||
             $this->pool->scope->isInScope();
         $domId = $this->generateDomIdFromClassname($ref->getName(), $doProtected, $doPrivate);
 
@@ -78,16 +78,16 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
         if ($this->pool->recursionHandler->isInMetaHive($domId)) {
             // We have been here before.
             // We skip this one, and leave it to the js recursion handler!
-            $metaMethods = $this->pool->messages->getHelp('metaMethods');
+            $metaMethods = $this->pool->messages->getHelp(key: 'metaMethods');
             return $output .
                 $this->pool->render->renderRecursion(
                     $this->dispatchEventWithModel(
-                        static::EVENT_MARKER_RECURSION,
-                        $this->pool->createClass(Model::class)
+                        name: static::EVENT_MARKER_RECURSION,
+                        model: $this->pool->createClass(classname: Model::class)
                             ->setDomid($domId)
-                            ->setNormal($metaMethods)
-                            ->setName($metaMethods)
-                            ->setType($this->pool->messages->getHelp('classInternals'))
+                            ->setNormal(normal: $metaMethods)
+                            ->setName(name: $metaMethods)
+                            ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
                     )
                 );
         }
@@ -132,15 +132,15 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
         usort($methods, [$this, static::REFLECTION_SORTING]);
 
         return $this->pool->render->renderExpandableChild(
-            $this->dispatchEventWithModel(
-                static::EVENT_MARKER_ANALYSES_END,
-                $this->pool->createClass(Model::class)
-                    ->setName($this->pool->messages->getHelp('metaMethods'))
-                    ->setType($this->pool->messages->getHelp('classInternals'))
-                    ->addParameter(static::PARAM_DATA, $methods)
-                    ->addParameter(static::PARAM_REF, $ref)
+            model: $this->dispatchEventWithModel(
+                name: static::EVENT_MARKER_ANALYSES_END,
+                model: $this->pool->createClass(classname: Model::class)
+                    ->setName(name: $this->pool->messages->getHelp(key: 'metaMethods'))
+                    ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
+                    ->addParameter(name: static::PARAM_DATA, value: $methods)
+                    ->addParameter(name: static::PARAM_REF, value: $ref)
                     ->setDomId($domId)
-                    ->injectCallback($this->pool->createClass(ThroughMethods::class))
+                    ->injectCallback(object: $this->pool->createClass(classname: ThroughMethods::class))
             )
         );
     }

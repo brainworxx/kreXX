@@ -82,7 +82,7 @@ class Callback extends AbstractScalarAnalysis
      */
     public function canHandle($string, Model $model): bool
     {
-        if (!is_callable($string)) {
+        if (!is_callable(value: $string)) {
             return false;
         }
 
@@ -110,12 +110,13 @@ class Callback extends AbstractScalarAnalysis
     {
         // Stitching together the main analysis.
         /** @var FunctionDeclaration $functionDeclaration */
-        $functionDeclaration = $this->pool->createClass(FunctionDeclaration::class);
+        $functionDeclaration = $this->pool->createClass(classname: FunctionDeclaration::class);
         $messages = $this->pool->messages;
         $meta = [
-            $messages->getHelp('metaComment') => $this->pool
-                ->createClass(Functions::class)->getComment($this->reflectionFunction),
-            $messages->getHelp('metaDeclaredIn') => $functionDeclaration->retrieveDeclaration($this->reflectionFunction)
+            $messages->getHelp(key: 'metaComment') => $this->pool
+                ->createClass(classname: Functions::class)->getComment($this->reflectionFunction),
+            $messages->getHelp(key: 'metaDeclaredIn') => $functionDeclaration
+                ->retrieveDeclaration($this->reflectionFunction)
         ];
         $this->insertParameters($meta);
 
@@ -134,7 +135,7 @@ class Callback extends AbstractScalarAnalysis
     {
         foreach ($this->reflectionFunction->getParameters() as $key => $reflectionParameter) {
             ++$key;
-            $meta[$this->pool->messages->getHelp('metaParamNo') . $key] = $this->pool
+            $meta[$this->pool->messages->getHelp(key: 'metaParamNo') . $key] = $this->pool
                 ->codegenHandler
                 ->parameterToString($reflectionParameter);
         }

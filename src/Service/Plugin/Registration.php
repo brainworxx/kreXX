@@ -411,7 +411,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
         if (isset(Krexx::$pool)) {
             Krexx::$pool->rewrite = static::$rewriteList;
             Krexx::$pool->eventService->register = static::$eventList;
-            Krexx::$pool->config = Krexx::$pool->createClass(Config::class);
+            Krexx::$pool->config = Krexx::$pool->createClass(classname: Config::class);
             Krexx::$pool->messages->readHelpTexts();
         }
     }

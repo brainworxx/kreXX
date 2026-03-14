@@ -72,7 +72,7 @@ class ProtectedProperties extends AbstractObjectAnalysis
             $this->getReflectionPropertiesData(
                 $refProps,
                 $ref,
-                $this->pool->messages->getHelp('protectedProperties')
+                $this->pool->messages->getHelp(key: 'protectedProperties')
             );
     }
 }

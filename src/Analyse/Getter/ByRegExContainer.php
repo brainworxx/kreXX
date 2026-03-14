@@ -100,7 +100,7 @@ class ByRegExContainer extends AbstractGetter
         // We take the first one that we get.
         // There may others in there, but when the developer uses static
         // caching, this is where the value should be.
-        $parts = explode($this->secondPattern, $results[0]);
+        $parts = explode(separator: $this->secondPattern, string: $results[0]);
         if (count($parts) !== 2) {
             return null;
         }

@@ -66,10 +66,10 @@ trait PluginList
         foreach (SettingsGetter::getPlugins() as $plugin) {
             if ($plugin[static::IS_ACTIVE]) {
                 $activeClass = 'kisactive';
-                $activeText = $messages->getHelp('pluginActive');
+                $activeText = $messages->getHelp(key: 'pluginActive');
             } else {
                 $activeClass = 'kisinactive';
-                $activeText = $messages->getHelp('pluginInactive');
+                $activeText = $messages->getHelp(key: 'pluginInactive');
             }
 
             $configClass = $plugin[static::CONFIG_CLASS];

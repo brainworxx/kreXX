@@ -66,8 +66,8 @@ trait Footer
                 $this->markerFooter,
                 [
                     '',
-                    $this->pool->messages->getHelp('additionalData'),
-                    $this->pool->messages->getHelp('noDataAvailable'),
+                    $this->pool->messages->getHelp(key: 'additionalData'),
+                    $this->pool->messages->getHelp(key: 'noDataAvailable'),
                 ],
                 parent::renderFooter($caller, $model, true)
             );
@@ -77,8 +77,8 @@ trait Footer
             $this->markerFooter,
             [
                 static::STYLE_HIDDEN,
-                $this->pool->messages->getHelp('additionalData'),
-                $this->pool->messages->getHelp('noDataAvailable'),
+                $this->pool->messages->getHelp(key: 'additionalData'),
+                $this->pool->messages->getHelp(key: 'noDataAvailable'),
             ],
             parent::renderFooter($caller, $model, $configOnly)
         );

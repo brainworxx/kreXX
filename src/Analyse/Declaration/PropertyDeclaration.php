@@ -56,12 +56,12 @@ class PropertyDeclaration extends AbstractDeclaration
         $messages = $this->pool->messages;
         // Early returns for simple cases.
         if (isset($reflection->isUndeclared)) {
-            return $messages->getHelp('metaUndeclared');
+            return $messages->getHelp(key: 'metaUndeclared');
         }
 
         $reflectionClass = $reflection->getDeclaringClass();
         if ($reflectionClass->isInternal()) {
-            return $messages->getHelp('metaPredeclared');
+            return $messages->getHelp(key: 'metaPredeclared');
         }
 
         $traits = $reflectionClass->getTraits();
@@ -73,7 +73,8 @@ class PropertyDeclaration extends AbstractDeclaration
         if ($reflectionClass !== null) {
             $result = $reflectionClass->getFileName() .
                 $this->pool->render->renderLinebreak() .
-                ($reflectionClass->isTrait() ? $messages->getHelp('metaInTrait') : $messages->getHelp('metaInClass')) .
+                ($reflectionClass->isTrait() ?
+                    $messages->getHelp(key: 'metaInTrait') : $messages->getHelp(key: 'metaInClass')) .
                 $reflectionClass->name;
         }
 

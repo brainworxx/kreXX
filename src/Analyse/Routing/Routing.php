@@ -72,15 +72,15 @@ class Routing extends AbstractRouting
     {
         parent::__construct($pool);
 
-        $this->processors[ProcessString::class] = $pool->createClass(ProcessString::class);
-        $this->processors[ProcessInteger::class] = $pool->createClass(ProcessInteger::class);
-        $this->processors[ProcessArray::class] = $pool->createClass(ProcessArray::class);
-        $this->processors[ProcessClosure::class] = $pool->createClass(ProcessClosure::class);
-        $this->processors[ProcessObject::class] = $pool->createClass(ProcessObject::class);
-        $this->processors[ProcessBoolean::class] = $pool->createClass(ProcessBoolean::class);
-        $this->processors[ProcessFloat::class] = $pool->createClass(ProcessFloat::class);
-        $this->processors[ProcessNull::class] = $pool->createClass(ProcessNull::class);
-        $this->processors[ProcessResource::class] = $pool->createClass(ProcessResource::class);
+        $this->processors[ProcessString::class] = $pool->createClass(classname: ProcessString::class);
+        $this->processors[ProcessInteger::class] = $pool->createClass(classname: ProcessInteger::class);
+        $this->processors[ProcessArray::class] = $pool->createClass(classname: ProcessArray::class);
+        $this->processors[ProcessClosure::class] = $pool->createClass(classname: ProcessClosure::class);
+        $this->processors[ProcessObject::class] = $pool->createClass(classname: ProcessObject::class);
+        $this->processors[ProcessBoolean::class] = $pool->createClass(classname: ProcessBoolean::class);
+        $this->processors[ProcessFloat::class] = $pool->createClass(classname: ProcessFloat::class);
+        $this->processors[ProcessNull::class] = $pool->createClass(classname: ProcessNull::class);
+        $this->processors[ProcessResource::class] = $pool->createClass(classname: ProcessResource::class);
 
         $pool->routing = $this;
     }
@@ -112,7 +112,7 @@ class Routing extends AbstractRouting
 
         // Looks like we ran out of processors.
         /** @var ProcessOther $processOther */
-        $processOther = $this->pool->createClass(ProcessOther::class);
+        $processOther = $this->pool->createClass(classname: ProcessOther::class);
         $processOther->canHandle($model);
 
         return $processOther->handle();

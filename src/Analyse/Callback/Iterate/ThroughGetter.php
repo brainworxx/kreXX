@@ -123,14 +123,14 @@ class ThroughGetter extends AbstractCallback implements
     public function __construct(Pool $pool)
     {
         parent::__construct($pool);
-        $this->commentAnalysis = $this->pool->createClass(Methods::class);
+        $this->commentAnalysis = $this->pool->createClass(classname: Methods::class);
         $this->getterAnalyser = [
-            $this->pool->createClass(ByMethodName::class),
-            $this->pool->createClass(ByRegExProperty::class),
-            $this->pool->createClass(ByRegExContainer::class),
-            $this->pool->createClass(ByRegExDelegate::class)
+            $this->pool->createClass(classname: ByMethodName::class),
+            $this->pool->createClass(classname: ByRegExProperty::class),
+            $this->pool->createClass(classname: ByRegExContainer::class),
+            $this->pool->createClass(classname: ByRegExDelegate::class)
         ];
-        $this->methodDeclaration = $this->pool->createClass(MethodDeclaration::class);
+        $this->methodDeclaration = $this->pool->createClass(classname: MethodDeclaration::class);
     }
 
     /**
@@ -182,24 +182,24 @@ class ThroughGetter extends AbstractCallback implements
             // 2.) We got NULL as a value
             // 3.) We were unable to get any info at all.
             /** @var Model $model */
-            $model = $this->pool->createClass(Model::class)
-                ->setName($reflectionMethod->getName())
-                ->setCodeGenType(static::CODEGEN_TYPE_PUBLIC);
+            $model = $this->pool->createClass(classname: Model::class)
+                ->setName(name: $reflectionMethod->getName())
+                ->setCodeGenType(codeGenType: static::CODEGEN_TYPE_PUBLIC);
             $this->assignMetaDataToJson($model, $reflectionMethod);
 
             // We need to decide if we are handling static getters.
             if ($reflectionMethod->isStatic()) {
-                $model->setConnectorType(static::CONNECTOR_STATIC_METHOD);
+                $model->setConnectorType(type: static::CONNECTOR_STATIC_METHOD);
             } else {
-                $model->setConnectorType(static::CONNECTOR_METHOD);
+                $model->setConnectorType(type: static::CONNECTOR_METHOD);
             }
 
             // Get ourselves a possible return value
             $output .= $this->retrievePropertyValue(
                 $reflectionMethod,
                 $this->dispatchEventWithModel(
-                    __FUNCTION__ . static::EVENT_MARKER_END,
-                    $model
+                    name: __FUNCTION__ . static::EVENT_MARKER_END,
+                    model: $model
                 )
             );
         }
@@ -221,8 +221,8 @@ class ThroughGetter extends AbstractCallback implements
             ->getComment($reflectionMethod, $this->parameters[static::PARAM_REF]);
         $declaration = nl2br($this->methodDeclaration->retrieveDeclaration($reflectionMethod));
         $messages = $this->pool->messages;
-        $model->addToJson($messages->getHelp('metaMethodComment'), nl2br($comments))
-            ->addToJson($messages->getHelp('metaDeclaredIn'), $declaration);
+        $model->addToJson($messages->getHelp(key: 'metaMethodComment'), nl2br($comments))
+            ->addToJson($messages->getHelp(key: 'metaDeclaredIn'), $declaration);
     }
 
     /**
@@ -251,23 +251,23 @@ class ThroughGetter extends AbstractCallback implements
             }
         }
 
-        $this->dispatchEventWithModel(__FUNCTION__ . '::resolving', $model);
+        $this->dispatchEventWithModel(name: __FUNCTION__ . '::resolving', model: $model);
 
         if ($this->parameters[static::PARAM_ADDITIONAL][static::PARAM_NOTHING_FOUND]) {
             $messages = $this->pool->messages;
             // Found nothing  :-(
             // We literally have no info. We need to tell the user.
             // We render this right away, without any routing.
-            return $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
-                __FUNCTION__ . static::EVENT_MARKER_END,
-                $model->setType($messages->getHelp('getterValueUnknown'))
-                    ->setNormal($messages->getHelp('getterValueUnknown'))
-                    ->addJsonHint($messages->getHelp('getterUnknown'))
+            return $this->pool->render->renderExpandableChild(model: $this->dispatchEventWithModel(
+                name: __FUNCTION__ . static::EVENT_MARKER_END,
+                model: $model->setType(type: $messages->getHelp(key: 'getterValueUnknown'))
+                    ->setNormal(normal: $messages->getHelp(key: 'getterValueUnknown'))
+                    ->addJsonHint($messages->getHelp(key: 'getterUnknown'))
             ));
         }
 
         return $this->pool->routing->analysisHub(
-            $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $model)
+            $this->dispatchEventWithModel(name: __FUNCTION__ . static::EVENT_MARKER_END, model: $model)
         );
     }
 
@@ -285,7 +285,7 @@ class ThroughGetter extends AbstractCallback implements
         if ($value === null) {
             // A NULL value might mean that the values does not
             // exist, until the getter computes it.
-            $model->addJsonHint($this->pool->messages->getHelp('getterNull'));
+            $model->addJsonHint($this->pool->messages->getHelp(key: 'getterNull'));
         }
     }
 

@@ -82,11 +82,11 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
             $reflectionConstant = $this->parameters[static::PARAM_REF]->getReflectionConstant($constantName);
             if ($this->canDump($reflectionConstant)) {
                 $output .= $this->pool->routing->analysisHub(
-                    $this->pool->createClass(Model::class)
+                    $this->pool->createClass(classname: Model::class)
                         ->setData($constantValue)
                         ->setAdditional($this->retrieveAdditionalData($reflectionConstant))
-                        ->setName($constantName)
-                        ->setCodeGenType(static::CODEGEN_TYPE_PUBLIC)
+                        ->setName(name: $constantName)
+                        ->setCodeGenType(codeGenType: static::CODEGEN_TYPE_PUBLIC)
                         ->setCustomConnectorLeft($prefix . '::')
                 );
             }
@@ -107,15 +107,15 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
     protected function retrieveAdditionalData(ReflectionClassConstant $reflectionConstant): string
     {
         if ($reflectionConstant->isPublic()) {
-            return $this->pool->messages->getHelp('publicConstant');
+            return $this->pool->messages->getHelp(key: 'publicConstant');
         }
 
         if ($reflectionConstant->isProtected()) {
-            return $this->pool->messages->getHelp('protectedConstant');
+            return $this->pool->messages->getHelp(key: 'protectedConstant');
         }
 
         // It either is public, protected or private, and nothing else.
-        return $this->pool->messages->getHelp('privateConstant');
+        return $this->pool->messages->getHelp(key: 'privateConstant');
     }
 
     /**

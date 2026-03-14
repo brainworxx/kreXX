@@ -90,20 +90,23 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
     protected function generateOutput(SettingModel $setting, string $id): string
     {
         /** @var Model $model */
-        $model = $this->pool->createClass(Model::class)->setHelpid($id . 'Help');
-        $name = $this->pool->messages->getHelp($id . 'Readable');
+        $model = $this->pool->createClass(classname: Model::class)->setHelpid(helpId: $id . 'Help');
+        $name = $this->pool->messages->getHelp(key: $id . 'Readable');
         $value = $this->prepareValue($setting);
         if ($setting->isEditable()) {
             return $this->pool->render->renderSingleEditableChild(
                 $model->setData($name)
-                    ->setName($value)
-                    ->setNormal($setting->getSource())
-                    ->setType($setting->getType())->setDomid($id)
+                    ->setName(name: $value)
+                    ->setNormal(normal: $setting->getSource())
+                    ->setType(type: $setting->getType())->setDomid($id)
             );
         }
 
         return $this->pool->render->renderExpandableChild(
-            $model->setData($value)->setName($name)->setNormal($value)->setType($setting->getSource())
+            model: $model->setData($value)
+                ->setName(name: $name)
+                ->setNormal(normal: $value)
+                ->setType(type: $setting->getSource())
         );
     }
 

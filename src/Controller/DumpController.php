@@ -72,7 +72,7 @@ class DumpController extends AbstractController implements BacktraceConstInterfa
 
         // Find caller.
         if ($data instanceof LogModel) {
-            $this->callerFinder = $this->pool->createClass(ExceptionCallerFinder::class);
+            $this->callerFinder = $this->pool->createClass(classname: ExceptionCallerFinder::class);
         }
         $caller = $this->callerFinder->findCaller($message, $data);
         $caller[static::TRACE_LEVEL] = $level;
@@ -84,7 +84,9 @@ class DumpController extends AbstractController implements BacktraceConstInterfa
 
         // Start the magic.
         $analysis = $this->pool->routing->analysisHub(
-            $this->pool->createClass(Model::class)->setData($data)->setName($caller[static::TRACE_VARNAME])
+            $this->pool->createClass(classname: Model::class)
+                ->setData($data)
+                ->setName(name: $caller[static::TRACE_VARNAME])
         );
 
         // Detect the encoding on the start-chunk-string of the analysis

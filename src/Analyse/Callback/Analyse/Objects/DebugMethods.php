@@ -79,23 +79,26 @@ class DebugMethods extends AbstractObjectAnalysis implements
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
         $data = $reflectionClass->getData();
-
-        foreach (explode(',', $this->pool->config->getSetting(static::SETTING_DEBUG_METHODS)) as $funcName) {
+        $functionNames = $this->pool->config->getSetting(name: static::SETTING_DEBUG_METHODS);
+        foreach (explode(separator: ',', string: $functionNames) as $funcName) {
             if (
-                $this->checkIfAccessible($data, $funcName, $reflectionClass) &&
+                $this->checkIfAccessible(data: $data, funcName: $funcName, reflectionClass: $reflectionClass) &&
                 // We ignore NULL values.
-                ($result = $this->retrieveValue($data, $funcName)) !== null
+                ($result = $this->retrieveValue(object: $data, methodName: $funcName)) !== null
             ) {
                 $output .= $this->pool->render->renderExpandableChild(
-                    $this->dispatchEventWithModel($funcName, $this->pool->createClass(Model::class)
-                        ->setName($funcName)
-                        ->setType($this->pool->messages->getHelp('debugMethod'))
-                        ->setCodeGenType(static::CODEGEN_TYPE_PUBLIC)
-                        ->setNormal(static::UNKNOWN_VALUE)
-                        ->setHelpid($funcName)
-                        ->setConnectorType(static::CONNECTOR_METHOD)
-                        ->addParameter(static::PARAM_DATA, $result)
-                        ->injectCallback($this->pool->createClass(Debug::class)))
+                    model: $this->dispatchEventWithModel(
+                        name: $funcName,
+                        model: $this->pool->createClass(classname: Model::class)
+                            ->setName(name: $funcName)
+                            ->setType(type: $this->pool->messages->getHelp(key: 'debugMethod'))
+                            ->setCodeGenType(codeGenType: static::CODEGEN_TYPE_PUBLIC)
+                            ->setNormal(normal: static::UNKNOWN_VALUE)
+                            ->setHelpid(helpId: $funcName)
+                            ->setConnectorType(type: static::CONNECTOR_METHOD)
+                            ->addParameter(name: static::PARAM_DATA, value: $result)
+                            ->injectCallback(object: $this->pool->createClass(classname: Debug::class))
+                    )
                 );
                 unset($result);
             }
@@ -115,11 +118,11 @@ class DebugMethods extends AbstractObjectAnalysis implements
      * @return mixed
      *   Whatever the method would return.
      */
-    protected function retrieveValue(object $object, string $methodName)
+    protected function retrieveValue(object $object, string $methodName): mixed
     {
         $result = null;
         // Add a try to prevent the hosting CMS from doing something stupid.
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler(callback: $this->pool->retrieveErrorCallback());
         try {
             $result = $object->$methodName();
         } catch (Throwable $e) {
@@ -152,9 +155,9 @@ class DebugMethods extends AbstractObjectAnalysis implements
         // 2. Method can be called. There may be a magical method, though.
         // 3. It's not blacklisted.
         if (
-            !method_exists($data, $funcName) ||
-            !is_callable([$data, $funcName]) ||
-            !$this->pool->config->validation->isAllowedDebugCall($data, $funcName)
+            !method_exists(object_or_class: $data, method: $funcName) ||
+            !is_callable(value: [$data, $funcName]) ||
+            !$this->pool->config->validation->isAllowedDebugCall(data: $data, method: $funcName)
         ) {
             return false;
         }
@@ -162,7 +165,7 @@ class DebugMethods extends AbstractObjectAnalysis implements
         // We need to check if the callable function requires any parameters.
         // We will not call those, because we simply can not provide them.
         try {
-            $ref = $reflectionClass->getMethod($funcName);
+            $ref = $reflectionClass->getMethod(name: $funcName);
             return $ref->getNumberOfRequiredParameters() === 0;
         } catch (ReflectionException $e) {
             return false;

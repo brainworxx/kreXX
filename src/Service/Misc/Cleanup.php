@@ -94,7 +94,7 @@ class Cleanup implements ConfigConstInterface
             $logList
         );
 
-        $maxFileCount = (int)$this->pool->config->getSetting(static::SETTING_MAX_FILES);
+        $maxFileCount = (int)$this->pool->config->getSetting(name: static::SETTING_MAX_FILES);
         $count = 1;
         // Cleanup logfiles.
         foreach ($logList as $file) {

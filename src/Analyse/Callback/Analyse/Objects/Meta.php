@@ -76,7 +76,7 @@ class Meta extends AbstractObjectAnalysis
 
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
-        $name = $this->parameters[static::PARAM_META_NAME] ?? $this->pool->messages->getHelp('metaClassData');
+        $name = $this->parameters[static::PARAM_META_NAME] ?? $this->pool->messages->getHelp(key: 'metaClassData');
 
         // We need to check, if we have a meta recursion here.
         $domId = $this->generateDomIdFromClassname($ref->getName());
@@ -87,12 +87,12 @@ class Meta extends AbstractObjectAnalysis
             return $output .
                 $this->pool->render->renderRecursion(
                     $this->dispatchEventWithModel(
-                        static::EVENT_MARKER_RECURSION,
-                        $this->pool->createClass(Model::class)
+                        name: static::EVENT_MARKER_RECURSION,
+                        model: $this->pool->createClass(classname: Model::class)
                             ->setDomid($domId)
-                            ->setNormal($name)
-                            ->setName($name)
-                            ->setType($this->pool->messages->getHelp('classInternals'))
+                            ->setNormal(normal: $name)
+                            ->setName(name: $name)
+                            ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
                     )
                 );
         }
@@ -117,14 +117,14 @@ class Meta extends AbstractObjectAnalysis
     {
         $this->pool->recursionHandler->addToMetaHive($domId);
 
-        return $this->pool->render->renderExpandableChild($this->dispatchEventWithModel(
-            static::EVENT_MARKER_ANALYSES_END,
-            $this->pool->createClass(Model::class)
-                ->setName($name)
+        return $this->pool->render->renderExpandableChild(model: $this->dispatchEventWithModel(
+            name: static::EVENT_MARKER_ANALYSES_END,
+            model: $this->pool->createClass(classname: Model::class)
+                ->setName(name: $name)
                 ->setDomid($domId)
-                ->setType($this->pool->messages->getHelp('classInternals'))
-                ->addParameter(static::PARAM_DATA, $this->generateMetaData($ref))
-                ->injectCallback($this->pool->createClass(ThroughMeta::class))
+                ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
+                ->addParameter(name: static::PARAM_DATA, value: $this->generateMetaData($ref))
+                ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
         ));
     }
 
@@ -142,29 +142,31 @@ class Meta extends AbstractObjectAnalysis
         $messages = $this->pool->messages;
         // Get the naming on the way.
         $data = [
-            $messages->getHelp('metaClassName') => $this->generateName($ref),
-            $messages->getHelp('metaComment') => $this->pool->createClass(Classes::class)->getComment($ref),
-            $messages->getHelp('metaAttributes') => $this->pool->createClass(Attributes::class)->getAttributes($ref),
-            $messages->getHelp('metaDeclaredIn') => $ref->isInternal() ?
-                $messages->getHelp('metaPredeclared') :
+            $messages->getHelp(key: 'metaClassName') => $this->generateName($ref),
+            $messages->getHelp(key: 'metaComment') => $this->pool
+                ->createClass(classname: Classes::class)->getComment($ref),
+            $messages->getHelp(key: 'metaAttributes') => $this->pool
+                ->createClass(classname: Attributes::class)->getAttributes($ref),
+            $messages->getHelp(key: 'metaDeclaredIn') => $ref->isInternal() ?
+                $messages->getHelp(key: 'metaPredeclared') :
                 $ref->getFileName() . ' ' .
-                $messages->getHelp('metaInLine') . $ref->getStartLine(),
+                $messages->getHelp(key: 'metaInLine') . $ref->getStartLine(),
         ];
 
         // Now to collect the inheritance stuff.
         // Each of them will get analysed by the ThroughMeta callback.
         if (!empty($interfaces = $ref->getInterfaces())) {
-            $data[$messages->getHelp('metaInterfaces')] = $interfaces;
+            $data[$messages->getHelp(key: 'metaInterfaces')] = $interfaces;
         }
         if (!empty($traitList = $ref->getTraits())) {
-            $data[$messages->getHelp('metaTraits')] = $traitList;
+            $data[$messages->getHelp(key: 'metaTraits')] = $traitList;
         }
 
         /** @var ReflectionClass $previousClass */
         if (!empty($previousClass = $ref->getParentClass())) {
             // We add it via array, because the other inheritance getters
             // are also supplying one.
-            $data[$messages->getHelp('metaInheritedClass')] = [$previousClass->getName() => $previousClass];
+            $data[$messages->getHelp(key: 'metaInheritedClass')] = [$previousClass->getName() => $previousClass];
         }
 
         return $data;
@@ -202,21 +204,21 @@ class Meta extends AbstractObjectAnalysis
         $messages = $this->pool->messages;
 
         if ($ref->isFinal()) {
-            $result .= $messages->getHelp('final') . ' ';
+            $result .= $messages->getHelp(key: 'final') . ' ';
         }
         if ($ref->isInternal()) {
-            $result .= $messages->getHelp('internal') . ' ';
+            $result .= $messages->getHelp(key: 'internal') . ' ';
         }
         if ($ref->isInterface()) {
-            $result .= $messages->getHelp('interface') . ' ';
+            $result .= $messages->getHelp(key: 'interface') . ' ';
         } elseif ($ref->isTrait()) {
-            $result .= $messages->getHelp('trait') . ' ';
+            $result .= $messages->getHelp(key: 'trait') . ' ';
         } elseif ($ref->isAbstract()) {
             // Huh, traits and interfaces are abstract,
             // but you do not declare them as such.
-            $result .= $messages->getHelp('abstract') . ' ' . $messages->getHelp('class') . ' ';
+            $result .= $messages->getHelp(key: 'abstract') . ' ' . $messages->getHelp(key: 'class') . ' ';
         } else {
-            $result .= $messages->getHelp('class') . ' ';
+            $result .= $messages->getHelp(key: 'class') . ' ';
         }
 
         return $result . $ref->getName();

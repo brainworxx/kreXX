@@ -96,17 +96,17 @@ class Getter extends AbstractObjectAnalysis
         }
 
         return $output . $this->pool->render->renderExpandableChild(
-            $this->dispatchEventWithModel(
-                static::EVENT_MARKER_ANALYSES_END,
-                $this->pool->createClass(Model::class)
-                    ->setName($this->pool->messages->getHelp('getter'))
-                    ->setType($this->pool->messages->getHelp('classInternals'))
-                    ->setHelpid('getterHelpInfo')
-                    ->addParameter(static::PARAM_REF, $ref)
-                    ->addParameter(static::PARAM_NORMAL_GETTER, $this->normalGetter)
-                    ->addParameter(static::PARAM_IS_GETTER, $this->isGetter)
-                    ->addParameter(static::PARAM_HAS_GETTER, $this->hasGetter)
-                    ->injectCallback($this->pool->createClass(ThroughGetter::class))
+            model: $this->dispatchEventWithModel(
+                name: static::EVENT_MARKER_ANALYSES_END,
+                model: $this->pool->createClass(classname: Model::class)
+                    ->setName(name: $this->pool->messages->getHelp(key: 'getter'))
+                    ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
+                    ->setHelpid(helpId: 'getterHelpInfo')
+                    ->addParameter(name: static::PARAM_REF, value: $ref)
+                    ->addParameter(name: static::PARAM_NORMAL_GETTER, value: $this->normalGetter)
+                    ->addParameter(name: static::PARAM_IS_GETTER, value: $this->isGetter)
+                    ->addParameter(name: static::PARAM_HAS_GETTER, value: $this->hasGetter)
+                    ->injectCallback(object: $this->pool->createClass(classname: ThroughGetter::class))
             )
         );
     }

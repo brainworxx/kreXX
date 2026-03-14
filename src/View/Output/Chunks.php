@@ -138,7 +138,7 @@ class Chunks implements ConfigConstInterface
         $this->pool = $pool;
         $this->chunkDir = $pool->config->getChunkDir();
         $this->logDir = $pool->config->getLogDir();
-        $stamp = explode(' ', microtime());
+        $stamp = explode(separator: ' ', string: microtime());
         $this->fileStamp = $stamp[1] . str_replace('0.', '', $stamp[0]);
 
         $pool->chunks = $this;
@@ -208,7 +208,7 @@ class Chunks implements ConfigConstInterface
     public function sendDechunkedToBrowser(string $string): void
     {
         // Check for HTML output.
-        if ($this->pool->createClass(CheckOutput::class)->isOutputHtml()) {
+        if ($this->pool->createClass(classname: CheckOutput::class)->isOutputHtml()) {
             $chunkPos = strpos($string, static::STRING_DELIMITER);
 
             while ($chunkPos !== false) {
@@ -219,7 +219,7 @@ class Chunks implements ConfigConstInterface
                 $chunkPart = substr($string, $chunkPos);
 
                 // We translate the first chunk.
-                $result = explode(static::STRING_DELIMITER, $chunkPart, 3);
+                $result = explode(separator: static::STRING_DELIMITER, string: $chunkPart, limit: 3);
                 $string = str_replace(
                     static::STRING_DELIMITER . $result[1] . static::STRING_DELIMITER,
                     $this->dechunkMe($result[1]),
@@ -264,7 +264,7 @@ class Chunks implements ConfigConstInterface
             // We translate the first chunk.
             // Strangely, with a memory peak of 84 MB, explode is
             // 2 mb cheaper than preg_match().
-            $result = explode(static::STRING_DELIMITER, $chunkPart, 3);
+            $result = explode(separator: static::STRING_DELIMITER, string: $chunkPart, limit: 3);
             $string = str_replace(
                 static::STRING_DELIMITER . $result[1] . static::STRING_DELIMITER,
                 $this->dechunkMe($result[1]),
@@ -343,7 +343,7 @@ class Chunks implements ConfigConstInterface
      */
     public function addMetadata(array $caller): void
     {
-        if ($this->pool->config->getSetting(static::SETTING_DESTINATION) === static::VALUE_FILE) {
+        if ($this->pool->config->getSetting(name: static::SETTING_DESTINATION) === static::VALUE_FILE) {
             $this->metadata[] = $caller;
         }
     }

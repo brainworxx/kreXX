@@ -124,13 +124,13 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
         foreach ($this->analysesCallbacks as $className => $callback) {
             if ($data instanceof $className) {
                 $output .= $this->pool->render->renderExpandableChild(
-                    $this->dispatchEventWithModel(
-                        static::EVENT_MARKER_ANALYSES_END,
-                        $this->pool->createClass(Model::class)
-                            ->setName($this->pool->messages->getHelp('metaRessourceAnalysis'))
-                            ->setType($this->pool->messages->getHelp('classInternals'))
-                            ->addParameter(static::PARAM_DATA, $this->$callback($data))
-                            ->injectCallback($this->pool->createClass(ThroughMeta::class))
+                    model: $this->dispatchEventWithModel(
+                        name: static::EVENT_MARKER_ANALYSES_END,
+                        model: $this->pool->createClass(classname: Model::class)
+                            ->setName(name: $this->pool->messages->getHelp(key: 'metaRessourceAnalysis'))
+                            ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
+                            ->addParameter(name: static::PARAM_DATA, value: $this->$callback($data))
+                            ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
                     )
                 );
             }

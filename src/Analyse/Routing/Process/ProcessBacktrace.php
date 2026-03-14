@@ -88,7 +88,7 @@ class ProcessBacktrace extends AbstractCallback implements
         }
 
         $output = '';
-        $maxStep = (int) $this->pool->config->getSetting(static::SETTING_MAX_STEP_NUMBER);
+        $maxStep = (int) $this->pool->config->getSetting(name: static::SETTING_MAX_STEP_NUMBER);
         $stepCount = count($backtrace);
 
         // Remove steps according to the configuration.
@@ -101,11 +101,11 @@ class ProcessBacktrace extends AbstractCallback implements
 
         for ($step = 1; $step <= $maxStep; ++$step) {
             $output .= $this->pool->render->renderExpandableChild(
-                $this->pool->createClass(Model::class)
-                    ->setName($step)
-                    ->setType(static::TYPE_STACK_FRAME)
-                    ->addParameter(static::PARAM_DATA, $backtrace[$step - 1])
-                    ->injectCallback($this->pool->createClass(BacktraceStep::class))
+                model: $this->pool->createClass(classname: Model::class)
+                    ->setName(name: $step)
+                    ->setType(type: static::TYPE_STACK_FRAME)
+                    ->addParameter(name: static::PARAM_DATA, value: $backtrace[$step - 1])
+                    ->injectCallback(object: $this->pool->createClass(classname: BacktraceStep::class))
             );
         }
 

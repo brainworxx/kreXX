@@ -79,8 +79,8 @@ class ThroughLargeArray extends AbstractCallback implements
         // Iterate through.
         foreach ($this->parameters[static::PARAM_DATA] as $key => $value) {
             /** @var Model $model */
-            $model = $this->pool->createClass(Model::class)->setCodeGenType(
-                $this->parameters[static::PARAM_MULTILINE] ?
+            $model = $this->pool->createClass(classname: Model::class)->setCodeGenType(
+                codeGenType: $this->parameters[static::PARAM_MULTILINE] ?
                     static::CODEGEN_TYPE_ITERATOR_TO_ARRAY : static::CODEGEN_TYPE_PUBLIC
             );
 
@@ -105,13 +105,13 @@ class ThroughLargeArray extends AbstractCallback implements
     protected function handleKey($key, Model $model): void
     {
         if (is_string($key)) {
-            $model->setName($this->pool->encodingService->encodeString($key))
-                ->setConnectorType(static::CONNECTOR_ASSOCIATIVE_ARRAY);
+            $model->setName(name: $this->pool->encodingService->encodeString($key))
+                ->setConnectorType(type: static::CONNECTOR_ASSOCIATIVE_ARRAY);
 
             return;
         }
 
-        $model->setName($key)->setConnectorType(static::CONNECTOR_NORMAL_ARRAY);
+        $model->setName(name: $key)->setConnectorType(type: static::CONNECTOR_NORMAL_ARRAY);
     }
 
     /**
@@ -129,18 +129,18 @@ class ThroughLargeArray extends AbstractCallback implements
         $messages = $this->pool->messages;
         if (is_object($value)) {
             // We will not go too deep here, and say only what it is.
-            $model->setType($messages->getHelp('simpleClassType'))->setNormal(get_class($value));
+            $model->setType(type: $messages->getHelp(key: 'simpleClassType'))->setNormal(normal: get_class($value));
 
-            return $this->pool->render->renderExpandableChild($model);
+            return $this->pool->render->renderExpandableChild(model: $model);
         }
 
         if (is_array($value)) {
             // Adding another array to the output may be as bad as a
             // complete object analysis.
-            $model->setType($messages->getHelp('simpleArrayType'))
-                ->setNormal($messages->getHelp('count') . count($value));
+            $model->setType(type: $messages->getHelp(key: 'simpleArrayType'))
+                ->setNormal(normal: $messages->getHelp(key: 'count') . count($value));
 
-                return $this->pool->render->renderExpandableChild($model);
+                return $this->pool->render->renderExpandableChild(model: $model);
         }
 
         // We handle the simple type normally with the analysis hub.

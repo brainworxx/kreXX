@@ -94,7 +94,7 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
 
         foreach ($this->generateDumperList() as $classname) {
             $output .= $this->pool
-                ->createClass($classname)
+                ->createClass(classname: $classname)
                 ->setParameters($this->parameters)
                 ->callMe();
         }
@@ -128,7 +128,7 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
         // We do this early on, because we do not want other analysis methods
         // fetch traversable results, that are only fetchable once.
         if (
-            $config->getSetting(static::SETTING_ANALYSE_TRAVERSABLE) === true
+            $config->getSetting(name: static::SETTING_ANALYSE_TRAVERSABLE) === true
             && $data instanceof \Traversable
         ) {
             $stuffToDump[] = Traversable::class;
@@ -161,17 +161,17 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
 
         // Dumping getter methods before the protected and private,
         // in case we are not in scope.
-        if (!$isInScope && $config->getSetting(static::SETTING_ANALYSE_GETTER)) {
+        if (!$isInScope && $config->getSetting(name: static::SETTING_ANALYSE_GETTER)) {
             $stuffToDump[] = Getter::class;
         }
 
         // Dumping protected properties.
-        if ($isInScope || $config->getSetting(static::SETTING_ANALYSE_PROTECTED)) {
+        if ($isInScope || $config->getSetting(name: static::SETTING_ANALYSE_PROTECTED)) {
             $stuffToDump[] = ProtectedProperties::class;
         }
 
         // Dumping private properties.
-        if ($isInScope || $config->getSetting(static::SETTING_ANALYSE_PRIVATE)) {
+        if ($isInScope || $config->getSetting(name: static::SETTING_ANALYSE_PRIVATE)) {
             $stuffToDump[] = PrivateProperties::class;
         }
 

@@ -84,7 +84,7 @@ abstract class AbstractOutput
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $this->cleanupService = $pool->createClass(Cleanup::class);
+        $this->cleanupService = $pool->createClass(classname: Cleanup::class);
     }
 
     /**

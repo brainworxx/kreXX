@@ -84,13 +84,13 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
         $object = $this->model->getData();
         // Output data from the class.
         $result = $this->pool->render->renderExpandableChild(
-            $this->dispatchProcessEvent(
-                $this->model->setType(static::TYPE_CLASS)
-                    ->addParameter(static::PARAM_DATA, $object)
-                    ->addParameter(static::PARAM_NAME, $this->model->getName())
-                    ->setNormal('\\' . get_class($object))
+            model: $this->dispatchProcessEvent(
+                $this->model->setType(type: static::TYPE_CLASS)
+                    ->addParameter(name: static::PARAM_DATA, value: $object)
+                    ->addParameter(name: static::PARAM_NAME, value: $this->model->getName())
+                    ->setNormal(normal: '\\' . get_class($object))
                     ->setDomid($this->generateDomIdFromObject($object))
-                    ->injectCallback($this->pool->createClass(Objects::class))
+                    ->injectCallback(object: $this->pool->createClass(classname: Objects::class))
             )
         );
 

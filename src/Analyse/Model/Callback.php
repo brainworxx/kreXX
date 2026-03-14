@@ -87,7 +87,7 @@ trait Callback
      * @return Model
      *   $this, for chaining.
      */
-    public function addParameter(string $name, $value): Model
+    public function addParameter(string $name, mixed $value): Model
     {
         $this->parameters[$name] = $value;
         return $this;

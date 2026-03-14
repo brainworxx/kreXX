@@ -108,14 +108,17 @@ abstract class AbstractScalarAnalysis extends AbstractCallback implements Callba
 
         // Prepare the rendering.
         /** @var Model $model */
-        $model = $this->pool->createClass(Model::class)
-            ->addParameter(static::PARAM_DATA, $meta)
-            ->addParameter(static::PARAM_CODE_GEN_TYPE, $this->codeGenType)
-            ->addParameter(static::PARAM_VALUE, $this->handledValue)
-            ->injectCallback($this->pool->createClass($this->iteratorRenderer));
+        $model = $this->pool->createClass(classname: Model::class)
+            ->addParameter(name: static::PARAM_DATA, value: $meta)
+            ->addParameter(name: static::PARAM_CODE_GEN_TYPE, value: $this->codeGenType)
+            ->addParameter(name: static::PARAM_VALUE, value: $this->handledValue)
+            ->injectCallback(object: $this->pool->createClass(classname: $this->iteratorRenderer));
 
         // We render the model directly. This class acts only as a proxy.
-        return $output . $this->dispatchEventWithModel(__FUNCTION__ . static::EVENT_MARKER_END, $model)->renderMe();
+        return $output . $this->dispatchEventWithModel(
+            name: __FUNCTION__ . static::EVENT_MARKER_END,
+            model: $model
+        )->renderMe();
     }
 
     /**

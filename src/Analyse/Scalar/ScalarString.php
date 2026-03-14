@@ -89,7 +89,7 @@ class ScalarString extends AbstractScalar
 
         foreach ($classList as $className) {
             if ($className::isActive()) {
-                $this->classList[$className] = $pool->createClass($className);
+                $this->classList[$className] = $pool->createClass(classname: $className);
             }
         }
 
@@ -112,7 +112,7 @@ class ScalarString extends AbstractScalar
     {
         foreach ($this->classList as $className => $analyser) {
             if ($analyser->canHandle($originalData, $model)) {
-                return $model->injectCallback($analyser)
+                return $model->injectCallback(object: $analyser)
                     ->setDomid($this->generateDomId($originalData, $className));
             }
         }

@@ -105,13 +105,13 @@ class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
     {
         $messages = $this->pool->messages;
         $meta = [
-            $messages->getHelp('metaDecodedBase64') => $this->decodedString,
+            $messages->getHelp(key: 'metaDecodedBase64') => $this->decodedString,
         ];
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
             $this->model->setHasExtra(false);
-            $meta[$messages->getHelp('metaContent')] = $this->model->getData();
+            $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }
 
         return $meta;

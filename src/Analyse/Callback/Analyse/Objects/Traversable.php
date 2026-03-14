@@ -96,7 +96,7 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
         try {
             // We need to deactivate the current error handling to
             // prevent the host system to do anything stupid.
-            set_error_handler($this->pool->retrieveErrorCallback());
+            set_error_handler(callback: $this->pool->retrieveErrorCallback());
             $parameter = iterator_to_array($data);
         } catch (Throwable $e) {
             //Restore the previous error handler, and return an empty string.
@@ -129,27 +129,27 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
         $messages = $this->pool->messages;
 
         /** @var Model $model */
-        $model = $this->pool->createClass(Model::class)
-            ->setName($this->parameters[static::PARAM_NAME])
-            ->setType(static::TYPE_FOREACH)
-            ->addParameter(static::PARAM_DATA, $result)
-            ->addParameter(static::PARAM_MULTILINE, $multiline)
-            ->addToJson($messages->getHelp('metaLength'), (string)count($result));
+        $model = $this->pool->createClass(classname: Model::class)
+            ->setName(name: $this->parameters[static::PARAM_NAME])
+            ->setType(type: static::TYPE_FOREACH)
+            ->addParameter(name: static::PARAM_DATA, value: $result)
+            ->addParameter(name: static::PARAM_MULTILINE, value: $multiline)
+            ->addToJson($messages->getHelp(key: 'metaLength'), (string)count($result));
 
         // Check, if we are handling a huge array. Huge arrays tend to result in a huge
         // output, maybe even triggering an emergency break. to avoid this, we give them
         // a special callback.
-        if (count($result) > (int) $this->pool->config->getSetting(static::SETTING_ARRAY_COUNT_LIMIT)) {
-            $model->injectCallback($this->pool->createClass(ThroughLargeArray::class))
-                ->setNormal($messages->getHelp('simplifiedTraversableInfo'))
-                ->setHelpid('simpleArray');
+        if (count($result) > (int) $this->pool->config->getSetting(name: static::SETTING_ARRAY_COUNT_LIMIT)) {
+            $model->injectCallback(object: $this->pool->createClass(classname: ThroughLargeArray::class))
+                ->setNormal(normal: $messages->getHelp(key: 'simplifiedTraversableInfo'))
+                ->setHelpid(helpId: 'simpleArray');
         } else {
-            $model->injectCallback($this->pool->createClass(ThroughArray::class))
-                ->setNormal($messages->getHelp('traversableInfo'));
+            $model->injectCallback(object: $this->pool->createClass(classname: ThroughArray::class))
+                ->setNormal(normal: $messages->getHelp(key: 'traversableInfo'));
         }
 
         $analysisResult = $this->pool->render->renderExpandableChild(
-            $this->dispatchEventWithModel(static::EVENT_MARKER_ANALYSES_END, $model)
+            model: $this->dispatchEventWithModel(name: static::EVENT_MARKER_ANALYSES_END, model: $model)
         );
 
         $this->pool->emergencyHandler->downOneNestingLevel();

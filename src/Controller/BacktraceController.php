@@ -67,7 +67,7 @@ class BacktraceController extends AbstractController implements BacktraceConstIn
         $this->pool->codegenHandler->setCodegenAllowed(false);
 
         $analysis = $this->pool
-            ->createClass(ProcessBacktrace::class)
+            ->createClass(classname: ProcessBacktrace::class)
             ->handle($backtrace);
 
         // Detect the encoding on the start-chunk-string of the analysis

@@ -140,7 +140,7 @@ class ByRegExProperty extends ByMethodName
         $methodName = rtrim($propertyName, '()');
         if ($reflectionClass->hasMethod($methodName) && ++$this->deep < 3) {
             return $this->retrieveReflectionProperty(
-                $reflectionClass->getMethod($methodName),
+                $reflectionClass->getMethod(name: $methodName),
                 $reflectionClass,
                 $currentPrefix
             );

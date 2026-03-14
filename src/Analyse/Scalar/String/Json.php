@@ -129,15 +129,15 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
 
         $messages = $this->pool->messages;
         $meta = [
-            $messages->getHelp('metaDecodedJson') => $this->decodedJson,
-            $messages->getHelp('metaPrettyPrint') => $this->pool->encodingService
+            $messages->getHelp(key: 'metaDecodedJson') => $this->decodedJson,
+            $messages->getHelp(key: 'metaPrettyPrint') => $this->pool->encodingService
                 ->encodeString(json_encode($this->decodedJson, JSON_PRETTY_PRINT))
         ];
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
             $this->model->setHasExtra(false);
-            $meta[$messages->getHelp('metaContent')] = $this->model->getData();
+            $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }
 
         return $meta;

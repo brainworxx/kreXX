@@ -87,23 +87,23 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         $messages = $pool->messages;
 
         $this->keysWithExtra = [
-            $messages->getHelp('metaComment'),
-            $messages->getHelp('metaDeclaredIn'),
-            $messages->getHelp('metaSource'),
-            $messages->getHelp('metaPrettyPrint'),
-            $messages->getHelp('metaContent'),
-            $messages->getHelp('metaAttributes'),
+            $messages->getHelp(key: 'metaComment'),
+            $messages->getHelp(key: 'metaDeclaredIn'),
+            $messages->getHelp(key: 'metaSource'),
+            $messages->getHelp(key: 'metaPrettyPrint'),
+            $messages->getHelp(key: 'metaContent'),
+            $messages->getHelp(key: 'metaAttributes'),
         ];
 
         $this->stuffToProcess = [
-            $messages->getHelp('metaInheritedClass'),
-            $messages->getHelp('metaInterfaces'),
-            $messages->getHelp('metaTraits'),
+            $messages->getHelp(key: 'metaInheritedClass'),
+            $messages->getHelp(key: 'metaInterfaces'),
+            $messages->getHelp(key: 'metaTraits'),
         ];
 
         $this->simpleAnalysisRouting = [
-            $messages->getHelp('metaDecodedJson'),
-            $messages->getHelp('metaDecodedBase64'),
+            $messages->getHelp(key: 'metaDecodedJson'),
+            $messages->getHelp(key: 'metaDecodedBase64'),
         ];
     }
 
@@ -121,14 +121,14 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
             if (in_array($key, $this->stuffToProcess, true)) {
                 $output .= $this->pool->render->renderExpandableChild(
-                    $this->dispatchEventWithModel(
-                        $key,
-                        $this->pool->createClass(Model::class)
-                            ->setName($key)
-                            ->setType($this->pool->messages->getHelp('classInternals'))
-                            ->addParameter(static::PARAM_DATA, $metaData)
+                    model: $this->dispatchEventWithModel(
+                        name: $key,
+                        model: $this->pool->createClass(classname: Model::class)
+                            ->setName(name: $key)
+                            ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
+                            ->addParameter(name: static::PARAM_DATA, value: $metaData)
                             ->injectCallback(
-                                $this->pool->createClass(ThroughMetaReflections::class)
+                                object: $this->pool->createClass(classname: ThroughMetaReflections::class)
                             )
                     )
                 );
@@ -154,21 +154,21 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
     protected function prepareModel(string $key, $meta): Model
     {
         /** @var Model $model */
-        $model = $this->pool->createClass(Model::class)
+        $model = $this->pool->createClass(classname: Model::class)
             ->setData($meta)
-            ->setName($key)
+            ->setName(name: $key)
             ->setType(
-                $key === $this->pool->messages->getHelp('metaPrettyPrint') ? $key : static::TYPE_REFLECTION
+                type: $key === $this->pool->messages->getHelp(key: 'metaPrettyPrint') ? $key : static::TYPE_REFLECTION
             );
 
         if (isset($this->parameters[static::PARAM_CODE_GEN_TYPE])) {
-            $model->setCodeGenType($this->parameters[static::PARAM_CODE_GEN_TYPE]);
+            $model->setCodeGenType(codeGenType: $this->parameters[static::PARAM_CODE_GEN_TYPE]);
         }
 
         if (in_array($key, $this->keysWithExtra, true)) {
-            $model->setNormal(static::UNKNOWN_VALUE)->setHasExtra(true);
+            $model->setNormal(normal: static::UNKNOWN_VALUE)->setHasExtra(true);
         } else {
-            $model->setNormal($meta);
+            $model->setNormal(normal: $meta);
         }
 
         return $model;
@@ -192,8 +192,8 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
             return $this->pool->routing->analysisHub($model);
         }
 
-        if ($key === $this->pool->messages->getHelp('metaReflection')) {
-            return $this->pool->createClass(Meta::class)
+        if ($key === $this->pool->messages->getHelp(key: 'metaReflection')) {
+            return $this->pool->createClass(classname: Meta::class)
                 ->setParameters([static::PARAM_REF => $model->getNormal()])
                 ->callMe();
         }
@@ -203,7 +203,10 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         if (is_string($model->getData())) {
             // Render a single data point.
             $result = $this->pool->render->renderExpandableChild(
-                $this->dispatchEventWithModel(__FUNCTION__ . $key . static::EVENT_MARKER_END, $model)
+                model: $this->dispatchEventWithModel(
+                    name: __FUNCTION__ . $key . static::EVENT_MARKER_END,
+                    model: $model
+                )
             );
         } else {
             // Fallback to whatever-rendering.

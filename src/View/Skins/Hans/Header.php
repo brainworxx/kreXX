@@ -76,9 +76,9 @@ trait Header
                 $this->renderSearch(),
                 $messages->outputMessages(),
                 $this->pool->chunks->getOfficialEncoding(),
-                $messages->getHelp('noJavaScript'),
-                $messages->getHelp('callNumber'),
-                $messages->getHelp('searchHeadline'),
+                $messages->getHelp(key: 'noJavaScript'),
+                $messages->getHelp(key: 'callNumber'),
+                $messages->getHelp(key: 'searchHeadline'),
             ],
             $this->fileCache[static::FILE_HEADER]
         );

@@ -174,31 +174,31 @@ class Pool extends AbstractFactory
         $this->rewrite = $rewrite;
 
         // Initializes the file service.
-        $this->createClass(File::class);
+        $this->createClass(classname: File::class);
         // Initializes the messages.
-        $this->createClass(Messages::class);
+        $this->createClass(classname: Messages::class);
         // Initialize the encoding service.
-        $this->createClass(Encoding::class);
+        $this->createClass(classname: Encoding::class);
         // Initializes the configuration.
-        $this->createClass(Config::class);
+        $this->createClass(classname: Config::class);
         // Initialize the emergency handler.
-        $this->createClass(Emergency::class);
+        $this->createClass(classname: Emergency::class);
         // Initialize the recursionHandler.
-        $this->createClass(Recursion::class);
+        $this->createClass(classname: Recursion::class);
         // Initialize the code generation.
-        $this->createClass(Codegen::class);
+        $this->createClass(classname: Codegen::class);
         // Initializes the chunks' handler.
-        $this->createClass(Chunks::class);
+        $this->createClass(classname: Chunks::class);
         // Initializes the scope analysis.
-        $this->createClass(Scope::class);
+        $this->createClass(classname: Scope::class);
         // Initializes the routing.
-        $this->createClass(Routing::class);
+        $this->createClass(classname: Routing::class);
         // Initialize the event handler.
-        $this->createClass(Event::class);
+        $this->createClass(classname: Event::class);
         // Initializes the render class.
-        $this->createClass($this->config->getSkinClass());
+        $this->createClass(classname: $this->config->getSkinClass());
         // Create the registry
-        $this->createClass(Registry::class);
+        $this->createClass(classname: Registry::class);
         // Check the environment and prepare the feedback, if necessary.
         $this->checkEnvironment();
     }
@@ -247,19 +247,19 @@ class Pool extends AbstractFactory
     {
         // We need to reset our recursion handler, because
         // the content of classes might change with another run.
-        $this->createClass(Recursion::class);
+        $this->createClass(classname: Recursion::class);
 
         // Initialize the code generation.
-        $this->createClass(Codegen::class);
-        $this->createClass(Scope::class);
+        $this->createClass(classname: Codegen::class);
+        $this->createClass(classname: Scope::class);
 
         // Reset the routing, because they cache their settings.
-        $this->createClass(Routing::class);
+        $this->createClass(classname: Routing::class);
 
         if ($this->processId !== getmypid()) {
             // We just got forked!
             // Hence, reset the chunked class to avoid file collision.
-            $this->createClass(Chunks::class);
+            $this->createClass(classname: Chunks::class);
             $this->processId = getmypid();
         }
 

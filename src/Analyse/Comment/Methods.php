@@ -109,12 +109,12 @@ class Methods extends AbstractComment
         ) {
             $comment = $this->replaceInheritComment(
                 $comment,
-                $this->getMethodComment($reflectionClass->getMethod($this->methodName), $reflectionClass)
+                $this->getMethodComment($reflectionClass->getMethod(name: $this->methodName), $reflectionClass)
             );
         }
 
         // Tell the dev that we could not resolve the comment.
-        return $this->replaceInheritComment($comment, $this->pool->messages->getHelp('commentResolvingFail'));
+        return $this->replaceInheritComment($comment, $this->pool->messages->getHelp(key: 'commentResolvingFail'));
     }
 
     /**
@@ -190,7 +190,7 @@ class Methods extends AbstractComment
     protected function retrieveComment(string $originalComment, ReflectionClass $reflection): string
     {
         if ($reflection->hasMethod($this->methodName)) {
-            $newComment = $this->prettifyComment($reflection->getMethod($this->methodName)->getDocComment());
+            $newComment = $this->prettifyComment($reflection->getMethod(name: $this->methodName)->getDocComment());
             // Replace it.
             $originalComment = $this->replaceInheritComment($originalComment, $newComment);
         }

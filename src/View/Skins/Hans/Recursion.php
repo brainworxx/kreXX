@@ -69,7 +69,7 @@ trait Recursion
                 $model->getName(),
                 $model->getDomid(),
                 $model->getNormal(),
-                $this->pool->messages->getHelp('recursion'),
+                $this->pool->messages->getHelp(key: 'recursion'),
                 $this->renderConnectorLeft($model->getConnectorLeft()),
                 $this->renderConnectorRight($model->getConnectorRight()),
                 $this->generateDataAttribute(

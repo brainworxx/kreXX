@@ -76,7 +76,7 @@ class ClassName extends AbstractScalarAnalysis
      */
     public function canHandle($string, Model $model): bool
     {
-        set_error_handler($this->pool->retrieveErrorCallback());
+        set_error_handler(callback: $this->pool->retrieveErrorCallback());
         try {
             if (strpos($string, '\\') !== false && class_exists($string)) {
                 $this->handledValue = $string;
@@ -102,14 +102,14 @@ class ClassName extends AbstractScalarAnalysis
         $messages = $this->pool->messages;
         $meta = [];
         try {
-            $meta = [$messages->getHelp('metaReflection') => new ReflectionClass($this->handledValue)];
+            $meta = [$messages->getHelp(key: 'metaReflection') => new ReflectionClass($this->handledValue)];
         } catch (ReflectionException $e) {
         }
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
             $this->model->setHasExtra(false);
-            $meta[$messages->getHelp('metaContent')] = $this->model->getData();
+            $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }
 
         return $meta;

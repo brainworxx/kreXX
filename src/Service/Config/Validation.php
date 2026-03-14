@@ -371,7 +371,7 @@ class Validation extends Fallback
      */
     protected function evalDebugMethods($value, string $name, string $group): bool
     {
-        $list = explode(',', $value);
+        $list = explode(separator: ',', string: $value);
 
         foreach ($list as $entry) {
             // Test for whitespace.

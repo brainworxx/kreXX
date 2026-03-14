@@ -83,7 +83,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
         if ($float > 946681200) {
             try {
                 $this->model->addToJson(
-                    $this->pool->messages->getHelp('metaTimestamp'),
+                    $this->pool->messages->getHelp(key: 'metaTimestamp'),
                     (DateTime::createFromFormat('U.u', (string)$float))->format('d.M Y H:i:s.u')
                 );
             } catch (Throwable $exception) {
@@ -92,8 +92,8 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
         }
 
         return $this->pool->render->renderExpandableChild(
-            $this->dispatchProcessEvent(
-                $this->model->setNormal($this->formatFloat($float))->setType(static::TYPE_FLOAT)
+            model: $this->dispatchProcessEvent(
+                $this->model->setNormal(normal: $this->formatFloat($float))->setType(type: static::TYPE_FLOAT)
             )
         );
     }
@@ -114,15 +114,15 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
         if (!strpos($stringFloat, 'E-')) {
             return $stringFloat;
         }
-        list($beforeE, $afterE) = explode("E", $stringFloat);
+        list($beforeE, $afterE) = explode(separator: "E", string: $stringFloat);
 
         $this->model->addToJson(
-            $this->pool->messages->getHelp('metaUnformattedFloat'),
+            $this->pool->messages->getHelp(key: 'metaUnformattedFloat'),
             (string)$float
         );
 
         $format = "%." .
-            (strlen(explode(".", $beforeE)[1]) + (abs((int)$afterE)) - 1)
+            (strlen(explode(separator: ".", string: $beforeE)[1]) + (abs((int)$afterE)) - 1)
             . "f";
         return sprintf($format, $float);
     }
