@@ -168,7 +168,6 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Controller/DumpController.php';
         include_once KREXX_DIR . 'src/Controller/TimerController.php';
         include_once KREXX_DIR . 'src/Controller/EditSettingsController.php';
-        include_once KREXX_DIR . 'src/Controller/ExceptionController.php';
 
         include_once KREXX_DIR . 'src/Service/Config/Fallback.php';
         include_once KREXX_DIR . 'src/Service/Config/Config.php';
@@ -219,8 +218,6 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/View/Skins/Hans/BacktraceSourceLine.php';
         include_once KREXX_DIR . 'src/View/Skins/Hans/Button.php';
         include_once KREXX_DIR . 'src/View/Skins/Hans/CssJs.php';
-        include_once KREXX_DIR . 'src/View/Skins/Hans/FatalHeader.php';
-        include_once KREXX_DIR . 'src/View/Skins/Hans/FatalMain.php';
         include_once KREXX_DIR . 'src/View/Skins/Hans/Footer.php';
         include_once KREXX_DIR . 'src/View/Skins/Hans/Header.php';
         include_once KREXX_DIR . 'src/View/Skins/Hans/Linebreak.php';
@@ -235,12 +232,8 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/View/Skins/RenderHans.php';
         include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/Button.php';
         include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/ExpandableChild.php';
-        include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/FatalMain.php';
         include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/Footer.php';
         include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/Header.php';
-        // @deprecated
-        include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/Recursion.php';
-        // @deprecated
         include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/SingleEditableChild.php';
         include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/ConnectorRight.php';
         include_once KREXX_DIR . 'src/View/Skins/SmokyGrey/Help.php';

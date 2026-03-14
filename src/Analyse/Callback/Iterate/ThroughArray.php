@@ -72,21 +72,9 @@ class ThroughArray extends AbstractCallback implements
         $multilineCodeGen = $this->parameters[static::PARAM_MULTILINE] ?
             static::CODEGEN_TYPE_ITERATOR_TO_ARRAY : static::CODEGEN_TYPE_PUBLIC;
 
-        // @deprecated
-        // Will be removed as soon as we drop PHP 8.0 support.
-        $recursionMarker = $this->pool->recursionHandler->getMarker();
-
         $array = $this->parameters[static::PARAM_DATA];
         // Iterate through.
         foreach ($array as $key => $value) {
-            // We will not output our recursion marker.
-            // Meh, the only reason for the recursion marker
-            // in arrays is because of the $GLOBAL array, which
-            // we will only render once.
-            if ($key === $recursionMarker) {
-                continue;
-            }
-
             $output .= $this->pool->routing
                 ->analysisHub($this->prepareModel($array, $key, $value, $multilineCodeGen));
         }

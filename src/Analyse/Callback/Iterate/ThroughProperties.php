@@ -166,20 +166,13 @@ class ThroughProperties extends AbstractCallback implements
         $default = null;
 
         try {
-            // The 8.0 way of getting the default value.
-            // There is also a PHP 8.0 bug that may cause an
-            // "Internal error: Failed to retrieve the reflection object"
-            // That is not even a Reflection exception, it's an "Error".
             if ($property->hasDefaultValue()) {
                 $default = $property->getDefaultValue();
             }
         } catch (Throwable $exception) {
-            // Fallback to the 7.x way.
             // The values of static properties are stored in the default
             // properties of the class reflection.
             // And we do not want these here.
-            // @deprecated
-            //   Will be removed as soon als we drop php 8.0 support.
             if (!$property->isStatic()) {
                 // We also need to get the class that actually declared this
                 // value. The default values can only be found in there.
@@ -335,19 +328,12 @@ class ThroughProperties extends AbstractCallback implements
         $additional = '';
         $messages = $this->pool->messages;
 
-        // There are readonly properties since PHP 8.1 available.
-        // In a rather buggy state. When the property is not readonly, this may
-        // trigger an
-        // "Error : Internal error: Failed to retrieve the reflection object".
-        // It was later fixed in PHP 8.1.?.
-        // @deprecated The try catch will be removed.
         try {
             if ($refProperty->isReadOnly()) {
                 $additional .= $messages->getHelp('readonly') . ' ';
             }
         } catch (Throwable $exception) {
-            // Do nothing.
-            // We ignore this one.
+            // Do nothing. We ignore this one.
         }
 
         if (!$ref->isPropertyUnset($refProperty)) {

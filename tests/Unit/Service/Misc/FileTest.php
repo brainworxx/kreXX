@@ -57,7 +57,6 @@ use ReflectionClass;
 #[CoversMethod(File::class, 'filetime')]
 class FileTest extends AbstractHelper
 {
-    public const DOC_ROOT = 'docRoot';
     public const IS_READABLE_CACHE = 'isReadableCache';
     public const FILE_NAME = 'some file';
     public const MISC_NAMESPACE = '\\Brainworxx\\Krexx\\Service\\Misc\\';
@@ -77,8 +76,6 @@ class FileTest extends AbstractHelper
     {
         parent::setUp();
         $this->file = new File(Krexx::$pool);
-        // Make sure we have a doc root, independent of everything.
-        $this->setValueByReflection(static::DOC_ROOT, 'doc ruth', $this->file);
         // Reset the writable cache in the file service.
         $this->setValueByReflection(static::IS_READABLE_CACHE, [], $this->file);
         // Mock the realpath of the not existing files.

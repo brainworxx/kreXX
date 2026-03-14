@@ -122,13 +122,11 @@ class MethodDeclarationTest extends AbstractHelper
         $refMethod = $refClass->getMethod('returnThis');
         $this->assertEquals('', $returnType->retrieveReturnType($refMethod));
 
-        // Doing PHP 8+ specific tests.
-        if (version_compare(phpversion(), '8.0.0', '>=')) {
-            $fixture = new UnionTypeFixture();
-            $refClass = new ReflectionClass($fixture);
-            $refMethod = $refClass->getMethod('unionParameter');
-            $this->assertEquals('array|int|bool', $returnType->retrieveReturnType($refMethod));
-        }
+        $fixture = new UnionTypeFixture();
+        $refClass = new ReflectionClass($fixture);
+        $refMethod = $refClass->getMethod('unionParameter');
+        $this->assertEquals('array|int|bool', $returnType->retrieveReturnType($refMethod));
+
     }
 
     /**
@@ -169,16 +167,13 @@ class MethodDeclarationTest extends AbstractHelper
         );
 
         // Union type
-        // Doing PHP 8+ specific tests.
-        if (version_compare(phpversion(), '8.0.0', '>=')) {
-            $classReflection = new \ReflectionClass(UnionTypeFixture::class);
-            $methodReflection = $classReflection->getMethod('unionParameter');
-            $parameterReflection = $methodReflection->getParameters()[0];
-            $this->assertEquals(
-                'array|int|bool ',
-                $methodDeclaration->retrieveParameterType($parameterReflection),
-                'The not prefixes type list with the | symbol.'
-            );
-        }
+        $classReflection = new \ReflectionClass(UnionTypeFixture::class);
+        $methodReflection = $classReflection->getMethod('unionParameter');
+        $parameterReflection = $methodReflection->getParameters()[0];
+        $this->assertEquals(
+            'array|int|bool ',
+            $methodDeclaration->retrieveParameterType($parameterReflection),
+            'The not prefixes type list with the | symbol.'
+        );
     }
 }

@@ -114,10 +114,6 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
     public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
-        if (version_compare(phpversion(), '8.0.0', '<=')) {
-            // Wrong PHP version.
-            return $output;
-        }
 
         $this->pool->codegenHandler->setCodegenAllowed(false);
         $data = $this->parameters[static::PARAM_DATA];

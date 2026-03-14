@@ -474,9 +474,6 @@ class CodegenTest extends AbstractHelper
      */
     public function testParameterToStringWithObjects()
     {
-        if (version_compare(phpversion(), '8.1.0', '<=')) {
-            $this->markTestSkipped('Wrong PHP version.');
-        }
         $fixture = new Parameters();
         $reflection = new \ReflectionClass($fixture);
         $reflectionMethod = $reflection->getMethod('someMethod');
@@ -550,16 +547,15 @@ class CodegenTest extends AbstractHelper
             $this->codegenHandler->parameterToString($reflectionParameter)
         );
 
-        if (version_compare(phpversion(), '8.0.0', '>=')) {
-            // Test for union types.
-            $reflection = new \ReflectionClass(UnionTypeFixture::class);
-            $reflectionMethod = $reflection->getMethod('unionParameter');
-            $reflectionParameter = $reflectionMethod->getParameters()[0];
-            $this->assertEquals(
-                'array|int|bool $parameter',
-                $this->codegenHandler->parameterToString($reflectionParameter)
-            );
-        }
+        // Test for union types.
+        $reflection = new \ReflectionClass(UnionTypeFixture::class);
+        $reflectionMethod = $reflection->getMethod('unionParameter');
+        $reflectionParameter = $reflectionMethod->getParameters()[0];
+        $this->assertEquals(
+            'array|int|bool $parameter',
+            $this->codegenHandler->parameterToString($reflectionParameter)
+        );
+
     }
 
     /**
@@ -567,10 +563,6 @@ class CodegenTest extends AbstractHelper
      */
     public function testDefaultValueEnum()
     {
-        if (version_compare(phpversion(), '8.0.99', '<=')) {
-            $this->markTestSkipped('Wrong PHP version.');
-        }
-
         $reflection = new \ReflectionClass(EnumFixture::class);
         $reflectionMethod = $reflection->getMethod('useEnums');
         $reflectionParameter = $reflectionMethod->getParameters()[0];

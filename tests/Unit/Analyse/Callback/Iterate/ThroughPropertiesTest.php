@@ -295,12 +295,7 @@ class ThroughPropertiesTest extends AbstractHelper
 
         // publicStatic
         $expectedJson = [static::JSON_DECLARED_KEY => $complexDeclarationString];
-        if (version_compare(phpversion(), '7.4.99', '>')) {
-            // We can not retrieve the default values of static properties
-            // in PHP 7.x. and very early PHP 8.0 versions. We ignore the early
-            // 8.0 versions for the sake of our sanity.
-            $expectedJson[static::JSON_DEFAULT_VALUE] = '1';
-        }
+        $expectedJson[static::JSON_DEFAULT_VALUE] = '1';
 
         $this->assertModelValues(
             $models[6],
@@ -419,10 +414,6 @@ class ThroughPropertiesTest extends AbstractHelper
      */
     public function testCallMeError()
     {
-        if (version_compare(phpversion(), '7.4.99', '<')) {
-            $this->markTestSkipped('Wrong PHP Version');
-        }
-
         // Create a fixture.
         $refPropertyMock = $this->createMock(ReflectionProperty::class);
         $refPropertyMock->expects($this->any())
@@ -477,10 +468,6 @@ class ThroughPropertiesTest extends AbstractHelper
      */
     public function testCallMePhpEight()
     {
-        if (version_compare(phpversion(), '8.0.99', '<')) {
-            $this->markTestSkipped('Wrong PHP Version');
-        }
-
         // Test the events.
         $this->mockEventService(
             [$this->startEvent, $this->throughProperties],
@@ -526,10 +513,6 @@ class ThroughPropertiesTest extends AbstractHelper
      */
     public function testCallMeDefaultEnum()
     {
-        if (version_compare(phpversion(), '8.0.99', '<')) {
-            $this->markTestSkipped('Wrong PHP Version');
-        }
-
         // Test the events.
         $this->mockEventService(
             [$this->startEvent, $this->throughProperties],
@@ -571,10 +554,6 @@ class ThroughPropertiesTest extends AbstractHelper
 
     public function testCallMeAttribute()
     {
-        if (version_compare(phpversion(), '8.0.99', '<')) {
-            $this->markTestSkipped('Wrong PHP Version');
-        }
-
         // Test the events.
         $this->mockEventService(
             [$this->startEvent, $this->throughProperties],

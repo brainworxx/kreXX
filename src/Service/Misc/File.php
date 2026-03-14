@@ -58,16 +58,6 @@ class File
     protected Pool $pool;
 
     /**
-     * The current docroot.
-     *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @var string
-     */
-    protected string $docRoot;
-
-    /**
      * Injects the pool.
      *
      * @param Pool $pool
@@ -76,7 +66,6 @@ class File
     {
         $this->pool = $pool;
         $server = $pool->getServer();
-        $this->docRoot = trim($this->realpath($server['DOCUMENT_ROOT']), DIRECTORY_SEPARATOR);
         $pool->fileService = $this;
     }
 
@@ -299,35 +288,6 @@ class File
         }
 
         restore_error_handler();
-    }
-
-    /**
-     * We will remove the $_SERVER['DOCUMENT_ROOT'] from the absolute
-     * path of the calling file.
-     * Return the original path, in case we can not determine the
-     * $_SERVER['DOCUMENT_ROOT']
-     *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @codeCoverageIgnore
-     *   We will not test deprecated methods.
-     *
-     * @param string $filePath
-     *   The path we want to filter
-     *
-     * @return string
-     *   The filtered path to the calling file.
-     */
-    public function filterFilePath(string $filePath): string
-    {
-        $realpath = ltrim($this->realpath($filePath), DIRECTORY_SEPARATOR);
-        if (!empty($this->docRoot) && strpos($realpath, $this->docRoot) === 0) {
-            // Found it on position 0.
-            $realpath = '...' . DIRECTORY_SEPARATOR . substr($realpath, strlen($this->docRoot) + 1);
-        }
-
-        return $realpath;
     }
 
     /**

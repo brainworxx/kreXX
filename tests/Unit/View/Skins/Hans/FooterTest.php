@@ -67,9 +67,6 @@ class FooterTest extends AbstractRenderHans
             $this->renderHans::TRACE_URL => 'https://www.google.biz',
         ];
         Krexx::$pool->fileService->expects($this->any())
-            ->method('filterFilePath')
-            ->willReturn('');
-        Krexx::$pool->fileService->expects($this->any())
             ->method('fileIsReadable')
             ->willReturn(true);
 
@@ -139,9 +136,6 @@ class FooterTest extends AbstractRenderHans
     {
         // Mock the caller
         $caller = [];
-        Krexx::$pool->fileService->expects($this->any())
-            ->method('filterFilePath')
-            ->willReturn('');
         Krexx::$pool->fileService->expects($this->any())
             ->method('fileIsReadable')
             ->willReturn(true);

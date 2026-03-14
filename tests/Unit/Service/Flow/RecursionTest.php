@@ -74,31 +74,11 @@ class RecursionTest extends AbstractHelper
     public function testConstruct()
     {
         $this->assertStringContainsString('Krexx', $this->recursion->getMarker());
-        if (version_compare(phpversion(), '8.1.0', '<=')) {
-            $this->assertTrue(
-                $GLOBALS[$this->recursion->getMarker()],
-                'The marker should be set in the globals.'
-            );
-        }
         $this->assertEquals(
             new SplObjectStorage(),
             $this->retrieveValueByReflection(static::RECURSION_HIVE, $this->recursion)
         );
         $this->assertSame($this->recursion, Krexx::$pool->recursionHandler);
-    }
-
-    /**
-     * Test the removal of the recursion marker in the globals.
-     */
-    public function testDestruct()
-    {
-        if (version_compare(phpversion(), '8.1.0', '>=')) {
-            $this->markTestSkipped('Wrong PHP version.');
-        }
-        $marker = $this->recursion->getMarker();
-        $this->recursion->__destruct();
-        $this->assertFalse(isset($GLOBALS[$marker]));
-        $this->setValueByReflection('recursionMarker', $marker, $this->recursion);
     }
 
     /**
@@ -133,22 +113,11 @@ class RecursionTest extends AbstractHelper
 
         $this->assertTrue($this->recursion->isInHive($fixture));
         $this->assertFalse($this->recursion->isInHive(['some', 'array']));
-        if (version_compare(phpversion(), '8.1.0', '<=')) {
-            $this->assertFalse($this->recursion->isInHive($GLOBALS));
-            $this->assertTrue($this->recursion->isInHive($GLOBALS), 'Render them a second time');
-        }
 
         // And now the same thing with an array.
         $fixture = [];
         $this->assertFalse($this->recursion->isInHive($fixture));
         $this->assertFalse($this->recursion->isInHive($fixture), 'We do not track arrays');
-        $fixture[$this->recursion->getMarker()] = true;
-
-        if (version_compare(phpversion(), '8.1.0', '>=')) {
-            // 8.1.0 does not have globals anymore.
-            $this->assertFalse($this->recursion->isInHive($fixture), 'Pretend that this is the global array.');
-            $this->assertTrue($this->recursion->isInHive($fixture), 'We did track it.');
-        }
     }
 
     /**

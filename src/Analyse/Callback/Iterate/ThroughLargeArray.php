@@ -74,22 +74,10 @@ class ThroughLargeArray extends AbstractCallback implements
      */
     public function callMe(): string
     {
-        $output = $this->dispatchStartEvent();
-
-        $recursionMarker = $this->pool->recursionHandler->getMarker();
-        $output .= $this->pool->render->renderSingeChildHr();
+        $output = $this->dispatchStartEvent() . $this->pool->render->renderSingeChildHr();
 
         // Iterate through.
         foreach ($this->parameters[static::PARAM_DATA] as $key => $value) {
-            // We will not output our recursion marker.
-            // Meh, the only reason for the recursion marker
-            // in arrays is because of the $GLOBAL array, which
-            // we will only render once.
-            // @deprecated Will be removed when we drop 8.0 support
-            if ($key === $recursionMarker) {
-                continue;
-            }
-
             /** @var Model $model */
             $model = $this->pool->createClass(Model::class)->setCodeGenType(
                 $this->parameters[static::PARAM_MULTILINE] ?

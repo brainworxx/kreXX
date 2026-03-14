@@ -70,18 +70,6 @@ class ReflectionClass extends \ReflectionClass
     protected SplObjectStorage $unsetPropertyStorage;
 
     /**
-     * Must we set the properties accessible?
-     *
-     * This is not necessarily in PHP 8.1 and higher.
-     *
-     * @deprecated
-     *   Will be removed as soon as we drop support for PHP 8.0.
-     *
-     * @var bool|null
-     */
-    protected static ?bool $mustSetAccessible = null;
-
-    /**
      * ReflectionClass constructor.
      *
      * @param object|string $data
@@ -91,10 +79,6 @@ class ReflectionClass extends \ReflectionClass
      */
     public function __construct($data)
     {
-        if (static::$mustSetAccessible === null) {
-            // Determine, if we must set the properties accessible.
-            static::$mustSetAccessible = version_compare(phpversion(), '8.1.0', '<');
-        }
         // Retrieve the class variables.
         if ($data instanceof \ArrayObject) {
             try {
@@ -147,9 +131,6 @@ class ReflectionClass extends \ReflectionClass
         try {
             // Static values are not inside the value array.
             if ($refProperty->isStatic()) {
-                if (static::$mustSetAccessible) {
-                    $refProperty->setAccessible(true);
-                }
                 return $refProperty->getValue($this->data);
             }
         } catch (Throwable $throwable) {

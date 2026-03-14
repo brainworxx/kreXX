@@ -16,36 +16,11 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(OpaqueRessource::class, 'curlHandler')]
 class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterface
 {
-     /**
-     * What the method name says. Call it with a simulated wrong php version.
-     */
-    public function testCallMeWrongPhpVersion()
-    {
-        $versionCompareMock = $this->getFunctionMock(
-            '\\Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects',
-            'version_compare'
-        );
-        $versionCompareMock->expects($this->once())
-            ->willReturn(true);
-
-        // We only expect the start event, nothing more.
-        $opaque = new OpaqueRessource(Krexx::$pool);
-        $this->mockEventService(
-            ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\OpaqueRessource::callMe::start', $opaque]
-        );
-
-        $this->assertEquals('', $opaque->callMe());
-    }
-
     /**
      * Test the analysis of the so-called opaque ressource class analysis.
      */
     public function testCallMeCurl()
     {
-        if (version_compare(phpversion(), '8.0.0', '<=')) {
-            $this->markTestSkipped('Wrong PHP version.');
-        }
-
         $this->mockEmergencyHandler();
 
         $opaque = new OpaqueRessource(Krexx::$pool);
@@ -70,10 +45,6 @@ class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterfa
 
     public function testCallMeAddressInfo()
     {
-        if (version_compare(phpversion(), '8.0.0', '<=')) {
-            $this->markTestSkipped('Wrong PHP version.');
-        }
-
         $this->mockEmergencyHandler();
 
         $opaque = new OpaqueRessource(Krexx::$pool);
@@ -101,10 +72,6 @@ class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterfa
 
     public function testCallMeSslCert()
     {
-        if (version_compare(phpversion(), '8.0.0', '<=')) {
-            $this->markTestSkipped('Wrong PHP version.');
-        }
-
         $this->mockEmergencyHandler();
 
         $opaque = new OpaqueRessource(Krexx::$pool);
@@ -149,10 +116,6 @@ hjJuL9EH
 
     public function testCallMeGlImage()
     {
-        if (version_compare(phpversion(), '8.0.0', '<=')) {
-            $this->markTestSkipped('Wrong PHP version.');
-        }
-
         $this->mockEmergencyHandler();
 
         $opaque = new OpaqueRessource(Krexx::$pool);

@@ -88,30 +88,8 @@ class Recursion
     public function __construct(Pool $pool)
     {
         $this->recursionMarker = 'Krexx' . substr(str_shuffle(md5(microtime())), 0, 10);
-        if (version_compare(phpversion(), '8.1.0', '<=')) {
-            // Mark the $GLOBALS array.
-            $GLOBALS[$this->recursionMarker] = true;
-        }
         $this->recursionHive = new SplObjectStorage();
-
         $pool->recursionHandler = $this;
-    }
-
-    /**
-     * Resets all Arrays inside the recursion array.
-     *
-     * @deprecated
-     *   Will be removed as soon as we drop PHP 8.0 support.
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     */
-    public function __destruct()
-    {
-        // Remove our mark from the $GLOBALS.
-        if (isset($this->recursionMarker)) {
-            unset($GLOBALS[$this->recursionMarker]);
-        }
     }
 
     /**
@@ -139,16 +117,6 @@ class Recursion
         // Check objects.
         if (is_object($bee)) {
             return $this->recursionHive->offsetExists($bee);
-        }
-
-        // Check arrays (only the $GLOBAL array may apply).
-        if (isset($bee[$this->recursionMarker])) {
-            // We render the $GLOBALS only once.
-            if ($this->globalsWereRendered) {
-                return true;
-            }
-
-            $this->globalsWereRendered = true;
         }
 
         // Should be a normal array. We do not track these, because we can not

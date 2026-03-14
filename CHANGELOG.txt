@@ -1,5 +1,6 @@
 7.0.0
 - Change: Dropped support for PHP 7.4, 8.0 and 8.1.
+- Change: Removed deprecations.
 
 6.0.7
 - Bugfix: Render a trailing linebreak in the extra info correctly.

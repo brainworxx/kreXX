@@ -113,30 +113,6 @@ class ProcessBacktrace extends AbstractCallback implements
     }
 
     /**
-     * Filter the file path, for better readability.
-     *
-     * @param array $backtraceStep
-     *   The backtrace step.
-     *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @codeCoverageIgnore
-     *   We do not test deprecated code.
-     *
-     * @return array
-     *   The same backtrace step., but with a filtered file path.
-     */
-    protected function filterFilePath(array $backtraceStep): array
-    {
-        if (isset($backtraceStep[static::TRACE_FILE])) {
-            $backtraceStep[static::TRACE_ORG_FILE] = $backtraceStep[static::TRACE_FILE];
-        }
-
-        return $backtraceStep;
-    }
-
-    /**
      * Get the backtrace, and remove all steps that were caused by kreXX.
      *
      * @return array

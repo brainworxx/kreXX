@@ -200,26 +200,6 @@ interface CallbackConstInterface
     /**
      * Frontend literal.
      *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @var string
-     */
-    public const TYPE_INTERNALS = 'class internals';
-
-    /**
-     * Frontend literal.
-     *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @var string
-     */
-    public const TYPE_DEBUG_METHOD = 'debug method';
-
-    /**
-     * Frontend literal.
-     *
      * @var string
      */
     public const TYPE_FOREACH = 'foreach';
@@ -230,36 +210,6 @@ interface CallbackConstInterface
      * @var string
      */
     public const TYPE_CONFIG = 'config';
-
-    /**
-     * Frontend literal.
-     *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @var string
-     */
-    public const TYPE_UNKNOWN = 'unknown';
-
-    /**
-     * Frontend literal.
-     *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @var string
-     */
-    public const TYPE_SIMPLE_CLASS = 'simplified class analysis';
-
-    /**
-     * Frontend literal.
-     *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @var string
-     */
-    public const TYPE_SIMPLE_ARRAY = 'simplified array analysis';
 
     /**
      * Frontend literal.

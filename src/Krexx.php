@@ -224,62 +224,6 @@ class Krexx
     }
 
     /**
-     * Registering our exception handler.
-     *
-     * @deprecated
-     *   Since 6.0.0
-     *   Will be removed.
-     *   Has anybody used this one since PHP 7.0 anyway?
-     * @codeCoverageIgnore
-     *   We will not test deprecated code.
-     *
-     * @api
-     */
-    public static function registerExceptionHandler(): void
-    {
-        Pool::createPool();
-
-        // Disabled?
-        if (
-            static::$pool->config->getSetting(ConfigConstInterface::SETTING_DISABLED) ||
-            Config::$disabledByPhp
-        ) {
-            return;
-        }
-
-        static::$pool->createClass(ExceptionController::class)
-            ->registerAction();
-    }
-
-    /**
-     * Unregistering our exception handler.
-     *
-     * @deprecated
-     *   Since 6.0.0
-     *   Will be removed.
-     *   Has anybody used this one since PHP 7.0 anyway?
-     * @codeCoverageIgnore
-     *   We will not test deprecated code.
-     *
-     * @api
-     */
-    public static function unregisterExceptionHandler(): void
-    {
-        Pool::createPool();
-
-        // Disabled?
-        if (
-            static::$pool->config->getSetting(ConfigConstInterface::SETTING_DISABLED) ||
-            Config::$disabledByPhp
-        ) {
-            return;
-        }
-
-        static::$pool->createClass(ExceptionController::class)
-            ->unregisterAction();
-    }
-
-    /**
      * Ignore all settings, and force file logging. Ajax requests will not be ignored.
      *
      * @api

@@ -77,17 +77,11 @@ abstract class AbstractHelper extends TestCase
         // Reset the kreXX count.
         $emergencyRef = new \ReflectionClass(Krexx::$pool->emergencyHandler);
         $krexxCountRef = $emergencyRef->getProperty(KrexxTest::KREXX_COUNT);
-        if (version_compare(phpversion(), '8.1.0', '<')) {
-            $krexxCountRef->setAccessible(true);
-        }
         $krexxCountRef->setValue(Krexx::$pool->emergencyHandler, 0);
 
         // Reset the messages.
         $messageRef = new \ReflectionClass(Krexx::$pool->messages);
         $keysRef = $messageRef->getProperty('messages');
-        if (version_compare(phpversion(), '8.1.0', '<')) {
-            $keysRef->setAccessible(true);
-        }
         $keysRef->setValue(Krexx::$pool->messages, []);
 
         // Remove possible logfiles.
@@ -141,9 +135,6 @@ abstract class AbstractHelper extends TestCase
         try {
             $reflectionClass = new \ReflectionClass($object);
             $reflectionProperty = $reflectionClass->getProperty($name);
-            if (version_compare(phpversion(), '8.1.0', '<')) {
-                $reflectionProperty->setAccessible(true);
-            }
 
             if (is_object($object)) {
                 $reflectionProperty->setValue($object, $value);
@@ -176,9 +167,6 @@ abstract class AbstractHelper extends TestCase
         try {
             $reflectionClass = new \ReflectionClass($object);
             $reflectionProperty = $reflectionClass->getProperty($name);
-            if (version_compare(phpversion(), '8.1.0', '<')) {
-                $reflectionProperty->setAccessible(true);
-            }
             if (is_object($object)) {
                 return $reflectionProperty->getValue($object);
             } else {
@@ -281,9 +269,6 @@ abstract class AbstractHelper extends TestCase
         try {
             $reflection = new \ReflectionClass($object);
             $reflectionMethod = $reflection->getMethod('dispatchStartEvent');
-            if (version_compare(phpversion(), '8.1.0', '<')) {
-                $reflectionMethod->setAccessible(true);
-            }
             return $reflectionMethod->invoke($object);
         } catch (ReflectionException $e) {
             $this->fail($e->getMessage());

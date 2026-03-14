@@ -58,16 +58,6 @@ class Xml extends AbstractScalarAnalysis
     /**
      * Was the decoding of the XML successful?
      *
-     * @deprecated
-     *   Since 6.0.0. Will be removed.
-     *
-     * @var bool
-     */
-    protected $hasErrors = false;
-
-    /**
-     * Was the decoding of the XML successful?
-     *
      * @var string
      */
     protected string $error = '';
@@ -127,7 +117,6 @@ class Xml extends AbstractScalarAnalysis
             return false;
         }
         $this->error = '';
-        $this->hasErrors = false;
 
         // Load the document.
         set_error_handler([$this, 'errorCallback']);
@@ -179,7 +168,6 @@ class Xml extends AbstractScalarAnalysis
     public function errorCallback(int $errno, string $errstr): bool
     {
         $this->error = $this->pool->encodingService->encodeString($errstr);
-        $this->hasErrors = true;
         return true;
     }
 }

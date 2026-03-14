@@ -68,19 +68,10 @@ class ThroughArrayTest extends AbstractHelper
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughArray::callMe::start', $throughArray]
         );
 
-        // Prepare a fixture with recursion marker
-        $recursionHandler = $this->createMock(Recursion::class);
-        $recursionHandler->expects($this->once())
-            ->method('getMarker')
-            ->willReturn('recursion marker');
-        Krexx::$pool->recursionHandler = $recursionHandler;
-
-
         $fixture = [
            'multiline' => true,
            'data' => [
                0 => 'some value',
-               'recursion marker' => true,
                'one' => new stdClass()
            ]
         ];

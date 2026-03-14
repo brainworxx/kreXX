@@ -112,29 +112,6 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     }
 
     /**
-     * Retrieve the ressource type string.
-     *
-     * @param resource|object $resource
-     *   The ressource
-     *
-     * @deprecated
-     *   Since 6.0.0 will be removed.
-     * @codeCoverageIgnore
-     *   We will not test deprecated stuff.
-     *
-     * @return string
-     *   The type string.
-     */
-    protected function retrieveTypeString($resource): string
-    {
-        if (is_object($resource)) {
-            return get_class($resource);
-        }
-
-        return $this->pool->messages->getHelp('resource') . ' (' . get_resource_type($resource) . ')';
-    }
-
-    /**
      * Render an unknown or closed resource.
      *
      * @param \Brainworxx\Krexx\Analyse\Model $model

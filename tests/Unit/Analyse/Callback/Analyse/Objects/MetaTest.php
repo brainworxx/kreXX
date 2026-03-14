@@ -244,10 +244,6 @@ class MetaTest extends AbstractHelper
      */
     public function testCallMeWithAttributes()
     {
-        if (version_compare(phpversion(), '8.0.99', '<')) {
-            $this->markTestSkipped('Wrong PHP Version');
-        }
-
         // Make sure that we are not testing a recursion.
         $recursionMock = $this->createMock(Recursion::class);
         $recursionMock->expects($this->any())
