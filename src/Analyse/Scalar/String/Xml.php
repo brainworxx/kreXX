@@ -149,7 +149,7 @@ class Xml extends AbstractScalarAnalysis
             ->encodeString($this->DOMDocument->saveXML());
 
         // Move the extra part into a nest, for better readability.
-        $this->model->setHasExtra(false);
+        $this->model->setHasExtra(value: false);
         $meta[$messages->getHelp(key: 'metaContent')] = $this->pool
             ->encodingService
             ->encodeString($this->handledValue);

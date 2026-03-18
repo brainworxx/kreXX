@@ -103,7 +103,7 @@ class ThroughArray extends AbstractCallback implements
         /** @var Model $model */
         $model = $this->pool
             ->createClass(classname: Model::class)
-            ->setData($value)
+            ->setData(data: $value)
             ->setCodeGenType(codeGenType: $multilineCodeGen);
 
         if (is_string($key)) {

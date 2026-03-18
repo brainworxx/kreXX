@@ -155,7 +155,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
     {
         /** @var Model $model */
         $model = $this->pool->createClass(classname: Model::class)
-            ->setData($meta)
+            ->setData(data: $meta)
             ->setName(name: $key)
             ->setType(
                 type: $key === $this->pool->messages->getHelp(key: 'metaPrettyPrint') ? $key : static::TYPE_REFLECTION
@@ -166,7 +166,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         }
 
         if (in_array($key, $this->keysWithExtra, true)) {
-            $model->setNormal(normal: static::UNKNOWN_VALUE)->setHasExtra(true);
+            $model->setNormal(normal: static::UNKNOWN_VALUE)->setHasExtra(value: true);
         } else {
             $model->setNormal(normal: $meta);
         }

@@ -63,7 +63,7 @@ class Debug extends AbstractCallback implements CallbackConstInterface
                 $this->dispatchEventWithModel(
                     name: static::EVENT_MARKER_ANALYSES_END,
                     model: $this->pool->createClass(classname: Model::class)
-                        ->setData($this->parameters[static::PARAM_DATA])
+                        ->setData(data: $this->parameters[static::PARAM_DATA])
                         ->setName(name: $this->pool->messages->getHelp(key: 'result'))
                 )
             );

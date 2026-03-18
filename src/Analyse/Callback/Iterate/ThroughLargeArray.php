@@ -144,6 +144,6 @@ class ThroughLargeArray extends AbstractCallback implements
         }
 
         // We handle the simple type normally with the analysis hub.
-        return $this->pool->routing->analysisHub($model->setData($value));
+        return $this->pool->routing->analysisHub($model->setData(data: $value));
     }
 }

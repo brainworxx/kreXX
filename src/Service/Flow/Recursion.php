@@ -87,7 +87,7 @@ class Recursion
      */
     public function __construct(Pool $pool)
     {
-        $this->recursionMarker = 'Krexx' . substr(str_shuffle(md5(microtime())), 0, 10);
+        $this->recursionMarker = 'Krexx' . substr(string: str_shuffle(md5(microtime())), offset: 0, length: 10);
         $this->recursionHive = new SplObjectStorage();
         $pool->recursionHandler = $this;
     }

@@ -67,7 +67,7 @@ class ThroughResource extends AbstractCallback implements CallbackConstInterface
         foreach ($this->parameters[static::PARAM_DATA] as $name => $data) {
             $output .= $this->pool->routing->analysisHub(
                 $this->pool->createClass(classname: Model::class)
-                    ->setData($data)
+                    ->setData(data: $data)
                     ->setName(name: str_replace('_', ' ', $name))
                     ->setNormal(normal: $data)
             );

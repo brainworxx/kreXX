@@ -95,7 +95,7 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
         $value = $this->prepareValue($setting);
         if ($setting->isEditable()) {
             return $this->pool->render->renderSingleEditableChild(
-                $model->setData($name)
+                $model->setData(data: $name)
                     ->setName(name: $value)
                     ->setNormal(normal: $setting->getSource())
                     ->setType(type: $setting->getType())->setDomid($id)
@@ -103,7 +103,7 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
         }
 
         return $this->pool->render->renderExpandableChild(
-            model: $model->setData($value)
+            model: $model->setData(data: $value)
                 ->setName(name: $name)
                 ->setNormal(normal: $value)
                 ->setType(type: $setting->getSource())

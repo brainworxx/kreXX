@@ -129,7 +129,7 @@ class ThroughProperties extends AbstractCallback implements
     {
         $messages = $this->pool->messages;
         return $this->pool->createClass(classname: Model::class)
-            ->setData($value)
+            ->setData(data: $value)
             ->setName(name: $this->retrievePropertyName($refProperty))
             ->addToJson(
                 $messages->getHelp(key: 'metaComment'),

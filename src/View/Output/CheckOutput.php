@@ -172,7 +172,7 @@ class CheckOutput
         foreach ($ipList as $ip) {
             $wildcardPos = strpos($ip, '*');
             // Check if the ip has a wildcard.
-            if ($wildcardPos !== false && substr($remote, 0, $wildcardPos) . '*' === $ip) {
+            if ($wildcardPos !== false && substr(string: $remote, offset: 0, length: $wildcardPos) . '*' === $ip) {
                 return true;
             }
         }

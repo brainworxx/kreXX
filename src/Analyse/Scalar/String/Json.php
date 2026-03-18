@@ -88,7 +88,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
     public function canHandle($string, Model $model): bool
     {
         // Get a fist impression.
-        $first = substr($string, 0, 1);
+        $first = substr(string: $string, offset: 0, length: 1);
         if (!($first === '{' xor $first === '[')) {
             return false;
         }
@@ -136,7 +136,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
-            $this->model->setHasExtra(false);
+            $this->model->setHasExtra(value: false);
             $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }
 

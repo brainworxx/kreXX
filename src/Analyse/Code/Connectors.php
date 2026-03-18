@@ -165,8 +165,8 @@ class Connectors implements ConnectorsConstInterface
         }
 
         // Capping the parameters for a better readability.
-        if ($cap > 0 && strlen($this->params) > $cap) {
-            return '(' . substr($this->params, 0, $cap) . ' . . . )';
+        if ($cap > 0 && strlen(string: $this->params) > $cap) {
+            return '(' . substr(string: $this->params, offset: 0, length: $cap) . ' . . . )';
         }
 
         return '(' . $this->params . ')';

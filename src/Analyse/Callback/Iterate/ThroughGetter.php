@@ -281,7 +281,7 @@ class ThroughGetter extends AbstractCallback implements
      */
     protected function prepareModel(Model $model, $value): void
     {
-        $model->setData($value);
+        $model->setData(data: $value);
         if ($value === null) {
             // A NULL value might mean that the values does not
             // exist, until the getter computes it.

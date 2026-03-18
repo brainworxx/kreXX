@@ -147,14 +147,14 @@ class ProcessString extends AbstractRouting implements
         $length = $this->retrieveLengthAndEncoding($data);
         if ($length > 50 || strstr($data, PHP_EOL) !== false) {
             $cut = $this->pool->encodingService->encodeString(
-                $this->pool->encodingService->mbSubStr($data, 0, 50)
+                $this->pool->encodingService->mbSubStr(string: $data, start: 0, length: 50)
             ) . static::UNKNOWN_VALUE;
 
             $data = $this->pool->encodingService->encodeString($data);
 
-            $this->model->setHasExtra(true)
+            $this->model->setHasExtra(value: true)
                 ->setNormal(normal: $cut)
-                ->setData($data);
+                ->setData(data: $data);
         } else {
             $this->model->setNormal(normal: $this->pool->encodingService->encodeString($data));
         }
@@ -203,10 +203,10 @@ class ProcessString extends AbstractRouting implements
 
         if ($encoding === false) {
             // Looks like we have a mixed encoded string.
-            $length = $this->pool->encodingService->mbStrLen($data);
+            $length = $this->pool->encodingService->mbStrLen(string: $data);
         } else {
             // Normal encoding, nothing special here.
-            $length = $this->pool->encodingService->mbStrLen($data, $encoding);
+            $length = $this->pool->encodingService->mbStrLen(string: $data, encoding: $encoding);
         }
 
         // Long string or with broken encoding.

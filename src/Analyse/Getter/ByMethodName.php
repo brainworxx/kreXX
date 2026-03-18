@@ -175,12 +175,12 @@ class ByMethodName extends AbstractGetter
          // Get the name and remove the 'get' . . .
         $getterName = $reflectionMethod->getName();
         if (strpos($getterName, $currentPrefix) === 0) {
-            return lcfirst(substr($getterName, strlen($currentPrefix)));
+            return lcfirst(substr(string: $getterName, offset: strlen(string: $currentPrefix)));
         }
 
         // . . .  or the '_get'.
         if (strpos($getterName, '_' . $currentPrefix) === 0) {
-            return lcfirst(substr($getterName, strlen($currentPrefix) + 1));
+            return lcfirst(substr(string: $getterName, offset: strlen(string: $currentPrefix) + 1));
         }
 
         // Still here?!? At least make the first letter lowercase.

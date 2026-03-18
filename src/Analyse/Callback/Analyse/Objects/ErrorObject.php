@@ -61,9 +61,14 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
 
         /** @var \Throwable $data */
         $data = $this->parameters[static::PARAM_DATA];
-        $this->addExceptionMessage($data);
+        $this->addExceptionMessage(data: $data);
         $lineNo = $data->getLine() - 1;
-        $source = trim($this->pool->fileService->readSourcecode($data->getFile(), $lineNo, $lineNo - 5, $lineNo + 5));
+        $source = trim(string: $this->pool->fileService->readSourcecode(
+            filePath: $data->getFile(),
+            highlight: $lineNo,
+            readFrom: $lineNo - 5,
+            readTo: $lineNo + 5
+        ));
         if (empty($source)) {
             $source = $this->pool->messages->getHelp(key: 'noSourceAvailable');
         }
@@ -72,10 +77,10 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
             model: $this->dispatchEventWithModel(
                 name: 'source',
                 model: $this->pool->createClass(classname: Model::class)
-                    ->setData($source)
+                    ->setData(data: $source)
                     ->setName(name: $this->pool->messages->getHelp(key: 'sourceCode'))
                     ->setNormal(normal: static::UNKNOWN_VALUE)
-                    ->setHasExtra(true)
+                    ->setHasExtra(value: true)
                     ->setType(type: static::TYPE_PHP)
             )
         );
@@ -96,8 +101,8 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
         $message = $data->getMessage();
 
         // Some messages are huge.
-        if (strlen($message) > 80) {
-            $message = substr($message, 0, 75) . ' ...';
+        if (strlen(string: $message) > 80) {
+            $message = substr(string: $message, offset: 0, length: 75) . ' ...';
         }
 
         // Escape it, there can be some bad stuff in there.

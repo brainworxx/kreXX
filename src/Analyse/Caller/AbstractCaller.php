@@ -182,7 +182,7 @@ abstract class AbstractCaller
         $ssl = !empty($server['HTTPS']) && $server['HTTPS'] === 'on';
 
         $protocol = strtolower($server['SERVER_PROTOCOL']);
-        $protocol = substr($protocol, 0, strpos($protocol, '/'));
+        $protocol = substr(string: $protocol, offset: 0, length: strpos($protocol, '/'));
         if ($ssl) {
             $protocol .= 's';
         }

@@ -162,10 +162,10 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
         // Adding the sourcecode
         $highlight = $ref->getStartLine() - 1;
         return $this->pool->fileService->readSourcecode(
-            $ref->getFileName(),
-            $highlight,
-            $highlight - 3,
-            $ref->getEndLine() - 1
+            filePath: $ref->getFileName(),
+            highlight: $highlight,
+            readFrom: $highlight - 3,
+            readTo: $ref->getEndLine() - 1
         );
     }
 

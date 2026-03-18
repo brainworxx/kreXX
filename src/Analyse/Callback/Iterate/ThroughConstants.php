@@ -83,7 +83,7 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
             if ($this->canDump($reflectionConstant)) {
                 $output .= $this->pool->routing->analysisHub(
                     $this->pool->createClass(classname: Model::class)
-                        ->setData($constantValue)
+                        ->setData(data: $constantValue)
                         ->setAdditional($this->retrieveAdditionalData($reflectionConstant))
                         ->setName(name: $constantName)
                         ->setCodeGenType(codeGenType: static::CODEGEN_TYPE_PUBLIC)

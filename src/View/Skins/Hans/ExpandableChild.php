@@ -211,7 +211,7 @@ trait ExpandableChild
      */
     protected function prepareExtra(string $extra): string
     {
-        $lastChar = substr($extra, -1);
+        $lastChar = substr(string: $extra, offset: -1);
         if ($lastChar === "\n" || $lastChar === "\r") {
             return $extra . $lastChar;
         }

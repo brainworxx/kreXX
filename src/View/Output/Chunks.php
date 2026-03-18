@@ -159,7 +159,7 @@ class Chunks implements ConfigConstInterface
     {
         static $counter = 0;
 
-        if ($this->chunkAllowed && strlen($string) > 10000) {
+        if ($this->chunkAllowed && strlen(string: $string) > 10000) {
             // Get the key.
             $key = $this->fileStamp . '_' . ++$counter;
             // Detect the encoding in the chunk.
@@ -213,10 +213,10 @@ class Chunks implements ConfigConstInterface
 
             while ($chunkPos !== false) {
                 // We have a chunk, we send the html part.
-                echo substr($string, 0, $chunkPos);
+                echo substr(string: $string, offset: 0, length: $chunkPos);
                 ob_flush();
                 flush();
-                $chunkPart = substr($string, $chunkPos);
+                $chunkPart = substr(string: $string, offset: $chunkPos);
 
                 // We translate the first chunk.
                 $result = explode(separator: static::STRING_DELIMITER, string: $chunkPart, limit: 3);
@@ -257,9 +257,9 @@ class Chunks implements ConfigConstInterface
 
         while ($chunkPos !== false) {
             // We have a chunk, we save the html part.
-            $this->pool->fileService->putFileContents($filename, substr($string, 0, $chunkPos));
+            $this->pool->fileService->putFileContents($filename, substr(string: $string, offset: 0, length: $chunkPos));
 
-            $chunkPart = substr($string, $chunkPos);
+            $chunkPart = substr(string: $string, offset: $chunkPos);
 
             // We translate the first chunk.
             // Strangely, with a memory peak of 84 MB, explode is

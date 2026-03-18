@@ -102,7 +102,7 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
             // We also need to unset the data for the source generation.
             $model->setDomid($domId)
                 ->setNormal(normal: $normal)
-                ->setData(null)
+                ->setData(data: null)
         );
     }
 
@@ -119,10 +119,10 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
     {
         $text = $this->pool->messages->getHelp(key: 'maximumLevelReached2');
 
-        $model->setData($text)
+        $model->setData(data: $text)
             ->setNormal(normal: $this->pool->messages->getHelp(key: 'maximumLevelReached1'))
             ->setType(type: is_array($model->getData()) ? static::TYPE_ARRAY : static::TYPE_OBJECT)
-            ->setHasExtra(true);
+            ->setHasExtra(value: true);
 
         // Render it directly.
         return $this->pool->render->renderExpandableChild(model: $model);

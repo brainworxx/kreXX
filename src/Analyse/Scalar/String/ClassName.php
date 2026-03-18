@@ -108,7 +108,7 @@ class ClassName extends AbstractScalarAnalysis
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
-            $this->model->setHasExtra(false);
+            $this->model->setHasExtra(value: false);
             $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }
 

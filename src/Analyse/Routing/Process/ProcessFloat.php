@@ -122,7 +122,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
         );
 
         $format = "%." .
-            (strlen(explode(separator: ".", string: $beforeE)[1]) + (abs((int)$afterE)) - 1)
+            (strlen(string: explode(separator: ".", string: $beforeE)[1]) + (abs((int)$afterE)) - 1)
             . "f";
         return sprintf($format, $float);
     }

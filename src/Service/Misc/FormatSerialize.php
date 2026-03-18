@@ -91,7 +91,7 @@ class FormatSerialize
      */
     protected function read(int $length): string
     {
-        $result = substr($this->string, $this->offset, $length);
+        $result = substr(string: $this->string, offset: $this->offset, length: $length);
         $this->offset += $length;
 
         return $result;
@@ -135,7 +135,7 @@ class FormatSerialize
      */
     protected function assert(string $string): string
     {
-        if ($this->read(strlen($string)) !== $string) {
+        if ($this->read(strlen(string: $string)) !== $string) {
             throw new Exception(__FUNCTION__);
         }
 

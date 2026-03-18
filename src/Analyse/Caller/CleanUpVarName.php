@@ -96,7 +96,7 @@ class CleanUpVarName
         // Counting all real round brackets, while ignoring the ones inside strings.
         foreach (str_split($name) as $count => $char) {
             if ($this->isReady($char)) {
-                return substr($name, 0, $count);
+                return substr(string: $name, offset: 0, length: $count);
             }
             $this->adjustActiveQuotes($char);
         }

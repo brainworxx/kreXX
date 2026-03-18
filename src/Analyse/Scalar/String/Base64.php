@@ -82,7 +82,7 @@ class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
     public function canHandle($string, Model $model): bool
     {
         if (
-            strlen($string) > 36
+            strlen(string: $string) > 36
             && preg_match('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$^', $string)
             && base64_encode($this->decodedString = base64_decode($string, true)) === $string
         ) {
@@ -110,7 +110,7 @@ class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
 
         // Move the extra part into a nest, for better readability.
         if ($this->model->hasExtra()) {
-            $this->model->setHasExtra(false);
+            $this->model->setHasExtra(value: false);
             $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }
 

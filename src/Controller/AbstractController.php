@@ -203,7 +203,7 @@ abstract class AbstractController implements ConfigConstInterface
 
         /** @var Model $model */
         $model = $this->pool->createClass(classname: Model::class);
-        $model->setData($jsCode)->setNormal(normal: $css);
+        $model->setData(data: $jsCode)->setNormal(normal: $css);
         $this->pool->eventService->dispatch(static::class . '::outputCssAndJs', null, $model);
         return $this->pool->render->renderCssJs($model->getNormal(), $model->getData());
     }

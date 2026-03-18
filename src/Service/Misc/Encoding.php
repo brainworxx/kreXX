@@ -104,7 +104,7 @@ class Encoding
              */
             function mb_strlen($string, $encoding = null): int
             {
-                return strlen($string);
+                return strlen(string: $string);
             }
 
             /**
@@ -122,7 +122,7 @@ class Encoding
              */
             function mb_substr($string, $start, $length): string
             {
-                return substr($string, $start, $length);
+                return substr(string: $string, offset: $start, length: $length);
             }
 
             /**
@@ -169,7 +169,7 @@ class Encoding
             return '';
         }
 
-        if (strlen($data) > 3072000) {
+        if (strlen(string: $data) > 3072000) {
             // This is a very large string.
             // We would run out of memory, if we try to encode it.
             return $this->pool->messages->getHelp(key: 'stringTooLargeNormal');
@@ -223,7 +223,7 @@ class Encoding
      */
     protected function encodeCompletely(string &$data, bool $code): string
     {
-        if (strlen($data) > 102400) {
+        if (strlen(string: $data) > 102400) {
             return $this->pool->messages->getHelp(key: 'stringTooLarge');
         }
 
@@ -282,9 +282,9 @@ class Encoding
     {
         // Meh, the original mb_strlen interprets a null here as an empty string.
         if ($encoding === null) {
-            return mb_strlen($string);
+            return mb_strlen(string: $string);
         }
-        return mb_strlen($string, $encoding);
+        return mb_strlen(string: $string, encoding: $encoding);
     }
 
     /**
@@ -306,7 +306,7 @@ class Encoding
      */
     public function mbSubStr(string $string, int $start, int $length): string
     {
-        return mb_substr($string, $start, $length);
+        return mb_substr(string: $string, start: $start, length: $length);
     }
 
     /**

@@ -85,7 +85,7 @@ class DumpController extends AbstractController implements BacktraceConstInterfa
         // Start the magic.
         $analysis = $this->pool->routing->analysisHub(
             $this->pool->createClass(classname: Model::class)
-                ->setData($data)
+                ->setData(data: $data)
                 ->setName(name: $caller[static::TRACE_VARNAME])
         );
 
