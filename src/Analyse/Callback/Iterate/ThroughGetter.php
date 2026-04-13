@@ -218,7 +218,7 @@ class ThroughGetter extends AbstractCallback implements
     protected function assignMetaDataToJson(Model $model, ReflectionMethod $reflectionMethod): void
     {
         $comments = $this->commentAnalysis
-            ->getComment($reflectionMethod, $this->parameters[static::PARAM_REF]);
+            ->getComment(reflection: $reflectionMethod, reflectionClass: $this->parameters[static::PARAM_REF]);
         $declaration = nl2br($this->methodDeclaration->retrieveDeclaration($reflectionMethod));
         $messages = $this->pool->messages;
         $model->addToJson($messages->getHelp(key: 'metaMethodComment'), nl2br($comments))

@@ -181,7 +181,7 @@ class ByRegExDelegate extends ByRegExContainer
         // The propertyName now may look like this:
         // myObject->getStuff()
         if (
-            count($parts) !== 2
+            count(value: $parts) !== 2
             || !$reflectionClass->hasProperty($parts[0])
         ) {
             // This is not the code I am looking for.
@@ -189,7 +189,7 @@ class ByRegExDelegate extends ByRegExContainer
         }
 
         $object = $reflectionClass->retrieveValue($reflectionClass->getProperty($parts[0]));
-        if (!is_object($object)) {
+        if (!is_object(value: $object)) {
             return null;
         }
 

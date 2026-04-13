@@ -163,8 +163,8 @@ class ReflectionClass extends \ReflectionClass
             // far. Depending on your PHP version, that value may not be accessible
             // via normal means from the array we have got here. And no, we are not
             // accessing the object directly.
-            return array_values($this->objectArray)[
-                array_search($propName, array_keys($this->objectArray))
+            return array_values(array: $this->objectArray)[
+                array_search(needle: $propName, haystack: array_keys(array: $this->objectArray))
             ] ?? null;
         }
 
@@ -198,7 +198,7 @@ class ReflectionClass extends \ReflectionClass
     public function getObjectVars(): array
     {
         return array_filter($this->objectArray, function ($key) {
-            return strpos((string)$key, "\0") === false;
+            return !str_contains(haystack: (string)$key, needle: "\0");
         }, ARRAY_FILTER_USE_KEY);
     }
 

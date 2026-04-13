@@ -108,10 +108,10 @@ abstract class AbstractRender implements RenderInterface
 
         $encodingService = $this->pool->encodingService;
         foreach ($array as &$entry) {
-            $entry = $encodingService->encodeString($entry);
+            $entry = $encodingService->encodeString(data: $entry);
         }
 
-        return json_encode($array);
+        return json_encode(value: $array);
     }
 
     /**

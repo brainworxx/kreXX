@@ -108,10 +108,7 @@ class Xml extends AbstractScalarAnalysis
         // Get a first impression, we check the mime type of the model.
         $metaStuff = $model->getJson();
         $mimeType = $this->pool->messages->getHelp(key: 'metaMimeTypeString');
-        if (
-            empty($metaStuff[$mimeType]) ||
-            strpos($metaStuff[$mimeType], 'xml;') === false
-        ) {
+        if (empty($metaStuff[$mimeType]) || !str_contains(haystack: $metaStuff[$mimeType], needle: 'xml;')) {
             // Was not identified as xml before.
             // Early return.
             return false;
@@ -146,13 +143,13 @@ class Xml extends AbstractScalarAnalysis
 
         $meta[$messages->getHelp(key: 'metaPrettyPrint')] = $this->pool
             ->encodingService
-            ->encodeString($this->DOMDocument->saveXML());
+            ->encodeString(data: $this->DOMDocument->saveXML());
 
         // Move the extra part into a nest, for better readability.
         $this->model->setHasExtra(value: false);
         $meta[$messages->getHelp(key: 'metaContent')] = $this->pool
             ->encodingService
-            ->encodeString($this->handledValue);
+            ->encodeString(data: $this->handledValue);
 
         return $meta;
     }
@@ -167,7 +164,7 @@ class Xml extends AbstractScalarAnalysis
      */
     public function errorCallback(int $errno, string $errstr): bool
     {
-        $this->error = $this->pool->encodingService->encodeString($errstr);
+        $this->error = $this->pool->encodingService->encodeString(data: $errstr);
         return true;
     }
 }

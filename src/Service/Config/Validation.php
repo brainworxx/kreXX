@@ -216,7 +216,7 @@ class Validation extends Fallback
             );
 
         if (!$result) {
-            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR . ucfirst($name));
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst($name));
         }
 
         return $result;
@@ -240,7 +240,7 @@ class Validation extends Fallback
             || $value === static::VALUE_BROWSER_IMMEDIATELY;
 
         if (!$result) {
-            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR . ucfirst($name));
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst($name));
         }
 
         return $result;
@@ -261,7 +261,7 @@ class Validation extends Fallback
     {
         $result = empty($value);
         if ($result) {
-            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR . ucfirst($name));
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst($name));
         }
 
         return !$result;
@@ -295,8 +295,8 @@ class Validation extends Fallback
         $result = true;
         if (!$this->evalInt($value, $name, $group) || $maxTime < (int)$value) {
             $this->pool->messages->addMessage(
-                static::KEY_CONFIG_ERROR . ucfirst($name) . 'Big',
-                [$maxTime]
+                key: static::KEY_CONFIG_ERROR . ucfirst($name) . 'Big',
+                args: [$maxTime]
             );
 
             $result = false;
@@ -323,7 +323,7 @@ class Validation extends Fallback
     {
         $result = $value === static::VALUE_TRUE || $value === static::VALUE_FALSE || is_bool($value);
         if (!$result) {
-            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_BOOL, [$group, $name]);
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR_BOOL, args: [$group, $name]);
         }
 
         return $result;
@@ -349,7 +349,7 @@ class Validation extends Fallback
     {
         $result = (int) $value > 0;
         if (!$result) {
-            $this->pool->messages->addMessage(static::KEY_CONFIG_ERROR_INT, [$group, $name]);
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR_INT, args: [$group, $name]);
         }
 
         return $result;
@@ -375,10 +375,10 @@ class Validation extends Fallback
 
         foreach ($list as $entry) {
             // Test for whitespace.
-            if (strpos($entry, ' ') !== false) {
+            if (str_contains(haystack: $entry, needle: ' ')) {
                 $this->pool->messages->addMessage(
-                    static::KEY_CONFIG_ERROR_DEBUG_INVALID,
-                    [$group, $name, $entry]
+                    key: static::KEY_CONFIG_ERROR_DEBUG_INVALID,
+                    args: [$group, $name, $entry]
                 );
                 return false;
             }
@@ -405,7 +405,7 @@ class Validation extends Fallback
     {
         if (!isset($this->pool->config->getLanguageList()[$value])) {
             $this->pool->messages
-                ->addMessage(static::KEY_CONFIG_ERROR_LANGUAGE_INVALID, [$group, $name, $value]);
+                ->addMessage(key: static::KEY_CONFIG_ERROR_LANGUAGE_INVALID, args: [$group, $name, $value]);
             return false;
         }
 

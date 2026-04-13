@@ -132,8 +132,10 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
     {
         return (
                 // Check for a function trace.
-                isset($caller[static::TRACE_FUNCTION]) &&
-                strpos(strtolower($caller[static::TRACE_FUNCTION]), static::FUNCTION_PATTERN) === 0
+                isset($caller[static::TRACE_FUNCTION]) && str_starts_with(
+                    haystack: strtolower($caller[static::TRACE_FUNCTION]),
+                    needle: static::FUNCTION_PATTERN
+                )
             ) ||
             (
                 // Check for a class trace.
@@ -187,7 +189,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
                 return $this->pool
                     ->encodingService
                     ->encodeString(
-                        $this->pool->createClass(classname: CleanUpVarName::class)
+                        data: $this->pool->createClass(classname: CleanUpVarName::class)
                             ->cleanup(trim($name[1], " \t\n\r\0\x0B"))
                     );
             }

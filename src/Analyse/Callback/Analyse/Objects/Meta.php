@@ -72,32 +72,32 @@ class Meta extends AbstractObjectAnalysis
     public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
-        $this->pool->codegenHandler->setCodegenAllowed(false);
+        $this->pool->codegenHandler->setCodegenAllowed(bool: false);
 
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         $name = $this->parameters[static::PARAM_META_NAME] ?? $this->pool->messages->getHelp(key: 'metaClassData');
 
         // We need to check, if we have a meta recursion here.
-        $domId = $this->generateDomIdFromClassname($ref->getName());
-        if ($this->pool->recursionHandler->isInMetaHive($domId)) {
+        $domId = $this->generateDomIdFromClassname(data: $ref->getName());
+        if ($this->pool->recursionHandler->isInMetaHive(domId: $domId)) {
             // We have been here before.
             // We skip this one, and leave it to the js recursion handler!
-            $this->pool->codegenHandler->setCodegenAllowed(true);
+            $this->pool->codegenHandler->setCodegenAllowed(bool: true);
             return $output .
                 $this->pool->render->renderRecursion(
-                    $this->dispatchEventWithModel(
+                    model: $this->dispatchEventWithModel(
                         name: static::EVENT_MARKER_RECURSION,
                         model: $this->pool->createClass(classname: Model::class)
-                            ->setDomid($domId)
+                            ->setDomid(domid: $domId)
                             ->setNormal(normal: $name)
                             ->setName(name: $name)
                             ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
                     )
                 );
         }
-        $this->pool->codegenHandler->setCodegenAllowed(true);
-        return $output . $this->analyseMeta($domId, $ref, $name);
+        $this->pool->codegenHandler->setCodegenAllowed(bool: true);
+        return $output . $this->analyseMeta(domId: $domId, ref: $ref, name: $name);
     }
 
     /**
@@ -115,13 +115,13 @@ class Meta extends AbstractObjectAnalysis
      */
     protected function analyseMeta(string $domId, ReflectionClass $ref, string $name): string
     {
-        $this->pool->recursionHandler->addToMetaHive($domId);
+        $this->pool->recursionHandler->addToMetaHive(domId: $domId);
 
         return $this->pool->render->renderExpandableChild(model: $this->dispatchEventWithModel(
             name: static::EVENT_MARKER_ANALYSES_END,
             model: $this->pool->createClass(classname: Model::class)
                 ->setName(name: $name)
-                ->setDomid($domId)
+                ->setDomid(domid: $domId)
                 ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
                 ->addParameter(name: static::PARAM_DATA, value: $this->generateMetaData($ref))
                 ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
@@ -142,11 +142,11 @@ class Meta extends AbstractObjectAnalysis
         $messages = $this->pool->messages;
         // Get the naming on the way.
         $data = [
-            $messages->getHelp(key: 'metaClassName') => $this->generateName($ref),
+            $messages->getHelp(key: 'metaClassName') => $this->generateName(ref: $ref),
             $messages->getHelp(key: 'metaComment') => $this->pool
-                ->createClass(classname: Classes::class)->getComment($ref),
+                ->createClass(classname: Classes::class)->getComment(reflection: $ref),
             $messages->getHelp(key: 'metaAttributes') => $this->pool
-                ->createClass(classname: Attributes::class)->getAttributes($ref),
+                ->createClass(classname: Attributes::class)->getAttributes(reflection: $ref),
             $messages->getHelp(key: 'metaDeclaredIn') => $ref->isInternal() ?
                 $messages->getHelp(key: 'metaPredeclared') :
                 $ref->getFileName() . ' ' .

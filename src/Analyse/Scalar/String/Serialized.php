@@ -97,7 +97,7 @@ class Serialized extends AbstractScalarAnalysis
 
         if ($result !== null) {
             $meta[$messages->getHelp(key: 'metaPrettyPrint')] = $this->pool
-                ->encodingService->encodeString($result);
+                ->encodingService->encodeString(data: $result);
             $this->model->setHasExtra(value: false);
             $meta[$messages->getHelp(key: 'metaContent')] = $this->model->getData();
         }

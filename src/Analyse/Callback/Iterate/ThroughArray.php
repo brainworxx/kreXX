@@ -107,7 +107,7 @@ class ThroughArray extends AbstractCallback implements
             ->setCodeGenType(codeGenType: $multilineCodeGen);
 
         if (is_string($key)) {
-            $model->setName(name: $this->pool->encodingService->encodeString($key))
+            $model->setName(name: $this->pool->encodingService->encodeString(data: $key))
                 ->setConnectorType(type: static::CONNECTOR_ASSOCIATIVE_ARRAY);
         } else {
             $model->setName(name: $key)->setConnectorType(type: static::CONNECTOR_NORMAL_ARRAY);

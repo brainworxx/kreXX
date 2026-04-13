@@ -89,7 +89,7 @@ class Getter extends AbstractObjectAnalysis
         $ref = $this->parameters[static::PARAM_REF];
 
         // Get all public methods.
-        $this->retrieveMethodList($ref);
+        $this->retrieveMethodList(ref: $ref);
         if (empty($this->normalGetter + $this->isGetter + $this->hasGetter)) {
             // There are no getter methods in here.
             return $output;
@@ -132,11 +132,11 @@ class Getter extends AbstractObjectAnalysis
             return;
         }
 
-        if (strpos($method->getName(), 'get') === 0) {
+        if (str_starts_with(haystack: $method->getName(), needle: 'get')) {
             $this->normalGetter[] = $method;
-        } elseif (strpos($method->getName(), 'is') === 0) {
+        } elseif (str_starts_with(haystack: $method->getName(), needle: 'is')) {
             $this->isGetter[] = $method;
-        } elseif (strpos($method->getName(), 'has') === 0) {
+        } elseif (str_starts_with(haystack: $method->getName(), needle: 'has')) {
             $this->hasGetter[] = $method;
         }
     }
@@ -150,13 +150,13 @@ class Getter extends AbstractObjectAnalysis
     protected function retrieveMethodList(ReflectionClass $ref): void
     {
         // Get all public methods.
-        $methodList = $ref->getMethods(ReflectionMethod::IS_PUBLIC);
+        $methodList = $ref->getMethods(filter: ReflectionMethod::IS_PUBLIC);
 
         if ($this->pool->scope->isInScope()) {
             // Looks like we also need the protected and private methods.
             $methodList = [
                 ...$methodList,
-                ...$ref->getMethods(ReflectionMethod::IS_PRIVATE | ReflectionMethod::IS_PROTECTED)
+                ...$ref->getMethods(filter: ReflectionMethod::IS_PRIVATE | ReflectionMethod::IS_PROTECTED)
             ];
         }
 
@@ -165,11 +165,11 @@ class Getter extends AbstractObjectAnalysis
         }
 
         // Sort them.
-        usort($methodList, [$this, static::REFLECTION_SORTING]);
+        usort(array: $methodList, callback: [$this, static::REFLECTION_SORTING]);
 
         /** @var \ReflectionMethod $method */
         foreach ($methodList as $method) {
-            $this->populateGetterLists($method, $ref);
+            $this->populateGetterLists(method: $method, ref: $ref);
         }
     }
 }

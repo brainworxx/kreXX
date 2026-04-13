@@ -73,7 +73,7 @@ class Methods extends AbstractComment
         $this->methodName = $reflection->getName();
 
         return $this->pool->encodingService->encodeString(
-            $this->getMethodComment($reflection, $reflectionClass)
+            data: $this->getMethodComment($reflection, $reflectionClass)
         );
     }
 

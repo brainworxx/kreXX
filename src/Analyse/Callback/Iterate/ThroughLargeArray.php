@@ -102,10 +102,10 @@ class ThroughLargeArray extends AbstractCallback implements
      * @param Model $model
      *   The so far prepared model we are preparing further.
      */
-    protected function handleKey($key, Model $model): void
+    protected function handleKey(int|string $key, Model $model): void
     {
         if (is_string($key)) {
-            $model->setName(name: $this->pool->encodingService->encodeString($key))
+            $model->setName(name: $this->pool->encodingService->encodeString(data: $key))
                 ->setConnectorType(type: static::CONNECTOR_ASSOCIATIVE_ARRAY);
 
             return;
@@ -127,7 +127,7 @@ class ThroughLargeArray extends AbstractCallback implements
     protected function handleValue($value, Model $model): string
     {
         $messages = $this->pool->messages;
-        if (is_object($value)) {
+        if (is_object(value: $value)) {
             // We will not go too deep here, and say only what it is.
             $model->setType(type: $messages->getHelp(key: 'simpleClassType'))->setNormal(normal: get_class($value));
 
@@ -138,7 +138,7 @@ class ThroughLargeArray extends AbstractCallback implements
             // Adding another array to the output may be as bad as a
             // complete object analysis.
             $model->setType(type: $messages->getHelp(key: 'simpleArrayType'))
-                ->setNormal(normal: $messages->getHelp(key: 'count') . count($value));
+                ->setNormal(normal: $messages->getHelp(key: 'count') . count(value: $value));
 
                 return $this->pool->render->renderExpandableChild(model: $model);
         }

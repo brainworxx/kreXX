@@ -61,18 +61,18 @@ class ProtectedProperties extends AbstractObjectAnalysis
 
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
-        $refProps = $ref->getProperties(ReflectionProperty::IS_PROTECTED);
+        $refProps = $ref->getProperties(filter: ReflectionProperty::IS_PROTECTED);
         if (empty($refProps)) {
             return $output;
         }
 
-        usort($refProps, [$this, static::REFLECTION_SORTING]);
+        usort(array: $refProps, callback: [$this, static::REFLECTION_SORTING]);
 
         return $output .
             $this->getReflectionPropertiesData(
-                $refProps,
-                $ref,
-                $this->pool->messages->getHelp(key: 'protectedProperties')
+                refProps: $refProps,
+                ref: $ref,
+                label: $this->pool->messages->getHelp(key: 'protectedProperties')
             );
     }
 }

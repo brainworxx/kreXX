@@ -324,8 +324,8 @@ class Config extends Fallback
      */
     public function getSkinList(): array
     {
-        $keys = array_keys($this->skinConfiguration);
-        return array_combine($keys, $keys);
+        $keys = array_keys(array: $this->skinConfiguration);
+        return array_combine(keys: $keys, values: $keys);
     }
 
     /**

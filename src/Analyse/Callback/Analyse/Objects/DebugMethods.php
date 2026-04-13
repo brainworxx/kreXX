@@ -138,7 +138,7 @@ class DebugMethods extends AbstractObjectAnalysis implements
     /**
      * Check if we are allowed to access this class method as a debug method for this class.
      *
-     * @param mixed $data
+     * @param object $data
      *   The class that we are currently analysing.
      * @param string $funcName
      *   The name of the function that we want to call.
@@ -148,7 +148,7 @@ class DebugMethods extends AbstractObjectAnalysis implements
      * @return bool
      *   Whether we are allowed to access this method.
      */
-    protected function checkIfAccessible($data, string $funcName, ReflectionClass $reflectionClass): bool
+    protected function checkIfAccessible(object $data, string $funcName, ReflectionClass $reflectionClass): bool
     {
         // We need to check if:
         // 1. Method exists. It may be protected though.
@@ -167,7 +167,7 @@ class DebugMethods extends AbstractObjectAnalysis implements
         try {
             $ref = $reflectionClass->getMethod(name: $funcName);
             return $ref->getNumberOfRequiredParameters() === 0;
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException) {
             return false;
         }
     }

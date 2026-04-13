@@ -88,7 +88,7 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
     protected function handleRecursion(Model $model): string
     {
         $data = $model->getData();
-        if (is_object($data)) {
+        if (is_object(value: $data)) {
             $normal = '\\' . get_class($data);
             $domId = $this->generateDomIdFromObject($data);
         } else {
@@ -100,7 +100,7 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
         return $this->pool->render->renderRecursion(
             // Prepare the model for the recursion rendering.
             // We also need to unset the data for the source generation.
-            $model->setDomid($domId)
+            model: $model->setDomid(domid: $domId)
                 ->setNormal(normal: $normal)
                 ->setData(data: null)
         );

@@ -71,7 +71,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
      */
     public static function isActive(): bool
     {
-        return function_exists('json_decode');
+        return function_exists(function: 'json_decode');
     }
 
     /**
@@ -94,7 +94,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
         }
 
         // @deprecated Will be removed once we drop 8.3 support.
-        if (function_exists('json_validate') && json_validate($string)) {
+        if (function_exists(function: 'json_validate') && json_validate(json: $string)) {
             // Doing it the PHP 8.3 way.
             $this->model = $model;
             $this->handledValue = $string;
@@ -131,7 +131,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
         $meta = [
             $messages->getHelp(key: 'metaDecodedJson') => $this->decodedJson,
             $messages->getHelp(key: 'metaPrettyPrint') => $this->pool->encodingService
-                ->encodeString(json_encode($this->decodedJson, JSON_PRETTY_PRINT))
+                ->encodeString(data: json_encode(value: $this->decodedJson, flags: JSON_PRETTY_PRINT))
         ];
 
         // Move the extra part into a nest, for better readability.

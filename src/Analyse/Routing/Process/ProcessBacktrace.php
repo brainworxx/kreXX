@@ -89,11 +89,15 @@ class ProcessBacktrace extends AbstractCallback implements
 
         $output = '';
         $maxStep = (int) $this->pool->config->getSetting(name: static::SETTING_MAX_STEP_NUMBER);
-        $stepCount = count($backtrace);
+        $stepCount = count(value: $backtrace);
 
         // Remove steps according to the configuration.
         if ($maxStep < $stepCount) {
-            $this->pool->messages->addMessage('omittedBacktrace', [($maxStep + 1), $stepCount], true);
+            $this->pool->messages->addMessage(
+                key: 'omittedBacktrace',
+                args: [($maxStep + 1), $stepCount],
+                isThrowAway: true
+            );
         } else {
             // We will not analyse more steps than we actually have.
             $maxStep = $stepCount;
@@ -125,13 +129,16 @@ class ProcessBacktrace extends AbstractCallback implements
         // We remove all steps that came from inside the kreXX lib.
         $krexxScr = KREXX_DIR . 'src';
         foreach ($backtrace as $key => $step) {
-            if (isset($step[static::TRACE_FILE]) && strpos($step[static::TRACE_FILE], $krexxScr) !== false) {
+            if (
+                isset($step[static::TRACE_FILE])
+                && str_contains(haystack: $step[static::TRACE_FILE], needle: $krexxScr)
+            ) {
                 unset($backtrace[$key]);
             } else {
                 // No need to go further, because we should have passed the
                 // kreXX part.
                 // Reset the array keys, because the 0 is now missing.
-                return array_values($backtrace);
+                return array_values(array: $backtrace);
             }
         }
 

@@ -153,7 +153,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
             // And of course, there are no connectors.
             $this->firstRun = false;
             $this->addTypeHint($model);
-            return $this->pool->encodingService->encodeString((string) $model->getName());
+            return $this->pool->encodingService->encodeString(data: (string) $model->getName());
         }
 
         $type = $model->getCodeGenType();
@@ -168,7 +168,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
 
         // I'm not really sure if it is possible to create element names that
         // we need to escape.
-        return $this->pool->encodingService->encodeString($result);
+        return $this->pool->encodingService->encodeString(data: $result);
     }
 
     /**
@@ -180,7 +180,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     {
         if (
             empty($name = (string) $model->getName())
-            || strpos($name, '$') !== 0
+            || !str_starts_with(haystack: $name, needle: '$')
         ) {
             // There is no name, no need for a hint.
             return;
@@ -188,7 +188,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
 
         $type = $model->getType() === static::TYPE_CLASS ? $model->getNormal() : $model->getType();
         foreach (static::TYPE_HINT_WHITE_LIST as $value) {
-            if (strpos($name, $value) !== false) {
+            if (str_contains(haystack: $name, needle: $value)) {
                 // We are analysing something like:
                 // $this->getWhatever();
                 // We can not type hint this.
@@ -343,7 +343,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         }
 
         // Escape it, just in case.
-        return $this->pool->encodingService->encodeString($name);
+        return $this->pool->encodingService->encodeString(data: $name);
     }
 
     /**
@@ -368,7 +368,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
             $default = 'NULL';
         } elseif ($default instanceof UnitEnum) {
             $default = get_class($default) . '::' . $default->name;
-        } elseif (is_object($default)) {
+        } elseif (is_object(value: $default)) {
             $default = 'new \\' .  get_class($default) . '()';
         } else {
             // Not sure if this is even possible, but I'm not taking my chances.

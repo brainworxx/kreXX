@@ -65,7 +65,7 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
     public function canHandle(Model $model): bool
     {
         $this->model = $model;
-        return is_object($model->getData());
+        return is_object(value: $model->getData());
     }
 
     /**
@@ -85,11 +85,11 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
         // Output data from the class.
         $result = $this->pool->render->renderExpandableChild(
             model: $this->dispatchProcessEvent(
-                $this->model->setType(type: static::TYPE_CLASS)
+                model: $this->model->setType(type: static::TYPE_CLASS)
                     ->addParameter(name: static::PARAM_DATA, value: $object)
                     ->addParameter(name: static::PARAM_NAME, value: $this->model->getName())
                     ->setNormal(normal: '\\' . get_class($object))
-                    ->setDomid($this->generateDomIdFromObject($object))
+                    ->setDomid(domid: $this->generateDomIdFromObject($object))
                     ->injectCallback(object: $this->pool->createClass(classname: Objects::class))
             )
         );

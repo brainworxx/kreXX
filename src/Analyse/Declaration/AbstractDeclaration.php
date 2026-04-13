@@ -117,7 +117,10 @@ abstract class AbstractDeclaration
     protected function formatNamedType(ReflectionNamedType $namedType): string
     {
         $result = $namedType->getName();
-        if (!in_array($result, ReturnType::ALLOWED_TYPES, true) && strpos($result, '\\') !== 0) {
+        if (
+            !in_array(needle: $result, haystack: ReturnType::ALLOWED_TYPES, strict: true)
+            && !str_starts_with(haystack: $result, needle: '\\')
+        ) {
             // Must be e un-namespaced class name.
             $result = '\\' . $result;
         }

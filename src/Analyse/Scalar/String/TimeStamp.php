@@ -75,10 +75,10 @@ class TimeStamp extends AbstractScalarAnalysis
 
         // Might be a regular time stamp, get a second impression.
         $metaTimestamp = $this->pool->messages->getHelp(key: 'metaTimestamp');
-        if ((string)$float === $string && strpos($string, '.') === false) {
+        if ((string)$float === $string && !str_contains(haystack: $string, needle: '.')) {
             $model->addToJson(
                 $metaTimestamp,
-                (new DateTime('@' . $float))->format('d.M Y H:i:s')
+                (new DateTime(datetime: '@' . $float))->format('d.M Y H:i:s')
             );
             return false;
         }
@@ -87,9 +87,9 @@ class TimeStamp extends AbstractScalarAnalysis
         try {
             $model->addToJson(
                 $metaTimestamp,
-                (DateTime::createFromFormat('U.u', $string)->format('d.M Y H:i:s.u'))
+                (DateTime::createFromFormat(format: 'U.u', datetime: $string)->format('d.M Y H:i:s.u'))
             );
-        } catch (Throwable $exception) {
+        } catch (Throwable) {
             // Do nothing
         }
 

@@ -41,7 +41,7 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
      */
     protected function gdImageHandler(GdImage $image): array
     {
-        if (!function_exists('image_type_to_mime_type')) {
+        if (!function_exists(function: 'image_type_to_mime_type')) {
             return ['error' => static::UNKNOWN_VALUE];
         }
         return [
@@ -66,7 +66,7 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
      */
     protected function socketAddressHandler(AddressInfo $address): array
     {
-        if (!function_exists('socket_addrinfo_explain')) {
+        if (!function_exists(function: 'socket_addrinfo_explain')) {
             return ['error' => static::UNKNOWN_VALUE];
         }
         return socket_addrinfo_explain($address);
@@ -83,7 +83,7 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
      */
     protected function openSslCertHandler(OpenSSLCertificate $certificate): array
     {
-        if (!function_exists('openssl_x509_parse')) {
+        if (!function_exists(function: 'openssl_x509_parse')) {
             return ['error' => static::UNKNOWN_VALUE];
         }
         return openssl_x509_parse($certificate);
@@ -100,10 +100,10 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
      */
     protected function curlHandler(CurlHandle $curlHandle): array
     {
-        if (!function_exists('curl_getinfo')) {
+        if (!function_exists(function: 'curl_getinfo')) {
             return ['error' => static::UNKNOWN_VALUE];
         }
-        return curl_getinfo($curlHandle);
+        return curl_getinfo(handle: $curlHandle);
     }
 
     /**
@@ -115,7 +115,7 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
     {
         $output = $this->dispatchStartEvent();
 
-        $this->pool->codegenHandler->setCodegenAllowed(false);
+        $this->pool->codegenHandler->setCodegenAllowed(bool: false);
         $data = $this->parameters[static::PARAM_DATA];
 
         // We iterate through the class list.
@@ -136,7 +136,7 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
             }
         }
 
-        $this->pool->codegenHandler->setCodegenAllowed(true);
+        $this->pool->codegenHandler->setCodegenAllowed(bool: true);
         return $output;
     }
 }

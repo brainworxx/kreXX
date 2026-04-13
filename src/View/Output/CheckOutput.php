@@ -107,10 +107,10 @@ class CheckOutput
         // When we have dispatched a PDF or Json, the browser will not be
         // able to render the HTML output correctly.
         foreach (headers_list() as $header) {
-            $header = strtolower($header);
+            $header = strtolower(string: $header);
             if (
-                strpos($header, 'content-type') !== false &&
-                strpos($header, 'html') === false
+                str_contains(haystack: $header, needle: 'content-type')
+                && !str_contains(haystack: $header, needle: 'html')
             ) {
                 // We do have none html content type.
                 return false;
@@ -170,7 +170,7 @@ class CheckOutput
     protected function checkWildcards(array $ipList, string $remote): bool
     {
         foreach ($ipList as $ip) {
-            $wildcardPos = strpos($ip, '*');
+            $wildcardPos = strpos(haystack: $ip, needle: '*');
             // Check if the ip has a wildcard.
             if ($wildcardPos !== false && substr(string: $remote, offset: 0, length: $wildcardPos) . '*' === $ip) {
                 return true;

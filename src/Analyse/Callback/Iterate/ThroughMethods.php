@@ -169,13 +169,15 @@ class ThroughMethods extends AbstractCallback implements
         $messages = $this->pool->messages;
         return [
             // Get the comment from the class, it's parents, interfaces or traits.
-            $messages->getHelp(key: 'metaComment') => $this->commentAnalysis->getComment($refMethod, $refClass),
+            $messages->getHelp(key: 'metaComment') => $this->commentAnalysis
+                ->getComment(reflection: $refMethod, reflectionClass: $refClass),
             // Get the method attributes.
-            $messages->getHelp(key: 'metaAttributes') => $this->attributes->getAttributes($refMethod),
+            $messages->getHelp(key: 'metaAttributes') => $this->attributes->getAttributes(reflection: $refMethod),
             // Get declaration place.
             $messages->getHelp(key: 'metaDeclaredIn') => $this->methodDeclaration->retrieveDeclaration($refMethod),
             // Get the return type.
-            $messages->getHelp(key: 'metaReturnType') => $this->returnType->getComment($refMethod, $refClass),
+            $messages->getHelp(key: 'metaReturnType') => $this->returnType
+                ->getComment(reflection: $refMethod, reflectionClass: $refClass),
         ];
     }
 

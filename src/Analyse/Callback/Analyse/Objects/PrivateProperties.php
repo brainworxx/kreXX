@@ -72,22 +72,22 @@ class PrivateProperties extends AbstractObjectAnalysis
         // We need to get all parent classes and then poll them for private
         // properties to get the whole picture.
         do {
-            $refProps = [...$refProps, ...$reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE)];
+            $refProps = [...$refProps, ...$reflectionClass->getProperties(filter: ReflectionProperty::IS_PRIVATE)];
             // And now for the parent class.
             $reflectionClass = $reflectionClass->getParentClass();
-        } while (is_object($reflectionClass));
+        } while (is_object(value: $reflectionClass));
 
         if (empty($refProps)) {
             return $output;
         }
 
-        usort($refProps, [$this, static::REFLECTION_SORTING]);
+        usort(array: $refProps, callback: [$this, static::REFLECTION_SORTING]);
 
         return $output .
             $this->getReflectionPropertiesData(
-                $refProps,
-                $ref,
-                $this->pool->messages->getHelp(key: 'privateProperties')
+                refProps: $refProps,
+                ref: $ref,
+                label: $this->pool->messages->getHelp(key: 'privateProperties')
             );
     }
 }

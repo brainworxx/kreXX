@@ -201,7 +201,7 @@ class Emergency implements ConfigConstInterface
         // Check Runtime.
         if ($this->timer < time()) {
             // This is taking longer than expected.
-            $this->pool->messages->addMessage('emergencyTimer');
+            $this->pool->messages->addMessage(key: 'emergencyTimer');
             Krexx::editSettings();
             Krexx::disable();
             $this->allIsOk = false;
@@ -226,7 +226,7 @@ class Emergency implements ConfigConstInterface
         if ($this->serverMemoryLimit > 2) {
             // Is more left than is configured?
             if (($this->serverMemoryLimit - memory_get_usage()) < $this->minMemoryLeft) {
-                $this->pool->messages->addMessage('emergencyMemory');
+                $this->pool->messages->addMessage(key: 'emergencyMemory');
                 // Show settings to give the dev to repair the situation.
                 Krexx::editSettings();
                 Krexx::disable();
@@ -307,7 +307,7 @@ class Emergency implements ConfigConstInterface
 
         // Give feedback if this is our last call.
         if ($this->krexxCount === ($this->maxCall - 1)) {
-            $this->pool->messages->addMessage('maxCallReached');
+            $this->pool->messages->addMessage(key: 'maxCallReached');
         }
 
         // Count goes up.

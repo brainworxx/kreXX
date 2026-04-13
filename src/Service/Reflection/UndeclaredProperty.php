@@ -103,7 +103,7 @@ class UndeclaredProperty extends ReflectionProperty
      * @param string|int $name
      *   The name of the property.
      */
-    public function __construct(ReflectionClass $ref, $name)
+    public function __construct(ReflectionClass $ref, string|int $name)
     {
         $this->declaringClass = $ref;
         $this->propertyName = $name;

@@ -94,7 +94,7 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface, Proces
 
         return $this->pool->render->renderExpandableChild(
             model: $this->dispatchProcessEvent(
-                $this->model->setNormal(normal: $this->model->getData())->setType(type: static::TYPE_INTEGER)
+                model: $this->model->setNormal(normal: $this->model->getData())->setType(type: static::TYPE_INTEGER)
             )
         );
     }

@@ -78,20 +78,20 @@ class PublicProperties extends AbstractObjectAnalysis
         //
         // What is left are those special properties that were dynamically
         // set during runtime, but were not declared in the class.
-        foreach ($ref->getProperties(ReflectionProperty::IS_PUBLIC) as $refProp) {
+        foreach ($ref->getProperties(filter: ReflectionProperty::IS_PUBLIC) as $refProp) {
             $publicProps[$refProp->name] = $refProp;
         }
 
-        $refProps = $this->handleUndeclaredProperties($data, $publicProps, $ref);
+        $refProps = $this->handleUndeclaredProperties(data: $data, publicProps: $publicProps, ref: $ref);
         if (empty($refProps)) {
             return $output;
         }
 
-        usort($refProps, [$this, static::REFLECTION_SORTING]);
+        usort(array:$refProps, callback: [$this, static::REFLECTION_SORTING]);
         // Adding an HR to reflect that the following stuff are not public
         // properties anymore.
         return $output .
-            $this->getReflectionPropertiesData($refProps, $ref) .
+            $this->getReflectionPropertiesData(refProps: $refProps, ref: $ref) .
             $this->pool->render->renderSingeChildHr();
     }
 
@@ -106,14 +106,14 @@ class PublicProperties extends AbstractObjectAnalysis
      * @return array
      */
     protected function handleUndeclaredProperties(
-        $data,
+        mixed $data,
         array $publicProps,
         ReflectionClass $ref
     ): array {
         // For every not-declared property, we add another reflection.
         // Those are simply added during runtime
-        foreach (array_keys(array_diff_key($ref->getObjectVars(), $publicProps)) as $key) {
-            $publicProps[$key] = new UndeclaredProperty($ref, $key);
+        foreach (array_keys(array: array_diff_key($ref->getObjectVars(), $publicProps)) as $key) {
+            $publicProps[$key] = new UndeclaredProperty(ref: $ref, name: $key);
         }
 
         // Test for hidden properties
@@ -126,7 +126,7 @@ class PublicProperties extends AbstractObjectAnalysis
         }
 
         foreach ($missingProperties as $propertyName) {
-            $publicProps[$propertyName] = new HiddenProperty($ref, $propertyName);
+            $publicProps[$propertyName] = new HiddenProperty(ref: $ref, name: $propertyName);
         }
 
         return $publicProps;

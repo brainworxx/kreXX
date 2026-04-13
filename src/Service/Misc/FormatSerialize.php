@@ -111,13 +111,13 @@ class FormatSerialize
      */
     protected function readTo(string $stopSting): string
     {
-        $position = strpos($this->string, $stopSting, $this->offset);
+        $position = strpos(haystack: $this->string, needle: $stopSting, offset: $this->offset);
 
         if ($position === false) {
-            throw new Exception(__FUNCTION__);
+            throw new Exception(message: __FUNCTION__);
         }
 
-        return $this->read($position - $this->offset);
+        return $this->read(length: $position - $this->offset);
     }
 
     /**

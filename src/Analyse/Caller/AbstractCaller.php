@@ -142,7 +142,7 @@ abstract class AbstractCaller
     protected function getType(string $headline, string $varname, $data): string
     {
         if (empty($headline)) {
-            $type = is_object($data) ? get_class($data) : gettype($data);
+            $type = is_object(value: $data) ? get_class($data) : gettype($data);
             if ($type === 'double') {
                 $type = 'float';
             }
@@ -182,7 +182,7 @@ abstract class AbstractCaller
         $ssl = !empty($server['HTTPS']) && $server['HTTPS'] === 'on';
 
         $protocol = strtolower($server['SERVER_PROTOCOL']);
-        $protocol = substr(string: $protocol, offset: 0, length: strpos($protocol, '/'));
+        $protocol = substr(string: $protocol, offset: 0, length: strpos(haystack: $protocol, needle: '/'));
         if ($ssl) {
             $protocol .= 's';
         }
@@ -193,6 +193,6 @@ abstract class AbstractCaller
 
         $host = $server['HTTP_HOST'] ?? $server['SERVER_NAME'] . $port;
 
-        return $this->pool->encodingService->encodeString($protocol . '://' . $host . $server['REQUEST_URI']);
+        return $this->pool->encodingService->encodeString(data: $protocol . '://' . $host . $server['REQUEST_URI']);
     }
 }

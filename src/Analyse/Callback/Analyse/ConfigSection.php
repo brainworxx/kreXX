@@ -98,7 +98,7 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
                 $model->setData(data: $name)
                     ->setName(name: $value)
                     ->setNormal(normal: $setting->getSource())
-                    ->setType(type: $setting->getType())->setDomid($id)
+                    ->setType(type: $setting->getType())->setDomid(domid: $id)
             );
         }
 

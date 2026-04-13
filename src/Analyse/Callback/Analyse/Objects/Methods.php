@@ -72,19 +72,23 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
             $this->pool->scope->isInScope();
         $doPrivate = $this->pool->config->getSetting(name: static::SETTING_ANALYSE_PRIVATE_METHODS) ||
             $this->pool->scope->isInScope();
-        $domId = $this->generateDomIdFromClassname($ref->getName(), $doProtected, $doPrivate);
+        $domId = $this->generateDomIdFromClassname(
+            data: $ref->getName(),
+            doProtected: $doProtected,
+            doPrivate: $doPrivate
+        );
 
         // We need to check, if we have a meta recursion here.
-        if ($this->pool->recursionHandler->isInMetaHive($domId)) {
+        if ($this->pool->recursionHandler->isInMetaHive(domId: $domId)) {
             // We have been here before.
             // We skip this one, and leave it to the js recursion handler!
             $metaMethods = $this->pool->messages->getHelp(key: 'metaMethods');
             return $output .
                 $this->pool->render->renderRecursion(
-                    $this->dispatchEventWithModel(
+                    model: $this->dispatchEventWithModel(
                         name: static::EVENT_MARKER_RECURSION,
                         model: $this->pool->createClass(classname: Model::class)
-                            ->setDomid($domId)
+                            ->setDomid(domid: $domId)
                             ->setNormal(normal: $metaMethods)
                             ->setName(name: $metaMethods)
                             ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
@@ -92,7 +96,12 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
                 );
         }
 
-        return $output . $this->analyseMethods($ref, $domId, $doProtected, $doPrivate);
+        return $output . $this->analyseMethods(
+            ref: $ref,
+            domId: $domId,
+            doProtected: $doProtected,
+            doPrivate: $doPrivate
+        );
     }
 
     /**
@@ -112,12 +121,12 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
      */
     protected function analyseMethods(ReflectionClass $ref, string $domId, bool $doProtected, bool $doPrivate): string
     {
-        $methods = $ref->getMethods(ReflectionMethod::IS_PUBLIC);
+        $methods = $ref->getMethods(filter: ReflectionMethod::IS_PUBLIC);
         if ($doProtected) {
-            $methods = [...$methods, ...$ref->getMethods(ReflectionMethod::IS_PROTECTED)];
+            $methods = [...$methods, ...$ref->getMethods(filter: ReflectionMethod::IS_PROTECTED)];
         }
         if ($doPrivate) {
-            $methods = [...$methods, ...$ref->getMethods(ReflectionMethod::IS_PRIVATE)];
+            $methods = [...$methods, ...$ref->getMethods(filter: ReflectionMethod::IS_PRIVATE)];
         }
 
         // Is there anything to analyse?
@@ -126,10 +135,10 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
         }
 
         // Now that we have something to analyse, register the DOM ID.
-        $this->pool->recursionHandler->addToMetaHive($domId);
+        $this->pool->recursionHandler->addToMetaHive(domId: $domId);
 
         // We need to sort these alphabetically.
-        usort($methods, [$this, static::REFLECTION_SORTING]);
+        usort(array: $methods, callback: [$this, static::REFLECTION_SORTING]);
 
         return $this->pool->render->renderExpandableChild(
             model: $this->dispatchEventWithModel(
@@ -139,7 +148,7 @@ class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
                     ->setType(type: $this->pool->messages->getHelp(key: 'classInternals'))
                     ->addParameter(name: static::PARAM_DATA, value: $methods)
                     ->addParameter(name: static::PARAM_REF, value: $ref)
-                    ->setDomId($domId)
+                    ->setDomId(domid: $domId)
                     ->injectCallback(object: $this->pool->createClass(classname: ThroughMethods::class))
             )
         );

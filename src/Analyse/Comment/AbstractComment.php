@@ -140,7 +140,7 @@ abstract class AbstractComment
             // Replace the first we find. There may be others in there,
             // and we must not replace them with themselves, causing
             // the comment to repeat itself.
-            if (strpos($originalComment, $pattern) !== false) {
+            if (str_contains(haystack: $originalComment, needle: $pattern)) {
                 // Found one, and end the foreach.
                 $originalComment = str_replace($pattern, $comment, $originalComment);
                 break;

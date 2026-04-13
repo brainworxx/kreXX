@@ -133,12 +133,12 @@ class ThroughProperties extends AbstractCallback implements
             ->setName(name: $this->retrievePropertyName($refProperty))
             ->addToJson(
                 $messages->getHelp(key: 'metaComment'),
-                $this->propertyComment->getComment($refProperty)
+                $this->propertyComment->getComment(reflection: $refProperty)
             )
             ->addToJson(
                 $messages->getHelp(key: 'metaAttributes'),
                 // Meh, the addToJson method does not support real new lines.
-                nl2br($this->attributes->getAttributes($refProperty))
+                nl2br($this->attributes->getAttributes(reflection: $refProperty))
             )
             ->addToJson(
                 $messages->getHelp(key: 'metaDeclaredIn'),
@@ -204,7 +204,7 @@ class ThroughProperties extends AbstractCallback implements
             $result = var_export($default, true);
         }
 
-        return nl2br($this->pool->encodingService->encodeString($result));
+        return nl2br($this->pool->encodingService->encodeString(data: $result));
     }
 
     /**
@@ -256,7 +256,7 @@ class ThroughProperties extends AbstractCallback implements
         ) {
             // There can be anything in there. We must take special preparations
             // for the code generation.
-            $propName = $this->pool->encodingService->encodeString($propName);
+            $propName = $this->pool->encodingService->encodeString(data: $propName);
         }
 
         return $propName;

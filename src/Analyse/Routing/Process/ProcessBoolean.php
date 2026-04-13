@@ -78,7 +78,7 @@ class ProcessBoolean extends AbstractRouting implements ProcessInterface, Proces
         $data = $this->model->getData() ? 'TRUE' : 'FALSE';
         return $this->pool->render->renderExpandableChild(
             model: $this->dispatchProcessEvent(
-                $this->model->setData(data: $data)
+                model: $this->model->setData(data: $data)
                     ->setNormal(normal: $data)
                     ->setType(type: static::TYPE_BOOL)
             )

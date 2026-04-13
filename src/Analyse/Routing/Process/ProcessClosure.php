@@ -102,7 +102,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
             model: $this->model->setType(type: static::TYPE_CLOSURE)
                 ->setNormal(normal: static::UNKNOWN_VALUE)
                 ->setConnectorParameters($this->retrieveParameterList($ref, $result))
-                ->setDomid($this->generateDomIdFromObject($data))
+                ->setDomid(domid: $this->generateDomIdFromObject($data))
                 ->setConnectorType(type: static::CONNECTOR_METHOD)
                 ->addParameter(name: static::PARAM_DATA, value: $result)
                 ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
@@ -126,7 +126,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
         // Adding comments from the file.
         $result[$messages->getHelp(key: 'metaComment')] = $this->pool
             ->createClass(classname: Functions::class)
-            ->getComment($ref);
+            ->getComment(reflection: $ref);
 
         // Adding the sourcecode
         $result[$messages->getHelp(key: 'metaSource')] = $this->retrieveSourceCode($ref);
@@ -143,7 +143,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
 
         // Adding the return type.
         $result[$messages->getHelp(key: 'metaReturnType')] = $this->pool->createClass(classname: ReturnType::class)
-            ->getComment($ref);
+            ->getComment(reflection: $ref);
 
         return $result;
     }

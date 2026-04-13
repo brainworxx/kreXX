@@ -112,10 +112,10 @@ class Recursion
      * @return bool
      *   Boolean which shows whether we are facing a recursion.
      */
-    public function isInHive($bee): bool
+    public function isInHive(object|array $bee): bool
     {
         // Check objects.
-        if (is_object($bee)) {
+        if (is_object(value: $bee)) {
             return $this->recursionHive->offsetExists($bee);
         }
 

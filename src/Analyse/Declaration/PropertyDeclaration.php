@@ -127,7 +127,7 @@ class PropertyDeclaration extends AbstractDeclaration
 
         foreach ($traits as $trait) {
             if ($trait->hasProperty($propertyName)) {
-                if (count($trait->getTraitNames()) > 0) {
+                if (count(value: $trait->getTraitNames()) > 0) {
                     // Multiple layers of traits!
                     return null;
                 }

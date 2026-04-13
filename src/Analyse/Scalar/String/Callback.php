@@ -114,7 +114,7 @@ class Callback extends AbstractScalarAnalysis
         $messages = $this->pool->messages;
         $meta = [
             $messages->getHelp(key: 'metaComment') => $this->pool
-                ->createClass(classname: Functions::class)->getComment($this->reflectionFunction),
+                ->createClass(classname: Functions::class)->getComment(reflection: $this->reflectionFunction),
             $messages->getHelp(key: 'metaDeclaredIn') => $functionDeclaration
                 ->retrieveDeclaration($this->reflectionFunction)
         ];

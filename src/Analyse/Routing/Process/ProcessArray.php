@@ -102,7 +102,7 @@ class ProcessArray extends AbstractProcessNoneScalar implements
     protected function handleNoneScalar(): string
     {
         $this->pool->emergencyHandler->upOneNestingLevel();
-        $count = count($this->model->getData());
+        $count = count(value: $this->model->getData());
 
         if ($count > $this->arrayCountLimit) {
             // Budget array analysis.
@@ -116,7 +116,7 @@ class ProcessArray extends AbstractProcessNoneScalar implements
         // Dumping all Properties.
         $result = $this->pool->render->renderExpandableChild(
             model: $this->dispatchProcessEvent(
-                $this->model->setType(type: static::TYPE_ARRAY)
+                model: $this->model->setType(type: static::TYPE_ARRAY)
                     ->setNormal(normal: $count . $this->pool->messages->getHelp(key: 'countElements'))
                     ->addParameter(name: static::PARAM_DATA, value: $this->model->getData())
                     ->addParameter(name: static::PARAM_MULTILINE, value: false)

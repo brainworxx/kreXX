@@ -72,7 +72,7 @@ class Encoding
      */
     protected function registerPolyfill(): void
     {
-        if (!function_exists('mb_detect_encoding')) {
+        if (!function_exists(function: 'mb_detect_encoding')) {
             /**
              * Cheap dummy "polyfill" for mb_detect_encoding
              *
@@ -145,7 +145,7 @@ class Encoding
             }
 
             // Tell the dev, that we have a problem.
-            $this->pool->messages->addMessage('mbstringNotInstalled');
+            $this->pool->messages->addMessage(key: 'mbstringNotInstalled');
         }
     }
 

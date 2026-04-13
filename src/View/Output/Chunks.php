@@ -209,7 +209,7 @@ class Chunks implements ConfigConstInterface
     {
         // Check for HTML output.
         if ($this->pool->createClass(classname: CheckOutput::class)->isOutputHtml()) {
-            $chunkPos = strpos($string, static::STRING_DELIMITER);
+            $chunkPos = strpos(haystack: $string, needle: static::STRING_DELIMITER);
 
             while ($chunkPos !== false) {
                 // We have a chunk, we send the html part.
@@ -221,11 +221,11 @@ class Chunks implements ConfigConstInterface
                 // We translate the first chunk.
                 $result = explode(separator: static::STRING_DELIMITER, string: $chunkPart, limit: 3);
                 $string = str_replace(
-                    static::STRING_DELIMITER . $result[1] . static::STRING_DELIMITER,
-                    $this->dechunkMe($result[1]),
-                    $chunkPart
+                    search: static::STRING_DELIMITER . $result[1] . static::STRING_DELIMITER,
+                    replace: $this->dechunkMe(key: $result[1]),
+                    subject: $chunkPart
                 );
-                $chunkPos = strpos($string, static::STRING_DELIMITER);
+                $chunkPos = strpos(haystack: $string, needle: static::STRING_DELIMITER);
             }
 
             // No more chunk keys, we send what is left.
@@ -253,7 +253,7 @@ class Chunks implements ConfigConstInterface
 
         // Determine the filename.
         $filename = $this->logDir . $this->fileStamp . '.Krexx.html';
-        $chunkPos = strpos($string, static::STRING_DELIMITER);
+        $chunkPos = strpos(haystack: $string, needle: static::STRING_DELIMITER);
 
         while ($chunkPos !== false) {
             // We have a chunk, we save the html part.
@@ -270,7 +270,7 @@ class Chunks implements ConfigConstInterface
                 $this->dechunkMe($result[1]),
                 $chunkPart
             );
-            $chunkPos = strpos($string, static::STRING_DELIMITER);
+            $chunkPos = strpos(haystack: $string, needle: static::STRING_DELIMITER);
         }
 
         // No more chunks, we save what is left.
@@ -283,7 +283,7 @@ class Chunks implements ConfigConstInterface
             // available in $this->metadata.
             $this->pool->fileService->deleteFile($filename);
             // Create a new metadata file with new info.
-            $this->pool->fileService->putFileContents($filename, json_encode($this->metadata));
+            $this->pool->fileService->putFileContents($filename, json_encode(value: $this->metadata));
         }
     }
 

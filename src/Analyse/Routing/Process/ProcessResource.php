@@ -89,7 +89,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
             case $transRes . ' (curl)':
                 // No need to check for a curl installation, because we are
                 // facing a curl instance right here.
-                $meta = curl_getinfo($resource);
+                $meta = curl_getinfo(handle: $resource);
                 break;
 
             case $transRes . ' (process)':
@@ -103,7 +103,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
         // Output metadata from the class.
         return $this->pool->render->renderExpandableChild(
             model: $this->dispatchProcessEvent(
-                $this->model->setType(type: static::TYPE_RESOURCE)
+                model: $this->model->setType(type: static::TYPE_RESOURCE)
                     ->addParameter(name: static::PARAM_DATA, value: $meta)
                     ->setNormal(normal: $typeString)
                     ->injectCallback(object: $this->pool->createClass(classname: ThroughResource::class))

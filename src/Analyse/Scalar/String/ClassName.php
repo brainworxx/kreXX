@@ -78,13 +78,13 @@ class ClassName extends AbstractScalarAnalysis
     {
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
         try {
-            if (strpos($string, '\\') !== false && class_exists($string)) {
+            if (str_contains(haystack: $string, needle: '\\') && class_exists(class: $string)) {
                 $this->handledValue = $string;
                 $this->model = $model;
                 restore_error_handler();
                 return true;
             }
-        } catch (Throwable $throwable) {
+        } catch (Throwable) {
         }
 
         restore_error_handler();

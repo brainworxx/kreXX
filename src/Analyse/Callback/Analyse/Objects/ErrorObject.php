@@ -106,8 +106,8 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
         }
 
         // Escape it, there can be some bad stuff in there.
-        $message = $this->pool->encodingService->encodeString($message);
-        $this->pool->messages->addMessage('exceptionText', [get_class($data), $message], true);
+        $message = $this->pool->encodingService->encodeString(data: $message);
+        $this->pool->messages->addMessage(key: 'exceptionText', args: [get_class($data), $message], isThrowAway: true);
     }
 
     /**
@@ -121,7 +121,7 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
         $output = '';
         $trace = $this->parameters[static::PARAM_DATA]->getTrace();
         if (is_array($trace)) {
-            $this->pool->codegenHandler->setCodegenAllowed(false);
+            $this->pool->codegenHandler->setCodegenAllowed(bool: false);
             $output .= $this->pool->render->renderExpandableChild(
                 model: $this->dispatchEventWithModel(
                     name: static::TRACE_BACKTRACE,
@@ -134,7 +134,7 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
                         )
                 )
             );
-            $this->pool->codegenHandler->setCodegenAllowed(true);
+            $this->pool->codegenHandler->setCodegenAllowed(bool: true);
         }
 
         return $output;

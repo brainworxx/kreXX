@@ -141,7 +141,7 @@ class Attributes
             case $parameter instanceof UnitEnum:
                 $result .= get_class($parameter) . '::' . $parameter->name;
                 break;
-            case is_object($parameter):
+            case is_object(value: $parameter):
                 // If the parameter is an object, we return its class name.
                 $result .= get_class($parameter) . '::class,';
         }

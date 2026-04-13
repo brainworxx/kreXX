@@ -98,7 +98,7 @@ class Scope implements CallbackConstInterface
             $this->scope = $scope;
             // Now that we have a scope, we can actually generate code to
             // reach the variables inside the analysis.
-            $this->pool->codegenHandler->setCodegenAllowed(true);
+            $this->pool->codegenHandler->setCodegenAllowed(bool: true);
         }
     }
 
@@ -146,14 +146,14 @@ class Scope implements CallbackConstInterface
 
         $messages = $this->pool->messages;
         $privateInherited = $messages->getHelp(key: 'private') . ' ' . $messages->getHelp(key: 'inherited');
-        if (strpos($model->getType(), $privateInherited) !== false) {
+        if (str_contains(haystack: $model->getType(), needle:  $privateInherited)) {
             // Inherited private properties or methods are not accessible from the
             // $this scope. We need to make sure that we do not generate any code
             // for them.
             return false;
         }
 
-        if (is_object($model->getData()) || is_array($model->getData())) {
+        if (is_object(value: $model->getData()) || is_array(value: $model->getData())) {
             // When analysing a class or array, we have + 1 on our nesting level, when
             // coming from the code generation. That is, because that class is currently
             // being analysed.

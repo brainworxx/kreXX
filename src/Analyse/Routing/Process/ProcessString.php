@@ -106,7 +106,7 @@ class ProcessString extends AbstractRouting implements
         } else {
             // Use a "polyfill" dummy, tell the dev that we have a problem.
             $this->bufferInfo = $pool->createClass(classname: FileinfoDummy::class);
-            $pool->messages->addMessage('fileinfoNotInstalled');
+            $pool->messages->addMessage(key: 'fileinfoNotInstalled');
         }
 
         $this->analyseScalar = $this->pool->config->getSetting(name: static::SETTING_ANALYSE_SCALAR);
@@ -147,23 +147,23 @@ class ProcessString extends AbstractRouting implements
         $length = $this->retrieveLengthAndEncoding($data);
         if ($length > 50 || strstr($data, PHP_EOL) !== false) {
             $cut = $this->pool->encodingService->encodeString(
-                $this->pool->encodingService->mbSubStr(string: $data, start: 0, length: 50)
+                data: $this->pool->encodingService->mbSubStr(string: $data, start: 0, length: 50)
             ) . static::UNKNOWN_VALUE;
 
-            $data = $this->pool->encodingService->encodeString($data);
+            $data = $this->pool->encodingService->encodeString(data: $data);
 
             $this->model->setHasExtra(value: true)
                 ->setNormal(normal: $cut)
                 ->setData(data: $data);
         } else {
-            $this->model->setNormal(normal: $this->pool->encodingService->encodeString($data));
+            $this->model->setNormal(normal: $this->pool->encodingService->encodeString(data: $data));
         }
 
         if ($this->analyseScalar) {
             return $this->handleStringScalar($originalData);
         }
 
-        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent($this->model));
+        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent(model: $this->model));
     }
 
     /**
@@ -179,12 +179,12 @@ class ProcessString extends AbstractRouting implements
     {
         $this->scalarString->handle($this->model, $originalData);
         $domId = $this->model->getDomid();
-        if ($domId !== '' && $this->pool->recursionHandler->isInMetaHive($domId)) {
-            return $this->pool->render->renderRecursion($this->model);
+        if ($domId !== '' && $this->pool->recursionHandler->isInMetaHive(domId: $domId)) {
+            return $this->pool->render->renderRecursion(model: $this->model);
         }
 
-        $this->pool->recursionHandler->addToMetaHive($domId);
-        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent($this->model));
+        $this->pool->recursionHandler->addToMetaHive(domId: $domId);
+        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent(model: $this->model));
     }
 
     /**

@@ -97,8 +97,8 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
             // We need to deactivate the current error handling to
             // prevent the host system to do anything stupid.
             set_error_handler(callback: $this->pool->retrieveErrorCallback());
-            $parameter = iterator_to_array($data);
-        } catch (Throwable $e) {
+            $parameter = iterator_to_array(iterator: $data);
+        } catch (Throwable) {
             //Restore the previous error handler, and return an empty string.
             restore_error_handler();
             $this->pool->emergencyHandler->downOneNestingLevel();
@@ -107,7 +107,7 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
 
         // Reactivate whatever error handling we had previously.
         restore_error_handler();
-        return $this->analyseTraversableResult($data, $parameter);
+        return $this->analyseTraversableResult(originalClass: $data, result: $parameter);
     }
 
     /**
@@ -124,8 +124,7 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
     protected function analyseTraversableResult(object $originalClass, array $result): string
     {
         // Direct access to the iterator object,de depending on the object itself.
-        $multiline = !($originalClass instanceof ArrayAccess)
-            || $originalClass instanceof SplObjectStorage;
+        $multiline = !($originalClass instanceof ArrayAccess) || $originalClass instanceof SplObjectStorage;
         $messages = $this->pool->messages;
 
         /** @var Model $model */
@@ -134,12 +133,12 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
             ->setType(type: static::TYPE_FOREACH)
             ->addParameter(name: static::PARAM_DATA, value: $result)
             ->addParameter(name: static::PARAM_MULTILINE, value: $multiline)
-            ->addToJson($messages->getHelp(key: 'metaLength'), (string)count($result));
+            ->addToJson($messages->getHelp(key: 'metaLength'), (string)count(value: $result));
 
         // Check, if we are handling a huge array. Huge arrays tend to result in a huge
         // output, maybe even triggering an emergency break. to avoid this, we give them
         // a special callback.
-        if (count($result) > (int) $this->pool->config->getSetting(name: static::SETTING_ARRAY_COUNT_LIMIT)) {
+        if (count(value: $result) > (int) $this->pool->config->getSetting(name: static::SETTING_ARRAY_COUNT_LIMIT)) {
             $model->injectCallback(object: $this->pool->createClass(classname: ThroughLargeArray::class))
                 ->setNormal(normal: $messages->getHelp(key: 'simplifiedTraversableInfo'))
                 ->setHelpid(helpId: 'simpleArray');

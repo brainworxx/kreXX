@@ -93,7 +93,7 @@ class ReturnType extends AbstractComment
         $result = $this->pool->createClass(classname: MethodDeclaration::class)
             ->retrieveReturnType($reflection);
         if ($result !== '') {
-            return $this->pool->encodingService->encodeString($result);
+            return $this->pool->encodingService->encodeString(data: $result);
         }
 
         // Fallback to the comments parsing.
@@ -123,19 +123,19 @@ class ReturnType extends AbstractComment
     {
         $resultToken = strtok($comment . ' ', ' ');
         $result = '';
-        if (strpos($resultToken, '$this') === 0 && $reflectionClass !== null) {
+        if (str_starts_with(haystack: $resultToken, needle: '$this') && $reflectionClass !== null) {
             // @return $this
             // And we know what $this actually is.
-            $result = $this->pool->encodingService->encodeString('\\' . $reflectionClass->getName());
+            $result = $this->pool->encodingService->encodeString(data: '\\' . $reflectionClass->getName());
         } elseif (
             // Inside the whitelist
-            in_array($resultToken, static::ALLOWED_TYPES, true)
+            in_array(needle: $resultToken, haystack: static::ALLOWED_TYPES, strict: true)
             // Looks like a class name with namespace.
-            || strpos($resultToken, '\\') === 0
+            || str_starts_with(haystack: $resultToken, needle: '\\')
             // Multiple types.
-            || strpos($resultToken, '|') !== false
+            || str_contains(haystack: $resultToken, needle: '|')
         ) {
-            $result = $this->pool->encodingService->encodeString($resultToken);
+            $result = $this->pool->encodingService->encodeString(data: $resultToken);
         }
 
         return $result;

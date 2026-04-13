@@ -119,7 +119,7 @@ class File
             $result .= $this->pool->render->renderBacktraceSourceLine(
                 $className,
                 $realLineNo,
-                $this->pool->encodingService->encodeString($content[$currentLineNo], true)
+                $this->pool->encodingService->encodeString(data: $content[$currentLineNo], code: true)
             );
         }
 
@@ -216,7 +216,7 @@ class File
         if (!$this->fileIsReadable($filePath)) {
             if ($showError) {
                 // This file was not readable! We need to tell the user!
-                $this->pool->messages->addMessage('fileserviceAccess', [$filePath], true);
+                $this->pool->messages->addMessage(key: 'fileserviceAccess', args: [$filePath], isThrowAway: true);
             }
             // Return empty string.
             return '';
@@ -228,7 +228,7 @@ class File
         $file = fopen($filePath, 'r');
         if ($file === false) {
             // File opening just failed!
-            $this->pool->messages->addMessage('fileserviceAccess', [$filePath], true);
+            $this->pool->messages->addMessage(key: 'fileserviceAccess', args: [$filePath], isThrowAway: true);
             restore_error_handler();
             return '';
         }
@@ -283,7 +283,7 @@ class File
             chmod($realpath, 0777);
             if (!unlink($realpath)) {
                 // We have a permission problem here!
-                $this->pool->messages->addMessage('fileserviceDelete', [$realpath]);
+                $this->pool->messages->addMessage(key: 'fileserviceDelete', args: [$realpath]);
             }
         }
 
