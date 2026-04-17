@@ -88,21 +88,21 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
         /** @var Closure $data */
         $data = $this->model->getData();
         // Remember that we've been here before.
-        $this->pool->recursionHandler->addToHive($data);
+        $this->pool->recursionHandler->addToHive(bee: $data);
 
         try {
-            $ref = new ReflectionFunction($data);
-        } catch (ReflectionException $e) {
+            $ref = new ReflectionFunction(function: $data);
+        } catch (ReflectionException) {
             // Not sure how this can happen.
             return '';
         }
 
-        $result = $this->retrieveMetaData($ref);
-        return $this->pool->render->renderExpandableChild($this->dispatchProcessEvent(
+        $result = $this->retrieveMetaData(ref: $ref);
+        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent(
             model: $this->model->setType(type: static::TYPE_CLOSURE)
                 ->setNormal(normal: static::UNKNOWN_VALUE)
-                ->setConnectorParameters($this->retrieveParameterList($ref, $result))
-                ->setDomid(domid: $this->generateDomIdFromObject($data))
+                ->setConnectorParameters(params: $this->retrieveParameterList(ref: $ref, result: $result))
+                ->setDomid(domid: $this->generateDomIdFromObject(data: $data))
                 ->setConnectorType(type: static::CONNECTOR_METHOD)
                 ->addParameter(name: static::PARAM_DATA, value: $result)
                 ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
@@ -185,13 +185,12 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
         $paramList = '';
         foreach ($ref->getParameters() as $key => $reflectionParameter) {
             $paramList .=  $result[$this->pool->messages->getHelp(key: 'metaParamNo') . ++$key] = $this->pool
-                ->codegenHandler
-                ->parameterToString($reflectionParameter);
+                ->codegenHandler->parameterToString(reflectionParameter: $reflectionParameter);
             // We add a comma to the parameter list, to separate them for a
             // better readability.
             $paramList .= ', ';
         }
 
-        return rtrim($paramList, ', ');
+        return rtrim(string: $paramList, characters: ', ');
     }
 }

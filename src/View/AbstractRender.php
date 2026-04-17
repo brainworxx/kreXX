@@ -86,8 +86,8 @@ abstract class AbstractRender implements RenderInterface
         $this->pool->render = $this;
 
         // Prepare the template file cache.
-        foreach (glob(($this->pool->config->getSkinDirectory()) . '*.html') as $filePath) {
-            $this->fileCache[basename($filePath, '.html')] = $pool->fileService->getFileContents($filePath);
+        foreach (glob(pattern: $this->pool->config->getSkinDirectory() . '*.html') as $filePath) {
+            $this->fileCache[basename($filePath, '.html')] = $pool->fileService->getFileContents(filePath: $filePath);
         }
     }
 
@@ -129,7 +129,7 @@ abstract class AbstractRender implements RenderInterface
      */
     protected function generateDataAttribute(string $name, string $data): string
     {
-        return ' data-' . $name . '="' . str_replace('"', '&#34;', $data) . '" ';
+        return ' data-' . $name . '="' . str_replace(search: '"', replace: '&#34;', subject: $data) . '" ';
     }
 
     /**
@@ -149,6 +149,6 @@ abstract class AbstractRender implements RenderInterface
             $typeClasses .= 'k' . $typeClass . ' ';
         }
 
-        return strtolower($typeClasses);
+        return strtolower(string: $typeClasses);
     }
 }

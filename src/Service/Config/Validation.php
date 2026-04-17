@@ -141,7 +141,7 @@ class Validation extends Fallback
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
 
         $this->methodBlacklist = SettingsGetter::getBlacklistDebugMethods();
         $this->classBlacklist = [
@@ -178,13 +178,13 @@ class Validation extends Fallback
      * @return bool
      *   If it was evaluated.
      */
-    public function evaluateSetting(string $group, string $name, $value): bool
+    public function evaluateSetting(string $group, string $name, string|int|bool|null $value): bool
     {
         if ($group === static::SECTION_FE_EDITING) {
             // These settings can never be changed in the frontend.
             // But we may decide to display or hide them.
-            return !in_array($name, $this->feDoNotEdit, true) ||
-                in_array($value, static::FE_MINIMAL_SETTINGS, true);
+            return !in_array(needle: $name, haystack: $this->feDoNotEdit, strict: true) ||
+                in_array(needle: $value, haystack: static::FE_MINIMAL_SETTINGS, strict: true);
         }
 
         // We simply call the configured evaluation method.
@@ -193,13 +193,13 @@ class Validation extends Fallback
             return $callback($value, $this->pool);
         }
 
-        return $this->$callback($value, $name, $group);
+        return $this->$callback(value: $value, name: $name, group: $group);
     }
 
     /**
      * We check the configuration for this skin.
      *
-     * @param string|int|bool|null $value
+     * @param bool|int|string|null $value
      *   The value we want to evaluate
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
@@ -207,16 +207,16 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalSkin($value, string $name): bool
+    protected function evalSkin(bool|int|string|null $value, string $name, ?string $group = null): bool
     {
         $result = isset($this->skinConfiguration[$value]) &&
-            class_exists($this->skinConfiguration[$value][static::SKIN_CLASS]) &&
+            class_exists(class: $this->skinConfiguration[$value][static::SKIN_CLASS]) &&
             $this->pool->fileService->fileIsReadable(
-                $this->skinConfiguration[$value][static::SKIN_DIRECTORY] . 'header.html'
+                filePath: $this->skinConfiguration[$value][static::SKIN_DIRECTORY] . 'header.html'
             );
 
         if (!$result) {
-            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst($name));
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst(string: $name));
         }
 
         return $result;
@@ -225,7 +225,7 @@ class Validation extends Fallback
     /**
      * We are expecting 'browser' or 'file'.
      *
-     * @param string|int|bool|null $value
+     * @param bool|int|string|null $value
      *   The value we want to evaluate
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
@@ -233,14 +233,14 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalDestination($value, string $name): bool
+    protected function evalDestination(bool|int|string|null $value, string $name, ?string $group = null): bool
     {
         $result = $value === static::VALUE_BROWSER
             || $value === static::VALUE_FILE
             || $value === static::VALUE_BROWSER_IMMEDIATELY;
 
         if (!$result) {
-            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst($name));
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst(string: $name));
         }
 
         return $result;
@@ -249,7 +249,7 @@ class Validation extends Fallback
     /**
      * Evaluating the IP range, by testing that it is not empty.
      *
-     * @param string|int|bool|null $value
+     * @param bool|int|string|null $value
      *   The value we want to evaluate
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
@@ -257,11 +257,11 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalIpRange($value, string $name): bool
+    protected function evalIpRange(bool|int|string|null $value, string $name, ?string $group = null): bool
     {
         $result = empty($value);
         if ($result) {
-            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst($name));
+            $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst(string: $name));
         }
 
         return !$result;
@@ -271,7 +271,7 @@ class Validation extends Fallback
      * Evaluation the maximum runtime, by looking at the server settings, as
      * well as checking for an integer value.
      *
-     * @param string|int|bool|null $value
+     * @param bool|int|string|null $value
      *   The value we want to evaluate
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
@@ -282,9 +282,9 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalMaxRuntime($value, string $name, string $group): bool
+    protected function evalMaxRuntime(bool|int|string|null $value, string $name, string $group): bool
     {
-        $maxTime = (int)ini_get('max_execution_time');
+        $maxTime = (int)ini_get(option: 'max_execution_time');
 
         if ($maxTime <= 0) {
             // There is no max execution time set.
@@ -295,7 +295,7 @@ class Validation extends Fallback
         $result = true;
         if (!$this->evalInt($value, $name, $group) || $maxTime < (int)$value) {
             $this->pool->messages->addMessage(
-                key: static::KEY_CONFIG_ERROR . ucfirst($name) . 'Big',
+                key: static::KEY_CONFIG_ERROR . ucfirst(string: $name) . 'Big',
                 args: [$maxTime]
             );
 
@@ -308,7 +308,7 @@ class Validation extends Fallback
     /**
      * Evaluates a string of 'true' or 'false'.
      *
-     * @param string|int|bool|null $value
+     * @param bool|int|string|null $value
      *   The string we want to evaluate.
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
@@ -319,9 +319,9 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalBool($value, string $name, string $group): bool
+    protected function evalBool(bool|int|string|null $value, string $name, string $group): bool
     {
-        $result = $value === static::VALUE_TRUE || $value === static::VALUE_FALSE || is_bool($value);
+        $result = $value === static::VALUE_TRUE || $value === static::VALUE_FALSE || is_bool(value: $value);
         if (!$result) {
             $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR_BOOL, args: [$group, $name]);
         }
@@ -334,7 +334,7 @@ class Validation extends Fallback
      *
      * It must be greater than 0 and smaller than 101.
      *
-     * @param string|int|bool|null $value
+     * @param bool|int|string|null $value
      *   The string we want to evaluate.
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
@@ -345,7 +345,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalInt($value, string $name, string $group): bool
+    protected function evalInt(bool|int|string|null $value, string $name, string $group): bool
     {
         $result = (int) $value > 0;
         if (!$result) {
@@ -358,7 +358,7 @@ class Validation extends Fallback
     /**
      * Sanity check, if the supplied debug methods are not obviously flawed.
      *
-     * @param string|int|bool|null $value
+     * @param bool|int|string|null $value
      *   Comma separated list of debug methods.
      * @param string $name
      *   The name of the value we are checking, needed for the feedback text.
@@ -369,7 +369,7 @@ class Validation extends Fallback
      * @return bool
      *   Whether it does evaluate or not.
      */
-    protected function evalDebugMethods($value, string $name, string $group): bool
+    protected function evalDebugMethods(bool|int|string|null $value, string $name, string $group): bool
     {
         $list = explode(separator: ',', string: $value);
 
@@ -435,7 +435,7 @@ class Validation extends Fallback
 
         // Check if the combination of class and method is blacklisted.
         foreach ($this->methodBlacklist as $classname => $debugMethod) {
-            if ($data instanceof $classname && in_array($method, $debugMethod, true)) {
+            if ($data instanceof $classname && in_array(needle: $method, haystack: $debugMethod, strict: true)) {
                 return false;
             }
         }

@@ -64,8 +64,8 @@ trait Recursion
     public function renderRecursion(Model $model): string
     {
         return str_replace(
-            $this->markerRecursion,
-            [
+            search: $this->markerRecursion,
+            replace: [
                 $model->getName(),
                 $model->getDomid(),
                 $model->getNormal(),
@@ -78,7 +78,7 @@ trait Recursion
                 ),
                 $this->renderHelp($model),
             ],
-            $this->fileCache[static::FILE_RECURSION]
+            subject: $this->fileCache[static::FILE_RECURSION]
         );
     }
 

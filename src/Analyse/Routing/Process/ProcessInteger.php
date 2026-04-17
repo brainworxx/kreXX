@@ -66,7 +66,7 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface, Proces
     public function canHandle(Model $model): bool
     {
         $this->model = $model;
-        return is_int($model->getData());
+        return is_int(value: $model->getData());
     }
 
     /**
@@ -83,11 +83,11 @@ class ProcessInteger extends AbstractRouting implements ProcessInterface, Proces
             $int = $this->model->getData();
             if ($int > 946681200) {
                 $this->model->addToJson(
-                    $this->pool->messages->getHelp(key: 'metaTimestamp'),
-                    (new DateTime('@' . $int))->format('d.M Y H:i:s')
+                    key: $this->pool->messages->getHelp(key: 'metaTimestamp'),
+                    value: (new DateTime(datetime: '@' . $int))->format(format: 'd.M Y H:i:s')
                 );
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Do nothing.
             // Not sure how this can happen.
         }

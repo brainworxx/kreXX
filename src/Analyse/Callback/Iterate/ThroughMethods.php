@@ -98,7 +98,7 @@ class ThroughMethods extends AbstractCallback implements
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
 
         $this->commentAnalysis = $pool->createClass(classname: Methods::class);
         $this->methodDeclaration = $pool->createClass(classname: MethodDeclaration::class);
@@ -122,7 +122,7 @@ class ThroughMethods extends AbstractCallback implements
         /** @var \ReflectionMethod $refMethod */
         foreach ($this->parameters[static::PARAM_DATA] as $refMethod) {
             $declaringClass = $refMethod->getDeclaringClass();
-            $methodData = $this->retrieveMethodData($refMethod, $refClass);
+            $methodData = $this->retrieveMethodData(refMethod: $refMethod, refClass: $refClass);
 
             // Update the reflection method, so an event subscriber can do
             // something with it.
@@ -134,16 +134,18 @@ class ThroughMethods extends AbstractCallback implements
                 model: $this->pool->createClass(classname: Model::class)
                     ->setName(name: $refMethod->name)
                     // Remove the ',' after the last char.
-                    ->setConnectorParameters(rtrim($this->retrieveParameters($refMethod, $methodData), ', '))
-                    ->setType(type: $this->getDeclarationKeywords(
-                        $refMethod,
-                        $declaringClass,
-                        $refClass
+                    ->setConnectorParameters(params: rtrim(
+                        string: $this->retrieveParameters(reflectionMethod: $refMethod, methodData: $methodData),
+                        characters: ', '
+                    ))->setType(type: $this->getDeclarationKeywords(
+                        reflectionMethod: $refMethod,
+                        declaringClass: $declaringClass,
+                        reflectionClass: $refClass
                     ) . static::TYPE_METHOD)
-                    ->setConnectorType(type: $this->retrieveConnectorType($refMethod))
+                    ->setConnectorType(type: $this->retrieveConnectorType(reflectionMethod: $refMethod))
                     ->addParameter(name: static::PARAM_DATA, value: $methodData)
                     ->setCodeGenType(codeGenType: $refMethod->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '')
-                    ->setReturnType($methodData[$this->pool->messages->getHelp(key: 'metaReturnType')])
+                    ->setReturnType(returnType: $methodData[$this->pool->messages->getHelp(key: 'metaReturnType')])
                     ->injectCallback(object: $this->pool->createClass(classname: ThroughMeta::class))
             ));
         }
@@ -174,7 +176,8 @@ class ThroughMethods extends AbstractCallback implements
             // Get the method attributes.
             $messages->getHelp(key: 'metaAttributes') => $this->attributes->getAttributes(reflection: $refMethod),
             // Get declaration place.
-            $messages->getHelp(key: 'metaDeclaredIn') => $this->methodDeclaration->retrieveDeclaration($refMethod),
+            $messages->getHelp(key: 'metaDeclaredIn') => $this->methodDeclaration
+                ->retrieveDeclaration(reflection: $refMethod),
             // Get the return type.
             $messages->getHelp(key: 'metaReturnType') => $this->returnType
                 ->getComment(reflection: $refMethod, reflectionClass: $refClass),
@@ -212,8 +215,7 @@ class ThroughMethods extends AbstractCallback implements
         foreach ($reflectionMethod->getParameters() as $key => $reflectionParameter) {
             ++$key;
             $paramList .= $methodData[$this->pool->messages->getHelp(key: 'metaParamNo') . $key] = $this->pool
-                ->codegenHandler
-                ->parameterToString($reflectionParameter);
+                ->codegenHandler->parameterToString(reflectionParameter: $reflectionParameter);
             // We add a comma to the parameter list, to separate them for a
             // better readability.
             $paramList .= ', ';

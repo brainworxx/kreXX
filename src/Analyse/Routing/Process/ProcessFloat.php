@@ -66,7 +66,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
     public function canHandle(Model $model): bool
     {
         $this->model = $model;
-        return is_float($model->getData());
+        return is_float(value: $model->getData());
     }
 
     /**
@@ -83,17 +83,21 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
         if ($float > 946681200) {
             try {
                 $this->model->addToJson(
-                    $this->pool->messages->getHelp(key: 'metaTimestamp'),
-                    (DateTime::createFromFormat('U.u', (string)$float))->format('d.M Y H:i:s.u')
+                    key: $this->pool->messages->getHelp(key: 'metaTimestamp'),
+                    value: (DateTime::createFromFormat(
+                        format: 'U.u',
+                        datetime: (string)$float
+                    ))->format(format: 'd.M Y H:i:s.u')
                 );
-            } catch (Throwable $exception) {
+            } catch (Throwable) {
                 // Do nothing
             }
         }
 
         return $this->pool->render->renderExpandableChild(
             model: $this->dispatchProcessEvent(
-                model: $this->model->setNormal(normal: $this->formatFloat($float))->setType(type: static::TYPE_FLOAT)
+                model: $this->model->setNormal(normal: $this->formatFloat(float: $float))
+                    ->setType(type: static::TYPE_FLOAT)
             )
         );
     }

@@ -122,7 +122,7 @@ class ThroughGetter extends AbstractCallback implements
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
         $this->commentAnalysis = $this->pool->createClass(classname: Methods::class);
         $this->getterAnalyser = [
             $this->pool->createClass(classname: ByMethodName::class),
@@ -185,7 +185,7 @@ class ThroughGetter extends AbstractCallback implements
             $model = $this->pool->createClass(classname: Model::class)
                 ->setName(name: $reflectionMethod->getName())
                 ->setCodeGenType(codeGenType: static::CODEGEN_TYPE_PUBLIC);
-            $this->assignMetaDataToJson($model, $reflectionMethod);
+            $this->assignMetaDataToJson(model: $model, reflectionMethod: $reflectionMethod);
 
             // We need to decide if we are handling static getters.
             if ($reflectionMethod->isStatic()) {
@@ -196,8 +196,8 @@ class ThroughGetter extends AbstractCallback implements
 
             // Get ourselves a possible return value
             $output .= $this->retrievePropertyValue(
-                $reflectionMethod,
-                $this->dispatchEventWithModel(
+                reflectionMethod: $reflectionMethod,
+                model: $this->dispatchEventWithModel(
                     name: __FUNCTION__ . static::EVENT_MARKER_END,
                     model: $model
                 )
@@ -219,10 +219,10 @@ class ThroughGetter extends AbstractCallback implements
     {
         $comments = $this->commentAnalysis
             ->getComment(reflection: $reflectionMethod, reflectionClass: $this->parameters[static::PARAM_REF]);
-        $declaration = nl2br($this->methodDeclaration->retrieveDeclaration($reflectionMethod));
+        $declaration = nl2br(string: $this->methodDeclaration->retrieveDeclaration(reflection: $reflectionMethod));
         $messages = $this->pool->messages;
-        $model->addToJson($messages->getHelp(key: 'metaMethodComment'), nl2br($comments))
-            ->addToJson($messages->getHelp(key: 'metaDeclaredIn'), $declaration);
+        $model->addToJson(key: $messages->getHelp(key: 'metaMethodComment'), value: nl2br(string: $comments))
+            ->addToJson(key: $messages->getHelp(key: 'metaDeclaredIn'), value: $declaration);
     }
 
     /**
@@ -238,15 +238,19 @@ class ThroughGetter extends AbstractCallback implements
      */
     protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model): string
     {
-        $this->resetParameters($reflectionMethod);
+        $this->resetParameters(reflectionMethod: $reflectionMethod);
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
         $currentPrefix = $this->parameters[static::CURRENT_PREFIX];
         foreach ($this->getterAnalyser as $analyser) {
-            $value = $analyser->retrieveIt($reflectionMethod, $reflectionClass, $currentPrefix);
+            $value = $analyser->retrieveIt(
+                reflectionMethod: $reflectionMethod,
+                reflectionClass: $reflectionClass,
+                currentPrefix: $currentPrefix
+            );
             if ($analyser->hasResult()) {
-                $this->prepareParameters($value, $analyser, $reflectionMethod);
-                $this->prepareModel($model, $value);
+                $this->prepareParameters(value: $value, analyser: $analyser, reflectionMethod: $reflectionMethod);
+                $this->prepareModel(model: $model, value: $value);
                 break;
             }
         }
@@ -262,12 +266,12 @@ class ThroughGetter extends AbstractCallback implements
                 name: __FUNCTION__ . static::EVENT_MARKER_END,
                 model: $model->setType(type: $messages->getHelp(key: 'getterValueUnknown'))
                     ->setNormal(normal: $messages->getHelp(key: 'getterValueUnknown'))
-                    ->addJsonHint($messages->getHelp(key: 'getterUnknown'))
+                    ->addJsonHint(hint: $messages->getHelp(key: 'getterUnknown'))
             ));
         }
 
         return $this->pool->routing->analysisHub(
-            $this->dispatchEventWithModel(name: __FUNCTION__ . static::EVENT_MARKER_END, model: $model)
+            model: $this->dispatchEventWithModel(name: __FUNCTION__ . static::EVENT_MARKER_END, model: $model)
         );
     }
 
@@ -285,7 +289,7 @@ class ThroughGetter extends AbstractCallback implements
         if ($value === null) {
             // A NULL value might mean that the values does not
             // exist, until the getter computes it.
-            $model->addJsonHint($this->pool->messages->getHelp(key: 'getterNull'));
+            $model->addJsonHint(hint: $this->pool->messages->getHelp(key: 'getterNull'));
         }
     }
 
@@ -297,8 +301,11 @@ class ThroughGetter extends AbstractCallback implements
      * @param \ReflectionMethod $reflectionMethod
      *   Reflection of the method that we are analysing.
      */
-    protected function prepareParameters($value, AbstractGetter $analyser, ReflectionMethod $reflectionMethod): void
-    {
+    protected function prepareParameters(
+        mixed $value,
+        AbstractGetter $analyser,
+        ReflectionMethod $reflectionMethod
+    ): void {
         $this->parameters[static::PARAM_ADDITIONAL] = [
             static::PARAM_NOTHING_FOUND => false,
             static::PARAM_VALUE => $value,

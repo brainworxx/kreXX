@@ -191,7 +191,7 @@ class File
 
         // Using \SplFixedArray to save some memory, as it can get
         // quite huge, depending on your system. 4mb is nothing here.
-        if ($this->fileIsReadable($filePath)) {
+        if ($this->fileIsReadable(filePath: $filePath)) {
             return $filecache[$filePath] = SplFixedArray::fromArray(file($filePath));
         }
         // Not readable!
@@ -213,7 +213,7 @@ class File
      */
     public function getFileContents(string $filePath, bool $showError = true): string
     {
-        if (!$this->fileIsReadable($filePath)) {
+        if (!$this->fileIsReadable(filePath: $filePath)) {
             if ($showError) {
                 // This file was not readable! We need to tell the user!
                 $this->pool->messages->addMessage(key: 'fileserviceAccess', args: [$filePath], isThrowAway: true);
@@ -278,7 +278,7 @@ class File
 
         // Check if it is an actual file and if it is writable.
         // Those are left over chunks from previous calls, or old logfiles.
-        if (is_file($realpath)) {
+        if (is_file(filename: $realpath)) {
             // Make sure it is unlinkable.
             chmod($realpath, 0777);
             if (!unlink($realpath)) {
@@ -309,7 +309,7 @@ class File
         }
 
         // Set the cache and return it.
-        return static::$isReadableCache[$realPath] = is_readable($realPath) && is_file($realPath);
+        return static::$isReadableCache[$realPath] = is_readable(filename: $realPath) && is_file(filename: $realPath);
     }
 
     /**
@@ -324,7 +324,7 @@ class File
     {
         $filePath = $this->realpath($filePath);
 
-        if ($this->fileIsReadable($filePath)) {
+        if ($this->fileIsReadable(filePath: $filePath)) {
             set_error_handler(callback: $this->pool->retrieveErrorCallback());
             $result = filemtime($filePath);
             restore_error_handler();
@@ -350,7 +350,7 @@ class File
      */
     protected function realpath(string $filePath): string
     {
-        $realpath = realpath($filePath);
+        $realpath = realpath(path: $filePath);
 
         if ($realpath === false) {
             return $filePath;

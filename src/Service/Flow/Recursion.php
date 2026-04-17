@@ -74,20 +74,17 @@ class Recursion
     protected array $metaRecursionHive = [];
 
     /**
-     * Here we store, if we have rendered the $GLOBALS array so far.
-     *
-     * @var bool
-     */
-    protected bool $globalsWereRendered = false;
-
-    /**
      * Generate the recursion marker during class construction.
      *
      * @param Pool $pool
      */
     public function __construct(Pool $pool)
     {
-        $this->recursionMarker = 'Krexx' . substr(string: str_shuffle(md5(microtime())), offset: 0, length: 10);
+        $this->recursionMarker = 'Krexx' . substr(
+            string: str_shuffle(string: md5(string: microtime())),
+            offset: 0,
+            length: 10
+        );
         $this->recursionHive = new SplObjectStorage();
         $pool->recursionHandler = $this;
     }
@@ -100,7 +97,7 @@ class Recursion
      */
     public function addToHive(object $bee): void
     {
-        $this->recursionHive->offsetSet($bee);
+        $this->recursionHive->offsetSet(object: $bee);
     }
 
     /**
@@ -116,7 +113,7 @@ class Recursion
     {
         // Check objects.
         if (is_object(value: $bee)) {
-            return $this->recursionHive->offsetExists($bee);
+            return $this->recursionHive->offsetExists(object: $bee);
         }
 
         // Should be a normal array. We do not track these, because we can not

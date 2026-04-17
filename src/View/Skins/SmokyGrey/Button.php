@@ -59,12 +59,12 @@ trait Button
     {
         // Prepare the json. Not much do display for form elements.
         return str_replace(
-            $this->markerSingleButton,
-            [
+            search: $this->markerSingleButton,
+            replace: [
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
                 $model->getName()
             ],
-            parent::renderButton($model)
+            subject: parent::renderButton($model)
         );
     }
 

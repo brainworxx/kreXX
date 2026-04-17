@@ -77,7 +77,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @throws \ReflectionException
      */
-    public function __construct($data)
+    public function __construct(object|string $data)
     {
         // Retrieve the class variables.
         if ($data instanceof \ArrayObject) {
@@ -98,7 +98,7 @@ class ReflectionClass extends \ReflectionClass
         // Init our unset object storage;
         $this->unsetPropertyStorage = new SplObjectStorage();
 
-        parent::__construct($data);
+        parent::__construct(objectOrClass: $data);
     }
 
     /**
@@ -157,7 +157,7 @@ class ReflectionClass extends \ReflectionClass
     protected function retrieveEsotericValue(ReflectionProperty $refProperty)
     {
         $propName = $refProperty->getName();
-        if ($refProperty instanceof UndeclaredProperty && is_numeric($propName)) {
+        if ($refProperty instanceof UndeclaredProperty && is_numeric(value: $propName)) {
             // We are facing a numeric property name (yes, that is possible).
             // To be honest, this one of the most bizarre things I've encountered so
             // far. Depending on your PHP version, that value may not be accessible

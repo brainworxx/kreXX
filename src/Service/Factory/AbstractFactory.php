@@ -96,19 +96,24 @@ abstract class AbstractFactory
             $classname = $this->rewrite[$classname];
         }
 
-        return new $classname($this);
+        if (method_exists($classname, '__construct')) {
+            // Inject the pool.
+            return new $classname(pool: $this);
+        }
+
+        return new $classname();
     }
 
     /**
      * Return a part the superglobal $GLOBALS.
      *
-     * @param string|int $what
+     * @param int|string $what
      *   The part of the globals we want to access.
      *
      * @return array
      *   The part we are requesting.
      */
-    public function &getGlobals($what = ''): array
+    public function &getGlobals(int|string $what = ''): array
     {
         if (empty($what)) {
             return $GLOBALS;
@@ -153,10 +158,10 @@ abstract class AbstractFactory
         // Create a new pool where we store all our classes.
         // We also need to check if we have an overwrite for the pool.
         if (empty($rewrite[Pool::class])) {
-            Krexx::$pool = new Pool($rewrite);
+            Krexx::$pool = new Pool(rewrite: $rewrite);
         } else {
             $classname = $rewrite[Pool::class];
-            Krexx::$pool = new $classname($rewrite);
+            Krexx::$pool = new $classname(rewrite: $rewrite);
         }
     }
 }

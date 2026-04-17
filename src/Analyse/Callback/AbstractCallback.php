@@ -115,8 +115,8 @@ abstract class AbstractCallback
     protected function dispatchStartEvent(): string
     {
         return $this->pool->eventService->dispatch(
-            static::class . PluginConfigInterface::START_EVENT,
-            $this
+            name: static::class . PluginConfigInterface::START_EVENT,
+            callback: $this
         );
     }
 
@@ -134,9 +134,9 @@ abstract class AbstractCallback
     protected function dispatchEventWithModel(string $name, Model $model): Model
     {
         $this->pool->eventService->dispatch(
-            static::class . '::' . $name,
-            $this,
-            $model
+            name: static::class . '::' . $name,
+            callback: $this,
+            model: $model
         );
 
         return $model;

@@ -86,7 +86,7 @@ class Encoding
              * @return string
              *   Always 'polyfill'.
              */
-            function mb_detect_encoding($string = '', $encodingList = null, $strict = false): string
+            function mb_detect_encoding($string = '', $encodings = null, $strict = false): string
             {
                 return 'polyfill';
             }
@@ -131,15 +131,15 @@ class Encoding
              *
              * @param string $string
              *   Will not get used.
-             * @param string $toEncoding
+             * @param string $to_encoding
              *   Will not get used.
-             * @param string $fromEncoding
+             * @param string $from_encoding
              *   Will not get used.
              *
              * @return string
              *   Always an empty string.
              */
-            function mb_convert_encoding($string, $toEncoding, $fromEncoding): string
+            function mb_convert_encoding($string, $to_encoding, $from_encoding): string
             {
                 return '';
             }
@@ -190,12 +190,16 @@ class Encoding
         // There are several places here, that may throw a warning.
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
 
-        $result = str_replace($search, ['&#64;', '&#123;', '&nbsp;&nbsp;'], htmlentities($data, ENT_QUOTES));
+        $result = str_replace(
+            search: $search,
+            replace: ['&#64;', '&#123;', '&nbsp;&nbsp;'],
+            subject: htmlentities(string: $data, flags: ENT_QUOTES)
+        );
 
         // Check if encoding was successful.
         // 99.99% of the time, the encoding works.
         if (empty($result)) {
-            $result = $this->encodeCompletely($data, $code);
+            $result = $this->encodeCompletely(data: $data, code: $code);
         }
 
         // Reactivate whatever error handling we had previously.
@@ -227,8 +231,12 @@ class Encoding
             return $this->pool->messages->getHelp(key: 'stringTooLarge');
         }
 
-        $encoding = mb_detect_encoding($data, 'auto', true);
-        $data = mb_convert_encoding($data, 'UTF-32', $encoding === false ? null : $encoding);
+        $encoding = mb_detect_encoding(string: $data, encodings: 'auto', strict: true);
+        $data = mb_convert_encoding(
+            string: $data,
+            to_encoding: 'UTF-32',
+            from_encoding: $encoding === false ? null : $encoding
+        );
         if (empty($data)) {
             // Unable to convert this string into something we can completely
             // encode. Fallback to an empty string.
@@ -236,10 +244,10 @@ class Encoding
         }
 
         return implode(
-            "",
-            array_map(
-                $code ? [$this, 'arrayMapCallbackCode'] : [$this, 'arrayMapCallbackNormal'],
-                unpack("N*", $data)
+            separator: '',
+            array: array_map(
+                callback: $code ? [$this, 'arrayMapCallbackCode'] : [$this, 'arrayMapCallbackNormal'],
+                array: unpack(format: "N*", string: $data)
             )
         );
     }
@@ -261,9 +269,9 @@ class Encoding
      * @return string|bool
      *   The result.
      */
-    public function mbDetectEncoding(string $string, string $encodinglist = 'auto', bool $strict = true)
+    public function mbDetectEncoding(string $string, string $encodinglist = 'auto', bool $strict = true): bool|string
     {
-        return mb_detect_encoding($string, $encodinglist, $strict);
+        return mb_detect_encoding(string: $string, encodings: $encodinglist, strict: $strict);
     }
 
     /**
@@ -322,20 +330,20 @@ class Encoding
      *
      * @return string|int
      */
-    public function encodeStringForCodeGeneration($name)
+    public function encodeStringForCodeGeneration(string|int $name): string|int
     {
-        if (is_int($name)) {
+        if (is_int(value: $name)) {
             return $name;
         }
 
         $result = str_replace(
-            ['&#039;', "\0", "\xEF", "\xBB", "\xBF"],
-            ["\&#039;", '\' . "\0" . \'', '\' . "\xEF" . \'', '\' . "\xBB" . \'', '\' . "\xBF" . \''],
-            $name
+            search: ['&#039;', "\0", "\xEF", "\xBB", "\xBF"],
+            replace: ["\&#039;", '\' . "\0" . \'', '\' . "\xEF" . \'', '\' . "\xBB" . \'', '\' . "\xBF" . \''],
+            subject: $name
         );
 
         // Clean it up a bit
-        return str_replace('" . \'\' . "', '', $result);
+        return str_replace(search: '" . \'\' . "', replace: '', subject: $result);
     }
 
     /**

@@ -82,7 +82,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
 
         $messages = $pool->messages;
 
@@ -119,7 +119,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
         $output = $this->dispatchStartEvent();
 
         foreach ($this->parameters[static::PARAM_DATA] as $key => $metaData) {
-            if (in_array($key, $this->stuffToProcess, true)) {
+            if (in_array(needle: $key, haystack: $this->stuffToProcess, strict: true)) {
                 $output .= $this->pool->render->renderExpandableChild(
                     model: $this->dispatchEventWithModel(
                         name: $key,
@@ -165,7 +165,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
             $model->setCodeGenType(codeGenType: $this->parameters[static::PARAM_CODE_GEN_TYPE]);
         }
 
-        if (in_array($key, $this->keysWithExtra, true)) {
+        if (in_array(needle: $key, haystack: $this->keysWithExtra, strict: true)) {
             $model->setNormal(normal: static::UNKNOWN_VALUE)->setHasExtra(value: true);
         } else {
             $model->setNormal(normal: $meta);
@@ -187,20 +187,20 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
     {
         $key = $model->getName();
 
-        if (in_array($key, $this->simpleAnalysisRouting, true)) {
+        if (in_array(needle: $key, haystack: $this->simpleAnalysisRouting, strict: true)) {
             // Prepare the json/ base64 code generation.
-            return $this->pool->routing->analysisHub($model);
+            return $this->pool->routing->analysisHub(model: $model);
         }
 
         if ($key === $this->pool->messages->getHelp(key: 'metaReflection')) {
             return $this->pool->createClass(classname: Meta::class)
-                ->setParameters([static::PARAM_REF => $model->getNormal()])
+                ->setParameters(parameters: [static::PARAM_REF => $model->getNormal()])
                 ->callMe();
         }
 
         // Sorry, no code generation for you guys.
         $this->pool->codegenHandler->setCodegenAllowed(bool: false);
-        if (is_string($model->getData())) {
+        if (is_string(value: $model->getData())) {
             // Render a single data point.
             $result = $this->pool->render->renderExpandableChild(
                 model: $this->dispatchEventWithModel(
@@ -210,7 +210,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
             );
         } else {
             // Fallback to whatever-rendering.
-            $result = $this->pool->routing->analysisHub($model);
+            $result = $this->pool->routing->analysisHub(model: $model);
         }
 
         $this->pool->codegenHandler->setCodegenAllowed(bool: true);

@@ -61,7 +61,7 @@ class ThroughConfig extends AbstractCallback implements CallbackConstInterface, 
     {
         return $this->dispatchStartEvent() . $this->renderAllSections() .
             $this->pool->render->renderButton(
-                $this->pool->createClass(classname: Model::class)
+                model: $this->pool->createClass(classname: Model::class)
                     ->setName(name: 'kresetbutton')
                     ->setNormal(normal: $this->pool->messages->getHelp(key: 'resetCookiesReadable'))
                     ->setHelpid(helpId: 'kresetbutton')
@@ -86,7 +86,7 @@ class ThroughConfig extends AbstractCallback implements CallbackConstInterface, 
         $configOutput = '';
         foreach ($sections as $sectionName => $sectionData) {
             // Render a whole section.
-            if ($this->hasSomethingToRender($sectionData)) {
+            if ($this->hasSomethingToRender(sectionData: $sectionData)) {
                 $configOutput .= $this->pool->render->renderExpandableChild(
                     model: $this->pool->createClass(classname: Model::class)
                         ->setName(name: $this->pool->messages->getHelp(key: $sectionName . 'Readable'))

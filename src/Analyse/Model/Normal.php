@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Model;
 
 use Brainworxx\Krexx\Analyse\Model;
+use stdClass;
 
 /**
  * Analysis model trait with the normal part. Worst name ever.
@@ -47,20 +48,20 @@ trait Normal
     /**
      * The short result of the analysis.
      *
-     * @var string|int
+     * @var mixed
      */
-    protected $normal = '';
+    protected mixed $normal = '';
 
     /**
      * Setter for normal.
      *
-     * @param string|int $normal
+     * @param mixed $normal
      *   The short result of the analysis.
      *
      * @return Model
      *   $this, for chaining.
      */
-    public function setNormal($normal): Model
+    public function setNormal(mixed $normal): Model
     {
         $this->normal = $normal;
         return $this;
@@ -72,7 +73,7 @@ trait Normal
      * @return string|int
      *   The short result of the analysis.
      */
-    public function getNormal()
+    public function getNormal(): mixed
     {
         return $this->normal;
     }

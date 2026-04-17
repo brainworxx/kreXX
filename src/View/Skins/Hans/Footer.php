@@ -81,14 +81,14 @@ trait Footer
         }
 
         return str_replace(
-            $this->markerFooter,
-            [
+            search: $this->markerFooter,
+            replace: [
                 $this->renderExpandableChild(model: $model, isExpanded: $configOnly),
                 $callerString,
                 $this->pool->messages->getHelp(key: 'pluginList'),
                 $this->renderPluginList(),
             ],
-            $this->fileCache[static::FILE_FOOTER]
+            subject: $this->fileCache[static::FILE_FOOTER]
         );
     }
 
@@ -105,8 +105,8 @@ trait Footer
         $messages = $this->pool->messages;
 
         return str_replace(
-            $this->markerCaller,
-            [
+            search: $this->markerCaller,
+            replace: [
                 $messages->getHelp(key: 'calledFromTxt'),
                 $messages->getHelp(key: 'calledFromLine'),
                 $messages->getHelp(key: 'calledFromAt'),
@@ -116,7 +116,7 @@ trait Footer
                 $caller[static::TRACE_DATE],
                 $caller[static::TRACE_URL],
             ],
-            $this->fileCache[static::FILE_CALLER]
+            subject: $this->fileCache[static::FILE_CALLER]
         );
     }
 

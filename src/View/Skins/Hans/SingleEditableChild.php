@@ -91,15 +91,15 @@ trait SingleEditableChild
         }
 
         return str_replace(
-            $this->markerSingleEditableChild,
-            [
+            search: $this->markerSingleEditableChild,
+            replace: [
                 $model->getData(),
                 $model->getNormal(),
-                str_replace($this->markerDropdownOptions, $options, $this->renderSpecificEditableElement($model)),
+                str_replace(search: $this->markerDropdownOptions, replace: $options, subject: $this->renderSpecificEditableElement($model)),
                 static::RENDER_EDITABLE,
                 $this->renderHelp($model),
             ],
-            $this->fileCache[static::FILE_SI_EDIT_CHILD]
+            subject: $this->fileCache[static::FILE_SI_EDIT_CHILD]
         );
     }
 
@@ -129,9 +129,9 @@ trait SingleEditableChild
         foreach ($valueList as $value => $text) {
             $value === $model->getName() ? $selected = 'selected="selected"' : $selected = '';
             $options .= str_replace(
-                $this->markerSelectOption,
-                [$text, $value, $selected],
-                $this->fileCache[static::FILE_SI_SELECT_OPTIONS]
+                search: $this->markerSelectOption,
+                replace: [$text, $value, $selected],
+                subject: $this->fileCache[static::FILE_SI_SELECT_OPTIONS]
             );
         }
 
@@ -150,12 +150,12 @@ trait SingleEditableChild
     protected function renderSpecificEditableElement(Model $model): string
     {
         return str_replace(
-            $this->markerSingleInput,
-            [
+            search: $this->markerSingleInput,
+            replace: [
                 $model->getDomid(),
                 $model->getName()
             ],
-            $this->fileCache['single' . $model->getType()]
+            subject: $this->fileCache['single' . $model->getType()]
         );
     }
 

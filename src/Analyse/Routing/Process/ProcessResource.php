@@ -66,7 +66,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     public function canHandle(Model $model): bool
     {
         $this->model = $model;
-        return is_resource($model->getData()) || gettype($model->getData()) === 'resource (closed)';
+        return is_resource($model->getData()) || gettype(value: $model->getData()) === 'resource (closed)';
     }
 
     /**
@@ -78,12 +78,13 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     public function handle(): string
     {
         $resource = $this->model->getData();
-        $typeString = $this->pool->messages->getHelp(key: 'resource') . ' (' . get_resource_type($resource) . ')';
+        $typeString = $this->pool->messages->getHelp(key: 'resource') . ' (' .
+            get_resource_type(resource: $resource) . ')';
         $transRes = $this->pool->messages->getHelp(key: 'resource');
 
         switch ($typeString) {
             case $transRes . ' (stream)':
-                $meta = stream_get_meta_data($resource);
+                $meta = stream_get_meta_data(stream: $resource);
                 break;
 
             case $transRes . ' (curl)':
@@ -93,11 +94,11 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
                 break;
 
             case $transRes . ' (process)':
-                $meta = proc_get_status($resource);
+                $meta = proc_get_status(process: $resource);
                 break;
 
             default:
-                return $this->renderUnknownOrClosed($this->model, $resource);
+                return $this->renderUnknownOrClosed(model: $this->model, resource: $resource);
         }
 
         // Output metadata from the class.
@@ -122,12 +123,12 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
      * @return string
      *   The rendered HTML.
      */
-    protected function renderUnknownOrClosed(Model $model, $resource): string
+    protected function renderUnknownOrClosed(Model $model, mixed $resource): string
     {
         return $this->pool->render->renderExpandableChild(
             model: $this->dispatchNamedEvent(
-                __FUNCTION__,
-                $model->setNormal(normal: gettype($resource))
+                name: __FUNCTION__,
+                model: $model->setNormal(normal: gettype(value: $resource))
                     ->setType(type: static::TYPE_RESOURCE)
             )
         );

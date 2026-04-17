@@ -104,9 +104,12 @@ class ThroughProperties extends AbstractCallback implements
             }
 
             $output .= $this->pool->routing->analysisHub(
-                $this->dispatchEventWithModel(
+                model: $this->dispatchEventWithModel(
                     name: __FUNCTION__ . static::EVENT_MARKER_END,
-                    model: $this->prepareModel($ref->retrieveValue($refProperty), $refProperty)
+                    model: $this->prepareModel(
+                        value: $ref->retrieveValue(refProperty: $refProperty),
+                        refProperty: $refProperty
+                    )
                 )
             );
         }
@@ -125,32 +128,33 @@ class ThroughProperties extends AbstractCallback implements
      * @return \Brainworxx\Krexx\Analyse\Model
      *   The prepared model.
      */
-    protected function prepareModel($value, ReflectionProperty $refProperty): Model
+    protected function prepareModel(mixed $value, ReflectionProperty $refProperty): Model
     {
         $messages = $this->pool->messages;
         return $this->pool->createClass(classname: Model::class)
             ->setData(data: $value)
-            ->setName(name: $this->retrievePropertyName($refProperty))
+            ->setName(name: $this->retrievePropertyName(refProperty: $refProperty))
             ->addToJson(
-                $messages->getHelp(key: 'metaComment'),
-                $this->propertyComment->getComment(reflection: $refProperty)
-            )
-            ->addToJson(
-                $messages->getHelp(key: 'metaAttributes'),
+                key: $messages->getHelp(key: 'metaComment'),
+                value: $this->propertyComment->getComment(reflection: $refProperty)
+            )->addToJson(
+                key: $messages->getHelp(key: 'metaAttributes'),
                 // Meh, the addToJson method does not support real new lines.
-                nl2br($this->attributes->getAttributes(reflection: $refProperty))
+                value: nl2br(string: $this->attributes->getAttributes(reflection: $refProperty))
+            )->addToJson(
+                key: $messages->getHelp(key: 'metaDeclaredIn'),
+                value: $this->propertyDeclaration->retrieveDeclaration(reflection: $refProperty)
+            )->addToJson(
+                key: $messages->getHelp(key: 'metaDefaultValue'),
+                value: $this->retrieveDefaultValue(property: $refProperty)
+            )->addToJson(
+                key: $messages->getHelp(key: 'metaTypedValue'),
+                value: $this->propertyDeclaration->retrieveNamedPropertyType($refProperty)
             )
-            ->addToJson(
-                $messages->getHelp(key: 'metaDeclaredIn'),
-                $this->propertyDeclaration->retrieveDeclaration($refProperty)
-            )
-            ->addToJson($messages->getHelp(key: 'metaDefaultValue'), $this->retrieveDefaultValue($refProperty))
-            ->addToJson(
-                $messages->getHelp(key: 'metaTypedValue'),
-                $this->propertyDeclaration->retrieveNamedPropertyType($refProperty)
-            )
-            ->setAdditional($this->getAdditionalData($refProperty, $this->parameters[static::PARAM_REF]))
-            ->setConnectorType(type: $this->retrieveConnector($refProperty))
+            ->setAdditional(additional: $this->getAdditionalData(
+                refProperty: $refProperty,
+                ref: $this->parameters[static::PARAM_REF]
+            ))->setConnectorType(type: $this->retrieveConnector(refProperty: $refProperty))
             ->setCodeGenType(codeGenType: $refProperty->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '');
     }
 
@@ -169,7 +173,7 @@ class ThroughProperties extends AbstractCallback implements
             if ($property->hasDefaultValue()) {
                 $default = $property->getDefaultValue();
             }
-        } catch (Throwable $exception) {
+        } catch (Throwable) {
             // The values of static properties are stored in the default
             // properties of the class reflection.
             // And we do not want these here.
@@ -181,7 +185,7 @@ class ThroughProperties extends AbstractCallback implements
             }
         }
 
-        return $default === null ? '' : $this->formatDefaultValue($default);
+        return $default === null ? '' : $this->formatDefaultValue(default: $default);
     }
 
     /**
@@ -190,21 +194,21 @@ class ThroughProperties extends AbstractCallback implements
      * @param string|int|float|array|UnitEnum $default
      * @return string
      */
-    protected function formatDefaultValue($default): string
+    protected function formatDefaultValue(string|int|float|array|UnitEnum $default): string
     {
-        if (is_int($default) || is_float($default)) {
+        if (is_int(value: $default) || is_float(value: $default)) {
             // We do not need to escape an integer or a float,
             return (string)$default;
         }
 
         $result = '';
-        if (is_string($default)) {
+        if (is_string(value: $default)) {
             $result = '\'' . $default . '\'';
-        } elseif (is_array($default) || $default instanceof UnitEnum) {
-            $result = var_export($default, true);
+        } elseif (is_array(value: $default) || $default instanceof UnitEnum) {
+            $result = var_export(value: $default, return: true);
         }
 
-        return nl2br($this->pool->encodingService->encodeString(data: $result));
+        return nl2br(string: $this->pool->encodingService->encodeString(data: $result));
     }
 
     /**
@@ -224,7 +228,7 @@ class ThroughProperties extends AbstractCallback implements
             $connectorType = static::CONNECTOR_STATIC_PROPERTY;
         } elseif (
             !empty($refProperty->isUndeclared) &&
-            !$this->isPropertyNameNormal($refProperty->getName())
+            !$this->isPropertyNameNormal(propName: $refProperty->getName())
         ) {
             // This one was undeclared and does not follow the standard naming
             // conventions of PHP. Maybe something for a rest service?
@@ -252,7 +256,7 @@ class ThroughProperties extends AbstractCallback implements
             $propName = '$' . $propName;
         } elseif (
             !empty($refProperty->isUndeclared) &&
-            !$this->isPropertyNameNormal($refProperty->getName())
+            !$this->isPropertyNameNormal(propName: $refProperty->getName())
         ) {
             // There can be anything in there. We must take special preparations
             // for the code generation.
@@ -294,7 +298,7 @@ class ThroughProperties extends AbstractCallback implements
         }
 
         // Retrieve the value status of the property.
-        $additional .= $this->retrieveValueStatus($refProperty, $ref);
+        $additional .= $this->retrieveValueStatus(refProperty: $refProperty, ref: $ref);
 
         // Test if the property is inherited or not by testing the
         // declaring class
@@ -332,11 +336,11 @@ class ThroughProperties extends AbstractCallback implements
             if ($refProperty->isReadOnly()) {
                 $additional .= $messages->getHelp(key: 'readonly') . ' ';
             }
-        } catch (Throwable $exception) {
+        } catch (Throwable) {
             // Do nothing. We ignore this one.
         }
 
-        if (!$ref->isPropertyUnset($refProperty)) {
+        if (!$ref->isPropertyUnset(reflectionProperty: $refProperty)) {
             return $additional;
         }
 
@@ -367,7 +371,7 @@ class ThroughProperties extends AbstractCallback implements
      * @return bool
      *   Whether we have a special char in there, or not.
      */
-    public function isPropertyNameNormal($propName): bool
+    public function isPropertyNameNormal(string|int $propName): bool
     {
         static $cache = [];
 
@@ -378,8 +382,8 @@ class ThroughProperties extends AbstractCallback implements
         // The first regex detects all allowed characters.
         // For some reason, they also allow BOM characters.
         return $cache[$propName] = (bool) preg_match(
-            "/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/",
-            (string)$propName
-        ) && !(bool) preg_match("/\xEF\xBB\xBF/", $propName);
+            pattern: "/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/",
+            subject: (string)$propName
+        ) && !(bool) preg_match(pattern: "/\xEF\xBB\xBF/", subject: $propName);
     }
 }

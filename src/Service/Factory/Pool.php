@@ -213,26 +213,26 @@ class Pool extends AbstractFactory
         // Check chunk folder is writable.
         // If not, give feedback!
         $chunkFolder = $this->config->getChunkDir();
-        if (!$this->fileService->isDirectoryWritable($chunkFolder)) {
+        if (!$this->fileService->isDirectoryWritable(path: $chunkFolder)) {
             $this->messages->addMessage(
                 key: 'chunksNotWritable',
                 args: [$chunkFolder]
             );
             // We can work without chunks, but this will require much more memory!
-            $this->chunks->setChunkAllowed(false);
+            $this->chunks->setChunkAllowed(bool: false);
         }
 
         // Check if the log folder is writable.
         // If not, give feedback!
         $logFolder = $this->config->getLogDir();
-        if (!$this->fileService->isDirectoryWritable($logFolder)) {
+        if (!$this->fileService->isDirectoryWritable(path: $logFolder)) {
             $this->messages->addMessage(
                 key: 'logNotWritable',
                 args: [$logFolder]
             );
             // Tell the chunk output that we have no write access in the logging
             // folder.
-            $this->chunks->setLoggingAllowed(false);
+            $this->chunks->setLoggingAllowed(bool: false);
         }
 
         // At this point, we won't inform the dev right away. The error message

@@ -80,13 +80,13 @@ trait ExpandableChild
         $codegenHandler =  $this->pool->codegenHandler;
         $generateSource = $codegenHandler->generateSource($model);
         return str_replace(
-            $this->markerExpandableChild,
-            [
+            search: $this->markerExpandableChild,
+            replace: [
                 $model->getName(),
                 $model->getType(),
                 $this->retrieveTypeClasses($model),
                 $model->getNormal(),
-                $this->renderConnectorRight($model->getConnectorRight(128), $model->getReturnType()),
+                $this->renderConnectorRight($model->getConnectorRight(cap: 128), $model->getReturnType()),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $generateSource),
                 $this->pool->chunks->chunkMe($this->renderNest($model)),
                 $this->renderSourceButtonSg($generateSource, $model),
@@ -94,7 +94,7 @@ trait ExpandableChild
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $codegenHandler->generateWrapperRight()),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
             ],
-            $this->fileCache[static::FILE_EX_CHILD_NORMAL]
+            subject: $this->fileCache[static::FILE_EX_CHILD_NORMAL]
         );
     }
 
@@ -121,9 +121,9 @@ trait ExpandableChild
         } else {
             // Add the button.
             return str_replace(
-                $this->markerSourceButton,
-                $model->getConnectorLanguage(),
-                $this->fileCache[static::FILE_SOURCE_BUTTON]
+                search: $this->markerSourceButton,
+                replace: $model->getConnectorLanguage(),
+                subject: $this->fileCache[static::FILE_SOURCE_BUTTON]
             );
         }
     }

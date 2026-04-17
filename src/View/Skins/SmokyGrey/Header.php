@@ -72,8 +72,8 @@ trait Header
 
         $messages = $this->pool->messages;
         return str_replace(
-            $this->markerHeader,
-            [
+            search: $this->markerHeader,
+            replace: [
                 $debugClass,
                 $configClass,
                 $this->renderPluginList(),
@@ -81,7 +81,7 @@ trait Header
                 $messages->getHelp(key: 'configHeadline'),
                 $messages->getHelp(key: 'pluginsHeadline')
             ],
-            parent::renderHeader($headline, $cssJs)
+            subject: parent::renderHeader($headline, $cssJs)
         );
     }
 

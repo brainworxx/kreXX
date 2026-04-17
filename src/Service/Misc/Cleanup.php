@@ -83,13 +83,13 @@ class Cleanup implements ConfigConstInterface
         }
 
         // Cleanup old logfiles to prevent an overflow.
-        $logList = glob($this->pool->config->getLogDir() . '*.Krexx.html');
+        $logList = glob(pattern: $this->pool->config->getLogDir() . '*.Krexx.html');
         if (empty($logList)) {
             return $this;
         }
 
         array_multisort(
-            array_map([$this->pool->fileService, 'filetime'], $logList),
+            array_map(callback: [$this->pool->fileService, 'filetime'], array: $logList),
             SORT_DESC,
             $logList
         );
@@ -99,8 +99,8 @@ class Cleanup implements ConfigConstInterface
         // Cleanup logfiles.
         foreach ($logList as $file) {
             if ($count > $maxFileCount) {
-                $this->pool->fileService->deleteFile($file);
-                $this->pool->fileService->deleteFile($file . '.json');
+                $this->pool->fileService->deleteFile(filePath: $file);
+                $this->pool->fileService->deleteFile(filePath: $file . '.json');
             }
 
             ++$count;
@@ -125,10 +125,10 @@ class Cleanup implements ConfigConstInterface
         static::$chunksDone = true;
         // Clean up leftover files.
         $now = time();
-        foreach ((array)glob($this->pool->config->getChunkDir() . '*.Krexx.tmp') as $file) {
+        foreach ((array)glob(pattern: $this->pool->config->getChunkDir() . '*.Krexx.tmp') as $file) {
             // We delete everything that is older than 15 minutes.
-            if (($this->pool->fileService->filetime($file) + 900) < $now) {
-                $this->pool->fileService->deleteFile($file);
+            if (($this->pool->fileService->filetime(filePath: $file) + 900) < $now) {
+                $this->pool->fileService->deleteFile(filePath: $file);
             }
         }
 

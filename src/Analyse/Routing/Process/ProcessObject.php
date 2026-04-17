@@ -79,7 +79,7 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
         $this->pool->emergencyHandler->upOneNestingLevel();
 
         // Remember that we've been here before.
-        $this->pool->recursionHandler->addToHive($this->model->getData());
+        $this->pool->recursionHandler->addToHive(bee: $this->model->getData());
 
         $object = $this->model->getData();
         // Output data from the class.
@@ -88,8 +88,8 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
                 model: $this->model->setType(type: static::TYPE_CLASS)
                     ->addParameter(name: static::PARAM_DATA, value: $object)
                     ->addParameter(name: static::PARAM_NAME, value: $this->model->getName())
-                    ->setNormal(normal: '\\' . get_class($object))
-                    ->setDomid(domid: $this->generateDomIdFromObject($object))
+                    ->setNormal(normal: '\\' . get_class(object: $object))
+                    ->setDomid(domid: $this->generateDomIdFromObject(data: $object))
                     ->injectCallback(object: $this->pool->createClass(classname: Objects::class))
             )
         );

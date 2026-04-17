@@ -79,12 +79,15 @@ class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
      *
      * @inheritDoc
      */
-    public function canHandle($string, Model $model): bool
+    public function canHandle(string|int|bool $string, Model $model): bool
     {
         if (
             strlen(string: $string) > 36
-            && preg_match('^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$^', $string)
-            && base64_encode($this->decodedString = base64_decode($string, true)) === $string
+            && preg_match(
+                pattern: '^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$^',
+                subject: $string
+            )
+            && base64_encode($this->decodedString = base64_decode(string: $string, strict: true)) === $string
         ) {
             $this->model = $model;
             $this->handledValue = $string;

@@ -79,15 +79,15 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
         // Dump them with visibility infos.
         foreach ($this->parameters[static::PARAM_DATA] as $constantName => $constantValue) {
             /** @var ReflectionClassConstant $reflectionConstant */
-            $reflectionConstant = $this->parameters[static::PARAM_REF]->getReflectionConstant($constantName);
-            if ($this->canDump($reflectionConstant)) {
+            $reflectionConstant = $this->parameters[static::PARAM_REF]->getReflectionConstant(name: $constantName);
+            if ($this->canDump(reflectionConstant: $reflectionConstant)) {
                 $output .= $this->pool->routing->analysisHub(
-                    $this->pool->createClass(classname: Model::class)
+                    model: $this->pool->createClass(classname: Model::class)
                         ->setData(data: $constantValue)
-                        ->setAdditional($this->retrieveAdditionalData($reflectionConstant))
+                        ->setAdditional(additional: $this->retrieveAdditionalData($reflectionConstant))
                         ->setName(name: $constantName)
                         ->setCodeGenType(codeGenType: static::CODEGEN_TYPE_PUBLIC)
-                        ->setCustomConnectorLeft($prefix . '::')
+                        ->setCustomConnectorLeft(customConnectorLeft: $prefix . '::')
                 );
             }
         }

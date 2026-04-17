@@ -92,14 +92,14 @@ trait ExpandableChild
         $codegenHandler = $this->pool->codegenHandler;
         $generateSource = $codegenHandler->generateSource($model);
         return str_replace(
-            $this->markerExpandableChild,
-            [
+            search: $this->markerExpandableChild,
+            replace: [
                 $model->getName(),
                 $model->getType(),
                 $this->retrieveTypeClasses($model),
                 $model->getNormal(),
                 $this->renderConnectorLeft($model->getConnectorLeft()),
-                $this->renderConnectorRight($model->getConnectorRight(128), $model->getReturnType()),
+                $this->renderConnectorRight($model->getConnectorRight(cap: 128), $model->getReturnType()),
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $generateSource),
                 $this->renderSourceButtonWithStop($generateSource),
                 $isExpanded ? 'kopened' : '',
@@ -108,7 +108,7 @@ trait ExpandableChild
                 $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $codegenHandler->generateWrapperRight()),
                 $this->renderHelp($model),
             ],
-            $this->fileCache[static::FILE_EX_CHILD_NORMAL]
+            subject: $this->fileCache[static::FILE_EX_CHILD_NORMAL]
         );
     }
 
@@ -164,14 +164,14 @@ trait ExpandableChild
         }
 
         return str_replace(
-            $this->markerNest,
-            [
+            search: $this->markerNest,
+            replace: [
                 $style,
                 $model->renderMe(),
                 $domid,
                 $this->renderExtra($model),
             ],
-            $this->fileCache[static::FILE_NEST]
+            subject: $this->fileCache[static::FILE_NEST]
         );
     }
 
@@ -188,9 +188,9 @@ trait ExpandableChild
     {
         if ($model->hasExtra()) {
             return str_replace(
-                $this->markerSingleChildExtra,
-                $this->prepareExtra($model->getData()),
-                $this->fileCache[static::FILE_SI_CHILD_EX]
+                search: $this->markerSingleChildExtra,
+                replace: $this->prepareExtra($model->getData()),
+                subject: $this->fileCache[static::FILE_SI_CHILD_EX]
             );
         }
 

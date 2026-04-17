@@ -70,7 +70,7 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
                 continue;
             }
 
-            $sectionOutput .= $this->generateOutput($setting, $id);
+            $sectionOutput .= $this->generateOutput(setting: $setting, id: $id);
         }
 
         return $sectionOutput;
@@ -92,10 +92,10 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
         /** @var Model $model */
         $model = $this->pool->createClass(classname: Model::class)->setHelpid(helpId: $id . 'Help');
         $name = $this->pool->messages->getHelp(key: $id . 'Readable');
-        $value = $this->prepareValue($setting);
+        $value = $this->prepareValue(setting: $setting);
         if ($setting->isEditable()) {
             return $this->pool->render->renderSingleEditableChild(
-                $model->setData(data: $name)
+                model: $model->setData(data: $name)
                     ->setName(name: $value)
                     ->setNormal(normal: $setting->getSource())
                     ->setType(type: $setting->getType())->setDomid(domid: $id)
@@ -123,7 +123,7 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
     {
         $value = $setting->getValue();
 
-        if (!is_bool($value)) {
+        if (!is_bool(value: $value)) {
             // Early return.
             return $value;
         }

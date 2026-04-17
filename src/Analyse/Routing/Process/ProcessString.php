@@ -68,7 +68,7 @@ class ProcessString extends AbstractRouting implements
      *
      * @var \finfo|\Brainworxx\Krexx\Service\Misc\FileinfoDummy
      */
-    protected $bufferInfo;
+    protected finfo|FileinfoDummy $bufferInfo;
 
     /**
      * The deeper string analysis.
@@ -98,11 +98,11 @@ class ProcessString extends AbstractRouting implements
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
 
         // Init the fileinfo class.
-        if (class_exists(finfo::class, false)) {
-            $this->bufferInfo = new finfo(FILEINFO_MIME);
+        if (class_exists(class: finfo::class, autoload: false)) {
+            $this->bufferInfo = new finfo(flags: FILEINFO_MIME);
         } else {
             // Use a "polyfill" dummy, tell the dev that we have a problem.
             $this->bufferInfo = $pool->createClass(classname: FileinfoDummy::class);
@@ -127,7 +127,7 @@ class ProcessString extends AbstractRouting implements
     public function canHandle(Model $model): bool
     {
         $this->model = $model;
-        return is_string($model->getData());
+        return is_string(value: $model->getData());
     }
 
     /**
@@ -144,8 +144,8 @@ class ProcessString extends AbstractRouting implements
         // preview (which we call "extra").
         // We also need to check for linebreaks, because the preview can not
         // display those.
-        $length = $this->retrieveLengthAndEncoding($data);
-        if ($length > 50 || strstr($data, PHP_EOL) !== false) {
+        $length = $this->retrieveLengthAndEncoding(data: $data);
+        if ($length > 50 || str_contains(haystack: $data, needle: PHP_EOL)) {
             $cut = $this->pool->encodingService->encodeString(
                 data: $this->pool->encodingService->mbSubStr(string: $data, start: 0, length: 50)
             ) . static::UNKNOWN_VALUE;
@@ -160,7 +160,7 @@ class ProcessString extends AbstractRouting implements
         }
 
         if ($this->analyseScalar) {
-            return $this->handleStringScalar($originalData);
+            return $this->handleStringScalar(originalData: $originalData);
         }
 
         return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent(model: $this->model));
@@ -177,7 +177,7 @@ class ProcessString extends AbstractRouting implements
      */
     protected function handleStringScalar(string $originalData): string
     {
-        $this->scalarString->handle($this->model, $originalData);
+        $this->scalarString->handle(model: $this->model, originalData: $originalData);
         $domId = $this->model->getDomid();
         if ($domId !== '' && $this->pool->recursionHandler->isInMetaHive(domId: $domId)) {
             return $this->pool->render->renderRecursion(model: $this->model);
@@ -198,7 +198,7 @@ class ProcessString extends AbstractRouting implements
      */
     protected function retrieveLengthAndEncoding(string $data): int
     {
-        $encoding = $this->pool->encodingService->mbDetectEncoding($data);
+        $encoding = $this->pool->encodingService->mbDetectEncoding(string: $data);
         $messages = $this->pool->messages;
 
         if ($encoding === false) {
@@ -214,19 +214,19 @@ class ProcessString extends AbstractRouting implements
             // Let's see, what the buffer-info can do with it.
             static $bufferCache = [];
             if (!isset($bufferCache[$data])) {
-                $bufferCache[$data] = $this->bufferInfo->buffer($data);
+                $bufferCache[$data] = $this->bufferInfo->buffer(string: $data);
             }
-            $this->model->addToJson($messages->getHelp(key: 'metaMimeTypeString'), $bufferCache[$data]);
+            $this->model->addToJson(key: $messages->getHelp(key: 'metaMimeTypeString'), value: $bufferCache[$data]);
         } elseif ($encoding === false) {
             // Short string with broken encoding.
-            $this->model->addToJson($messages->getHelp(key: 'metaEncoding'), 'broken');
+            $this->model->addToJson(key: $messages->getHelp(key: 'metaEncoding'), value: 'broken');
         } else {
             // Short string with normal encoding.
-            $this->model->addToJson($messages->getHelp(key: 'metaEncoding'), $encoding);
+            $this->model->addToJson(key: $messages->getHelp(key: 'metaEncoding'), value: $encoding);
         }
 
         $this->model->setType(type: static::TYPE_STRING)
-            ->addToJson($messages->getHelp(key: 'metaLength'), (string)$length);
+            ->addToJson(key: $messages->getHelp(key: 'metaLength'), value: (string)$length);
 
         return $length;
     }

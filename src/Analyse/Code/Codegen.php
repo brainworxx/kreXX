@@ -152,7 +152,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
             // it comes directly from the source code itself.
             // And of course, there are no connectors.
             $this->firstRun = false;
-            $this->addTypeHint($model);
+            $this->addTypeHint(model: $model);
             return $this->pool->encodingService->encodeString(data: (string) $model->getName());
         }
 
@@ -160,10 +160,10 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         $result = '';
         if ($type === static::CODEGEN_TYPE_PUBLIC) {
             // Public methods, debug methods.
-            $result = $this->concatenation($model);
+            $result = $this->concatenation(model: $model);
         } elseif ($type !== static::CODEGEN_TYPE_EMPTY) {
             // We go for the more complicated stuff.
-            $result = $this->generateComplicatedStuff($model);
+            $result = $this->generateComplicatedStuff(model: $model);
         }
 
         // I'm not really sure if it is possible to create element names that
@@ -197,8 +197,8 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         }
 
         $model->addToJson(
-            $this->pool->messages->getHelp(key: 'metaTypeHint'),
-            '/** @var ' . $type . ' ' . $name . ' */'
+            key: $this->pool->messages->getHelp(key: 'metaTypeHint'),
+            value: '/** @var ' . $type . ' ' . $name . ' */'
         );
     }
 
@@ -224,7 +224,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         // And now for the more serious stuff.
         switch ($type) {
             case static::CODEGEN_TYPE_ITERATOR_TO_ARRAY:
-                $result = 'iterator_to_array(;firstMarker;)' . $this->concatenation($model);
+                $result = 'iterator_to_array(;firstMarker;)' . $this->concatenation(model: $model);
                 break;
 
             case static::CODEGEN_TYPE_ARRAY_VALUES_ACCESS:
@@ -232,9 +232,9 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
                 break;
 
             default:
-                if ($this->pool->scope->testModelForCodegen($model)) {
+                if ($this->pool->scope->testModelForCodegen(model: $model)) {
                     // Test if we are inside the scope. Everything within our scope is reachable.
-                    $result = $this->concatenation($model);
+                    $result = $this->concatenation(model: $model);
                 }
         }
 
@@ -277,7 +277,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     {
         // We simply add the connectors for public access.
         return $model->getConnectorLeft() .
-            $this->pool->encodingService->encodeStringForCodeGeneration($model->getName()) .
+            $this->pool->encodingService->encodeStringForCodeGeneration(name: $model->getName()) .
             $model->getConnectorRight();
     }
 
@@ -333,13 +333,13 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
             $prefix = '&';
         }
 
-        $name = $this->methodDeclaration->retrieveParameterType($reflectionParameter) .
+        $name = $this->methodDeclaration->retrieveParameterType(reflectionParameter: $reflectionParameter) .
             $prefix . '$' . $reflectionParameter->getName();
 
         // Retrieve the default value, if available.
         if ($reflectionParameter->isDefaultValueAvailable()) {
             $default = $reflectionParameter->getDefaultValue();
-            $name .= ' = ' . $this->translateDefaultValue($default);
+            $name .= ' = ' . $this->translateDefaultValue(default: $default);
         }
 
         // Escape it, just in case.
@@ -351,14 +351,14 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      *
      * @param mixed $default
      *
-     * @return mixed
+     * @return string
      *   The type in a human-readable form.
      */
-    protected function translateDefaultValue($default)
+    protected function translateDefaultValue(mixed $default): string
     {
-        if (is_string($default)) {
-            $default = '\'' . str_replace('\'', '\\\'', $default) . '\'';
-        } elseif (is_array($default)) {
+        if (is_string(value: $default)) {
+            $default = '\'' . str_replace(search: '\'', replace: '\\\'', subject: $default) . '\'';
+        } elseif (is_array(value: $default)) {
             $default = 'array()';
         } elseif ($default ===  true) {
             $default = 'TRUE';
@@ -367,12 +367,12 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         } elseif ($default === null) {
             $default = 'NULL';
         } elseif ($default instanceof UnitEnum) {
-            $default = get_class($default) . '::' . $default->name;
+            $default = get_class(object: $default) . '::' . $default->name;
         } elseif (is_object(value: $default)) {
-            $default = 'new \\' .  get_class($default) . '()';
+            $default = 'new \\' .  get_class(object: $default) . '()';
         } else {
             // Not sure if this is even possible, but I'm not taking my chances.
-            $default = gettype($default);
+            $default = gettype(value: $default);
         }
 
         return $default;

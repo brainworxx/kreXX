@@ -70,7 +70,7 @@ class Routing extends AbstractRouting
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
 
         $this->processors[ProcessString::class] = $pool->createClass(classname: ProcessString::class);
         $this->processors[ProcessInteger::class] = $pool->createClass(classname: ProcessInteger::class);
@@ -105,7 +105,7 @@ class Routing extends AbstractRouting
         }
 
         foreach ($this->processors as $processor) {
-            if ($processor->canHandle($model)) {
+            if ($processor->canHandle(model: $model)) {
                 return $processor->handle();
             }
         }
@@ -113,7 +113,7 @@ class Routing extends AbstractRouting
         // Looks like we ran out of processors.
         /** @var ProcessOther $processOther */
         $processOther = $this->pool->createClass(classname: ProcessOther::class);
-        $processOther->canHandle($model);
+        $processOther->canHandle(model: $model);
 
         return $processOther->handle();
     }

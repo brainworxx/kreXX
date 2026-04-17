@@ -66,7 +66,7 @@ abstract class AbstractScalarAnalysis extends AbstractCallback implements Callba
      *
      * @var string|int|float
      */
-    protected $handledValue;
+    protected string|int|float $handledValue;
 
     /**
      * Is this scalar deep analysis class able to do something here?
@@ -79,7 +79,7 @@ abstract class AbstractScalarAnalysis extends AbstractCallback implements Callba
      * @return bool
      *   Got this one get handled?
      */
-    abstract public function canHandle($string, Model $model): bool;
+    abstract public function canHandle(string|int|bool $string, Model $model): bool;
 
     /**
      * Are all perquisites met for this class to do anything?

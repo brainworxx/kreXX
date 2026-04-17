@@ -216,7 +216,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
      */
     public static function addScalarStringAnalyser(string $class): void
     {
-        if (!in_array($class, static::$additionalScalarString, true)) {
+        if (!in_array(needle: $class, haystack: static::$additionalScalarString, strict: true)) {
             static::$additionalScalarString[] = $class;
         }
     }
@@ -237,7 +237,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
             static::$blacklistDebugMethods[$className] = [];
         }
 
-        if (!in_array($methodName, static::$blacklistDebugMethods[$className], true)) {
+        if (!in_array(needle: $methodName, haystack: static::$blacklistDebugMethods[$className], strict: true)) {
             static::$blacklistDebugMethods[$className][] = $methodName;
         }
     }
@@ -252,7 +252,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
      */
     public static function addClassToDebugBlacklist(string $class): void
     {
-        if (!in_array($class, static::$blacklistDebugClass, true)) {
+        if (!in_array(needle: $class, haystack: static::$blacklistDebugClass, strict: true)) {
             static::$blacklistDebugClass[] = $class;
         }
     }
@@ -350,7 +350,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
      */
     public static function register(PluginConfigInterface $configClass): void
     {
-        static::$plugins[get_class($configClass)] = [
+        static::$plugins[get_class(object: $configClass)] = [
             static::CONFIG_CLASS => $configClass,
             static::IS_ACTIVE => false,
         ];

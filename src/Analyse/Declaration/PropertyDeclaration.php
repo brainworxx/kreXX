@@ -67,7 +67,11 @@ class PropertyDeclaration extends AbstractDeclaration
         $traits = $reflectionClass->getTraits();
         if (!empty($traits)) {
             // Update the declaring class reflection from the traits.
-            $reflectionClass = $this->retrieveDeclaringClassFromTraits($traits, $reflection, $reflectionClass);
+            $reflectionClass = $this->retrieveDeclaringClassFromTraits(
+                traits: $traits,
+                refProperty: $reflection,
+                originalRef: $reflectionClass
+            );
         }
         $result = '';
         if ($reflectionClass !== null) {
@@ -90,7 +94,7 @@ class PropertyDeclaration extends AbstractDeclaration
     public function retrieveNamedPropertyType(ReflectionProperty $refProperty): string
     {
         if ($refProperty->hasType()) {
-            return trim($this->retrieveNamedType($refProperty->getType()));
+            return trim(string: $this->retrieveNamedType(namedType: $refProperty->getType()));
         }
 
         return '';
@@ -126,7 +130,7 @@ class PropertyDeclaration extends AbstractDeclaration
         $propertyName = $refProperty->name;
 
         foreach ($traits as $trait) {
-            if ($trait->hasProperty($propertyName)) {
+            if ($trait->hasProperty(name: $propertyName)) {
                 if (count(value: $trait->getTraitNames()) > 0) {
                     // Multiple layers of traits!
                     return null;

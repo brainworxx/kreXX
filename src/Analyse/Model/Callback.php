@@ -105,7 +105,7 @@ trait Callback
         }
 
         return $this->callback
-            ->setParameters($this->parameters)
+            ->setParameters(parameters: $this->parameters)
             ->callMe();
     }
 

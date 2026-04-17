@@ -93,13 +93,13 @@ abstract class AbstractDeclaration
 
         // Handling the normal types.
         if ($namedType instanceof ReflectionNamedType) {
-            $result = $this->formatNamedType($namedType);
+            $result = $this->formatNamedType(namedType: $namedType);
         } elseif ($namedType instanceof ReflectionUnionType) {
             // Union types have several types in them.
             foreach ($namedType->getTypes() as $singleNamedType) {
-                $result .=  $this->formatNamedType($singleNamedType) . '|';
+                $result .=  $this->formatNamedType(namedType: $singleNamedType) . '|';
             }
-            $result = trim($result, '|');
+            $result = trim(string: $result, characters: '|');
         }
 
         return ($namedType->allowsNull() ? '?' : '') . $result;

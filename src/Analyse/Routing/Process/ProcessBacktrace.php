@@ -62,7 +62,7 @@ class ProcessBacktrace extends AbstractCallback implements
      */
     public function callMe(): string
     {
-        return $this->handle($this->parameters[static::PARAM_DATA]);
+        return $this->handle(backtrace: $this->parameters[static::PARAM_DATA]);
     }
 
     /**

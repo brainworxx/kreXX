@@ -72,26 +72,29 @@ class BacktraceStep extends AbstractCallback implements
         // file, line, function, object, type, args, sourcecode.
         $messages = $this->pool->messages;
         return $this->dispatchStartEvent() .
-            $this->outputSingleChild($messages->getHelp(key: 'file'), static::TRACE_FILE, 'fileToOutput') .
-            $this->lineToOutput() .
+            $this->outputSingleChild(
+                name: $messages->getHelp(key: 'file'),
+                type: static::TRACE_FILE,
+                eventName: 'fileToOutput'
+            ) . $this->lineToOutput() .
             $this->outputProcessor(
-                $messages->getHelp(key: 'callingObject'),
-                static::TRACE_OBJECT,
-                'objectToOutput',
-                ProcessObject::class
+                name: $messages->getHelp(key: 'callingObject'),
+                type: static::TRACE_OBJECT,
+                eventName: 'objectToOutput',
+                processorName: ProcessObject::class
             ) . $this->outputSingleChild(
-                $messages->getHelp(key: 'callType'),
-                static::TRACE_TYPE,
-                'typeToOutput'
+                name: $messages->getHelp(key: 'callType'),
+                type: static::TRACE_TYPE,
+                eventName: 'typeToOutput'
             ) . $this->outputSingleChild(
-                $messages->getHelp(key: 'lastCalledFunction'),
-                static::TRACE_FUNCTION,
-                'functionToOutput'
+                name: $messages->getHelp(key: 'lastCalledFunction'),
+                type: static::TRACE_FUNCTION,
+                eventName:'functionToOutput'
             ) . $this->outputProcessor(
-                $messages->getHelp(key: 'argumentsFromTheCall'),
-                static::TRACE_ARGS,
-                'argsToOutput',
-                ProcessArray::class
+                name: $messages->getHelp(key: 'argumentsFromTheCall'),
+                type: static::TRACE_ARGS,
+                eventName:'argsToOutput',
+                processorName: ProcessArray::class
             );
     }
 
@@ -144,7 +147,7 @@ class BacktraceStep extends AbstractCallback implements
             // Trying the read the sourcecode where it was called.
             $lineNo = $stepData[static::TRACE_LINE] - 1;
             $source = trim(
-                $this->pool->fileService->readSourcecode(
+                string: $this->pool->fileService->readSourcecode(
                     filePath: $stepData[static::TRACE_FILE] ?? '',
                     highlight: $lineNo,
                     readFrom: $lineNo - 5,
@@ -192,7 +195,7 @@ class BacktraceStep extends AbstractCallback implements
                 ->setName(name: $name)
         );
 
-        $processor->canHandle($model);
+        $processor->canHandle(model: $model);
         return $processor->handle();
     }
 

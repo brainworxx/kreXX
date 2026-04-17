@@ -76,7 +76,9 @@ class ThroughArray extends AbstractCallback implements
         // Iterate through.
         foreach ($array as $key => $value) {
             $output .= $this->pool->routing
-                ->analysisHub($this->prepareModel($array, $key, $value, $multilineCodeGen));
+                ->analysisHub(
+                    model: $this->prepareModel(key: $key, value: $value, multilineCodeGen: $multilineCodeGen)
+                );
         }
 
         return $output . $this->pool->render->renderSingeChildHr();
@@ -85,9 +87,6 @@ class ThroughArray extends AbstractCallback implements
     /**
      * Create the model and set the values that we have.
      *
-     * @param array $array
-     *   Deprecated since 6.0.0. This parameter will be removed.
-     *   The array we are analysing.
      * @param int|string $key
      *   A current key.
      * @param mixed $value
@@ -98,7 +97,7 @@ class ThroughArray extends AbstractCallback implements
      * @return \Brainworxx\Krexx\Analyse\Model
      *   The prepared model.
      */
-    protected function prepareModel(array $array, $key, $value, string $multilineCodeGen): Model
+    protected function prepareModel(int|string $key, mixed $value, string $multilineCodeGen): Model
     {
         /** @var Model $model */
         $model = $this->pool
@@ -106,7 +105,7 @@ class ThroughArray extends AbstractCallback implements
             ->setData(data: $value)
             ->setCodeGenType(codeGenType: $multilineCodeGen);
 
-        if (is_string($key)) {
+        if (is_string(value: $key)) {
             $model->setName(name: $this->pool->encodingService->encodeString(data: $key))
                 ->setConnectorType(type: static::CONNECTOR_ASSOCIATIVE_ARRAY);
         } else {

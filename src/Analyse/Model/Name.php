@@ -50,7 +50,7 @@ trait Name
      *
      * @var string|int
      */
-    protected $name = '';
+    protected int|string $name = '';
 
     /**
      * Setter for the name.
@@ -73,7 +73,7 @@ trait Name
      * @return int|string
      *   The name/key we are analysing.
      */
-    public function &getName()
+    public function &getName(): int|string
     {
         return $this->name;
     }

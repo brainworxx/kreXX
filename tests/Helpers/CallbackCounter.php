@@ -57,9 +57,9 @@ class CallbackCounter extends AbstractCallback implements ProcessConstInterface,
         return '';
     }
 
-    public function setParameters(array $params): AbstractCallback
+    public function setParameters(array $parameters): AbstractCallback
     {
-        static::$staticParameters[static::$counter] = $params;
-        return parent::setParameters($params);
+        static::$staticParameters[static::$counter] = $parameters;
+        return parent::setParameters($parameters);
     }
 }

@@ -63,8 +63,8 @@ trait CssJs
     {
         $messages = $this->pool->messages;
         return str_replace(
-            $this->markerCssJs,
-            [
+            search: $this->markerCssJs,
+            replace: [
                 $css,
                 $javascript,
                 $messages->getHelp(key: 'tsEnterText'),
@@ -74,7 +74,7 @@ trait CssJs
                 $messages->getHelp(key: 'tsNoDataAvailable'),
                 $messages->getHelp(key: 'tsAdditionalData')
             ],
-            $this->fileCache[static::FILE_CSSJS]
+            subject: $this->fileCache[static::FILE_CSSJS]
         );
     }
 

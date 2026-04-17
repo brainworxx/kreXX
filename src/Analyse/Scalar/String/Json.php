@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use stdClass;
 
 /**
  * Deep analysis for json strings.
@@ -57,7 +58,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
      *
      * @var \stdClass|array
      */
-    protected $decodedJson;
+    protected null|stdClass|array $decodedJson;
 
     /**
      * The model, so far.
@@ -85,7 +86,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
      * @return bool
      *   Well? Can we handle it?
      */
-    public function canHandle($string, Model $model): bool
+    public function canHandle(string|int|bool $string, Model $model): bool
     {
         // Get a fist impression.
         $first = substr(string: $string, offset: 0, length: 1);
@@ -103,7 +104,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
 
         // The only way to test a valid json, is to decode it.
         // @deprecated This will be removed in PHP 8.3.
-        $this->decodedJson = json_decode($string);
+        $this->decodedJson = json_decode(json: $string);
         if (json_last_error() === JSON_ERROR_NONE || $this->decodedJson !== null) {
             $this->model = $model;
             $this->handledValue = $string;
@@ -124,7 +125,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
         if (empty($this->decodedJson)) {
             // We will not decode it again, if we already have a result.
             // @deprecated The "if" will be removed in PHP 8.3.
-            $this->decodedJson = json_decode($this->handledValue);
+            $this->decodedJson = json_decode(json: $this->handledValue);
         }
 
         $messages = $this->pool->messages;

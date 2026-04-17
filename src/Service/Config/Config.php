@@ -102,7 +102,7 @@ class Config extends Fallback
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
 
         // Point the configuration to the right directories
         $this->directories = [
@@ -115,13 +115,13 @@ class Config extends Fallback
         $pool->config = $this;
 
         $this->fileConfig = $pool->createClass(classname: File::class)
-            ->loadFile($this->getPathToConfigFile());
+            ->loadFile(path: $this->getPathToConfigFile());
         $this->cookieConfig = $pool->createClass(classname: Cookie::class);
 
         // Loading the settings.
         foreach ($this->configFallback as $settings) {
             foreach ($settings as $name) {
-                $this->loadConfigValue($name);
+                $this->loadConfigValue(name: $name);
             }
         }
 
@@ -143,14 +143,14 @@ class Config extends Fallback
             ($this->checkOutput->isAjax() || $this->checkOutput->isCli())
         ) {
             // No kreXX for you. At least until you start forced logging.
-            $this->setDisabled(true);
+            $this->setDisabled(value: true);
         }
 
         // Now that our settings are in place, we need to check the
         // ip to decide if we need to deactivate kreXX.
-        if (!$this->checkOutput->isAllowedIp($this->getSetting(name: static::SETTING_IP_RANGE))) {
+        if (!$this->checkOutput->isAllowedIp(whitelist: $this->getSetting(name: static::SETTING_IP_RANGE))) {
             // No kreXX for you! At all.
-            $this->setDisabled(true);
+            $this->setDisabled(value: true);
             static::$disabledByPhp = true;
         }
     }
@@ -164,8 +164,8 @@ class Config extends Fallback
     public function setDisabled(bool $value): void
     {
         $this->settings[static::SETTING_DISABLED]
-            ->setValue($value)
-            ->setSource($this->pool->messages->getHelp(key: 'internalFlow'));
+            ->setValue(value: $value)
+            ->setSource(source: $this->pool->messages->getHelp(key: 'internalFlow'));
     }
 
     /**
@@ -221,34 +221,34 @@ class Config extends Fallback
      */
     public function loadConfigValue(string $name): Config
     {
-        $model = $this->prepareModelWithFeSettings($name);
+        $model = $this->prepareModelWithFeSettings(name: $name);
         $section = $model->getSection();
         $this->settings[$name] = $model;
 
-        $cookieSetting = $this->cookieConfig->getConfigFromCookies($section, $name);
-        if ($this->isCookieValueAllowed($model, $name, $cookieSetting)) {
-            $model->setValue($cookieSetting)
-                ->setSource($this->pool->messages->getHelp(key: 'localCookieSettings'));
+        $cookieSetting = $this->cookieConfig->getConfigFromCookies(group: $section, name: $name);
+        if ($this->isCookieValueAllowed(model: $model, name: $name, value: $cookieSetting)) {
+            $model->setValue(value: $cookieSetting)
+                ->setSource(source: $this->pool->messages->getHelp(key: 'localCookieSettings'));
             return $this;
         }
 
         // Do we have a value in the configuration file?
-        if ($this->fileConfig->getConfigFromFile($section, $name) !== null) {
-            $model->setValue($this->fileConfig->getConfigFromFile($section, $name))
-                ->setSource($this->pool->messages->getHelp(key: 'configFileSettings'));
+        if ($this->fileConfig->getConfigFromFile(group: $section, name: $name) !== null) {
+            $model->setValue(value: $this->fileConfig->getConfigFromFile(group: $section, name: $name))
+                ->setSource(source: $this->pool->messages->getHelp(key: 'configFileSettings'));
             return $this;
         }
 
         // Plugin overwrites
         if (isset(SettingsGetter::getNewFallbackValues()[$name])) {
-            $model->setValue(SettingsGetter::getNewFallbackValues()[$name])
-                ->setSource($this->pool->messages->getHelp(key: 'pluginOverwriteSetting'));
+            $model->setValue(value: SettingsGetter::getNewFallbackValues()[$name])
+                ->setSource(source: $this->pool->messages->getHelp(key: 'pluginOverwriteSetting'));
             return $this;
         }
 
         // Fallback the factory settings.
-        $model->setValue($this->feConfigFallback[$name][static::VALUE])
-            ->setSource($this->pool->messages->getHelp(key: 'factorySetting'));
+        $model->setValue(value: $this->feConfigFallback[$name][static::VALUE])
+            ->setSource(source: $this->pool->messages->getHelp(key: 'factorySetting'));
 
         return $this;
     }
@@ -352,12 +352,12 @@ class Config extends Fallback
      */
     protected function prepareModelWithFeSettings(string $name): Model
     {
-        $fileFeSettings = $this->fileConfig->getFeConfigFromFile($name) ??
+        $fileFeSettings = $this->fileConfig->getFeConfigFromFile(parameterName: $name) ??
             $this->feConfigFallback[$name][static::RENDER];
 
         return $this->pool->createClass(classname: Model::class)
-            ->setSection($this->feConfigFallback[$name][static::SECTION])
-            ->setEditable($fileFeSettings[static::RENDER_EDITABLE] === static::VALUE_TRUE)
+            ->setSection(section: $this->feConfigFallback[$name][static::SECTION])
+            ->setEditable(editable: $fileFeSettings[static::RENDER_EDITABLE] === static::VALUE_TRUE)
             ->setType(type: $fileFeSettings[static::RENDER_TYPE]);
     }
 }

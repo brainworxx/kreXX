@@ -133,7 +133,7 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
             ->setType(type: static::TYPE_FOREACH)
             ->addParameter(name: static::PARAM_DATA, value: $result)
             ->addParameter(name: static::PARAM_MULTILINE, value: $multiline)
-            ->addToJson($messages->getHelp(key: 'metaLength'), (string)count(value: $result));
+            ->addToJson(key: $messages->getHelp(key: 'metaLength'), value: (string)count(value: $result));
 
         // Check, if we are handling a huge array. Huge arrays tend to result in a huge
         // output, maybe even triggering an emergency break. to avoid this, we give them

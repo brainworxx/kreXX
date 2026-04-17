@@ -209,7 +209,7 @@ class HiddenProperty extends UndeclaredProperty
      */
     public function __construct(\ReflectionClass $ref, $name)
     {
-        parent::__construct($ref, $name);
+        parent::__construct(ref: $ref, name: $name);
 
         $name = $ref->getName();
         if ($name === DateTime::class || $name === DateTimeImmutable::class) {

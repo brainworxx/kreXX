@@ -95,7 +95,7 @@ trait ConnectorService
      */
     public function getConnectorRight(int $cap = 0): string
     {
-        return $this->connectorService->getConnectorRight($cap);
+        return $this->connectorService->getConnectorRight(cap: $cap);
     }
 
     /**
@@ -108,9 +108,9 @@ trait ConnectorService
      * @return Model
      *   $this for chaining.
      */
-    public function setConnectorParameters($params): Model
+    public function setConnectorParameters(string|int $params): Model
     {
-        $this->connectorService->setParameters($params);
+        $this->connectorService->setParameters(params: $params);
         return $this;
     }
 
@@ -143,14 +143,14 @@ trait ConnectorService
      * Sets a special and custom connectorLeft. Only used for constants code
      * generation.
      *
-     * @param string $string
+     * @param string $customConnectorLeft
      *
      * @return Model
      *   Return $this for chaining.
      */
-    public function setCustomConnectorLeft(string $string): Model
+    public function setCustomConnectorLeft(string $customConnectorLeft): Model
     {
-        $this->connectorService->setCustomConnectorLeft($string);
+        $this->connectorService->setCustomConnectorLeft(customConnectorLeft: $customConnectorLeft);
         return $this;
     }
 
@@ -185,7 +185,7 @@ trait ConnectorService
      */
     public function setReturnType(string $returnType): Model
     {
-        $this->connectorService->setReturnType($returnType);
+        $this->connectorService->setReturnType(returnType: $returnType);
         return $this;
     }
 }

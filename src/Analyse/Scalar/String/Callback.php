@@ -80,15 +80,15 @@ class Callback extends AbstractScalarAnalysis
      * @return bool
      *   The result, if it's callable.
      */
-    public function canHandle($string, Model $model): bool
+    public function canHandle(string|int|bool $string, Model $model): bool
     {
         if (!is_callable(value: $string)) {
             return false;
         }
 
         try {
-            $this->reflectionFunction = new ReflectionFunction($string);
-        } catch (ReflectionException | TypeError $e) {
+            $this->reflectionFunction = new ReflectionFunction(function: $string);
+        } catch (ReflectionException | TypeError) {
             // Huh, we were unable to retrieve the reflection.
             // Nothing left to do here.
             return false;
@@ -116,9 +116,9 @@ class Callback extends AbstractScalarAnalysis
             $messages->getHelp(key: 'metaComment') => $this->pool
                 ->createClass(classname: Functions::class)->getComment(reflection: $this->reflectionFunction),
             $messages->getHelp(key: 'metaDeclaredIn') => $functionDeclaration
-                ->retrieveDeclaration($this->reflectionFunction)
+                ->retrieveDeclaration(reflection: $this->reflectionFunction)
         ];
-        $this->insertParameters($meta);
+        $this->insertParameters(meta: $meta);
 
         return $meta;
     }
@@ -126,8 +126,6 @@ class Callback extends AbstractScalarAnalysis
     /**
      * We insert the parameters into the meta array.
      *
-     * @param \ReflectionFunction $reflectionFunction
-     *   The reflection of the function that we are analysing.
      * @param string[] $meta
      *   The meta array, so far.
      */
@@ -136,8 +134,7 @@ class Callback extends AbstractScalarAnalysis
         foreach ($this->reflectionFunction->getParameters() as $key => $reflectionParameter) {
             ++$key;
             $meta[$this->pool->messages->getHelp(key: 'metaParamNo') . $key] = $this->pool
-                ->codegenHandler
-                ->parameterToString($reflectionParameter);
+                ->codegenHandler->parameterToString(reflectionParameter: $reflectionParameter);
         }
     }
 }

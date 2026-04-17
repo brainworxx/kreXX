@@ -85,9 +85,9 @@ class ThroughLargeArray extends AbstractCallback implements
             );
 
             // Handling string keys of the array.
-            $this->handleKey($key, $model);
+            $this->handleKey(key: $key, model: $model);
             // Handling of the value and add some output.
-            $output .= $this->handleValue($value, $model);
+            $output .= $this->handleValue(value: $value, model: $model);
         }
 
         return $output . $this->pool->render->renderSingeChildHr();
@@ -104,7 +104,7 @@ class ThroughLargeArray extends AbstractCallback implements
      */
     protected function handleKey(int|string $key, Model $model): void
     {
-        if (is_string($key)) {
+        if (is_string(value: $key)) {
             $model->setName(name: $this->pool->encodingService->encodeString(data: $key))
                 ->setConnectorType(type: static::CONNECTOR_ASSOCIATIVE_ARRAY);
 
@@ -124,17 +124,18 @@ class ThroughLargeArray extends AbstractCallback implements
      * @return string
      *   The generated markup
      */
-    protected function handleValue($value, Model $model): string
+    protected function handleValue(mixed $value, Model $model): string
     {
         $messages = $this->pool->messages;
         if (is_object(value: $value)) {
             // We will not go too deep here, and say only what it is.
-            $model->setType(type: $messages->getHelp(key: 'simpleClassType'))->setNormal(normal: get_class($value));
+            $model->setType(type: $messages->getHelp(key: 'simpleClassType'))
+                ->setNormal(normal: get_class(object: $value));
 
             return $this->pool->render->renderExpandableChild(model: $model);
         }
 
-        if (is_array($value)) {
+        if (is_array(value: $value)) {
             // Adding another array to the output may be as bad as a
             // complete object analysis.
             $model->setType(type: $messages->getHelp(key: 'simpleArrayType'))
@@ -144,6 +145,6 @@ class ThroughLargeArray extends AbstractCallback implements
         }
 
         // We handle the simple type normally with the analysis hub.
-        return $this->pool->routing->analysisHub($model->setData(data: $value));
+        return $this->pool->routing->analysisHub(model: $model->setData(data: $value));
     }
 }

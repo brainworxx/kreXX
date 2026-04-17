@@ -104,7 +104,7 @@ class Connectors implements ConnectorsConstInterface
      * @param string|int $params
      *   The parameters as a sting.
      */
-    public function setParameters($params): void
+    public function setParameters(string|int $params): void
     {
         $this->params = $params;
     }

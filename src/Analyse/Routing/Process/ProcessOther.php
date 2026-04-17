@@ -79,7 +79,7 @@ class ProcessOther extends AbstractRouting implements ProcessInterface
     public function handle(): string
     {
         // Unknown type, better encode it, just to be sure.
-        $type = $this->pool->encodingService->encodeString(data: gettype($this->model->getData()));
+        $type = $this->pool->encodingService->encodeString(data: gettype(value: $this->model->getData()));
         return $this->pool->render->renderExpandableChild(
             model: $this->dispatchProcessEvent(
                 model: $this->model->setType(type: $type)

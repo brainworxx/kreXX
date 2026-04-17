@@ -78,7 +78,10 @@ class MethodDeclaration extends AbstractDeclaration
             // There is no real clean way to get the name of the trait that we
             // are looking at.
             $traitName = $this->pool->messages->getHelp(key: 'canNotResolveTrait');
-            $trait = $this->retrieveDeclaringReflection($reflection, $reflectionClass);
+            $trait = $this->retrieveDeclaringReflection(
+                reflectionMethod: $reflection,
+                declaringClass: $reflectionClass
+            );
             if ($trait !== null) {
                 $traitName = $trait->getName();
             }
@@ -104,7 +107,7 @@ class MethodDeclaration extends AbstractDeclaration
             return '';
         }
 
-        return $this->retrieveNamedType($namedType);
+        return $this->retrieveNamedType(namedType: $namedType);
     }
 
     /**
@@ -121,7 +124,7 @@ class MethodDeclaration extends AbstractDeclaration
     public function retrieveParameterType(ReflectionParameter $reflectionParameter): string
     {
         return $reflectionParameter->hasType() ?
-            $this->retrieveNamedType($reflectionParameter->getType()) . ' ' : '';
+            $this->retrieveNamedType(namedType: $reflectionParameter->getType()) . ' ' : '';
     }
 
     /**
@@ -148,7 +151,7 @@ class MethodDeclaration extends AbstractDeclaration
         // Go through the first layer of traits.
         // No need to recheck the availability for traits. This is done above.
         foreach ($declaringClass->getTraits() as $trait) {
-            $result = $this->retrieveDeclaringReflection($reflectionMethod, $trait);
+            $result = $this->retrieveDeclaringReflection(reflectionMethod:  $reflectionMethod, declaringClass: $trait);
             if ($result !== null) {
                 return $result;
             }

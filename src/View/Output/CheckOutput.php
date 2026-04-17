@@ -82,7 +82,7 @@ class CheckOutput
         $server = $this->pool->getServer();
 
         return isset($server['HTTP_X_REQUESTED_WITH']) &&
-            strtolower($server['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+            strtolower(string: $server['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
     /**
@@ -138,14 +138,14 @@ class CheckOutput
     {
         $server = $this->pool->getServer();
         $remote = isset($server[static::REMOTE_ADDRESS]) ? (string) $server[static::REMOTE_ADDRESS] : null;
-        $ipList = array_map('trim', explode(separator: ',', string: $whitelist));
+        $ipList = array_map(callback: 'trim', array: explode(separator: ',', string: $whitelist));
         if (
             // There is no IP on the shell.
             $this->isCli()
             // Or we allow everyone.
             || $whitelist === '*'
             // Or the IPs are matching.
-            || in_array($remote, $ipList, true)
+            || in_array(needle: $remote, haystack: $ipList, strict: true)
         ) {
             return true;
         }

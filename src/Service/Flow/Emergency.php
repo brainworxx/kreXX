@@ -134,7 +134,8 @@ class Emergency implements ConfigConstInterface
         $this->pool = $pool;
 
         // Cache the server memory limit.
-        if (preg_match('/^(\d+)(.)$/', strtoupper(ini_get('memory_limit')), $matches)) {
+        $memoryLimit = strtoupper(string: ini_get(option: 'memory_limit'));
+        if (preg_match(pattern: '/^(\d+)(.)$/', subject: $memoryLimit, matches: $matches)) {
             if ($matches[2] === 'M') {
                 // Megabyte.
                 $this->serverMemoryLimit = $matches[1] * 1024 * 1024;

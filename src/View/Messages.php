@@ -204,7 +204,10 @@ class Messages
         foreach ($fileList as $filename) {
             $helpArray = array_replace_recursive(
                 $helpArray,
-                (array)parse_ini_string($this->pool->fileService->getFileContents($filename, false), true)
+                (array)parse_ini_string(
+                    ini_string: $this->pool->fileService->getFileContents(filePath: $filename, showError: false),
+                    process_sections: true
+                )
             );
         }
 

@@ -95,7 +95,7 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
         foreach ($this->generateDumperList() as $classname) {
             $output .= $this->pool
                 ->createClass(classname: $classname)
-                ->setParameters($this->parameters)
+                ->setParameters(parameters: $this->parameters)
                 ->callMe();
         }
 
@@ -115,11 +115,11 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
     protected function generateDumperList(): array
     {
         $data = $this->parameters[static::PARAM_DATA];
-        $ref = $this->parameters[static::PARAM_REF] = new ReflectionClass($data);
+        $ref = $this->parameters[static::PARAM_REF] = new ReflectionClass(data: $data);
         $config = $this->pool->config;
         $stuffToDump = [PublicProperties::class];
-
-        if (in_array($ref->getName(), [stdClass::class, __PHP_Incomplete_Class::class], true)) {
+        $hayStack = [stdClass::class, __PHP_Incomplete_Class::class];
+        if (in_array(needle: $ref->getName(), haystack: $hayStack, strict: true)) {
             // We ignore everything else for these two types.
             return $stuffToDump;
         }
@@ -143,7 +143,7 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
         }
 
         // Dumping all the property related stuff.
-        $this->addPropertyDumper($stuffToDump);
+        $this->addPropertyDumper(stuffToDump: $stuffToDump);
 
         return [...$stuffToDump, ...$this->standardDumper];
     }
@@ -177,7 +177,7 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
 
         // Dumping getter methods before the protected and private,
         // in case we are in scope.
-        if ($isInScope && $config->getSetting(static::SETTING_ANALYSE_GETTER)) {
+        if ($isInScope && $config->getSetting(name: static::SETTING_ANALYSE_GETTER)) {
             $stuffToDump[] = Getter::class;
         }
     }

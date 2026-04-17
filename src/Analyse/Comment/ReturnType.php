@@ -91,7 +91,7 @@ class ReturnType extends AbstractComment
     {
         // Get a first impression by the reflection.
         $result = $this->pool->createClass(classname: MethodDeclaration::class)
-            ->retrieveReturnType($reflection);
+            ->retrieveReturnType(reflection: $reflection);
         if ($result !== '') {
             return $this->pool->encodingService->encodeString(data: $result);
         }
@@ -100,9 +100,9 @@ class ReturnType extends AbstractComment
         $docComment = $reflection->getDocComment();
         if (
             !empty($docComment)
-            && preg_match('/(?<=@return ).*$/m', $docComment, $matches) > 0
+            && preg_match(pattern: '/(?<=@return ).*$/m', subject: $docComment, matches: $matches) > 0
         ) {
-            $result = $this->retrieveReturnTypeFromComment($matches[0], $reflectionClass);
+            $result = $this->retrieveReturnTypeFromComment(comment: $matches[0], reflectionClass: $reflectionClass);
         }
 
         return $result;
@@ -121,7 +121,7 @@ class ReturnType extends AbstractComment
      */
     protected function retrieveReturnTypeFromComment(string $comment, ?ReflectionClass $reflectionClass = null): string
     {
-        $resultToken = strtok($comment . ' ', ' ');
+        $resultToken = strtok(string: $comment . ' ', token: ' ');
         $result = '';
         if (str_starts_with(haystack: $resultToken, needle: '$this') && $reflectionClass !== null) {
             // @return $this

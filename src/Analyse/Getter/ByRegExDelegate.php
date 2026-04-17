@@ -96,7 +96,7 @@ class ByRegExDelegate extends ByRegExContainer
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
         $this->getterAnalyser[] = $this->pool->createClass(classname: ByMethodName::class);
         $this->getterAnalyser[] = $this->pool->createClass(classname: ByRegExProperty::class);
         $this->getterAnalyser[] = $this->pool->createClass(classname: ByRegExContainer::class);
@@ -110,9 +110,13 @@ class ByRegExDelegate extends ByRegExContainer
         ReflectionMethod $reflectionMethod,
         ReflectionClass $reflectionClass,
         string $currentPrefix
-    ) {
+    ): mixed {
         $this->currentPrefix = $currentPrefix;
-        return parent::retrieveIt($reflectionMethod, $reflectionClass, $currentPrefix);
+        return parent::retrieveIt(
+            reflectionMethod: $reflectionMethod,
+            reflectionClass: $reflectionClass,
+            currentPrefix: $currentPrefix
+        );
     }
 
     /**
@@ -124,7 +128,7 @@ class ByRegExDelegate extends ByRegExContainer
      *
      * {@inheritDoc}
      */
-    protected function extractValue(array $parts, ReflectionClass $reflectionClass)
+    protected function extractValue(array $parts, ReflectionClass $reflectionClass): mixed
     {
         ++$this->deep;
         if ($this->deep > 10) {
@@ -136,9 +140,9 @@ class ByRegExDelegate extends ByRegExContainer
         // $this->myObject?->getStuff();
         // We need to remove the question mark, since it is not part of the
         // object name.
-        $parts[0] = trim($parts[0], '?');
+        $parts[0] = trim(string: $parts[0], characters: '?');
         try {
-            $delegateReflection = $this->retrieveReflectionClass($parts, $reflectionClass);
+            $delegateReflection = $this->retrieveReflectionClass(parts: $parts, reflectionClass: $reflectionClass);
             if ($delegateReflection === null) {
                 $this->deep = 0;
                 return null;
@@ -147,14 +151,18 @@ class ByRegExDelegate extends ByRegExContainer
             // Now, let's ask the others.
             $reflectionMethod = $delegateReflection->getMethod(name: $parts[1]);
             foreach ($this->getterAnalyser as $analyser) {
-                $value = $analyser->retrieveIt($reflectionMethod, $delegateReflection, $this->currentPrefix);
+                $value = $analyser->retrieveIt(
+                    reflectionMethod: $reflectionMethod,
+                    reflectionClass: $delegateReflection,
+                    currentPrefix: $this->currentPrefix
+                );
                 if ($analyser->hasResult()) {
                     $this->foundSomething = true;
                     $this->deep = 0;
                     return $value;
                 }
             }
-        } catch (ReflectionException $exception) {
+        } catch (ReflectionException) {
         }
 
         return null;
@@ -182,19 +190,19 @@ class ByRegExDelegate extends ByRegExContainer
         // myObject->getStuff()
         if (
             count(value: $parts) !== 2
-            || !$reflectionClass->hasProperty($parts[0])
+            || !$reflectionClass->hasProperty(name: $parts[0])
         ) {
             // This is not the code I am looking for.
             return null;
         }
 
-        $object = $reflectionClass->retrieveValue($reflectionClass->getProperty($parts[0]));
+        $object = $reflectionClass->retrieveValue(refProperty: $reflectionClass->getProperty(name: $parts[0]));
         if (!is_object(value: $object)) {
             return null;
         }
 
-        $delegateReflection = new ReflectionClass($object);
-        if (!$delegateReflection->hasMethod($parts[1])) {
+        $delegateReflection = new ReflectionClass(data: $object);
+        if (!$delegateReflection->hasMethod(name: $parts[1])) {
             return null;
         }
 

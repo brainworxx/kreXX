@@ -64,7 +64,7 @@ class TimeStamp extends AbstractScalarAnalysis
      *
      * @throws \Exception
      */
-    public function canHandle($string, Model $model): bool
+    public function canHandle(string|int|bool $string, Model $model): bool
     {
         // Get a first impression.
         $float  = (float) $string;
@@ -77,8 +77,8 @@ class TimeStamp extends AbstractScalarAnalysis
         $metaTimestamp = $this->pool->messages->getHelp(key: 'metaTimestamp');
         if ((string)$float === $string && !str_contains(haystack: $string, needle: '.')) {
             $model->addToJson(
-                $metaTimestamp,
-                (new DateTime(datetime: '@' . $float))->format('d.M Y H:i:s')
+                key: $metaTimestamp,
+                value: (new DateTime(datetime: '@' . $float))->format(format: 'd.M Y H:i:s')
             );
             return false;
         }
@@ -86,8 +86,8 @@ class TimeStamp extends AbstractScalarAnalysis
         // Check for a microtime string.
         try {
             $model->addToJson(
-                $metaTimestamp,
-                (DateTime::createFromFormat(format: 'U.u', datetime: $string)->format('d.M Y H:i:s.u'))
+                key: $metaTimestamp,
+                value: (DateTime::createFromFormat(format: 'U.u', datetime: $string)->format(format: 'd.M Y H:i:s.u'))
             );
         } catch (Throwable) {
             // Do nothing

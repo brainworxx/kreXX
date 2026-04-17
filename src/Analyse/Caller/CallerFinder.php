@@ -73,7 +73,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
      */
     public function __construct(Pool $pool)
     {
-         parent::__construct($pool);
+         parent::__construct(pool: $pool);
 
         // Setting the search pattern.
         $this->callPattern = [
@@ -94,17 +94,17 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
      */
     public function findCaller(string $headline, $data): array
     {
-        $backtrace = array_reverse(debug_backtrace(0, 5));
+        $backtrace = array_reverse(array: debug_backtrace(options: 0, limit: 5));
 
         // Going from the first call of the first line, up through the first debug call.
         foreach ($backtrace as $caller) {
-            if ($this->identifyCaller($caller)) {
+            if ($this->identifyCaller(caller: $caller)) {
                 break;
             }
         }
 
         $varname = empty($headline) ?
-            $this->getVarName($caller[static::TRACE_FILE], $caller[static::TRACE_LINE]) :
+            $this->getVarName(file: $caller[static::TRACE_FILE], line: $caller[static::TRACE_LINE]) :
             $headline;
 
         // We will not keep the whole backtrace im memory. We only return what we
@@ -113,8 +113,8 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
             static::TRACE_FILE => $caller[static::TRACE_FILE],
             static::TRACE_LINE => (int)$caller[static::TRACE_LINE],
             static::TRACE_VARNAME => $varname,
-            static::TRACE_TYPE => $this->getType($headline, $varname, $data),
-            static::TRACE_DATE => date(static::TIME_FORMAT, time()),
+            static::TRACE_TYPE => $this->getType(headline: $headline, varname: $varname, data: $data),
+            static::TRACE_DATE => date(format: static::TIME_FORMAT, timestamp: time()),
             static::TRACE_URL => $this->getCurrentUrl(),
         ];
     }
@@ -133,7 +133,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
         return (
                 // Check for a function trace.
                 isset($caller[static::TRACE_FUNCTION]) && str_starts_with(
-                    haystack: strtolower($caller[static::TRACE_FUNCTION]),
+                    haystack: strtolower(string: $caller[static::TRACE_FUNCTION]),
                     needle: static::FUNCTION_PATTERN
                 )
             ) ||
@@ -161,11 +161,11 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
         $varname = static::UNKNOWN_VALUE;
 
         // Retrieve the call from the sourcecode file.
-        if (!$this->pool->fileService->fileIsReadable($file)) {
+        if (!$this->pool->fileService->fileIsReadable(filePath: $file)) {
             return $varname;
         }
 
-        $commendLine = $this->pool->fileService->readFile($file, --$line, $line);
+        $commendLine = $this->pool->fileService->readFile(filePath: $file, readFrom: --$line, readTo: $line);
 
         return $this->removeKrexxPartFromCommand($commendLine);
     }
@@ -184,13 +184,13 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
         foreach ($this->callPattern as $funcname) {
             // This little baby tries to resolve everything inside the
             // brackets of the kreXX call.
-            preg_match('/' . $funcname . '\s*\((.*)\)\s*/u', $command, $name);
+            preg_match(pattern: '/' . $funcname . '\s*\((.*)\)\s*/u', subject: $command, matches: $name);
             if (isset($name[1])) {
                 return $this->pool
                     ->encodingService
                     ->encodeString(
                         data: $this->pool->createClass(classname: CleanUpVarName::class)
-                            ->cleanup(trim($name[1], " \t\n\r\0\x0B"))
+                            ->cleanup(name: trim($name[1], characters: " \t\n\r\0\x0B"))
                     );
             }
         }

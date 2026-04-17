@@ -77,7 +77,8 @@ abstract class AbstractScalar
      */
     protected function generateDomId(string $string, string $className): string
     {
-        return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_scalar_' . md5($string . '_' . $className);
+        return 'k' . $this->pool->emergencyHandler->getKrexxCount() . '_scalar_'
+            . md5(string: $string . '_' . $className);
     }
 
     /**

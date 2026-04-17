@@ -91,7 +91,7 @@ abstract class AbstractCaller
      */
     public function setPattern(string $pattern): AbstractCaller
     {
-        $this->pattern = strtolower($pattern);
+        $this->pattern = strtolower(string: $pattern);
         return $this;
     }
 
@@ -139,10 +139,10 @@ abstract class AbstractCaller
      * @return string
      *   The analysis type.
      */
-    protected function getType(string $headline, string $varname, $data): string
+    protected function getType(string $headline, string $varname, mixed $data): string
     {
         if (empty($headline)) {
-            $type = is_object(value: $data) ? get_class($data) : gettype($data);
+            $type = is_object(value: $data) ? get_class(object: $data) : gettype(value: $data);
             if ($type === 'double') {
                 $type = 'float';
             }
@@ -181,7 +181,7 @@ abstract class AbstractCaller
         // SSL or no SSL.
         $ssl = !empty($server['HTTPS']) && $server['HTTPS'] === 'on';
 
-        $protocol = strtolower($server['SERVER_PROTOCOL']);
+        $protocol = strtolower(string: $server['SERVER_PROTOCOL']);
         $protocol = substr(string: $protocol, offset: 0, length: strpos(haystack: $protocol, needle: '/'));
         if ($ssl) {
             $protocol .= 's';

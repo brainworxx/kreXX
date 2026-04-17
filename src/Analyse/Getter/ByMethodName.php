@@ -64,10 +64,14 @@ class ByMethodName extends AbstractGetter
         ReflectionMethod $reflectionMethod,
         ReflectionClass $reflectionClass,
         string $currentPrefix
-    ) {
+    ): mixed {
         $this->foundSomething = false;
         $this->reflectionProperty = null;
-        $reflectionProperty = $this->retrieveReflectionProperty($reflectionMethod, $reflectionClass, $currentPrefix);
+        $reflectionProperty = $this->retrieveReflectionProperty(
+            reflectionMethod: $reflectionMethod,
+            reflectionClass: $reflectionClass,
+            currentPrefix: $currentPrefix
+        );
         if ($reflectionProperty === null) {
             // Nothing was found.
             return null;
@@ -75,7 +79,11 @@ class ByMethodName extends AbstractGetter
 
         $this->foundSomething = true;
         $this->reflectionProperty = $reflectionProperty;
-        return $this->prepareResult($reflectionProperty, $reflectionClass, $currentPrefix);
+        return $this->prepareResult(
+            refProp: $reflectionProperty,
+            reflectionClass: $reflectionClass,
+            currentPrefix: $currentPrefix
+        );
     }
 
     /**
@@ -105,26 +113,29 @@ class ByMethodName extends AbstractGetter
         // We will check:
         $names = [
             // myProperty
-            $propertyName = $this->preparePropertyName($reflectionMethod, $currentPrefix),
+            $propertyName = $this->preparePropertyName(
+                reflectionMethod: $reflectionMethod,
+                currentPrefix: $currentPrefix
+            ),
             // _myProperty
             '_' . $propertyName,
             // MyProperty
-            ucfirst($propertyName),
+            ucfirst(string: $propertyName),
             // _MyProperty
-            '_' . ucfirst($propertyName),
+            '_' . ucfirst(string: $propertyName),
             // myproperty
-            strtolower($propertyName),
+            strtolower(string: $propertyName),
             // _myproperty
-            '_' . strtolower($propertyName),
+            '_' . strtolower(string: $propertyName),
             // my_property
-            $this->convertToSnakeCase($propertyName),
+            $this->convertToSnakeCase(string: $propertyName),
             // _my_property
-            '_' . $this->convertToSnakeCase($propertyName)
+            '_' . $this->convertToSnakeCase(string: $propertyName)
         ];
 
         foreach ($names as $name) {
-            if ($reflectionClass->hasProperty($name)) {
-                return $reflectionClass->getProperty($name);
+            if ($reflectionClass->hasProperty(name: $name)) {
+                return $reflectionClass->getProperty(name: $name);
             }
         }
 
@@ -149,12 +160,12 @@ class ByMethodName extends AbstractGetter
         ReflectionProperty $refProp,
         ReflectionClass $reflectionClass,
         string $currentPrefix
-    ) {
+    ): mixed {
         // We've got ourselves a possible result.
-        $value = $reflectionClass->retrieveValue($refProp);
+        $value = $reflectionClass->retrieveValue(refProperty: $refProp);
         // If we are handling a getter, we retrieve the value itself
         // If we are handling an is'er of has'er, we return a boolean.
-        if ($currentPrefix !== 'get' && !is_bool($value)) {
+        if ($currentPrefix !== 'get' && !is_bool(value: $value)) {
             return $value !== null;
         }
 
@@ -175,12 +186,12 @@ class ByMethodName extends AbstractGetter
          // Get the name and remove the 'get' . . .
         $getterName = $reflectionMethod->getName();
         if (str_starts_with(haystack: $getterName, needle: $currentPrefix)) {
-            return lcfirst(substr(string: $getterName, offset: strlen(string: $currentPrefix)));
+            return lcfirst(string: substr(string: $getterName, offset: strlen(string: $currentPrefix)));
         }
 
         // . . .  or the '_get'.
         if (str_starts_with(haystack: $getterName, needle: '_' . $currentPrefix)) {
-            return lcfirst(substr(string: $getterName, offset: strlen(string: $currentPrefix) + 1));
+            return lcfirst(string: substr(string: $getterName, offset: strlen(string: $currentPrefix) + 1));
         }
 
         // Still here?!? At least make the first letter lowercase.
@@ -201,6 +212,10 @@ class ByMethodName extends AbstractGetter
      */
     protected function convertToSnakeCase(string $string): string
     {
-        return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
+        return strtolower(string: preg_replace(
+            pattern: ['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'],
+            replacement: '$1_$2',
+            subject: $string
+        ));
     }
 }

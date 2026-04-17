@@ -64,7 +64,7 @@ class ProcessBoolean extends AbstractRouting implements ProcessInterface, Proces
     public function canHandle(Model $model): bool
     {
         $this->model = $model;
-        return is_bool($model->getData());
+        return is_bool(value: $model->getData());
     }
 
     /**

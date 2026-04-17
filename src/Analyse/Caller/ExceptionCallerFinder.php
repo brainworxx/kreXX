@@ -58,15 +58,15 @@ class ExceptionCallerFinder extends AbstractCaller implements BacktraceConstInte
     public function findCaller(string $headline, $data): array
     {
         if ($data instanceof Throwable) {
-            $headline = get_class($data);
+            $headline = get_class(object: $data);
         }
         return [
             static::TRACE_FILE => $data->getFile(),
             static::TRACE_LINE => $data->getLine() + 1,
-            static::TRACE_VARNAME => ' ' . get_class($data),
+            static::TRACE_VARNAME => ' ' . get_class(object: $data),
             static::TRACE_LEVEL => 'error',
             static::TRACE_TYPE => $headline,
-            static::TRACE_DATE => date(static::TIME_FORMAT, time()),
+            static::TRACE_DATE => date(format: static::TIME_FORMAT, timestamp: time()),
             static::TRACE_URL => $this->getCurrentUrl(),
         ];
     }

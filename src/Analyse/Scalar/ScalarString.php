@@ -93,7 +93,7 @@ class ScalarString extends AbstractScalar
             }
         }
 
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
     }
 
     /**
@@ -111,9 +111,9 @@ class ScalarString extends AbstractScalar
     public function handle(Model $model, string $originalData): Model
     {
         foreach ($this->classList as $className => $analyser) {
-            if ($analyser->canHandle($originalData, $model)) {
+            if ($analyser->canHandle(string: $originalData, model: $model)) {
                 return $model->injectCallback(object: $analyser)
-                    ->setDomid(domid: $this->generateDomId($originalData, $className));
+                    ->setDomid(domid: $this->generateDomId(string: $originalData, className: $className));
             }
         }
 

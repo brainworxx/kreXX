@@ -58,18 +58,18 @@ trait LoggingTrait
         // Output destination: file
         Krexx::$pool->config
             ->settings[ConfigConstInterface::SETTING_DESTINATION]
-            ->setSource($source)
-            ->setValue(ConfigConstInterface::VALUE_FILE);
+            ->setSource(source: $source)
+            ->setValue(value: ConfigConstInterface::VALUE_FILE);
 
         // Do not care about ajax requests.
         Krexx::$pool->config
             ->settings[ConfigConstInterface::SETTING_DETECT_AJAX]
-            ->setSource($source)
-            ->setValue(false);
+            ->setSource(source: $source)
+            ->setValue(value: false);
 
         // Reload the disabled settings with the new ajax setting.
          Krexx::$pool->config
-            ->loadConfigValue(ConfigConstInterface::SETTING_DISABLED);
+            ->loadConfigValue(name: ConfigConstInterface::SETTING_DISABLED);
     }
 
     /**

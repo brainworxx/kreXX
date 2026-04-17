@@ -60,8 +60,8 @@ class Properties extends AbstractComment
 
         // Cache not found. We need to generate this one.
         return nl2br(
-            $this->pool->encodingService->encodeString(
-                data: $this->prettifyComment($reflection->getDocComment())
+            string: $this->pool->encodingService->encodeString(
+                data: $this->prettifyComment(comment: $reflection->getDocComment())
             )
         );
     }

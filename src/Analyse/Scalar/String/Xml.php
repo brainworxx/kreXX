@@ -76,7 +76,7 @@ class Xml extends AbstractScalarAnalysis
      */
     public function __construct(Pool $pool)
     {
-        parent::__construct($pool);
+        parent::__construct(pool: $pool);
 
         $this->DOMDocument = new DOMDocument("1.0");
         // The pretty print done by a dom parser.
@@ -89,13 +89,13 @@ class Xml extends AbstractScalarAnalysis
      */
     public static function isActive(): bool
     {
-        return class_exists(DOMDocument::class);
+        return class_exists(class: DOMDocument::class, autoload: false);
     }
 
     /**
      * Test, if this is a valid XML structure.
      *
-     * @param bool|int|string $string
+     * @param string|int|bool $string
      *   The possible json.
      * @param Model $model
      *   The model, so far for additional information.
@@ -103,7 +103,7 @@ class Xml extends AbstractScalarAnalysis
      * @return bool
      *   Well? Can we handle it?
      */
-    public function canHandle($string, Model $model): bool
+    public function canHandle(string|int|bool $string, Model $model): bool
     {
         // Get a first impression, we check the mime type of the model.
         $metaStuff = $model->getJson();
@@ -117,11 +117,11 @@ class Xml extends AbstractScalarAnalysis
 
         // Load the document.
         set_error_handler(callback: [$this, 'errorCallback']);
-        $this->DOMDocument->loadXML($string);
+        $this->DOMDocument->loadXML(source: $string);
         restore_error_handler();
 
         if (!empty($this->error)) {
-            $model->addToJson($this->pool->messages->getHelp(key: 'xmlError'), $this->error);
+            $model->addToJson(key: $this->pool->messages->getHelp(key: 'xmlError'), value: $this->error);
             return false;
         }
 

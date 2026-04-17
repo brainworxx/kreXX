@@ -63,7 +63,7 @@ class ThroughMetaReflections extends AbstractCallback implements CallbackConstIn
         foreach ($this->parameters[static::PARAM_DATA] as $key => $ref) {
             $output .= $this->pool
                 ->createClass(classname: Meta::class)
-                ->setParameters([static::PARAM_REF => $ref, static::PARAM_META_NAME => $key])
+                ->setParameters(parameters: [static::PARAM_REF => $ref, static::PARAM_META_NAME => $key])
                 ->callMe();
         }
 

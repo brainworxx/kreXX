@@ -58,9 +58,9 @@ trait SingleEditableChild
     {
         // Prepare the json. Not much do display for form elements.
         return str_replace(
-            $this->markerSingleEditableChild,
-            $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
-            parent::renderSingleEditableChild($model)
+            search: $this->markerSingleEditableChild,
+            replace: $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
+            subject: parent::renderSingleEditableChild($model)
         );
     }
 

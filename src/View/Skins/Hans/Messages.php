@@ -56,9 +56,9 @@ trait Messages
         /** @var \Brainworxx\Krexx\View\Message $message */
         foreach ($messages as $message) {
             $result .= str_replace(
-                $this->markerMessages,
-                $message->getText(),
-                $this->fileCache[static::FILE_MESSAGE]
+                search: $this->markerMessages,
+                replace: $message->getText(),
+                subject: $this->fileCache[static::FILE_MESSAGE]
             );
         }
 

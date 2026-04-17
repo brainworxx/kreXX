@@ -65,8 +65,8 @@ trait Search
     {
         $messages = $this->pool->messages;
         return str_replace(
-            $this->markerSearch,
-            [
+            search: $this->markerSearch,
+            replace: [
                 $this->pool->recursionHandler->getMarker(),
                 $messages->getHelp(key: 'searchHeadline'),
                 $messages->getHelp(key: 'searchCaseSensitive'),
@@ -75,7 +75,7 @@ trait Search
                 $messages->getHelp(key: 'searchLongResults'),
                 $messages->getHelp(key: 'searchWholeValues'),
             ],
-            $this->fileCache[static::FILE_SEARCH]
+            subject: $this->fileCache[static::FILE_SEARCH]
         );
     }
 

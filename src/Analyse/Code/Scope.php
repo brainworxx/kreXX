@@ -82,7 +82,6 @@ class Scope implements CallbackConstInterface
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-
         $pool->scope = $this;
     }
 

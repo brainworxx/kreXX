@@ -74,13 +74,13 @@ trait PluginList
 
             $configClass = $plugin[static::CONFIG_CLASS];
             $result .= str_replace(
-                $this->markerSinglePlugin,
-                [
+                search: $this->markerSinglePlugin,
+                replace: [
                     $activeClass,
                     $activeText,
                     $configClass->getName() . ' ' . $configClass->getVersion()
                 ],
-                $this->fileCache[static::FILE_SI_PLUGIN]
+                subject: $this->fileCache[static::FILE_SI_PLUGIN]
             );
         }
         return $result;

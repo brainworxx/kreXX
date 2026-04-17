@@ -74,7 +74,7 @@ class ClassName extends AbstractScalarAnalysis
      * @return bool
      *   Is this a class name?
      */
-    public function canHandle($string, Model $model): bool
+    public function canHandle(string|int|bool $string, Model $model): bool
     {
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
         try {
@@ -102,8 +102,8 @@ class ClassName extends AbstractScalarAnalysis
         $messages = $this->pool->messages;
         $meta = [];
         try {
-            $meta = [$messages->getHelp(key: 'metaReflection') => new ReflectionClass($this->handledValue)];
-        } catch (ReflectionException $e) {
+            $meta = [$messages->getHelp(key: 'metaReflection') => new ReflectionClass(data: $this->handledValue)];
+        } catch (ReflectionException) {
         }
 
         // Move the extra part into a nest, for better readability.
