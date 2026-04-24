@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Service\Misc;
 
 use Exception;
+use Throwable;
 
 /**
  * Format a serialized string into a human-readable form.
@@ -74,7 +75,7 @@ class FormatSerialize
 
         try {
             return $this->parse();
-        } catch (Exception $exception) {
+        } catch (Throwable) {
             // Could not format the string.
             return null;
         }

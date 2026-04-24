@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Caller;
 
+use Brainworxx\Krexx\Logging\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Throwable;
 
@@ -56,7 +57,7 @@ class ExceptionCallerFinder extends AbstractCaller implements BacktraceConstInte
      * @return array
      *   The exception, that was thrown.
      */
-    public function findCaller(string $headline, $data): array
+    public function findCaller(string $headline, mixed $data): array
     {
         if ($data instanceof Throwable) {
             $headline = get_class(object: $data);

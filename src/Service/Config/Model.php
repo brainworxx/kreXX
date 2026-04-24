@@ -113,7 +113,7 @@ class Model implements ConfigConstInterface
      * @return $this
      *   Return $this for Chaining.
      */
-    public function setValue($value): Model
+    public function setValue(string|int|null|bool $value): Model
     {
         if ($value === static::VALUE_TRUE) {
             $value = true;

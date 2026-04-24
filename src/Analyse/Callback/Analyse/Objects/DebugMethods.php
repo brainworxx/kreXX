@@ -135,7 +135,7 @@ class DebugMethods extends AbstractObjectAnalysis implements
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
         try {
             $result = $object->$methodName();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Do nothing.
         }
 

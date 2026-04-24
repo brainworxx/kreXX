@@ -177,7 +177,7 @@ class Config extends Fallback
      * @return int|bool|string|null
      *   The setting.
      */
-    public function getSetting(string $name)
+    public function getSetting(string $name): int|bool|string|null
     {
         return $this->settings[$name]->getValue();
     }

@@ -66,7 +66,7 @@ class Registry
      *
      * To 'unset' any value, just submit an empty() value.
      *
-     * @param mixed $key
+     * @param string|int $key
      *   The key under what we store the $value,
      * @param mixed $value
      *   The stuff we want to store.
@@ -74,7 +74,7 @@ class Registry
      * @return $this
      *   Return $this for chaining.
      */
-    public function set(mixed $key, mixed $value): Registry
+    public function set(string|int $key, mixed $value): Registry
     {
         if ($value === null) {
             unset($this->data[$key]);

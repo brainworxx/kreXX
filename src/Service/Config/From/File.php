@@ -157,7 +157,7 @@ class File extends Fallback
      * @param string $name
      *   The name of the setting.
      *
-     * @return string|null
+     * @return null|string|bool
      *   The value from the file. Null, when not available or not validated.
      */
     public function getConfigFromFile(string $group, string $name): null|string|bool

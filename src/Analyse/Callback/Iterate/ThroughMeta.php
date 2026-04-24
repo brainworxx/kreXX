@@ -149,7 +149,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
      * @return \Brainworxx\Krexx\Analyse\Model
      *   The prepared model.
      */
-    protected function prepareModel(string $key, $meta): Model
+    protected function prepareModel(string $key, mixed $meta): Model
     {
         /** @var Model $model */
         $model = $this->pool->createClass(classname: Model::class)

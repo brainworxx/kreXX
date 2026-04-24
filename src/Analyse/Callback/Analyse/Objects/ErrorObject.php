@@ -102,7 +102,7 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
      * @param Throwable|LoggingModel $data
      * @return void
      */
-    protected function addExceptionMessage($data): void
+    protected function addExceptionMessage(Throwable|LoggingModel $data): void
     {
         // Level 1 means, that is the first object we are looking at.
         if ($this->pool->emergencyHandler->getNestingLevel() !== 1) {

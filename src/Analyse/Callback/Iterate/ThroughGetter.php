@@ -282,7 +282,7 @@ class ThroughGetter extends AbstractCallback implements
      * @param mixed $value
      *   The retrieved possible value. Can be anything.
      */
-    protected function prepareModel(Model $model, $value): void
+    protected function prepareModel(Model $model, mixed $value): void
     {
         $model->setData(data: $value);
         if ($value === null) {

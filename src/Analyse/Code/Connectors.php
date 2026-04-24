@@ -72,7 +72,7 @@ class Connectors implements ConnectorsConstInterface
      *
      * @var string|int
      */
-    protected $params;
+    protected string|int $params;
 
     /**
      * The type of connectors we are rendering.
@@ -115,7 +115,7 @@ class Connectors implements ConnectorsConstInterface
      * @return string|int
      *   The connection parameters.
      */
-    public function getParameters()
+    public function getParameters(): string|int
     {
         return $this->params;
     }

@@ -70,7 +70,7 @@ trait Normal
     /**
      * Getter for normal.
      *
-     * @return string|int
+     * @return mixed
      *   The short result of the analysis.
      */
     public function getNormal(): mixed

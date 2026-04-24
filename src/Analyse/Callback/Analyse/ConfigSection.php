@@ -129,7 +129,7 @@ class ConfigSection extends AbstractCallback implements CallbackConstInterface, 
      * @return int|string|null
      *   The prepared value.
      */
-    protected function prepareValue(SettingModel $setting)
+    protected function prepareValue(SettingModel $setting): int|string|null
     {
         $value = $setting->getValue();
 

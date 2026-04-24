@@ -61,7 +61,7 @@ trait Name
      * @return Model
      *   $this, for chaining.
      */
-    public function setName($name): Model
+    public function setName(int|string $name): Model
     {
         $this->name = $name;
         return $this;

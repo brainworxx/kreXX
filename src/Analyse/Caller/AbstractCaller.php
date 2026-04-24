@@ -115,7 +115,7 @@ abstract class AbstractCaller
      *     'url' => 'http://some.server.xx/path/'
      *   );
      */
-    abstract public function findCaller(string $headline, $data): array;
+    abstract public function findCaller(string $headline, mixed $data): array;
 
     /**
      * Get the analysis type for the metadata and the page title.

@@ -90,7 +90,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function findCaller(string $headline, $data): array
+    public function findCaller(string $headline, mixed $data): array
     {
         $backtrace = array_reverse(array: debug_backtrace(options: 0, limit: 5));
 

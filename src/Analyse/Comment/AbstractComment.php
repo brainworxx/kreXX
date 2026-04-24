@@ -89,7 +89,7 @@ abstract class AbstractComment
      * @return string
      *   The better readable comment
      */
-    protected function prettifyComment($comment): string
+    protected function prettifyComment(string|bool $comment): string
     {
         if ($comment === false) {
             return '';

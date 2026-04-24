@@ -110,13 +110,13 @@ class PublicProperties extends AbstractObjectAnalysis
      *
      * Also: Take care of the \DateTime properties anomaly.
      *
-     * @param mixed $data
+     * @param object $data
      * @param ReflectionProperty[] $publicProps
      * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref
      * @return array
      */
     protected function handleUndeclaredProperties(
-        mixed $data,
+        object $data,
         array $publicProps,
         ReflectionClass $ref
     ): array {
