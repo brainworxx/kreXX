@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Processing of objects.
@@ -52,6 +53,15 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is this one an object?

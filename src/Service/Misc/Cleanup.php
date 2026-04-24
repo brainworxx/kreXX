@@ -46,13 +46,6 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 class Cleanup implements ConfigConstInterface
 {
     /**
-     * The pool.
-     *
-     * @var \Brainworxx\Krexx\Service\Factory\Pool
-     */
-    protected Pool $pool;
-
-    /**
      * We only do a chunks cleanup once.
      *
      * @var bool
@@ -64,9 +57,8 @@ class Cleanup implements ConfigConstInterface
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
     }
 
     /**

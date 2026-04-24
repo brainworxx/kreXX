@@ -38,6 +38,7 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Throwable;
 use ReflectionException;
@@ -50,6 +51,15 @@ class ClassName extends AbstractScalarAnalysis
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is always active

@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Processing of other types of values.
@@ -53,6 +54,15 @@ class ProcessOther extends AbstractRouting implements ProcessInterface
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Fall back to telling the dev to create a ticket, requesting an analysis

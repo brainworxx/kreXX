@@ -68,10 +68,8 @@ class Routing extends AbstractRouting
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
-
         $this->processors[ProcessString::class] = $pool->createClass(classname: ProcessString::class);
         $this->processors[ProcessInteger::class] = $pool->createClass(classname: ProcessInteger::class);
         $this->processors[ProcessArray::class] = $pool->createClass(classname: ProcessArray::class);

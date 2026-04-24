@@ -47,11 +47,6 @@ use Reflector;
 abstract class AbstractComment
 {
     /**
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Pattern for the finding of inherited comments.
      *
      * @var string[]
@@ -68,9 +63,8 @@ abstract class AbstractComment
      *
      * @param Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
     }
 
     /**

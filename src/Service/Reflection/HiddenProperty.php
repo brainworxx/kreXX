@@ -208,7 +208,7 @@ class HiddenProperty extends UndeclaredProperty
     /**
      * {@inheritDoc}
      */
-    public function __construct(ReflectionClass $ref, $name)
+    public function __construct(ReflectionClass $ref, int|string $name)
     {
         parent::__construct(ref: $ref, name: $name);
 

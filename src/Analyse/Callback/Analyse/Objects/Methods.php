@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMethods;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionMethod;
 
@@ -55,6 +56,15 @@ use ReflectionMethod;
  */
 class Methods extends AbstractObjectAnalysis implements ConfigConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Decides which methods we want to analyse and then starts the dump.
      *

@@ -44,6 +44,7 @@ use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessArray;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessObject;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Backtrace analysis methods.
@@ -60,6 +61,15 @@ class BacktraceStep extends AbstractCallback implements
     CallbackConstInterface,
     ProcessConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Renders a backtrace step.
      *

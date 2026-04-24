@@ -42,6 +42,7 @@ use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Code\ConnectorsConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionException;
 use Throwable;
@@ -61,6 +62,15 @@ class DebugMethods extends AbstractObjectAnalysis implements
     ConnectorsConstInterface,
     ConfigConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Calls all configured debug methods in die class.
      *

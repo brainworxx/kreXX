@@ -96,10 +96,8 @@ class ThroughMethods extends AbstractCallback implements
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
-
         $this->commentAnalysis = $pool->createClass(classname: Methods::class);
         $this->methodDeclaration = $pool->createClass(classname: MethodDeclaration::class);
         $this->returnType = $pool->createClass(classname: ReturnType::class);

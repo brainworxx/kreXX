@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Iterate through the ressource analysis and generate an output.
@@ -49,6 +50,15 @@ use Brainworxx\Krexx\Analyse\Model;
  */
 class ThroughResource extends AbstractCallback implements CallbackConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Renders the info of a resource.
      *

@@ -248,21 +248,10 @@ abstract class Fallback implements ConfigConstInterface
     protected array $skinConfiguration = [];
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
+     * Initialize the fallback configuration, get the skins.
      */
-    protected Pool $pool;
-
-    /**
-     * Injects the pool and initialize the fallback configuration, get the skins.
-     *
-     * @param Pool $pool
-     */
-    public function __construct(Pool $pool)
+    public function __construct()
     {
-        $this->pool = $pool;
-
         // Generate the configuration fallback.
         $this->generateConfigFallback();
         // Generate the configuration for the fe editor.

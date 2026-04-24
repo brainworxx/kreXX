@@ -45,13 +45,6 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 abstract class AbstractCaller
 {
     /**
-     * Our pool where we keep al relevant classes.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Pattern that we are using to identify the caller.
      *
      * We use this one to identify the line from which kreXX was called.
@@ -75,10 +68,8 @@ abstract class AbstractCaller
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-    }
+    abstract public function __construct(Pool $pool);
+
 
     /**
      * Setter for the identifier pattern.

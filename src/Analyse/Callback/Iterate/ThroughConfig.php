@@ -42,6 +42,7 @@ use Brainworxx\Krexx\Analyse\Callback\Analyse\ConfigSection;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Configuration output methods.
@@ -51,6 +52,15 @@ use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
  */
 class ThroughConfig extends AbstractCallback implements CallbackConstInterface, ConfigConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Renders whole configuration.
      *

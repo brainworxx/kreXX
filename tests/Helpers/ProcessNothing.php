@@ -46,6 +46,15 @@ use Brainworxx\Krexx\Analyse\Routing\Process\ProcessInterface;
  */
 class ProcessNothing extends AbstractRouting implements ProcessInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected \Brainworxx\Krexx\Service\Factory\Pool $pool)
+    {
+    }
+
     public function canHandle(Model $model): bool
     {
         return true;

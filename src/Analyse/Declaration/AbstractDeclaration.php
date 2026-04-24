@@ -50,21 +50,13 @@ use ReflectionUnionType;
 abstract class AbstractDeclaration
 {
     /**
-     * Here we store all relevant data.
-     *
-     * @var \Brainworxx\Krexx\Service\Factory\Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Injects the pool.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
     }
 
     /**

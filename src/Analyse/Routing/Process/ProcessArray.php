@@ -70,10 +70,8 @@ class ProcessArray extends AbstractProcessNoneScalar implements
     /**
      * {@inheritDoc}
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
-
         $this->arrayCountLimit = (int) $this->pool->config
             ->getSetting(name: static::SETTING_ARRAY_COUNT_LIMIT);
     }

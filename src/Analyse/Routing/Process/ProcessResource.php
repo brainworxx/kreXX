@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughResource;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Processing of resources.
@@ -53,6 +54,15 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is this one a resource?

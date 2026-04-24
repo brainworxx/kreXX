@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Processing of NULL values. Really.
@@ -51,6 +52,15 @@ class ProcessNull extends AbstractRouting implements ProcessInterface, ProcessCo
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is this one null?

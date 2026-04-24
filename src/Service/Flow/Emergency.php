@@ -110,13 +110,6 @@ class Emergency implements ConfigConstInterface
     protected int $maxNestingLevel;
 
     /**
-     * The pool, where we store the classes we need.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Configured maximum amount of calls.
      *
      * @var int
@@ -129,10 +122,8 @@ class Emergency implements ConfigConstInterface
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
-
         // Cache the server memory limit.
         $memoryLimit = strtoupper(string: ini_get(option: 'memory_limit'));
         if (preg_match(pattern: '/^(\d+)(.)$/', subject: $memoryLimit, matches: $matches)) {

@@ -120,9 +120,8 @@ class ThroughGetter extends AbstractCallback implements
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
         $this->commentAnalysis = $this->pool->createClass(classname: Methods::class);
         $this->getterAnalyser = [
             $this->pool->createClass(classname: ByMethodName::class),

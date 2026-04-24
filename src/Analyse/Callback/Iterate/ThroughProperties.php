@@ -80,6 +80,15 @@ class ThroughProperties extends AbstractCallback implements
     protected Attributes $attributes;
 
     /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
+    /**
      * Renders the properties of a class.
      *
      * @return string

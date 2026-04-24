@@ -59,21 +59,11 @@ abstract class AbstractGetter
     protected ?ReflectionProperty $reflectionProperty = null;
 
     /**
-     * This is the pool.
-     *
-     * @var \Brainworxx\Krexx\Service\Factory\Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Inject the pool,
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-    }
+    abstract public function __construct(Pool $pool);
 
     /**
      * We retrieve the possible return value of the gatter, without calling it.

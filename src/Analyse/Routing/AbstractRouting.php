@@ -47,22 +47,12 @@ use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 abstract class AbstractRouting
 {
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Injects the pool.
      *
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
-    {
-         $this->pool = $pool;
-    }
+    abstract public function __construct(Pool $pool);
 
     /**
      * Generates an id for the DOM.

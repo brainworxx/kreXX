@@ -42,6 +42,7 @@ use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughLargeArray;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use SplObjectStorage;
 use Throwable;
 
@@ -56,6 +57,15 @@ use Throwable;
  */
 class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Checks runtime, memory and nesting level. Then trigger the actual analysis.
      *

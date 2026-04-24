@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughConstants;
 use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Class Constants analysis.
@@ -49,6 +50,15 @@ use Brainworxx\Krexx\Analyse\Model;
  */
 class Constants extends AbstractObjectAnalysis implements CodegenConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Dumps the constants of a class,
      *

@@ -74,10 +74,8 @@ class Xml extends AbstractScalarAnalysis
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
-
         $this->DOMDocument = new DOMDocument("1.0");
         // The pretty print done by a dom parser.
         $this->DOMDocument->preserveWhiteSpace = false;

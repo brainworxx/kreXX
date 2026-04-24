@@ -47,13 +47,6 @@ use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 abstract class AbstractCallback
 {
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * The parameters for the callback.
      *
      * @var array
@@ -67,17 +60,6 @@ abstract class AbstractCallback
      *   The generated markup.
      */
     abstract public function callMe(): string;
-
-    /**
-     * Injects the pool.
-     *
-     * @param Pool $pool
-     *   The pool, where we store the classes we need.
-     */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-    }
 
     /**
      * Add callback parameters at class construction.

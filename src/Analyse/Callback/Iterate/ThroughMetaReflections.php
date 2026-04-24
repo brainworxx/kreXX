@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Meta;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Simple iterating through meta reflections.
@@ -49,6 +50,15 @@ use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
  */
 class ThroughMetaReflections extends AbstractCallback implements CallbackConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Simply iterate through reflections coming from the ThoughMeta callback.
      *

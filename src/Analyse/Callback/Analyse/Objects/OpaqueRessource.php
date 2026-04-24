@@ -6,6 +6,7 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use CurlHandle;
 use GdImage;
 use OpenSSLCertificate;
@@ -29,6 +30,15 @@ class OpaqueRessource extends AbstractCallback implements CallbackConstInterface
         AddressInfo::class => 'socketAddressHandler',
         GdImage::class => 'gdImageHandler',
     ];
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Retrieve information about a GD image resource.

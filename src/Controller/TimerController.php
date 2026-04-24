@@ -63,9 +63,8 @@ class TimerController extends AbstractController
      *
      * @param Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
     }
 
     /**

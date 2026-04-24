@@ -96,10 +96,8 @@ class ProcessString extends AbstractRouting implements
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
-
         // Init the fileinfo class.
         if (class_exists(class: finfo::class, autoload: false)) {
             $this->bufferInfo = new finfo(flags: FILEINFO_MIME);

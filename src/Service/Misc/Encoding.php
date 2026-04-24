@@ -45,20 +45,12 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 class Encoding
 {
     /**
-     * Our pool.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Injects the pool.
      *
      * @param Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $this->registerPolyfill();
         $pool->encodingService = $this;
     }

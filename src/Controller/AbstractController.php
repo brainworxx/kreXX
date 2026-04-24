@@ -80,13 +80,6 @@ abstract class AbstractController implements ConfigConstInterface
     protected static array $jsCssSend = [];
 
     /**
-     * Our pool where we keep all relevant classes.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Finds our caller.
      *
      * @var AbstractCaller
@@ -106,9 +99,8 @@ abstract class AbstractController implements ConfigConstInterface
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $this->callerFinder = $pool->createClass(classname: CallerFinder::class);
 
         // Register our output service.

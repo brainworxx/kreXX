@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Getter;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionMethod;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 
@@ -133,5 +134,9 @@ class ByRegExContainer extends AbstractGetter
 
         $this->foundSomething = true;
         return $container[$key];
+    }
+
+    public function __construct(protected Pool $pool)
+    {
     }
 }

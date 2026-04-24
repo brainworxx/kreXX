@@ -58,13 +58,6 @@ class Scope implements CallbackConstInterface
     protected const THIS_SCOPE = '$this';
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * The "scope" we are starting with. When it is $this in combination with a
      * nesting level of 1, we treat protected and private variables and functions
      * as public, because they are reachable from the current scope.
@@ -79,9 +72,8 @@ class Scope implements CallbackConstInterface
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $pool->scope = $this;
     }
 

@@ -43,6 +43,7 @@ use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Caller\BacktraceConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Processing of a backtrace. No abstract for you, because we are dealing with
@@ -54,6 +55,15 @@ class ProcessBacktrace extends AbstractCallback implements
     BacktraceConstInterface,
     ConfigConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Wrapper around the process method, so we can use this one as a callback.
      *

@@ -80,9 +80,8 @@ class FilePath extends AbstractScalarAnalysis
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
         $this->bufferInfo = new finfo(flags: FILEINFO_MIME);
     }
 

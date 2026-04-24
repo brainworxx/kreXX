@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Caller;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Throwable;
 
 /**
@@ -69,5 +70,14 @@ class ExceptionCallerFinder extends AbstractCaller implements BacktraceConstInte
             static::TRACE_DATE => date(format: static::TIME_FORMAT, timestamp: time()),
             static::TRACE_URL => $this->getCurrentUrl(),
         ];
+    }
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
     }
 }

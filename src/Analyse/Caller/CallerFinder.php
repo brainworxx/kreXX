@@ -71,10 +71,8 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-         parent::__construct(pool: $pool);
-
         // Setting the search pattern.
         $this->callPattern = [
             'krexx',

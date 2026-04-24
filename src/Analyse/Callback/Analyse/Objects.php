@@ -53,6 +53,7 @@ use Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Traversable;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Logging\Model as LogModel;
 use Brainworxx\Krexx\Service\Config\ConfigConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use stdClass;
 use Throwable;
@@ -79,6 +80,15 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
         Methods::class,
         DebugMethods::class,
     ];
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Starts the dump of an object.

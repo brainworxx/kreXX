@@ -100,9 +100,9 @@ class Config extends Fallback
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
+        parent::__construct();
 
         // Point the configuration to the right directories
         $this->directories = [

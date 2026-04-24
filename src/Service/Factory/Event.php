@@ -54,23 +54,14 @@ class Event
     public array $register = [];
 
     /**
-     * The pool.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Injects the pool. Retrieve the global event handlers from the overwrites.
      *
      * @param Pool $pool
      *   The pool, what else?
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $this->register = SettingsGetter::getEventList();
-
         $pool->eventService = $this;
     }
 

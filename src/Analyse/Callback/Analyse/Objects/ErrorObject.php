@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Caller\BacktraceConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessBacktrace;
 use Brainworxx\Krexx\Logging\Model as LoggingModel;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Throwable;
 
 /**
@@ -48,6 +49,15 @@ use Throwable;
  */
 class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Error object analysis.
      *

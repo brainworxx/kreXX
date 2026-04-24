@@ -53,18 +53,12 @@ class File
     protected static array $isReadableCache = [];
 
     /**
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Injects the pool.
      *
      * @param Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $pool->fileService = $this;
     }
 

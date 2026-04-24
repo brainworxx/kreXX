@@ -56,7 +56,7 @@ class RoutingNothing extends Routing
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
     }
 

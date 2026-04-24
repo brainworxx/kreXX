@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Getter;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -217,5 +218,9 @@ class ByMethodName extends AbstractGetter
             replacement: '$1_$2',
             subject: $string
         ));
+    }
+
+    public function __construct(protected Pool $pool)
+    {
     }
 }

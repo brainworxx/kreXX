@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Scalar\String;
 use Brainworxx\Krexx\Analyse\Comment\Functions;
 use Brainworxx\Krexx\Analyse\Declaration\FunctionDeclaration;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionException;
 use ReflectionFunction;
 use TypeError;
@@ -58,6 +59,15 @@ class Callback extends AbstractScalarAnalysis
      * @var \ReflectionFunction
      */
     protected ReflectionFunction $reflectionFunction;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is always active, because there are no system dependencies.

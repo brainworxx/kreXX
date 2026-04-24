@@ -40,6 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Debug method result analysis methods.
@@ -49,6 +50,15 @@ use Brainworxx\Krexx\Analyse\Model;
  */
 class Debug extends AbstractCallback implements CallbackConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Iterate though the result of the polled debug methods.
      *

@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionProperty;
 
 /**
@@ -49,6 +50,15 @@ use ReflectionProperty;
  */
 class ProtectedProperties extends AbstractObjectAnalysis
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Dump all protected properties.
      *

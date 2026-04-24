@@ -43,6 +43,7 @@ use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Code\ConnectorsConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\Process\ProcessConstInterface;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 /**
  * Array analysis methods.
@@ -58,6 +59,15 @@ class ThroughArray extends AbstractCallback implements
     ConnectorsConstInterface,
     ProcessConstInterface
 {
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
+
     /**
      * Renders the expendable around the array analysis.
      *

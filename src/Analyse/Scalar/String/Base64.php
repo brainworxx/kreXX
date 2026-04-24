@@ -37,6 +37,7 @@ namespace Brainworxx\Krexx\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 
 class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
 {
@@ -60,6 +61,15 @@ class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is's always active.

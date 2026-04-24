@@ -52,20 +52,12 @@ class CheckOutput
     protected const REMOTE_ADDRESS = 'REMOTE_ADDR';
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var \Brainworxx\Krexx\Service\Factory\Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Injects the pool.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
     }
 
     /**

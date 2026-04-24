@@ -94,9 +94,8 @@ class ByRegExDelegate extends ByRegExContainer
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        parent::__construct(pool: $pool);
         $this->getterAnalyser[] = $this->pool->createClass(classname: ByMethodName::class);
         $this->getterAnalyser[] = $this->pool->createClass(classname: ByRegExProperty::class);
         $this->getterAnalyser[] = $this->pool->createClass(classname: ByRegExContainer::class);

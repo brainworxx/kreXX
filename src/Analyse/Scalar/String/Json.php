@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Scalar\String;
 
 use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use stdClass;
 
 /**
@@ -66,6 +67,15 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * {@inheritDoc}

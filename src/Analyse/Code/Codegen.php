@@ -58,13 +58,6 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     protected const TYPE_HINT_WHITE_LIST = ['->', '::', '[', ']', '(', ')', '.'];
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Retrieves the declared method parameters from the declaration.
      *
      * @var \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration
@@ -117,9 +110,8 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $pool->codegenHandler = $this;
         $this->methodDeclaration = $pool->createClass(classname: MethodDeclaration::class);
     }

@@ -46,21 +46,11 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 abstract class AbstractScalar
 {
     /**
-     * The pool, like the variable name says.
-     *
-     * @var \Brainworxx\Krexx\Service\Factory\Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Inject hte pool.
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-    }
+    abstract public function __construct(Pool $pool);
 
     /**
      * Generate a DOM id for recursion handling.

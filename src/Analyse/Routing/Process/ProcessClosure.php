@@ -43,6 +43,7 @@ use Brainworxx\Krexx\Analyse\Code\ConnectorsConstInterface;
 use Brainworxx\Krexx\Analyse\Comment\Functions;
 use Brainworxx\Krexx\Analyse\Comment\ReturnType;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use Closure;
 use ReflectionException;
 use ReflectionFunction;
@@ -61,6 +62,15 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is this one a boolean?

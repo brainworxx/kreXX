@@ -39,6 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Routing\AbstractRouting;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use DateTime;
 use Throwable;
 
@@ -53,6 +54,15 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
      * @var Model
      */
     protected Model $model;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Is this one a float?

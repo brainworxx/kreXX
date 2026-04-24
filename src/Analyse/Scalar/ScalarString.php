@@ -72,7 +72,7 @@ class ScalarString extends AbstractScalar
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
         $classList = [
             Callback::class,
@@ -92,8 +92,6 @@ class ScalarString extends AbstractScalar
                 $this->classList[$className] = $pool->createClass(classname: $className);
             }
         }
-
-        parent::__construct(pool: $pool);
     }
 
     /**

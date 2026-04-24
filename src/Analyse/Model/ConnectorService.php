@@ -47,13 +47,6 @@ use Brainworxx\Krexx\Service\Factory\Pool;
 trait ConnectorService
 {
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * The connector service, used for source generation.
      *
      * @var Connectors
@@ -65,12 +58,9 @@ trait ConnectorService
      *
      * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->connectorService = $pool->createClass(
-            classname: Connectors::class
-        );
-        $this->pool = $pool;
+        $this->connectorService = $pool->createClass(classname: Connectors::class);
     }
 
      /**

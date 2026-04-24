@@ -60,13 +60,6 @@ class Messages
     protected array $helpArray = [];
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * The language key where the texts are stored.
      *
      * @var string
@@ -79,9 +72,8 @@ class Messages
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $pool->messages = $this;
     }
 

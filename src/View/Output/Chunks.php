@@ -66,13 +66,6 @@ class Chunks implements ConfigConstInterface
     protected const STRING_DELIMITER = '@@@';
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Here we store the metadata from the call.
      *
      * We save this data in a separate file, so that a backend extension can offer
@@ -133,9 +126,8 @@ class Chunks implements ConfigConstInterface
      * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $this->chunkDir = $pool->config->getChunkDir();
         $this->logDir = $pool->config->getLogDir();
         $stamp = explode(separator: ' ', string: microtime());

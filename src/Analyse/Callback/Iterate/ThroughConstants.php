@@ -41,6 +41,7 @@ use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionClassConstant;
 
 /**
@@ -59,6 +60,15 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
      * @var bool
      */
     protected bool $isInScope = false;
+
+    /**
+     * Inject the pool.
+     *
+     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     */
+    public function __construct(protected Pool $pool)
+    {
+    }
 
     /**
      * Simply iterate though object constants.

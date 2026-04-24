@@ -60,13 +60,6 @@ abstract class AbstractRender implements RenderInterface
     protected const STYLE_ACTIVE = 'kactive';
 
     /**
-     * Here we store all relevant data.
-     *
-     * @var Pool
-     */
-    protected Pool $pool;
-
-    /**
      * Caching the content fo the template files.
      *
      * @var string[]
@@ -80,9 +73,8 @@ abstract class AbstractRender implements RenderInterface
      * @param Pool $pool
      *   The pool.
      */
-    public function __construct(Pool $pool)
+    public function __construct(protected Pool $pool)
     {
-        $this->pool = $pool;
         $this->pool->render = $this;
 
         // Prepare the template file cache.
