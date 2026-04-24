@@ -225,32 +225,14 @@ class FormatSerialize
      */
     protected function parse(string $string = "\n"): string
     {
-        switch ($result = $this->read(length: 1)) {
-            case 'N':
-                // Null handling.
-                $result .= $this->assert(string: ';');
-                break;
-            case 'O':
-                // Object handling.
-                $result .= $this->parseString() . $this->parseArrayOrObject(string: $string);
-                break;
-            case 's':
-                // String handling.
-                $result .= $this->parseString() . $this->assert(string: ';');
-                break;
-            case 'a':
-                // Array handling.
-                $result .= $this->parseArrayOrObject(string: $string);
-                break;
-            case 'C':
-                // Serializable object handling.
-                $result .= $this->parseSerializableObject();
-                break;
-            default:
-                // Boolean, float, integer.
-                $result .= $this->assert(string: ':') . $this->readTo(stopSting: ';') . $this->assert(string: ';');
-                break;
-        }
+        $result .= match ($result = $this->read(length: 1)) {
+            'N' => $this->assert(string: ';'),
+            'O' => $this->parseString() . $this->parseArrayOrObject(string: $string),
+            's' => $this->parseString() . $this->assert(string: ';'),
+            'a' => $this->parseArrayOrObject(string: $string),
+            'C' => $this->parseSerializableObject(),
+            default => $this->assert(string: ':') . $this->readTo(stopSting: ';') . $this->assert(string: ';'),
+        };
 
         return $result;
     }
