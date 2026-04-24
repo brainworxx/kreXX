@@ -155,7 +155,7 @@ class CheckOutput
             return false;
         }
 
-        return $this->checkWildcards($ipList, $remote);
+        return $this->checkWildcards(ipList: $ipList, remote: $remote);
     }
 
     /**

@@ -61,10 +61,13 @@ trait Button
         return str_replace(
             search: $this->markerSingleButton,
             replace: [
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_JSON, $this->encodeJson($model->getJson())),
+                $this->generateDataAttribute(
+                    name: static::DATA_ATTRIBUTE_JSON,
+                    data: $this->encodeJson($model->getJson())
+                ),
                 $model->getName()
             ],
-            subject: parent::renderButton($model)
+            subject: parent::renderButton(model: $model)
         );
     }
 

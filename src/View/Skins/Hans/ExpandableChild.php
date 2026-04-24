@@ -90,23 +90,32 @@ trait ExpandableChild
 
         // Generating our code.
         $codegenHandler = $this->pool->codegenHandler;
-        $generateSource = $codegenHandler->generateSource($model);
+        $generateSource = $codegenHandler->generateSource(model: $model);
         return str_replace(
             search: $this->markerExpandableChild,
             replace: [
                 $model->getName(),
                 $model->getType(),
-                $this->retrieveTypeClasses($model),
+                $this->retrieveTypeClasses(model: $model),
                 $model->getNormal(),
-                $this->renderConnectorLeft($model->getConnectorLeft()),
-                $this->renderConnectorRight($model->getConnectorRight(cap: 128), $model->getReturnType()),
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_SOURCE, $generateSource),
-                $this->renderSourceButtonWithStop($generateSource),
+                $this->renderConnectorLeft(connector: $model->getConnectorLeft()),
+                $this->renderConnectorRight(
+                    connector: $model->getConnectorRight(cap: 128),
+                    returnType: $model->getReturnType()
+                ),
+                $this->generateDataAttribute(name: static::DATA_ATTRIBUTE_SOURCE, data: $generateSource),
+                $this->renderSourceButtonWithStop(gencode: $generateSource),
                 $isExpanded ? 'kopened' : '',
-                $this->pool->chunks->chunkMe($this->renderNest($model, $isExpanded)),
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_L, $codegenHandler->generateWrapperLeft()),
-                $this->generateDataAttribute(static::DATA_ATTRIBUTE_WRAPPER_R, $codegenHandler->generateWrapperRight()),
-                $this->renderHelp($model),
+                $this->pool->chunks->chunkMe(string: $this->renderNest(model: $model, isExpanded: $isExpanded)),
+                $this->generateDataAttribute(
+                    name: static::DATA_ATTRIBUTE_WRAPPER_L,
+                    data: $codegenHandler->generateWrapperLeft()
+                ),
+                $this->generateDataAttribute(
+                    name: static::DATA_ATTRIBUTE_WRAPPER_R,
+                    data: $codegenHandler->generateWrapperRight()
+                ),
+                $this->renderHelp(model: $model),
             ],
             subject: $this->fileCache[static::FILE_EX_CHILD_NORMAL]
         );
@@ -169,7 +178,7 @@ trait ExpandableChild
                 $style,
                 $model->renderMe(),
                 $domid,
-                $this->renderExtra($model),
+                $this->renderExtra(model: $model),
             ],
             subject: $this->fileCache[static::FILE_NEST]
         );
@@ -189,7 +198,7 @@ trait ExpandableChild
         if ($model->hasExtra()) {
             return str_replace(
                 search: $this->markerSingleChildExtra,
-                replace: $this->prepareExtra($model->getData()),
+                replace: $this->prepareExtra(extra: $model->getData()),
                 subject: $this->fileCache[static::FILE_SI_CHILD_EX]
             );
         }

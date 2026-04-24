@@ -70,13 +70,13 @@ trait Recursion
                 $model->getDomid(),
                 $model->getNormal(),
                 $this->pool->messages->getHelp(key: 'recursion'),
-                $this->renderConnectorLeft($model->getConnectorLeft()),
-                $this->renderConnectorRight($model->getConnectorRight()),
+                $this->renderConnectorLeft(connector: $model->getConnectorLeft()),
+                $this->renderConnectorRight(connector: $model->getConnectorRight()),
                 $this->generateDataAttribute(
-                    static::DATA_ATTRIBUTE_SOURCE,
-                    $this->pool->codegenHandler->generateSource($model)
+                    name: static::DATA_ATTRIBUTE_SOURCE,
+                    data: $this->pool->codegenHandler->generateSource(model: $model)
                 ),
-                $this->renderHelp($model),
+                $this->renderHelp(model: $model),
             ],
             subject: $this->fileCache[static::FILE_RECURSION]
         );

@@ -192,7 +192,7 @@ class Chunks implements ConfigConstInterface
         $filename = $this->chunkDir . $key . '.Krexx.tmp';
         // Read the file.
         $string = $this->pool->fileService->getFileContents(filePath: $filename);
-        // Delete it, we don't need it anymore.
+        // Delete it, we don't need it any more.
         $this->pool->fileService->deleteFile(filePath: $filename);
         return $string;
     }

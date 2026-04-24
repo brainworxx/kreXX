@@ -65,7 +65,6 @@ class File
     public function __construct(Pool $pool)
     {
         $this->pool = $pool;
-        $server = $pool->getServer();
         $pool->fileService = $this;
     }
 
@@ -90,7 +89,7 @@ class File
 
         // Read the file into our cache array. We may need to reed this file a
         // few times.
-        $content = $this->getFileContentsArray($filePath);
+        $content = $this->getFileContentsArray(filePath: $filePath);
 
         if ($readFrom < 0) {
              $readFrom = 0;
@@ -117,9 +116,9 @@ class File
 
             $currentLineNo === $highlight ? $className = 'highlight' : $className = 'source';
             $result .= $this->pool->render->renderBacktraceSourceLine(
-                $className,
-                $realLineNo,
-                $this->pool->encodingService->encodeString(data: $content[$currentLineNo], code: true)
+                className: $className,
+                lineNo: $realLineNo,
+                sourceCode: $this->pool->encodingService->encodeString(data: $content[$currentLineNo], code: true)
             );
         }
 
@@ -143,7 +142,7 @@ class File
         $result = '';
 
         // Read the file into our cache array.
-        $content = $this->getFileContentsArray($filePath);
+        $content = $this->getFileContentsArray(filePath: $filePath);
         if ($readFrom < 0) {
              $readFrom = 0;
         }
@@ -181,7 +180,7 @@ class File
      */
     protected function getFileContentsArray(string $filePath): SplFixedArray
     {
-        $filePath = $this->realpath($filePath);
+        $filePath = $this->realpath(filePath: $filePath);
 
         static $filecache = [];
 
@@ -192,10 +191,10 @@ class File
         // Using \SplFixedArray to save some memory, as it can get
         // quite huge, depending on your system. 4mb is nothing here.
         if ($this->fileIsReadable(filePath: $filePath)) {
-            return $filecache[$filePath] = SplFixedArray::fromArray(file($filePath));
+            return $filecache[$filePath] = SplFixedArray::fromArray(array: file(filename: $filePath));
         }
         // Not readable!
-        return $filecache[$filePath] = new SplFixedArray(0);
+        return $filecache[$filePath] = new SplFixedArray(size: 0);
     }
 
     /**
@@ -224,7 +223,7 @@ class File
 
         // Get the file contents.
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
-        $filePath = $this->realpath($filePath);
+        $filePath = $this->realpath(filePath: $filePath);
         $file = fopen($filePath, 'r');
         if ($file === false) {
             // File opening just failed!
@@ -232,8 +231,8 @@ class File
             restore_error_handler();
             return '';
         }
-        $result = fread($file, filesize($filePath));
-        fclose($file);
+        $result = fread(stream: $file, length: filesize($filePath));
+        fclose(stream: $file);
         restore_error_handler();
 
         return $result;
@@ -255,7 +254,7 @@ class File
     {
         // Register the file as a readable one.
         static::$isReadableCache[$filePath] = true;
-        file_put_contents($filePath, $string, FILE_APPEND);
+        file_put_contents(filename: $filePath, data: $string, flags: FILE_APPEND);
     }
 
     /**
@@ -265,13 +264,13 @@ class File
      */
     public function deleteFile(string $filePath): void
     {
-        $realpath = $this->realpath($filePath);
+        $realpath = $this->realpath(filePath: $filePath);
 
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
 
         // Fast-forward for the current chunk files.
         if (isset(static::$isReadableCache[$realpath])) {
-            unlink($realpath);
+            unlink(filename: $realpath);
             restore_error_handler();
             return;
         }
@@ -280,8 +279,8 @@ class File
         // Those are left over chunks from previous calls, or old logfiles.
         if (is_file(filename: $realpath)) {
             // Make sure it is unlinkable.
-            chmod($realpath, 0777);
-            if (!unlink($realpath)) {
+            chmod(filename: $realpath, permissions: 0777);
+            if (!unlink(filename: $realpath)) {
                 // We have a permission problem here!
                 $this->pool->messages->addMessage(key: 'fileserviceDelete', args: [$realpath]);
             }
@@ -301,7 +300,7 @@ class File
      */
     public function fileIsReadable(string $filePath): bool
     {
-        $realPath = $this->realpath($filePath);
+        $realPath = $this->realpath(filePath: $filePath);
 
         // Return the cache, if we have any.
         if (isset(static::$isReadableCache[$realPath])) {
@@ -322,11 +321,11 @@ class File
      */
     public function filetime(string $filePath): int
     {
-        $filePath = $this->realpath($filePath);
+        $filePath = $this->realpath(filePath: $filePath);
 
         if ($this->fileIsReadable(filePath: $filePath)) {
             set_error_handler(callback: $this->pool->retrieveErrorCallback());
-            $result = filemtime($filePath);
+            $result = filemtime(filename: $filePath);
             restore_error_handler();
         }
 
@@ -374,7 +373,8 @@ class File
     {
         $filename = 'test';
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
-        $result = (bool)file_put_contents($path . $filename, 'x') && unlink($path . $filename);
+        $result = (bool)file_put_contents(filename: $path . $filename, data: 'x')
+            && unlink(filename: $path . $filename);
         restore_error_handler();
 
         return $result;

@@ -146,7 +146,7 @@ class Krexx
         AbstractController::$analysisInProgress = true;
 
         static::$pool->createClass(classname: DumpController::class)
-            ->dumpAction($data);
+            ->dumpAction(data: $data);
 
         AbstractController::$analysisInProgress = false;
 

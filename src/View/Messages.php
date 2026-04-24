@@ -119,10 +119,10 @@ class Messages
         if (!isset($this->messages[$key])) {
             // Add it to the keys, so the CMS can display it.
             $this->messages[$key] = $this->pool->createClass(classname: Message::class)
-                ->setKey($key)
-                ->setArguments($args)
+                ->setKey(key: $key)
+                ->setArguments(arguments: $args)
                 ->setText($this->getHelp(key: $key, args: $args))
-                ->setIsThrowAway($isThrowAway);
+                ->setIsThrowAway(isThrowAway: $isThrowAway);
         }
     }
 
@@ -160,7 +160,7 @@ class Messages
         if (
             php_sapi_name() === 'cli' &&
             !empty($this->messages) &&
-            !defined('KREXX_TEST_IN_PROGRESS')
+            !defined(constant_name: 'KREXX_TEST_IN_PROGRESS')
         ) {
             // Output the messages on the shell.
              $result = "\n\n" . $this->getHelp(key: 'shellFeedbackHeadline') . "\n";
@@ -173,7 +173,7 @@ class Messages
         }
 
         // Return the rendered messages.
-        return $this->pool->render->renderMessages($this->messages);
+        return $this->pool->render->renderMessages(messages: $this->messages);
     }
 
     /**
@@ -189,7 +189,7 @@ class Messages
      */
     public function getHelp(string $key, array $args = []): string
     {
-        return vsprintf($this->helpArray[$key] ?? '', $args);
+        return vsprintf(format: $this->helpArray[$key] ?? '', values: $args);
     }
 
     /**

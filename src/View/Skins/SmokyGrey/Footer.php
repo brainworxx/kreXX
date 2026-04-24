@@ -69,7 +69,7 @@ trait Footer
                     $this->pool->messages->getHelp(key: 'additionalData'),
                     $this->pool->messages->getHelp(key: 'noDataAvailable'),
                 ],
-                subject: parent::renderFooter($caller, $model, true)
+                subject: parent::renderFooter(caller: $caller, model: $model, configOnly: true)
             );
         }
 
@@ -80,7 +80,7 @@ trait Footer
                 $this->pool->messages->getHelp(key: 'additionalData'),
                 $this->pool->messages->getHelp(key: 'noDataAvailable'),
             ],
-            subject: parent::renderFooter($caller, $model, $configOnly)
+            subject: parent::renderFooter(caller: $caller, model: $model, configOnly: $configOnly)
         );
     }
 

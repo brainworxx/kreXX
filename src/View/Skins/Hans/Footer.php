@@ -74,7 +74,7 @@ trait Footer
     public function renderFooter(array $caller, Model $model, bool $configOnly = false): string
     {
         if (isset($caller[static::TRACE_FILE])) {
-            $callerString = $this->renderCaller($caller);
+            $callerString = $this->renderCaller(caller: $caller);
         } else {
              // When we have no caller, we will not render it.
             $callerString = '';

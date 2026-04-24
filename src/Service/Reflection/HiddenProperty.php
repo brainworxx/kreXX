@@ -54,6 +54,7 @@ use DOMProcessingInstruction;
 use DOMText;
 use DOMXPath;
 use DateTime;
+use ReflectionClass;
 
 /**
  * Due to a PHP bug, the properties from all ext-dom classes are hidden from
@@ -207,7 +208,7 @@ class HiddenProperty extends UndeclaredProperty
     /**
      * {@inheritDoc}
      */
-    public function __construct(\ReflectionClass $ref, $name)
+    public function __construct(ReflectionClass $ref, $name)
     {
         parent::__construct(ref: $ref, name: $name);
 

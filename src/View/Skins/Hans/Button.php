@@ -63,7 +63,7 @@ trait Button
             replace: [
                 $model->getNormal(),
                 $model->getName(),
-                $this->renderHelp($model),
+                $this->renderHelp(model: $model),
             ],
             subject: $this->fileCache[static::FILE_SI_BUTTON]
         );

@@ -154,7 +154,7 @@ class Registration implements ConfigConstInterface, PluginConstInterface
      * @param string|int|null $value
      *   The new value.
      */
-    public static function addNewFallbackValue(string $name, $value): void
+    public static function addNewFallbackValue(string $name, string|int|null $value): void
     {
         static::$newFallbackValues[$name] = $value;
     }

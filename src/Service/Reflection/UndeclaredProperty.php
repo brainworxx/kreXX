@@ -70,7 +70,7 @@ class UndeclaredProperty extends ReflectionProperty
      *
      * @var string|int
      */
-    public $propertyName;
+    public string|int $propertyName;
 
     /**
      * A reflection of the class, where the property was declared.
@@ -112,10 +112,10 @@ class UndeclaredProperty extends ReflectionProperty
     /**
      * A dynamically declared property can never be static.
      *
-     * @return bool
+     * @return false
      *   Always false.
      */
-    public function isStatic(): bool
+    public function isStatic(): false
     {
         return false;
     }
@@ -134,10 +134,10 @@ class UndeclaredProperty extends ReflectionProperty
     /**
      * A dynamically declared property can never have a default value.
      *
-     * @return bool
+     * @return false
      *   Always false.
      */
-    public function isDefault(): bool
+    public function isDefault(): false
     {
         return false;
     }
@@ -145,10 +145,10 @@ class UndeclaredProperty extends ReflectionProperty
     /**
      * A dynamically declared property can never be private.
      *
-     * @return bool
+     * @return false
      *   Always false.
      */
-    public function isPrivate(): bool
+    public function isPrivate(): false
     {
         return false;
     }
@@ -157,7 +157,7 @@ class UndeclaredProperty extends ReflectionProperty
      * A dynamically declared property can never be protected.
      *
      * @return bool
-     *   Always false.
+     *   Is it protected?
      */
     public function isProtected(): bool
     {
@@ -215,9 +215,9 @@ class UndeclaredProperty extends ReflectionProperty
     /**
      * Undeclared properties are not typed.
      *
-     * @return bool
+     * @return false
      */
-    public function hasType(): bool
+    public function hasType(): false
     {
         return false;
     }
@@ -227,8 +227,7 @@ class UndeclaredProperty extends ReflectionProperty
      *
      * @return null
      */
-    #[\ReturnTypeWillChange]
-    public function getDefaultValue()
+    public function getDefaultValue(): null
     {
         return null;
     }

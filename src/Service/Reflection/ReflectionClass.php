@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Service\Reflection;
 
+use ArrayObject;
 use ReflectionException;
 use ReflectionProperty;
 use Throwable;
@@ -60,7 +61,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @var object|string
      */
-    protected $data;
+    protected object|string $data;
 
     /**
      * Storage for unset properties.
@@ -80,13 +81,13 @@ class ReflectionClass extends \ReflectionClass
     public function __construct(object|string $data)
     {
         // Retrieve the class variables.
-        if ($data instanceof \ArrayObject) {
+        if ($data instanceof ArrayObject) {
             try {
                 $flags = $data->getFlags();
-                $data->setFlags(\ArrayObject::STD_PROP_LIST);
+                $data->setFlags(flags: ArrayObject::STD_PROP_LIST);
                 $this->objectArray = (array) $data;
-                $data->setFlags($flags);
-            } catch (Throwable $throwable) {
+                $data->setFlags(flags: $flags);
+            } catch (Throwable) {
                 // Do nothing.
             }
         } else {
@@ -110,7 +111,7 @@ class ReflectionClass extends \ReflectionClass
      * @return mixed
      *   The retrieved value.
      */
-    public function retrieveValue(ReflectionProperty $refProperty)
+    public function retrieveValue(ReflectionProperty $refProperty): mixed
     {
         $propName = $refProperty->getName();
         $lookup = [
@@ -131,14 +132,14 @@ class ReflectionClass extends \ReflectionClass
         try {
             // Static values are not inside the value array.
             if ($refProperty->isStatic()) {
-                return $refProperty->getValue($this->data);
+                return $refProperty->getValue(object: $this->data);
             }
-        } catch (Throwable $throwable) {
+        } catch (Throwable) {
             // Do nothing.
             // We ignore this one.
         }
 
-        return $this->retrieveEsotericValue($refProperty);
+        return $this->retrieveEsotericValue(refProperty: $refProperty);
     }
 
     /**
@@ -154,7 +155,7 @@ class ReflectionClass extends \ReflectionClass
      *
      * @return mixed
      */
-    protected function retrieveEsotericValue(ReflectionProperty $refProperty)
+    protected function retrieveEsotericValue(ReflectionProperty $refProperty): mixed
     {
         $propName = $refProperty->getName();
         if ($refProperty instanceof UndeclaredProperty && is_numeric(value: $propName)) {
@@ -178,14 +179,14 @@ class ReflectionClass extends \ReflectionClass
                 $result = $this->data->$propName;
                 restore_error_handler();
                 return $result;
-            } catch (Throwable $exception) {
+            } catch (Throwable) {
                 // Do nothing.
                 // Looks like somebody did not like me accessing it directly.
             }
             restore_error_handler();
         }
 
-        $this->unsetPropertyStorage->offsetSet($refProperty);
+        $this->unsetPropertyStorage->offsetSet(object: $refProperty);
         return null;
     }
 
@@ -193,13 +194,13 @@ class ReflectionClass extends \ReflectionClass
      * The original get_object_vars() is problematic, because it
      * may fire PropertyHooks, LazyProxies or LazyGhosts.
      *
-     * @return mixed[]
+     * @return array
      */
     public function getObjectVars(): array
     {
-        return array_filter($this->objectArray, function ($key) {
+        return array_filter(array: $this->objectArray, callback: function ($key) {
             return !str_contains(haystack: (string)$key, needle: "\0");
-        }, ARRAY_FILTER_USE_KEY);
+        }, mode: ARRAY_FILTER_USE_KEY);
     }
 
     /**
@@ -212,7 +213,7 @@ class ReflectionClass extends \ReflectionClass
      */
     public function isPropertyUnset(ReflectionProperty $reflectionProperty): bool
     {
-        return $this->unsetPropertyStorage->offsetExists($reflectionProperty);
+        return $this->unsetPropertyStorage->offsetExists(object: $reflectionProperty);
     }
 
     /**
@@ -247,8 +248,8 @@ class ReflectionClass extends \ReflectionClass
         $result = [];
         foreach ($interfaceNames as $interfaceName) {
             try {
-                $result[$interfaceName] = new ReflectionClass($interfaceName);
-            } catch (ReflectionException $exception) {
+                $result[$interfaceName] = new ReflectionClass(data: $interfaceName);
+            } catch (ReflectionException) {
                 // Do nothing. We skip this one.
                 // Not sure how this could happen.
             }
@@ -272,8 +273,8 @@ class ReflectionClass extends \ReflectionClass
         $result = [];
         foreach ($traits as $trait) {
             try {
-                $result[$trait] = new ReflectionClass($trait);
-            } catch (ReflectionException $exception) {
+                $result[$trait] = new ReflectionClass(data: $trait);
+            } catch (ReflectionException) {
                 // We skip this one.
             }
         }
@@ -284,17 +285,17 @@ class ReflectionClass extends \ReflectionClass
     /**
      * Wrapper around the getParentClass, to make sure we get our ReflectionClass.
      *
-     * @return bool|\ReflectionClass
+     * @return false|ReflectionClass
      */
     #[\ReturnTypeWillChange]
-    public function getParentClass()
+    public function getParentClass(): ReflectionClass|false
     {
         $result = false;
         $parent = parent::getParentClass();
         if (!empty($parent)) {
             try {
                 $result = new ReflectionClass($parent->name);
-            } catch (ReflectionException $e) {
+            } catch (ReflectionException) {
                 // Do nothing.
             }
         }

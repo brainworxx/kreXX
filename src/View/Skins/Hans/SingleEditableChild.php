@@ -87,7 +87,7 @@ trait SingleEditableChild
         // For dropdown elements, we need to render the options.
         $options = '';
         if ($model->getType() === static::RENDER_TYPE_SELECT) {
-            $options = $this->renderSelectOptions($model);
+            $options = $this->renderSelectOptions(model: $model);
         }
 
         return str_replace(
@@ -95,9 +95,13 @@ trait SingleEditableChild
             replace: [
                 $model->getData(),
                 $model->getNormal(),
-                str_replace(search: $this->markerDropdownOptions, replace: $options, subject: $this->renderSpecificEditableElement($model)),
+                str_replace(
+                    search: $this->markerDropdownOptions,
+                    replace: $options,
+                    subject: $this->renderSpecificEditableElement(model: $model)
+                ),
                 static::RENDER_EDITABLE,
-                $this->renderHelp($model),
+                $this->renderHelp(model: $model),
             ],
             subject: $this->fileCache[static::FILE_SI_EDIT_CHILD]
         );
