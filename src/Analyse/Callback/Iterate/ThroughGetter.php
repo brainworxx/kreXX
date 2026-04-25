@@ -323,7 +323,7 @@ class ThroughGetter extends AbstractCallback implements
      * @param \ReflectionMethod $reflectionMethod
      * @return void
      */
-    protected function resetParameters(ReflectionMethod $reflectionMethod)
+    protected function resetParameters(ReflectionMethod $reflectionMethod): void
     {
         $this->parameters[static::PARAM_ADDITIONAL] = [
             static::PARAM_NOTHING_FOUND => true,

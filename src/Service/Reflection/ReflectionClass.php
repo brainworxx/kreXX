@@ -287,7 +287,6 @@ class ReflectionClass extends \ReflectionClass
      *
      * @return false|ReflectionClass
      */
-    #[\ReturnTypeWillChange]
     public function getParentClass(): ReflectionClass|false
     {
         $result = false;

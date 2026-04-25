@@ -72,7 +72,7 @@ class Serialized extends AbstractScalarAnalysis
     /**
      * Test if this one looks like a serialized whatever.
      *
-     * @param string $string
+     * @param string|int|bool $string $string
      *   The string we want to take a look at.
      * @param Model $model
      *   The model, so far.

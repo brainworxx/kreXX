@@ -70,7 +70,7 @@ class Encoding
              *
              * @param string $string
              *   Will not get used.
-             * @param string $encodingList
+             * @param string $encodings
              *   Will not get used.
              * @param bool $strict
              *   Will not get used.
@@ -78,7 +78,7 @@ class Encoding
              * @return string
              *   Always 'polyfill'.
              */
-            function mb_detect_encoding($string = '', $encodings = null, $strict = false): string
+            function mb_detect_encoding($string = '', $encodings = null, $strict = false): string|false
             {
                 return 'polyfill';
             }

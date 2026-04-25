@@ -38,7 +38,6 @@ declare(strict_types=1);
 namespace Brainworxx\Krexx\Analyse\Model;
 
 use Brainworxx\Krexx\Analyse\Model;
-use stdClass;
 
 /**
  * Analysis model trait with the normal part. Worst name ever.

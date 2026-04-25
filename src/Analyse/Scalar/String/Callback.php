@@ -82,7 +82,7 @@ class Callback extends AbstractScalarAnalysis
     /**
      * Is this actually a callback? Simple wrapper around is_callable().
      *
-     * @param string $string
+     * @param string|int|bool $string
      *   The string to test.
      * @param Model $model
      *   What the variable name says.

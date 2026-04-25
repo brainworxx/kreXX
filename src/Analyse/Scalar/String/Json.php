@@ -57,7 +57,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
     /**
      * What the variable name says.
      *
-     * @var \stdClass|array
+     * @var \stdClass|array|null
      */
     protected null|stdClass|array $decodedJson;
 
@@ -88,7 +88,7 @@ class Json extends AbstractScalarAnalysis implements CodegenConstInterface
     /**
      * Test, if this is a json, and if we can decode it.
      *
-     * @param string $string
+     * @param string|int|bool $string $string
      *   The string we want to take a look at.
      * @param Model $model
      *   The model, so far.

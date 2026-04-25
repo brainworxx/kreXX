@@ -113,7 +113,7 @@ trait ExpandableChild
     /**
      * Render the source button.
      *
-     * @param string $gencode
+     * @param string $genCode
      *   The generated source.
      * @param Model $model
      *   The model.

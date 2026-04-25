@@ -37,7 +37,6 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Caller;
 
-use Brainworxx\Krexx\Logging\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Throwable;
 

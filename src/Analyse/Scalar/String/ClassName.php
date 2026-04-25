@@ -76,7 +76,7 @@ class ClassName extends AbstractScalarAnalysis
      *
      * To avoid needless junk, we only look at classes with a namespace.
      *
-     * @param string $string
+     * @param string|int|bool $string $string
      *   The possible class name we are looking at
      * @param \Brainworxx\Krexx\Analyse\Model $model
      *   The model so far.

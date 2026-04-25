@@ -90,7 +90,7 @@ class FilePath extends AbstractScalarAnalysis
      *
      * Of course, we only act, if finfo is available.
      *
-     * @param string $string
+     * @param string|int|bool $string $string
      *   The string to test.
      *
      * @param Model $model
