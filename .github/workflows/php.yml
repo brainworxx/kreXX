@@ -28,7 +28,7 @@ jobs:
         php-version: ${{ matrix.env.php }}
         coverage: xdebug
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Validate composer.json
       run: composer validate --strict
@@ -45,7 +45,7 @@ jobs:
       run: composer test-coverage
 
     - name: publish code coverage
-      uses: qltysh/qlty-action/coverage@v1
+      uses: qltysh/qlty-action/coverage@v2
       if: ${{ matrix.env.coverage == 'yes' }}
       with:
         token: ${{secrets.QLTY_COVERAGE_TOKEN}}
