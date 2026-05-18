@@ -181,7 +181,15 @@ class Messages
      */
     public function getHelp(string $key, array $args = []): string
     {
-        return vsprintf(format: $this->helpArray[$key] ?? '', values: $args);
+        if (empty($this->helpArray[$key])) {
+            return '';
+        }
+
+        if ($args === []) {
+            return $this->helpArray[$key];
+        }
+
+        return vsprintf(format: $this->helpArray[$key], values: $args);
     }
 
     /**
