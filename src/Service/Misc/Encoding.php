@@ -261,9 +261,9 @@ class Encoding
      * @return string|bool
      *   The result.
      */
-    public function mbDetectEncoding(string $string, string $encodinglist = 'auto', bool $strict = true): bool|string
+    public function mbDetectEncoding(string $string): bool|string
     {
-        return mb_detect_encoding(string: $string, encodings: $encodinglist, strict: $strict);
+        return mb_detect_encoding(string: $string);
     }
 
     /**
