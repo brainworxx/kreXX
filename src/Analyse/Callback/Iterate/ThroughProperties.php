@@ -200,14 +200,18 @@ class ThroughProperties extends AbstractCallback implements
     /**
      * Format the default value into something readable
      *
-     * @param string|int|float|array|UnitEnum $default
+     * @param bool|string|int|float|array|UnitEnum $default
      * @return string
      */
-    protected function formatDefaultValue(string|int|float|array|UnitEnum $default): string
+    protected function formatDefaultValue(bool|string|int|float|array|UnitEnum $default): string
     {
         if (is_int(value: $default) || is_float(value: $default)) {
             // We do not need to escape an integer or a float,
             return (string)$default;
+        }
+
+        if (is_bool(value: $default)) {
+            return $default ? 'TRUE' : 'FALSE';
         }
 
         $result = '';
