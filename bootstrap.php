@@ -104,9 +104,13 @@ call_user_func(function () {
         include_once KREXX_DIR . 'src/Analyse/Caller/ExceptionCallerFinder.php';
 
         include_once KREXX_DIR . 'src/Analyse/Comment/AbstractComment.php';
+        include_once KREXX_DIR . 'src/Analyse/Comment/Comment.php';
+        // deprecated
         include_once KREXX_DIR . 'src/Analyse/Comment/Functions.php';
         include_once KREXX_DIR . 'src/Analyse/Comment/Methods.php';
+        // deprecated
         include_once KREXX_DIR . 'src/Analyse/Comment/Properties.php';
+        // deprecated
         include_once KREXX_DIR . 'src/Analyse/Comment/Classes.php';
         include_once KREXX_DIR . 'src/Analyse/Comment/ReturnType.php';
         include_once KREXX_DIR . 'src/Analyse/Comment/Attributes.php';

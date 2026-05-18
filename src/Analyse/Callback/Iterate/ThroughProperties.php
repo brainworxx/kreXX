@@ -42,7 +42,7 @@ use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
 use Brainworxx\Krexx\Analyse\Code\ConnectorsConstInterface;
 use Brainworxx\Krexx\Analyse\Comment\Attributes;
-use Brainworxx\Krexx\Analyse\Comment\Properties;
+use Brainworxx\Krexx\Analyse\Comment\Comment;
 use Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -72,7 +72,7 @@ class ThroughProperties extends AbstractCallback implements
     /**
      * @var Properties
      */
-    protected Properties $propertyComment;
+    protected Comment $propertyComment;
 
     /**
      * @var \Brainworxx\Krexx\Analyse\Comment\Attributes
@@ -103,7 +103,7 @@ class ThroughProperties extends AbstractCallback implements
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         $this->propertyDeclaration = $this->pool->createClass(classname: PropertyDeclaration::class);
-        $this->propertyComment = $this->pool->createClass(classname: Properties::class);
+        $this->propertyComment = $this->pool->createClass(classname: Comment::class);
         $this->attributes = $this->pool->createClass(classname: Attributes::class);
 
         foreach ($this->parameters[static::PARAM_DATA] as $refProperty) {
@@ -145,7 +145,7 @@ class ThroughProperties extends AbstractCallback implements
             ->setName(name: $this->retrievePropertyName(refProperty: $refProperty))
             ->addToJson(
                 key: $messages->getHelp(key: 'metaComment'),
-                value: $this->propertyComment->getComment(reflection: $refProperty)
+                value: nl2br($this->propertyComment->getComment(reflection: $refProperty))
             )->addToJson(
                 key: $messages->getHelp(key: 'metaAttributes'),
                 // Meh, the addToJson method does not support real new lines.

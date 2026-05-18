@@ -37,7 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Scalar\String;
 
-use Brainworxx\Krexx\Analyse\Comment\Functions;
+use Brainworxx\Krexx\Analyse\Comment\Comment;
 use Brainworxx\Krexx\Analyse\Declaration\FunctionDeclaration;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -124,7 +124,7 @@ class Callback extends AbstractScalarAnalysis
         $messages = $this->pool->messages;
         $meta = [
             $messages->getHelp(key: 'metaComment') => $this->pool
-                ->createClass(classname: Functions::class)->getComment(reflection: $this->reflectionFunction),
+                ->createClass(classname: Comment::class)->getComment(reflection: $this->reflectionFunction),
             $messages->getHelp(key: 'metaDeclaredIn') => $functionDeclaration
                 ->retrieveDeclaration(reflection: $this->reflectionFunction)
         ];

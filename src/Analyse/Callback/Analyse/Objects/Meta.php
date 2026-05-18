@@ -39,7 +39,7 @@ namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Comment\Attributes;
-use Brainworxx\Krexx\Analyse\Comment\Classes;
+use Brainworxx\Krexx\Analyse\Comment\Comment;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
@@ -154,7 +154,7 @@ class Meta extends AbstractObjectAnalysis
         $data = [
             $messages->getHelp(key: 'metaClassName') => $this->generateName(ref: $ref),
             $messages->getHelp(key: 'metaComment') => $this->pool
-                ->createClass(classname: Classes::class)->getComment(reflection: $ref),
+                ->createClass(classname: Comment::class)->getComment(reflection: $ref),
             $messages->getHelp(key: 'metaAttributes') => $this->pool
                 ->createClass(classname: Attributes::class)->getAttributes(reflection: $ref),
             $messages->getHelp(key: 'metaDeclaredIn') => $ref->isInternal() ?

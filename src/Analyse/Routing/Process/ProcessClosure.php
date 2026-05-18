@@ -40,7 +40,7 @@ namespace Brainworxx\Krexx\Analyse\Routing\Process;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Code\ConnectorsConstInterface;
-use Brainworxx\Krexx\Analyse\Comment\Functions;
+use Brainworxx\Krexx\Analyse\Comment\Comment;
 use Brainworxx\Krexx\Analyse\Comment\ReturnType;
 use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Service\Factory\Pool;
@@ -135,7 +135,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
 
         // Adding comments from the file.
         $result[$messages->getHelp(key: 'metaComment')] = $this->pool
-            ->createClass(classname: Functions::class)
+            ->createClass(classname: Comment::class)
             ->getComment(reflection: $ref);
 
         // Adding the sourcecode
