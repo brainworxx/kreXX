@@ -31,7 +31,7 @@ jobs:
         php-version: ${{ matrix.env.php }}
         coverage: xdebug
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Validate composer.json
       run: composer validate --strict
