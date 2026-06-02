@@ -263,7 +263,7 @@ class Encoding
      */
     public function mbDetectEncoding(string $string): bool|string
     {
-        return mb_detect_encoding(string: $string);
+        return mb_detect_encoding(string: $string, encodings: 'auto', strict: true);
     }
 
     /**
