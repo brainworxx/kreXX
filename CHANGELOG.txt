@@ -9,6 +9,7 @@
 - Bugfix: The help info text display of the Hans skin is respecting
   the whitespace formatting now.
 - Bugfix: Do not omit a bool default value for properties.
+- Bugfix: Removed some frontend literals.
 
 6.0.6
 - Bugfix: Prevent hints from overwriting themselves.

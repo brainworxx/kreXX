@@ -156,7 +156,8 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
             ->setData(data: $meta)
             ->setName(name: $key)
             ->setType(
-                type: $key === $this->pool->messages->getHelp(key: 'metaPrettyPrint') ? $key : static::TYPE_REFLECTION
+                type: $key === $this->pool->messages->getHelp(key: 'metaPrettyPrint') ?
+                    $key : $this->pool->messages->getHelp('reflectionType')
             );
 
         if (isset($this->parameters[static::PARAM_CODE_GEN_TYPE])) {

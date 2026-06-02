@@ -140,7 +140,7 @@ class Traversable extends AbstractObjectAnalysis implements ConfigConstInterface
         /** @var Model $model */
         $model = $this->pool->createClass(classname: Model::class)
             ->setName(name: $this->parameters[static::PARAM_NAME])
-            ->setType(type: static::TYPE_FOREACH)
+            ->setType(type: $this->pool->messages->getHelp(key: 'foreachType'))
             ->addParameter(name: static::PARAM_DATA, value: $result)
             ->addParameter(name: static::PARAM_MULTILINE, value: $multiline)
             ->addToJson(key: $messages->getHelp(key: 'metaLength'), value: (string)count(value: $result));

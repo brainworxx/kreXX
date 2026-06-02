@@ -115,6 +115,7 @@ class ThroughMethods extends AbstractCallback implements
         $result = $this->dispatchStartEvent();
         /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $refClass */
         $refClass = $this->parameters[static::PARAM_REF];
+        $messages = $this->pool->messages;
 
         // Deep analysis of the methods.
         /** @var \ReflectionMethod $refMethod */
@@ -139,7 +140,7 @@ class ThroughMethods extends AbstractCallback implements
                         reflectionMethod: $refMethod,
                         declaringClass: $declaringClass,
                         reflectionClass: $refClass
-                    ) . static::TYPE_METHOD)
+                    ) . $messages->getHelp('methodType'))
                     ->setConnectorType(type: $this->retrieveConnectorType(reflectionMethod: $refMethod))
                     ->addParameter(name: static::PARAM_DATA, value: $methodData)
                     ->setCodeGenType(codeGenType: $refMethod->isPublic() ? static::CODEGEN_TYPE_PUBLIC : '')

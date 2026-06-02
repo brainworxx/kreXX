@@ -91,7 +91,7 @@ class ErrorObject extends AbstractObjectAnalysis implements BacktraceConstInterf
                     ->setName(name: $this->pool->messages->getHelp(key: 'sourceCode'))
                     ->setNormal(normal: static::UNKNOWN_VALUE)
                     ->setHasExtra(value: true)
-                    ->setType(type: static::TYPE_PHP)
+                    ->setType(type: $this->pool->messages->getHelp(key: 'phpType'))
             )
         );
     }
