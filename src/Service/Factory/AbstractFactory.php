@@ -68,16 +68,9 @@ abstract class AbstractFactory
      */
     public function __construct()
     {
-        $this->errorCallback = function (
-            int $errno,
-            string $errstr,
-            ?string $errfile = null,
-            ?int $errline = null,
-            ?array $errcontext = null
-        ): bool {
+        $this->errorCallback = 
             // Do nothing.
-            return true;
-        };
+            (fn(int $errno, string $errstr, ?string $errfile = null, ?int $errline = null, ?array $errcontext = null): bool => true);
     }
 
     /**
@@ -115,7 +108,7 @@ abstract class AbstractFactory
      */
     public function &getGlobals(int|string $what = ''): array
     {
-        if (empty($what)) {
+        if ($what === 0 || ($what === '' || $what === '0')) {
             return $GLOBALS;
         }
 

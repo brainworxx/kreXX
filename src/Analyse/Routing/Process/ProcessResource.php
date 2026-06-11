@@ -58,7 +58,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -125,7 +125,7 @@ class ProcessResource extends AbstractRouting implements ProcessInterface, Callb
     /**
      * Render an unknown or closed resource.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model, so far.
      * @param resource $resource
      *   The resource, that we are analysing.

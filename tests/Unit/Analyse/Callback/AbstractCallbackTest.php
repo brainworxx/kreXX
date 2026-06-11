@@ -49,7 +49,7 @@ class AbstractCallbackTest extends AbstractHelper
     /**
      * Test if the __construct injects the pool.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $debugCallback = new Debug(Krexx::$pool);
 
@@ -59,12 +59,12 @@ class AbstractCallbackTest extends AbstractHelper
     /**
      * Testing the settings of the parameters for the callback.
      */
-    public function testSetParameters()
+    public function testSetParameters(): void
     {
-        $params = array(
+        $params = [
             'param1' => 'value1',
             'param2' => 'value2',
-        );
+        ];
 
         $debugCallback = new Debug(Krexx::$pool);
         $this->assertEquals($debugCallback, $debugCallback->setParameters($params));
@@ -74,12 +74,12 @@ class AbstractCallbackTest extends AbstractHelper
     /**
      * Testing if we can retrieve previously set parameters from the callback
      */
-    public function testGetParameters()
+    public function testGetParameters(): void
     {
-        $params = array(
+        $params = [
             'param1' => 'value1',
             'param2' => 'value2',
-        );
+        ];
 
         $debugCallback = new Debug(Krexx::$pool);
 

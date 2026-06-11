@@ -48,7 +48,7 @@ trait Callback
     /**
      * Callback for the renderMe() method.
      *
-     * @var \Brainworxx\Krexx\Analyse\Callback\AbstractCallback|null
+     * @var AbstractCallback|null
      */
     protected ?AbstractCallback $callback = null;
 

@@ -54,7 +54,7 @@ class RecursionTest extends AbstractHelper
     public const  RECURSION_HIVE = 'recursionHive';
 
     /**
-     * @var \Brainworxx\Krexx\Service\Flow\Recursion
+     * @var Recursion
      */
     protected $recursion;
 
@@ -71,7 +71,7 @@ class RecursionTest extends AbstractHelper
     /**
      * Test the setting of the recursion marker and the creation of the hive.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertStringContainsString('Krexx', $this->recursion->getMarker());
         $this->assertEquals(
@@ -84,7 +84,7 @@ class RecursionTest extends AbstractHelper
     /**
      * Test the adding of classes to the hive.
      */
-    public function testAddToHive()
+    public function testAddToHive(): void
     {
         $fixture = new StdClass();
 
@@ -100,7 +100,7 @@ class RecursionTest extends AbstractHelper
     /**
      * Test the actual recursion handling.
      */
-    public function testIsInHive()
+    public function testIsInHive(): void
     {
         $fixture = new StdClass();
 
@@ -123,7 +123,7 @@ class RecursionTest extends AbstractHelper
     /**
      * Test the geter for the marker
      */
-    public function testGetMarker()
+    public function testGetMarker(): void
     {
         $marker = 'some string';
         $this->setValueByReflection('recursionMarker', $marker, $this->recursion);
@@ -133,7 +133,7 @@ class RecursionTest extends AbstractHelper
     /**
      * Test the meta hive.
      */
-    public function testIsInMetaHive()
+    public function testIsInMetaHive(): void
     {
         $hive = ['marker' => true];
         $this->setValueByReflection('metaRecursionHive', $hive, $this->recursion);
@@ -144,7 +144,7 @@ class RecursionTest extends AbstractHelper
     /**
      * Test the adding of stuff to the meta hive.
      */
-    public function testAddToMetaHive()
+    public function testAddToMetaHive(): void
     {
         $this->recursion->addToMetaHive('key');
         $this->assertEquals(['key' => true], $this->retrieveValueByReflection('metaRecursionHive', $this->recursion));

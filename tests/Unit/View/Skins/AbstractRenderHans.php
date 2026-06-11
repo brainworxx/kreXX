@@ -68,7 +68,7 @@ abstract class AbstractRenderHans extends AbstractHelper
     protected $modelMock;
 
     /**
-     * @var \Brainworxx\Krexx\View\Skins\RenderHans
+     * @var RenderHans
      */
     protected $renderHans;
 

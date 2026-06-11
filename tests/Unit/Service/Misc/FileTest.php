@@ -65,7 +65,7 @@ class FileTest extends AbstractHelper
     public const IS_FILE = 'is_file';
 
     /**
-     * @var \Brainworxx\Krexx\Service\Misc\File
+     * @var File
      */
     protected $file;
 
@@ -87,7 +87,7 @@ class FileTest extends AbstractHelper
     /**
      * Setting of the pool and assigning itself to the pool.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $this->assertSame($this->file, Krexx::$pool->fileService);
         $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $this->file));
@@ -96,7 +96,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the reading of source code from a fixture file.
      */
-    public function testReadSourcecodeNormal()
+    public function testReadSourcecodeNormal(): void
     {
         $returnValue = 'some string';
         $source = 'source';
@@ -152,7 +152,7 @@ class FileTest extends AbstractHelper
      * Test the reading of source code from a cached fixture file, with messed
      * up parameters.
      */
-    public function testReadSourcecodeMessedUp()
+    public function testReadSourcecodeMessedUp(): void
     {
         $simpleReflection = new ReflectionClass(SimpleFixture::class);
         $this->assertEmpty(
@@ -183,7 +183,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the reading of a fixture file into a string.
      */
-    public function testReadFile()
+    public function testReadFile(): void
     {
         $reflection = new ReflectionClass(TraversableFixture::class);
         $result = $this->file->readFile($reflection->getFileName(), 44, 48);
@@ -222,7 +222,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the direct reading of a file into a string.
      */
-    public function testGetFileContents()
+    public function testGetFileContents(): void
     {
         $this->assertEmpty($this->file->getFileContents('whatever'), 'File does not exist');
         $this->assertCount(1, Krexx::$pool->messages->getMessages());
@@ -232,7 +232,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the reading of a file that we can not open (for whatever reason.)
      */
-    public function testGetFileContentsWithfailedFile()
+    public function testGetFileContentsWithfailedFile(): void
     {
         $fOpenMock = $this->getFunctionMock(static::MISC_NAMESPACE, 'fopen');
         $fOpenMock->expects($this->once())
@@ -251,7 +251,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the wrapper around the file_put_contents in the file handler.
      */
-    public function testPutFileContents()
+    public function testPutFileContents(): void
     {
         // We will not really write a file here.
         $filePutContents = $this->getFunctionMock(static::MISC_NAMESPACE, 'file_put_contents');
@@ -266,7 +266,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the deleting of a registered file.
      */
-    public function testDeleteFileRegistered()
+    public function testDeleteFileRegistered(): void
     {
         // Start the mocking.
         $chmod = $this->getFunctionMock(static::MISC_NAMESPACE, static::CHMOD);
@@ -290,7 +290,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the deleting of a not existing file.
      */
-    public function testDeleteFileNotExisting()
+    public function testDeleteFileNotExisting(): void
     {
         // Start the mocking.
         $unlink = $this->getFunctionMock(static::MISC_NAMESPACE, static::UNLINK);
@@ -315,7 +315,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the deleting of a unregistered file.
      */
-    public function testDeleteFileUnRegistered()
+    public function testDeleteFileUnRegistered(): void
     {
         // Start the mocking.
         $payload = 'unregistered_file.txt';
@@ -342,7 +342,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the deleting of a problematic file.
      */
-    public function testDeleteFileWithProblems()
+    public function testDeleteFileWithProblems(): void
     {
         $isFile = $this->getFunctionMock(static::MISC_NAMESPACE, static::IS_FILE);
         $isFile->expects($this->once())
@@ -372,7 +372,7 @@ class FileTest extends AbstractHelper
     /**
      * Test, if an already registered file is readable.
      */
-    public function testFileIsReadableRegistered()
+    public function testFileIsReadableRegistered(): void
     {
         // Set the stage.
         $filename = static::FILE_NAME;
@@ -386,7 +386,7 @@ class FileTest extends AbstractHelper
     /**
      * Test, if an already registered file is readable.
      */
-    public function testFileIsReadableUnregistered()
+    public function testFileIsReadableUnregistered(): void
     {
         $isFile = $this->getFunctionMock(static::MISC_NAMESPACE, static::IS_FILE);
         $isFile->expects($this->once())
@@ -405,7 +405,7 @@ class FileTest extends AbstractHelper
     /**
      * Test if a not existing file is readable.
      */
-    public function testFileIsReadableNotExisting()
+    public function testFileIsReadableNotExisting(): void
     {
         $fileService = new File(Krexx::$pool);
         $this->assertFalse($fileService->fileIsReadable('barf'));
@@ -414,7 +414,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the getting of a file stamp from an "existing" file.
      */
-    public function testFileTimeExisting()
+    public function testFileTimeExisting(): void
     {
         // Set the stage for an "existing" file.
         $filename = static::FILE_NAME;
@@ -432,7 +432,7 @@ class FileTest extends AbstractHelper
     /**
      * Test the getting of a file stamp from a not "existing" file.
      */
-    public function testFileTimeNotExisting()
+    public function testFileTimeNotExisting(): void
     {
         $fileService = new File(Krexx::$pool);
         $filePath = 'I am not here';

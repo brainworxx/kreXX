@@ -198,9 +198,7 @@ class ReflectionClass extends \ReflectionClass
      */
     public function getObjectVars(): array
     {
-        return array_filter(array: $this->objectArray, callback: function ($key) {
-            return !str_contains(haystack: (string)$key, needle: "\0");
-        }, mode: ARRAY_FILTER_USE_KEY);
+        return array_filter(array: $this->objectArray, callback: fn($key) => !str_contains(haystack: (string)$key, needle: "\0"), mode: ARRAY_FILTER_USE_KEY);
     }
 
     /**

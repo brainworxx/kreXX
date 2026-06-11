@@ -137,7 +137,7 @@ class Validation extends Fallback
     /**
      * Setting the pool and retrieving the debug method blacklist.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -154,7 +154,7 @@ class Validation extends Fallback
 
         // Adding the new configuration options from the plugins.
         $pluginConfig = SettingsGetter::getNewSettings();
-        if (empty($pluginConfig)) {
+        if ($pluginConfig === []) {
             return;
         }
 
@@ -235,9 +235,7 @@ class Validation extends Fallback
      */
     protected function evalDestination(bool|int|string|null $value, string $name, ?string $group = null): bool
     {
-        $result = $value === static::VALUE_BROWSER
-            || $value === static::VALUE_FILE
-            || $value === static::VALUE_BROWSER_IMMEDIATELY;
+        $result = in_array($value, [static::VALUE_BROWSER, static::VALUE_FILE, static::VALUE_BROWSER_IMMEDIATELY], true);
 
         if (!$result) {
             $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst(string: $name));
@@ -259,7 +257,7 @@ class Validation extends Fallback
      */
     protected function evalIpRange(bool|int|string|null $value, string $name, ?string $group = null): bool
     {
-        $result = empty($value);
+        $result = $value === false || $value === 0 || ($value === '' || $value === '0') || $value === null;
         if ($result) {
             $this->pool->messages->addMessage(key: static::KEY_CONFIG_ERROR . ucfirst(string: $name));
         }

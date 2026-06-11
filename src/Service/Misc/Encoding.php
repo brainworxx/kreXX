@@ -96,7 +96,7 @@ class Encoding
              */
             function mb_strlen($string, $encoding = null): int
             {
-                return strlen(string: $string);
+                return strlen(string: (string) $string);
             }
 
             /**
@@ -114,7 +114,7 @@ class Encoding
              */
             function mb_substr($string, $start, $length): string
             {
-                return substr(string: $string, offset: $start, length: $length);
+                return substr(string: (string) $string, offset: $start, length: $length);
             }
 
             /**
@@ -238,7 +238,7 @@ class Encoding
         return implode(
             separator: '',
             array: array_map(
-                callback: $code ? [$this, 'arrayMapCallbackCode'] : [$this, 'arrayMapCallbackNormal'],
+                callback: $code ? $this->arrayMapCallbackCode(...) : $this->arrayMapCallbackNormal(...),
                 array: unpack(format: "N*", string: $data)
             )
         );

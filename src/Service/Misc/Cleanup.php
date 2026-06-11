@@ -55,7 +55,7 @@ class Cleanup implements ConfigConstInterface
     /**
      * Assigning the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -76,12 +76,12 @@ class Cleanup implements ConfigConstInterface
 
         // Cleanup old logfiles to prevent an overflow.
         $logList = glob(pattern: $this->pool->config->getLogDir() . '*.Krexx.html');
-        if (empty($logList)) {
+        if ($logList === [] || $logList === false) {
             return $this;
         }
 
         array_multisort(
-            array_map(callback: [$this->pool->fileService, 'filetime'], array: $logList),
+            array_map(callback: $this->pool->fileService->filetime(...), array: $logList),
             SORT_DESC,
             $logList
         );

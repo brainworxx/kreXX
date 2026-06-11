@@ -66,20 +66,6 @@ class UndeclaredProperty extends ReflectionProperty
     public bool $isUndeclared = true;
 
     /**
-     * The name of the property.
-     *
-     * @var string|int
-     */
-    public string|int $propertyName;
-
-    /**
-     * A reflection of the class, where the property was declared.
-     *
-     * @var \ReflectionClass
-     */
-    protected ReflectionClass $declaringClass;
-
-    /**
      * Is this value actually reachable?
      *
      * The DateTime object has those. Undeclared and not reachable.
@@ -98,15 +84,22 @@ class UndeclaredProperty extends ReflectionProperty
     /**
      * Setting the necessary property's constructor.
      *
-     * @param \ReflectionClass $ref
+     * @param \ReflectionClass $declaringClass
      *   The instance of the class with the property.
-     * @param string|int $name
+     * @param string|int $propertyName
      *   The name of the property.
      */
-    public function __construct(ReflectionClass $ref, string|int $name)
+    public function __construct(
+        /**
+         * A reflection of the class, where the property was declared.
+         */
+        protected ReflectionClass $declaringClass,
+        /**
+         * The name of the property.
+         */
+        public string|int $propertyName
+    )
     {
-        $this->declaringClass = $ref;
-        $this->propertyName = $name;
     }
 
     /**

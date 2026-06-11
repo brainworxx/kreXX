@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration;
 use Brainworxx\Krexx\Analyse\Getter\AbstractGetter;
 use Brainworxx\Krexx\Analyse\Getter\ByMethodName;
@@ -97,28 +98,28 @@ class ThroughGetter extends AbstractCallback implements
     /**
      * These analysers will take a look at the getter.
      *
-     * @var \Brainworxx\Krexx\Analyse\Getter\AbstractGetter[]
+     * @var AbstractGetter[]
      */
     protected array $getterAnalyser;
 
     /**
      * Class for the comment analysis.
      *
-     * @var \Brainworxx\Krexx\Analyse\Comment\Methods
+     * @var Methods
      */
     protected Methods $commentAnalysis;
 
     /**
      * The method declaration retriever.
      *
-     * @var \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration
+     * @var MethodDeclaration
      */
     protected MethodDeclaration $methodDeclaration;
 
     /**
      * Injects the pool and initializes the comment analysis.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -209,7 +210,7 @@ class ThroughGetter extends AbstractCallback implements
     /**
      * We assign the metadata (comments and declaration) to the model.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model so far.
      * @param \ReflectionMethod $reflectionMethod
      *   Reflection of the method that we are analysing.
@@ -238,7 +239,7 @@ class ThroughGetter extends AbstractCallback implements
     protected function retrievePropertyValue(ReflectionMethod $reflectionMethod, Model $model): string
     {
         $this->resetParameters(reflectionMethod: $reflectionMethod);
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass */
+        /** @var ReflectionClass $reflectionClass */
         $reflectionClass = $this->parameters[static::PARAM_REF];
         $currentPrefix = $this->parameters[static::CURRENT_PREFIX];
         foreach ($this->getterAnalyser as $analyser) {
@@ -277,7 +278,7 @@ class ThroughGetter extends AbstractCallback implements
     /**
      * Prepare the model with the retrieved value.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model, so far.
      * @param mixed $value
      *   The retrieved possible value. Can be anything.
@@ -295,7 +296,7 @@ class ThroughGetter extends AbstractCallback implements
     /**
      * @param mixed $value
      *   The possible value that we retrieved.
-     * @param \Brainworxx\Krexx\Analyse\Getter\AbstractGetter $analyser
+     * @param AbstractGetter $analyser
      *   The analyser that we used.
      * @param \ReflectionMethod $reflectionMethod
      *   Reflection of the method that we are analysing.

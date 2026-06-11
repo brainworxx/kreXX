@@ -61,7 +61,7 @@ abstract class AbstractGetter
     /**
      * Inject the pool,
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     abstract public function __construct(Pool $pool);
 
@@ -70,7 +70,7 @@ abstract class AbstractGetter
      *
      * @param \ReflectionMethod $reflectionMethod
      *   The reflection of the getter we are analysing.
-     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass
+     * @param ReflectionClass $reflectionClass
      *   The reflection of the class we are analysing.
      *
      * @return mixed

@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Iterate;
 
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Analyse\Callback\AbstractCallback;
 use Brainworxx\Krexx\Analyse\Callback\CallbackConstInterface;
 use Brainworxx\Krexx\Analyse\Code\CodegenConstInterface;
@@ -64,7 +65,7 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -79,7 +80,7 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
     public function callMe(): string
     {
         $output = $this->dispatchStartEvent();
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
+        /** @var ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
 
         // Setting the prefix, depending on the scope.
@@ -139,14 +140,10 @@ class ThroughConstants extends AbstractCallback implements CallbackConstInterfac
      */
     protected function canDump(ReflectionClassConstant $reflectionConstant): bool
     {
-        if ($reflectionConstant->isPublic() || $this->isInScope) {
-            // It's either public or inside the scope.
-            // This includes also some private classes from the highest levels of
-            // the class.
-            return true;
-        }
-
         // Either a deep private or out of scope.
-        return false;
+        // It's either public or inside the scope.
+        // This includes also some private classes from the highest levels of
+        // the class.
+        return $reflectionConstant->isPublic() || $this->isInScope;
     }
 }

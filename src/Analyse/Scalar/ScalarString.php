@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Scalar;
 
+use Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis;
 use Brainworxx\Krexx\Analyse\Scalar\String\Base64;
 use Brainworxx\Krexx\Analyse\Scalar\String\Callback;
 use Brainworxx\Krexx\Analyse\Scalar\String\ClassName;
@@ -63,14 +64,14 @@ class ScalarString extends AbstractScalar
     /**
      * The list of analysis classes, that we use.
      *
-     * @var \Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis[]
+     * @var AbstractScalarAnalysis[]
      */
     protected array $classList = [];
 
     /**
      * Get the additional analysis classes from the plugins.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {

@@ -48,7 +48,7 @@ class ExceptionCallerFinderTest extends AbstractHelper
     /**
      * Test the return array.
      */
-    public function testFindCaller()
+    public function testFindCaller(): void
     {
         $fixture = new \Exception();
         $callerFinder = new ExceptionCallerFinder(Krexx::$pool);

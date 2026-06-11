@@ -19,7 +19,7 @@ class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterfa
     /**
      * Test the analysis of the so-called opaque ressource class analysis.
      */
-    public function testCallMeCurl()
+    public function testCallMeCurl(): void
     {
         $this->mockEmergencyHandler();
 
@@ -43,7 +43,7 @@ class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterfa
         $this->assertEquals(0, $result['redirect_count']);
     }
 
-    public function testCallMeAddressInfo()
+    public function testCallMeAddressInfo(): void
     {
         $this->mockEmergencyHandler();
 
@@ -70,7 +70,7 @@ class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterfa
         $this->assertArrayHasKey('ai_addr', $result);
     }
 
-    public function testCallMeSslCert()
+    public function testCallMeSslCert(): void
     {
         $this->mockEmergencyHandler();
 
@@ -114,7 +114,7 @@ hjJuL9EH
         $this->assertEquals('Some-State', $result['subject']['ST']);
     }
 
-    public function testCallMeGlImage()
+    public function testCallMeGlImage(): void
     {
         $this->mockEmergencyHandler();
 

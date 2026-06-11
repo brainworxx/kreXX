@@ -52,7 +52,7 @@ class ThroughConfigTest extends AbstractHelper
     /**
      * Test the configuration iteration.
      */
-    public function testCallMe()
+    public function testCallMe(): void
     {
         $this->mockEmergencyHandler();
 

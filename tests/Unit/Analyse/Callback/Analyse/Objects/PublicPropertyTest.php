@@ -58,7 +58,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 class PublicPropertyTest extends AbstractHelper
 {
     /**
-     * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\PublicProperties
+     * @var PublicProperties
      */
     protected $publicProperties;
 
@@ -93,7 +93,7 @@ class PublicPropertyTest extends AbstractHelper
      * Test the public property analysis, without any public ones in the
      * fixture
      */
-    public function testCallMeNoPublic()
+    public function testCallMeNoPublic(): void
     {
         // Test start event
         $this->mockEventService([$this->startEvent, $this->publicProperties]);
@@ -119,7 +119,7 @@ class PublicPropertyTest extends AbstractHelper
      * Test the public property analysis, with public ones in the fixture.
      * We also add some undeclared ones to the mix.
      */
-    public function testCallMeWithPublic()
+    public function testCallMeWithPublic(): void
     {
         // Set up the events
         $this->mockEventService([$this->startEvent, $this->publicProperties], [$this->endEvent, $this->publicProperties]);
@@ -161,7 +161,7 @@ class PublicPropertyTest extends AbstractHelper
     /**
      * Testing the "public" properties of a date time analysis.
      */
-    public function testCallMeDateTime()
+    public function testCallMeDateTime(): void
     {
         // Set up the events
         $this->mockEventService([$this->startEvent, $this->publicProperties], [$this->endEvent, $this->publicProperties]);

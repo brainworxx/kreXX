@@ -215,16 +215,14 @@ class Emergency implements ConfigConstInterface
     {
         // We will only check, if we were able to determine a memory limit
         // in the first place.
-        if ($this->serverMemoryLimit > 2) {
-            // Is more left than is configured?
-            if (($this->serverMemoryLimit - memory_get_usage()) < $this->minMemoryLeft) {
-                $this->pool->messages->addMessage(key: 'emergencyMemory');
-                // Show settings to give the dev to repair the situation.
-                Krexx::editSettings();
-                Krexx::disable();
-                $this->allIsOk = false;
-                return true;
-            }
+        // Is more left than is configured?
+        if ($this->serverMemoryLimit > 2 && $this->serverMemoryLimit - memory_get_usage() < $this->minMemoryLeft) {
+            $this->pool->messages->addMessage(key: 'emergencyMemory');
+            // Show settings to give the dev to repair the situation.
+            Krexx::editSettings();
+            Krexx::disable();
+            $this->allIsOk = false;
+            return true;
         }
 
         return false;
@@ -279,7 +277,7 @@ class Emergency implements ConfigConstInterface
      */
     public function initTimer(): void
     {
-        if (empty($this->timer) || php_sapi_name() === 'cli') {
+        if ($this->timer === 0 || php_sapi_name() === 'cli') {
             $this->timer = time() + $this->maxRuntime;
         }
     }

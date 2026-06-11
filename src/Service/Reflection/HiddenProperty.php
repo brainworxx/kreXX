@@ -208,12 +208,12 @@ class HiddenProperty extends UndeclaredProperty
     /**
      * {@inheritDoc}
      */
-    public function __construct(ReflectionClass $ref, int|string $name)
+    public function __construct(ReflectionClass $declaringClass, int|string $propertyName)
     {
-        parent::__construct(ref: $ref, name: $name);
+        parent::__construct(declaringClass: $declaringClass, propertyName: $propertyName);
 
-        $name = $ref->getName();
-        if ($name === DateTime::class || $name === DateTimeImmutable::class) {
+        $propertyName = $declaringClass->getName();
+        if ($propertyName === DateTime::class || $propertyName === DateTimeImmutable::class) {
             $this->isPublic = false;
             $this->isProtected = true;
         }

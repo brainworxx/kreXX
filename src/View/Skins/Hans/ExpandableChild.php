@@ -134,7 +134,7 @@ trait ExpandableChild
     {
         if (
             $gencode === static::CODEGEN_STOP_BIT ||
-            empty($gencode) ||
+            ($gencode === '' || $gencode === '0') ||
             !$this->pool->codegenHandler->isCodegenAllowed()
         ) {
             // Remove the button marker, because here is nothing to add.
@@ -166,11 +166,7 @@ trait ExpandableChild
         }
 
         // Are we expanding this one?
-        if ($isExpanded) {
-            $style = '';
-        } else {
-            $style = static::STYLE_HIDDEN;
-        }
+        $style = $isExpanded ? '' : static::STYLE_HIDDEN;
 
         return str_replace(
             search: $this->markerNest,
@@ -187,7 +183,7 @@ trait ExpandableChild
     /**
      * Render the 'extra' part of the singe child output.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model.
      *
      * @return string

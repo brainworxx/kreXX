@@ -48,7 +48,7 @@ class Cookie
     /**
      * Our security handler.
      *
-     * @var \Brainworxx\Krexx\Service\Config\Validation
+     * @var Validation
      */
     protected Validation $validation;
 
@@ -62,7 +62,7 @@ class Cookie
     /**
      * Inject the pool, and get a first impression of the cookies.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(Pool $pool)
     {

@@ -73,7 +73,7 @@ class BacktraceStepTest extends AbstractHelper
     /**
      * Testing, if all events got fired.
      */
-    public function testCallMe()
+    public function testCallMe(): void
     {
         $backtraceStep = new BacktraceStep(Krexx::$pool);
         $this->mockEventService(
@@ -94,7 +94,7 @@ class BacktraceStepTest extends AbstractHelper
     /**
      * Test everything, but some data is missing.
      */
-    public function testCallMeEmpty()
+    public function testCallMeEmpty(): void
     {
         $backtraceStep = new BacktraceStep(Krexx::$pool);
         $singleStep = ['data' => debug_backtrace()[5]];

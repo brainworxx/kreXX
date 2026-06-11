@@ -59,7 +59,7 @@ class MethodDeclarationTest extends AbstractHelper
     /**
      * Test the retrieval of declaration of simple functions.
      */
-    public function testRetrieveDeclaration()
+    public function testRetrieveDeclaration(): void
     {
         $methodDeclaration = new MethodDeclaration(\Krexx::$pool);
 
@@ -86,7 +86,7 @@ class MethodDeclarationTest extends AbstractHelper
     /**
      * Test the retrieval of an unknown declaration.
      */
-    public function testRetrieveDeclarationUnknown()
+    public function testRetrieveDeclarationUnknown(): void
     {
         $reflectionMethodMock = $this->createMock(\ReflectionMethod::class);
         $reflectionClassMock = $this->createMock(\ReflectionClass::class);
@@ -110,7 +110,7 @@ class MethodDeclarationTest extends AbstractHelper
     /**
      * Testing the retrieval of the return type by reflections.
      */
-    public function testRetrieveReturnType()
+    public function testRetrieveReturnType(): void
     {
         $fixture = new ReturnTypeFixture();
         $returnType = new MethodDeclaration(\Krexx::$pool);
@@ -132,7 +132,7 @@ class MethodDeclarationTest extends AbstractHelper
     /**
      * Testing the retrieval of a declared parameter type.
      */
-    public function testRetrieveParameterType()
+    public function testRetrieveParameterType(): void
     {
         $methodDeclaration = new MethodDeclaration(\Krexx::$pool);
 

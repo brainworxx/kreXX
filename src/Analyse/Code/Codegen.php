@@ -60,7 +60,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     /**
      * Retrieves the declared method parameters from the declaration.
      *
-     * @var \Brainworxx\Krexx\Analyse\Declaration\MethodDeclaration
+     * @var MethodDeclaration
      */
     protected MethodDeclaration $methodDeclaration;
 
@@ -123,7 +123,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
      * we can generate PHP code to actually reach the corresponding value.
      * This function generates this code.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      *
      * @return string
@@ -166,12 +166,12 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     /**
      * Adding the typehint to the model, on the first run.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      */
     protected function addTypeHint(Model $model): void
     {
         if (
-            empty($name = (string) $model->getName())
+            ($name = (string) $model->getName()) === '' || ($name = (string) $model->getName()) === '0'
             || !str_starts_with(haystack: $name, needle: '$')
         ) {
             // There is no name, no need for a hint.
@@ -197,7 +197,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     /**
      * The more obscure stuff for the code generation.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model, which hosts all the data we need.
      *
      * @return string
@@ -260,7 +260,7 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
     /**
      * Simple concatenation of all parameters.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *
      * @return string
      *   The generated code.
@@ -359,9 +359,9 @@ class Codegen implements CallbackConstInterface, CodegenConstInterface, ProcessC
         } elseif ($default === null) {
             $default = 'NULL';
         } elseif ($default instanceof UnitEnum) {
-            $default = get_class(object: $default) . '::' . $default->name;
+            $default = $default::class . '::' . $default->name;
         } elseif (is_object(value: $default)) {
-            $default = 'new \\' .  get_class(object: $default) . '()';
+            $default = 'new \\' .  $default::class . '()';
         } else {
             // Not sure if this is even possible, but I'm not taking my chances.
             $default = gettype(value: $default);

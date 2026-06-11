@@ -56,7 +56,7 @@ class PublicProperties extends AbstractObjectAnalysis
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -72,7 +72,7 @@ class PublicProperties extends AbstractObjectAnalysis
     {
         $output = $this->dispatchStartEvent();
 
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
+        /** @var ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         $data = $ref->getData();
         $publicProps = [];
@@ -93,7 +93,7 @@ class PublicProperties extends AbstractObjectAnalysis
         }
 
         $refProps = $this->handleUndeclaredProperties(data: $data, publicProps: $publicProps, ref: $ref);
-        if (empty($refProps)) {
+        if ($refProps === []) {
             return $output;
         }
 
@@ -112,7 +112,7 @@ class PublicProperties extends AbstractObjectAnalysis
      *
      * @param object $data
      * @param ReflectionProperty[] $publicProps
-     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref
+     * @param ReflectionClass $ref
      * @return array
      */
     protected function handleUndeclaredProperties(
@@ -123,7 +123,7 @@ class PublicProperties extends AbstractObjectAnalysis
         // For every not-declared property, we add another reflection.
         // Those are simply added during runtime
         foreach (array_keys(array: array_diff_key($ref->getObjectVars(), $publicProps)) as $key) {
-            $publicProps[$key] = new UndeclaredProperty(ref: $ref, name: $key);
+            $publicProps[$key] = new UndeclaredProperty(declaringClass: $ref, propertyName: $key);
         }
 
         // Test for hidden properties
@@ -136,7 +136,7 @@ class PublicProperties extends AbstractObjectAnalysis
         }
 
         foreach ($missingProperties as $propertyName) {
-            $publicProps[$propertyName] = new HiddenProperty(ref: $ref, name: $propertyName);
+            $publicProps[$propertyName] = new HiddenProperty(declaringClass: $ref, propertyName: $propertyName);
         }
 
         return $publicProps;

@@ -58,7 +58,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -128,7 +128,7 @@ class ProcessFloat extends AbstractRouting implements ProcessInterface, ProcessC
         if (!strpos(haystack: $stringFloat, needle: 'E-')) {
             return $stringFloat;
         }
-        list($beforeE, $afterE) = explode(separator: "E", string: $stringFloat);
+        [$beforeE, $afterE] = explode(separator: "E", string: $stringFloat);
 
         $this->model->addToJson(
             key: $this->pool->messages->getHelp(key: 'metaUnformattedFloat'),

@@ -62,7 +62,7 @@ class ThroughArray extends AbstractCallback implements
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -104,7 +104,7 @@ class ThroughArray extends AbstractCallback implements
      * @param string $multilineCodeGen
      *   The prepared code generation.
      *
-     * @return \Brainworxx\Krexx\Analyse\Model
+     * @return Model
      *   The prepared model.
      */
     protected function prepareModel(int|string $key, mixed $value, string $multilineCodeGen): Model

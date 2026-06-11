@@ -56,12 +56,7 @@ class ConfigSupplier extends File
      */
     public function getConfigFromFile(string $group, string $name): bool|string|null
     {
-        // Deliver the overwrites.
-        if (isset(static::$overwriteValues[$name])) {
-            return static::$overwriteValues[$name];
-        }
-
         // Fallback to the parent.
-        return parent::getConfigFromFile($group, $name);
+        return static::$overwriteValues[$name] ?? parent::getConfigFromFile($group, $name);
     }
 }

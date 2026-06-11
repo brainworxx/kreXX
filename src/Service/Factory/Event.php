@@ -73,7 +73,7 @@ class Event
      * @param AbstractCallback|null $callback
      *   The callback, that emitted the event.
      *   Null, when coming from the routing.
-     * @param \Brainworxx\Krexx\Analyse\Model|null $model
+     * @param Model|null $model
      *   The model so far, if available.
      *
      * @return string

@@ -57,7 +57,7 @@ class FooterTest extends AbstractRenderHans
      * We test the renderExpandableChild separately to keep this one at least
      * a little bit sane.
      */
-    public function testRenderFooter()
+    public function testRenderFooter(): void
     {
         // Mock the caller
         $caller = [
@@ -132,7 +132,7 @@ class FooterTest extends AbstractRenderHans
     /**
      * Test everything with an empty caller array.
      */
-    public function testRenderFooterNoCaller()
+    public function testRenderFooterNoCaller(): void
     {
         // Mock the caller
         $caller = [];

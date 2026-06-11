@@ -55,7 +55,7 @@ class PropertyDeclarationTest extends AbstractHelper
     /**
      * Test the retrieval of the declaration place of properties
      */
-    public function testRetrieveDeclaration()
+    public function testRetrieveDeclaration(): void
     {
         $propertyDeclaration = new PropertyDeclaration(\Krexx::$pool);
 
@@ -91,7 +91,7 @@ class PropertyDeclarationTest extends AbstractHelper
     /**
      * Test the retrieval of a typed property declaration type.
      */
-    public function testRetrieveNamedPropertyType()
+    public function testRetrieveNamedPropertyType(): void
     {
         $propertyDeclaration = new PropertyDeclaration(\Krexx::$pool);
 

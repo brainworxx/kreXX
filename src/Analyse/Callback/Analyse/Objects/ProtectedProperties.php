@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionProperty;
 
@@ -53,7 +54,7 @@ class ProtectedProperties extends AbstractObjectAnalysis
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -69,7 +70,7 @@ class ProtectedProperties extends AbstractObjectAnalysis
     {
         $output = $this->dispatchStartEvent();
 
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
+        /** @var ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         $refProps = $ref->getProperties(filter: ReflectionProperty::IS_PROTECTED);
         if (empty($refProps)) {

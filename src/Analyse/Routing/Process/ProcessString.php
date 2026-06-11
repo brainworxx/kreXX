@@ -66,7 +66,7 @@ class ProcessString extends AbstractRouting implements
     /**
      * The buffer info class. We use it to get the mimetype from a string.
      *
-     * @var \finfo|\Brainworxx\Krexx\Service\Misc\FileinfoDummy
+     * @var \finfo|FileinfoDummy
      */
     protected finfo|FileinfoDummy $bufferInfo;
 
@@ -94,7 +94,7 @@ class ProcessString extends AbstractRouting implements
     /**
      * Inject the pool and initialize the buffer-info class.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -143,7 +143,7 @@ class ProcessString extends AbstractRouting implements
         // We also need to check for linebreaks, because the preview can not
         // display those.
         $length = $this->retrieveLengthAndEncoding(data: $data);
-        if ($length > 50 || str_contains(haystack: $data, needle: PHP_EOL)) {
+        if ($length > 50 || str_contains(haystack: (string) $data, needle: PHP_EOL)) {
             $cut = $this->pool->encodingService->encodeString(
                 data: $this->pool->encodingService->mbSubStr(string: $data, start: 0, length: 50)
             ) . static::UNKNOWN_VALUE;

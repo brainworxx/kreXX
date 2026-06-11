@@ -96,10 +96,10 @@ abstract class AbstractRouting
      *
      * @param string $name
      *   The event name.
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model, so far.
      *
-     * @return \Brainworxx\Krexx\Analyse\Model
+     * @return Model
      *   The changed model.
      */
     protected function dispatchNamedEvent(string $name, Model $model): Model

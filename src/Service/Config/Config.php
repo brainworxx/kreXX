@@ -98,7 +98,7 @@ class Config extends Fallback
     /**
      * Inject the pool and load the configuration.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -185,7 +185,7 @@ class Config extends Fallback
     /**
      * Are we allowed to use this value for this setting from the cookies?
      *
-     * @param \Brainworxx\Krexx\Service\Config\Model $model
+     * @param Model $model
      *   The configuration model, loaded with the fe editing values.
      * @param string $name
      *   Name of the configuration.
@@ -199,15 +199,10 @@ class Config extends Fallback
             // We either have no value, or are not allowed to edit it in the first place.
             return false;
         }
-
-        if ($name === static::SETTING_DISABLED && $value === static::VALUE_FALSE) {
-            // We must not overwrite a disabled=true with local cookie settings!
-            // Otherwise, it could get enabled locally, which might be a security
-            // issue.
-            return false;
-        }
-
-        return true;
+        // We must not overwrite a disabled=true with local cookie settings!
+        // Otherwise, it could get enabled locally, which might be a security
+        // issue.
+        return !($name === static::SETTING_DISABLED && $value === static::VALUE_FALSE);
     }
 
     /**
@@ -347,7 +342,7 @@ class Config extends Fallback
      * @param string $name
      *   Name of the setting.
      *
-     * @return \Brainworxx\Krexx\Service\Config\Model
+     * @return Model
      *   The prepared model.
      */
     protected function prepareModelWithFeSettings(string $name): Model

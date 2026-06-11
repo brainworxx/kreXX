@@ -52,7 +52,7 @@ abstract class AbstractDeclaration
     /**
      * Injects the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      *   The pool, where we store the classes we need.
      */
     public function __construct(protected Pool $pool)

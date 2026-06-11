@@ -69,7 +69,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
     /**
      * Injects the pool, sets the callPattern to search for.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -101,7 +101,7 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
             }
         }
 
-        $varname = empty($headline) ?
+        $varname = $headline === '' || $headline === '0' ?
             $this->getVarName(file: $caller[static::TRACE_FILE], line: $caller[static::TRACE_LINE]) :
             $headline;
 

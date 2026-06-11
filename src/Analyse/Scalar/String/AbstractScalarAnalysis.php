@@ -101,7 +101,7 @@ abstract class AbstractScalarAnalysis extends AbstractCallback implements Callba
         $output = $this->dispatchStartEvent();
         $meta = $this->handle();
 
-        if (empty($meta)) {
+        if ($meta === []) {
             // Nothing to render.
             return $output;
         }

@@ -66,7 +66,7 @@ class MethodDeclaration extends AbstractDeclaration
         }
 
         $filename = (string)$reflection->getFileName();
-        if (empty($filename)) {
+        if ($filename === '' || $filename === '0') {
             // Not sure, if this is possible.
             return $this->pool->messages->getHelp(key: 'unknownDeclaration');
         }
@@ -82,7 +82,7 @@ class MethodDeclaration extends AbstractDeclaration
                 reflectionMethod: $reflection,
                 declaringClass: $reflectionClass
             );
-            if ($trait !== null) {
+            if ($trait instanceof \ReflectionClass) {
                 $traitName = $trait->getName();
             }
 
@@ -152,7 +152,7 @@ class MethodDeclaration extends AbstractDeclaration
         // No need to recheck the availability for traits. This is done above.
         foreach ($declaringClass->getTraits() as $trait) {
             $result = $this->retrieveDeclaringReflection(reflectionMethod:  $reflectionMethod, declaringClass: $trait);
-            if ($result !== null) {
+            if ($result instanceof \ReflectionClass) {
                 return $result;
             }
         }

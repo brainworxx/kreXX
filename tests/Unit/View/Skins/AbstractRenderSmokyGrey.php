@@ -66,7 +66,7 @@ abstract class AbstractRenderSmokyGrey extends AbstractHelper
     protected $modelMock;
 
     /**
-     * @var \Brainworxx\Krexx\View\Skins\RenderSmokyGrey
+     * @var RenderSmokyGrey
      */
     protected $renderSmokyGrey;
 

@@ -132,8 +132,8 @@ abstract class AbstractCaller
      */
     protected function getType(string $headline, string $varname, mixed $data): string
     {
-        if (empty($headline)) {
-            $type = is_object(value: $data) ? get_class(object: $data) : gettype(value: $data);
+        if ($headline === '' || $headline === '0') {
+            $type = get_debug_type($data);
             if ($type === 'double') {
                 $type = 'float';
             }
@@ -172,7 +172,7 @@ abstract class AbstractCaller
         // SSL or no SSL.
         $ssl = !empty($server['HTTPS']) && $server['HTTPS'] === 'on';
 
-        $protocol = strtolower(string: $server['SERVER_PROTOCOL']);
+        $protocol = strtolower(string: (string) $server['SERVER_PROTOCOL']);
         $protocol = substr(string: $protocol, offset: 0, length: strpos(haystack: $protocol, needle: '/'));
         if ($ssl) {
             $protocol .= 's';

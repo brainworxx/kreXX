@@ -56,7 +56,7 @@ trait ConnectorService
     /**
      * Inject the pool and create the connector service.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {

@@ -54,7 +54,7 @@ class CheckOutput
     /**
      * Injects the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -130,7 +130,7 @@ class CheckOutput
     {
         $server = $this->pool->getServer();
         $remote = isset($server[static::REMOTE_ADDRESS]) ? (string) $server[static::REMOTE_ADDRESS] : null;
-        $ipList = array_map(callback: 'trim', array: explode(separator: ',', string: $whitelist));
+        $ipList = array_map(callback: trim(...), array: explode(separator: ',', string: $whitelist));
         if (
             // There is no IP on the shell.
             $this->isCli()

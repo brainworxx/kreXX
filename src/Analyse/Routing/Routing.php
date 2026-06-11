@@ -66,7 +66,7 @@ class Routing extends AbstractRouting
     /**
      * Inject the pool and create all the routing classes.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {

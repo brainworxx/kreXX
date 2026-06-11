@@ -270,7 +270,7 @@ abstract class Fallback implements ConfigConstInterface
 
         // Adding the new configuration options from the plugins.
         $pluginConfig = SettingsGetter::getNewSettings();
-        if (empty($pluginConfig)) {
+        if ($pluginConfig === []) {
             return;
         }
 
@@ -319,7 +319,7 @@ abstract class Fallback implements ConfigConstInterface
     {
         // Adding the new configuration options from the plugins.
         $pluginConfig = SettingsGetter::getNewSettings();
-        if (empty($pluginConfig)) {
+        if ($pluginConfig === []) {
             return;
         }
 

@@ -35,9 +35,9 @@
 
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Iterate;
 
+use Brainworxx\Krexx\Analyse\Model;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughArray;
 use Brainworxx\Krexx\Analyse\Code\Codegen;
-use Brainworxx\Krexx\Service\Flow\Recursion;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\RoutingNothing;
 use Brainworxx\Krexx\Krexx;
@@ -60,7 +60,7 @@ class ThroughArrayTest extends AbstractHelper
     /**
      * Test the normal array iteration.
      */
-    public function testCallMe()
+    public function testCallMe(): void
     {
         // Listen for the start event.
         $throughArray = new ThroughArray(Krexx::$pool);
@@ -81,7 +81,7 @@ class ThroughArrayTest extends AbstractHelper
             ->callMe();
 
         // Check the result
-        /** @var \Brainworxx\Krexx\Analyse\Model[] $models */
+        /** @var Model[] $models */
         $models = Krexx::$pool->routing->model;
         $this->assertCount(2, $models);
 
@@ -101,7 +101,7 @@ class ThroughArrayTest extends AbstractHelper
     /**
      * Testing the special handling of a PHP bug.
      */
-    public function testCallMeInaccessibleArray()
+    public function testCallMeInaccessibleArray(): void
     {
         // Listen for the start event.
         $throughArray = new ThroughArray(Krexx::$pool);
@@ -121,7 +121,7 @@ class ThroughArrayTest extends AbstractHelper
             ->callMe();
 
         // Check the result
-        /** @var \Brainworxx\Krexx\Analyse\Model[] $models */
+        /** @var Model[] $models */
         $models = Krexx::$pool->routing->model;
         $this->assertCount(1, $models);
         // This bug may or may not be fixed on the used PHP version.

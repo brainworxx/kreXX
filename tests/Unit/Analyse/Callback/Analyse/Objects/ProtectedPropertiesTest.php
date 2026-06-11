@@ -54,7 +54,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 class ProtectedPropertiesTest extends AbstractHelper
 {
     /**
-     * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\ProtectedProperties
+     * @var ProtectedProperties
      */
     protected $protectedProperties;
 
@@ -82,7 +82,7 @@ class ProtectedPropertiesTest extends AbstractHelper
      * Test the private property analysis, without any protected ones in the
      * fixture.
      */
-    public function testCallMeNoProtected()
+    public function testCallMeNoProtected(): void
     {
         // Test start event
         $this->mockEventService(
@@ -113,7 +113,7 @@ class ProtectedPropertiesTest extends AbstractHelper
      * Test, if the private analysis gets all privates, including the
      * "inherited"  ones.
      */
-    public function testCallMeWithProtected()
+    public function testCallMeWithProtected(): void
     {
         // Set up the events
         $this->mockEventService(

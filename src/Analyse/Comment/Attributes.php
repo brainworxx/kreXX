@@ -139,11 +139,11 @@ class Attributes
                 $result .= $this->handleArray(parameter: $parameter, indention: $indention) . ',';
                 break;
             case $parameter instanceof UnitEnum:
-                $result .= get_class(object: $parameter) . '::' . $parameter->name;
+                $result .= $parameter::class . '::' . $parameter->name;
                 break;
             case is_object(value: $parameter):
                 // If the parameter is an object, we return its class name.
-                $result .= get_class(object: $parameter) . '::class,';
+                $result .= $parameter::class . '::class,';
         }
 
         return $result;
@@ -162,7 +162,7 @@ class Attributes
      */
     protected function handleArray(array $parameter, int $indention): string
     {
-        if (empty($parameter)) {
+        if ($parameter === []) {
             // If the array is empty, we return an empty array representation.
             return str_repeat(string: ' ', times: $indention - 4) . '[]';
         }

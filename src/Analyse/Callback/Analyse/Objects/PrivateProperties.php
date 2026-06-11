@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace Brainworxx\Krexx\Analyse\Callback\Analyse\Objects;
 
+use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Service\Factory\Pool;
 use ReflectionProperty;
 
@@ -55,7 +56,7 @@ class PrivateProperties extends AbstractObjectAnalysis
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -72,7 +73,7 @@ class PrivateProperties extends AbstractObjectAnalysis
         $output = $this->dispatchStartEvent();
 
         $refProps = [];
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
+        /** @var ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         // We need to keep the original reference intact.
         $reflectionClass = $ref;
@@ -87,7 +88,7 @@ class PrivateProperties extends AbstractObjectAnalysis
             $reflectionClass = $reflectionClass->getParentClass();
         } while (is_object(value: $reflectionClass));
 
-        if (empty($refProps)) {
+        if ($refProps === []) {
             return $output;
         }
 

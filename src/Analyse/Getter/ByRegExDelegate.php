@@ -71,7 +71,7 @@ class ByRegExDelegate extends ByRegExContainer
     protected string $secondPattern = '->';
 
     /**
-     * @var \Brainworxx\Krexx\Analyse\Getter\AbstractGetter[]
+     * @var AbstractGetter[]
      */
     protected array $getterAnalyser;
 
@@ -92,7 +92,7 @@ class ByRegExDelegate extends ByRegExContainer
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -139,10 +139,10 @@ class ByRegExDelegate extends ByRegExContainer
         // $this->myObject?->getStuff();
         // We need to remove the question mark, since it is not part of the
         // object name.
-        $parts[0] = trim(string: $parts[0], characters: '?');
+        $parts[0] = trim(string: (string) $parts[0], characters: '?');
         try {
             $delegateReflection = $this->retrieveReflectionClass(parts: $parts, reflectionClass: $reflectionClass);
-            if ($delegateReflection === null) {
+            if (!$delegateReflection instanceof ReflectionClass) {
                 $this->deep = 0;
                 return null;
             }
@@ -172,12 +172,12 @@ class ByRegExDelegate extends ByRegExContainer
      *
      * @param array $parts
      *   The parts from the regex scanner.
-     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass
+     * @param ReflectionClass $reflectionClass
      *   The reflection of the class that we are analysing
      *
      * @throws \ReflectionException
      *
-     * @return \Brainworxx\Krexx\Service\Reflection\ReflectionClass|null
+     * @return ReflectionClass|null
      *   Reflection of the class that is getting called inside the class that we
      *   are analysing.
      */

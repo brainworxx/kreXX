@@ -94,14 +94,14 @@ class ByRegExContainer extends AbstractGetter
         // We are looking for something like this:
         // $this->container['key'];
         $results = $this->findIt(searchArray: $this->firstPattern, haystack: $sourcecode);
-        if (empty($results)) {
+        if ($results === []) {
             return null;
         }
 
         // We take the first one that we get.
         // There may others in there, but when the developer uses static
         // caching, this is where the value should be.
-        $parts = explode(separator: $this->secondPattern, string: $results[0]);
+        $parts = explode(separator: $this->secondPattern, string: (string) $results[0]);
         if (count(value: $parts) !== 2) {
             return null;
         }
@@ -126,7 +126,7 @@ class ByRegExContainer extends AbstractGetter
             return null;
         }
 
-        $key = trim(string: $parts[1], characters: '\'"');
+        $key = trim(string: (string) $parts[1], characters: '\'"');
         $container = $reflectionClass->retrieveValue(refProperty: $reflectionClass->getProperty(name: $containerName));
         if (!isset($container[$key])) {
             return null;

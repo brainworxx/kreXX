@@ -38,7 +38,6 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Callback\Iterate;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties;
 use Brainworxx\Krexx\Analyse\Declaration\PropertyDeclaration;
 use Brainworxx\Krexx\Analyse\Model;
-use Brainworxx\Krexx\Service\Flow\Emergency;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Service\Reflection\UndeclaredProperty;
 use Brainworxx\Krexx\Tests\Fixtures\AttributeFixture;
@@ -90,7 +89,7 @@ class ThroughPropertiesTest extends AbstractHelper
     public const BOOLEAN = 'boolean';
 
     /**
-     * @var \Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughProperties
+     * @var ThroughProperties
      */
     protected $throughProperties;
 
@@ -116,7 +115,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Testing an analysis without any methods to look at.
      */
-    public function testCallMeEmpty()
+    public function testCallMeEmpty(): void
     {
         // Test for the start event
         $this->mockEventService(
@@ -138,7 +137,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Normal test run for the property analysis.
      */
-    public function testCallMeNormal()
+    public function testCallMeNormal(): void
     {
         // Test the events.
         $this->mockEventService(
@@ -387,7 +386,7 @@ class ThroughPropertiesTest extends AbstractHelper
             ['qwer', 'asdf'],
             static::PUBLIC_ARRAY_DEFAULT,
             [
-                static::JSON_DECLARED_KEY => 'Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesFixture',
+                static::JSON_DECLARED_KEY => ComplexPropertiesFixture::class,
                 static::JSON_COMMENT_KEY => 'A simple variable with a default array.<br /><br />&#64;var string[]',
                 static::JSON_DEFAULT_VALUE => 'array (<br />&nbsp;&nbsp;0 =&gt; &#039;qwer&#039;,<br />&nbsp;&nbsp;1 =&gt; &#039;asdf&#039;,<br />)'
             ],
@@ -402,7 +401,7 @@ class ThroughPropertiesTest extends AbstractHelper
             123.456,
             static::PUBLIC_FLOAT_PROPERTY,
             [
-                static::JSON_DECLARED_KEY => 'Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesFixture',
+                static::JSON_DECLARED_KEY => ComplexPropertiesFixture::class,
                 static::JSON_COMMENT_KEY => 'Public float property<br /><br />&#64;var float',
                 static::JSON_DEFAULT_VALUE => '123.456'
             ],
@@ -418,7 +417,7 @@ class ThroughPropertiesTest extends AbstractHelper
             true,
             static::BOOLEAN,
             [
-                static::JSON_DECLARED_KEY => 'Brainworxx\Krexx\Tests\Fixtures\ComplexPropertiesFixture',
+                static::JSON_DECLARED_KEY => ComplexPropertiesFixture::class,
                 static::JSON_COMMENT_KEY => 'Boolean default value.<br /><br />&#64;var bool',
                 static::JSON_DEFAULT_VALUE => true
             ],
@@ -431,7 +430,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Provoke an error when getting the default value.
      */
-    public function testCallMeError()
+    public function testCallMeError(): void
     {
         // Create a fixture.
         $refPropertyMock = $this->createMock(ReflectionProperty::class);
@@ -485,7 +484,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Special tests for PHP 8, actually with some 7.4'er stuff.
      */
-    public function testCallMePhpEight()
+    public function testCallMePhpEight(): void
     {
         // Test the events.
         $this->mockEventService(
@@ -530,7 +529,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Testing the default enum value.
      */
-    public function testCallMeDefaultEnum()
+    public function testCallMeDefaultEnum(): void
     {
         // Test the events.
         $this->mockEventService(
@@ -571,7 +570,7 @@ class ThroughPropertiesTest extends AbstractHelper
         );
     }
 
-    public function testCallMeAttribute()
+    public function testCallMeAttribute(): void
     {
         // Test the events.
         $this->mockEventService(
@@ -615,7 +614,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Simply assert the stuff inside the model.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      * @param mixed $data
      * @param string $name
      * @param array $json
@@ -654,7 +653,7 @@ class ThroughPropertiesTest extends AbstractHelper
     /**
      * Testing the property name analysis.
      */
-    public function testIsPropertyNameNormal()
+    public function testIsPropertyNameNormal(): void
     {
         $this->assertTrue($this->throughProperties->isPropertyNameNormal('getValue'));
         $this->assertFalse($this->throughProperties->isPropertyNameNormal('get value'));

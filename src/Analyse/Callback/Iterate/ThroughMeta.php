@@ -78,7 +78,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
     /**
      * Inject the pool and init the workflow.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -146,7 +146,7 @@ class ThroughMeta extends AbstractCallback implements CallbackConstInterface
      * @param mixed $meta
      *   The data to display.
      *
-     * @return \Brainworxx\Krexx\Analyse\Model
+     * @return Model
      *   The prepared model.
      */
     protected function prepareModel(string $key, mixed $meta): Model

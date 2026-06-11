@@ -83,7 +83,7 @@ class Pool extends AbstractFactory
      *
      * Gets loaded in the output footer.
      *
-     * @var \Brainworxx\Krexx\View\RenderInterface
+     * @var RenderInterface
      */
     public RenderInterface $render;
 

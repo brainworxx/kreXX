@@ -158,15 +158,15 @@ class Connectors implements ConnectorsConstInterface
     public function getConnectorRight(int $cap): string
     {
         if (
-            empty($this->params) ||
+            !isset($this->params) || in_array($this->params, ['', '0', 0], true) ||
             ($this->type !== static::CONNECTOR_METHOD && $this->type !== static::CONNECTOR_STATIC_METHOD)
         ) {
             return $this->connectorArray[$this->type][1];
         }
 
         // Capping the parameters for a better readability.
-        if ($cap > 0 && strlen(string: $this->params) > $cap) {
-            return '(' . substr(string: $this->params, offset: 0, length: $cap) . ' . . . )';
+        if ($cap > 0 && strlen(string: (string) $this->params) > $cap) {
+            return '(' . substr(string: (string) $this->params, offset: 0, length: $cap) . ' . . . )';
         }
 
         return '(' . $this->params . ')';

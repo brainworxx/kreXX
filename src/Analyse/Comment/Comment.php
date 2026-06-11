@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Brainworxx\Krexx\Analyse\Comment;
 
 use ReflectionClass;
@@ -23,7 +25,7 @@ class Comment extends AbstractComment
      */
     public function getComment(Reflector $reflection, ?ReflectionClass $reflectionClass = null): string
     {
-        if (isset($reflection->isUndeclared)) {
+        if (property_exists($reflection, 'isUndeclared') && $reflection->isUndeclared !== null) {
             return '';
         }
 

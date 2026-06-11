@@ -137,7 +137,7 @@ class ObjectsTest extends AbstractHelper
      * Testing the start event and if other analysis classes are getting used,
      * according to the configuration.
      */
-    public function testCallMeEvent()
+    public function testCallMeEvent(): void
     {
         // Test if start event has fired
         $this->mockEventService(
@@ -151,7 +151,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the public properties are getting analysed.
      */
-    public function testCallMePublic()
+    public function testCallMePublic(): void
     {
         // Test analyse public
         Krexx::$pool->rewrite[PublicProperties::class] = CallbackCounter::class;
@@ -168,7 +168,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the getter get analysed.
      */
-    public function testCallMeGetter()
+    public function testCallMeGetter(): void
     {
         // Test analyse getter true
         Krexx::$pool->rewrite[Getter::class] = CallbackCounter::class;
@@ -195,7 +195,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the meta stuff is analysed.
      */
-    public function testCallMeMeta()
+    public function testCallMeMeta(): void
     {
         Krexx::$pool->rewrite[Meta::class] = CallbackCounter::class;
         $this->objects->setParameters($this->fixture)
@@ -207,7 +207,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the protected properties are analysed.
      */
-    public function testCallMeProtected()
+    public function testCallMeProtected(): void
     {
         // Test analyse protected true
         Krexx::$pool->rewrite[ProtectedProperties::class] = CallbackCounter::class;
@@ -233,7 +233,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the private properties are analysed.
      */
-    public function testCallMePrivate()
+    public function testCallMePrivate(): void
     {
         // Test analyse private true
         Krexx::$pool->rewrite[PrivateProperties::class] = CallbackCounter::class;
@@ -261,7 +261,7 @@ class ObjectsTest extends AbstractHelper
      *
      * Pun not intended.
      */
-    public function testCallMeConstants()
+    public function testCallMeConstants(): void
     {
         Krexx::$pool->rewrite[Constants::class] = CallbackCounter::class;
 
@@ -276,7 +276,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the method analysis is used.
      */
-    public function testCallMeMethods()
+    public function testCallMeMethods(): void
     {
         Krexx::$pool->rewrite[Methods::class] = CallbackCounter::class;
 
@@ -291,7 +291,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test with traversable deactivated and with a traversable class
      */
-    public function testCallMeTraversableDeactivatedTraversable()
+    public function testCallMeTraversableDeactivatedTraversable(): void
     {
         $this->setConfigValue(Fallback::SETTING_ANALYSE_TRAVERSABLE, false);
         Krexx::$pool->rewrite[Traversable::class] = CallbackCounter::class;
@@ -303,7 +303,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test with traversable deactivated and with a normal class
      */
-    public function testCallMeTraversableDeactivatedNormal()
+    public function testCallMeTraversableDeactivatedNormal(): void
     {
         $this->setConfigValue(Fallback::SETTING_ANALYSE_TRAVERSABLE, false);
         Krexx::$pool->rewrite[Traversable::class] = CallbackCounter::class;
@@ -314,7 +314,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test with traversable activated and with a normal class
      */
-    public function testCallMeTraversableActivatedTraversable()
+    public function testCallMeTraversableActivatedTraversable(): void
     {
         $this->setConfigValue(Fallback::SETTING_ANALYSE_TRAVERSABLE, true);
         Krexx::$pool->rewrite[Traversable::class] = CallbackCounter::class;
@@ -325,7 +325,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the traversable part is called.
      */
-    public function testCallMeTraversableActivated()
+    public function testCallMeTraversableActivated(): void
     {
         // Test with traversable activated and with a traversable class
         $this->setConfigValue(Fallback::SETTING_ANALYSE_TRAVERSABLE, true);
@@ -340,7 +340,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the debug methods analysis is triggered.
      */
-    public function testCallMeDebugMethods()
+    public function testCallMeDebugMethods(): void
     {
         Krexx::$pool->rewrite[DebugMethods::class] = CallbackCounter::class;
         $this->objects->setParameters($this->fixture)
@@ -352,7 +352,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test, if the analysis of an error object works.
      */
-    public function testCallMeException()
+    public function testCallMeException(): void
     {
         Krexx::$pool->rewrite[ErrorObject::class] = CallbackCounter::class;
         $this->fixture[CallbackConstInterface::PARAM_DATA] = new Exception('message', 123);
@@ -365,7 +365,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test the handling of the log model.
      */
-    public function testCallMeLogModel()
+    public function testCallMeLogModel(): void
     {
         $logModel = new Model();
         $logModel->setCode(12345)
@@ -386,7 +386,7 @@ class ObjectsTest extends AbstractHelper
      *
      * Wasn't there a Swing Out Sister song about this?
      */
-    public function testCallMeIncomplete()
+    public function testCallMeIncomplete(): void
     {
         Krexx::$pool->rewrite[PublicProperties::class] = CallbackCounter::class;
         $this->fixture[CallbackConstInterface::PARAM_DATA] = unserialize('O:8:"Phxbject":1:{s:3:"wat";s:3:"qqq";}');
@@ -403,7 +403,7 @@ class ObjectsTest extends AbstractHelper
     /**
      * Test the order of the in scope analysis.
      */
-    public function testCallMeInScope()
+    public function testCallMeInScope(): void
     {
         // Test analyse getter true
         Krexx::$pool->rewrite[Getter::class] = CallbackCounter::class;

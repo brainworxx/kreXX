@@ -54,7 +54,7 @@ class ConfigSectionTest extends AbstractHelper
     /**
      * Testing if the configuration is rendered correctly.
      */
-    public function testCallMe()
+    public function testCallMe(): void
     {
         // Prepare the fixture.
         $noRender = new Model();

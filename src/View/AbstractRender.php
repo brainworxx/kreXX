@@ -94,7 +94,7 @@ abstract class AbstractRender implements RenderInterface
     protected function encodeJson(array $array): string
     {
         // No data, no json!
-        if (empty($array)) {
+        if ($array === []) {
             return '';
         }
 
@@ -127,7 +127,7 @@ abstract class AbstractRender implements RenderInterface
     /**
      * Retrieve the css type classes form the model.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model.
      *
      * @return string

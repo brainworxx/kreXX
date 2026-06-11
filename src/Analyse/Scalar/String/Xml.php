@@ -72,7 +72,7 @@ class Xml extends AbstractScalarAnalysis
     /**
      * Inject the pool, initialize the parser.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -114,11 +114,11 @@ class Xml extends AbstractScalarAnalysis
         $this->error = '';
 
         // Load the document.
-        set_error_handler(callback: [$this, 'errorCallback']);
+        set_error_handler(callback: $this->errorCallback(...));
         $this->DOMDocument->loadXML(source: $string);
         restore_error_handler();
 
-        if (!empty($this->error)) {
+        if ($this->error !== '' && $this->error !== '0') {
             $model->addToJson(key: $this->pool->messages->getHelp(key: 'xmlError'), value: $this->error);
             return false;
         }

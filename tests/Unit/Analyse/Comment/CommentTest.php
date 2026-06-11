@@ -59,7 +59,7 @@ class CommentTest extends AbstractHelper
     /**
      * Test the retrieval of a class comment from a class reflection
      */
-    public function testGetCommentClass()
+    public function testGetCommentClass(): void
     {
         $cachedComment = '/**' . PHP_EOL;
         $cachedComment .= ' * was geht ab?' . PHP_EOL;
@@ -77,23 +77,21 @@ class CommentTest extends AbstractHelper
     /**
      * Test the getting of a comment from a closure.
      */
-    public function testGetCommentFunction()
+    public function testGetCommentFunction(): void
     {
         /**
          * Do something.
          */
-        $fixture = function () {
+        $fixture = 
             // Do something in here, to prevent a code smell.
-            return 1;
-        };
+            (fn() => 1);
         $comment = new Comment(Krexx::$pool);
         $reflection = new ReflectionFunction($fixture);
         $this->assertEquals('Do something.', $comment->getComment($reflection));
 
-        $fixture = function () {
+        $fixture = 
             // Doing something else.
-            return 2;
-        };
+            (fn() => 2);
         $reflection = new ReflectionFunction($fixture);
         $this->assertEquals('', $comment->getComment($reflection));
     }
@@ -101,7 +99,7 @@ class CommentTest extends AbstractHelper
     /**
      * Testing the comment retrieval for properties.
      */
-    public function testGetCommentProperty()
+    public function testGetCommentProperty(): void
     {
         $comment = new Comment(Krexx::$pool);
         $reflectionProperty = new ReflectionProperty(PrivateFixture::class, 'value5');

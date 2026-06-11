@@ -65,7 +65,7 @@ class Base64 extends AbstractScalarAnalysis implements CodegenConstInterface
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {

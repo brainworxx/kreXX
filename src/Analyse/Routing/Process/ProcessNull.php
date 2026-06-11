@@ -56,7 +56,7 @@ class ProcessNull extends AbstractRouting implements ProcessInterface, ProcessCo
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {

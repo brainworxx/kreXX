@@ -57,7 +57,7 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -98,7 +98,7 @@ class ProcessObject extends AbstractProcessNoneScalar implements CallbackConstIn
                 model: $this->model->setType(type: static::TYPE_CLASS)
                     ->addParameter(name: static::PARAM_DATA, value: $object)
                     ->addParameter(name: static::PARAM_NAME, value: $this->model->getName())
-                    ->setNormal(normal: '\\' . get_class(object: $object))
+                    ->setNormal(normal: '\\' . $object::class)
                     ->setDomid(domid: $this->generateDomIdFromObject(data: $object))
                     ->injectCallback(object: $this->pool->createClass(classname: Objects::class))
             )

@@ -55,7 +55,7 @@ class ClassName extends AbstractScalarAnalysis
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -78,7 +78,7 @@ class ClassName extends AbstractScalarAnalysis
      *
      * @param string|int|bool $string $string
      *   The possible class name we are looking at
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model so far.
      *
      * @return bool

@@ -48,7 +48,7 @@ abstract class AbstractOutput
     /**
      * Deleting old chunks and logfiles.
      *
-     * @var \Brainworxx\Krexx\Service\Misc\Cleanup
+     * @var Cleanup
      */
     protected Cleanup $cleanupService;
 

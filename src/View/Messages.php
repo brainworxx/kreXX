@@ -151,7 +151,7 @@ class Messages
         // Simple Wrapper for OutputActions::$render->renderMessages
         if (
             php_sapi_name() === 'cli' &&
-            !empty($this->messages) &&
+            $this->messages !== [] &&
             !defined(constant_name: 'KREXX_TEST_IN_PROGRESS')
         ) {
             // Output the messages on the shell.

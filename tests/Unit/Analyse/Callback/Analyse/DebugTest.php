@@ -50,7 +50,7 @@ class DebugTest extends AbstractHelper
     /**
      * Testing if the debug method output gets routed.
      */
-    public function testCallMe()
+    public function testCallMe(): void
     {
         $debug = new Debug(Krexx::$pool);
         $data = ['data' => 'just some string'];

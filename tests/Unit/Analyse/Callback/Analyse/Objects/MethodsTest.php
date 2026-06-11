@@ -77,7 +77,7 @@ class MethodsTest extends AbstractHelper
     protected $recursionEvent = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Methods::recursion';
 
     /**
-     * @var \Brainworxx\Krexx\Analyse\Callback\Analyse\Objects\Methods
+     * @var Methods
      */
     protected $methods;
 
@@ -124,7 +124,7 @@ class MethodsTest extends AbstractHelper
     /**
      * Testing the methods analysis recursion.
      */
-    public function testCallMeRecursion()
+    public function testCallMeRecursion(): void
     {
         // Set up the recursion events
         $this->mockEventService(
@@ -147,7 +147,7 @@ class MethodsTest extends AbstractHelper
     /**
      * Testing the analysis for public methods only.
      */
-    public function testCallMePublic()
+    public function testCallMePublic(): void
     {
         // Set up the events
         $this->mockEventService(
@@ -179,7 +179,7 @@ class MethodsTest extends AbstractHelper
     /**
      * Testing the analysis for public and protected methods.
      */
-    public function testCallMeProtected()
+    public function testCallMeProtected(): void
     {
         // Set up the events
         $this->mockEventService(
@@ -212,7 +212,7 @@ class MethodsTest extends AbstractHelper
     /**
      * Testing the analysis for public and private methods.
      */
-    public function testCallMePrivate()
+    public function testCallMePrivate(): void
     {
         // Set up the events
         $this->mockEventService(
@@ -245,7 +245,7 @@ class MethodsTest extends AbstractHelper
     /**
      * Testing the analysis for public and private methods.
      */
-    public function testCallMePrivateProtected()
+    public function testCallMePrivateProtected(): void
     {
         // Set up the events
         $this->mockEventService(
@@ -279,7 +279,7 @@ class MethodsTest extends AbstractHelper
     /**
      * Testing the analysis with an empty stdClass
      */
-    public function testCallMePrivateEmpty()
+    public function testCallMePrivateEmpty(): void
     {
         // Set up the events
         $this->mockEventService([$this->startEvent, $this->methods]);

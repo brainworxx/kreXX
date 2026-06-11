@@ -296,13 +296,8 @@ class File
     {
         $realPath = $this->realpath(filePath: $filePath);
 
-        // Return the cache, if we have any.
-        if (isset(static::$isReadableCache[$realPath])) {
-            return static::$isReadableCache[$realPath];
-        }
-
         // Set the cache and return it.
-        return static::$isReadableCache[$realPath] = is_readable(filename: $realPath) && is_file(filename: $realPath);
+        return static::$isReadableCache[$realPath] ?? static::$isReadableCache[$realPath] = is_readable(filename: $realPath) && is_file(filename: $realPath);
     }
 
     /**

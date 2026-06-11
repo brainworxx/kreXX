@@ -48,7 +48,7 @@ abstract class AbstractScalar
     /**
      * Inject hte pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     abstract public function __construct(Pool $pool);
 
@@ -79,7 +79,7 @@ abstract class AbstractScalar
      * @param string $originalData
      *   The unescaped original data of the analysis.
      *
-     * @return \Brainworxx\Krexx\Analyse\Model
+     * @return Model
      *   The adjusted model.
      */
     abstract public function handle(Model $model, string $originalData): Model;

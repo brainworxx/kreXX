@@ -75,14 +75,14 @@ class ThroughProperties extends AbstractCallback implements
     protected Comment $propertyComment;
 
     /**
-     * @var \Brainworxx\Krexx\Analyse\Comment\Attributes
+     * @var Attributes
      */
     protected Attributes $attributes;
 
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -100,7 +100,7 @@ class ThroughProperties extends AbstractCallback implements
 
         // I need to preprocess them, since I do not want to render a
         // reflection property.
-        /** @var \Brainworxx\Krexx\Service\Reflection\ReflectionClass $ref */
+        /** @var ReflectionClass $ref */
         $ref = $this->parameters[static::PARAM_REF];
         $this->propertyDeclaration = $this->pool->createClass(classname: PropertyDeclaration::class);
         $this->propertyComment = $this->pool->createClass(classname: Comment::class);
@@ -134,7 +134,7 @@ class ThroughProperties extends AbstractCallback implements
      * @param \ReflectionProperty $refProperty
      *   The reflection of the property we are analysing.
      *
-     * @return \Brainworxx\Krexx\Analyse\Model
+     * @return Model
      *   The prepared model.
      */
     protected function prepareModel(mixed $value, ReflectionProperty $refProperty): Model
@@ -388,15 +388,11 @@ class ThroughProperties extends AbstractCallback implements
     {
         static $cache = [];
 
-        if (isset($cache[$propName])) {
-            return $cache[$propName];
-        }
-
         // The first regex detects all allowed characters.
         // For some reason, they also allow BOM characters.
-        return $cache[$propName] = (bool) preg_match(
+        return $cache[$propName] ?? $cache[$propName] = (bool) preg_match(
             pattern: "/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/",
             subject: (string)$propName
-        ) && !(bool) preg_match(pattern: "/\xEF\xBB\xBF/", subject: $propName);
+        ) && !(bool) preg_match(pattern: "/\xEF\xBB\xBF/", subject: (string) $propName);
     }
 }

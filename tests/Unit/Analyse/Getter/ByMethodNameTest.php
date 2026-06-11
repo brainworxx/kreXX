@@ -60,7 +60,7 @@ class ByMethodNameTest extends AbstractGetter
     /**
      * Test the retrieval of the possible getter by the method name, simple.
      */
-    public function testRetrieveItSimple()
+    public function testRetrieveItSimple(): void
     {
         $instance = new GetterFixture();
         $classReflection = new ReflectionClass($instance);
@@ -103,7 +103,7 @@ class ByMethodNameTest extends AbstractGetter
     /**
      * Test the retrieval of the possible getter by the method name and by, deep
      */
-    public function testRetrieveItDeep()
+    public function testRetrieveItDeep(): void
     {
         $instance = new DeepGetterFixture();
         $classReflection = new ReflectionClass($instance);

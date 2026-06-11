@@ -110,7 +110,7 @@ trait SingleEditableChild
     /**
      * Renders the options of a select.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model.
      *
      * @return string
@@ -145,7 +145,7 @@ trait SingleEditableChild
     /**
      * Dynamically render the element.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The model.
      *
      * @return string

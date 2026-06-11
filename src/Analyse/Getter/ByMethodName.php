@@ -73,7 +73,7 @@ class ByMethodName extends AbstractGetter
             reflectionClass: $reflectionClass,
             currentPrefix: $currentPrefix
         );
-        if ($reflectionProperty === null) {
+        if (!$reflectionProperty instanceof \ReflectionProperty) {
             // Nothing was found.
             return null;
         }
@@ -149,7 +149,7 @@ class ByMethodName extends AbstractGetter
      *
      * @param \ReflectionProperty $refProp
      *   The reflection of the property that it may return.
-     * @param \Brainworxx\Krexx\Service\Reflection\ReflectionClass $reflectionClass
+     * @param ReflectionClass $reflectionClass
      *   The reflection class, for the retrieval og the value.
      * @param string $currentPrefix
      *   The current prefix.
@@ -213,7 +213,7 @@ class ByMethodName extends AbstractGetter
      */
     protected function convertToSnakeCase(string $string): string
     {
-        return strtolower(string: preg_replace(
+        return strtolower(string: (string) preg_replace(
             pattern: ['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'],
             replacement: '$1_$2',
             subject: $string

@@ -97,21 +97,21 @@ class Chunks implements ConfigConstInterface
      *
      * @var string
      */
-    protected string $logDir;
+    protected string $logDir = '';
 
     /**
      * The folder for the output chunks.
      *
      * @var string
      */
-    protected string $chunkDir;
+    protected string $chunkDir = '';
 
     /**
      * Microtime stamp for chunk operations.
      *
      * @var string
      */
-    protected string $fileStamp;
+    protected string $fileStamp = '';
 
     /**
      * Here we save the encoding we are currently using.
@@ -272,7 +272,7 @@ class Chunks implements ConfigConstInterface
         $this->pool->fileService->putFileContents(filePath: $filename, string: $string);
         // Save our metadata, so a potential backend module can display it.
         // We may or may not have already some output for this file.
-        if (!empty($this->metadata)) {
+        if ($this->metadata !== []) {
             $filename .= '.json';
             // Remove the old metadata file. We still have all it's content
             // available in $this->metadata.
@@ -348,13 +348,13 @@ class Chunks implements ConfigConstInterface
      */
     public function __destruct()
     {
-        if (empty($this->chunkDir)) {
+        if ($this->chunkDir === '' || $this->chunkDir === '0') {
             return;
         }
 
         // Get a list of all chunk files from the run.
         $chunkList = glob(pattern: $this->chunkDir . $this->fileStamp . '_*');
-        if (empty($chunkList)) {
+        if ($chunkList === [] || $chunkList === false) {
             return;
         }
 

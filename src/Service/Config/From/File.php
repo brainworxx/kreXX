@@ -49,7 +49,7 @@ class File extends Fallback
     /**
      * Our security handler.
      *
-     * @var \Brainworxx\Krexx\Service\Config\Validation
+     * @var Validation
      */
     protected Validation $validation;
 
@@ -117,7 +117,7 @@ class File extends Fallback
         // Get the human-readable stuff from the file.
         $value = $this->getConfigFromFile(group: static::SECTION_FE_EDITING, name: $parameterName);
 
-        if (empty($value)) {
+        if (in_array($value, ['', '0', false, null], true)) {
             // Sorry, no value stored.
             return null;
         }

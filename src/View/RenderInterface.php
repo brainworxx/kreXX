@@ -138,7 +138,7 @@ interface RenderInterface
     /**
      * Renders all internal messages.
      *
-     * @param \Brainworxx\Krexx\View\Message[] $messages
+     * @param Message[] $messages
      *   The current messages.
      *
      * @return string

@@ -66,7 +66,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -147,7 +147,7 @@ class ProcessClosure extends AbstractProcessNoneScalar implements
 
         // Adding the namespace, but only if we have one.
         $namespace = $ref->getNamespaceName();
-        if (empty(!$namespace)) {
+        if ($namespace) {
             $result[$messages->getHelp(key: 'metaNamespace')] = $namespace;
         }
 

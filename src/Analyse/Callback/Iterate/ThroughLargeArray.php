@@ -70,7 +70,7 @@ class ThroughLargeArray extends AbstractCallback implements
     /**
      * Inject the pool.
      *
-     * @param \Brainworxx\Krexx\Service\Factory\Pool $pool
+     * @param Pool $pool
      */
     public function __construct(protected Pool $pool)
     {
@@ -140,7 +140,7 @@ class ThroughLargeArray extends AbstractCallback implements
         if (is_object(value: $value)) {
             // We will not go too deep here, and say only what it is.
             $model->setType(type: $messages->getHelp(key: 'simpleClassType'))
-                ->setNormal(normal: get_class(object: $value));
+                ->setNormal(normal: $value::class);
 
             return $this->pool->render->renderExpandableChild(model: $model);
         }

@@ -47,7 +47,7 @@ call_user_func(function () {
     // the existing autoloader can not load kreXX.
     // Meh, this file looks like sh*t.
 
-    if (defined('KREXX_DIR') === true) {
+    if (defined('KREXX_DIR')) {
         // Been here, done that.
         return;
     }
@@ -255,7 +255,7 @@ call_user_func(function () {
         if (!class_exists(\Brainworxx\Krexx\Krexx::class)) {
             $krexxLoader();
         }
-    } catch (\Throwable $e) {
+    } catch (\Throwable) {
         // Meh. The autoloader did throw an error.
         $krexxLoader();
     }

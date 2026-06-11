@@ -79,7 +79,7 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
     /**
      * This none simple type was analysed before.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The already prepared model.
      *
      * @return string
@@ -89,7 +89,7 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
     {
         $data = $model->getData();
         if (is_object(value: $data)) {
-            $normal = '\\' . get_class(object: $data);
+            $normal = '\\' . $data::class;
             $domId = $this->generateDomIdFromObject(data: $data);
         } else {
             // Must be the globals array.
@@ -109,7 +109,7 @@ abstract class AbstractProcessNoneScalar extends AbstractRouting implements Proc
     /**
      * This none simple type was nested too deep.
      *
-     * @param \Brainworxx\Krexx\Analyse\Model $model
+     * @param Model $model
      *   The already prepared model.
      *
      * @return string
