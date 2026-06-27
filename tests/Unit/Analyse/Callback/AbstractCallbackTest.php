@@ -41,7 +41,6 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Krexx;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversMethod(AbstractCallback::class, '__construct')]
 #[CoversMethod(AbstractCallback::class, 'setParameters')]
 #[CoversMethod(AbstractCallback::class, 'getParameters')]
 class AbstractCallbackTest extends AbstractHelper
