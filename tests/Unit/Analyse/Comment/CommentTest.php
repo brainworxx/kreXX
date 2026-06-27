@@ -47,13 +47,9 @@ use Brainworxx\Krexx\Tests\Fixtures\PrivateFixture;
 use ReflectionProperty;
 
 #[CoversMethod(Comment::class, 'getComment')]
-#[CoversMethod(Comment::class, 'getMethodComment')]
 #[CoversMethod(AbstractComment::class, 'prettifyComment')]
 #[CoversMethod(AbstractComment::class, 'checkComment')]
-#[CoversMethod(Comment::class, 'getInterfaceComment')]
-#[CoversMethod(Comment::class, 'getTraitComment')]
 #[CoversMethod(AbstractComment::class, 'replaceInheritComment')]
-#[CoversMethod(Comment::class, 'retrieveComment')]
 class CommentTest extends AbstractHelper
 {
     /**
@@ -82,14 +78,14 @@ class CommentTest extends AbstractHelper
         /**
          * Do something.
          */
-        $fixture = 
+        $fixture =
             // Do something in here, to prevent a code smell.
             (fn() => 1);
         $comment = new Comment(Krexx::$pool);
         $reflection = new ReflectionFunction($fixture);
         $this->assertEquals('Do something.', $comment->getComment($reflection));
 
-        $fixture = 
+        $fixture =
             // Doing something else.
             (fn() => 2);
         $reflection = new ReflectionFunction($fixture);

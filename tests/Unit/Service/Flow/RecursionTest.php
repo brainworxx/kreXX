@@ -47,7 +47,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Recursion::class, 'getMarker')]
 #[CoversMethod(Recursion::class, 'isInHive')]
 #[CoversMethod(Recursion::class, 'addToHive')]
-#[CoversMethod(Recursion::class, '__destruct')]
 #[CoversMethod(Recursion::class, '__construct')]
 class RecursionTest extends AbstractHelper
 {
