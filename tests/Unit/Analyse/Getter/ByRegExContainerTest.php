@@ -45,12 +45,23 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(ByRegExContainer::class, 'retrieveIt')]
 #[CoversMethod(ByRegExContainer::class, 'extractValue')]
+#[CoversMethod(ByRegExContainer::class, '__construct')]
 class ByRegExContainerTest extends AbstractGetter
 {
     public function setUp(): void
     {
         parent::setUp();
         $this->testSubject = new ByRegExContainer(Krexx::$pool);
+    }
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new ByRegExContainer(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
     }
 
     /**

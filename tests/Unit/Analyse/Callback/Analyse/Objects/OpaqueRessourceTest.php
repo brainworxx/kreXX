@@ -150,4 +150,38 @@ hjJuL9EH
         $this->assertEquals(true, $result['imageistruecolor']);
         $this->assertEquals(0, $result['imagecolorstotal']);
     }
+
+    /**
+     * We try to error out as much as possible.
+     *
+     * @return void
+     */
+    public function testCallMeError(): void
+    {
+        $this->mockEmergencyHandler();
+
+        $functionMock = $this->getFunctionMock(
+            'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects',
+            'function_exists'
+        );
+        $functionMock->expects($this->any())
+            ->willReturn(false);
+
+        $parcour = [];
+        $parcour[] = [self::PARAM_DATA => curl_init()];
+        $parcour[] = [self::PARAM_DATA => socket_addrinfo_lookup('localhost')[0]];
+        $parcour[] = [self::PARAM_DATA => openssl_x509_read('invalid certificate')];
+        $parcour[] = [self::PARAM_DATA => imagecreatetruecolor(100, 100)];
+
+        foreach ($parcour as $fixture) {
+            $opaque = new OpaqueRessource(Krexx::$pool);
+            $fixture = [self::PARAM_DATA => curl_init()];
+            $opaque->setParameters($fixture);
+            $renderNothing = new RenderNothing(Krexx::$pool);
+            Krexx::$pool->render = $renderNothing;
+            $opaque->callMe();
+            $result = $renderNothing->model['renderExpandableChild'][0]->getParameters()[static::PARAM_DATA];
+            $this->assertEquals(static::UNKNOWN_VALUE, $result['error']);
+        }
+    }
 }
