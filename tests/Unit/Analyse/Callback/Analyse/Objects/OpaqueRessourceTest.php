@@ -18,6 +18,28 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterface
 {
     /**
+     * A sample certificate.
+     * Generated with:
+     * openssl req -x509 -newkey rsa:515 -nodes -out cert.pem -keyout key.pem -days 365
+     * and pressing return for all questions.
+     *
+     * @var string
+     */
+    protected $certificate = '-----BEGIN CERTIFICATE-----
+MIIB4jCCAYugAwIBAgIUZhJKtdI3+THXbGfFJtkUd7j8OU4wDQYJKoZIhvcNAQEL
+BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
+GEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yNTA5MDQxMjQyMTNaFw0yNjA5
+MDQxMjQyMTNaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw
+HwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwXDANBgkqhkiG9w0BAQEF
+AANLADBIAkEF9EimbiXHEddtNvYmShGvca63Uzx2Ab8IpLLFmtMrFyEi3ZlHUAx9
+0ePAhU/pFQO9AoBWmARc8aPmeI5KIG2b/wIDAQABo1MwUTAdBgNVHQ4EFgQUlgSr
+xXmablTchtb+T9QZ5HYLNTUwHwYDVR0jBBgwFoAUlgSrxXmablTchtb+T9QZ5HYL
+NTUwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAANCAAIM70prf5wfoFQr
+5xjK7HorFvtD0tBC6RIWeVHeMfE8i5OYu1K+nBIxwGaJVT8twYU7erleKe4UzgNL
+hjJuL9EH
+-----END CERTIFICATE-----';
+
+    /**
      * Test if the __construct injects the pool.
      */
     public function testConstruct(): void
@@ -91,25 +113,7 @@ class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterfa
             ['Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\OpaqueRessource::analysisEnd', $opaque]
         );
 
-        // A sample certificate.
-        // Generated with:
-        // openssl req -x509 -newkey rsa:515 -nodes -out cert.pem -keyout key.pem -days 365
-        // and pressing return for all questions.
-        $certificate = '-----BEGIN CERTIFICATE-----
-MIIB4jCCAYugAwIBAgIUZhJKtdI3+THXbGfFJtkUd7j8OU4wDQYJKoZIhvcNAQEL
-BQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoM
-GEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yNTA5MDQxMjQyMTNaFw0yNjA5
-MDQxMjQyMTNaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEw
-HwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwXDANBgkqhkiG9w0BAQEF
-AANLADBIAkEF9EimbiXHEddtNvYmShGvca63Uzx2Ab8IpLLFmtMrFyEi3ZlHUAx9
-0ePAhU/pFQO9AoBWmARc8aPmeI5KIG2b/wIDAQABo1MwUTAdBgNVHQ4EFgQUlgSr
-xXmablTchtb+T9QZ5HYLNTUwHwYDVR0jBBgwFoAUlgSrxXmablTchtb+T9QZ5HYL
-NTUwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAANCAAIM70prf5wfoFQr
-5xjK7HorFvtD0tBC6RIWeVHeMfE8i5OYu1K+nBIxwGaJVT8twYU7erleKe4UzgNL
-hjJuL9EH
------END CERTIFICATE-----';
-
-        $fixture = [self::PARAM_DATA => openssl_x509_read($certificate)];
+        $fixture = [self::PARAM_DATA => openssl_x509_read($this->certificate)];
         $opaque->setParameters($fixture);
         $renderNothing = new RenderNothing(Krexx::$pool);
         Krexx::$pool->render = $renderNothing;
@@ -170,16 +174,16 @@ hjJuL9EH
         $parcour = [];
         $parcour[] = [self::PARAM_DATA => curl_init()];
         $parcour[] = [self::PARAM_DATA => socket_addrinfo_lookup('localhost')[0]];
-        $parcour[] = [self::PARAM_DATA => openssl_x509_read('invalid certificate')];
+        $parcour[] = [self::PARAM_DATA => openssl_x509_read($this->certificate)];
         $parcour[] = [self::PARAM_DATA => imagecreatetruecolor(100, 100)];
 
-        foreach ($parcour as $fixture) {
+        foreach ($parcour as $key => $fixture) {
             $opaque = new OpaqueRessource(Krexx::$pool);
-            $fixture = [self::PARAM_DATA => curl_init()];
             $opaque->setParameters($fixture);
             $renderNothing = new RenderNothing(Krexx::$pool);
             Krexx::$pool->render = $renderNothing;
             $opaque->callMe();
+            $this->assertArrayHasKey('renderExpandableChild', $renderNothing->model, 'Parcour: ' . $key);
             $result = $renderNothing->model['renderExpandableChild'][0]->getParameters()[static::PARAM_DATA];
             $this->assertEquals(static::UNKNOWN_VALUE, $result['error']);
         }
