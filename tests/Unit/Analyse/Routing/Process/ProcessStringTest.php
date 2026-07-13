@@ -80,6 +80,16 @@ class ProcessStringTest extends AbstractHelper
     }
 
     /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new ProcessString(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
+    }
+
+    /**
      * Testing the setting of the pool and of the file info class.
      */
     public function testConstructWithoutFinfo(): void
