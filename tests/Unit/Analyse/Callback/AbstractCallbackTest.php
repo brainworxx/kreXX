@@ -46,16 +46,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 class AbstractCallbackTest extends AbstractHelper
 {
     /**
-     * Test if the __construct injects the pool.
-     */
-    public function testConstruct(): void
-    {
-        $debugCallback = new Debug(Krexx::$pool);
-
-        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $debugCallback));
-    }
-
-    /**
      * Testing the settings of the parameters for the callback.
      */
     public function testSetParameters(): void

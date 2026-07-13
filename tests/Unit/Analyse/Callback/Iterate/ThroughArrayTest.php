@@ -46,6 +46,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(ThroughArray::class, 'callMe')]
 #[CoversMethod(ThroughArray::class, 'prepareModel')]
+#[CoversMethod(ThroughArray::class, '__construct')]
 class ThroughArrayTest extends AbstractHelper
 {
     /**
@@ -55,6 +56,16 @@ class ThroughArrayTest extends AbstractHelper
     {
         parent::setUp();
         Krexx::$pool->routing = new RoutingNothing(Krexx::$pool);
+    }
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new ThroughArray(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
     }
 
     /**

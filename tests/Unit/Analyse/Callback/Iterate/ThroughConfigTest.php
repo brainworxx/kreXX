@@ -47,8 +47,19 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ThroughConfig::class, 'callMe')]
 #[CoversMethod(ThroughConfig::class, 'renderAllSections')]
 #[CoversMethod(ThroughConfig::class, 'hasSomethingToRender')]
+#[CoversMethod(ThroughConfig::class, '__construct')]
 class ThroughConfigTest extends AbstractHelper
 {
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new ThroughConfig(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
+    }
+
     /**
      * Test the configuration iteration.
      */

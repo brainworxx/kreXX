@@ -65,6 +65,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ThroughProperties::class, 'retrieveValueStatus')]
 #[CoversMethod(PropertyDeclaration::class, 'retrieveNamedPropertyType')]
 #[CoversMethod(ThroughProperties::class, 'isPropertyNameNormal')]
+#[CoversMethod(ThroughProperties::class, '__construct')]
 class ThroughPropertiesTest extends AbstractHelper
 {
     public const PUBLIC_STRING_PROPERTY = 'publicStringProperty';
@@ -111,6 +112,16 @@ class ThroughPropertiesTest extends AbstractHelper
      * @var string
      */
     protected $endEvent = 'Brainworxx\\Krexx\\Analyse\\Callback\\Iterate\\ThroughProperties::callMe::end';
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new ThroughProperties(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
+    }
 
     /**
      * Testing an analysis without any methods to look at.
