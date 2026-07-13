@@ -49,6 +49,7 @@ use ReflectionProperty;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(ProtectedProperties::class, 'callMe')]
+#[CoversMethod(ProtectedProperties::class, '__construct')]
 #[CoversMethod(AbstractObjectAnalysis::class, 'getReflectionPropertiesData')]
 #[CoversMethod(AbstractObjectAnalysis::class, 'reflectionSorting')]
 class ProtectedPropertiesTest extends AbstractHelper
@@ -76,6 +77,16 @@ class ProtectedPropertiesTest extends AbstractHelper
         ];
 
         $this->mockEmergencyHandler();
+    }
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new ProtectedProperties(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
     }
 
     /**

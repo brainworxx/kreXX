@@ -52,6 +52,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Methods::class, 'callMe')]
 #[CoversMethod(Methods::class, 'analyseMethods')]
 #[CoversMethod(Methods::class, 'generateDomIdFromClassname')]
+#[CoversMethod(Methods::class, '__construct')]
 #[CoversMethod(AbstractObjectAnalysis::class, 'reflectionSorting')]
 class MethodsTest extends AbstractHelper
 {
@@ -119,6 +120,16 @@ class MethodsTest extends AbstractHelper
         ];
 
         $this->methods->setParameters($this->fixture);
+    }
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new Methods(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
     }
 
     /**

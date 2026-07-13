@@ -53,6 +53,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(BacktraceStep::class, 'retrieveSource')]
 #[CoversMethod(AbstractCallback::class, 'dispatchStartEvent')]
 #[CoversMethod(AbstractCallback::class, 'dispatchEventWithModel')]
+#[CoversMethod(BacktraceStep::class, '__construct')]
 class BacktraceStepTest extends AbstractHelper
 {
     /**
@@ -68,6 +69,16 @@ class BacktraceStepTest extends AbstractHelper
         parent::setUp();
 
         $this->mockEmergencyHandler();
+    }
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new BacktraceStep(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
     }
 
     /**

@@ -51,6 +51,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Traversable::class, 'callMe')]
 #[CoversMethod(Traversable::class, 'retrieveTraversableData')]
 #[CoversMethod(Traversable::class, 'analyseTraversableResult')]
+#[CoversMethod(Traversable::class, '__construct')]
 class TraversableTest extends AbstractHelper
 {
     public const  CHECK_NESTING = 'checkNesting';
@@ -184,6 +185,9 @@ class TraversableTest extends AbstractHelper
      */
     public function testMeWithSmallArray(): void
     {
+        $object = new Traversable(Krexx::$pool);
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
+
         // Tell the emergency handler, that the nesting level is ok.
         Krexx::$pool->emergencyHandler->expects($this->any())
             ->method(static::CHECK_NESTING)

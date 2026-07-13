@@ -14,8 +14,19 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(OpaqueRessource::class, 'socketAddressHandler')]
 #[CoversMethod(OpaqueRessource::class, 'openSslCertHandler')]
 #[CoversMethod(OpaqueRessource::class, 'curlHandler')]
+#[CoversMethod(OpaqueRessource::class, '__construct')]
 class OpaqueRessourceTest extends AbstractHelper implements CallbackConstInterface
 {
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new OpaqueRessource(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
+    }
+
     /**
      * Test the analysis of the so-called opaque ressource class analysis.
      */

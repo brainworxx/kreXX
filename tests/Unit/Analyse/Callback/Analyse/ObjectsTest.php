@@ -72,6 +72,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Objects::class, 'addPropertyDumper')]
 #[CoversMethod(AbstractCallback::class, 'dispatchStartEvent')]
 #[CoversMethod(Objects::class, 'setParameters')]
+#[CoversMethod(Objects::class, '__construct')]
 class ObjectsTest extends AbstractHelper
 {
     /**
@@ -131,6 +132,16 @@ class ObjectsTest extends AbstractHelper
             $parameters[CallbackConstInterface::PARAM_NAME]
         );
         $this->assertTrue(is_a($parameters['ref'], ReflectionClass::class));
+    }
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new Objects(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
     }
 
     /**

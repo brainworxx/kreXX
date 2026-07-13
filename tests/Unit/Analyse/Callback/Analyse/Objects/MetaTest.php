@@ -60,6 +60,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Meta::class, 'analyseMeta')]
 #[CoversMethod(Meta::class, 'generateMetaData')]
 #[CoversMethod(Meta::class, 'generateName')]
+#[CoversMethod(Meta::class, '__construct')]
 class MetaTest extends AbstractHelper
 {
     /**
@@ -76,6 +77,16 @@ class MetaTest extends AbstractHelper
      * @var string
      */
     protected $endEvent = 'Brainworxx\\Krexx\\Analyse\\Callback\\Analyse\\Objects\\Meta::analysisEnd';
+
+    /**
+     * Test if the __construct injects the pool.
+     */
+    public function testConstruct(): void
+    {
+        $object = new Meta(Krexx::$pool);
+
+        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $object));
+    }
 
     /**
      * Test the recursion handling.
