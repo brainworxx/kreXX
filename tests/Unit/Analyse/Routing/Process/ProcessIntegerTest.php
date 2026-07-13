@@ -47,7 +47,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ProcessInteger::class, 'handle')]
 #[CoversMethod(AbstractRouting::class, 'dispatchProcessEvent')]
 #[CoversMethod(ProcessInteger::class, 'canHandle')]
-#[CoversMethod(ProcessInteger::class, 'construct')]
+#[CoversMethod(ProcessInteger::class, '__construct')]
 class ProcessIntegerTest extends AbstractHelper
 {
     /**
