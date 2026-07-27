@@ -85,13 +85,6 @@ class ProcessString extends AbstractRouting implements
     protected int $bufferInfoThreshold = 20;
 
     /**
-     * Caching of the setting SETTING_ANALYSE_SCALAR
-     *
-     * @var bool
-     */
-    protected bool $analyseScalar;
-
-    /**
      * Inject the pool and initialize the buffer-info class.
      *
      * @param Pool $pool
@@ -107,10 +100,7 @@ class ProcessString extends AbstractRouting implements
             $pool->messages->addMessage(key: 'fileinfoNotInstalled');
         }
 
-        $this->analyseScalar = $this->pool->config->getSetting(name: static::SETTING_ANALYSE_SCALAR);
-        if ($this->analyseScalar) {
-            $this->scalarString = $pool->createClass(classname: ScalarString::class);
-        }
+        $this->scalarString = $pool->createClass(classname: ScalarString::class);
     }
 
     /**
@@ -157,11 +147,7 @@ class ProcessString extends AbstractRouting implements
             $this->model->setNormal(normal: $this->pool->encodingService->encodeString(data: $data));
         }
 
-        if ($this->analyseScalar) {
-            return $this->handleStringScalar(originalData: $originalData);
-        }
-
-        return $this->pool->render->renderExpandableChild(model: $this->dispatchProcessEvent(model: $this->model));
+        return $this->handleStringScalar(originalData: $originalData);
     }
 
     /**

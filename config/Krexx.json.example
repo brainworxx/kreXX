@@ -16,7 +16,6 @@
     "properties": {
         "analyseProtected": false,
         "analysePrivate": false,
-        "analyseScalar": true,
         "analyseTraversable": true
     },
     "methods": {

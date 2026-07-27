@@ -260,13 +260,6 @@ interface ConfigConstInterface
     public const SETTING_ANALYSE_PRIVATE = 'analysePrivate';
 
     /**
-     * Array key. Holds the value of analyseScalar.
-     *
-     * @var string
-     */
-    public const SETTING_ANALYSE_SCALAR = 'analyseScalar';
-
-    /**
      * Array key. Holds the value of analyseTraversable.
      *
      * @var string

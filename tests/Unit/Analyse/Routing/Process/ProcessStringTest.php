@@ -108,7 +108,6 @@ class ProcessStringTest extends AbstractHelper
 
         // And while we are at it, test if the internal setting was set.
         $this->assertNotNull($this->retrieveValueByReflection('scalarString', $processor));
-        $this->assertNotNull($this->retrieveValueByReflection('analyseScalar', $processor));
     }
 
     /**
@@ -240,38 +239,6 @@ class ProcessStringTest extends AbstractHelper
             $renderNothing->model['renderRecursion'],
             'We should have something in the recursion array.'
         );
-        $this->assertCount(
-            1,
-            $renderNothing->model['renderExpandableChild'],
-            'The first one should be in the expandable child.'
-        );
-    }
-
-    public function testProcessWithoutScalar(): void
-    {
-        // Deactivate the scalar analysis.
-        Krexx::$pool->rewrite[File::class] = ConfigSupplier::class;
-        ConfigSupplier::$overwriteValues[ConfigConstInterface::SETTING_ANALYSE_SCALAR] = false;
-        new Config(\Krexx::$pool);
-
-        $fixture = '{"whatever": "okay"}';
-        $renderNothing = new RenderNothing(Krexx::$pool);
-        Krexx::$pool->render = $renderNothing;
-
-        $recursionHandlerMock = $this->createMock(Recursion::class);
-        $recursionHandlerMock->expects($this->never())
-            ->method('isInMetaHive');
-        $recursionHandlerMock->expects($this->never())
-            ->method('addToMetaHive');
-        Krexx::$pool->recursionHandler = $recursionHandlerMock;
-
-        $model = new Model(Krexx::$pool);
-        $model->setData($fixture);
-
-        $this->processString = new ProcessString(Krexx::$pool);
-        $this->processString->canHandle($model);
-        $this->processString->handle();
-
         $this->assertCount(
             1,
             $renderNothing->model['renderExpandableChild'],

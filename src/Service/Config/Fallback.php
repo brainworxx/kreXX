@@ -159,7 +159,6 @@ abstract class Fallback implements ConfigConstInterface
             self::SETTING_ANALYSE_PROTECTED,
             self::SETTING_ANALYSE_PRIVATE,
             self::SETTING_ANALYSE_TRAVERSABLE,
-            self::SETTING_ANALYSE_SCALAR,
         ],
         self::SECTION_METHODS => [
             self::SETTING_ANALYSE_PROTECTED_METHODS,
@@ -291,7 +290,6 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_ANALYSE_PRIVATE_METHODS => $this->returnBoolSelectFalse(static::SECTION_METHODS),
             static::SETTING_ANALYSE_PROTECTED => $this->returnBoolSelectFalse(static::SECTION_PROPERTIES),
             static::SETTING_ANALYSE_PRIVATE => $this->returnBoolSelectFalse(static::SECTION_PROPERTIES),
-            static::SETTING_ANALYSE_SCALAR => $this->returnBoolSelectTrue(static::SECTION_PROPERTIES),
             static::SETTING_ANALYSE_TRAVERSABLE => $this->returnBoolSelectTrue(static::SECTION_PROPERTIES),
             static::SETTING_DEBUG_METHODS => $this->returnDebugMethods(),
             static::SETTING_NESTING_LEVEL => $this->returnInput(static::SECTION_PRUNE, 10),
