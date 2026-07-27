@@ -61,12 +61,6 @@ trait LoggingTrait
             ->setSource(source: $source)
             ->setValue(value: ConfigConstInterface::VALUE_FILE);
 
-        // Do not care about ajax requests.
-        Krexx::$pool->config
-            ->settings[ConfigConstInterface::SETTING_DETECT_AJAX]
-            ->setSource(source: $source)
-            ->setValue(value: false);
-
         // Reload the disabled settings with the new ajax setting.
          Krexx::$pool->config
             ->loadConfigValue(name: ConfigConstInterface::SETTING_DISABLED);

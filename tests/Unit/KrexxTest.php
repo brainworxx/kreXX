@@ -356,37 +356,19 @@ class KrexxTest extends AbstractHelper
             ->method('getSource')
             ->willReturn($forcedLogging);
 
-        $settingsMockAjax = $this->createMock(Model::class);
-        $settingsMockAjax->expects($this->once())
-            ->method('setSource')
-            ->with($this->equalTo($forcedLogging))
-            ->willReturn($settingsMockAjax);
-        $settingsMockAjax->expects($this->once())
-            ->method('setValue')
-            ->with($this->equalTo(false));
-        $settingsMockAjax->expects($this->any())
-            ->method('getValue')
-            ->willReturn(false);
-        $settingsMockAjax->expects($this->once())
-            ->method('getSource')
-            ->willReturn($forcedLogging);
-
         // Inject the mock into the settings
         Krexx::$pool->config->settings[Fallback::SETTING_DESTINATION] = $settingsMockDest;
-        Krexx::$pool->config->settings[Fallback::SETTING_DETECT_AJAX] = $settingsMockAjax;
     }
 
     /**
      * Test, if the forced logger worked as expected afterwards.
      *
      * @param $settingsMockDest
-     * @param $settingsMockAjax
      */
-    protected function endForcedLogger($settingsMockDest, $settingsMockAjax)
+    protected function endForcedLogger($settingsMockDest)
     {
         // Test if the mock are gone.
         $this->assertNotEquals($settingsMockDest, Krexx::$pool->config->settings[Fallback::SETTING_DESTINATION]);
-        $this->assertNotEquals($settingsMockAjax, Krexx::$pool->config->settings[Fallback::SETTING_DETECT_AJAX]);
 
         // Test if we have a logfile.
         $filesystemIterator = new FilesystemIterator(
@@ -405,7 +387,6 @@ class KrexxTest extends AbstractHelper
 
         $this->beginForcedLogger();
         $settingsMockDest = Krexx::$pool->config->settings[Fallback::SETTING_DESTINATION];
-        $settingsMockAjax = Krexx::$pool->config->settings[Fallback::SETTING_DETECT_AJAX];
 
         // Run a simple analysis.
         Krexx::log();
@@ -413,7 +394,7 @@ class KrexxTest extends AbstractHelper
         // The counter should be at 1.
         $this->assertEquals(1, $this->retrieveValueByReflection(static::KREXX_COUNT, Krexx::$pool->emergencyHandler));
 
-        $this->endForcedLogger($settingsMockDest, $settingsMockAjax);
+        $this->endForcedLogger($settingsMockDest);
     }
 
     /**
@@ -425,7 +406,6 @@ class KrexxTest extends AbstractHelper
 
         $this->beginForcedLogger();
         $settingsMockDest = Krexx::$pool->config->settings[Fallback::SETTING_DESTINATION];
-        $settingsMockAjax = Krexx::$pool->config->settings[Fallback::SETTING_DETECT_AJAX];
 
         // We make this a short one.
         Krexx::$pool->config->settings[Fallback::SETTING_MAX_STEP_NUMBER]->setValue(1);
@@ -434,7 +414,7 @@ class KrexxTest extends AbstractHelper
         // The counter should be at 0.
         $this->assertEquals(1, $this->retrieveValueByReflection(static::KREXX_COUNT, Krexx::$pool->emergencyHandler));
 
-        $this->endForcedLogger($settingsMockDest, $settingsMockAjax);
+        $this->endForcedLogger($settingsMockDest);
     }
 
     /**
@@ -446,13 +426,12 @@ class KrexxTest extends AbstractHelper
 
         $this->beginForcedLogger();
         $settingsMockDest = Krexx::$pool->config->settings[Fallback::SETTING_DESTINATION];
-        $settingsMockAjax = Krexx::$pool->config->settings[Fallback::SETTING_DETECT_AJAX];
 
         Krexx::logTimerEnd();
         // The counter should go up to 1
         $this->assertEquals(1, $this->retrieveValueByReflection(static::KREXX_COUNT, Krexx::$pool->emergencyHandler));
 
-        $this->endForcedLogger($settingsMockDest, $settingsMockAjax);
+        $this->endForcedLogger($settingsMockDest);
     }
 
     /**

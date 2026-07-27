@@ -63,7 +63,6 @@ class FileTest extends AbstractHelper
         $this->fixture = [
             ConfigFromFile::SECTION_FE_EDITING => [
                 ConfigFromFile::SETTING_SKIN => ConfigFromFile::RENDER_TYPE_CONFIG_NONE,
-                ConfigFromFile::SETTING_DETECT_AJAX => ConfigFromFile::RENDER_TYPE_CONFIG_DISPLAY,
                 ConfigFromFile::SETTING_NESTING_LEVEL => ConfigFromFile::RENDER_TYPE_CONFIG_FULL,
                 ConfigFromFile::SETTING_DEBUG_METHODS => ConfigFromFile::RENDER_TYPE_CONFIG_FULL,
                 ConfigFromFile::SETTING_ANALYSE_PRIVATE => 'garbage'
@@ -189,13 +188,6 @@ class FileTest extends AbstractHelper
         ];
 
         $this->assertEquals($none, $config->getFeConfigFromFile($config::SETTING_SKIN));
-        $this->assertEquals(
-            [
-                ConfigFromFile::RENDER_TYPE => ConfigFromFile::RENDER_TYPE_SELECT,
-                ConfigFromFile::RENDER_EDITABLE => ConfigFromFile::VALUE_FALSE
-            ],
-            $config->getFeConfigFromFile($config::SETTING_DETECT_AJAX)
-        );
         $this->assertEquals(
             [
                 ConfigFromFile::RENDER_TYPE => ConfigFromFile::RENDER_TYPE_INPUT,

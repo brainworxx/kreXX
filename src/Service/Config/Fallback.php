@@ -143,7 +143,6 @@ abstract class Fallback implements ConfigConstInterface
         self::SECTION_OUTPUT => [
             self::SETTING_DISABLED,
             self::SETTING_IP_RANGE,
-            self::SETTING_DETECT_AJAX,
         ],
         self::SECTION_BEHAVIOR => [
             self::SETTING_SKIN,
@@ -301,7 +300,6 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_DESTINATION => $this->returnDestination(),
             static::SETTING_MAX_FILES => $this->returnMaxFiles(),
             static::SETTING_SKIN => $this->returnSkin(),
-            static::SETTING_DETECT_AJAX => $this->returnBoolSelectTrue(static::SECTION_OUTPUT),
             static::SETTING_IP_RANGE => $this->returnIpRange(),
             static::SETTING_ANALYSE_GETTER => $this->returnBoolSelectTrue(static::SECTION_METHODS),
             static::SETTING_MEMORY_LEFT => $this->returnInput(static::SECTION_EMERGENCY, 64),

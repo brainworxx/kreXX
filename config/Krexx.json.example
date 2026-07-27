@@ -2,7 +2,6 @@
     "output": {
         "disabled": false,
         "iprange": "*",
-        "detectAjax": true
     },
     "behavior": {
         "skin": "smokygrey",
@@ -33,7 +32,6 @@
     },
     "feEditing": {
         "disabled": "full",
-        "detectAjax": "full",
         "skin": "full",
         "maxStepNumber": "full",
         "arrayCountLimit": "full",

@@ -14,12 +14,6 @@ disabled = "false"
 ; iprange = "192.168.0.110,192.168.1.*"
 iprange = "*"
 
-; Shall kreXX try to detect an AJAX request?
-; If set to true, there will be no output when AJAX is detected, to prevent a
-; js error.
-detectAjax = "true"
-; detectAjax = "false"
-
 ; ------------------------------------------------------------------------------
 [behavior]
 
@@ -133,7 +127,6 @@ memoryLeft = "64"
 ; Please note, that the logging and debug methods options can never be edited
 ; on the frontend.
 disabled = "full"
-detectAjax = "full"
 skin = "full"
 maxStepNumber = "full"
 arrayCountLimit = "full"

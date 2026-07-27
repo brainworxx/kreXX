@@ -211,13 +211,6 @@ interface ConfigConstInterface
     public const SETTING_MAX_FILES = 'maxfiles';
 
     /**
-     * Array key. Holds the value of detectAjax.
-     *
-     * @var string
-     */
-    public const SETTING_DETECT_AJAX = 'detectAjax';
-
-    /**
      * Array key. Holds the value of level.
      *
      * @var string
