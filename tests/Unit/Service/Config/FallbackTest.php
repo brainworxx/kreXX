@@ -54,7 +54,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Fallback::class, 'returnInput')]
 #[CoversMethod(Fallback::class, 'returnIpRange')]
 #[CoversMethod(Fallback::class, 'returnMaxFiles')]
-#[CoversMethod(Fallback::class, 'returnMaxRuntime')]
 #[CoversMethod(Fallback::class, 'returnSkin')]
 #[CoversMethod(Fallback::class, 'generateSkinConfiguration')]
 #[CoversMethod(Fallback::class, 'generateConfigFallback')]

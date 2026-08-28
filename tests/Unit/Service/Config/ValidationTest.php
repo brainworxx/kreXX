@@ -55,7 +55,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Validation::class, 'evalDestination')]
 #[CoversMethod(Validation::class, 'evalInt')]
 #[CoversMethod(Validation::class, 'evalIpRange')]
-#[CoversMethod(Validation::class, 'evalMaxRuntime')]
 #[CoversMethod(Validation::class, 'evalSkin')]
 #[CoversMethod(Validation::class, 'evalLanguage')]
 #[CoversMethod(Validation::class, 'isAllowedDebugCall')]
@@ -245,26 +244,6 @@ class ValidationTest extends AbstractHelper
             ),
             'We do not allow a full-rendering for write protected settings.'
         );
-    }
-
-    /**
-     * We evaluate the max runtime with a simulated eternal runtime setting.
-     */
-    public function testEvalMaxRuntime(): void
-    {
-        $iniGetMock = $this->getFunctionMock('Brainworxx\\Krexx\\Service\\Config\\', 'ini_get');
-        $iniGetMock->expects($this->once())
-            ->with('max_execution_time')
-            ->willReturn(0);
-
-        $validation = new Validation(Krexx::$pool);
-        $result = $validation->evaluateSetting(
-            'I don\'t need no group!',
-            $validation::SETTING_MAX_RUNTIME,
-            'an invalid string'
-        );
-
-        $this->assertTrue($result, 'We do not check the value when there is no maximal execution time set.');
     }
 
     /**

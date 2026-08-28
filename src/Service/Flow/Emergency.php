@@ -79,7 +79,7 @@ class Emergency implements ConfigConstInterface
      *
      * @var int
      */
-    protected int $maxRuntime = 0;
+    protected int $maxRuntime = 60;
 
     /**
      * The server memory limit, coming from the php.ini.
@@ -137,7 +137,6 @@ class Emergency implements ConfigConstInterface
         }
 
         // Cache some settings.
-        $this->maxRuntime = (int) $pool->config->getSetting(name: static::SETTING_MAX_RUNTIME);
         $this->minMemoryLeft = ((int) $pool->config->getSetting(name: static::SETTING_MEMORY_LEFT))  * 1024 * 1024;
         $this->maxCall = (int) $this->pool->config->getSetting(name: static::SETTING_MAX_CALL);
         $this->maxNestingLevel = (int) $this->pool->config->getSetting(name: static::SETTING_NESTING_LEVEL);

@@ -277,6 +277,12 @@ class Validation extends Fallback
      *   The name of the group that we are evaluating, needed for the feedback
      *   text.
      *
+     * @deprecated
+     *   Since 7.0.0, will be removed in 8.0.0.
+     *
+     * @codeCoverageIgnore
+     *   We do not test this, because it is deprecated and will be removed in the next major version.
+     *
      * @return bool
      *   Whether it does evaluate or not.
      */

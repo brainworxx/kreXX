@@ -227,6 +227,9 @@ interface ConfigConstInterface
     /**
      * Array key. Holds the value of maxRuntime.
      *
+     * @deprecated
+     *   Since 7.0.0, will be removed in 8.0.0.
+     *
      * @var string
      */
     public const SETTING_MAX_RUNTIME = 'maxRuntime';

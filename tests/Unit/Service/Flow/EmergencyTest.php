@@ -92,19 +92,17 @@ class EmergencyTest extends AbstractHelper
     {
         // Mock config
         $configMock = $this->createMock(Config::class);
-        $configMock->expects($this->exactly(4))
+        $configMock->expects($this->exactly(3))
             ->method('getSetting')
             ->with(...$this->withConsecutive(
-                [Fallback::SETTING_MAX_RUNTIME],
                 [Fallback::SETTING_MEMORY_LEFT],
                 [Fallback::SETTING_MAX_CALL],
                 [Fallback::SETTING_NESTING_LEVEL]
             ))->willReturnMap([
-                [Fallback::SETTING_MAX_RUNTIME, '60'],
                 [Fallback::SETTING_MEMORY_LEFT, '64'],
                 [Fallback::SETTING_MAX_CALL, '10'],
                 [Fallback::SETTING_NESTING_LEVEL, '5']
-                ]);
+            ]);
         Krexx::$pool->config = $configMock;
     }
 

@@ -71,6 +71,9 @@ abstract class Fallback implements ConfigConstInterface
      *
      * @see \Brainworxx\Krexx\Service\Config\Validation
      *
+     * @deprecated
+     *   Since 7.0.0, will be removed in 8.0
+     *
      * @var string
      */
     protected const EVAL_MAX_RUNTIME = 'evalMaxRuntime';
@@ -168,7 +171,6 @@ abstract class Fallback implements ConfigConstInterface
         ],
         self::SECTION_EMERGENCY => [
             self::SETTING_MAX_CALL,
-            self::SETTING_MAX_RUNTIME,
             self::SETTING_MEMORY_LEFT,
         ],
     ];
@@ -301,7 +303,6 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_IP_RANGE => $this->returnIpRange(),
             static::SETTING_ANALYSE_GETTER => $this->returnBoolSelectTrue(static::SECTION_METHODS),
             static::SETTING_MEMORY_LEFT => $this->returnInput(static::SECTION_EMERGENCY, 64),
-            static::SETTING_MAX_RUNTIME => $this->returnMaxRuntime(),
             static::SETTING_MAX_STEP_NUMBER => $this->returnInput(static::SECTION_PRUNE, 15),
             static::SETTING_ARRAY_COUNT_LIMIT => $this->returnInput(static::SECTION_PRUNE, 300),
             static::SETTING_LANGUAGE_KEY => $this->returnLanguages(),
@@ -504,6 +505,12 @@ abstract class Fallback implements ConfigConstInterface
 
     /**
      * The render settings for the max runtime.
+     *
+     * @deprecated
+     *   Since 7.0.0, will be removed in 8.0.0.
+     *
+     * @codeCoverageIgnore
+     *   We do not test this, as it is deprecated and will be removed in 8.0.0.
      *
      * @return array
      */
