@@ -157,6 +157,7 @@ abstract class Fallback implements ConfigConstInterface
             self::SETTING_MAX_STEP_NUMBER,
             self::SETTING_ARRAY_COUNT_LIMIT,
             self::SETTING_NESTING_LEVEL,
+            self::SETTING_MAX_CALL,
         ],
         self::SECTION_PROPERTIES => [
             self::SETTING_ANALYSE_PROTECTED,
@@ -168,9 +169,6 @@ abstract class Fallback implements ConfigConstInterface
             self::SETTING_ANALYSE_PRIVATE_METHODS,
             self::SETTING_ANALYSE_GETTER,
             self::SETTING_DEBUG_METHODS,
-        ],
-        self::SECTION_EMERGENCY => [
-            self::SETTING_MAX_CALL,
         ],
     ];
 
@@ -294,7 +292,7 @@ abstract class Fallback implements ConfigConstInterface
             static::SETTING_ANALYSE_TRAVERSABLE => $this->returnBoolSelectTrue(static::SECTION_PROPERTIES),
             static::SETTING_DEBUG_METHODS => $this->returnDebugMethods(),
             static::SETTING_NESTING_LEVEL => $this->returnInput(static::SECTION_PRUNE, 10),
-            static::SETTING_MAX_CALL => $this->returnInput(static::SECTION_EMERGENCY, 10),
+            static::SETTING_MAX_CALL => $this->returnInput(static::SECTION_PRUNE, 10),
             static::SETTING_DISABLED => $this->returnBoolSelectFalse(static::SECTION_OUTPUT),
             static::SETTING_DESTINATION => $this->returnDestination(),
             static::SETTING_MAX_FILES => $this->returnMaxFiles(),

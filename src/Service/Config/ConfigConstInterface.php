@@ -122,6 +122,9 @@ interface ConfigConstInterface
     /**
      * Array key. Contains the config of the emergency section.
      *
+     * @deprecated
+     *   Since 7.0.0, will be removed in 8.0.0.
+     *
      * @var string
      */
     public const SECTION_EMERGENCY = 'emergency';

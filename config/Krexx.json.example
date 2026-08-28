@@ -11,7 +11,8 @@
     "prune": {
         "maxStepNumber": "10",
         "arrayCountLimit": "300",
-        "level": "10"
+        "level": "10",
+        "maxCall": "15"
     },
     "properties": {
         "analyseProtected": false,
@@ -23,9 +24,6 @@
         "analysePrivateMethods": false,
         "analyseGetter": true,
         "debugMethods": "debug,toArray,__toString,toString"
-    },
-    "emergency": {
-        "maxCall": "15"
     },
     "feEditing": {
         "disabled": "full",

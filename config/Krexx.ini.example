@@ -53,6 +53,11 @@ arrayCountLimit = 300
 ; When we reach a certain level, we simply stop there and won't go any further.
 level = "10"
 
+; How often can you call kreXX in one run?
+; kreXX can generate a lot of data, and depending on your settings
+; increasing this number might not be a good idea.
+maxCall = "15"
+
 ; ------------------------------------------------------------------------------
 [properties]
 ; kreXX can poll a lot of info. Depending on your needs, these might be a little
@@ -91,14 +96,6 @@ analyseGetter = "true"
 ; callable. These functions are called without parameters. They also might
 ; actually do stuff which might be unwanted.
 debugMethods = "debug,toArray,__toString,toString"
-
-; ------------------------------------------------------------------------------
-[emergency]
-
-; How often can you call kreXX in one run?
-; kreXX can generate a lot of data, and depending on your settings
-; increasing this number might not be a good idea.
-maxCall = "15"
 
 ; ------------------------------------------------------------------------------
 [feEditing]
