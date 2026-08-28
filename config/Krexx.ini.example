@@ -100,18 +100,6 @@ debugMethods = "debug,toArray,__toString,toString"
 ; increasing this number might not be a good idea.
 maxCall = "15"
 
-; kreXX checks during the analysis how much time has elapsed since start. Here
-; you can adjust the amount where it will trigger an emergency break. Unit of
-; measurement is seconds.
-maxRuntime = "60"
-
-; Setting up the config for the emergency break.
-; When analysing large objects, there is always the chance that you run out of
-; time or memory. kreXX checks these values regularly.
-; kreXX checks regularly how much memory is left. Here you can adjust the amount
-; where it will trigger an emergency break. Unit of measurement is MB.
-memoryLeft = "64"
-
 ; ------------------------------------------------------------------------------
 [feEditing]
 ; Here you can edit the frontend configuration form
@@ -134,5 +122,3 @@ analyseProtectedMethods = "full"
 analysePrivateMethods = "full"
 analyseGetter = "full"
 maxCall = "full"
-memoryLeft = "full"
-maxRuntime = "full"

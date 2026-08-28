@@ -93,7 +93,7 @@ class Emergency implements ConfigConstInterface
      *
      * @var int
      */
-    protected int $minMemoryLeft = 0;
+    protected int $minMemoryLeft = 64;
 
     /**
      * The level inside the object/array hierarchy we are in.
@@ -137,7 +137,6 @@ class Emergency implements ConfigConstInterface
         }
 
         // Cache some settings.
-        $this->minMemoryLeft = ((int) $pool->config->getSetting(name: static::SETTING_MEMORY_LEFT))  * 1024 * 1024;
         $this->maxCall = (int) $this->pool->config->getSetting(name: static::SETTING_MAX_CALL);
         $this->maxNestingLevel = (int) $this->pool->config->getSetting(name: static::SETTING_NESTING_LEVEL);
 

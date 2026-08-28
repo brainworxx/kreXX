@@ -25,9 +25,7 @@
         "debugMethods": "debug,toArray,__toString,toString"
     },
     "emergency": {
-        "maxCall": "15",
-        "maxRuntime": "60",
-        "memoryLeft": "64"
+        "maxCall": "15"
     },
     "feEditing": {
         "disabled": "full",
@@ -41,8 +39,6 @@
         "analyseProtectedMethods": "full",
         "analysePrivateMethods": "full",
         "analyseGetter": "full",
-        "maxCall": "full",
-        "memoryLeft": "full",
-        "maxRuntime": "full"
+        "maxCall": "full"
     }
 }

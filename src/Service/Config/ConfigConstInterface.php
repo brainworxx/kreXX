@@ -237,6 +237,9 @@ interface ConfigConstInterface
     /**
      * Array key. Holds the value of memoryLeft.
      *
+     * @deprecated
+     *   Since 7.0.0, will be removed in 8.0.0.
+     *
      * @var string
      */
     public const SETTING_MEMORY_LEFT = 'memoryLeft';

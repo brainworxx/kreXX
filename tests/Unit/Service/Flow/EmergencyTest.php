@@ -92,80 +92,16 @@ class EmergencyTest extends AbstractHelper
     {
         // Mock config
         $configMock = $this->createMock(Config::class);
-        $configMock->expects($this->exactly(3))
+        $configMock->expects($this->exactly(2))
             ->method('getSetting')
             ->with(...$this->withConsecutive(
-                [Fallback::SETTING_MEMORY_LEFT],
                 [Fallback::SETTING_MAX_CALL],
                 [Fallback::SETTING_NESTING_LEVEL]
             ))->willReturnMap([
-                [Fallback::SETTING_MEMORY_LEFT, '64'],
                 [Fallback::SETTING_MAX_CALL, '10'],
                 [Fallback::SETTING_NESTING_LEVEL, '5']
             ]);
         Krexx::$pool->config = $configMock;
-    }
-
-    /**
-     * Test the caching of several settings, as well as retreating the memory
-     * limit.
-     */
-    public function testConstructWithKb(): void
-    {
-        $this->setConfigMock();
-
-        // Mock kb memory limit
-        $iniGet = $this->getFunctionMock(static::FLOW_NAMESPACE, static::INI_GET);
-        $iniGet->expects($this->once())
-            ->willReturn('50k');
-
-        $this->emergency = new Emergency(Krexx::$pool);
-
-        // Test setting of pool
-        $this->assertSame(Krexx::$pool, $this->retrieveValueByReflection('pool', $this->emergency));
-        // Test setting itself in pool
-        $this->assertSame($this->emergency, Krexx::$pool->emergencyHandler);
-        // Test setting of values from config
-        $this->assertEquals(
-            60,
-            $this->retrieveValueByReflection(static::MAX_RUNTIME, $this->emergency)
-        );
-        $this->assertEquals(
-            64 * 1024 * 1024,
-            $this->retrieveValueByReflection(static::MIN_MEMORY_LEFT, $this->emergency)
-        );
-        $this->assertEquals(
-            10,
-            $this->retrieveValueByReflection(static::MAX_CALL, $this->emergency)
-        );
-        $this->assertEquals(
-            5,
-            $this->retrieveValueByReflection(static::MAX_NESTING_LEVEL, $this->emergency)
-        );
-        $this->assertEquals(
-            50 * 1024,
-            $this->retrieveValueByReflection(static::SERVER_MEMORY_LIMIT, $this->emergency)
-        );
-    }
-
-    /**
-     * Test the caching of several settings, as well as retreating the memory
-     * limit.
-     */
-    public function testConstructWithMb(): void
-    {
-        $this->setConfigMock();
-
-        // Mock MB memory limit.
-        $iniGet = $this->getFunctionMock(static::FLOW_NAMESPACE, static::INI_GET);
-        $iniGet->expects($this->once())
-            ->willReturn('50m');
-
-        $this->emergency = new Emergency(Krexx::$pool);
-        $this->assertEquals(
-            50 * 1024 * 1024,
-            $this->retrieveValueByReflection(static::SERVER_MEMORY_LIMIT, $this->emergency)
-        );
     }
 
     /**
