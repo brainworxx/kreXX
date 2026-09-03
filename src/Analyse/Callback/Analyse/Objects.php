@@ -102,6 +102,7 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
     {
         $output = $this->pool->render->renderSingeChildHr() . $this->dispatchStartEvent();
 
+        // Dumping all configured debug functions.
         foreach ($this->generateDumperList() as $classname) {
             $output .= $this->pool
                 ->createClass(classname: $classname)
@@ -109,7 +110,6 @@ class Objects extends AbstractCallback implements CallbackConstInterface, Config
                 ->callMe();
         }
 
-        // Dumping all configured debug functions.
         // Adding an HR for a better readability.
         return $output . $this->pool->render->renderSingeChildHr();
     }
