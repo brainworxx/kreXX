@@ -349,8 +349,7 @@ class KrexxTest extends AbstractHelper
         $settingsMockDest->expects($this->once())
             ->method('setValue')
             ->with($this->equalTo(Fallback::VALUE_FILE));
-        $settingsMockDest->expects($this->any())
-            ->method('getValue')
+        $settingsMockDest->method('getValue')
             ->willReturn(Fallback::VALUE_FILE);
         $settingsMockDest->expects($this->once())
             ->method('getSource')

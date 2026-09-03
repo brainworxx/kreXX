@@ -93,8 +93,7 @@ class CallerFinderTest extends AbstractHelper
         // Prepare the uri.
         // The things you do, to mock an uri call . . .
         $poolMock = $this->createMock(Pool::class);
-        $poolMock->expects($this->any())
-            ->method('getServer')
+        $poolMock->method('getServer')
             ->willReturn([
                 'SERVER_PROTOCOL' => 'abcd/',
                 'SERVER_PORT' => 123,
@@ -107,8 +106,7 @@ class CallerFinderTest extends AbstractHelper
         $poolMock->config = Krexx::$pool->config;
         $poolMock->emergencyHandler = Krexx::$pool->emergencyHandler;
         $poolMock->messages = Krexx::$pool->messages;
-        $poolMock->expects($this->any())
-            ->method('createClass')
+        $poolMock->method('createClass')
             ->willReturnCallback(fn($classname) => Krexx::$pool->createClass($classname));
 
         // Create our test subject.
@@ -264,8 +262,7 @@ class CallerFinderTest extends AbstractHelper
 
         // We need a different pool mock.
         $poolMock = $this->createMock(Pool::class);
-        $poolMock->expects($this->any())
-            ->method('getServer')
+        $poolMock->method('getServer')
             ->willReturn([
                 'SERVER_PROTOCOL' => 'abcd/',
                 'SERVER_PORT' => 123,
@@ -277,8 +274,7 @@ class CallerFinderTest extends AbstractHelper
         $poolMock->config = Krexx::$pool->config;
         $poolMock->emergencyHandler = Krexx::$pool->emergencyHandler;
         $poolMock->messages = Krexx::$pool->messages;
-        $poolMock->expects($this->any())
-            ->method('createClass')
+        $poolMock->method('createClass')
             ->willReturnCallback(fn($classname) => Krexx::$pool->createClass($classname));
         $this->callerFinder = new CallerFinder($poolMock);
 

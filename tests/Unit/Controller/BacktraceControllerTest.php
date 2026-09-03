@@ -88,8 +88,7 @@ class BacktraceControllerTest extends AbstractController
         $emergencyMock->expects($this->once())
             ->method('checkMaxCall')
             ->willReturn(false);
-        $emergencyMock->expects($this->any())
-            ->method('checkEmergencyBreak')
+        $emergencyMock->method('checkEmergencyBreak')
             ->willReturn(true);
         Krexx::$pool->emergencyHandler = $emergencyMock;
 

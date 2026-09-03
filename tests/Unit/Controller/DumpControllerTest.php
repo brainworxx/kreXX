@@ -144,8 +144,7 @@ class DumpControllerTest extends AbstractController
         $fixture = new \Brainworxx\Krexx\Logging\Model();
         $message = 'Message in a bottle';
         $emergencyMock = $this->createMock(Emergency::class);
-        $emergencyMock->expects($this->any())
-            ->method('checkEmergencyBreak')
+        $emergencyMock->method('checkEmergencyBreak')
             ->willReturn(true);
         $codeGenMock = $this->createMock(Codegen::class);
         $codeGenMock->expects($this->once())
@@ -174,16 +173,14 @@ class DumpControllerTest extends AbstractController
         $expectation = Krexx::$pool->messages->getHelp('configFileNotFound');
 
         $fileServiceMock = $this->createMock(File::class);
-        $fileServiceMock->expects($this->any())
-            ->method('fileIsReadable')
+        $fileServiceMock->method('fileIsReadable')
             ->willReturn(false);
         Krexx::$pool->fileService = $fileServiceMock;
 
         $outputService = new OutputNothing(Krexx::$pool);
         $this->setValueByReflection('outputService', $outputService, $dumpController);
         $emergencyMock = $this->createMock(Emergency::class);
-        $emergencyMock->expects($this->any())
-            ->method('checkEmergencyBreak')
+        $emergencyMock->method('checkEmergencyBreak')
             ->willReturn(false);
         Krexx::$pool->emergencyHandler = $emergencyMock;
         $this->setValueByReflection('jsCssSend', [], $dumpController);

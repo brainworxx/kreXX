@@ -143,8 +143,7 @@ class DebugMethodsTest extends AbstractHelper
 
         $fixtureClass = new DebugMethodFixture();
         $reflectionMock = $this->createMock(ReflectionClass::class);
-        $reflectionMock->expects($this->any())
-            ->method('getMethod')
+        $reflectionMock->method('getMethod')
             ->willThrowException(new \ReflectionException());
         $reflectionMock->expects($this->once())
             ->method('getData')

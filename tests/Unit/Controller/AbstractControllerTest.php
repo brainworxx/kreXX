@@ -90,17 +90,14 @@ class AbstractControllerTest extends AbstractHelper
     public function testOutputCssAndJsWithoutMinFiles()
     {
         $fileMock = $this->createMock(FileService::class);
-        $fileMock->expects($this->any())
-            ->method('fileIsReadable')
+        $fileMock->method('fileIsReadable')
             ->willReturn(false);
-        $fileMock->expects($this->any())
-            ->method('getFileContents')
+        $fileMock->method('getFileContents')
             ->willReturn('some content');
         Krexx::$pool->fileService = $fileMock;
 
         $outputServiceMock = $this->createMock(Browser::class);
-        $outputServiceMock->expects($this->any())
-            ->method('addChunkString')
+        $outputServiceMock->method('addChunkString')
             ->willReturn($outputServiceMock);
 
         Krexx::$pool->render = new RenderNothing(Krexx::$pool);
@@ -112,8 +109,7 @@ class AbstractControllerTest extends AbstractHelper
         // Let's do this a second time, and make sure that we do not send the
         // css/js a second time.
         $fileMock = $this->createMock(FileService::class);
-        $fileMock->expects($this->any())
-            ->method('fileIsReadable')
+        $fileMock->method('fileIsReadable')
             ->willReturn(false);
         $fileMock->expects($this->never())
             ->method('getFileContents');

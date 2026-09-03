@@ -96,8 +96,7 @@ class RoutingTest extends AbstractHelper
             } else {
                 $mock->expects($this->never())
                     ->method('handle');
-                $mock->expects($this->any())
-                    ->method('canHandle')
+                $mock->method('canHandle')
                     ->willReturn(false);
             }
             $processors[$className] = $mock;

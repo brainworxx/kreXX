@@ -52,9 +52,7 @@ class SingleEditableChildTest extends AbstractRenderSmokyGrey
     public function testRenderSingleEditableChild(): void
     {
         $this->mockModel(static::GET_JSON, ['formless' => 'forming']);
-        $this->modelMock->expects($this->any())
-            ->method('getType')
-            ->willReturn('Input');
+        $this->modelMock->method('getType')->willReturn('Input');
         $result = $this->renderSmokyGrey->renderSingleEditableChild($this->modelMock);
         $this->assertStringContainsString('formless', $result);
         $this->assertStringContainsString('forming', $result);

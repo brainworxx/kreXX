@@ -55,11 +55,9 @@ class FooterTest extends AbstractRenderSmokyGrey
         $model->expects($this->exactly(2))
             ->method('getJson')
             ->willReturn([]);
-        $model->expects($this->any())
-            ->method('getType')
+        $model->method('getType')
             ->willReturn('');
-        $model->expects($this->any())
-            ->method('getConnectorRight')
+        $model->method('getConnectorRight')
             ->willReturn('');
 
         $result = $this->renderSmokyGrey->renderFooter([], $model, true);

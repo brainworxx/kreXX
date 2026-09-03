@@ -217,8 +217,7 @@ class MetaTest extends AbstractHelper
     {
         // Make sure that we are not testing a recursion.
         $recursionMock = $this->createMock(Recursion::class);
-        $recursionMock->expects($this->any())
-            ->method('isInMetaHive')
+        $recursionMock->method('isInMetaHive')
             ->willReturn(false);
         Krexx::$pool->recursionHandler = $recursionMock;
 
@@ -257,8 +256,7 @@ class MetaTest extends AbstractHelper
     {
         // Make sure that we are not testing a recursion.
         $recursionMock = $this->createMock(Recursion::class);
-        $recursionMock->expects($this->any())
-            ->method('isInMetaHive')
+        $recursionMock->method('isInMetaHive')
             ->willReturn(false);
         Krexx::$pool->recursionHandler = $recursionMock;
 

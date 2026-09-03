@@ -66,8 +66,7 @@ class FooterTest extends AbstractRenderHans
             $this->renderHans::TRACE_DATE => 'yesteryear',
             $this->renderHans::TRACE_URL => 'https://www.google.biz',
         ];
-        Krexx::$pool->fileService->expects($this->any())
-            ->method('fileIsReadable')
+        Krexx::$pool->fileService->method('fileIsReadable')
             ->willReturn(true);
 
         // Mock the model for the renderExpandableChild, which we will not test
@@ -136,9 +135,7 @@ class FooterTest extends AbstractRenderHans
     {
         // Mock the caller
         $caller = [];
-        Krexx::$pool->fileService->expects($this->any())
-            ->method('fileIsReadable')
-            ->willReturn(true);
+        Krexx::$pool->fileService->method('fileIsReadable')->willReturn(true);
 
         $model = new Model(Krexx::$pool);
         $result = $this->renderHans->renderFooter($caller, $model);

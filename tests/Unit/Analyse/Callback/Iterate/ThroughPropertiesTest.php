@@ -445,29 +445,21 @@ class ThroughPropertiesTest extends AbstractHelper
     {
         // Create a fixture.
         $refPropertyMock = $this->createMock(ReflectionProperty::class);
-        $refPropertyMock->expects($this->any())
-            ->method('hasDefaultValue')
+        $refPropertyMock->method('hasDefaultValue')
             ->willReturn(true);
-        $refPropertyMock->expects($this->any())
-            ->method('getDefaultValue')
+        $refPropertyMock->method('getDefaultValue')
             ->willThrowException(new \Exception());
-        $refPropertyMock->expects($this->any())
-            ->method('getName')
+        $refPropertyMock->method('getName')
             ->willReturn('someValue');
-        $refPropertyMock->expects($this->any())
-            ->method('isStatic')
+        $refPropertyMock->method('isStatic')
             ->willReturn(false);
-        $refPropertyMock->expects($this->any())
-            ->method('isProtected')
+        $refPropertyMock->method('isProtected')
             ->willReturn(false);
-        $refPropertyMock->expects($this->any())
-            ->method('isPrivate')
+        $refPropertyMock->method('isPrivate')
             ->willReturn(false);
-        $refPropertyMock->expects($this->any())
-            ->method('getDeclaringClass')
+        $refPropertyMock->method('getDeclaringClass')
             ->willReturn(new \ReflectionClass(PublicFixture::class));
-        $refPropertyMock->expects($this->any())
-            ->method('getDocComment')
+        $refPropertyMock->method('getDocComment')
             ->willReturn('');
 
 
