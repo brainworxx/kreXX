@@ -38,6 +38,7 @@ namespace Brainworxx\Krexx\Tests\Unit\Analyse\Scalar\String;
 use Brainworxx\Krexx\Analyse\Callback\Iterate\ThroughMeta;
 use Brainworxx\Krexx\Analyse\Declaration\FunctionDeclaration;
 use Brainworxx\Krexx\Analyse\Model;
+use Brainworxx\Krexx\Analyse\Scalar\String\AbstractScalarAnalysis;
 use Brainworxx\Krexx\Analyse\Scalar\String\Callback;
 use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
@@ -46,7 +47,7 @@ use Krexx;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(Callback::class, 'canHandle')]
-#[CoversMethod(Callback::class, 'callMe')]
+#[CoversMethod(AbstractScalarAnalysis::class, 'callMe')]
 #[CoversMethod(Callback::class, 'handle')]
 #[CoversMethod(Callback::class, 'isActive')]
 #[CoversMethod(FunctionDeclaration::class, 'retrieveDeclaration')]

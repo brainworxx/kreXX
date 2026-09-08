@@ -55,8 +55,8 @@ use Brainworxx\Krexx\View\Output\Chunks;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(DumpController::class, 'dumpAction')]
-#[CoversMethod(BacktraceController::class, 'outputFooter')]
-#[CoversMethod(BacktraceController::class, 'outputCssAndJs')]
+#[CoversMethod(\Brainworxx\Krexx\Controller\AbstractController::class, 'outputFooter')]
+#[CoversMethod(\Brainworxx\Krexx\Controller\AbstractController::class, 'outputCssAndJs')]
 class DumpControllerTest extends AbstractController
 {
     /**

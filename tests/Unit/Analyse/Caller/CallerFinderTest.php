@@ -50,7 +50,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(CallerFinder::class, '__construct')]
 #[CoversMethod(CallerFinder::class, 'findCaller')]
 #[CoversMethod(CallerFinder::class, 'getVarName')]
-#[CoversMethod(CallerFinder::class, 'getType')]
+#[CoversMethod(AbstractCaller::class, 'getType')]
 #[CoversMethod(CallerFinder::class, 'identifyCaller')]
 #[CoversMethod(CallerFinder::class, 'removeKrexxPartFromCommand')]
 #[CoversMethod(AbstractCaller::class, 'getCurrentUrl')]
