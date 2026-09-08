@@ -61,7 +61,6 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(Pool::class, 'checkEnvironment')]
 #[CoversMethod(File::class, 'isDirectoryWritable')]
 #[CoversMethod(Pool::class, '__construct')]
-#[CoversMethod(Pool::class, 'checkEnvironment')]
 class PoolTest extends AbstractHelper
 {
     public const  MISC_NAMESPACE = '\\Brainworxx\\Krexx\\Service\\Misc\\';
