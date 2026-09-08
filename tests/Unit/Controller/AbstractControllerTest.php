@@ -47,6 +47,7 @@ use Brainworxx\Krexx\View\Output\Browser;
 use Brainworxx\Krexx\View\Output\BrowserImmediately;
 use Brainworxx\Krexx\View\Output\File;
 use Brainworxx\Krexx\Service\Misc\File as FileService;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use Brainworxx\Krexx\Controller\AbstractController;
 
@@ -87,6 +88,7 @@ class AbstractControllerTest extends AbstractHelper
     /**
      * We simply test the outputCssAndJs, with loading the un-minified files.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testOutputCssAndJsWithoutMinFiles()
     {
         $fileMock = $this->createMock(FileService::class);

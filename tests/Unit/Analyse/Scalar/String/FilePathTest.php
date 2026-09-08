@@ -43,6 +43,7 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use finfo;
 use Krexx;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use TypeError;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
@@ -91,6 +92,7 @@ class FilePathTest extends AbstractHelper
     /**
      * Test, if we can identify a file path.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCanHandle()
     {
         $filePath = new FilePath(Krexx::$pool);

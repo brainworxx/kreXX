@@ -44,6 +44,7 @@ use Brainworxx\Krexx\Tests\Fixtures\DebugMethodFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(DebugMethods::class, 'callMe')]
@@ -106,6 +107,7 @@ class DebugMethodsTest extends AbstractHelper
     /**
      * Test if the __construct injects the pool.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testConstruct(): void
     {
         $object = new DebugMethods(Krexx::$pool);
@@ -117,6 +119,7 @@ class DebugMethodsTest extends AbstractHelper
      * Testing the not-existing debug method, the one throwing a exception and
      * the one with the parameters. None of these must get thorough.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCallMeNothing()
     {
         // Set up the start events
@@ -138,6 +141,7 @@ class DebugMethodsTest extends AbstractHelper
         $this->assertEquals([], CallbackCounter::$staticParameters);
     }
 
+    #[AllowMockObjectsWithoutExpectations]
     public function testCallMeError()
     {
 
@@ -171,6 +175,7 @@ class DebugMethodsTest extends AbstractHelper
     /**
      * Testing the "good" and "ugly" debug methods.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCallMeNormal()
     {
         // Setup the start events

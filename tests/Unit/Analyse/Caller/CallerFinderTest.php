@@ -44,6 +44,7 @@ use Brainworxx\Krexx\Tests\Fixtures\ComplexMethodFixture;
 use Brainworxx\Krexx\Tests\Fixtures\LoggerCallerFixture;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Krexx;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use ReflectionClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
@@ -142,6 +143,7 @@ class CallerFinderTest extends AbstractHelper
     /**
      * Test the setting of the call pattern and the pattern itself.´ß
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testConstruct(): void
     {
         $krexx = 'krexx';
@@ -165,6 +167,7 @@ class CallerFinderTest extends AbstractHelper
      * Test normally, without any outside iterference, the way it is normally
      * executed.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFindCallerNormal(): void
     {
         $this->mockDebugBacktrace()
@@ -186,6 +189,7 @@ class CallerFinderTest extends AbstractHelper
     /**
      * Test the resolving of inline calles of kreXX.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFindCallerInline(): void
     {
         $this->mockDebugBacktrace()
@@ -209,6 +213,7 @@ class CallerFinderTest extends AbstractHelper
     /**
      * Test with an externally set headline.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFindCallerHeadline(): void
     {
 
@@ -230,6 +235,7 @@ class CallerFinderTest extends AbstractHelper
     /**
      * Test with a source file, that is not readable.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFindCallerUnreadableSource(): void
     {
         // Create a fixture.
@@ -254,6 +260,7 @@ class CallerFinderTest extends AbstractHelper
     /**
      * Test the finding without a valid url.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFindCallerNoUrl(): void
     {
         $this->mockDebugBacktrace()
@@ -286,6 +293,7 @@ class CallerFinderTest extends AbstractHelper
     /**
      * Manipulate the lookup array to prevent finding anything.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFindCallerNoResult(): void
     {
         $this->mockDebugBacktrace()
@@ -308,6 +316,7 @@ class CallerFinderTest extends AbstractHelper
     /**
      * Test the caller finder with the forced logger.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testFindCallerLogging(): void
     {
         $classRef = new ReflectionClass(LoggerCallerFixture::class);

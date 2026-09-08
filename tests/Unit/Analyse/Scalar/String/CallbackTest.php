@@ -44,6 +44,7 @@ use Brainworxx\Krexx\Service\Plugin\PluginConfigInterface;
 use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Krexx;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(Callback::class, 'canHandle')]
@@ -81,6 +82,7 @@ class CallbackTest extends AbstractHelper
     /**
      * Test the analysis of a callback.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCallMeNormal()
     {
         $this->mockEmergencyHandler();

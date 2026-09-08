@@ -48,7 +48,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(PropertyDeclaration::class, 'retrieveNamedPropertyType')]
 #[CoversMethod(AbstractDeclaration::class, 'retrieveNamedType')]
-#[CoversMethod(PropertyDeclaration::class, 'formatNamedType')]
+#[CoversMethod(AbstractDeclaration::class, 'formatNamedType')]
 #[CoversMethod(AbstractDeclaration::class, 'retrieveDeclaration')]
 #[CoversMethod(PropertyDeclaration::class, 'retrieveDeclaringClassFromTraits')]
 class PropertyDeclarationTest extends AbstractHelper

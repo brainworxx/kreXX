@@ -52,6 +52,7 @@ use Brainworxx\Krexx\Tests\Helpers\CallbackNothing;
 use Brainworxx\Krexx\Tests\Helpers\OutputNothing;
 use Brainworxx\Krexx\View\Output\Browser;
 use Brainworxx\Krexx\View\Output\Chunks;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(DumpController::class, 'dumpAction')]
@@ -138,6 +139,7 @@ class DumpControllerTest extends AbstractController
     /**
      * Testing the use of a log model, without code generation and with an emergency break.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testDumpActionSpecialCases()
     {
         $dumpController = new DumpController(Krexx::$pool);
@@ -166,6 +168,7 @@ class DumpControllerTest extends AbstractController
      *   - No minimized JS files
      *   - No minimized CSS files.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testDumpActionWithFooterHandling()
     {
         $dumpController = new DumpController(Krexx::$pool);

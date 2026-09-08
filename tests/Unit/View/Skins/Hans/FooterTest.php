@@ -43,6 +43,7 @@ use Brainworxx\Krexx\Tests\Unit\View\Skins\AbstractRenderHans;
 use Brainworxx\Krexx\View\Skins\Hans\ExpandableChild;
 use Brainworxx\Krexx\View\Skins\Hans\Footer;
 use Brainworxx\Krexx\View\Skins\Hans\PluginList;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(Footer::class, 'renderFooter')]
@@ -57,6 +58,7 @@ class FooterTest extends AbstractRenderHans
      * We test the renderExpandableChild separately to keep this one at least
      * a little bit sane.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testRenderFooter(): void
     {
         // Mock the caller
@@ -131,6 +133,7 @@ class FooterTest extends AbstractRenderHans
     /**
      * Test everything with an empty caller array.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testRenderFooterNoCaller(): void
     {
         // Mock the caller

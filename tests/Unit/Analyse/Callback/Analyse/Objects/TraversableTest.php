@@ -46,6 +46,7 @@ use Brainworxx\Krexx\Tests\Helpers\AbstractHelper;
 use Brainworxx\Krexx\Tests\Helpers\CallbackCounter;
 use Brainworxx\Krexx\Krexx;
 use ArrayObject;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
 #[CoversMethod(Traversable::class, 'callMe')]
@@ -95,6 +96,7 @@ class TraversableTest extends AbstractHelper
     /**
      * Test, if we do not ignore the emergency handler.
      */
+    #[AllowMockObjectsWithoutExpectations]
     public function testCallMeWithEmergency(): void
     {
         // Tell the emergency handler mock that we have a nesting level problem.
