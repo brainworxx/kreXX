@@ -70,7 +70,7 @@ class ThroughProperties extends AbstractCallback implements
     protected PropertyDeclaration $propertyDeclaration;
 
     /**
-     * @var Properties
+     * @var Comment
      */
     protected Comment $propertyComment;
 
