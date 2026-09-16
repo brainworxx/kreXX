@@ -12,6 +12,8 @@
 - Change: Throwaway messages are not removed any more when they are
   displayed in the shell.
 - Change: Updated the unit tests to UnitTest 13.0.
+- Change: Integers are not considered timestamps any more, when they
+  are +10 years in the future.
 
 6.1.0
 - Feature: Display the headline in the debug output in the
