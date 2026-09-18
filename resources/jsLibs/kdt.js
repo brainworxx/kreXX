@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -806,7 +807,9 @@ var SmokyGrey = (function (_super) {
     function SmokyGrey() {
         var _this = _super.call(this) || this;
         _this.initDraxx = function () {
-            _this.draxx = new Draxx('.kwrapper', '.khandle', function () { }, function () { });
+            _this.draxx = new Draxx('.kwrapper', '.khandle', function () {
+            }, function () {
+            });
         };
         _this.switchTab = function (event, element) {
             var instance = _this.kdt.getDataset(element.parentNode, 'instance');
