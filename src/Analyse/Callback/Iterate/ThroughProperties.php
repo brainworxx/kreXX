@@ -390,9 +390,9 @@ class ThroughProperties extends AbstractCallback implements
 
         // The first regex detects all allowed characters.
         // For some reason, they also allow BOM characters.
-        return $cache[$propName] ?? $cache[$propName] = (bool) preg_match(
+        return $cache[$propName] ?? $cache[$propName] = preg_match(
             pattern: "/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/",
             subject: (string)$propName
-        ) && !(bool) preg_match(pattern: "/\xEF\xBB\xBF/", subject: (string) $propName);
+        ) && !preg_match(pattern: "/\xEF\xBB\xBF/", subject: (string) $propName);
     }
 }
