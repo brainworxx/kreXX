@@ -35,9 +35,9 @@ class Eventhandler {
   /**
    * Here we store our callbacks.
    *
-   * @var {Function[]}
+   * @var Record<string, Function[]>
    */
-  protected storage: Function[][] = [];
+  protected storage: Record<string, Function[]> = {};
 
   /**
    * Instance of the kreXX dom tools class.
@@ -86,7 +86,7 @@ class Eventhandler {
    * @param {Event} event
    */
   public preventBubble(event: Event): void {
-    event.stop = true;
+    (event as StoppableEvent).stop = true;
   }
 
   /**
@@ -112,9 +112,9 @@ class Eventhandler {
   protected handle = (event: Event): void => {
     // We stop the event in its tracks.
     event.stopPropagation();
-    event.stop = false;
+    (event as StoppableEvent).stop = false;
 
-    let element: Node = (event.target as Node);
+    let element: Node | null = (event.target as Node);
     let selector: string;
     let i: number;
     let callbackArray: Function[] = [];
@@ -122,14 +122,14 @@ class Eventhandler {
     do {
       // We need to test the element on all selectors.
       for (selector in this.storage) {
-        if ((element as Element).matches(selector) === false) {
+        if (!(element as Element).matches(selector)) {
           continue;
         }
         callbackArray = this.storage[selector];
         // Got to call them all.
         for (i = 0; i < callbackArray.length; i++) {
           callbackArray[i](event, element);
-          if (event.stop) {
+          if ((event as StoppableEvent).stop) {
             // Our "implementation" of stopPropagation().
             return;
           }
@@ -137,7 +137,7 @@ class Eventhandler {
       }
 
       // Time to test the parent.
-      element = (element as Node).parentNode;
+      element = element.parentNode;
       // Test if we have reached the top of the rabbit hole.
       if (element === event.currentTarget) {
         element = null;

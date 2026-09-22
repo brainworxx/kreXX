@@ -28,6 +28,8 @@ var __extends = (this && this.__extends) || (function () {
 var Draxx = (function () {
     function Draxx(selector, handle, callbackUp, callbackDrag) {
         var _this = this;
+        this.offSetX = 0;
+        this.offSetY = 0;
         this.startDraxx = function (event) {
             var _a;
             var elContent = _this.kdt.getParents(event.target, _this.selector)[0];
@@ -35,7 +37,11 @@ var Draxx = (function () {
             _this.offSetY = offset.top + elContent.offsetHeight - event.pageY - elContent.offsetHeight;
             _this.offSetX = offset.left + _this.outerWidth(elContent) - event.pageX - _this.outerWidth(elContent);
             _this.elContentStyle = elContent.style;
-            var bodyStyle = getComputedStyle(document.querySelector('body'));
+            var body = document.querySelector('body');
+            if (body === null) {
+                return;
+            }
+            var bodyStyle = getComputedStyle(body);
             if (bodyStyle.position === 'relative') {
                 var relOffsetY = void 0;
                 var relOffsetX = void 0;
@@ -46,6 +52,9 @@ var Draxx = (function () {
                 else {
                     var prev = (_a = elContent.previousElementSibling) !== null && _a !== void 0 ? _a : elContent.parentElement;
                     do {
+                        if (prev === null) {
+                            break;
+                        }
                         relOffsetY = parseInt(getComputedStyle(prev).marginTop, 10);
                         prev = prev.previousElementSibling;
                     } while (prev && relOffsetY === 0);
@@ -68,6 +77,9 @@ var Draxx = (function () {
         this.drag = function (event) {
             event.preventDefault();
             event.stopPropagation();
+            if (!_this.elContentStyle) {
+                return;
+            }
             _this.elContentStyle.left = (event.pageX + _this.offSetX) + "px";
             _this.elContentStyle.top = (event.pageY + _this.offSetY) + "px";
             _this.callbackDrag();
@@ -113,7 +125,7 @@ var Draxx = (function () {
 var Eventhandler = (function () {
     function Eventhandler(selector) {
         var _this = this;
-        this.storage = [];
+        this.storage = {};
         this.handle = function (event) {
             event.stopPropagation();
             event.stop = false;
@@ -123,7 +135,7 @@ var Eventhandler = (function () {
             var callbackArray = [];
             do {
                 for (selector in _this.storage) {
-                    if (element.matches(selector) === false) {
+                    if (!element.matches(selector)) {
                         continue;
                     }
                     callbackArray = _this.storage[selector];
@@ -175,6 +187,7 @@ var Eventhandler = (function () {
 var Kdt = (function () {
     function Kdt() {
         var _this = this;
+        this.jumpTo = function () { };
         this.setJumpTo = function (jumpTo) {
             _this.jumpTo = jumpTo;
         };
@@ -192,7 +205,7 @@ var Kdt = (function () {
             document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
             alert(valueName + ' --> ' + newValue + '\n\n' + _this.translations.translate('tsPleaseReload'));
         };
-        this.resetSetting = function (event, element) {
+        this.resetSetting = function () {
             var date = new Date();
             date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
             var expires = 'expires=' + date.toUTCString();
@@ -221,37 +234,42 @@ var Kdt = (function () {
             }, 100);
         };
         this.copyFrom = function (event, element) {
+            var _a, _b, _c, _d;
             var i;
             var domid = _this.getDataset(element, 'domid');
-            if (domid === '') {
+            if (domid === '' || element.parentNode === null) {
                 return;
             }
             var orgNest = document.querySelector('#' + domid);
-            if (orgNest) {
-                var orgEl = orgNest.previousElementSibling;
+            var orgEl = orgNest === null || orgNest === void 0 ? void 0 : orgNest.previousElementSibling;
+            if (orgNest && orgEl) {
                 element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
                 var newEl = orgEl.cloneNode(true);
                 element.parentNode.insertBefore(newEl, element.nextSibling);
                 _this.findInDomlistByClass(newEl.children, 'kname').innerHTML = _this.findInDomlistByClass(element.children, 'kname').innerHTML;
-                var allChildren = newEl.nextElementSibling.getElementsByTagName("*");
-                for (i = 0; i < allChildren.length; i++) {
-                    allChildren[i].removeAttribute('id');
+                var allChildren = (_a = newEl.nextElementSibling) === null || _a === void 0 ? void 0 : _a.getElementsByTagName("*");
+                if (allChildren) {
+                    for (i = 0; i < allChildren.length; i++) {
+                        allChildren[i].removeAttribute('id');
+                    }
                 }
-                newEl.nextElementSibling.removeAttribute('id');
+                (_b = newEl.nextElementSibling) === null || _b === void 0 ? void 0 : _b.removeAttribute('id');
                 _this.setDataset(newEl.parentNode, 'domid', domid);
                 var newInfobox = newEl.querySelector('.khelp');
                 var newButton = newEl.querySelector('.kinfobutton');
                 var realInfobox = element.querySelector('.khelp');
                 var realButton = element.querySelector('.kinfobutton');
                 if (newInfobox !== null) {
-                    newInfobox.parentNode.removeChild(newInfobox);
+                    (_c = newInfobox.parentNode) === null || _c === void 0 ? void 0 : _c.removeChild(newInfobox);
                 }
                 if (newButton !== null) {
-                    newButton.parentNode.removeChild(newButton);
+                    (_d = newButton.parentNode) === null || _d === void 0 ? void 0 : _d.removeChild(newButton);
                 }
                 if (realInfobox !== null) {
-                    newEl.appendChild(realButton);
                     newEl.appendChild(realInfobox);
+                }
+                if (realButton !== null) {
+                    newEl.appendChild(realButton);
                 }
                 element.parentNode.removeChild(element);
             }
@@ -349,7 +367,7 @@ var Kdt = (function () {
         if (result === null) {
             return '';
         }
-        if (mustEscape === true) {
+        if (mustEscape) {
             return result.replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
@@ -368,6 +386,9 @@ var Kdt = (function () {
     Kdt.prototype.selectText = function (el) {
         var range = document.createRange();
         var selection = window.getSelection();
+        if (selection === null) {
+            return;
+        }
         range.selectNodeContents(el);
         selection.removeAllRanges();
         selection.addRange(range);
@@ -394,10 +415,11 @@ var Kdt = (function () {
         }
     };
     Kdt.prototype.moveToBottom = function (selector) {
+        var _a, _b, _c;
         var elements = document.querySelectorAll(selector);
         for (var i = 0; i < elements.length; i++) {
-            if (elements[i].parentNode.nodeName.toUpperCase() !== 'BODY') {
-                document.querySelector('body').appendChild(elements[i]);
+            if (((_b = (_a = elements[i]) === null || _a === void 0 ? void 0 : _a.parentNode) === null || _b === void 0 ? void 0 : _b.nodeName.toUpperCase()) !== 'BODY') {
+                (_c = document.querySelector('body')) === null || _c === void 0 ? void 0 : _c.appendChild(elements[i]);
             }
         }
     };
@@ -428,35 +450,60 @@ var Translations = (function () {
 var Search = (function () {
     function Search(eventHandler, jumpTo) {
         var _this = this;
-        this.results = [];
+        this.results = {};
         this.clearSearch = function (event) {
-            _this.results[_this.kdt.getDataset(event.target, 'instance')] = [];
+            _this.results[_this.kdt.getDataset(event.target, 'instance')] = {};
         };
         this.displaySearchOptions = function (event, element) {
-            _this.kdt.toggleClass(element.parentNode.nextElementSibling, 'khidden');
+            if (element.parentNode === null) {
+                return;
+            }
+            var nextElementSibling = element.parentNode.nextElementSibling;
+            if (nextElementSibling === null) {
+                return;
+            }
+            _this.kdt.toggleClass(nextElementSibling, 'khidden');
         };
         this.performSearch = function (event, element) {
-            _this.kdt.addClass([element.parentNode.nextElementSibling], 'khidden');
+            var _a;
+            var parentNode = element.parentNode;
+            if (parentNode === null) {
+                return;
+            }
+            var grandParentNode = parentNode.parentNode;
+            if (grandParentNode === null) {
+                return;
+            }
+            var patentSibling = parentNode.nextElementSibling;
+            if (patentSibling !== null) {
+                _this.kdt.addClass([patentSibling], 'khidden');
+            }
             var config = new SearchConfig();
-            config.searchtext = element.parentNode.querySelector('.ksearchfield').value;
-            config.caseSensitive = element.parentNode.parentNode.querySelector('.ksearchcase').checked;
-            config.searchKeys = element.parentNode.parentNode.querySelector('.ksearchkeys').checked;
-            config.searchShort = element.parentNode.parentNode.querySelector('.ksearchshort').checked;
-            config.searchLong = element.parentNode.parentNode.querySelector('.ksearchlong').checked;
-            config.searchWhole = element.parentNode.parentNode.querySelector('.ksearchwhole').checked;
-            if (config.caseSensitive === false) {
+            config.searchtext = parentNode.querySelector('.ksearchfield').value;
+            config.caseSensitive = grandParentNode.querySelector('.ksearchcase').checked;
+            config.searchKeys = grandParentNode.querySelector('.ksearchkeys').checked;
+            config.searchShort = grandParentNode.querySelector('.ksearchshort').checked;
+            config.searchLong = grandParentNode.querySelector('.ksearchlong').checked;
+            config.searchWhole = grandParentNode.querySelector('.ksearchwhole').checked;
+            if (!config.caseSensitive) {
                 config.searchtext = config.searchtext.toLowerCase();
             }
+            var searchStateElement = parentNode.querySelector('.ksearch-state');
+            if (searchStateElement === null) {
+                return;
+            }
             if (config.searchtext.length === 0) {
-                element.parentNode.querySelector('.ksearch-state').textContent = _this.kdt.translations.translate('tsEnterText');
+                searchStateElement.textContent = _this.kdt.translations.translate('tsEnterText');
                 return;
             }
             if (config.searchtext.length > 2 || config.searchWhole) {
                 config.instance = _this.kdt.getDataset(element, 'instance');
                 _this.retrievePayload(config);
-                var collapsed = config.payload.querySelectorAll('.kcollapsed');
-                for (var i = 0; i < collapsed.length; i++) {
-                    _this.eventHandler.triggerEvent(collapsed[i], 'click');
+                var collapsed = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll('.kcollapsed');
+                if (collapsed !== undefined) {
+                    for (var i = 0; i < collapsed.length; i++) {
+                        _this.eventHandler.triggerEvent(collapsed[i], 'click');
+                    }
                 }
                 if (typeof _this.results[config.instance] !== "undefined") {
                     if (typeof _this.results[config.instance][config.searchtext] === "undefined") {
@@ -485,12 +532,12 @@ var Search = (function () {
                 if (_this.results[config.instance][config.searchtext]['data'][pointer]) {
                     _this.jumpTo(_this.results[config.instance][config.searchtext]['data'][pointer]);
                 }
-                element.parentNode.querySelector('.ksearch-state').textContent =
+                searchStateElement.textContent =
                     (pointer + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
                 _this.results[config.instance][config.searchtext]['pointer'] = pointer;
             }
             else {
-                element.parentNode.querySelector('.ksearch-state').textContent = _this.kdt.translations.translate('tsTooSmall');
+                searchStateElement.textContent = _this.kdt.translations.translate('tsTooSmall');
             }
         };
         this.retrievePayload = function (config) {
@@ -502,32 +549,36 @@ var Search = (function () {
             config.payload = document.querySelector('#' + config.instance + ' .kbg-wrapper' + additionalClasses);
         };
         this.refreshResultlist = function (config) {
+            var _a, _b;
             _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
             var selector = [];
-            if (config.searchKeys === true) {
+            if (config.searchKeys) {
                 selector.push('li.kchild span.kname');
             }
-            if (config.searchShort === true) {
+            if (config.searchShort) {
                 selector.push('li.kchild span.kshort');
             }
-            if (config.searchLong === true) {
+            if (config.searchLong) {
                 selector.push('li div.kpreview');
             }
-            _this.results[config.instance] = [];
-            _this.results[config.instance][config.searchtext] = [];
+            _this.results[config.instance] = {};
+            _this.results[config.instance][config.searchtext] = { data: [], pointer: 0 };
             _this.results[config.instance][config.searchtext]['data'] = [];
-            _this.results[config.instance][config.searchtext]['pointer'] = [];
+            _this.results[config.instance][config.searchtext]['pointer'] = 0;
             if (selector.length > 0) {
                 var list = void 0;
-                list = config.payload.querySelectorAll(selector.join(', '));
+                list = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll(selector.join(', '));
+                if (typeof list === "undefined") {
+                    return;
+                }
                 var textContent = '';
                 for (var i = 0; i < list.length; ++i) {
-                    textContent = list[i].textContent;
-                    if (config.caseSensitive === false) {
+                    textContent = (_b = list[i].textContent) !== null && _b !== void 0 ? _b : '';
+                    if (!config.caseSensitive) {
                         textContent = textContent.toLowerCase();
                     }
-                    if ((config.searchWhole === true && textContent === config.searchtext) ||
-                        (config.searchWhole === false && textContent.indexOf(config.searchtext) > -1)) {
+                    if ((config.searchWhole && textContent === config.searchtext)
+                        || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)) {
                         _this.kdt.toggleClass(list[i], 'ksearch-found-highlight');
                         _this.results[config.instance][config.searchtext]['data'].push(list[i]);
                     }
@@ -541,7 +592,14 @@ var Search = (function () {
             if (event.key !== 'Enter') {
                 return;
             }
-            _this.eventHandler.triggerEvent(event.target.parentNode.querySelectorAll('.ksearchnow')[1], 'click');
+            if (event.target === null) {
+                return;
+            }
+            var parentNode = event.target.parentNode;
+            if (parentNode === null) {
+                return;
+            }
+            _this.eventHandler.triggerEvent(parentNode.querySelectorAll('.ksearchnow')[1], 'click');
         };
         this.kdt = new Kdt();
         this.eventHandler = eventHandler;
@@ -559,6 +617,14 @@ var Search = (function () {
 }());
 var SearchConfig = (function () {
     function SearchConfig() {
+        this.searchKeys = false;
+        this.searchShort = false;
+        this.searchLong = false;
+        this.caseSensitive = false;
+        this.searchWhole = false;
+        this.instance = '';
+        this.searchtext = '';
+        this.payload = null;
     }
     return SearchConfig;
 }());
@@ -566,9 +632,29 @@ var Hans = (function () {
     function Hans() {
         var _this = this;
         this.jumpToInterval = 0;
+        this.initDraxx = function () {
+            _this.draxx = new Draxx('.kwrapper', '.kheadnote', function () {
+                var searchWrapper = document.querySelectorAll('.search-wrapper');
+                var viewportOffset;
+                for (var i = 0; i < searchWrapper.length; i++) {
+                    viewportOffset = searchWrapper[i].getBoundingClientRect();
+                    searchWrapper[i].style.position = 'fixed';
+                    searchWrapper[i].style.top = viewportOffset.top + 'px';
+                }
+            }, function () {
+                var searchWrapper = document.querySelectorAll('.search-wrapper');
+                for (var i = 0; i < searchWrapper.length; i++) {
+                    searchWrapper[i].style.position = 'absolute';
+                    searchWrapper[i].style.top = '';
+                }
+            });
+        };
         this.toggle = function (event, element) {
             _this.kdt.toggleClass(element, 'kopened');
             var sibling = element.nextElementSibling;
+            if (sibling === null) {
+                return;
+            }
             do {
                 _this.kdt.toggleClass(sibling, 'khidden');
                 sibling = sibling.nextElementSibling;
@@ -577,19 +663,19 @@ var Hans = (function () {
         this.jumpTo = function (el, noHighlight) {
             _this.setHighlighting(el, noHighlight);
             var destination;
-            var container = document.querySelector('.kfatalwrapper-outer');
+            var container = document.querySelector('html');
             if (container === null) {
-                container = document.querySelector('html');
-                ++container.scrollTop;
-                if (container.scrollTop === 0 || container.scrollHeight <= container.clientHeight) {
-                    container = document.querySelector('body');
-                }
-                --container.scrollTop;
-                destination = el.getBoundingClientRect().top + container.scrollTop - 50;
+                return;
             }
-            else {
-                destination = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
+            ++container.scrollTop;
+            if (container.scrollTop === 0 || container.scrollHeight <= container.clientHeight) {
+                container = document.querySelector('body');
             }
+            if (container === null) {
+                return;
+            }
+            --container.scrollTop;
+            destination = el.getBoundingClientRect().top + container.scrollTop - 50;
             var diff = Math.abs(container.scrollTop - destination);
             if (diff < 250) {
                 return;
@@ -619,14 +705,21 @@ var Hans = (function () {
             var interval = setInterval(function () {
                 if (opacity < 0) {
                     clearInterval(interval);
+                    if (elInstance === null || elInstance.parentNode === null) {
+                        return;
+                    }
                     elInstance.parentNode.removeChild(elInstance);
                     return;
                 }
                 opacity -= 0.1;
+                if (elInstance === null) {
+                    return;
+                }
                 elInstance.style.opacity = opacity.toString();
             }, 20);
         };
         this.generateCode = function (event, element) {
+            var _a;
             event.stop = true;
             var codedisplay = element.nextElementSibling;
             var resultArray = [];
@@ -643,7 +736,10 @@ var Hans = (function () {
                 wrapperRight = _this.kdt.getDataset(el, 'codewrapperRight');
                 if (sourcedata === '. . .') {
                     if (domid !== '') {
-                        el = document.querySelector('#' + domid).parentNode;
+                        el = (_a = document.querySelector('#' + domid)) === null || _a === void 0 ? void 0 : _a.parentNode;
+                        if (!el) {
+                            break;
+                        }
                         resultArray.push(_this.kdt.getDataset(el, 'source'));
                     }
                 }
@@ -679,16 +775,6 @@ var Hans = (function () {
                 codedisplay.style.display = 'none';
             }
         };
-        this.checkSearchInViewport = function () {
-            var search = document.querySelector('.kfatalwrapper-outer .search-wrapper');
-            search.style.position = '';
-            search.style.top = '';
-            var rect = search.getBoundingClientRect();
-            if (rect.top < 0) {
-                search.style.position = 'fixed';
-                search.style.top = '0px';
-            }
-        };
         this.displayInfoBox = function (event, element) {
             event.stop = true;
             var box = element.nextElementSibling;
@@ -702,6 +788,9 @@ var Hans = (function () {
         this.displaySearch = function (event, element) {
             var instance = _this.kdt.getDataset(element, 'instance');
             var search = document.querySelector('#search-' + instance);
+            if (search === null) {
+                return;
+            }
             var viewportOffset;
             if (_this.kdt.hasClass(search, 'khidden')) {
                 _this.kdt.toggleClass(search, 'khidden');
@@ -734,9 +823,10 @@ var Hans = (function () {
         this.selectors.preventBubble = '.kodsp';
         this.selectors.displayInfoBox = '.kwrapper .kchild .kinfobutton';
         this.selectors.moveToViewport = '.kouterwrapper';
+        this.kdt = new Kdt();
+        this.initDraxx();
     }
     Hans.prototype.run = function () {
-        this.kdt = new Kdt();
         if (this.kdt.beenHere()) {
             return;
         }
@@ -744,7 +834,6 @@ var Hans = (function () {
         this.eventHandler = new Eventhandler(this.selectors.eventHandler);
         this.search = new Search(this.eventHandler, this.jumpTo);
         this.kdt.moveToBottom(this.selectors.moveToBottom);
-        this.initDraxx();
         this.eventHandler.addEvent(this.selectors.close, 'click', this.close);
         this.eventHandler.addEvent(this.selectors.toggle, 'click', this.toggle);
         this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.kdt.setSetting);
@@ -761,30 +850,17 @@ var Hans = (function () {
         }
         this.draxx.moveToViewport(this.selectors.moveToViewport);
     };
-    Hans.prototype.initDraxx = function () {
-        this.draxx = new Draxx('.kwrapper', '.kheadnote', function () {
-            var searchWrapper = document.querySelectorAll('.search-wrapper');
-            var viewportOffset;
-            for (var i = 0; i < searchWrapper.length; i++) {
-                viewportOffset = searchWrapper[i].getBoundingClientRect();
-                searchWrapper[i].style.position = 'fixed';
-                searchWrapper[i].style.top = viewportOffset.top + 'px';
-            }
-        }, function () {
-            var searchWrapper = document.querySelectorAll('.search-wrapper');
-            for (var i = 0; i < searchWrapper.length; i++) {
-                searchWrapper[i].style.position = 'absolute';
-                searchWrapper[i].style.top = '';
-            }
-        });
-    };
     Hans.prototype.setHighlighting = function (el, noHighlight) {
         var nests = this.kdt.getParents(el, '.knest');
         this.kdt.removeClass(nests, 'khidden');
         for (var i = 0; i < nests.length; i++) {
-            this.kdt.addClass([nests[i].previousElementSibling], 'kopened');
+            var parent_1 = nests[i].parentElement;
+            if (parent_1 === null) {
+                continue;
+            }
+            this.kdt.addClass([parent_1], 'kopened');
         }
-        if (noHighlight !== true) {
+        if (!noHighlight) {
             this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
             this.kdt.addClass([el], 'highlight-jumpto');
         }
@@ -799,6 +875,20 @@ var Hans = (function () {
 }());
 var Selectors = (function () {
     function Selectors() {
+        this.eventHandler = '';
+        this.moveToBottom = '';
+        this.close = '';
+        this.toggle = '';
+        this.setSetting = '';
+        this.resetSetting = '';
+        this.copyFrom = '';
+        this.displaySearch = '';
+        this.performSearch = '';
+        this.collapse = '';
+        this.generateCode = '';
+        this.preventBubble = '';
+        this.displayInfoBox = '';
+        this.moveToViewport = '';
     }
     return Selectors;
 }());
@@ -828,11 +918,15 @@ var SmokyGrey = (function (_super) {
             var kdt = _this.kdt;
             var setPayloadMaxHeight = _this.setPayloadMaxHeight.bind(_this);
             setTimeout(function () {
+                var _a;
                 var wrapper = kdt.getParents(element, '.kwrapper')[0];
                 if (typeof wrapper === 'undefined') {
                     return;
                 }
                 var body = wrapper.querySelector('.kdatabody');
+                if (body === null) {
+                    return;
+                }
                 var html = '';
                 var counter = 0;
                 var regex = /\\u([\d\w]{4})/gi;
@@ -855,14 +949,20 @@ var SmokyGrey = (function (_super) {
                 }
                 html = '<table><caption class="kheadline">' + kdt.translations.translate('tsAdditionalData') +
                     '</caption><tbody class="kdatabody">' + html + '</tbody></table>';
-                body.parentNode.parentNode.innerHTML = html;
+                ((_a = body.parentNode) === null || _a === void 0 ? void 0 : _a.parentNode).innerHTML = html;
                 setPayloadMaxHeight();
             }, 100);
         };
         _this.displaySearch = function (event, element) {
+            if (element.parentNode === null) {
+                return;
+            }
             var instance = _this.kdt.getDataset(element.parentNode, 'instance');
             var search = document.querySelector('#search-' + instance);
             var searchtab = document.querySelector('#' + instance + ' .ksearchbutton');
+            if (search === null || searchtab === null) {
+                return;
+            }
             if (_this.kdt.hasClass(search, 'khidden')) {
                 _this.kdt.toggleClass(search, 'khidden');
                 _this.kdt.toggleClass(searchtab, 'kactive');
@@ -877,7 +977,10 @@ var SmokyGrey = (function (_super) {
         _this.jumpTo = function (el, noHighlight) {
             _this.setHighlighting(el, noHighlight);
             var container = _this.kdt.getParents(el, '.kpayload');
-            container.push(document.querySelector('.kfatalwrapper-outer'));
+            var outerWrapper = document.querySelector('.kfatalwrapper-outer');
+            if (outerWrapper !== null) {
+                container.push(outerWrapper);
+            }
             if (container.length > 0) {
                 var destination_1 = el.getBoundingClientRect().top - container[0].getBoundingClientRect().top + container[0].scrollTop - 50;
                 var diff = Math.abs(container[0].scrollTop - destination_1);

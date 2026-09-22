@@ -35,7 +35,7 @@ class Translations {
   /**
    * Data storage for the translations
    */
-  protected translations: Object = {};
+  protected translations: Record<string, string> = {};
 
   /**
    * Set the translations
@@ -46,7 +46,7 @@ class Translations {
   constructor(selector: string, kdt: Kdt) {
     let dataElements = document.querySelectorAll(selector);
     let data: string;
-    let json: Object;
+    let json: Record<string, string> | false;
 
     // Load the translations from the elements.
     for (let i = 0; i < dataElements.length; i++) {

@@ -130,6 +130,9 @@ class SmokyGrey extends Hans {
       }
 
       let body = wrapper.querySelector('.kdatabody');
+      if (body === null) {
+        return;
+      }
       let html = '';
       let counter = 0;
       let regex = /\\u([\d\w]{4})/gi;
@@ -163,7 +166,7 @@ class SmokyGrey extends Hans {
         '</caption><tbody class="kdatabody">' + html + '</tbody></table>';
       // Meh, IE9 does not allow me to edit the contents of a table. I have to
       // redraw the whole thing.  :-(
-      (body.parentNode.parentNode as HTMLElement).innerHTML = html;
+      (body.parentNode?.parentNode as HTMLElement).innerHTML = html;
 
       // Since the additional data table might now be larger or smaller than,
       // we need to recalculate the height of the payload.
@@ -180,12 +183,17 @@ class SmokyGrey extends Hans {
    * @param {Node} element
    *   The element that was clicked.
    */
-  protected displaySearch = (event, element) => {
+  protected displaySearch = (event: Event, element: Node) => {
+    if (element.parentNode === null) {
+      return;
+    }
+    let instance: string = this.kdt.getDataset(element.parentNode as Element, 'instance');
+    let search: HTMLElement | null = document.querySelector('#search-' + instance);
+    let searchtab: HTMLElement | null = document.querySelector('#' + instance + ' .ksearchbutton');
 
-    let instance: string = this.kdt.getDataset(element.parentNode, 'instance');
-    let search: HTMLElement = document.querySelector('#search-' + instance);
-    let searchtab: HTMLElement = document.querySelector('#' + instance + ' .ksearchbutton');
-
+    if (search === null || searchtab === null) {
+      return;
+    }
     // Toggle display / hidden.
     if (this.kdt.hasClass(search, 'khidden')) {
       // Display it.
@@ -216,7 +224,10 @@ class SmokyGrey extends Hans {
 
     // Getting our scroll container
     let container: Node[] = this.kdt.getParents(el, '.kpayload');
-    container.push(document.querySelector('.kfatalwrapper-outer'));
+    let outerWrapper = document.querySelector('.kfatalwrapper-outer');
+    if (outerWrapper !== null) {
+      container.push(outerWrapper);
+    }
 
     if (container.length > 0) {
       // We need to find out in which direction we must go.

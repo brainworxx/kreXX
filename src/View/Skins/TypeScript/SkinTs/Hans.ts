@@ -44,24 +44,24 @@ class Hans {
    *
    * @var {Draxx}
    */
-  protected draxx: Draxx;
+  protected draxx!: Draxx;
 
   /**
    * Out DOM search.
    *
    * @var {Search}
    */
-  protected search: Search;
+  protected search: Search | undefined;
 
   /**
    * The event handler.
    *
-   * @var {Evenhandler}
+   * @var {Eventhandler}
    */
-  protected eventHandler: Eventhandler;
+  protected eventHandler: Eventhandler | undefined;
 
   /**
-   * Here we store the selectors for the ruin initialization.
+   * Here we store the selectors for the ruin initialisation.
    *
    * @var {Selectors}
    */
@@ -93,14 +93,43 @@ class Hans {
     this.selectors.preventBubble = '.kodsp';
     this.selectors.displayInfoBox = '.kwrapper .kchild .kinfobutton';
     this.selectors.moveToViewport = '.kouterwrapper';
+    // Init our libs before usage.
+    this.kdt = new Kdt();
+    // Initialize the draggable.
+    this.initDraxx();
+  }
+
+  /**
+   * Initialize the draggable.
+   */
+  protected initDraxx = (): void => {
+    this.draxx = new Draxx(
+      '.kwrapper',
+      '.kheadnote',
+      function () {
+        let searchWrapper: NodeList = document.querySelectorAll('.search-wrapper');
+        let viewportOffset: DOMRect;
+        for (let i = 0; i < searchWrapper.length; i++) {
+          viewportOffset = (searchWrapper[i] as HTMLElement).getBoundingClientRect();
+          (searchWrapper[i] as HTMLElement).style.position = 'fixed';
+          (searchWrapper[i] as HTMLElement).style.top = viewportOffset.top + 'px';
+        }
+      },
+      function () {
+        let searchWrapper = document.querySelectorAll('.search-wrapper');
+        for (let i = 0; i < searchWrapper.length; i++) {
+          (searchWrapper[i] as HTMLElement).style.position = 'absolute';
+          (searchWrapper[i] as HTMLElement).style.top = '';
+        }
+      }
+    );
   }
 
   /**
    * Getting our act together.
    */
   public run(): void {
-    // Init our libs before usage.
-    this.kdt = new Kdt();
+
     if (this.kdt.beenHere()) {
       // We only do this once.
       return;
@@ -112,9 +141,6 @@ class Hans {
     // In case we are handling a broken html structure, we must move everything
     // to the bottom.
     this.kdt.moveToBottom(this.selectors.moveToBottom);
-
-    // Initialize the draggable.
-    this.initDraxx();
 
     /**
      * Register kreXX close button function.
@@ -216,32 +242,6 @@ class Hans {
   }
 
   /**
-   * Initialize the draggable.
-   */
-  protected initDraxx(): void {
-    this.draxx = new Draxx(
-      '.kwrapper',
-      '.kheadnote',
-      function () {
-        let searchWrapper: NodeList = document.querySelectorAll('.search-wrapper');
-        let viewportOffset: DOMRect;
-        for (let i = 0; i < searchWrapper.length; i++) {
-          viewportOffset = (searchWrapper[i] as HTMLElement).getBoundingClientRect();
-          (searchWrapper[i] as HTMLElement).style.position = 'fixed';
-          (searchWrapper[i] as HTMLElement).style.top = viewportOffset.top + 'px';
-        }
-      },
-      function () {
-        let searchWrapper = document.querySelectorAll('.search-wrapper');
-        for (let i = 0; i < searchWrapper.length; i++) {
-          (searchWrapper[i] as HTMLElement).style.position = 'absolute';
-          (searchWrapper[i] as HTMLElement).style.top = '';
-        }
-      }
-    );
-  }
-
-  /**
    * Hides or displays the nest under an expandable element.
    *
    * @event click
@@ -254,7 +254,11 @@ class Hans {
     this.kdt.toggleClass(element, 'kopened');
 
     // Toggle all siblings.
-    let sibling: Element = element.nextElementSibling;
+    let sibling: Element | null = element.nextElementSibling;
+    if (sibling === null) {
+      return;
+    }
+
     do {
       this.kdt.toggleClass(sibling, 'khidden');
       sibling = sibling.nextElementSibling;
@@ -274,10 +278,14 @@ class Hans {
     this.kdt.removeClass(nests, 'khidden');
     // We need to expand them all.
     for (let i = 0; i < nests.length; i++) {
-      this.kdt.addClass([(nests[i] as Element).previousElementSibling], 'kopened');
+      let parent: Element | null = (nests[i] as Element).parentElement;
+      if (parent === null) {
+        continue;
+      }
+      this.kdt.addClass([parent], 'kopened');
     }
 
-    if (noHighlight !== true) {
+    if (!noHighlight) {
       // Remove old highlighting.
       this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
       // Highlight new one.
@@ -301,21 +309,20 @@ class Hans {
 
     // Getting our scroll container
     let destination: number;
-    let container: Element | null = document.querySelector('.kfatalwrapper-outer');
+    let container: HTMLElement | null = document.querySelector('html');
     if (container === null) {
-      // Normal scrolling
-      container = document.querySelector('html');
-      // The html container may not accept any scrollTop value.
-      ++container.scrollTop;
-      if (container.scrollTop === 0 || container.scrollHeight <= container.clientHeight) {
-        container = document.querySelector('body');
-      }
-      --container.scrollTop;
-      destination = el.getBoundingClientRect().top + container.scrollTop - 50;
-    } else {
-      // Fatal Error scrolling.
-      destination = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
+      return;
     }
+    // The html container may not accept any scrollTop value.
+    ++container.scrollTop;
+    if (container.scrollTop === 0 || container.scrollHeight <= container.clientHeight) {
+      container = document.querySelector('body');
+    }
+    if (container === null) {
+      return;
+    }
+    --container.scrollTop;
+    destination = el.getBoundingClientRect().top + container.scrollTop - 50;
 
     let diff: number = Math.abs(container.scrollTop - destination);
     if (diff < 250) {
@@ -361,7 +368,7 @@ class Hans {
    */
   protected close = (event: Event, element: Element): void => {
     let instance: string = this.kdt.getDataset(element, 'instance');
-    let elInstance: HTMLElement = document.querySelector('#' + instance);
+    let elInstance: HTMLElement | null = document.querySelector('#' + instance);
 
     // Remove it nice and "slow".
     let opacity: number = 1;
@@ -369,10 +376,16 @@ class Hans {
       if (opacity < 0) {
         // It's invisible now, so we clear the timer and remove it from the DOM.
         clearInterval(interval);
+        if (elInstance === null || elInstance.parentNode === null) {
+          return;
+        }
         elInstance.parentNode.removeChild(elInstance);
         return;
       }
       opacity -= 0.1;
+      if (elInstance === null) {
+        return;
+      }
       elInstance.style.opacity = opacity.toString();
     }, 20);
   };
@@ -402,7 +415,7 @@ class Hans {
    */
   protected generateCode = (event: Event, element: Element): void => {
     // We don't want to bubble the click any further.
-    event.stop = true;
+    (event as StoppableEvent).stop = true;
 
     let codedisplay: HTMLElement = (element.nextElementSibling as HTMLElement);
     let resultArray: string[] = [];
@@ -413,7 +426,7 @@ class Hans {
     let wrapperRight: string = '';
 
     // Get the first element
-    let el: Element | Node = (this.kdt.getParents(element, 'li.kchild')[0] as Element);
+    let el: Element | Node | ParentNode | null | undefined = (this.kdt.getParents(element, 'li.kchild')[0] as Element);
 
     // Start the loop to collect all the date
     while (el) {
@@ -428,7 +441,10 @@ class Hans {
         if (domid !== '') {
           // We need to get a new el, because we are facing a recursion, and the
           // current path is not really reachable.
-          el = document.querySelector('#' + domid).parentNode;
+          el = document.querySelector('#' + domid)?.parentNode;
+          if (!el) {
+            break;
+          }
           // Get the source, again.
           resultArray.push(this.kdt.getDataset((el as Element), 'source'));
         }
@@ -481,26 +497,6 @@ class Hans {
   };
 
   /**
-   * Checks if the search form is inside the viewport. If not, fixes it on top.
-   * Gets triggered on,y when scolling the fatal error handler.
-   */
-  protected checkSearchInViewport = (): void => {
-    // Get the search
-    let search: HTMLElement = document.querySelector('.kfatalwrapper-outer .search-wrapper');
-    // Reset the inline styles
-    search.style.position = '';
-    search.style.top = '';
-
-    // Measure it!
-    let rect = search.getBoundingClientRect();
-    if (rect.top < 0) {
-      // Set it to the top
-      search.style.position = 'fixed';
-      search.style.top = '0px';
-    }
-  };
-
-  /**
    * Toggle the display of the infobox.
    *
    * @param {Event} event
@@ -510,7 +506,7 @@ class Hans {
    */
   protected displayInfoBox = (event: Event, element: Element): void => {
     // We don't want to bubble the click any further.
-    event.stop = true;
+    (event as StoppableEvent).stop = true;
 
     // Find the corresponding info box.
     let box: HTMLElement = (element.nextElementSibling as HTMLElement);
@@ -533,7 +529,10 @@ class Hans {
    */
   protected displaySearch = (event: Event, element: Node): void => {
     let instance: string = this.kdt.getDataset((element as Element), 'instance');
-    let search: HTMLElement = document.querySelector('#search-' + instance);
+    let search: HTMLElement | null = document.querySelector('#search-' + instance);
+    if (search === null) {
+      return;
+    }
     let viewportOffset;
 
     // Toggle display / hidden.

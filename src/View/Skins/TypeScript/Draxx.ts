@@ -56,21 +56,21 @@ class Draxx {
   /**
    * The style element of the stuff we are dragging around.
    */
-  protected elContentStyle: CSSStyleDeclaration;
+  protected elContentStyle: CSSStyleDeclaration | undefined;
 
   /**
    * The current x-axis offset.
    *
    * @var {number}
    */
-  protected offSetX: number;
+  protected offSetX: number = 0;
 
   /**
    * The current y-axis offset.
    *
    * @var {number}
    */
-  protected offSetY: number;
+  protected offSetY: number = 0;
 
   /**
    * The kreXX dom tools
@@ -95,7 +95,7 @@ class Draxx {
 
     let elements: NodeList = document.querySelectorAll(handle);
     for (let i = 0; i < elements.length; i++) {
-      elements[i].addEventListener('mousedown', this.startDraxx);
+      elements[i].addEventListener('mousedown', this.startDraxx as EventListener);
     }
   }
 
@@ -153,7 +153,11 @@ class Draxx {
     // and there are elements above that have
     // - margin: top or
     // - margin: bottom
-    let bodyStyle: CSSStyleDeclaration = getComputedStyle(document.querySelector('body'));
+    let body: HTMLElement | null = document.querySelector('body');
+    if (body === null) {
+      return;
+    }
+    let bodyStyle: CSSStyleDeclaration = getComputedStyle(body);
     if (bodyStyle.position === 'relative') {
       let relOffsetY: number;
       let relOffsetX: number;
@@ -167,8 +171,11 @@ class Draxx {
         // We need to look for another offset.
         // Now we need to get all elements above the current kreXX element and
         // get their margins (top and button)
-        let prev: Element = elContent.previousElementSibling ?? elContent.parentElement;
+        let prev: Element | null = elContent.previousElementSibling ?? elContent.parentElement;
         do {
+          if (prev === null) {
+            break;
+          }
           relOffsetY = parseInt(getComputedStyle(prev).marginTop, 10);
           prev = prev.previousElementSibling;
           // We will stop if we ran out of elements or if we have found the
@@ -215,6 +222,10 @@ class Draxx {
   protected drag = (event: MouseEvent): void => {
     event.preventDefault();
     event.stopPropagation();
+
+    if (!this.elContentStyle) {
+      return;
+    }
 
     this.elContentStyle.left = (event.pageX + this.offSetX) + "px";
     this.elContentStyle.top = (event.pageY + this.offSetY) + "px";

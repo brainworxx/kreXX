@@ -36,13 +36,12 @@ class Search {
    * Here we save the search results
    *
    * This is multidimensional array:
-   * results[kreXX-instance][search text][search results]
-   *                                     [pointer]
+   * results[kreXX-instance][search text][search results][pointer]
    * The [pointer] is the key of the [search result] where
    * you would jump to when you click "next"
    *
    */
-  protected results = [];
+  protected results: SearchResultsByInstance = {};
 
   /**
    * The kreXX dom tools.
@@ -95,11 +94,13 @@ class Search {
   /**
    * Reset the search results, because we now have new search options.
    *
+   * @var {Event} event
+   *
    * @event change
    */
   protected clearSearch = (event: Event): void => {
     // Wipe our instance data, nothing more
-    this.results[this.kdt.getDataset((event.target as Element), 'instance')] = [];
+    this.results[this.kdt.getDataset((event.target as Element), 'instance')] = {};
   };
 
   /**
@@ -113,7 +114,14 @@ class Search {
    */
   protected displaySearchOptions = (event: Event, element: Node): void => {
     // Get the options and switch the display class.
-    this.kdt.toggleClass((element.parentNode as Element).nextElementSibling, 'khidden');
+    if (element.parentNode === null) {
+      return;
+    }
+    let nextElementSibling = (element.parentNode as Element).nextElementSibling;
+    if (nextElementSibling === null) {
+      return;
+    }
+    this.kdt.toggleClass(nextElementSibling, 'khidden');
   };
 
   /**
@@ -125,27 +133,42 @@ class Search {
    *   The element that was clicked.
    */
   public performSearch = (event: Event, element: Element): void => {
-    // Hide the search options.
-    this.kdt.addClass([(element.parentNode as HTMLElement).nextElementSibling], 'khidden');
+    let parentNode: Element = element.parentNode as Element;
+    if (parentNode === null) {
+      return;
+    }
+    let grandParentNode = parentNode.parentNode as Element;
+    if (grandParentNode === null) {
+      return;
+    }
+    let patentSibling = (parentNode as HTMLElement).nextElementSibling
+    if (patentSibling !== null) {
+      // Hide the search options.
+      this.kdt.addClass([patentSibling], 'khidden');
+    }
 
     // Stitching together our configuration.
     let config: SearchConfig = new SearchConfig();
-    config.searchtext = (element.parentNode.querySelector('.ksearchfield') as HTMLInputElement).value;
-    config.caseSensitive = (element.parentNode.parentNode.querySelector('.ksearchcase') as HTMLInputElement).checked;
-    config.searchKeys = (element.parentNode.parentNode.querySelector('.ksearchkeys') as HTMLInputElement).checked;
-    config.searchShort = (element.parentNode.parentNode.querySelector('.ksearchshort') as HTMLInputElement).checked;
-    config.searchLong = (element.parentNode.parentNode.querySelector('.ksearchlong') as HTMLInputElement).checked;
-    config.searchWhole = (element.parentNode.parentNode.querySelector('.ksearchwhole') as HTMLInputElement).checked;
+    config.searchtext = (parentNode.querySelector('.ksearchfield') as HTMLInputElement).value;
+    config.caseSensitive = (grandParentNode.querySelector('.ksearchcase') as HTMLInputElement).checked;
+    config.searchKeys = (grandParentNode.querySelector('.ksearchkeys') as HTMLInputElement).checked;
+    config.searchShort = (grandParentNode.querySelector('.ksearchshort') as HTMLInputElement).checked;
+    config.searchLong = (grandParentNode.querySelector('.ksearchlong') as HTMLInputElement).checked;
+    config.searchWhole = (grandParentNode.querySelector('.ksearchwhole') as HTMLInputElement).checked;
 
     // Apply our configuration.
-    if (config.caseSensitive === false) {
+    if (!config.caseSensitive) {
       config.searchtext = config.searchtext.toLowerCase();
     }
 
     // Nothing to search for.
+    let searchStateElement = parentNode.querySelector('.ksearch-state');
+    if (searchStateElement === null) {
+      return;
+    }
     if (config.searchtext.length === 0) {
       // Not enough chars as a searchtext!
-      element.parentNode.querySelector('.ksearch-state').textContent = this.kdt.translations.translate('tsEnterText');
+      searchStateElement.textContent = this.kdt.translations.translate('tsEnterText');
       return;
     }
 
@@ -156,9 +179,11 @@ class Search {
       this.retrievePayload(config);
 
       // We need to un-collapse everything, in case it is collapsed.
-      let collapsed: NodeList = config.payload.querySelectorAll('.kcollapsed');
-      for (let i: number = 0; i < collapsed.length; i++) {
-        this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
+      let collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
+      if (collapsed !== undefined) {
+        for (let i: number = 0; i < collapsed.length; i++) {
+          this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
+        }
       }
 
       // Are we already having some results?
@@ -197,13 +222,13 @@ class Search {
       }
 
       // Feedback about where we are
-      element.parentNode.querySelector('.ksearch-state').textContent =
+      searchStateElement.textContent =
         (pointer + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
 
       this.results[config.instance][config.searchtext]['pointer'] = pointer;
     } else {
       // Not enough chars as a searchtext!
-      element.parentNode.querySelector('.ksearch-state').textContent = this.kdt.translations.translate('tsTooSmall');
+      searchStateElement.textContent = this.kdt.translations.translate('tsTooSmall');
     }
   };
 
@@ -214,7 +239,7 @@ class Search {
    */
   protected retrievePayload = (config: SearchConfig): void => {
     // We may need to search in a specific part of the payload.
-    let tab: Element = document.querySelector('#' + config.instance + ' .ktab.kactive');
+    let tab: Element|null = document.querySelector('#' + config.instance + ' .ktab.kactive');
     let additionalClasses: string = '';
 
     if (tab !== null) {
@@ -235,35 +260,39 @@ class Search {
 
     // Apply our configuration.
     let selector = [];
-    if (config.searchKeys === true) {
+    if (config.searchKeys) {
       selector.push('li.kchild span.kname');
     }
-    if (config.searchShort === true) {
+    if (config.searchShort) {
       selector.push('li.kchild span.kshort')
     }
-    if (config.searchLong === true) {
+    if (config.searchLong) {
       selector.push('li div.kpreview');
     }
 
     // Get a new list of elements
-    this.results[config.instance] = [];
-    this.results[config.instance][config.searchtext] = [];
+    this.results[config.instance] = {};
+    this.results[config.instance][config.searchtext] = {data: [], pointer: 0};
     this.results[config.instance][config.searchtext]['data'] = [];
-    this.results[config.instance][config.searchtext]['pointer'] = [];
+    this.results[config.instance][config.searchtext]['pointer'] = 0;
 
     // Poll out payload for elements to search
     if (selector.length > 0) {
-      let list: NodeList;
-      list = config.payload.querySelectorAll(selector.join(', '));
+      let list: NodeList | undefined;
+      list = config.payload?.querySelectorAll(selector.join(', '));
+      if (typeof list === "undefined") {
+        return;
+      }
       let textContent: string = '';
       for (let i: number = 0; i < list.length; ++i) {
         // Does it contain our search string?
-        textContent = list[i].textContent;
-        if (config.caseSensitive === false) {
+        textContent = list[i].textContent ?? '';
+        if (!config.caseSensitive) {
           textContent = textContent.toLowerCase();
         }
-        if ((config.searchWhole === true && textContent === config.searchtext) ||
-          (config.searchWhole === false && textContent.indexOf(config.searchtext) > -1)
+        if (
+          (config.searchWhole && textContent === config.searchtext)
+          || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)
         ) {
           this.kdt.toggleClass((list[i] as Element), 'ksearch-found-highlight');
           this.results[config.instance][config.searchtext]['data'].push(list[i]);
@@ -293,6 +322,13 @@ class Search {
       return;
     }
 
-    this.eventHandler.triggerEvent((event.target as Node).parentNode.querySelectorAll('.ksearchnow')[1], 'click');
+    if (event.target === null) {
+      return;
+    }
+    let parentNode = (event.target as Node).parentNode;
+    if (parentNode === null) {
+      return;
+    }
+    this.eventHandler.triggerEvent(parentNode.querySelectorAll('.ksearchnow')[1], 'click');
   };
 }

@@ -31,11 +31,13 @@
  *   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+type StoppableEvent = Event & { stop?: boolean };
+
 class Kdt {
   /**
    * The jump-to implementation.
    */
-  protected jumpTo: Function;
+  protected jumpTo: Function = function () {};
 
   /**
    * Our translations class.
@@ -79,8 +81,8 @@ class Kdt {
    */
   public getParents(el: Node, selector: string): Node[] {
     let result: Node[] = [];
-    let parent: Node = el.parentNode;
-    let body: Node = document.querySelector('body');
+    let parent: Node | null = el.parentNode;
+    let body: Node | null = document.querySelector('body');
 
     while (parent !== null) {
       // Check for classname
@@ -191,9 +193,9 @@ class Kdt {
     } else {
       // no class list there, we need to do this by hand.
       /** @type {Array} */
-      let classes = el.className.split(' ');
+      let classes: Array<any> = el.className.split(' ');
       /** @type {number} */
-      let existingIndex = classes.indexOf(className);
+      let existingIndex: number = classes.indexOf(className);
 
       if (existingIndex >= 0) {
         classes.splice(existingIndex, 1);
@@ -230,7 +232,7 @@ class Kdt {
       return '';
     }
 
-    if (mustEscape === true) {
+    if (mustEscape) {
       return result.replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -264,7 +266,11 @@ class Kdt {
    */
   public selectText(el: Element): void {
     let range: Range = document.createRange();
-    let selection: Selection = window.getSelection();
+    let selection: Selection | null = window.getSelection();
+
+    if (selection === null) {
+      return;
+    }
 
     range.selectNodeContents(el);
     selection.removeAllRanges();
@@ -277,12 +283,12 @@ class Kdt {
    * @param {string} cookieName
    *   Name of the cookie.
    *
-   * @return {object}
+   * @return {Record<string, string>}
    *   The value, set in the cookie.
    */
-  public readSettings(cookieName: string): object {
-    let match: RegExpMatchArray = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
-    let result: object = {};
+  public readSettings(cookieName: string): Record<string, string> {
+    let match: RegExpMatchArray | null = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
+    let result: Record<string, string> = {};
     if (match === null) {
       return result;
     }
@@ -309,7 +315,7 @@ class Kdt {
     event.stopPropagation();
 
     // Get the old value.
-    let settings = this.readSettings('KrexxDebugSettings');
+    let settings: Record<string, string> = this.readSettings('KrexxDebugSettings');
 
     // Get new settings from element.
     let newValue: string | number = (event.target as HTMLInputElement).value.replace('"', '').replace("'", '');
@@ -332,13 +338,8 @@ class Kdt {
 
   /**
    * Resets all values in the local cookie settings.
-   *
-   * @param {Event} event
-   *   The click event.
-   * @param {Node} element
-   *   The element that was clicked.
    */
-  public resetSetting = (event: Event, element: Node): void => {
+  public resetSetting = (): void => {
     // We do not delete the cookie, we simply remove all settings in it.
     let date: Date = new Date();
     date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
@@ -354,7 +355,7 @@ class Kdt {
    * @param {string} string
    * @returns {Object|boolean}
    */
-  public parseJson(string: string): Object | boolean {
+  public parseJson(string: string): Record<string, string> | false {
     try {
       return JSON.parse(string);
     } catch (error) {
@@ -376,10 +377,10 @@ class Kdt {
 
     for (let i = 0; i < elements.length; i++) {
       // Check if their parent is the body tag.
-      if (elements[i].parentNode.nodeName.toUpperCase() !== 'BODY') {
+      if (elements[i]?.parentNode?.nodeName.toUpperCase() !== 'BODY') {
         // Meh, we are handling some broken DOM. We need to move it
         // to the bottom.
-        document.querySelector('body').appendChild(elements[i]);
+        document.querySelector('body')?.appendChild(elements[i]);
       }
     }
   }
@@ -398,7 +399,7 @@ class Kdt {
    *   The element that was clicked.
    */
   public collapse = (event: Event, element: Element): void => {
-    event.stop = true;
+    (event as StoppableEvent).stop = true;
 
     let wrapper: Node = this.getParents(element, '.kwrapper')[0];
 
@@ -442,25 +443,26 @@ class Kdt {
    * @event click
    * @param {Event} event
    *   The click event.
-   * @param {HTMLElement} element
+   * @param {Element} element
    *   The element that was clicked.
    */
-  public copyFrom = (event: Event, element: HTMLElement): void => {
+  public copyFrom = (event: Event, element: Element): void => {
     let i: number;
 
     // Get the DOM id of the original analysis.
-    let domid: string = this.getDataset((element as Element), 'domid');
-    if (domid === '') {
+    let domid: string = this.getDataset(element, 'domid');
+    if (domid === '' || element.parentNode === null) {
       // Do nothing.
       return;
     }
+
     // Get the analysis data.
-    let orgNest: Node = document.querySelector('#' + domid);
+    let orgNest: HTMLElement | null = document.querySelector('#' + domid);
+    // Get the EL of the data (element with the arrow).
+    let orgEl: Node | null | undefined = orgNest?.previousElementSibling;
 
     // Does the element exist?
-    if (orgNest) {
-      // Get the EL of the data (element with the arrow).
-      let orgEl: Node = (orgNest as HTMLElement).previousElementSibling;
+    if (orgNest && orgEl) {
       // Clone the analysis data and insert it after the recursion EL.
       element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
       // Clone the EL of the analysis data and insert it after the recursion EL.
@@ -470,11 +472,13 @@ class Kdt {
       // Change the key of the just cloned EL to the one from the recursion.
       (this.findInDomlistByClass(newEl.children, 'kname') as HTMLElement).innerHTML = (this.findInDomlistByClass(element.children, 'kname') as HTMLElement).innerHTML;
       // We  need to remove the ids from the copy to avoid double ids.
-      let allChildren = newEl.nextElementSibling.getElementsByTagName("*");
-      for (i = 0; i < allChildren.length; i++) {
-        allChildren[i].removeAttribute('id');
+      let allChildren = newEl.nextElementSibling?.getElementsByTagName("*");
+      if (allChildren) {
+        for (i = 0; i < allChildren.length; i++) {
+          allChildren[i].removeAttribute('id');
+        }
       }
-      newEl.nextElementSibling.removeAttribute('id');
+      newEl.nextElementSibling?.removeAttribute('id');
 
       // Now we add the dom-id to the clone, as a data-field. this way we can
       // make sure to always produce the right path to this value during source
@@ -490,16 +494,18 @@ class Kdt {
 
       // We don't need the infobox on newEl, so we will remove it.
       if (newInfobox !== null) {
-        newInfobox.parentNode.removeChild(newInfobox);
+        newInfobox.parentNode?.removeChild(newInfobox);
       }
       if (newButton !== null) {
-        newButton.parentNode.removeChild(newButton);
+        newButton.parentNode?.removeChild(newButton);
       }
 
       // We copy the Infobox from the recursion to the newEl, if it exists.
       if (realInfobox !== null) {
-        newEl.appendChild(realButton);
         newEl.appendChild(realInfobox);
+      }
+      if (realButton !== null) {
+        newEl.appendChild(realButton);
       }
 
       // Remove the recursion EL.
