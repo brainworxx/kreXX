@@ -824,12 +824,12 @@ var Hans = (function () {
         this.selectors.displayInfoBox = '.kwrapper .kchild .kinfobutton';
         this.selectors.moveToViewport = '.kouterwrapper';
         this.kdt = new Kdt();
-        this.initDraxx();
     }
     Hans.prototype.run = function () {
         if (this.kdt.beenHere()) {
             return;
         }
+        this.initDraxx();
         this.kdt.setJumpTo(this.jumpTo);
         this.eventHandler = new Eventhandler(this.selectors.eventHandler);
         this.search = new Search(this.eventHandler, this.jumpTo);

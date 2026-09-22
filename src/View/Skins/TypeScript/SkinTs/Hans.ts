@@ -95,8 +95,6 @@ class Hans {
     this.selectors.moveToViewport = '.kouterwrapper';
     // Init our libs before usage.
     this.kdt = new Kdt();
-    // Initialize the draggable.
-    this.initDraxx();
   }
 
   /**
@@ -134,6 +132,10 @@ class Hans {
       // We only do this once.
       return;
     }
+
+    // Initialize the draggable.
+    this.initDraxx();
+
     this.kdt.setJumpTo(this.jumpTo);
     this.eventHandler = new Eventhandler(this.selectors.eventHandler);
     this.search = new Search(this.eventHandler, this.jumpTo);
