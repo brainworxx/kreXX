@@ -280,11 +280,11 @@ class Hans {
     this.kdt.removeClass(nests, 'khidden');
     // We need to expand them all.
     for (let i = 0; i < nests.length; i++) {
-      let parent: Element | null = (nests[i] as Element).parentElement;
-      if (parent === null) {
+      let prevSibling: Element | null = (nests[i] as Element).previousElementSibling;
+      if (prevSibling === null) {
         continue;
       }
-      this.kdt.addClass([parent], 'kopened');
+      this.kdt.addClass([prevSibling], 'kopened');
     }
 
     if (!noHighlight) {

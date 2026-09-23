@@ -854,11 +854,11 @@ var Hans = (function () {
         var nests = this.kdt.getParents(el, '.knest');
         this.kdt.removeClass(nests, 'khidden');
         for (var i = 0; i < nests.length; i++) {
-            var parent_1 = nests[i].parentElement;
-            if (parent_1 === null) {
+            var prevSibling = nests[i].previousElementSibling;
+            if (prevSibling === null) {
                 continue;
             }
-            this.kdt.addClass([parent_1], 'kopened');
+            this.kdt.addClass([prevSibling], 'kopened');
         }
         if (!noHighlight) {
             this.kdt.removeClass('.highlight-jumpto', 'highlight-jumpto');
