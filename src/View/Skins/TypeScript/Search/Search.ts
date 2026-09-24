@@ -141,15 +141,15 @@ class Search {
     if (grandParentNode === null) {
       return;
     }
-    let patentSibling = (parentNode as HTMLElement).nextElementSibling
-    if (patentSibling !== null) {
+    let parentSibling = (parentNode as HTMLElement).nextElementSibling
+    if (parentSibling !== null) {
       // Hide the search options.
-      this.kdt.addClass([patentSibling], 'khidden');
+      this.kdt.addClass([parentSibling], 'khidden');
     }
 
     // Stitching together our configuration.
     let config: SearchConfig = new SearchConfig();
-    config.searchtext = (parentNode.querySelector('.ksearchfield') as HTMLInputElement).value;
+    config.searchtext = (grandParentNode.querySelector('.ksearchfield') as HTMLInputElement).value;
     config.caseSensitive = (grandParentNode.querySelector('.ksearchcase') as HTMLInputElement).checked;
     config.searchKeys = (grandParentNode.querySelector('.ksearchkeys') as HTMLInputElement).checked;
     config.searchShort = (grandParentNode.querySelector('.ksearchshort') as HTMLInputElement).checked;
@@ -173,63 +173,63 @@ class Search {
     }
 
     // We only search for more than 3 chars.
-    if (config.searchtext.length > 2 || config.searchWhole) {
-      config.instance = this.kdt.getDataset(element, 'instance');
-
-      this.retrievePayload(config);
-
-      // We need to un-collapse everything, in case it is collapsed.
-      let collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
-      if (collapsed !== undefined) {
-        for (let i: number = 0; i < collapsed.length; i++) {
-          this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
-        }
-      }
-
-      // Are we already having some results?
-      if (typeof this.results[config.instance] !== "undefined") {
-        if (typeof this.results[config.instance][config.searchtext] === "undefined") {
-          this.refreshResultlist(config);
-        }
-      } else {
-        this.refreshResultlist(config);
-      }
-
-      let pointer: number = this.results[config.instance][config.searchtext]['pointer'];
-
-      // Set the pointer to the next or previous element
-      let direction: string = this.kdt.getDataset(element, 'direction');
-      if (direction === 'forward') {
-        pointer++;
-      } else {
-        pointer--;
-      }
-
-      // Do we have an element? We may need to adjust the pointer.
-      if (typeof this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
-        if (direction === 'forward') {
-          // There is no next element, we go back to the first one.
-          pointer = 0;
-        } else {
-          // There is no previous element, we go forward to the last one.
-          pointer = this.results[config.instance][config.searchtext]['data'].length - 1;
-        }
-      }
-      // Check again.
-      if (this.results[config.instance][config.searchtext]['data'][pointer]) {
-        // Now we simply jump to the element in the array.
-        this.jumpTo(this.results[config.instance][config.searchtext]['data'][pointer]);
-      }
-
-      // Feedback about where we are
-      searchStateElement.textContent =
-        (pointer + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
-
-      this.results[config.instance][config.searchtext]['pointer'] = pointer;
-    } else {
+    if (config.searchtext.length < 3 && !config.searchWhole) {
       // Not enough chars as a searchtext!
       searchStateElement.textContent = this.kdt.translations.translate('tsTooSmall');
+      return;
     }
+
+    config.instance = this.kdt.getDataset(element, 'instance');
+
+    this.retrievePayload(config);
+
+    // We need to un-collapse everything, in case it is collapsed.
+    let collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
+    if (collapsed !== undefined) {
+      for (let i: number = 0; i < collapsed.length; i++) {
+        this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
+      }
+    }
+
+    // Are we already having some results?
+    if (typeof this.results[config.instance] !== "undefined"
+      || typeof this.results[config.instance][config.searchtext] !== "undefined"
+    ) {
+      this.refreshResultlist(config);
+    }
+
+    let pointer: number = this.results[config.instance][config.searchtext]['pointer'];
+
+    // Set the pointer to the next or previous element
+    let direction: string = this.kdt.getDataset(element, 'direction');
+    if (direction === 'forward') {
+      pointer++;
+    } else {
+      pointer--;
+    }
+
+    // Do we have an element? We may need to adjust the pointer.
+    if (typeof this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
+      if (direction === 'forward') {
+        // There is no next element, we go back to the first one.
+        pointer = 0;
+      } else {
+        // There is no previous element, we go forward to the last one.
+        pointer = this.results[config.instance][config.searchtext]['data'].length - 1;
+      }
+    }
+
+    // Check again.
+    if (this.results[config.instance][config.searchtext]['data'][pointer]) {
+      // Now we simply jump to the element in the array.
+      this.jumpTo(this.results[config.instance][config.searchtext]['data'][pointer]);
+    }
+
+    // Feedback about where we are
+    searchStateElement.textContent =
+      (pointer + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
+
+    this.results[config.instance][config.searchtext]['pointer'] = pointer;
   };
 
   /**

@@ -223,43 +223,36 @@ class SmokyGrey extends Hans {
     this.setHighlighting(el, noHighlight);
 
     // Getting our scroll container
-    let container: Node[] = this.kdt.getParents(el, '.kpayload');
-    let outerWrapper = document.querySelector('.kfatalwrapper-outer');
-    if (outerWrapper !== null) {
-      container.push(outerWrapper);
+    let container: HTMLElement = (this.kdt.getParents(el, '.kpayload')[0] as HTMLElement);
+
+    // We need to find out in which direction we must go.
+    // We also must determine the speed we want to travel.
+    let destination: number = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
+    let diff: number = Math.abs(container.scrollTop - destination);
+    let step: number;
+    if (container.scrollTop < destination) {
+      // Forward.
+      step = Math.round(diff / 12);
+    } else {
+      // Backward.
+      step = Math.round(diff / 12) * -1;
     }
 
-    if (container.length > 0) {
-      // We need to find out in which direction we must go.
-      // We also must determine the speed we want to travel.
+    // We also need to check if the setting of the new value was successful.
+    let lastValue: number = container.scrollTop;
 
-      let destination: number = el.getBoundingClientRect().top - (container[0] as Element).getBoundingClientRect().top + (container[0] as Element).scrollTop - 50;
-      let diff: number = Math.abs((container[0] as Element).scrollTop - destination);
-      let step: number;
-      if ((container[0] as Element).scrollTop < destination) {
-        // Forward.
-        step = Math.round(diff / 12);
-      } else {
-        // Backward.
-        step = Math.round(diff / 12) * -1;
+    // Make sure to end the last interval before starting a new one.
+    clearInterval(this.jumpToInterval);
+    let interval: number = this.jumpToInterval = setInterval(function () {
+      container.scrollTop += step;
+      if (Math.abs(container.scrollTop - destination) <= Math.abs(step) || container.scrollTop === lastValue) {
+        // We are here now, the next step would take us too far.
+        // So we jump there right now and then clear the interval.
+        container.scrollTop = destination;
+        clearInterval(interval);
       }
-
-      // We also need to check if the setting of the new value was successful.
-      let lastValue: number = (container[0] as Element).scrollTop;
-
-      // Make sure to end the last interval before starting a new one.
-      clearInterval(this.jumpToInterval);
-      let interval: number = this.jumpToInterval = setInterval(function () {
-        (container[0] as Element).scrollTop += step;
-        if (Math.abs((container[0] as Element).scrollTop - destination) <= Math.abs(step) || (container[0] as Element).scrollTop === lastValue) {
-          // We are here now, the next step would take us too far.
-          // So we jump there right now and then clear the interval.
-          (container[0] as Element).scrollTop = destination;
-          clearInterval(interval);
-        }
-        lastValue = (container[0] as Element).scrollTop;
-      }, 1);
-    }
+      lastValue = container.scrollTop;
+    }, 1);
   };
 
   /**
