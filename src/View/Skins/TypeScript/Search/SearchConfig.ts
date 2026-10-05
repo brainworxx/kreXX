@@ -43,4 +43,5 @@ class SearchConfig {
   public instance: string = '';
   public searchtext: string = '';
   public payload: HTMLElement | null = null;
+  public node: Element | null = null;
 }

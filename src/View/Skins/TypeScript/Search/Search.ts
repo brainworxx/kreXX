@@ -125,6 +125,86 @@ class Search {
   };
 
   /**
+   * Prepare the search configuration.
+   *
+   * @param {Element} element
+   * @param {Element} instanceElement
+   *
+   * @return {SearchConfig}
+   */
+  protected prepareConfig = (element: Element, instanceElement: Element): SearchConfig => {
+    let config: SearchConfig = new SearchConfig();
+    config.node = element;
+    config.searchtext = (element.querySelector('.ksearchfield') as HTMLInputElement).value;
+    config.caseSensitive = (element.querySelector('.ksearchcase') as HTMLInputElement).checked;
+    config.searchKeys = (element.querySelector('.ksearchkeys') as HTMLInputElement).checked;
+    config.searchShort = (element.querySelector('.ksearchshort') as HTMLInputElement).checked;
+    config.searchLong = (element.querySelector('.ksearchlong') as HTMLInputElement).checked;
+    config.searchWhole = (element.querySelector('.ksearchwhole') as HTMLInputElement).checked;
+    config.instance = this.kdt.getDataset(instanceElement, 'instance');
+
+    // Apply our configuration.
+    if (!config.caseSensitive) {
+      config.searchtext = config.searchtext.toLowerCase();
+    }
+
+    return config;
+  }
+
+  /**
+   * Check if we have enough information to perform a search.
+   *
+   * @param config
+   *
+   * @return {boolean}
+   */
+  protected isSearchable = (config: SearchConfig): boolean => {
+    let searchStateElement = config.node?.querySelector('.ksearch-state');
+    if (searchStateElement === null || searchStateElement === undefined) {
+      return false;
+    }
+    if (config.searchtext.length === 0) {
+      // Not enough chars as a searchtext!
+      searchStateElement.textContent = this.kdt.translations.translate('tsEnterText');
+      return false;
+    }
+
+    // We only search for more than 3 chars.
+    if (config.searchtext.length < 3 && !config.searchWhole) {
+      // Not enough chars as a searchtext!
+      searchStateElement.textContent = this.kdt.translations.translate('tsTooSmall');
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Prepare the nodes for the search.
+   *
+   * @param element
+   *
+   * @return {Element|null}
+   */
+  protected prepareNodes = (element: Element): Element|null => {
+    let parentNode: Element = element.parentNode as Element;
+    if (parentNode === null) {
+      return null;
+    }
+    let grandParentNode = parentNode.parentNode as Element;
+    if (grandParentNode === null) {
+      return null;
+    }
+    let patentSibling = (parentNode as HTMLElement).nextElementSibling
+    if (patentSibling !== null) {
+      // Hide the search options.
+      this.kdt.addClass([patentSibling], 'khidden');
+    }
+
+    return grandParentNode;
+  }
+
+  /**
    * Initiates the search.
    *
    * @param {Event} event
@@ -133,53 +213,18 @@ class Search {
    *   The element that was clicked.
    */
   public performSearch = (event: Event, element: Element): void => {
-    let parentNode: Element = element.parentNode as Element;
-    if (parentNode === null) {
-      return;
-    }
-    let grandParentNode = parentNode.parentNode as Element;
+    let grandParentNode = this.prepareNodes(element);
     if (grandParentNode === null) {
       return;
     }
-    let parentSibling = (parentNode as HTMLElement).nextElementSibling
-    if (parentSibling !== null) {
-      // Hide the search options.
-      this.kdt.addClass([parentSibling], 'khidden');
-    }
 
     // Stitching together our configuration.
-    let config: SearchConfig = new SearchConfig();
-    config.searchtext = (grandParentNode.querySelector('.ksearchfield') as HTMLInputElement).value;
-    config.caseSensitive = (grandParentNode.querySelector('.ksearchcase') as HTMLInputElement).checked;
-    config.searchKeys = (grandParentNode.querySelector('.ksearchkeys') as HTMLInputElement).checked;
-    config.searchShort = (grandParentNode.querySelector('.ksearchshort') as HTMLInputElement).checked;
-    config.searchLong = (grandParentNode.querySelector('.ksearchlong') as HTMLInputElement).checked;
-    config.searchWhole = (grandParentNode.querySelector('.ksearchwhole') as HTMLInputElement).checked;
-
-    // Apply our configuration.
-    if (!config.caseSensitive) {
-      config.searchtext = config.searchtext.toLowerCase();
-    }
+    let config = this.prepareConfig(grandParentNode, element);
 
     // Nothing to search for.
-    let searchStateElement = parentNode.querySelector('.ksearch-state');
-    if (searchStateElement === null) {
+    if (!this.isSearchable(config)) {
       return;
     }
-    if (config.searchtext.length === 0) {
-      // Not enough chars as a searchtext!
-      searchStateElement.textContent = this.kdt.translations.translate('tsEnterText');
-      return;
-    }
-
-    // We only search for more than 3 chars.
-    if (config.searchtext.length < 3 && !config.searchWhole) {
-      // Not enough chars as a searchtext!
-      searchStateElement.textContent = this.kdt.translations.translate('tsTooSmall');
-      return;
-    }
-
-    config.instance = this.kdt.getDataset(element, 'instance');
 
     this.retrievePayload(config);
 
@@ -191,12 +236,7 @@ class Search {
       }
     }
 
-    // Are we already having some results?
-    if (typeof this.results[config.instance] !== "undefined"
-      || typeof this.results[config.instance][config.searchtext] !== "undefined"
-    ) {
-      this.refreshResultlist(config);
-    }
+    this.refreshResultlist(config);
 
     let pointer: number = this.results[config.instance][config.searchtext]['pointer'];
 
@@ -226,6 +266,10 @@ class Search {
     }
 
     // Feedback about where we are
+    let searchStateElement = config.node?.querySelector('.ksearch-state');
+    if (searchStateElement === null || searchStateElement === undefined) {
+      return;
+    }
     searchStateElement.textContent =
       (pointer + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
 
@@ -255,6 +299,12 @@ class Search {
    * @param {SearchConfig} config
    */
   protected refreshResultlist = (config: SearchConfig): void => {
+    if (typeof this.results[config.instance] !== "undefined"
+      && typeof this.results[config.instance][config.searchtext] !== "undefined"
+    ) {
+      return;
+    }
+
     // Remove all previous highlights
     this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
 

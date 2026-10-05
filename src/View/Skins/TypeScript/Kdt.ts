@@ -216,11 +216,13 @@ class Kdt {
    *
    * @returns {string}
    */
-  public getDataset(el: Element, what: string, mustEscape: boolean = false): string {
+  public getDataset(el: Element|null, what: string, mustEscape: boolean = false): string {
     let result: string | null;
 
-    if (typeof el === 'undefined' ||
-      typeof el.getAttribute !== 'function'
+    if (
+      el === null
+      || typeof el === 'undefined'
+      || typeof el.getAttribute !== 'function'
     ) {
       // No el or no attribute, no data!
       return '';

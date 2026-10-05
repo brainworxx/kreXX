@@ -359,8 +359,9 @@ var Kdt = (function () {
     Kdt.prototype.getDataset = function (el, what, mustEscape) {
         if (mustEscape === void 0) { mustEscape = false; }
         var result;
-        if (typeof el === 'undefined' ||
-            typeof el.getAttribute !== 'function') {
+        if (el === null
+            || typeof el === 'undefined'
+            || typeof el.getAttribute !== 'function') {
             return '';
         }
         result = el.getAttribute('data-' + what);
@@ -464,81 +465,96 @@ var Search = (function () {
             }
             _this.kdt.toggleClass(nextElementSibling, 'khidden');
         };
-        this.performSearch = function (event, element) {
+        this.prepareConfig = function (element, instanceElement) {
+            var config = new SearchConfig();
+            config.node = element;
+            config.searchtext = element.querySelector('.ksearchfield').value;
+            config.caseSensitive = element.querySelector('.ksearchcase').checked;
+            config.searchKeys = element.querySelector('.ksearchkeys').checked;
+            config.searchShort = element.querySelector('.ksearchshort').checked;
+            config.searchLong = element.querySelector('.ksearchlong').checked;
+            config.searchWhole = element.querySelector('.ksearchwhole').checked;
+            config.instance = _this.kdt.getDataset(instanceElement, 'instance');
+            if (!config.caseSensitive) {
+                config.searchtext = config.searchtext.toLowerCase();
+            }
+            return config;
+        };
+        this.isSearchable = function (config) {
             var _a;
+            var searchStateElement = (_a = config.node) === null || _a === void 0 ? void 0 : _a.querySelector('.ksearch-state');
+            if (searchStateElement === null || searchStateElement === undefined) {
+                return false;
+            }
+            if (config.searchtext.length === 0) {
+                searchStateElement.textContent = _this.kdt.translations.translate('tsEnterText');
+                return false;
+            }
+            if (config.searchtext.length < 3 && !config.searchWhole) {
+                searchStateElement.textContent = _this.kdt.translations.translate('tsTooSmall');
+                return false;
+            }
+            return true;
+        };
+        this.prepareNodes = function (element) {
             var parentNode = element.parentNode;
             if (parentNode === null) {
-                return;
+                return null;
             }
             var grandParentNode = parentNode.parentNode;
             if (grandParentNode === null) {
-                return;
+                return null;
             }
             var patentSibling = parentNode.nextElementSibling;
             if (patentSibling !== null) {
                 _this.kdt.addClass([patentSibling], 'khidden');
             }
-            var config = new SearchConfig();
-            config.searchtext = parentNode.querySelector('.ksearchfield').value;
-            config.caseSensitive = grandParentNode.querySelector('.ksearchcase').checked;
-            config.searchKeys = grandParentNode.querySelector('.ksearchkeys').checked;
-            config.searchShort = grandParentNode.querySelector('.ksearchshort').checked;
-            config.searchLong = grandParentNode.querySelector('.ksearchlong').checked;
-            config.searchWhole = grandParentNode.querySelector('.ksearchwhole').checked;
-            if (!config.caseSensitive) {
-                config.searchtext = config.searchtext.toLowerCase();
-            }
-            var searchStateElement = parentNode.querySelector('.ksearch-state');
-            if (searchStateElement === null) {
+            return grandParentNode;
+        };
+        this.performSearch = function (event, element) {
+            var _a, _b;
+            var grandParentNode = _this.prepareNodes(element);
+            if (grandParentNode === null) {
                 return;
             }
-            if (config.searchtext.length === 0) {
-                searchStateElement.textContent = _this.kdt.translations.translate('tsEnterText');
+            var config = _this.prepareConfig(grandParentNode, element);
+            if (!_this.isSearchable(config)) {
                 return;
             }
-            if (config.searchtext.length > 2 || config.searchWhole) {
-                config.instance = _this.kdt.getDataset(element, 'instance');
-                _this.retrievePayload(config);
-                var collapsed = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll('.kcollapsed');
-                if (collapsed !== undefined) {
-                    for (var i = 0; i < collapsed.length; i++) {
-                        _this.eventHandler.triggerEvent(collapsed[i], 'click');
-                    }
+            _this.retrievePayload(config);
+            var collapsed = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll('.kcollapsed');
+            if (collapsed !== undefined) {
+                for (var i = 0; i < collapsed.length; i++) {
+                    _this.eventHandler.triggerEvent(collapsed[i], 'click');
                 }
-                if (typeof _this.results[config.instance] !== "undefined") {
-                    if (typeof _this.results[config.instance][config.searchtext] === "undefined") {
-                        _this.refreshResultlist(config);
-                    }
-                }
-                else {
-                    _this.refreshResultlist(config);
-                }
-                var pointer = _this.results[config.instance][config.searchtext]['pointer'];
-                var direction = _this.kdt.getDataset(element, 'direction');
-                if (direction === 'forward') {
-                    pointer++;
-                }
-                else {
-                    pointer--;
-                }
-                if (typeof _this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
-                    if (direction === 'forward') {
-                        pointer = 0;
-                    }
-                    else {
-                        pointer = _this.results[config.instance][config.searchtext]['data'].length - 1;
-                    }
-                }
-                if (_this.results[config.instance][config.searchtext]['data'][pointer]) {
-                    _this.jumpTo(_this.results[config.instance][config.searchtext]['data'][pointer]);
-                }
-                searchStateElement.textContent =
-                    (pointer + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
-                _this.results[config.instance][config.searchtext]['pointer'] = pointer;
+            }
+            _this.refreshResultlist(config);
+            var pointer = _this.results[config.instance][config.searchtext]['pointer'];
+            var direction = _this.kdt.getDataset(element, 'direction');
+            if (direction === 'forward') {
+                pointer++;
             }
             else {
-                searchStateElement.textContent = _this.kdt.translations.translate('tsTooSmall');
+                pointer--;
             }
+            if (typeof _this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
+                if (direction === 'forward') {
+                    pointer = 0;
+                }
+                else {
+                    pointer = _this.results[config.instance][config.searchtext]['data'].length - 1;
+                }
+            }
+            if (_this.results[config.instance][config.searchtext]['data'][pointer]) {
+                _this.jumpTo(_this.results[config.instance][config.searchtext]['data'][pointer]);
+            }
+            var searchStateElement = (_b = config.node) === null || _b === void 0 ? void 0 : _b.querySelector('.ksearch-state');
+            if (searchStateElement === null || searchStateElement === undefined) {
+                return;
+            }
+            searchStateElement.textContent =
+                (pointer + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
+            _this.results[config.instance][config.searchtext]['pointer'] = pointer;
         };
         this.retrievePayload = function (config) {
             var tab = document.querySelector('#' + config.instance + ' .ktab.kactive');
@@ -550,6 +566,10 @@ var Search = (function () {
         };
         this.refreshResultlist = function (config) {
             var _a, _b;
+            if (typeof _this.results[config.instance] !== "undefined"
+                && typeof _this.results[config.instance][config.searchtext] !== "undefined") {
+                return;
+            }
             _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
             var selector = [];
             if (config.searchKeys) {
@@ -625,6 +645,7 @@ var SearchConfig = (function () {
         this.instance = '';
         this.searchtext = '';
         this.payload = null;
+        this.node = null;
     }
     return SearchConfig;
 }());
@@ -976,32 +997,26 @@ var SmokyGrey = (function (_super) {
         };
         _this.jumpTo = function (el, noHighlight) {
             _this.setHighlighting(el, noHighlight);
-            var container = _this.kdt.getParents(el, '.kpayload');
-            var outerWrapper = document.querySelector('.kfatalwrapper-outer');
-            if (outerWrapper !== null) {
-                container.push(outerWrapper);
+            var container = _this.kdt.getParents(el, '.kpayload')[0];
+            var destination = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
+            var diff = Math.abs(container.scrollTop - destination);
+            var step;
+            if (container.scrollTop < destination) {
+                step = Math.round(diff / 12);
             }
-            if (container.length > 0) {
-                var destination_1 = el.getBoundingClientRect().top - container[0].getBoundingClientRect().top + container[0].scrollTop - 50;
-                var diff = Math.abs(container[0].scrollTop - destination_1);
-                var step_1;
-                if (container[0].scrollTop < destination_1) {
-                    step_1 = Math.round(diff / 12);
-                }
-                else {
-                    step_1 = Math.round(diff / 12) * -1;
-                }
-                var lastValue_1 = container[0].scrollTop;
-                clearInterval(_this.jumpToInterval);
-                var interval_1 = _this.jumpToInterval = setInterval(function () {
-                    container[0].scrollTop += step_1;
-                    if (Math.abs(container[0].scrollTop - destination_1) <= Math.abs(step_1) || container[0].scrollTop === lastValue_1) {
-                        container[0].scrollTop = destination_1;
-                        clearInterval(interval_1);
-                    }
-                    lastValue_1 = container[0].scrollTop;
-                }, 1);
+            else {
+                step = Math.round(diff / 12) * -1;
             }
+            var lastValue = container.scrollTop;
+            clearInterval(_this.jumpToInterval);
+            var interval = _this.jumpToInterval = setInterval(function () {
+                container.scrollTop += step;
+                if (Math.abs(container.scrollTop - destination) <= Math.abs(step) || container.scrollTop === lastValue) {
+                    container.scrollTop = destination;
+                    clearInterval(interval);
+                }
+                lastValue = container.scrollTop;
+            }, 1);
         };
         _this.selectors.close = '.kwrapper .ktool-tabs .kclose, .kwrapper .kheadnote-wrapper .kclose';
         return _this;
