@@ -998,64 +998,85 @@ var SmokyGrey = (function (_super) {
 var CodeGen = (function () {
     function CodeGen() {
         var _this = this;
+        this.resultArray = [];
+        this.resultString = '';
+        this.sourcedata = '';
+        this.domid = '';
+        this.wrapperLeft = '';
+        this.wrapperRight = '';
         this.generateCode = function (event, element) {
-            var _a;
             event.stop = true;
-            var codedisplay = element.nextElementSibling;
-            var resultArray = [];
-            var resultString = '';
-            var sourcedata;
-            var domid;
-            var wrapperLeft = '';
-            var wrapperRight = '';
+            _this.reset();
             var el = _this.kdt.getParents(element, 'li.kchild')[0];
             while (el) {
-                domid = _this.kdt.getDataset(el, 'domid');
-                sourcedata = _this.kdt.getDataset(el, 'source');
-                wrapperLeft = _this.kdt.getDataset(el, 'codewrapperLeft');
-                wrapperRight = _this.kdt.getDataset(el, 'codewrapperRight');
-                if (sourcedata === '. . .') {
-                    if (domid !== '') {
-                        el = (_a = document.querySelector('#' + domid)) === null || _a === void 0 ? void 0 : _a.parentNode;
-                        if (!el) {
-                            break;
-                        }
-                        resultArray.push(_this.kdt.getDataset(el, 'source'));
-                    }
-                }
-                if (sourcedata !== '') {
-                    resultArray.push(sourcedata);
+                if (!_this.processElement(el)) {
+                    break;
                 }
                 el = _this.kdt.getParents(el, 'li.kchild')[0];
             }
-            resultArray.reverse();
-            for (var i = 0; i < resultArray.length; i++) {
-                if (resultArray[i] === '. . .') {
-                    resultString = '// Value is either protected or private.<br /> // Sorry . . ';
-                    break;
-                }
-                if (resultArray[i] === ';stop;') {
-                    resultString = '';
-                    resultArray[i] = '';
-                }
-                if (resultArray[i].indexOf(';firstMarker;') !== -1) {
-                    resultString = resultArray[i].replace(';firstMarker;', resultString);
-                }
-                else {
-                    resultString = resultString + resultArray[i];
-                }
-            }
-            resultString = wrapperLeft + resultString + wrapperRight;
-            codedisplay.innerHTML = '<div class="kcode-inner">' + resultString + '</div>';
-            if (codedisplay.style.display === 'none') {
-                codedisplay.style.display = '';
-                _this.kdt.selectText(codedisplay);
-            }
-            else {
-                codedisplay.style.display = 'none';
-            }
+            _this.processResultArray();
+            _this.resultString = _this.wrapperLeft + _this.resultString + _this.wrapperRight;
+            _this.displayCode(element);
         };
         this.kdt = new Kdt();
     }
+    CodeGen.prototype.processResultArray = function () {
+        this.resultArray.reverse();
+        for (var i = 0; i < this.resultArray.length; i++) {
+            if (this.resultArray[i] === '. . .') {
+                this.resultString = '// Value is either protected or private.<br /> // Sorry . . ';
+                break;
+            }
+            if (this.resultArray[i] === ';stop;') {
+                this.resultString = '';
+                this.resultArray[i] = '';
+            }
+            if (this.resultArray[i].indexOf(';firstMarker;') !== -1) {
+                this.resultString = this.resultArray[i].replace(';firstMarker;', this.resultString);
+            }
+            else {
+                this.resultString = this.resultString + this.resultArray[i];
+            }
+        }
+    };
+    CodeGen.prototype.processElement = function (el) {
+        var _a;
+        this.domid = this.kdt.getDataset(el, 'domid');
+        this.sourcedata = this.kdt.getDataset(el, 'source');
+        this.wrapperLeft = this.kdt.getDataset(el, 'codewrapperLeft');
+        this.wrapperRight = this.kdt.getDataset(el, 'codewrapperRight');
+        if (this.sourcedata === '. . .') {
+            if (this.domid !== '') {
+                var parentEl = (_a = document.querySelector('#' + this.domid)) === null || _a === void 0 ? void 0 : _a.parentNode;
+                if (!parentEl) {
+                    return false;
+                }
+                this.resultArray.push(this.kdt.getDataset(parentEl, 'source'));
+            }
+        }
+        if (this.sourcedata !== '') {
+            this.resultArray.push(this.sourcedata);
+        }
+        return true;
+    };
+    CodeGen.prototype.displayCode = function (element) {
+        var codedisplay = element.nextElementSibling;
+        codedisplay.innerHTML = '<div class="kcode-inner">' + this.resultString + '</div>';
+        if (codedisplay.style.display === 'none') {
+            codedisplay.style.display = '';
+            this.kdt.selectText(codedisplay);
+        }
+        else {
+            codedisplay.style.display = 'none';
+        }
+    };
+    CodeGen.prototype.reset = function () {
+        this.resultArray = [];
+        this.resultString = '';
+        this.sourcedata = '';
+        this.domid = '';
+        this.wrapperLeft = '';
+        this.wrapperRight = '';
+    };
     return CodeGen;
 }());

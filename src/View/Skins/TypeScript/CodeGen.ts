@@ -40,6 +40,48 @@ class CodeGen {
   protected kdt: Kdt;
 
   /**
+   * The result array.
+   *
+   * @var {string[]}
+   */
+  protected resultArray: string[] = [];
+
+  /**
+   * The result string.
+   *
+   * @var {string}
+   */
+  protected resultString: string = '';
+
+  /**
+   * The source data.
+   *
+   * @var {string}
+   */
+  protected sourcedata: string = '';
+
+  /**
+   * The domid.
+   *
+   * @var {string}
+   */
+  protected domid: string = '';
+
+  /**
+   * The wrapper left.
+   *
+   * @var {string}
+   */
+  protected wrapperLeft: string = '';
+
+  /**
+   * The wrapper right.
+   *
+   * @var {string}
+   */
+  protected wrapperRight: string = '';
+
+  /**
    * Not much to do, we simply grab the KDT.
    */
   constructor() {
@@ -59,82 +101,127 @@ class CodeGen {
     // We don't want to bubble the click any further.
     (event as StoppableEvent).stop = true;
 
-    let codedisplay: HTMLElement = (element.nextElementSibling as HTMLElement);
-    let resultArray: string[] = [];
-    let resultString: string = '';
-    let sourcedata: string;
-    let domid: string;
-    let wrapperLeft: string = '';
-    let wrapperRight: string = '';
+    this.reset();
 
     // Get the first element
-    let el: Element | Node | ParentNode | null | undefined = (this.kdt.getParents(element, 'li.kchild')[0] as Element);
+    let el: Element | Node = this.kdt.getParents(element, 'li.kchild')[0] as Element;
 
     // Start the loop to collect all the date
     while (el) {
-      // Get the domid
-      domid = this.kdt.getDataset((el as Element), 'domid');
-      sourcedata = this.kdt.getDataset((el as Element), 'source');
-
-      wrapperLeft = this.kdt.getDataset((el as Element), 'codewrapperLeft');
-      wrapperRight = this.kdt.getDataset((el as Element), 'codewrapperRight');
-
-      if (sourcedata === '. . .') {
-        if (domid !== '') {
-          // We need to get a new el, because we are facing a recursion, and the
-          // current path is not really reachable.
-          el = document.querySelector('#' + domid)?.parentNode;
-          if (!el) {
-            break;
-          }
-          // Get the source, again.
-          resultArray.push(this.kdt.getDataset((el as Element), 'source'));
-        }
+      if (!this.processElement(el as Element)) {
+        break;
       }
-      if (sourcedata !== '') {
-        resultArray.push(sourcedata);
-      }
+
       // Get the next el.
       el = this.kdt.getParents(el, 'li.kchild')[0];
     }
-    // Now we reverse our result, so that we can resolve it from the beginning.
-    resultArray.reverse();
 
-    for (let i = 0; i < resultArray.length; i++) {
+    this.processResultArray();
+
+    // Add the wrapper that we collected so far
+    this.resultString = this.wrapperLeft + this.resultString + this.wrapperRight;
+
+    this.displayCode(element);
+  };
+
+  /**
+   * Process the result array to generate the final result string.
+   */
+  protected processResultArray(): void
+  {
+    // Now we reverse our result, so that we can resolve it from the beginning.
+    this.resultArray.reverse();
+
+    for (let i = 0; i < this.resultArray.length; i++) {
       // We must check if our value is actually reachable.
       // '. . .' means it is not reachable,
       // we will stop right here and display a comment stating this.
-      if (resultArray[i] === '. . .') {
-        resultString = '// Value is either protected or private.<br /> // Sorry . . ';
+      if (this.resultArray[i] === '. . .') {
+        this.resultString = '// Value is either protected or private.<br /> // Sorry . . ';
         break;
       }
 
       // Check if we are facing a ;stop; instruction
-      if (resultArray[i] === ';stop;') {
-        resultString = '';
-        resultArray[i] = '';
+      if (this.resultArray[i] === ';stop;') {
+        this.resultString = '';
+        this.resultArray[i] = '';
       }
 
       // We're good, value can be reached!
-      if (resultArray[i].indexOf(';firstMarker;') !== -1) {
+      if (this.resultArray[i].indexOf(';firstMarker;') !== -1) {
         // We add our result so far into the "source template"
-        resultString = resultArray[i].replace(';firstMarker;', resultString);
+        this.resultString = this.resultArray[i].replace(';firstMarker;', this.resultString);
       } else {
         // Normal concatenation.
-        resultString = resultString + resultArray[i];
+        this.resultString = this.resultString + this.resultArray[i];
+      }
+    }
+  }
+
+  /**
+   * Process the element to extract the necessary data attributes.
+   *
+   * @param el
+   * @protected
+   */
+  protected processElement (el: Element): boolean
+  {
+    // Get the domid
+    this.domid = this.kdt.getDataset((el as Element), 'domid');
+    this.sourcedata = this.kdt.getDataset((el as Element), 'source');
+    this.wrapperLeft = this.kdt.getDataset((el as Element), 'codewrapperLeft');
+    this.wrapperRight = this.kdt.getDataset((el as Element), 'codewrapperRight');
+
+    if (this.sourcedata === '. . .') {
+      if (this.domid !== '') {
+        // We need to get a new el, because we are facing a recursion, and the
+        // current path is not really reachable.
+        let parentEl = document.querySelector('#' + this.domid)?.parentNode;
+        if (!parentEl) {
+          return false;
+        }
+        // Get the source, again.
+        this.resultArray.push(this.kdt.getDataset((parentEl as Element), 'source'));
       }
     }
 
-    // Add the wrapper that we collected so far
-    resultString = wrapperLeft + resultString + wrapperRight;
+    if (this.sourcedata !== '') {
+      this.resultArray.push(this.sourcedata);
+    }
 
+    return true;
+  }
+
+  /**
+   * Display the generated code in the next sibling element of the clicked element.
+   *
+   * @param {Element} element
+   */
+  protected displayCode (element: Element): void
+  {
     // 3. Add the text
-    codedisplay.innerHTML = '<div class="kcode-inner">' + resultString + '</div>';
+    let codedisplay: HTMLElement = (element.nextElementSibling as HTMLElement);
+    codedisplay.innerHTML = '<div class="kcode-inner">' + this.resultString + '</div>';
     if (codedisplay.style.display === 'none') {
       codedisplay.style.display = '';
       this.kdt.selectText(codedisplay);
     } else {
       codedisplay.style.display = 'none';
     }
-  };
+  }
+
+  /**
+   * Reset the internal state of the CodeGen instance.
+   *
+   * @protected
+   */
+  protected reset(): void
+  {
+    this.resultArray = [];
+    this.resultString = '';
+    this.sourcedata = '';
+    this.domid = '';
+    this.wrapperLeft = '';
+    this.wrapperRight = '';
+  }
 }
