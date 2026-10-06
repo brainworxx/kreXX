@@ -739,63 +739,6 @@ var Hans = (function () {
                 elInstance.style.opacity = opacity.toString();
             }, 20);
         };
-        this.generateCode = function (event, element) {
-            var _a;
-            event.stop = true;
-            var codedisplay = element.nextElementSibling;
-            var resultArray = [];
-            var resultString = '';
-            var sourcedata;
-            var domid;
-            var wrapperLeft = '';
-            var wrapperRight = '';
-            var el = _this.kdt.getParents(element, 'li.kchild')[0];
-            while (el) {
-                domid = _this.kdt.getDataset(el, 'domid');
-                sourcedata = _this.kdt.getDataset(el, 'source');
-                wrapperLeft = _this.kdt.getDataset(el, 'codewrapperLeft');
-                wrapperRight = _this.kdt.getDataset(el, 'codewrapperRight');
-                if (sourcedata === '. . .') {
-                    if (domid !== '') {
-                        el = (_a = document.querySelector('#' + domid)) === null || _a === void 0 ? void 0 : _a.parentNode;
-                        if (!el) {
-                            break;
-                        }
-                        resultArray.push(_this.kdt.getDataset(el, 'source'));
-                    }
-                }
-                if (sourcedata !== '') {
-                    resultArray.push(sourcedata);
-                }
-                el = _this.kdt.getParents(el, 'li.kchild')[0];
-            }
-            resultArray.reverse();
-            for (var i = 0; i < resultArray.length; i++) {
-                if (resultArray[i] === '. . .') {
-                    resultString = '// Value is either protected or private.<br /> // Sorry . . ';
-                    break;
-                }
-                if (resultArray[i] === ';stop;') {
-                    resultString = '';
-                    resultArray[i] = '';
-                }
-                if (resultArray[i].indexOf(';firstMarker;') !== -1) {
-                    resultString = resultArray[i].replace(';firstMarker;', resultString);
-                }
-                else {
-                    resultString = resultString + resultArray[i];
-                }
-            }
-            resultString = wrapperLeft + resultString + wrapperRight;
-            codedisplay.innerHTML = '<div class="kcode-inner">' + resultString + '</div>';
-            if (codedisplay.style.display === 'none') {
-                codedisplay.style.display = '';
-                _this.kdt.selectText(codedisplay);
-            }
-            else {
-                codedisplay.style.display = 'none';
-            }
-        };
         this.displayInfoBox = function (event, element) {
             event.stop = true;
             var box = element.nextElementSibling;
@@ -845,6 +788,7 @@ var Hans = (function () {
         this.selectors.displayInfoBox = '.kwrapper .kchild .kinfobutton';
         this.selectors.moveToViewport = '.kouterwrapper';
         this.kdt = new Kdt();
+        this.CodeGen = new CodeGen();
     }
     Hans.prototype.run = function () {
         if (this.kdt.beenHere()) {
@@ -863,7 +807,7 @@ var Hans = (function () {
         this.eventHandler.addEvent(this.selectors.displaySearch, 'click', this.displaySearch);
         this.eventHandler.addEvent(this.selectors.performSearch, 'click', this.search.performSearch);
         this.eventHandler.addEvent(this.selectors.collapse, 'click', this.kdt.collapse);
-        this.eventHandler.addEvent(this.selectors.generateCode, 'click', this.generateCode);
+        this.eventHandler.addEvent(this.selectors.generateCode, 'click', this.CodeGen.generateCode);
         this.eventHandler.addEvent(this.selectors.preventBubble, 'click', this.eventHandler.preventBubble);
         this.eventHandler.addEvent(this.selectors.displayInfoBox, 'click', this.displayInfoBox);
         if (window.location.protocol === 'file:') {
@@ -1051,3 +995,67 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
+var CodeGen = (function () {
+    function CodeGen() {
+        var _this = this;
+        this.generateCode = function (event, element) {
+            var _a;
+            event.stop = true;
+            var codedisplay = element.nextElementSibling;
+            var resultArray = [];
+            var resultString = '';
+            var sourcedata;
+            var domid;
+            var wrapperLeft = '';
+            var wrapperRight = '';
+            var el = _this.kdt.getParents(element, 'li.kchild')[0];
+            while (el) {
+                domid = _this.kdt.getDataset(el, 'domid');
+                sourcedata = _this.kdt.getDataset(el, 'source');
+                wrapperLeft = _this.kdt.getDataset(el, 'codewrapperLeft');
+                wrapperRight = _this.kdt.getDataset(el, 'codewrapperRight');
+                if (sourcedata === '. . .') {
+                    if (domid !== '') {
+                        el = (_a = document.querySelector('#' + domid)) === null || _a === void 0 ? void 0 : _a.parentNode;
+                        if (!el) {
+                            break;
+                        }
+                        resultArray.push(_this.kdt.getDataset(el, 'source'));
+                    }
+                }
+                if (sourcedata !== '') {
+                    resultArray.push(sourcedata);
+                }
+                el = _this.kdt.getParents(el, 'li.kchild')[0];
+            }
+            resultArray.reverse();
+            for (var i = 0; i < resultArray.length; i++) {
+                if (resultArray[i] === '. . .') {
+                    resultString = '// Value is either protected or private.<br /> // Sorry . . ';
+                    break;
+                }
+                if (resultArray[i] === ';stop;') {
+                    resultString = '';
+                    resultArray[i] = '';
+                }
+                if (resultArray[i].indexOf(';firstMarker;') !== -1) {
+                    resultString = resultArray[i].replace(';firstMarker;', resultString);
+                }
+                else {
+                    resultString = resultString + resultArray[i];
+                }
+            }
+            resultString = wrapperLeft + resultString + wrapperRight;
+            codedisplay.innerHTML = '<div class="kcode-inner">' + resultString + '</div>';
+            if (codedisplay.style.display === 'none') {
+                codedisplay.style.display = '';
+                _this.kdt.selectText(codedisplay);
+            }
+            else {
+                codedisplay.style.display = 'none';
+            }
+        };
+        this.kdt = new Kdt();
+    }
+    return CodeGen;
+}());
