@@ -195,15 +195,11 @@ class SmokyGrey extends Hans {
       return;
     }
     // Toggle display / hidden.
-    if (this.kdt.hasClass(search, 'khidden')) {
-      // Display it.
-      this.kdt.toggleClass(search, 'khidden');
-      this.kdt.toggleClass(searchtab, 'kactive');
+    search.classList.toggle('khidden');
+    searchtab.classList.toggle('kactive');
+    if (search.classList.contains('khidden')) {
       (search.querySelector('.ksearchfield') as HTMLElement).focus();
     } else {
-      // Hide it.
-      this.kdt.toggleClass(search, 'khidden');
-      this.kdt.toggleClass(searchtab, 'kactive');
       // Clear the results.
       this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
     }

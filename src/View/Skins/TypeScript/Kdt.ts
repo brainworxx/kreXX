@@ -102,20 +102,6 @@ class Kdt {
   }
 
   /**
-   * Determines if an element has a class.
-   *
-   * @param {Element} el
-   * @param {string} className
-   */
-  public hasClass(el: Element, className: string): boolean {
-    if (el.classList) {
-      return el.classList.contains(className);
-    } else {
-      return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
-    }
-  }
-
-  /**
    * Gets the first element from a list which hat that class.
    *
    * @param {NodeList|HTMLCollection} elements
@@ -124,12 +110,12 @@ class Kdt {
    * @returns {Element|null} the element
    */
   public findInDomlistByClass(elements: NodeList | HTMLCollection, className: string): Node | null {
-    className = " " + className + " ";
     for (let i = 0; i < elements.length; i++) {
-      if ((" " + (elements[i] as Element).className + " ").replace(/[\n\t]/g, " ").indexOf(className) > -1) {
+      if ((elements[i] as Element).classList.contains(className.trim())) {
         return elements[i];
       }
     }
+
     return null;
   }
 
@@ -152,7 +138,7 @@ class Kdt {
     }
 
     for (let i = 0; i < elements.length; i++) {
-      (elements[i] as Element).className += ' ' + className;
+      (elements[i] as Element).classList.add(className);
     }
   }
 
@@ -174,36 +160,7 @@ class Kdt {
     }
 
     for (let i = 0; i < elements.length; i++) {
-      (elements[i] as Element).className = (elements[i] as Element).className.replace(
-        new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' '
-      );
-    }
-  }
-
-  /**
-   * Toggles the class of an element
-   *
-   * @param {Element} el
-   * @param {string} className
-   */
-  public toggleClass(el: Element, className: string): void {
-    if (el.classList) {
-      // Just toggle it.
-      el.classList.toggle(className);
-    } else {
-      // no class list there, we need to do this by hand.
-      /** @type {Array} */
-      let classes: Array<any> = el.className.split(' ');
-      /** @type {number} */
-      let existingIndex: number = classes.indexOf(className);
-
-      if (existingIndex >= 0) {
-        classes.splice(existingIndex, 1);
-      } else {
-        classes.push(className);
-      }
-
-      el.className = classes.join(' ');
+      (elements[i] as Element).classList.remove(className);
     }
   }
 
@@ -412,7 +369,7 @@ class Kdt {
 
     // Here we start the hiding, only when clicked on a
     // none-collapsed button.
-    if (!this.hasClass(element, 'kcollapsed')) {
+    if (!element.classList.contains('kcollapsed')) {
       this.addClass(this.getParents(element, 'div.kbg-wrapper > ul'), 'kfilterroot');
       // Add the "rootline" to all elements between the button and the filterroot
       this.addClass(this.getParents(element, 'ul.knode, li.kchild'), 'krootline');

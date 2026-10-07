@@ -121,7 +121,7 @@ class Search {
     if (nextElementSibling === null) {
       return;
     }
-    this.kdt.toggleClass(nextElementSibling, 'khidden');
+    nextElementSibling.classList.toggle('khidden');
   };
 
   /**
@@ -344,7 +344,7 @@ class Search {
           (config.searchWhole && textContent === config.searchtext)
           || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)
         ) {
-          this.kdt.toggleClass((list[i] as Element), 'ksearch-found-highlight');
+          (list[i] as Element).classList.toggle('ksearch-found-highlight');
           this.results[config.instance][config.searchtext]['data'].push(list[i]);
         }
       }

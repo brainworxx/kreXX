@@ -256,7 +256,7 @@ class Hans {
    *   The element that was clicked.
    */
   protected toggle = (event: Event, element: Element): void => {
-    this.kdt.toggleClass(element, 'kopened');
+    element.classList.toggle('kopened');
 
     // Toggle all siblings.
     let sibling: Element | null = element.nextElementSibling;
@@ -265,7 +265,7 @@ class Hans {
     }
 
     do {
-      this.kdt.toggleClass(sibling, 'khidden');
+      sibling.classList.toggle('khidden');
       sibling = sibling.nextElementSibling;
     } while (sibling);
   };
@@ -449,9 +449,9 @@ class Hans {
     let viewportOffset;
 
     // Toggle display / hidden.
-    if (this.kdt.hasClass(search, 'khidden')) {
+    if (search.classList.contains('khidden')) {
       // Display it.
-      this.kdt.toggleClass(search, 'khidden');
+      search.classList.remove('khidden');
       (search.querySelector('.ksearchfield') as HTMLElement).focus();
       search.style.position = 'absolute';
       search.style.top = '';
@@ -460,7 +460,7 @@ class Hans {
       search.style.top = viewportOffset.top + 'px';
     } else {
       // Hide it.
-      this.kdt.toggleClass(search, 'khidden');
+      search.classList.add('khidden');
       this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
       search.style.position = 'absolute';
       search.style.top = '';

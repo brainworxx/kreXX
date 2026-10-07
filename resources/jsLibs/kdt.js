@@ -25,6 +25,91 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var CodeGen = (function () {
+    function CodeGen() {
+        var _this = this;
+        this.resultArray = [];
+        this.resultString = '';
+        this.sourcedata = '';
+        this.domid = '';
+        this.wrapperLeft = '';
+        this.wrapperRight = '';
+        this.generateCode = function (event, element) {
+            event.stop = true;
+            _this.reset();
+            var el = _this.kdt.getParents(element, 'li.kchild')[0];
+            while (el) {
+                if (!_this.processElement(el)) {
+                    break;
+                }
+                el = _this.kdt.getParents(el, 'li.kchild')[0];
+            }
+            _this.processResultArray();
+            _this.resultString = _this.wrapperLeft + _this.resultString + _this.wrapperRight;
+            _this.displayCode(element);
+        };
+        this.kdt = new Kdt();
+    }
+    CodeGen.prototype.processResultArray = function () {
+        this.resultArray.reverse();
+        for (var i = 0; i < this.resultArray.length; i++) {
+            if (this.resultArray[i] === '. . .') {
+                this.resultString = '// Value is either protected or private.<br /> // Sorry . . ';
+                break;
+            }
+            if (this.resultArray[i] === ';stop;') {
+                this.resultString = '';
+                this.resultArray[i] = '';
+            }
+            if (this.resultArray[i].indexOf(';firstMarker;') !== -1) {
+                this.resultString = this.resultArray[i].replace(';firstMarker;', this.resultString);
+            }
+            else {
+                this.resultString = this.resultString + this.resultArray[i];
+            }
+        }
+    };
+    CodeGen.prototype.processElement = function (el) {
+        var _a;
+        this.domid = this.kdt.getDataset(el, 'domid');
+        this.sourcedata = this.kdt.getDataset(el, 'source');
+        this.wrapperLeft = this.kdt.getDataset(el, 'codewrapperLeft');
+        this.wrapperRight = this.kdt.getDataset(el, 'codewrapperRight');
+        if (this.sourcedata === '. . .') {
+            if (this.domid !== '') {
+                var parentEl = (_a = document.querySelector('#' + this.domid)) === null || _a === void 0 ? void 0 : _a.parentNode;
+                if (!parentEl) {
+                    return false;
+                }
+                this.resultArray.push(this.kdt.getDataset(parentEl, 'source'));
+            }
+        }
+        if (this.sourcedata !== '') {
+            this.resultArray.push(this.sourcedata);
+        }
+        return true;
+    };
+    CodeGen.prototype.displayCode = function (element) {
+        var codedisplay = element.nextElementSibling;
+        codedisplay.innerHTML = '<div class="kcode-inner">' + this.resultString + '</div>';
+        if (codedisplay.style.display === 'none') {
+            codedisplay.style.display = '';
+            this.kdt.selectText(codedisplay);
+        }
+        else {
+            codedisplay.style.display = 'none';
+        }
+    };
+    CodeGen.prototype.reset = function () {
+        this.resultArray = [];
+        this.resultString = '';
+        this.sourcedata = '';
+        this.domid = '';
+        this.wrapperLeft = '';
+        this.wrapperRight = '';
+    };
+    return CodeGen;
+}());
 var Draxx = (function () {
     function Draxx(selector, handle, callbackUp, callbackDrag) {
         var _this = this;
@@ -218,7 +303,7 @@ var Kdt = (function () {
             _this.removeClass(wrapper.querySelectorAll('.kfilterroot'), 'kfilterroot');
             _this.removeClass(wrapper.querySelectorAll('.krootline'), 'krootline');
             _this.removeClass(wrapper.querySelectorAll('.ktopline'), 'ktopline');
-            if (!_this.hasClass(element, 'kcollapsed')) {
+            if (!element.classList.contains('kcollapsed')) {
                 _this.addClass(_this.getParents(element, 'div.kbg-wrapper > ul'), 'kfilterroot');
                 _this.addClass(_this.getParents(element, 'ul.knode, li.kchild'), 'krootline');
                 _this.addClass([_this.getParents(element, '.krootline')[0]], 'ktopline');
@@ -299,18 +384,9 @@ var Kdt = (function () {
         }
         return result;
     };
-    Kdt.prototype.hasClass = function (el, className) {
-        if (el.classList) {
-            return el.classList.contains(className);
-        }
-        else {
-            return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
-        }
-    };
     Kdt.prototype.findInDomlistByClass = function (elements, className) {
-        className = " " + className + " ";
         for (var i = 0; i < elements.length; i++) {
-            if ((" " + elements[i].className + " ").replace(/[\n\t]/g, " ").indexOf(className) > -1) {
+            if (elements[i].classList.contains(className.trim())) {
                 return elements[i];
             }
         }
@@ -325,7 +401,7 @@ var Kdt = (function () {
             elements = selector;
         }
         for (var i = 0; i < elements.length; i++) {
-            elements[i].className += ' ' + className;
+            elements[i].classList.add(className);
         }
     };
     Kdt.prototype.removeClass = function (selector, className) {
@@ -337,23 +413,7 @@ var Kdt = (function () {
             elements = selector;
         }
         for (var i = 0; i < elements.length; i++) {
-            elements[i].className = elements[i].className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-        }
-    };
-    Kdt.prototype.toggleClass = function (el, className) {
-        if (el.classList) {
-            el.classList.toggle(className);
-        }
-        else {
-            var classes = el.className.split(' ');
-            var existingIndex = classes.indexOf(className);
-            if (existingIndex >= 0) {
-                classes.splice(existingIndex, 1);
-            }
-            else {
-                classes.push(className);
-            }
-            el.className = classes.join(' ');
+            elements[i].classList.remove(className);
         }
     };
     Kdt.prototype.getDataset = function (el, what, mustEscape) {
@@ -463,7 +523,7 @@ var Search = (function () {
             if (nextElementSibling === null) {
                 return;
             }
-            _this.kdt.toggleClass(nextElementSibling, 'khidden');
+            nextElementSibling.classList.toggle('khidden');
         };
         this.prepareConfig = function (element, instanceElement) {
             var config = new SearchConfig();
@@ -599,7 +659,7 @@ var Search = (function () {
                     }
                     if ((config.searchWhole && textContent === config.searchtext)
                         || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)) {
-                        _this.kdt.toggleClass(list[i], 'ksearch-found-highlight');
+                        list[i].classList.toggle('ksearch-found-highlight');
                         _this.results[config.instance][config.searchtext]['data'].push(list[i]);
                     }
                 }
@@ -671,13 +731,13 @@ var Hans = (function () {
             });
         };
         this.toggle = function (event, element) {
-            _this.kdt.toggleClass(element, 'kopened');
+            element.classList.toggle('kopened');
             var sibling = element.nextElementSibling;
             if (sibling === null) {
                 return;
             }
             do {
-                _this.kdt.toggleClass(sibling, 'khidden');
+                sibling.classList.toggle('khidden');
                 sibling = sibling.nextElementSibling;
             } while (sibling);
         };
@@ -756,8 +816,8 @@ var Hans = (function () {
                 return;
             }
             var viewportOffset;
-            if (_this.kdt.hasClass(search, 'khidden')) {
-                _this.kdt.toggleClass(search, 'khidden');
+            if (search.classList.contains('khidden')) {
+                search.classList.remove('khidden');
                 search.querySelector('.ksearchfield').focus();
                 search.style.position = 'absolute';
                 search.style.top = '';
@@ -766,7 +826,7 @@ var Hans = (function () {
                 search.style.top = viewportOffset.top + 'px';
             }
             else {
-                _this.kdt.toggleClass(search, 'khidden');
+                search.classList.add('khidden');
                 _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
                 search.style.position = 'absolute';
                 search.style.top = '';
@@ -928,14 +988,12 @@ var SmokyGrey = (function (_super) {
             if (search === null || searchtab === null) {
                 return;
             }
-            if (_this.kdt.hasClass(search, 'khidden')) {
-                _this.kdt.toggleClass(search, 'khidden');
-                _this.kdt.toggleClass(searchtab, 'kactive');
+            search.classList.toggle('khidden');
+            searchtab.classList.toggle('kactive');
+            if (search.classList.contains('khidden')) {
                 search.querySelector('.ksearchfield').focus();
             }
             else {
-                _this.kdt.toggleClass(search, 'khidden');
-                _this.kdt.toggleClass(searchtab, 'kactive');
                 _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
             }
         };
@@ -995,88 +1053,3 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
-var CodeGen = (function () {
-    function CodeGen() {
-        var _this = this;
-        this.resultArray = [];
-        this.resultString = '';
-        this.sourcedata = '';
-        this.domid = '';
-        this.wrapperLeft = '';
-        this.wrapperRight = '';
-        this.generateCode = function (event, element) {
-            event.stop = true;
-            _this.reset();
-            var el = _this.kdt.getParents(element, 'li.kchild')[0];
-            while (el) {
-                if (!_this.processElement(el)) {
-                    break;
-                }
-                el = _this.kdt.getParents(el, 'li.kchild')[0];
-            }
-            _this.processResultArray();
-            _this.resultString = _this.wrapperLeft + _this.resultString + _this.wrapperRight;
-            _this.displayCode(element);
-        };
-        this.kdt = new Kdt();
-    }
-    CodeGen.prototype.processResultArray = function () {
-        this.resultArray.reverse();
-        for (var i = 0; i < this.resultArray.length; i++) {
-            if (this.resultArray[i] === '. . .') {
-                this.resultString = '// Value is either protected or private.<br /> // Sorry . . ';
-                break;
-            }
-            if (this.resultArray[i] === ';stop;') {
-                this.resultString = '';
-                this.resultArray[i] = '';
-            }
-            if (this.resultArray[i].indexOf(';firstMarker;') !== -1) {
-                this.resultString = this.resultArray[i].replace(';firstMarker;', this.resultString);
-            }
-            else {
-                this.resultString = this.resultString + this.resultArray[i];
-            }
-        }
-    };
-    CodeGen.prototype.processElement = function (el) {
-        var _a;
-        this.domid = this.kdt.getDataset(el, 'domid');
-        this.sourcedata = this.kdt.getDataset(el, 'source');
-        this.wrapperLeft = this.kdt.getDataset(el, 'codewrapperLeft');
-        this.wrapperRight = this.kdt.getDataset(el, 'codewrapperRight');
-        if (this.sourcedata === '. . .') {
-            if (this.domid !== '') {
-                var parentEl = (_a = document.querySelector('#' + this.domid)) === null || _a === void 0 ? void 0 : _a.parentNode;
-                if (!parentEl) {
-                    return false;
-                }
-                this.resultArray.push(this.kdt.getDataset(parentEl, 'source'));
-            }
-        }
-        if (this.sourcedata !== '') {
-            this.resultArray.push(this.sourcedata);
-        }
-        return true;
-    };
-    CodeGen.prototype.displayCode = function (element) {
-        var codedisplay = element.nextElementSibling;
-        codedisplay.innerHTML = '<div class="kcode-inner">' + this.resultString + '</div>';
-        if (codedisplay.style.display === 'none') {
-            codedisplay.style.display = '';
-            this.kdt.selectText(codedisplay);
-        }
-        else {
-            codedisplay.style.display = 'none';
-        }
-    };
-    CodeGen.prototype.reset = function () {
-        this.resultArray = [];
-        this.resultString = '';
-        this.sourcedata = '';
-        this.domid = '';
-        this.wrapperLeft = '';
-        this.wrapperRight = '';
-    };
-    return CodeGen;
-}());
