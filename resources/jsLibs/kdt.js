@@ -276,27 +276,6 @@ var Kdt = (function () {
         this.setJumpTo = function (jumpTo) {
             _this.jumpTo = jumpTo;
         };
-        this.setSetting = function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            var settings = _this.readSettings('KrexxDebugSettings');
-            var newValue = event.target.value.replace('"', '').replace("'", '');
-            var valueName = event.target.name.replace('"', '').replace("'", '');
-            settings[valueName] = newValue;
-            var date = new Date();
-            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-            var expires = 'expires=' + date.toUTCString();
-            document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
-            alert(valueName + ' --> ' + newValue + '\n\n' + _this.translations.translate('tsPleaseReload'));
-        };
-        this.resetSetting = function () {
-            var date = new Date();
-            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-            var expires = 'expires=' + date.toUTCString();
-            document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
-            alert(_this.translations.translate('tsConfigReset') + '\n\n' + _this.translations.translate('tsPleaseReload'));
-        };
         this.collapse = function (event, element) {
             event.stop = true;
             var wrapper = _this.getParents(element, '.kwrapper')[0];
@@ -453,19 +432,6 @@ var Kdt = (function () {
         range.selectNodeContents(el);
         selection.removeAllRanges();
         selection.addRange(range);
-    };
-    Kdt.prototype.readSettings = function (cookieName) {
-        var match = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
-        var result = {};
-        if (match === null) {
-            return result;
-        }
-        try {
-            result = JSON.parse(match[2]);
-        }
-        catch (error) {
-        }
-        return result;
     };
     Kdt.prototype.parseJson = function (string) {
         try {
@@ -849,6 +815,7 @@ var Hans = (function () {
         this.selectors.moveToViewport = '.kouterwrapper';
         this.kdt = new Kdt();
         this.CodeGen = new CodeGen();
+        this.settings = new Settings();
     }
     Hans.prototype.run = function () {
         if (this.kdt.beenHere()) {
@@ -861,8 +828,8 @@ var Hans = (function () {
         this.kdt.moveToBottom(this.selectors.moveToBottom);
         this.eventHandler.addEvent(this.selectors.close, 'click', this.close);
         this.eventHandler.addEvent(this.selectors.toggle, 'click', this.toggle);
-        this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.kdt.setSetting);
-        this.eventHandler.addEvent(this.selectors.resetSetting, 'click', this.kdt.resetSetting);
+        this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.settings.set);
+        this.eventHandler.addEvent(this.selectors.resetSetting, 'click', this.settings.reset);
         this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.kdt.copyFrom);
         this.eventHandler.addEvent(this.selectors.displaySearch, 'click', this.displaySearch);
         this.eventHandler.addEvent(this.selectors.performSearch, 'click', this.search.performSearch);
@@ -1053,3 +1020,44 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
+var Settings = (function () {
+    function Settings() {
+        var _this = this;
+        this.set = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            var settings = _this.read('KrexxDebugSettings');
+            var newValue = event.target.value.replace('"', '').replace("'", '');
+            var valueName = event.target.name.replace('"', '').replace("'", '');
+            settings[valueName] = newValue;
+            var date = new Date();
+            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+            var expires = 'expires=' + date.toUTCString();
+            document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
+            alert(valueName + ' --> ' + newValue + '\n\n' + _this.kdt.translations.translate('tsPleaseReload'));
+        };
+        this.reset = function () {
+            var date = new Date();
+            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+            var expires = 'expires=' + date.toUTCString();
+            document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
+            alert(_this.kdt.translations.translate('tsConfigReset') + '\n\n' + _this.kdt.translations.translate('tsPleaseReload'));
+        };
+        this.kdt = new Kdt();
+    }
+    Settings.prototype.read = function (cookieName) {
+        var match = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
+        var result = {};
+        if (match === null) {
+            return result;
+        }
+        try {
+            result = JSON.parse(match[2]);
+        }
+        catch (error) {
+        }
+        return result;
+    };
+    return Settings;
+}());

@@ -76,6 +76,8 @@ class Hans {
    */
   protected jumpToInterval: number = 0;
 
+  protected settings: Settings;
+
   /**
    * Defining all selectors for the run method.
    */
@@ -98,6 +100,7 @@ class Hans {
     // Init our libs before usage.
     this.kdt = new Kdt();
     this.CodeGen = new CodeGen();
+    this.settings = new Settings();
   }
 
   /**
@@ -172,7 +175,7 @@ class Hans {
      *   Changes on the kreXX html forms.
      *   All changes will automatically be written to the browser cookies.
      */
-    this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.kdt.setSetting);
+    this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.settings.set);
 
     /**
      * Register cookie reset function on the reset button.
@@ -181,7 +184,7 @@ class Hans {
      *   Resets the local settings in the settings cookie,
      *   when the reset button ic clicked.
      */
-    this.eventHandler.addEvent(this.selectors.resetSetting, 'click', this.kdt.resetSetting);
+    this.eventHandler.addEvent(this.selectors.resetSetting, 'click', this.settings.reset);
 
     /**
      * Register the recursions resolving.
