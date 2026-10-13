@@ -452,6 +452,47 @@ var Kdt = (function () {
     };
     return Kdt;
 }());
+var Settings = (function () {
+    function Settings() {
+        var _this = this;
+        this.set = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            var settings = _this.read('KrexxDebugSettings');
+            var newValue = event.target.value.replace('"', '').replace("'", '');
+            var valueName = event.target.name.replace('"', '').replace("'", '');
+            settings[valueName] = newValue;
+            var date = new Date();
+            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+            var expires = 'expires=' + date.toUTCString();
+            document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
+            alert(valueName + ' --> ' + newValue + '\n\n' + _this.kdt.translations.translate('tsPleaseReload'));
+        };
+        this.reset = function () {
+            var date = new Date();
+            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
+            var expires = 'expires=' + date.toUTCString();
+            document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
+            alert(_this.kdt.translations.translate('tsConfigReset') + '\n\n' + _this.kdt.translations.translate('tsPleaseReload'));
+        };
+        this.kdt = new Kdt();
+    }
+    Settings.prototype.read = function (cookieName) {
+        var match = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
+        var result = {};
+        if (match === null) {
+            return result;
+        }
+        try {
+            result = JSON.parse(match[2]);
+        }
+        catch (error) {
+        }
+        return result;
+    };
+    return Settings;
+}());
 var Translations = (function () {
     function Translations(selector, kdt) {
         this.translations = {};
@@ -477,9 +518,10 @@ var Translations = (function () {
 var Search = (function () {
     function Search(eventHandler, jumpTo) {
         var _this = this;
-        this.results = {};
         this.clearSearch = function (event) {
-            _this.results[_this.kdt.getDataset(event.target, 'instance')] = {};
+            var config = new SearchConfig();
+            config.instance = _this.kdt.getDataset(event.target, 'instance');
+            _this.resultBucket.clearSearchResults(config);
         };
         this.displaySearchOptions = function (event, element) {
             if (element.parentNode === null) {
@@ -555,32 +597,30 @@ var Search = (function () {
                 }
             }
             _this.refreshResultlist(config);
-            var pointer = _this.results[config.instance][config.searchtext]['pointer'];
+            var result = _this.resultBucket.getResultBucket(config);
             var direction = _this.kdt.getDataset(element, 'direction');
             if (direction === 'forward') {
-                pointer++;
+                result.pointer++;
             }
             else {
-                pointer--;
+                result.pointer--;
             }
-            if (typeof _this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
+            if (typeof result.data[result.pointer] === "undefined") {
                 if (direction === 'forward') {
-                    pointer = 0;
+                    result.pointer = 0;
                 }
                 else {
-                    pointer = _this.results[config.instance][config.searchtext]['data'].length - 1;
+                    result.pointer = result.data.length - 1;
                 }
             }
-            if (_this.results[config.instance][config.searchtext]['data'][pointer]) {
-                _this.jumpTo(_this.results[config.instance][config.searchtext]['data'][pointer]);
+            if (result.data[result.pointer]) {
+                _this.jumpTo(result.data[result.pointer]);
             }
             var searchStateElement = (_b = config.node) === null || _b === void 0 ? void 0 : _b.querySelector('.ksearch-state');
             if (searchStateElement === null || searchStateElement === undefined) {
                 return;
             }
-            searchStateElement.textContent =
-                (pointer + 1) + ' / ' + (_this.results[config.instance][config.searchtext]['data'].length);
-            _this.results[config.instance][config.searchtext]['pointer'] = pointer;
+            searchStateElement.textContent = (result.pointer + 1) + ' / ' + (result.data.length);
         };
         this.retrievePayload = function (config) {
             var tab = document.querySelector('#' + config.instance + ' .ktab.kactive');
@@ -592,8 +632,7 @@ var Search = (function () {
         };
         this.refreshResultlist = function (config) {
             var _a, _b;
-            if (typeof _this.results[config.instance] !== "undefined"
-                && typeof _this.results[config.instance][config.searchtext] !== "undefined") {
+            if (_this.resultBucket.hasSearchResults(config)) {
                 return;
             }
             _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
@@ -607,10 +646,7 @@ var Search = (function () {
             if (config.searchLong) {
                 selector.push('li div.kpreview');
             }
-            _this.results[config.instance] = {};
-            _this.results[config.instance][config.searchtext] = { data: [], pointer: 0 };
-            _this.results[config.instance][config.searchtext]['data'] = [];
-            _this.results[config.instance][config.searchtext]['pointer'] = 0;
+            var result = _this.resultBucket.getResultBucket(config);
             if (selector.length > 0) {
                 var list = void 0;
                 list = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll(selector.join(', '));
@@ -626,11 +662,11 @@ var Search = (function () {
                     if ((config.searchWhole && textContent === config.searchtext)
                         || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)) {
                         list[i].classList.toggle('ksearch-found-highlight');
-                        _this.results[config.instance][config.searchtext]['data'].push(list[i]);
+                        result.data.push(list[i]);
                     }
                 }
             }
-            _this.results[config.instance][config.searchtext]['pointer'] = -1;
+            result.pointer = -1;
         };
         this.searchfieldReturn = function (event) {
             event.preventDefault();
@@ -650,6 +686,7 @@ var Search = (function () {
         this.kdt = new Kdt();
         this.eventHandler = eventHandler;
         this.jumpTo = jumpTo;
+        this.resultBucket = new ResultBucket();
         this.eventHandler.addEvent('.kwrapper .ksearchcase', 'change', this.clearSearch);
         this.eventHandler.addEvent('.kwrapper .ksearchkeys', 'change', this.clearSearch);
         this.eventHandler.addEvent('.kwrapper .ksearchshort', 'change', this.clearSearch);
@@ -1020,44 +1057,27 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
-var Settings = (function () {
-    function Settings() {
-        var _this = this;
-        this.set = function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            var settings = _this.read('KrexxDebugSettings');
-            var newValue = event.target.value.replace('"', '').replace("'", '');
-            var valueName = event.target.name.replace('"', '').replace("'", '');
-            settings[valueName] = newValue;
-            var date = new Date();
-            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-            var expires = 'expires=' + date.toUTCString();
-            document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            document.cookie = 'KrexxDebugSettings=' + JSON.stringify(settings) + '; ' + expires + '; path=/';
-            alert(valueName + ' --> ' + newValue + '\n\n' + _this.kdt.translations.translate('tsPleaseReload'));
-        };
-        this.reset = function () {
-            var date = new Date();
-            date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-            var expires = 'expires=' + date.toUTCString();
-            document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
-            alert(_this.kdt.translations.translate('tsConfigReset') + '\n\n' + _this.kdt.translations.translate('tsPleaseReload'));
-        };
-        this.kdt = new Kdt();
+var ResultBucket = (function () {
+    function ResultBucket() {
+        this.results = {};
     }
-    Settings.prototype.read = function (cookieName) {
-        var match = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
-        var result = {};
-        if (match === null) {
-            return result;
-        }
-        try {
-            result = JSON.parse(match[2]);
-        }
-        catch (error) {
-        }
-        return result;
+    ResultBucket.prototype.getResultBucket = function (config) {
+        var _a, _b;
+        var _c, _d, _e, _f;
+        (_a = (_c = this.results)[_d = config.instance]) !== null && _a !== void 0 ? _a : (_c[_d] = {});
+        (_b = (_e = this.results[config.instance])[_f = config.searchtext]) !== null && _b !== void 0 ? _b : (_e[_f] = {
+            data: [],
+            pointer: -1,
+        });
+        return this.results[config.instance][config.searchtext];
     };
-    return Settings;
+    ResultBucket.prototype.clearSearchResults = function (config) {
+        this.results[config.instance] = {};
+    };
+    ResultBucket.prototype.hasSearchResults = function (config) {
+        return (this.results[config.instance] !== undefined &&
+            this.results[config.instance][config.searchtext] !== undefined &&
+            this.results[config.instance][config.searchtext].data.length > 0);
+    };
+    return ResultBucket;
 }());

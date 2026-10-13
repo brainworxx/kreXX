@@ -32,16 +32,13 @@
  */
 
 class Search {
+
   /**
-   * Here we save the search results
+   * The result bucket.
    *
-   * This is multidimensional array:
-   * results[kreXX-instance][search text][search results][pointer]
-   * The [pointer] is the key of the [search result] where
-   * you would jump to when you click "next"
-   *
+   * @var {ResultBucket}
    */
-  protected results: SearchResultsByInstance = {};
+  protected resultBucket: ResultBucket;
 
   /**
    * The kreXX dom tools.
@@ -72,6 +69,7 @@ class Search {
     this.kdt = new Kdt();
     this.eventHandler = eventHandler;
     this.jumpTo = jumpTo;
+    this.resultBucket = new ResultBucket();
 
     // Clear our search results, because we now have new options.
     this.eventHandler.addEvent('.kwrapper .ksearchcase', 'change', this.clearSearch);
@@ -100,7 +98,9 @@ class Search {
    */
   protected clearSearch = (event: Event): void => {
     // Wipe our instance data, nothing more
-    this.results[this.kdt.getDataset((event.target as Element), 'instance')] = {};
+    let config = new SearchConfig();
+    config.instance = this.kdt.getDataset((event.target as Element), 'instance');
+    this.resultBucket.clearSearchResults(config);
   };
 
   /**
@@ -238,31 +238,30 @@ class Search {
 
     this.refreshResultlist(config);
 
-    let pointer: number = this.results[config.instance][config.searchtext]['pointer'];
-
+    let result = this.resultBucket.getResultBucket(config);
     // Set the pointer to the next or previous element
     let direction: string = this.kdt.getDataset(element, 'direction');
     if (direction === 'forward') {
-      pointer++;
+      result.pointer++;
     } else {
-      pointer--;
+      result.pointer--;
     }
 
     // Do we have an element? We may need to adjust the pointer.
-    if (typeof this.results[config.instance][config.searchtext]['data'][pointer] === "undefined") {
+    if (typeof result.data[result.pointer] === "undefined") {
       if (direction === 'forward') {
         // There is no next element, we go back to the first one.
-        pointer = 0;
+        result.pointer = 0;
       } else {
         // There is no previous element, we go forward to the last one.
-        pointer = this.results[config.instance][config.searchtext]['data'].length - 1;
+        result.pointer = result.data.length - 1;
       }
     }
 
     // Check again.
-    if (this.results[config.instance][config.searchtext]['data'][pointer]) {
+    if (result.data[result.pointer]) {
       // Now we simply jump to the element in the array.
-      this.jumpTo(this.results[config.instance][config.searchtext]['data'][pointer]);
+      this.jumpTo(result.data[result.pointer]);
     }
 
     // Feedback about where we are
@@ -270,10 +269,7 @@ class Search {
     if (searchStateElement === null || searchStateElement === undefined) {
       return;
     }
-    searchStateElement.textContent =
-      (pointer + 1) + ' / ' + (this.results[config.instance][config.searchtext]['data'].length);
-
-    this.results[config.instance][config.searchtext]['pointer'] = pointer;
+    searchStateElement.textContent = (result.pointer + 1) + ' / ' + (result.data.length);
   };
 
   /**
@@ -299,12 +295,9 @@ class Search {
    * @param {SearchConfig} config
    */
   protected refreshResultlist = (config: SearchConfig): void => {
-    if (typeof this.results[config.instance] !== "undefined"
-      && typeof this.results[config.instance][config.searchtext] !== "undefined"
-    ) {
+    if (this.resultBucket.hasSearchResults(config)) {
       return;
     }
-
     // Remove all previous highlights
     this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
 
@@ -321,10 +314,8 @@ class Search {
     }
 
     // Get a new list of elements
-    this.results[config.instance] = {};
-    this.results[config.instance][config.searchtext] = {data: [], pointer: 0};
-    this.results[config.instance][config.searchtext]['data'] = [];
-    this.results[config.instance][config.searchtext]['pointer'] = 0;
+    // this.resultBucket.clearSearchResults(config);
+    let result = this.resultBucket.getResultBucket(config);
 
     // Poll out payload for elements to search
     if (selector.length > 0) {
@@ -345,14 +336,14 @@ class Search {
           || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)
         ) {
           (list[i] as Element).classList.toggle('ksearch-found-highlight');
-          this.results[config.instance][config.searchtext]['data'].push(list[i]);
+          result.data.push(list[i]);
         }
       }
     }
 
     // Reset our index.
     // When nothing is found, the pointer is toggeling -1, to show that there is something happening.
-    this.results[config.instance][config.searchtext]['pointer'] = -1;
+    result.pointer = -1;
   };
 
   /**
