@@ -515,6 +515,30 @@ var Translations = (function () {
     };
     return Translations;
 }());
+var ResultBucket = (function () {
+    function ResultBucket() {
+        this.results = {};
+    }
+    ResultBucket.prototype.getResultBucket = function (config) {
+        var _a, _b;
+        var _c, _d, _e, _f;
+        (_a = (_c = this.results)[_d = config.instance]) !== null && _a !== void 0 ? _a : (_c[_d] = {});
+        (_b = (_e = this.results[config.instance])[_f = config.searchtext]) !== null && _b !== void 0 ? _b : (_e[_f] = {
+            data: [],
+            pointer: -1,
+        });
+        return this.results[config.instance][config.searchtext];
+    };
+    ResultBucket.prototype.clearSearchResults = function (config) {
+        this.results[config.instance] = {};
+    };
+    ResultBucket.prototype.hasSearchResults = function (config) {
+        return (this.results[config.instance] !== undefined &&
+            this.results[config.instance][config.searchtext] !== undefined &&
+            this.results[config.instance][config.searchtext].data.length > 0);
+    };
+    return ResultBucket;
+}());
 var Search = (function () {
     function Search(eventHandler, jumpTo) {
         var _this = this;
@@ -549,9 +573,8 @@ var Search = (function () {
             return config;
         };
         this.isSearchable = function (config) {
-            var _a;
-            var searchStateElement = (_a = config.node) === null || _a === void 0 ? void 0 : _a.querySelector('.ksearch-state');
-            if (searchStateElement === null || searchStateElement === undefined) {
+            var searchStateElement = _this.getSearchStateElement(config);
+            if (!searchStateElement) {
                 return false;
             }
             if (config.searchtext.length === 0) {
@@ -573,30 +596,41 @@ var Search = (function () {
             if (grandParentNode === null) {
                 return null;
             }
-            var patentSibling = parentNode.nextElementSibling;
-            if (patentSibling !== null) {
-                _this.kdt.addClass([patentSibling], 'khidden');
+            var parentSibling = parentNode.nextElementSibling;
+            if (parentSibling !== null) {
+                _this.kdt.addClass([parentSibling], 'khidden');
             }
             return grandParentNode;
         };
         this.performSearch = function (event, element) {
-            var _a, _b;
-            var grandParentNode = _this.prepareNodes(element);
-            if (grandParentNode === null) {
+            var root = _this.prepareNodes(element);
+            if (root === null) {
                 return;
             }
-            var config = _this.prepareConfig(grandParentNode, element);
+            var config = _this.prepareConfig(root, element);
             if (!_this.isSearchable(config)) {
                 return;
             }
             _this.retrievePayload(config);
-            var collapsed = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll('.kcollapsed');
-            if (collapsed !== undefined) {
-                for (var i = 0; i < collapsed.length; i++) {
-                    _this.eventHandler.triggerEvent(collapsed[i], 'click');
-                }
-            }
+            _this.expandCollapsedNodes(config);
             _this.refreshResultlist(config);
+            _this.movePointer(config, element);
+            var result = _this.resultBucket.getResultBucket(config);
+            var current = result.data[result.pointer];
+            if (current) {
+                _this.jumpTo(current);
+            }
+            _this.updateSearchState(config);
+        };
+        this.updateSearchState = function (config) {
+            var result = _this.resultBucket.getResultBucket(config);
+            var searchStateElement = _this.getSearchStateElement(config);
+            if (!searchStateElement) {
+                return;
+            }
+            searchStateElement.textContent = (result.pointer + 1) + ' / ' + (result.data.length);
+        };
+        this.movePointer = function (config, element) {
             var result = _this.resultBucket.getResultBucket(config);
             var direction = _this.kdt.getDataset(element, 'direction');
             if (direction === 'forward') {
@@ -613,14 +647,15 @@ var Search = (function () {
                     result.pointer = result.data.length - 1;
                 }
             }
-            if (result.data[result.pointer]) {
-                _this.jumpTo(result.data[result.pointer]);
+        };
+        this.expandCollapsedNodes = function (config) {
+            var _a;
+            var collapsed = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll('.kcollapsed');
+            if (collapsed !== undefined) {
+                for (var i = 0; i < collapsed.length; i++) {
+                    _this.eventHandler.triggerEvent(collapsed[i], 'click');
+                }
             }
-            var searchStateElement = (_b = config.node) === null || _b === void 0 ? void 0 : _b.querySelector('.ksearch-state');
-            if (searchStateElement === null || searchStateElement === undefined) {
-                return;
-            }
-            searchStateElement.textContent = (result.pointer + 1) + ' / ' + (result.data.length);
         };
         this.retrievePayload = function (config) {
             var tab = document.querySelector('#' + config.instance + ' .ktab.kactive');
@@ -631,40 +666,18 @@ var Search = (function () {
             config.payload = document.querySelector('#' + config.instance + ' .kbg-wrapper' + additionalClasses);
         };
         this.refreshResultlist = function (config) {
-            var _a, _b;
+            var _a;
             if (_this.resultBucket.hasSearchResults(config)) {
                 return;
             }
             _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
-            var selector = [];
-            if (config.searchKeys) {
-                selector.push('li.kchild span.kname');
-            }
-            if (config.searchShort) {
-                selector.push('li.kchild span.kshort');
-            }
-            if (config.searchLong) {
-                selector.push('li div.kpreview');
+            var list = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll(_this.buildSelector(config));
+            if (list === undefined) {
+                return;
             }
             var result = _this.resultBucket.getResultBucket(config);
-            if (selector.length > 0) {
-                var list = void 0;
-                list = (_a = config.payload) === null || _a === void 0 ? void 0 : _a.querySelectorAll(selector.join(', '));
-                if (typeof list === "undefined") {
-                    return;
-                }
-                var textContent = '';
-                for (var i = 0; i < list.length; ++i) {
-                    textContent = (_b = list[i].textContent) !== null && _b !== void 0 ? _b : '';
-                    if (!config.caseSensitive) {
-                        textContent = textContent.toLowerCase();
-                    }
-                    if ((config.searchWhole && textContent === config.searchtext)
-                        || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)) {
-                        list[i].classList.toggle('ksearch-found-highlight');
-                        result.data.push(list[i]);
-                    }
-                }
+            for (var i = 0; i < list.length; ++i) {
+                _this.updateResult(list[i], config, result);
             }
             result.pointer = -1;
         };
@@ -696,6 +709,35 @@ var Search = (function () {
         this.eventHandler.addEvent('.kwrapper .koptions', 'click', this.displaySearchOptions);
         this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.searchfieldReturn);
     }
+    Search.prototype.getSearchStateElement = function (config) {
+        var _a, _b;
+        return (_b = (_a = config.node) === null || _a === void 0 ? void 0 : _a.querySelector('.ksearch-state')) !== null && _b !== void 0 ? _b : null;
+    };
+    Search.prototype.updateResult = function (node, config, result) {
+        var _a;
+        var textContent = (_a = node.textContent) !== null && _a !== void 0 ? _a : '';
+        if (!config.caseSensitive) {
+            textContent = textContent.toLowerCase();
+        }
+        if ((config.searchWhole && textContent === config.searchtext)
+            || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)) {
+            node.classList.toggle('ksearch-found-highlight');
+            result.data.push(node);
+        }
+    };
+    Search.prototype.buildSelector = function (config) {
+        var selector = [];
+        if (config.searchKeys) {
+            selector.push('li.kchild span.kname');
+        }
+        if (config.searchShort) {
+            selector.push('li.kchild span.kshort');
+        }
+        if (config.searchLong) {
+            selector.push('li div.kpreview');
+        }
+        return selector.join(', ');
+    };
     return Search;
 }());
 var SearchConfig = (function () {
@@ -1057,27 +1099,3 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
-var ResultBucket = (function () {
-    function ResultBucket() {
-        this.results = {};
-    }
-    ResultBucket.prototype.getResultBucket = function (config) {
-        var _a, _b;
-        var _c, _d, _e, _f;
-        (_a = (_c = this.results)[_d = config.instance]) !== null && _a !== void 0 ? _a : (_c[_d] = {});
-        (_b = (_e = this.results[config.instance])[_f = config.searchtext]) !== null && _b !== void 0 ? _b : (_e[_f] = {
-            data: [],
-            pointer: -1,
-        });
-        return this.results[config.instance][config.searchtext];
-    };
-    ResultBucket.prototype.clearSearchResults = function (config) {
-        this.results[config.instance] = {};
-    };
-    ResultBucket.prototype.hasSearchResults = function (config) {
-        return (this.results[config.instance] !== undefined &&
-            this.results[config.instance][config.searchtext] !== undefined &&
-            this.results[config.instance][config.searchtext].data.length > 0);
-    };
-    return ResultBucket;
-}());

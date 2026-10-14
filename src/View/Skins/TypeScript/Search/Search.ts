@@ -159,8 +159,8 @@ class Search {
    * @return {boolean}
    */
   protected isSearchable = (config: SearchConfig): boolean => {
-    let searchStateElement = config.node?.querySelector('.ksearch-state');
-    if (searchStateElement === null || searchStateElement === undefined) {
+    let searchStateElement = this.getSearchStateElement(config);
+    if (!searchStateElement) {
       return false;
     }
     if (config.searchtext.length === 0) {
@@ -195,10 +195,10 @@ class Search {
     if (grandParentNode === null) {
       return null;
     }
-    let patentSibling = (parentNode as HTMLElement).nextElementSibling
-    if (patentSibling !== null) {
+    let parentSibling = (parentNode as HTMLElement).nextElementSibling
+    if (parentSibling !== null) {
       // Hide the search options.
-      this.kdt.addClass([patentSibling], 'khidden');
+      this.kdt.addClass([parentSibling], 'khidden');
     }
 
     return grandParentNode;
@@ -213,13 +213,13 @@ class Search {
    *   The element that was clicked.
    */
   public performSearch = (event: Event, element: Element): void => {
-    let grandParentNode = this.prepareNodes(element);
-    if (grandParentNode === null) {
+    let root = this.prepareNodes(element);
+    if (root === null) {
       return;
     }
 
     // Stitching together our configuration.
-    let config = this.prepareConfig(grandParentNode, element);
+    let config = this.prepareConfig(root, element);
 
     // Nothing to search for.
     if (!this.isSearchable(config)) {
@@ -227,17 +227,51 @@ class Search {
     }
 
     this.retrievePayload(config);
+    this.expandCollapsedNodes(config);
+    this.refreshResultlist(config);
+    this.movePointer(config, element);
 
-    // We need to un-collapse everything, in case it is collapsed.
-    let collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
-    if (collapsed !== undefined) {
-      for (let i: number = 0; i < collapsed.length; i++) {
-        this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
-      }
+    let result = this.resultBucket.getResultBucket(config);
+    let current = result.data[result.pointer];
+    if (current) {
+      // Now we simply jump to the element in the array.
+      this.jumpTo(current);
     }
 
-    this.refreshResultlist(config);
+    this.updateSearchState(config);
+  };
 
+  /**
+   * Updates the search state display with the current pointer and the total number of results.
+   *
+   * @param config
+   */
+  protected updateSearchState = (config: SearchConfig): void => {
+    let result = this.resultBucket.getResultBucket(config);
+    let searchStateElement = this.getSearchStateElement(config);
+    if (!searchStateElement) {
+      return;
+    }
+    searchStateElement.textContent = (result.pointer + 1) + ' / ' + (result.data.length);
+  }
+
+  /**
+   * Retrieves the search state element from the configuration.
+   *
+   * @param config
+   * @protected
+   */
+  protected getSearchStateElement(config: SearchConfig): Element | null {
+    return config.node?.querySelector('.ksearch-state') ?? null;
+  }
+
+  /**
+   * Moves the pointer to the next or previous element.
+   *
+   * @param config
+   * @param element
+   */
+  protected movePointer = (config: SearchConfig, element: Element): void => {
     let result = this.resultBucket.getResultBucket(config);
     // Set the pointer to the next or previous element
     let direction: string = this.kdt.getDataset(element, 'direction');
@@ -257,20 +291,21 @@ class Search {
         result.pointer = result.data.length - 1;
       }
     }
+  }
 
-    // Check again.
-    if (result.data[result.pointer]) {
-      // Now we simply jump to the element in the array.
-      this.jumpTo(result.data[result.pointer]);
+  /**
+   * Expands all collapsed nodes, so that we can search through them.
+   *
+   * @param config
+   */
+  protected expandCollapsedNodes = (config: SearchConfig): void => {
+    let collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
+    if (collapsed !== undefined) {
+      for (let i: number = 0; i < collapsed.length; i++) {
+        this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
+      }
     }
-
-    // Feedback about where we are
-    let searchStateElement = config.node?.querySelector('.ksearch-state');
-    if (searchStateElement === null || searchStateElement === undefined) {
-      return;
-    }
-    searchStateElement.textContent = (result.pointer + 1) + ' / ' + (result.data.length);
-  };
+  }
 
   /**
    * Retrieve the payload for the search.
@@ -290,7 +325,7 @@ class Search {
   }
 
   /**
-   * Resets our searchlist and fills it with results.
+   * Resets our search list and fills it with results.
    *
    * @param {SearchConfig} config
    */
@@ -301,50 +336,60 @@ class Search {
     // Remove all previous highlights
     this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
 
-    // Apply our configuration.
-    let selector = [];
-    if (config.searchKeys) {
-      selector.push('li.kchild span.kname');
-    }
-    if (config.searchShort) {
-      selector.push('li.kchild span.kshort')
-    }
-    if (config.searchLong) {
-      selector.push('li div.kpreview');
+    // Poll out payload for elements to search
+    let list: NodeList | undefined = config.payload?.querySelectorAll(this.buildSelector(config));
+    if (list === undefined) {
+      return;
     }
 
     // Get a new list of elements
-    // this.resultBucket.clearSearchResults(config);
     let result = this.resultBucket.getResultBucket(config);
-
-    // Poll out payload for elements to search
-    if (selector.length > 0) {
-      let list: NodeList | undefined;
-      list = config.payload?.querySelectorAll(selector.join(', '));
-      if (typeof list === "undefined") {
-        return;
-      }
-      let textContent: string = '';
-      for (let i: number = 0; i < list.length; ++i) {
-        // Does it contain our search string?
-        textContent = list[i].textContent ?? '';
-        if (!config.caseSensitive) {
-          textContent = textContent.toLowerCase();
-        }
-        if (
-          (config.searchWhole && textContent === config.searchtext)
-          || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)
-        ) {
-          (list[i] as Element).classList.toggle('ksearch-found-highlight');
-          result.data.push(list[i]);
-        }
-      }
+    for (let i: number = 0; i < list.length; ++i) {
+      this.updateResult(list[i] as Element, config, result);
     }
 
     // Reset our index.
     // When nothing is found, the pointer is toggeling -1, to show that there is something happening.
     result.pointer = -1;
   };
+
+  protected updateResult(node: Element, config: SearchConfig, result: SearchResult): void {
+    // Does it contain our search string?
+    let textContent = node.textContent ?? '';
+    if (!config.caseSensitive) {
+      textContent = textContent.toLowerCase();
+    }
+
+    if (
+      (config.searchWhole && textContent === config.searchtext)
+      || (!config.searchWhole && textContent.indexOf(config.searchtext) > -1)
+    ) {
+      node.classList.toggle('ksearch-found-highlight');
+      result.data.push(node);
+    }
+  }
+
+  /**
+   * Builds a selector string based on the search configuration.
+   *
+   * @param {SearchConfig} config
+   * @returns {string}
+   */
+  protected buildSelector(config: SearchConfig): string {
+  const selector: string[] = [];
+
+  if (config.searchKeys) {
+    selector.push('li.kchild span.kname');
+  }
+  if (config.searchShort) {
+    selector.push('li.kchild span.kshort');
+  }
+  if (config.searchLong) {
+    selector.push('li div.kpreview');
+  }
+
+  return selector.join(', ');
+}
 
   /**
    * Listens for a <RETURN> in the search field.
