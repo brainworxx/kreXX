@@ -54,8 +54,20 @@ class Eventhandler {
 
     // Register the event handler.
     const elements: NodeList = document.querySelectorAll(selector);
+    this.registerEventsOnElements(elements, 'click', this.handle);
+  }
+
+  /**
+   * Registers an event listener on a list of elements.
+   *
+   * @param {NodeList} elements
+   * @param {string} eventName
+   * @param {EventListener} callback
+   * @protected
+   */
+  protected registerEventsOnElements(elements: NodeList, eventName: string, callback: EventListener): void {
     for (let i = 0; i < elements.length; i++) {
-      elements[i].addEventListener('click', this.handle);
+      elements[i].addEventListener(eventName, callback);
     }
   }
 
@@ -74,9 +86,7 @@ class Eventhandler {
     } else {
       /** @type {NodeList} */
       const elements: NodeList = document.querySelectorAll(selector);
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].addEventListener(eventName, (callBack as EventListener));
-      }
+      this.registerEventsOnElements(elements, eventName, (callBack as EventListener));
     }
   }
 
@@ -103,6 +113,32 @@ class Eventhandler {
   }
 
   /**
+   * Calls the events for a given event and element.
+   *
+   * @param event
+   * @param element
+   * @protected
+   */
+  protected callEvents(event: Event, element: Node): boolean {
+    for (let selector in this.storage) {
+      if (!(element as Element).matches(selector)) {
+        continue;
+      }
+      let callbackArray = this.storage[selector];
+      // Got to call them all.
+      for (let i = 0; i < callbackArray.length; i++) {
+        callbackArray[i](event, element);
+        if ((event as StoppableEvent).stop) {
+          // Our "implementation" of stopPropagation().
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
    * Whenever a click is bubbled on a kreXX instance, we try to find
    * the according callback, and simply call it.
    *
@@ -115,26 +151,10 @@ class Eventhandler {
     (event as StoppableEvent).stop = false;
 
     let element: Node | null = (event.target as Node);
-    let selector: string;
-    let i: number;
-    let callbackArray: Function[] = [];
 
     do {
       // We need to test the element on all selectors.
-      for (selector in this.storage) {
-        if (!(element as Element).matches(selector)) {
-          continue;
-        }
-        callbackArray = this.storage[selector];
-        // Got to call them all.
-        for (i = 0; i < callbackArray.length; i++) {
-          callbackArray[i](event, element);
-          if ((event as StoppableEvent).stop) {
-            // Our "implementation" of stopPropagation().
-            return;
-          }
-        }
-      }
+      this.callEvents(event, element);
 
       // Time to test the parent.
       element = element.parentNode;

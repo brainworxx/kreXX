@@ -110,6 +110,72 @@ var CodeGen = (function () {
     };
     return CodeGen;
 }());
+var CopyFrom = (function () {
+    function CopyFrom() {
+        var _this = this;
+        this.retrieveMainElements = function (element) {
+            var domid = _this.kdt.getDataset(element, 'domid');
+            if (domid === '' || element.parentNode === null) {
+                return false;
+            }
+            var orgNest = document.querySelector('#' + domid);
+            var orgEl = orgNest === null || orgNest === void 0 ? void 0 : orgNest.previousElementSibling;
+            var parentElement = element.parentNode;
+            if (orgNest && orgEl && parentElement) {
+                return { orgNest: orgNest, orgEl: orgEl, parentElement: parentElement, domid: domid };
+            }
+            return false;
+        };
+        this.prepareCopy = function (element, newEl) {
+            var _a, _b;
+            _this.kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML =
+                _this.kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
+            var allChildren = (_a = newEl.nextElementSibling) === null || _a === void 0 ? void 0 : _a.getElementsByTagName("*");
+            if (allChildren) {
+                for (var i = 0; i < allChildren.length; i++) {
+                    allChildren[i].removeAttribute('id');
+                }
+            }
+            (_b = newEl.nextElementSibling) === null || _b === void 0 ? void 0 : _b.removeAttribute('id');
+        };
+        this.prepareButtons = function (element, newEl) {
+            var _a, _b;
+            var newInfobox = newEl.querySelector('.khelp');
+            var newButton = newEl.querySelector('.kinfobutton');
+            var realInfobox = element.querySelector('.khelp');
+            var realButton = element.querySelector('.kinfobutton');
+            if (newInfobox !== null) {
+                (_a = newInfobox.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(newInfobox);
+            }
+            if (newButton !== null) {
+                (_b = newButton.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(newButton);
+            }
+            if (realInfobox === null) {
+                return;
+            }
+            if (realButton !== null) {
+                newEl.appendChild(realButton);
+            }
+            newEl.appendChild(realInfobox);
+        };
+        this.copyFrom = function (event, element) {
+            var mainElements = _this.retrieveMainElements(element);
+            if (!mainElements) {
+                return;
+            }
+            var orgNest = mainElements.orgNest, orgEl = mainElements.orgEl, parentElement = mainElements.parentElement, domid = mainElements.domid;
+            parentElement.insertBefore(orgNest.cloneNode(true), element.nextSibling);
+            var newEl = orgEl.cloneNode(true);
+            parentElement.insertBefore(newEl, element.nextSibling);
+            _this.kdt.setDataset(newEl.parentNode, 'domid', domid);
+            _this.prepareCopy(element, newEl);
+            _this.prepareButtons(element, newEl);
+            parentElement.removeChild(element);
+        };
+        this.kdt = new Kdt();
+    }
+    return CopyFrom;
+}());
 var Draxx = (function () {
     function Draxx(selector, handle, callbackUp, callbackDrag) {
         var _this = this;
@@ -215,22 +281,8 @@ var Eventhandler = (function () {
             event.stopPropagation();
             event.stop = false;
             var element = event.target;
-            var selector;
-            var i;
-            var callbackArray = [];
             do {
-                for (selector in _this.storage) {
-                    if (!element.matches(selector)) {
-                        continue;
-                    }
-                    callbackArray = _this.storage[selector];
-                    for (i = 0; i < callbackArray.length; i++) {
-                        callbackArray[i](event, element);
-                        if (event.stop) {
-                            return;
-                        }
-                    }
-                }
+                _this.callEvents(event, element);
                 element = element.parentNode;
                 if (element === event.currentTarget) {
                     element = null;
@@ -239,19 +291,20 @@ var Eventhandler = (function () {
         };
         this.kdt = new Kdt();
         var elements = document.querySelectorAll(selector);
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].addEventListener('click', this.handle);
-        }
+        this.registerEventsOnElements(elements, 'click', this.handle);
     }
+    Eventhandler.prototype.registerEventsOnElements = function (elements, eventName, callback) {
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener(eventName, callback);
+        }
+    };
     Eventhandler.prototype.addEvent = function (selector, eventName, callBack) {
         if (eventName === 'click') {
             this.addToStorage(selector, callBack);
         }
         else {
             var elements = document.querySelectorAll(selector);
-            for (var i = 0; i < elements.length; i++) {
-                elements[i].addEventListener(eventName, callBack);
-            }
+            this.registerEventsOnElements(elements, eventName, callBack);
         }
     };
     Eventhandler.prototype.preventBubble = function (event) {
@@ -262,6 +315,21 @@ var Eventhandler = (function () {
             this.storage[selector] = [];
         }
         this.storage[selector].push(callback);
+    };
+    Eventhandler.prototype.callEvents = function (event, element) {
+        for (var selector in this.storage) {
+            if (!element.matches(selector)) {
+                continue;
+            }
+            var callbackArray = this.storage[selector];
+            for (var i = 0; i < callbackArray.length; i++) {
+                callbackArray[i](event, element);
+                if (event.stop) {
+                    return false;
+                }
+            }
+        }
+        return true;
     };
     Eventhandler.prototype.triggerEvent = function (el, eventName) {
         var event = new Event(eventName, { bubbles: true, cancelable: false });
@@ -1061,69 +1129,3 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
-var CopyFrom = (function () {
-    function CopyFrom() {
-        var _this = this;
-        this.retrieveMainElements = function (element) {
-            var domid = _this.kdt.getDataset(element, 'domid');
-            if (domid === '' || element.parentNode === null) {
-                return false;
-            }
-            var orgNest = document.querySelector('#' + domid);
-            var orgEl = orgNest === null || orgNest === void 0 ? void 0 : orgNest.previousElementSibling;
-            var parentElement = element.parentNode;
-            if (orgNest && orgEl && parentElement) {
-                return { orgNest: orgNest, orgEl: orgEl, parentElement: parentElement, domid: domid };
-            }
-            return false;
-        };
-        this.prepareCopy = function (element, newEl) {
-            var _a, _b;
-            _this.kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML =
-                _this.kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
-            var allChildren = (_a = newEl.nextElementSibling) === null || _a === void 0 ? void 0 : _a.getElementsByTagName("*");
-            if (allChildren) {
-                for (var i = 0; i < allChildren.length; i++) {
-                    allChildren[i].removeAttribute('id');
-                }
-            }
-            (_b = newEl.nextElementSibling) === null || _b === void 0 ? void 0 : _b.removeAttribute('id');
-        };
-        this.prepareButtons = function (element, newEl) {
-            var _a, _b;
-            var newInfobox = newEl.querySelector('.khelp');
-            var newButton = newEl.querySelector('.kinfobutton');
-            var realInfobox = element.querySelector('.khelp');
-            var realButton = element.querySelector('.kinfobutton');
-            if (newInfobox !== null) {
-                (_a = newInfobox.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(newInfobox);
-            }
-            if (newButton !== null) {
-                (_b = newButton.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(newButton);
-            }
-            if (realInfobox === null) {
-                return;
-            }
-            if (realButton !== null) {
-                newEl.appendChild(realButton);
-            }
-            newEl.appendChild(realInfobox);
-        };
-        this.copyFrom = function (event, element) {
-            var mainElements = _this.retrieveMainElements(element);
-            if (!mainElements) {
-                return;
-            }
-            var orgNest = mainElements.orgNest, orgEl = mainElements.orgEl, parentElement = mainElements.parentElement, domid = mainElements.domid;
-            parentElement.insertBefore(orgNest.cloneNode(true), element.nextSibling);
-            var newEl = orgEl.cloneNode(true);
-            parentElement.insertBefore(newEl, element.nextSibling);
-            _this.kdt.setDataset(newEl.parentNode, 'domid', domid);
-            _this.prepareCopy(element, newEl);
-            _this.prepareButtons(element, newEl);
-            parentElement.removeChild(element);
-        };
-        this.kdt = new Kdt();
-    }
-    return CopyFrom;
-}());
