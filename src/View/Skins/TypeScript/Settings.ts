@@ -54,7 +54,7 @@ class Settings {
    *   The value, set in the cookie.
    */
   protected read(cookieName: string): Record<string, string> {
-    let match: RegExpMatchArray | null = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
+    const match: RegExpMatchArray | null = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
     let result: Record<string, string> = {};
     if (match === null) {
       return result;
@@ -82,17 +82,17 @@ class Settings {
     event.stopPropagation();
 
     // Get the old value.
-    let settings: Record<string, string> = this.read('KrexxDebugSettings');
+    const settings: Record<string, string> = this.read('KrexxDebugSettings');
 
     // Get new settings from element.
-    let newValue: string | number = (event.target as HTMLInputElement).value.replace('"', '').replace("'", '');
-    let valueName: string = (event.target as HTMLInputElement).name.replace('"', '').replace("'", '');
+    const newValue: string | number = (event.target as HTMLInputElement).value.replace('"', '').replace("'", '');
+    const valueName: string = (event.target as HTMLInputElement).name.replace('"', '').replace("'", '');
     settings[valueName] = newValue;
 
     // Save it.
-    let date: Date = new Date();
+    const date: Date = new Date();
     date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-    let expires: string = 'expires=' + date.toUTCString();
+    const expires: string = 'expires=' + date.toUTCString();
 
     // Remove a possible old value from a previous version.
     document.cookie = 'KrexxDebugSettings=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -108,9 +108,9 @@ class Settings {
    */
   public reset = (): void => {
     // We do not delete the cookie, we simply remove all settings in it.
-    let date: Date = new Date();
+    const date: Date = new Date();
     date.setTime(date.getTime() + (99 * 24 * 60 * 60 * 1000));
-    let expires: string = 'expires=' + date.toUTCString();
+    const expires: string = 'expires=' + date.toUTCString();
 
     document.cookie = 'KrexxDebugSettings={}; ' + expires + '; path=/';
     alert(this.kdt.translations.translate('tsConfigReset') + '\n\n' + this.kdt.translations.translate('tsPleaseReload'));

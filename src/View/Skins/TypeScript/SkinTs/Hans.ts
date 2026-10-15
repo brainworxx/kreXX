@@ -48,6 +48,8 @@ class Hans {
    */
   protected draxx!: Draxx;
 
+  protected copyFrom: CopyFrom;
+
   /**
    * Out DOM search.
    *
@@ -101,6 +103,7 @@ class Hans {
     this.kdt = new Kdt();
     this.CodeGen = new CodeGen();
     this.settings = new Settings();
+    this.copyFrom = new CopyFrom();
   }
 
   /**
@@ -111,7 +114,7 @@ class Hans {
       '.kwrapper',
       '.kheadnote',
       function () {
-        let searchWrapper: NodeList = document.querySelectorAll('.search-wrapper');
+        const searchWrapper: NodeList = document.querySelectorAll('.search-wrapper');
         let viewportOffset: DOMRect;
         for (let i = 0; i < searchWrapper.length; i++) {
           viewportOffset = (searchWrapper[i] as HTMLElement).getBoundingClientRect();
@@ -120,7 +123,7 @@ class Hans {
         }
       },
       function () {
-        let searchWrapper = document.querySelectorAll('.search-wrapper');
+        const searchWrapper = document.querySelectorAll('.search-wrapper');
         for (let i = 0; i < searchWrapper.length; i++) {
           (searchWrapper[i] as HTMLElement).style.position = 'absolute';
           (searchWrapper[i] as HTMLElement).style.top = '';
@@ -193,7 +196,7 @@ class Hans {
      *   When a recursion is clicked, kreXX tries to locate the
      *   first output of the object and highlight it.
      */
-    this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.kdt.copyFrom);
+    this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.copyFrom.copyFrom);
 
     /**
      * Register the displaying of the search menu
@@ -280,13 +283,13 @@ class Hans {
    * @param {boolean} noHighlight
    */
   protected setHighlighting(el: Element, noHighlight: boolean): void {
-    let nests: Node[] = this.kdt.getParents(el, '.knest');
+    const nests: Node[] = this.kdt.getParents(el, '.knest');
 
     // Show them.
     this.kdt.removeClass(nests, 'khidden');
     // We need to expand them all.
     for (let i = 0; i < nests.length; i++) {
-      let prevSibling: Element | null = (nests[i] as Element).previousElementSibling;
+      const prevSibling: Element | null = (nests[i] as Element).previousElementSibling;
       if (prevSibling === null) {
         continue;
       }
@@ -332,7 +335,7 @@ class Hans {
     --container.scrollTop;
     destination = el.getBoundingClientRect().top + container.scrollTop - 50;
 
-    let diff: number = Math.abs(container.scrollTop - destination);
+    const diff: number = Math.abs(container.scrollTop - destination);
     if (diff < 250) {
       // No need to jump there
       return;
@@ -353,7 +356,7 @@ class Hans {
 
     // Make sure to end the last interval before starting a new one.
     clearInterval(this.jumpToInterval);
-    let interval: number = this.jumpToInterval = setInterval(function () {
+    const interval: number = this.jumpToInterval = setInterval(function () {
       container.scrollTop += step;
       if (Math.abs(container.scrollTop - destination) <= Math.abs(step) || container.scrollTop === lastValue) {
         // We are here now, the next step would take us too far.
@@ -375,12 +378,12 @@ class Hans {
    *   The element that was clicked.
    */
   protected close = (event: Event, element: Element): void => {
-    let instance: string = this.kdt.getDataset(element, 'instance');
-    let elInstance: HTMLElement | null = document.querySelector('#' + instance);
+    const instance: string = this.kdt.getDataset(element, 'instance');
+    const elInstance: HTMLElement | null = document.querySelector('#' + instance);
 
     // Remove it nice and "slow".
     let opacity: number = 1;
-    let interval: number = setInterval(function () {
+    const interval: number = setInterval(function () {
       if (opacity < 0) {
         // It's invisible now, so we clear the timer and remove it from the DOM.
         clearInterval(interval);
@@ -406,7 +409,7 @@ class Hans {
    * for that file, and not for the server.
    */
   protected disableForms(): void {
-    let elements: NodeList = document.querySelectorAll('.kwrapper .kconfiguration .keditable input, .kwrapper .kconfiguration .keditable select');
+    const elements: NodeList = document.querySelectorAll('.kwrapper .kconfiguration .keditable input, .kwrapper .kconfiguration .keditable select');
     for (let i = 0; i < elements.length; i++) {
       (elements[i] as HTMLInputElement).disabled = true;
     }
@@ -425,7 +428,7 @@ class Hans {
     (event as StoppableEvent).stop = true;
 
     // Find the corresponding info box.
-    let box: HTMLElement = (element.nextElementSibling as HTMLElement);
+    const box: HTMLElement = (element.nextElementSibling as HTMLElement);
 
     if (box.style.display === 'none') {
       box.style.display = '';
@@ -444,8 +447,8 @@ class Hans {
    *   The element that was clicked.
    */
   protected displaySearch = (event: Event, element: Node): void => {
-    let instance: string = this.kdt.getDataset((element as Element), 'instance');
-    let search: HTMLElement | null = document.querySelector('#search-' + instance);
+    const instance: string = this.kdt.getDataset((element as Element), 'instance');
+    const search: HTMLElement | null = document.querySelector('#search-' + instance);
     if (search === null) {
       return;
     }

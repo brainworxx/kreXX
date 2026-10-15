@@ -53,7 +53,7 @@ class Eventhandler {
     this.kdt = new Kdt();
 
     // Register the event handler.
-    let elements: NodeList = document.querySelectorAll(selector);
+    const elements: NodeList = document.querySelectorAll(selector);
     for (let i = 0; i < elements.length; i++) {
       elements[i].addEventListener('click', this.handle);
     }
@@ -73,7 +73,7 @@ class Eventhandler {
       this.addToStorage(selector, callBack);
     } else {
       /** @type {NodeList} */
-      let elements: NodeList = document.querySelectorAll(selector);
+      const elements: NodeList = document.querySelectorAll(selector);
       for (let i = 0; i < elements.length; i++) {
         elements[i].addEventListener(eventName, (callBack as EventListener));
       }
@@ -154,7 +154,7 @@ class Eventhandler {
    */
   public triggerEvent(el: Element, eventName: string): void {
     /** @type {Event} */
-    let event: Event = new Event(eventName, {bubbles: true, cancelable: false});
+    const event: Event = new Event(eventName, {bubbles: true, cancelable: false});
     el.dispatchEvent(event);
   }
 }

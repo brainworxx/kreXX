@@ -272,7 +272,8 @@ var Eventhandler = (function () {
 var Kdt = (function () {
     function Kdt() {
         var _this = this;
-        this.jumpTo = function () { };
+        this.jumpTo = function () {
+        };
         this.setJumpTo = function (jumpTo) {
             _this.jumpTo = jumpTo;
         };
@@ -296,47 +297,6 @@ var Kdt = (function () {
             setTimeout(function () {
                 jumpTo(element, true);
             }, 100);
-        };
-        this.copyFrom = function (event, element) {
-            var _a, _b, _c, _d;
-            var i;
-            var domid = _this.getDataset(element, 'domid');
-            if (domid === '' || element.parentNode === null) {
-                return;
-            }
-            var orgNest = document.querySelector('#' + domid);
-            var orgEl = orgNest === null || orgNest === void 0 ? void 0 : orgNest.previousElementSibling;
-            if (orgNest && orgEl) {
-                element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
-                var newEl = orgEl.cloneNode(true);
-                element.parentNode.insertBefore(newEl, element.nextSibling);
-                _this.findInDomlistByClass(newEl.children, 'kname').innerHTML = _this.findInDomlistByClass(element.children, 'kname').innerHTML;
-                var allChildren = (_a = newEl.nextElementSibling) === null || _a === void 0 ? void 0 : _a.getElementsByTagName("*");
-                if (allChildren) {
-                    for (i = 0; i < allChildren.length; i++) {
-                        allChildren[i].removeAttribute('id');
-                    }
-                }
-                (_b = newEl.nextElementSibling) === null || _b === void 0 ? void 0 : _b.removeAttribute('id');
-                _this.setDataset(newEl.parentNode, 'domid', domid);
-                var newInfobox = newEl.querySelector('.khelp');
-                var newButton = newEl.querySelector('.kinfobutton');
-                var realInfobox = element.querySelector('.khelp');
-                var realButton = element.querySelector('.kinfobutton');
-                if (newInfobox !== null) {
-                    (_c = newInfobox.parentNode) === null || _c === void 0 ? void 0 : _c.removeChild(newInfobox);
-                }
-                if (newButton !== null) {
-                    (_d = newButton.parentNode) === null || _d === void 0 ? void 0 : _d.removeChild(newButton);
-                }
-                if (realInfobox !== null) {
-                    newEl.appendChild(realInfobox);
-                }
-                if (realButton !== null) {
-                    newEl.appendChild(realButton);
-                }
-                element.parentNode.removeChild(element);
-            }
         };
         this.translations = new Translations('.krdata-structure.krtrans', this);
         this.addClass('.kwrapper .knoscript', 'khidden');
@@ -895,6 +855,7 @@ var Hans = (function () {
         this.kdt = new Kdt();
         this.CodeGen = new CodeGen();
         this.settings = new Settings();
+        this.copyFrom = new CopyFrom();
     }
     Hans.prototype.run = function () {
         if (this.kdt.beenHere()) {
@@ -909,7 +870,7 @@ var Hans = (function () {
         this.eventHandler.addEvent(this.selectors.toggle, 'click', this.toggle);
         this.eventHandler.addEvent(this.selectors.setSetting, 'change', this.settings.set);
         this.eventHandler.addEvent(this.selectors.resetSetting, 'click', this.settings.reset);
-        this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.kdt.copyFrom);
+        this.eventHandler.addEvent(this.selectors.copyFrom, 'click', this.copyFrom.copyFrom);
         this.eventHandler.addEvent(this.selectors.displaySearch, 'click', this.displaySearch);
         this.eventHandler.addEvent(this.selectors.performSearch, 'click', this.search.performSearch);
         this.eventHandler.addEvent(this.selectors.collapse, 'click', this.kdt.collapse);
@@ -1100,3 +1061,69 @@ var SmokyGrey = (function (_super) {
     };
     return SmokyGrey;
 }(Hans));
+var CopyFrom = (function () {
+    function CopyFrom() {
+        var _this = this;
+        this.retrieveMainElements = function (element) {
+            var domid = _this.kdt.getDataset(element, 'domid');
+            if (domid === '' || element.parentNode === null) {
+                return false;
+            }
+            var orgNest = document.querySelector('#' + domid);
+            var orgEl = orgNest === null || orgNest === void 0 ? void 0 : orgNest.previousElementSibling;
+            var parentElement = element.parentNode;
+            if (orgNest && orgEl && parentElement) {
+                return { orgNest: orgNest, orgEl: orgEl, parentElement: parentElement, domid: domid };
+            }
+            return false;
+        };
+        this.prepareCopy = function (element, newEl) {
+            var _a, _b;
+            _this.kdt.findInDomlistByClass(newEl.children, 'kname').innerHTML =
+                _this.kdt.findInDomlistByClass(element.children, 'kname').innerHTML;
+            var allChildren = (_a = newEl.nextElementSibling) === null || _a === void 0 ? void 0 : _a.getElementsByTagName("*");
+            if (allChildren) {
+                for (var i = 0; i < allChildren.length; i++) {
+                    allChildren[i].removeAttribute('id');
+                }
+            }
+            (_b = newEl.nextElementSibling) === null || _b === void 0 ? void 0 : _b.removeAttribute('id');
+        };
+        this.prepareButtons = function (element, newEl) {
+            var _a, _b;
+            var newInfobox = newEl.querySelector('.khelp');
+            var newButton = newEl.querySelector('.kinfobutton');
+            var realInfobox = element.querySelector('.khelp');
+            var realButton = element.querySelector('.kinfobutton');
+            if (newInfobox !== null) {
+                (_a = newInfobox.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(newInfobox);
+            }
+            if (newButton !== null) {
+                (_b = newButton.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(newButton);
+            }
+            if (realInfobox === null) {
+                return;
+            }
+            if (realButton !== null) {
+                newEl.appendChild(realButton);
+            }
+            newEl.appendChild(realInfobox);
+        };
+        this.copyFrom = function (event, element) {
+            var mainElements = _this.retrieveMainElements(element);
+            if (!mainElements) {
+                return;
+            }
+            var orgNest = mainElements.orgNest, orgEl = mainElements.orgEl, parentElement = mainElements.parentElement, domid = mainElements.domid;
+            parentElement.insertBefore(orgNest.cloneNode(true), element.nextSibling);
+            var newEl = orgEl.cloneNode(true);
+            parentElement.insertBefore(newEl, element.nextSibling);
+            _this.kdt.setDataset(newEl.parentNode, 'domid', domid);
+            _this.prepareCopy(element, newEl);
+            _this.prepareButtons(element, newEl);
+            parentElement.removeChild(element);
+        };
+        this.kdt = new Kdt();
+    }
+    return CopyFrom;
+}());

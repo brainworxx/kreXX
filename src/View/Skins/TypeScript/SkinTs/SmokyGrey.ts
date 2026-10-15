@@ -91,8 +91,8 @@ class SmokyGrey extends Hans {
    *   The element that was clicked.
    */
   protected switchTab = (event: Event, element: Element): void => {
-    let instance = this.kdt.getDataset((element.parentNode as Element), 'instance');
-    let what = this.kdt.getDataset(element, 'what');
+    const instance = this.kdt.getDataset((element.parentNode as Element), 'instance');
+    const what = this.kdt.getDataset(element, 'what');
 
     // Toggle the highlighting.
     this.kdt.removeClass('#' + instance + ' .kactive:not(.ksearchbutton)', 'kactive');
@@ -117,32 +117,32 @@ class SmokyGrey extends Hans {
    *   The element that was clicked.
    */
   protected setAdditionalData = (event: Event, element: Node): void => {
-    let kdt: Kdt = this.kdt;
-    let setPayloadMaxHeight: Function = this.setPayloadMaxHeight.bind(this);
+    const kdt: Kdt = this.kdt;
+    const setPayloadMaxHeight: Function = this.setPayloadMaxHeight.bind(this);
     // When dealing with 400 MB output, or more, this one takes more time than anything else.
     // We will delay it, so that is does not slow down other stuff.
     setTimeout(function () {
-      let wrapper: HTMLElement = (kdt.getParents(element, '.kwrapper')[0] as HTMLElement);
+      const wrapper: HTMLElement = (kdt.getParents(element, '.kwrapper')[0] as HTMLElement);
       if (typeof wrapper === 'undefined') {
         // This only happens, when we are facing a recursion. There is no
         // additional json data, anyway.
         return;
       }
 
-      let body = wrapper.querySelector('.kdatabody');
+      const body = wrapper.querySelector('.kdatabody');
       if (body === null) {
         return;
       }
       let html = '';
       let counter = 0;
-      let regex = /\\u([\d\w]{4})/gi;
+      const regex = /\\u([\d\w]{4})/gi;
 
       // Mark the clicked el, clear the others.
       kdt.removeClass(wrapper.querySelectorAll('.kcurrent-additional'), 'kcurrent-additional');
       kdt.addClass([element], 'kcurrent-additional');
 
       // Load the Json.
-      let json = kdt.parseJson(kdt.getDataset((element as Element), 'addjson', false));
+      const json = kdt.parseJson(kdt.getDataset((element as Element), 'addjson', false));
 
       if (typeof json === 'object') {
         // We've got data!
@@ -187,9 +187,9 @@ class SmokyGrey extends Hans {
     if (element.parentNode === null) {
       return;
     }
-    let instance: string = this.kdt.getDataset(element.parentNode as Element, 'instance');
-    let search: HTMLElement | null = document.querySelector('#search-' + instance);
-    let searchtab: HTMLElement | null = document.querySelector('#' + instance + ' .ksearchbutton');
+    const instance: string = this.kdt.getDataset(element.parentNode as Element, 'instance');
+    const search: HTMLElement | null = document.querySelector('#search-' + instance);
+    const searchtab: HTMLElement | null = document.querySelector('#' + instance + ' .ksearchbutton');
 
     if (search === null || searchtab === null) {
       return;
@@ -221,12 +221,12 @@ class SmokyGrey extends Hans {
     this.setHighlighting(el, noHighlight);
 
     // Getting our scroll container
-    let container: HTMLElement = (this.kdt.getParents(el, '.kpayload')[0] as HTMLElement);
+    const container: HTMLElement = (this.kdt.getParents(el, '.kpayload')[0] as HTMLElement);
 
     // We need to find out in which direction we must go.
     // We also must determine the speed we want to travel.
-    let destination: number = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
-    let diff: number = Math.abs(container.scrollTop - destination);
+    const destination: number = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
+    const diff: number = Math.abs(container.scrollTop - destination);
     let step: number;
     if (container.scrollTop < destination) {
       // Forward.
@@ -241,7 +241,7 @@ class SmokyGrey extends Hans {
 
     // Make sure to end the last interval before starting a new one.
     clearInterval(this.jumpToInterval);
-    let interval: number = this.jumpToInterval = setInterval(function () {
+    const interval: number = this.jumpToInterval = setInterval(function () {
       container.scrollTop += step;
       if (Math.abs(container.scrollTop - destination) <= Math.abs(step) || container.scrollTop === lastValue) {
         // We are here now, the next step would take us too far.
@@ -266,9 +266,9 @@ class SmokyGrey extends Hans {
     // For the fatal error handler.
     elements = document.querySelectorAll('.kfatalwrapper-outer .kpayload');
     if (elements.length > 0) {
-      let header = (document.querySelector('.kfatalwrapper-outer ul.knode.kfirst') as HTMLElement).offsetHeight;
-      let footer = (document.querySelector('.kfatalwrapper-outer .kinfo-wrapper') as HTMLElement).offsetHeight;
-      let handler = (document.querySelector('.kfatalwrapper-outer') as HTMLElement).offsetHeight;
+      const header = (document.querySelector('.kfatalwrapper-outer ul.knode.kfirst') as HTMLElement).offsetHeight;
+      const footer = (document.querySelector('.kfatalwrapper-outer .kinfo-wrapper') as HTMLElement).offsetHeight;
+      const handler = (document.querySelector('.kfatalwrapper-outer') as HTMLElement).offsetHeight;
       // This sets the max payload height to the remaining height of the window,
       // sending the footer straight to the bottom of the viewport.
       this.handlePayloadMinHeight(handler - header - footer - 17, elements);

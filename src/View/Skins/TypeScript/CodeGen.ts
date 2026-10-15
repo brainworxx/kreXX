@@ -176,7 +176,7 @@ class CodeGen {
       if (this.domid !== '') {
         // We need to get a new el, because we are facing a recursion, and the
         // current path is not really reachable.
-        let parentEl = document.querySelector('#' + this.domid)?.parentNode;
+        const parentEl = document.querySelector('#' + this.domid)?.parentNode;
         if (!parentEl) {
           return false;
         }

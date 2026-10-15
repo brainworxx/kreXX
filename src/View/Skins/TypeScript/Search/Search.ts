@@ -98,7 +98,7 @@ class Search {
    */
   protected clearSearch = (event: Event): void => {
     // Wipe our instance data, nothing more
-    let config = new SearchConfig();
+    const config = new SearchConfig();
     config.instance = this.kdt.getDataset((event.target as Element), 'instance');
     this.resultBucket.clearSearchResults(config);
   };
@@ -117,7 +117,7 @@ class Search {
     if (element.parentNode === null) {
       return;
     }
-    let nextElementSibling = (element.parentNode as Element).nextElementSibling;
+    const nextElementSibling = (element.parentNode as Element).nextElementSibling;
     if (nextElementSibling === null) {
       return;
     }
@@ -133,7 +133,7 @@ class Search {
    * @return {SearchConfig}
    */
   protected prepareConfig = (element: Element, instanceElement: Element): SearchConfig => {
-    let config: SearchConfig = new SearchConfig();
+    const config: SearchConfig = new SearchConfig();
     config.node = element;
     config.searchtext = (element.querySelector('.ksearchfield') as HTMLInputElement).value;
     config.caseSensitive = (element.querySelector('.ksearchcase') as HTMLInputElement).checked;
@@ -159,7 +159,7 @@ class Search {
    * @return {boolean}
    */
   protected isSearchable = (config: SearchConfig): boolean => {
-    let searchStateElement = this.getSearchStateElement(config);
+    const searchStateElement = this.getSearchStateElement(config);
     if (!searchStateElement) {
       return false;
     }
@@ -187,15 +187,15 @@ class Search {
    * @return {Element|null}
    */
   protected prepareNodes = (element: Element): Element|null => {
-    let parentNode: Element = element.parentNode as Element;
+    const parentNode: Element = element.parentNode as Element;
     if (parentNode === null) {
       return null;
     }
-    let grandParentNode = parentNode.parentNode as Element;
+    const grandParentNode = parentNode.parentNode as Element;
     if (grandParentNode === null) {
       return null;
     }
-    let parentSibling = (parentNode as HTMLElement).nextElementSibling
+    const parentSibling = (parentNode as HTMLElement).nextElementSibling
     if (parentSibling !== null) {
       // Hide the search options.
       this.kdt.addClass([parentSibling], 'khidden');
@@ -213,13 +213,13 @@ class Search {
    *   The element that was clicked.
    */
   public performSearch = (event: Event, element: Element): void => {
-    let root = this.prepareNodes(element);
+    const root = this.prepareNodes(element);
     if (root === null) {
       return;
     }
 
     // Stitching together our configuration.
-    let config = this.prepareConfig(root, element);
+    const config = this.prepareConfig(root, element);
 
     // Nothing to search for.
     if (!this.isSearchable(config)) {
@@ -231,8 +231,8 @@ class Search {
     this.refreshResultlist(config);
     this.movePointer(config, element);
 
-    let result = this.resultBucket.getResultBucket(config);
-    let current = result.data[result.pointer];
+    const result = this.resultBucket.getResultBucket(config);
+    const current = result.data[result.pointer];
     if (current) {
       // Now we simply jump to the element in the array.
       this.jumpTo(current);
@@ -247,8 +247,8 @@ class Search {
    * @param config
    */
   protected updateSearchState = (config: SearchConfig): void => {
-    let result = this.resultBucket.getResultBucket(config);
-    let searchStateElement = this.getSearchStateElement(config);
+    const result = this.resultBucket.getResultBucket(config);
+    const searchStateElement = this.getSearchStateElement(config);
     if (!searchStateElement) {
       return;
     }
@@ -272,9 +272,9 @@ class Search {
    * @param element
    */
   protected movePointer = (config: SearchConfig, element: Element): void => {
-    let result = this.resultBucket.getResultBucket(config);
+    const result = this.resultBucket.getResultBucket(config);
     // Set the pointer to the next or previous element
-    let direction: string = this.kdt.getDataset(element, 'direction');
+    const direction: string = this.kdt.getDataset(element, 'direction');
     if (direction === 'forward') {
       result.pointer++;
     } else {
@@ -299,7 +299,7 @@ class Search {
    * @param config
    */
   protected expandCollapsedNodes = (config: SearchConfig): void => {
-    let collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
+    const collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
     if (collapsed !== undefined) {
       for (let i: number = 0; i < collapsed.length; i++) {
         this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
@@ -314,7 +314,7 @@ class Search {
    */
   protected retrievePayload = (config: SearchConfig): void => {
     // We may need to search in a specific part of the payload.
-    let tab: Element|null = document.querySelector('#' + config.instance + ' .ktab.kactive');
+    const tab: Element|null = document.querySelector('#' + config.instance + ' .ktab.kactive');
     let additionalClasses: string = '';
 
     if (tab !== null) {
@@ -337,13 +337,13 @@ class Search {
     this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
 
     // Poll out payload for elements to search
-    let list: NodeList | undefined = config.payload?.querySelectorAll(this.buildSelector(config));
+    const list: NodeList | undefined = config.payload?.querySelectorAll(this.buildSelector(config));
     if (list === undefined) {
       return;
     }
 
     // Get a new list of elements
-    let result = this.resultBucket.getResultBucket(config);
+    const result = this.resultBucket.getResultBucket(config);
     for (let i: number = 0; i < list.length; ++i) {
       this.updateResult(list[i] as Element, config, result);
     }
@@ -411,7 +411,7 @@ class Search {
     if (event.target === null) {
       return;
     }
-    let parentNode = (event.target as Node).parentNode;
+    const parentNode = (event.target as Node).parentNode;
     if (parentNode === null) {
       return;
     }

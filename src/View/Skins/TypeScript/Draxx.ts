@@ -93,7 +93,7 @@ class Draxx {
     this.callbackDrag = callbackDrag;
     this.kdt = new Kdt();
 
-    let elements: NodeList = document.querySelectorAll(handle);
+    const elements: NodeList = document.querySelectorAll(handle);
     for (let i = 0; i < elements.length; i++) {
       elements[i].addEventListener('mousedown', this.startDraxx as EventListener);
     }
@@ -119,7 +119,7 @@ class Draxx {
 
       // Get the elements we need to move
       /** @type {NodeList} */
-      let elements: NodeList = document.querySelectorAll(selector);
+      const elements: NodeList = document.querySelectorAll(selector);
       /** @type {number} */
       let oldOffset: number = 0;
 
@@ -140,8 +140,8 @@ class Draxx {
    */
   protected startDraxx = (event: MouseEvent): void => {
     // The selector has an ID, we only have one of them.
-    let elContent: HTMLElement = (this.kdt.getParents((event.target as Node), this.selector)[0] as HTMLElement);
-    let offset: Offset = this.getElementOffset(elContent);
+    const elContent: HTMLElement = (this.kdt.getParents((event.target as Node), this.selector)[0] as HTMLElement);
+    const offset: Offset = this.getElementOffset(elContent);
 
     // Calculate original offset.
     this.offSetY = offset.top + elContent.offsetHeight - event.pageY - elContent.offsetHeight;
@@ -153,11 +153,11 @@ class Draxx {
     // and there are elements above that have
     // - margin: top or
     // - margin: bottom
-    let body: HTMLElement | null = document.querySelector('body');
+    const body: HTMLElement | null = document.querySelector('body');
     if (body === null) {
       return;
     }
-    let bodyStyle: CSSStyleDeclaration = getComputedStyle(body);
+    const bodyStyle: CSSStyleDeclaration = getComputedStyle(body);
     if (bodyStyle.position === 'relative') {
       let relOffsetY: number;
       let relOffsetX: number;
@@ -242,10 +242,10 @@ class Draxx {
    * @returns {Offset}
    */
   protected getElementOffset(element: Element): Offset {
-    let de: Element = document.documentElement;
-    let box: DOMRect = element.getBoundingClientRect();
-    let top: number = box.top + window.pageYOffset - de.clientTop;
-    let left: number = box.left + window.pageXOffset - de.clientLeft;
+    const de: Element = document.documentElement;
+    const box: DOMRect = element.getBoundingClientRect();
+    const top: number = box.top + window.pageYOffset - de.clientTop;
+    const left: number = box.left + window.pageXOffset - de.clientLeft;
     return {top: top, left: left};
   }
 
@@ -258,7 +258,7 @@ class Draxx {
    */
   protected outerWidth(element: HTMLElement): number {
     let width: number = element.offsetWidth;
-    let style: CSSStyleDeclaration = getComputedStyle(element);
+    const style: CSSStyleDeclaration = getComputedStyle(element);
     width += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
     return width;
   }

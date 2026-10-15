@@ -37,7 +37,8 @@ class Kdt {
   /**
    * The jump-to implementation.
    */
-  protected jumpTo: Function = function () {};
+  protected jumpTo: Function = function () {
+  };
 
   /**
    * Our translations class.
@@ -80,9 +81,9 @@ class Kdt {
    * @param {string} selector
    */
   public getParents(el: Node, selector: string): Node[] {
-    let result: Node[] = [];
+    const result: Node[] = [];
     let parent: Node | null = el.parentNode;
-    let body: Node | null = document.querySelector('body');
+    const body: Node | null = document.querySelector('body');
 
     while (parent !== null) {
       // Check for classname
@@ -173,7 +174,7 @@ class Kdt {
    *
    * @returns {string}
    */
-  public getDataset(el: Element|null, what: string, mustEscape: boolean = false): string {
+  public getDataset(el: Element | null, what: string, mustEscape: boolean = false): string {
     let result: string | null;
 
     if (
@@ -224,8 +225,8 @@ class Kdt {
    * @param {Element} el
    */
   public selectText(el: Element): void {
-    let range: Range = document.createRange();
-    let selection: Selection | null = window.getSelection();
+    const range: Range = document.createRange();
+    const selection: Selection | null = window.getSelection();
 
     if (selection === null) {
       return;
@@ -260,7 +261,7 @@ class Kdt {
    */
   public moveToBottom(selector: string): void {
     // Get all elements.
-    let elements: NodeList = document.querySelectorAll(selector);
+    const elements: NodeList = document.querySelectorAll(selector);
 
     for (let i = 0; i < elements.length; i++) {
       // Check if their parent is the body tag.
@@ -288,7 +289,7 @@ class Kdt {
   public collapse = (event: Event, element: Element): void => {
     (event as StoppableEvent).stop = true;
 
-    let wrapper: Node = this.getParents(element, '.kwrapper')[0];
+    const wrapper: Node = this.getParents(element, '.kwrapper')[0];
 
     // Remove all old classes within this debug "window"
     this.removeClass((wrapper as Element).querySelectorAll('.kfilterroot'), 'kfilterroot');
@@ -313,90 +314,12 @@ class Kdt {
       this.removeClass((wrapper as Element).querySelectorAll('.kcollapsed'), 'kcollapsed');
     }
 
-    let jumpTo = this.jumpTo;
+    const jumpTo = this.jumpTo;
     setTimeout(
       function () {
         // Move the element into the viewport.
         jumpTo(element, true);
       }, 100
     );
-  };
-
-  /**
-   * When clicked on s recursion, this function will
-   * copy the original analysis result there and delete
-   * the recursion.
-   *
-   * @event click
-   * @param {Event} event
-   *   The click event.
-   * @param {Element} element
-   *   The element that was clicked.
-   */
-  public copyFrom = (event: Event, element: Element): void => {
-    let i: number;
-
-    // Get the DOM id of the original analysis.
-    let domid: string = this.getDataset(element, 'domid');
-    if (domid === '' || element.parentNode === null) {
-      // Do nothing.
-      return;
-    }
-
-    // Get the analysis data.
-    let orgNest: HTMLElement | null = document.querySelector('#' + domid);
-    // Get the EL of the data (element with the arrow).
-    let orgEl: Node | null | undefined = orgNest?.previousElementSibling;
-
-    // Does the element exist?
-    if (orgNest && orgEl) {
-      // Clone the analysis data and insert it after the recursion EL.
-      element.parentNode.insertBefore(orgNest.cloneNode(true), element.nextSibling);
-      // Clone the EL of the analysis data and insert it after the recursion EL.
-      let newEl: Element = (orgEl.cloneNode(true) as Element);
-      element.parentNode.insertBefore(newEl, element.nextSibling);
-
-      // Change the key of the just cloned EL to the one from the recursion.
-      (this.findInDomlistByClass(newEl.children, 'kname') as HTMLElement).innerHTML = (this.findInDomlistByClass(element.children, 'kname') as HTMLElement).innerHTML;
-      // We  need to remove the ids from the copy to avoid double ids.
-      let allChildren = newEl.nextElementSibling?.getElementsByTagName("*");
-      if (allChildren) {
-        for (i = 0; i < allChildren.length; i++) {
-          allChildren[i].removeAttribute('id');
-        }
-      }
-      newEl.nextElementSibling?.removeAttribute('id');
-
-      // Now we add the dom-id to the clone, as a data-field. this way we can
-      // make sure to always produce the right path to this value during source
-      // generation.
-      this.setDataset((newEl.parentNode as Element), 'domid', domid);
-
-      // Remove the infobox from the copy, if available and add the one from the
-      // recursion.
-      let newInfobox = newEl.querySelector('.khelp');
-      let newButton = newEl.querySelector('.kinfobutton');
-      let realInfobox = element.querySelector('.khelp');
-      let realButton = element.querySelector('.kinfobutton');
-
-      // We don't need the infobox on newEl, so we will remove it.
-      if (newInfobox !== null) {
-        newInfobox.parentNode?.removeChild(newInfobox);
-      }
-      if (newButton !== null) {
-        newButton.parentNode?.removeChild(newButton);
-      }
-
-      // We copy the Infobox from the recursion to the newEl, if it exists.
-      if (realInfobox !== null) {
-        newEl.appendChild(realInfobox);
-      }
-      if (realButton !== null) {
-        newEl.appendChild(realButton);
-      }
-
-      // Remove the recursion EL.
-      element.parentNode.removeChild(element);
-    }
   };
 }

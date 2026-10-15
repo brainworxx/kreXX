@@ -44,7 +44,7 @@ class Translations {
    * @param {Kdt} kdt
    */
   constructor(selector: string, kdt: Kdt) {
-    let dataElements = document.querySelectorAll(selector);
+    const dataElements = document.querySelectorAll(selector);
     let data: string;
     let json: Record<string, string> | false;
 
