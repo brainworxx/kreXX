@@ -1034,12 +1034,13 @@ var SmokyGrey = (function (_super) {
             if (search === null || searchtab === null) {
                 return;
             }
-            search.classList.toggle('khidden');
             searchtab.classList.toggle('kactive');
             if (search.classList.contains('khidden')) {
+                search.classList.toggle('khidden');
                 search.querySelector('.ksearchfield').focus();
             }
             else {
+                search.classList.toggle('khidden');
                 _this.kdt.removeClass('.ksearch-found-highlight', 'ksearch-found-highlight');
             }
         };
