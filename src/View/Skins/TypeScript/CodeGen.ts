@@ -137,7 +137,7 @@ class CodeGen {
       // '. . .' means it is not reachable,
       // we will stop right here and display a comment stating this.
       if (this.resultArray[i] === '. . .') {
-        this.resultString = '// Value is either protected or private.<br /> // Sorry . . ';
+        this.resultString = this.kdt.translations.translate('tsNoCodeGen');
         break;
       }
 

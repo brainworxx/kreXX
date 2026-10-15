@@ -54,7 +54,7 @@ var CodeGen = (function () {
         this.resultArray.reverse();
         for (var i = 0; i < this.resultArray.length; i++) {
             if (this.resultArray[i] === '. . .') {
-                this.resultString = '// Value is either protected or private.<br /> // Sorry . . ';
+                this.resultString = this.kdt.translations.translate('tsNoCodeGen');
                 break;
             }
             if (this.resultArray[i] === ';stop;') {
