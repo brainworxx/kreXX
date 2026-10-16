@@ -333,14 +333,28 @@ class Hans {
       return;
     }
     --container.scrollTop;
-    destination = el.getBoundingClientRect().top + container.scrollTop - 50;
+    destination = el.getBoundingClientRect().top + container.scrollTop - 200;
 
     const diff: number = Math.abs(container.scrollTop - destination);
-    if (diff < 250) {
+    if (diff < 150) {
       // No need to jump there
       return;
     }
 
+    this.scrollContainer(container, destination, diff);
+  };
+
+  /**
+   * Scrolls the container to the destination.
+   *
+   * @param {HTMLElement} container
+   *   The container to scroll.
+   * @param {number} destination
+   *   The destination to scroll to.
+   * @param {number} diff
+   *  The difference between the current scroll position and the destination.
+   */
+  protected scrollContainer = (container: HTMLElement, destination: number, diff: number): void => {
     // Getting the direction
     let step: number;
     if (container.scrollTop < destination) {
@@ -366,7 +380,7 @@ class Hans {
       }
       lastValue = container.scrollTop;
     }, 10);
-  };
+  }
 
   /**
    * Shows a "fast" closing animation and then removes the kreXX window from the markup.

@@ -227,30 +227,8 @@ class SmokyGrey extends Hans {
     // We also must determine the speed we want to travel.
     const destination: number = el.getBoundingClientRect().top - container.getBoundingClientRect().top + container.scrollTop - 50;
     const diff: number = Math.abs(container.scrollTop - destination);
-    let step: number;
-    if (container.scrollTop < destination) {
-      // Forward.
-      step = Math.round(diff / 12);
-    } else {
-      // Backward.
-      step = Math.round(diff / 12) * -1;
-    }
 
-    // We also need to check if the setting of the new value was successful.
-    let lastValue: number = container.scrollTop;
-
-    // Make sure to end the last interval before starting a new one.
-    clearInterval(this.jumpToInterval);
-    const interval: number = this.jumpToInterval = setInterval(function () {
-      container.scrollTop += step;
-      if (Math.abs(container.scrollTop - destination) <= Math.abs(step) || container.scrollTop === lastValue) {
-        // We are here now, the next step would take us too far.
-        // So we jump there right now and then clear the interval.
-        container.scrollTop = destination;
-        clearInterval(interval);
-      }
-      lastValue = container.scrollTop;
-    }, 1);
+    this.scrollContainer(container, destination, diff);
   };
 
   /**
