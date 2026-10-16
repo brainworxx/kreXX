@@ -32,13 +32,12 @@
  */
 
 class Search {
-
   /**
    * The result bucket.
    *
-   * @var {ResultBucket}
+   * @var {SearchResultBucket}
    */
-  protected resultBucket: ResultBucket;
+  protected resultBucket: SearchResultBucket;
 
   /**
    * The kreXX dom tools.
@@ -59,6 +58,8 @@ class Search {
    */
   protected jumpTo: Function;
 
+  protected navigation: SearchNavigator;
+
   /**
    * Inject the event handler.
    *
@@ -69,60 +70,10 @@ class Search {
     this.kdt = new Kdt();
     this.eventHandler = eventHandler;
     this.jumpTo = jumpTo;
-    this.resultBucket = new ResultBucket();
-
-    // Clear our search results, because we now have new options.
-    this.eventHandler.addEvent('.kwrapper .ksearchcase', 'change', this.clearSearch);
-    // Clear our search results, because we now have new options.
-    this.eventHandler.addEvent('.kwrapper .ksearchkeys', 'change', this.clearSearch);
-    // Clear our search results, because we now have new options.
-    this.eventHandler.addEvent('.kwrapper .ksearchshort', 'change', this.clearSearch);
-    // Clear our search results, because we now have new options.
-    this.eventHandler.addEvent('.kwrapper .ksearchlong', 'change', this.clearSearch);
-    // Clear our search results, because we now have new options.
-    this.eventHandler.addEvent('.kwrapper .ksearchwhole', 'change', this.clearSearch);
-    // Clear the search results, because we now have a new tab selected.
-    this.eventHandler.addEvent('.kwrapper .ktab', 'click', this.clearSearch);
-    // Display our search options.
-    this.eventHandler.addEvent('.kwrapper .koptions', 'click', this.displaySearchOptions);
-    // Listen for a return key in the seach field.
-    this.eventHandler.addEvent('.kwrapper .ksearchfield', 'keyup', this.searchfieldReturn);
+    this.resultBucket = new SearchResultBucket();
+    this.navigation = new SearchNavigator(this.resultBucket);
+    new SearchEventBinder(eventHandler, this.resultBucket);
   }
-
-  /**
-   * Reset the search results, because we now have new search options.
-   *
-   * @var {Event} event
-   *
-   * @event change
-   */
-  protected clearSearch = (event: Event): void => {
-    // Wipe our instance data, nothing more
-    const config = new SearchConfig();
-    config.instance = this.kdt.getDataset((event.target as Element), 'instance');
-    this.resultBucket.clearSearchResults(config);
-  };
-
-  /**
-   * Toggle the display of the search options.
-   *
-   * @event click
-   * @param {Event} event
-   *   The click event.
-   * @param {Node} element
-   *   The element that was clicked.
-   */
-  protected displaySearchOptions = (event: Event, element: Node): void => {
-    // Get the options and switch the display class.
-    if (element.parentNode === null) {
-      return;
-    }
-    const nextElementSibling = (element.parentNode as Element).nextElementSibling;
-    if (nextElementSibling === null) {
-      return;
-    }
-    nextElementSibling.classList.toggle('khidden');
-  };
 
   /**
    * Prepare the search configuration.
@@ -152,41 +103,13 @@ class Search {
   }
 
   /**
-   * Check if we have enough information to perform a search.
-   *
-   * @param config
-   *
-   * @return {boolean}
-   */
-  protected isSearchable = (config: SearchConfig): boolean => {
-    const searchStateElement = this.getSearchStateElement(config);
-    if (!searchStateElement) {
-      return false;
-    }
-    if (config.searchtext.length === 0) {
-      // Not enough chars as a searchtext!
-      searchStateElement.textContent = this.kdt.translations.translate('tsEnterText');
-      return false;
-    }
-
-    // We only search for more than 3 chars.
-    if (config.searchtext.length < 3 && !config.searchWhole) {
-      // Not enough chars as a searchtext!
-      searchStateElement.textContent = this.kdt.translations.translate('tsTooSmall');
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
    * Prepare the nodes for the search.
    *
    * @param element
    *
    * @return {Element|null}
    */
-  protected prepareNodes = (element: Element): Element|null => {
+  protected prepareNodes = (element: Element): Element | null => {
     const parentNode: Element = element.parentNode as Element;
     if (parentNode === null) {
       return null;
@@ -222,14 +145,14 @@ class Search {
     const config = this.prepareConfig(root, element);
 
     // Nothing to search for.
-    if (!this.isSearchable(config)) {
+    if (!this.navigation.isSearchable(config)) {
       return;
     }
 
     this.retrievePayload(config);
     this.expandCollapsedNodes(config);
     this.refreshResultlist(config);
-    this.movePointer(config, element);
+    this.navigation.movePointer(config, element);
 
     const result = this.resultBucket.getResultBucket(config);
     const current = result.data[result.pointer];
@@ -238,60 +161,8 @@ class Search {
       this.jumpTo(current);
     }
 
-    this.updateSearchState(config);
+    this.navigation.updateSearchState(config);
   };
-
-  /**
-   * Updates the search state display with the current pointer and the total number of results.
-   *
-   * @param config
-   */
-  protected updateSearchState = (config: SearchConfig): void => {
-    const result = this.resultBucket.getResultBucket(config);
-    const searchStateElement = this.getSearchStateElement(config);
-    if (!searchStateElement) {
-      return;
-    }
-    searchStateElement.textContent = (result.pointer + 1) + ' / ' + (result.data.length);
-  }
-
-  /**
-   * Retrieves the search state element from the configuration.
-   *
-   * @param config
-   * @protected
-   */
-  protected getSearchStateElement(config: SearchConfig): Element | null {
-    return config.node?.querySelector('.ksearch-state') ?? null;
-  }
-
-  /**
-   * Moves the pointer to the next or previous element.
-   *
-   * @param config
-   * @param element
-   */
-  protected movePointer = (config: SearchConfig, element: Element): void => {
-    const result = this.resultBucket.getResultBucket(config);
-    // Set the pointer to the next or previous element
-    const direction: string = this.kdt.getDataset(element, 'direction');
-    if (direction === 'forward') {
-      result.pointer++;
-    } else {
-      result.pointer--;
-    }
-
-    // Do we have an element? We may need to adjust the pointer.
-    if (typeof result.data[result.pointer] === "undefined") {
-      if (direction === 'forward') {
-        // There is no next element, we go back to the first one.
-        result.pointer = 0;
-      } else {
-        // There is no previous element, we go forward to the last one.
-        result.pointer = result.data.length - 1;
-      }
-    }
-  }
 
   /**
    * Expands all collapsed nodes, so that we can search through them.
@@ -299,7 +170,7 @@ class Search {
    * @param config
    */
   protected expandCollapsedNodes = (config: SearchConfig): void => {
-    const collapsed: NodeList|undefined = config.payload?.querySelectorAll('.kcollapsed');
+    const collapsed: NodeList | undefined = config.payload?.querySelectorAll('.kcollapsed');
     if (collapsed !== undefined) {
       for (let i: number = 0; i < collapsed.length; i++) {
         this.eventHandler.triggerEvent((collapsed[i] as Element), 'click');
@@ -314,7 +185,7 @@ class Search {
    */
   protected retrievePayload = (config: SearchConfig): void => {
     // We may need to search in a specific part of the payload.
-    const tab: Element|null = document.querySelector('#' + config.instance + ' .ktab.kactive');
+    const tab: Element | null = document.querySelector('#' + config.instance + ' .ktab.kactive');
     let additionalClasses: string = '';
 
     if (tab !== null) {
@@ -353,6 +224,14 @@ class Search {
     result.pointer = -1;
   };
 
+  /**
+   * Updates the search result with the current node if it matches the search criteria.
+   *
+   * @param node
+   * @param config
+   * @param result
+   * @protected
+   */
   protected updateResult(node: Element, config: SearchConfig, result: SearchResult): void {
     // Does it contain our search string?
     let textContent = node.textContent ?? '';
@@ -376,45 +255,18 @@ class Search {
    * @returns {string}
    */
   protected buildSelector(config: SearchConfig): string {
-  const selector: string[] = [];
+    const selector: string[] = [];
 
-  if (config.searchKeys) {
-    selector.push('li.kchild span.kname');
-  }
-  if (config.searchShort) {
-    selector.push('li.kchild span.kshort');
-  }
-  if (config.searchLong) {
-    selector.push('li div.kpreview');
-  }
-
-  return selector.join(', ');
-}
-
-  /**
-   * Listens for a <RETURN> in the search field.
-   *
-   * @param {KeyboardEvent} event
-   * @event keyUp
-   */
-  public searchfieldReturn = (event: KeyboardEvent): void => {
-    // Prevents the default event behavior (ie: click).
-    event.preventDefault();
-    // Prevents the event from propagating (ie: "bubbling").
-    event.stopPropagation();
-
-    // If this is no <RETURN> key, do nothing.
-    if (event.key !== 'Enter') {
-      return;
+    if (config.searchKeys) {
+      selector.push('li.kchild span.kname');
+    }
+    if (config.searchShort) {
+      selector.push('li.kchild span.kshort');
+    }
+    if (config.searchLong) {
+      selector.push('li div.kpreview');
     }
 
-    if (event.target === null) {
-      return;
-    }
-    const parentNode = (event.target as Node).parentNode;
-    if (parentNode === null) {
-      return;
-    }
-    this.eventHandler.triggerEvent(parentNode.querySelectorAll('.ksearchnow')[1], 'click');
-  };
+    return selector.join(', ');
+  }
 }
