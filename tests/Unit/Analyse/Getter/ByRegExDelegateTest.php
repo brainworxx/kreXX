@@ -36,6 +36,7 @@
 namespace Brainworxx\Krexx\Tests\Unit\Analyse\Getter;
 
 use Brainworxx\Krexx\Analyse\Getter\ByRegExDelegate;
+use Brainworxx\Krexx\Analyse\Getter\GetterRouting;
 use Brainworxx\Krexx\Service\Reflection\ReflectionClass;
 use Brainworxx\Krexx\Tests\Fixtures\DelegateGetterFixture;
 use Brainworxx\Krexx\Krexx;
@@ -51,7 +52,16 @@ class ByRegExDelegateTest extends AbstractGetter
     public function setUp(): void
     {
         parent::setUp();
-        $this->testSubject = new ByRegExDelegate(Krexx::$pool);
+
+        // The thingy you have to do, to get the right instance . . .
+        $routing = new GetterRouting(Krexx::$pool);
+        $analyser = $this->retrieveValueByReflection('getterAnalyser', $routing);
+        foreach ($analyser as $getter) {
+            if ($getter instanceof ByRegExDelegate) {
+                $this->testSubject = $getter;
+                break;
+            }
+        }
     }
 
     /**
@@ -59,7 +69,7 @@ class ByRegExDelegateTest extends AbstractGetter
      */
     public function testConstruct(): void
     {
-        $this->assertNotEmpty($this->retrieveValueByReflection('getterAnalyser', $this->testSubject));
+        $this->assertNotEmpty($this->retrieveValueByReflection('pool', $this->testSubject));
     }
 
     /**
