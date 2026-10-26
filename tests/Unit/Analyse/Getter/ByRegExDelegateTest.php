@@ -43,7 +43,7 @@ use Brainworxx\Krexx\Krexx;
 use Brainworxx\Krexx\Tests\Fixtures\EndlessLoop;
 use PHPUnit\Framework\Attributes\CoversMethod;
 
-#[CoversMethod(ByRegExDelegate::class, '__construct')]
+#[CoversMethod(ByRegExDelegate::class, 'setRouting')]
 #[CoversMethod(ByRegExDelegate::class, 'retrieveIt')]
 #[CoversMethod(ByRegExDelegate::class, 'extractValue')]
 #[CoversMethod(ByRegExDelegate::class, 'retrieveReflectionClass')]
