@@ -1,3 +1,5 @@
+6.1.1
+
 6.1.0
 - Feature: Display the headline in the debug output in the
   debug window.
