@@ -90,6 +90,6 @@ class ComplexMethodFixture extends MethodsFixture implements InterfaceFixture
      */
     public function traitComment()
     {
-        krexx($parameter, 'foo');
+        krexx($parameter, "foo");
     }
 }
