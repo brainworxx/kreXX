@@ -126,7 +126,7 @@ class PoolTest extends AbstractHelper
      */
     public function testCheckEnvironmentIsNotWritable()
     {
-        $filename = Krexx::$pool->recursionHandler->getMarker();
+        $filename = 'test' . Krexx::$pool->recursionHandler->getMarker();
         // Chunks folder is not writable
         // Log folder is not writable
         $filePutContents = $this->getFunctionMock(static::MISC_NAMESPACE, 'file_put_contents');

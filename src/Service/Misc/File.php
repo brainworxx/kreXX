@@ -412,7 +412,7 @@ class File
      */
     public function isDirectoryWritable(string $path): bool
     {
-        $filename = $this->pool->recursionHandler->getMarker();
+        $filename = 'test' . $this->pool->recursionHandler->getMarker();
         set_error_handler($this->pool->retrieveErrorCallback());
         // Make sure that the filename we want to create does not exist.
         unlink($path . $filename);
