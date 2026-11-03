@@ -128,10 +128,9 @@ class CallerFinder extends AbstractCaller implements BacktraceConstInterface, Ca
      */
     protected function cleanupVarName(string $name, string $headline): string
     {
-        $name = str_replace(search: '"' . $headline . '"', replace: '', subject: $name);
-        $name = str_replace(search: '\'' . $headline . '\'', replace: '', subject: $name);
-        $names = explode(separator: ',', string: $name);
-        return trim(string: $names[0], characters: " \t\n\r\0\x0B");
+        $name = str_replace(search: '&#034' . $headline . '&#034', replace: '', subject: $name);
+        $name = str_replace(search: '&#039;' . $headline . '&#039;', replace: '', subject: $name);
+        return trim(string: $name, characters: ", \t\n\r\0\x0B");
     }
 
     /**
