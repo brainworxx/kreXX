@@ -61,6 +61,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 #[CoversMethod(ReflectionClass::class, '__construct')]
 #[CoversMethod(ReflectionClass::class, 'getObjectVars')]
 #[CoversMethod(ReflectionClass::class, 'triggerLazyLoading')]
+#[CoversMethod(ReflectionClass::class, 'getLazyCallback')]
 class ReflectionClassTest extends AbstractHelper
 {
     /**
@@ -100,6 +101,7 @@ class ReflectionClassTest extends AbstractHelper
 
         $reflectionProperty = $reflection->getProperty('value');
         $this->assertEquals(42, $reflection->retrieveValue($reflectionProperty));
+        $this->assertIsCallable($reflection->getLazyCallback());
     }
 
     /**

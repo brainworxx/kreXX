@@ -169,6 +169,11 @@ class Meta extends AbstractObjectAnalysis
             $data[$messages->getHelp(key: 'metaAttributes')] = $attributes;
         }
 
+        // Take care of lazy objects.
+        if ($callback = $ref->getLazyCallback()) {
+            $data[$messages->getHelp(key: 'metaLazyInitializer')] = $callback;
+        }
+
         // Now to collect the inheritance stuff.
         // Each of them will get analysed by the ThroughMeta callback.
         if (!empty($interfaces = $ref->getInterfaces())) {

@@ -96,8 +96,18 @@ class MetaTest extends AbstractHelper
     {
         $meta = new Meta(Krexx::$pool);
 
-        // Setup a fixture
-        $ref = Krexx::$pool->createReflection(SimpleFixture::class);
+        if (!method_exists(\ReflectionClass::class, 'getLazyInitializer')) {
+            // Setup a fixture
+            $ref = Krexx::$pool->createReflection(SimpleFixture::class);
+        } else {
+            $reflection = new \ReflectionClass(SimpleFixture::class);
+            $ref = Krexx::$pool->createReflection($reflection->newLazyGhost(
+                initializer: function (object $proxy, string $method, array $parameters, &$initializer) {
+                    $initializer = null;
+                }
+            ));
+        }
+
         $expectedDomId = 'k42_c_' . md5(SimpleFixture::class);
 
         // Test for the events
@@ -198,7 +208,7 @@ class MetaTest extends AbstractHelper
         $this->assertStringContainsString('Just another meaningless class comment.', $data['Comment']);
         $this->assertStringEndsWith(
             DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'Fixtures' .
-            DIRECTORY_SEPARATOR . 'ComplexMethodFixture.php in line: 41',
+            DIRECTORY_SEPARATOR . 'ComplexMethodFixture.php in line: 42',
             $data['Declared in']
         );
         $metaInterfaces = 'Interfaces';

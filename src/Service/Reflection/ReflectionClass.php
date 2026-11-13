@@ -73,6 +73,11 @@ class ReflectionClass extends \ReflectionClass
     protected SplObjectStorage $unsetPropertyStorage;
 
     /**
+     * @var ?callable
+     */
+    protected $lazyCallback = null;
+
+    /**
      * ReflectionClass constructor.
      *
      * @param object|string $data
@@ -124,12 +129,18 @@ class ReflectionClass extends \ReflectionClass
         // We trigger the lazy loading, so we can get the properties.
         set_error_handler(callback: $this->pool->retrieveErrorCallback());
         try {
+            $this->lazyCallback = $this->getLazyInitializer(object: $data);
             get_object_vars($data);
         } catch (Throwable) {
             // Do nothing.
             // Lazy loading just fizzled out. We ignore this one.
         }
         restore_error_handler();
+    }
+
+    public function getLazyCallback(): ?callable
+    {
+        return $this->lazyCallback;
     }
 
     /**
