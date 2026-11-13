@@ -86,7 +86,12 @@ class ReflectionClassTest extends AbstractHelper
 
     public function testConstuctWithLazyGhost()
     {
-        $fixture = new \ReflectionClass(LazyFixture::class)->newLazyGhost(function (LazyFixture $object) {
+        if (!method_exists(OriginalReflectionClass::class, 'newLazyGhost')) {
+            $this->markTestSkipped('This test requires PHP 8.4 or higher.');
+        }
+
+        $vanillaReflection = new OriginalReflectionClass(LazyFixture::class);
+        $fixture = $vanillaReflection->newLazyGhost(function (LazyFixture $object) {
             $object->__construct(42);
         });
 
