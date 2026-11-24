@@ -17,8 +17,9 @@ jobs:
         env:
           - { php: 8.2, coverage: no  }
           - { php: 8.3, coverage: no  }
-          - { php: 8.4, coverage: no }
-          - { php: 8.5, coverage: yes }
+          - { php: 8.4, coverage: no  }
+          - { php: 8.5, coverage: no  }
+          - { php: 8.6, coverage: yes }
 
     steps:
 
